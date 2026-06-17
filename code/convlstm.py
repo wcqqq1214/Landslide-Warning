@@ -17,11 +17,14 @@ ROOT = Path(__file__).resolve().parent.parent
 FEAT_CSV = ROOT / "data" / "features.csv"
 OUT_PT = ROOT / "models" / "convlstm.pt"
 OUT_PNG = ROOT / "figures" / "forecast_interval.png"
+OUT_METRICS = ROOT / "figures" / "forecast_metrics.csv"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
 EXOG_COLS = ["RWL", "RWL_rate", "Rain_cum7", "Rain_cum15", "Rain_cum30"]
-LOOKBACK = 30
+THESIS_WINDOWS = {"MJ1": 2, "MJ9": 7, "MJ3": 2}
+PLOT_STATIONS = ["MJ9", "MJ1", "MJ3"]
+LOOKBACK = max(THESIS_WINDOWS.values())
 HORIZON = 1
 TRAIN_FRAC = 0.8
 CAL_FRAC = 0.0
@@ -170,6 +173,21 @@ def compute_forecast_metrics(p10, p50, p90, y_true, last):
     return metrics
 
 
+def station_metric_rows(p10, p50, p90, y_true, last, station_names, thesis_windows=None):
+    rows = []
+    thesis_windows = {} if thesis_windows is None else thesis_windows
+    for i, station in enumerate(station_names):
+        metrics = compute_forecast_metrics(
+            p10[:, i], p50[:, i], p90[:, i], y_true[:, i], last[:, i]
+        )
+        rows.append({
+            "station": station,
+            "thesis_window": thesis_windows.get(station, ""),
+            **metrics,
+        })
+    return rows
+
+
 def make_delta_scale(train_delta, floor=0.05):
     """Scale normalized targets by train-set daily displacement increments."""
     return np.maximum(train_delta.std(axis=0), floor)
@@ -290,6 +308,10 @@ def main():
     raw_metrics = compute_forecast_metrics(p10, p50, p90, yte_real, last_te)
     p10, p90 = pred[:, qi[0.1]] - qhat, pred[:, qi[0.9]] + qhat
     metrics = compute_forecast_metrics(p10, p50, p90, yte_real, last_te)
+    station_names = [c.replace("_disp", "") for c in DISP_COLS]
+    rows = station_metric_rows(
+        p10, p50, p90, yte_real, last_te, station_names, THESIS_WINDOWS
+    )
 
     OUT_PT.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
@@ -310,21 +332,29 @@ def main():
         "calibration_q": qhat,
     }, OUT_PT)
 
-    ch = DISP_COLS.index("ATU5_disp")
     OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
-    plt.figure(figsize=(11, 4))
-    plt.plot(yte_real[:, ch], label="actual", color="k", lw=1)
-    plt.plot(last_te[:, ch], label="persistence baseline", color="0.55", lw=1, ls="--")
-    plt.plot(p50[:, ch], label="P50 forecast", color="C1", lw=1)
-    plt.fill_between(range(len(p50)), p10[:, ch], p90[:, ch],
-                     alpha=0.3, color="C1", label="P10-P90 interval")
-    plt.title(f"ATU5 displacement forecast interval (ConvLSTM, {GRID_H}x{GRID_W} grid, horizon={HORIZON}d)")
-    plt.xlabel("test time step"); plt.ylabel("displacement / mm"); plt.legend()
+    fig, axes = plt.subplots(len(PLOT_STATIONS), 1, figsize=(11, 9), sharex=True)
+    for ax, station in zip(axes, PLOT_STATIONS):
+        ch = DISP_COLS.index(f"{station}_disp")
+        ax.plot(yte_real[:, ch], label="actual", color="k", lw=1)
+        ax.plot(last_te[:, ch], label="persistence", color="0.55", lw=1, ls="--")
+        ax.plot(p50[:, ch], label="P50", color="C1", lw=1)
+        ax.fill_between(range(len(p50)), p10[:, ch], p90[:, ch],
+                        alpha=0.25, color="C1", label="P10-P90")
+        ax.set_title(f"{station} forecast interval")
+        ax.set_ylabel("mm")
+    axes[-1].set_xlabel("test time step")
+    axes[0].legend(loc="upper left")
+    fig.suptitle(f"ConvLSTM forecast intervals ({GRID_H}x{GRID_W}, lookback={LOOKBACK}d, horizon={HORIZON}d)")
     plt.tight_layout(); plt.savefig(OUT_PNG, dpi=150); plt.close()
+
+    pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
+    print(f"[convlstm] 测点指标: {OUT_METRICS}")
     print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
+    print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
     print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
     print(f"[convlstm] fit/calibration 窗口: {n_fit}/{n_cal}")
     print(f"[convlstm] 测试集 RMSE(P50, 全测点): {metrics['model_rmse']:.3f} mm")
