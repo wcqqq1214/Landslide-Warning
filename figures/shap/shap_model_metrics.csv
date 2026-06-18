@@ -1,0 +1,2 @@
+reg_mse,cls_auc,cls_recall,cls_precision,cls_f1,window,warning_method,month_window_days,split_date,train_rows,test_rows,train_warning_rows,test_warning_rows
+0.027736287167945583,,0.0,0.0,0.0,5,station_v0_monthly_rate,30,2019-09-18,3432,861,301,0
