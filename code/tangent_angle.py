@@ -152,6 +152,63 @@ def _result(method, dates, start_index, end_index, rates):
     }
 
 
+def build_tangent_frame(
+    df,
+    stations,
+    manual_ranges=None,
+    date_col="Date",
+    train_frac=TRAIN_FRAC,
+    candidate_window=CANDIDATE_WINDOW,
+):
+    """Compute per-station tangent-angle series, daily levels, and persistent levels."""
+    df = df.rename(columns=lambda c: c.strip())
+    date_col = date_col.strip()
+
+    date_index = validate_daily_dates(df[date_col])
+
+    result = pd.DataFrame({"Date": date_index})
+    parameters = {}
+
+    for station_name, disp_col in stations.items():
+        disp_col = disp_col.strip()
+        displacement = df[disp_col]
+
+        manual_range = None
+        if manual_ranges and station_name in manual_ranges:
+            manual_range = manual_ranges[station_name]
+
+        rate_params = estimate_uniform_rate(
+            date_index,
+            displacement,
+            train_frac=train_frac,
+            window=candidate_window,
+            manual_range=manual_range,
+        )
+        parameters[station_name] = rate_params
+
+        angles_df = tangent_angle_series(
+            displacement,
+            rate_params["v_eq_mm_per_day"],
+        )
+
+        daily_levels = classify_tangent_angles(angles_df["alpha_smooth"])
+        persistent_levels = persistent_warning_levels(daily_levels)
+
+        result[f"{station_name}_alpha_raw"] = angles_df["alpha_raw"]
+        result[f"{station_name}_alpha_smooth"] = angles_df["alpha_smooth"]
+        result[f"{station_name}_alpha_daily_level"] = daily_levels
+        result[f"{station_name}_alpha_level"] = persistent_levels
+
+    return result, parameters
+
+
+def uniform_rate_rows(parameters):
+    """Return a deterministic list of dicts from the station parameter mapping."""
+    return [
+        {"station": station, **params} for station, params in parameters.items()
+    ]
+
+
 def estimate_uniform_rate(
     dates,
     displacement,

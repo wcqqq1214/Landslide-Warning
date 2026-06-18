@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
 import tangent_angle
+import features
 
 
 class TangentAngleRateTests(unittest.TestCase):
@@ -283,6 +284,148 @@ class TangentAngleWarningTests(unittest.TestCase):
                 window=2,
                 min_hits=3,
             )
+
+
+class TangentAngleFrameTests(unittest.TestCase):
+    def test_build_tangent_frame_reports_auditable_manual_station_columns(self):
+        dates = pd.date_range("2020-01-01", periods=10)
+        frame = pd.DataFrame(
+            {
+                " Date ": dates,
+                " MJ9/mm ": [0.0, 1.0, 3.0, 5.0, 7.0, 9.0,
+                              11.0, 14.0, 18.0, 23.0],
+            }
+        )
+
+        result, parameters = tangent_angle.build_tangent_frame(
+            frame,
+            {"MJ9": "MJ9/mm"},
+            manual_ranges={"MJ9": ("2020-01-02", "2020-01-06")},
+        )
+
+        self.assertEqual(
+            list(result.columns),
+            [
+                "Date",
+                "MJ9_alpha_raw",
+                "MJ9_alpha_smooth",
+                "MJ9_alpha_daily_level",
+                "MJ9_alpha_level",
+            ],
+        )
+        self.assertEqual(len(result), 10)
+        self.assertEqual(parameters["MJ9"]["method"], "manual")
+        self.assertEqual(parameters["MJ9"]["start_date"], "2020-01-02")
+        self.assertEqual(parameters["MJ9"]["end_date"], "2020-01-06")
+        self.assertAlmostEqual(parameters["MJ9"]["v_eq_mm_per_day"], 2.0)
+        self.assertTrue(
+            pd.api.types.is_integer_dtype(result["MJ9_alpha_daily_level"])
+        )
+        self.assertTrue(pd.api.types.is_integer_dtype(result["MJ9_alpha_level"]))
+
+    def test_build_tangent_frame_rejects_non_daily_or_unsorted_dates(self):
+        invalid_dates = [
+            ["2020-01-01", "2020-01-03", "2020-01-04"],
+            ["2020-01-02", "2020-01-01", "2020-01-03"],
+        ]
+
+        for dates in invalid_dates:
+            with self.subTest(dates=dates):
+                frame = pd.DataFrame(
+                    {"Date": dates, "MJ9/mm": [0.0, 1.0, 2.0]}
+                )
+                with self.assertRaises(ValueError):
+                    tangent_angle.build_tangent_frame(
+                        frame,
+                        {"MJ9": "MJ9/mm"},
+                        manual_ranges={
+                            "MJ9": ("2020-01-01", "2020-01-03")
+                        },
+                    )
+
+    def test_uniform_rate_rows_preserves_station_order_and_statistics(self):
+        parameters = {
+            "MJ9": {
+                "method": "manual",
+                "v_eq_mm_per_day": 2.0,
+                "rate_mad_mm_per_day": 0.0,
+            },
+            "MJ1": {
+                "method": "automatic_candidate",
+                "v_eq_mm_per_day": 1.5,
+                "rate_mad_mm_per_day": 0.1,
+            },
+        }
+
+        rows = tangent_angle.uniform_rate_rows(parameters)
+
+        self.assertEqual(
+            rows,
+            [
+                {
+                    "station": "MJ9",
+                    "method": "manual",
+                    "v_eq_mm_per_day": 2.0,
+                    "rate_mad_mm_per_day": 0.0,
+                },
+                {
+                    "station": "MJ1",
+                    "method": "automatic_candidate",
+                    "v_eq_mm_per_day": 1.5,
+                    "rate_mad_mm_per_day": 0.1,
+                },
+            ],
+        )
+
+
+class FeatureGenerationTests(unittest.TestCase):
+    def test_build_features_includes_auditable_angles_and_legacy_alias(self):
+        dates = pd.date_range("2020-01-01", periods=40)
+        data = {
+            " Date ": dates.astype(str),
+            " RWL/m ": np.linspace(140.0, 141.0, len(dates)),
+            " Rainfall/mm ": np.ones(len(dates)),
+        }
+        for station_index, column in enumerate(features.DISP_COLS, start=1):
+            data[f" {column} "] = np.arange(len(dates), dtype=float) * station_index
+        frame = pd.DataFrame(data).iloc[::-1].reset_index(drop=True)
+
+        result, parameters = features.build_features(frame)
+
+        expected_mj9_columns = {
+            "MJ9_disp",
+            "MJ9_v",
+            "MJ9_a",
+            "MJ9_alpha_raw",
+            "MJ9_alpha_smooth",
+            "MJ9_alpha_daily_level",
+            "MJ9_alpha_level",
+            "MJ9_alpha",
+        }
+        self.assertTrue(expected_mj9_columns.issubset(result.columns))
+        pd.testing.assert_series_equal(
+            result["MJ9_alpha"],
+            result["MJ9_alpha_smooth"],
+            check_names=False,
+        )
+        self.assertEqual(
+            list(parameters),
+            [features.short(column) for column in features.DISP_COLS],
+        )
+        self.assertEqual(len(parameters), 8)
+        self.assertEqual(int(result.isna().sum().sum()), 0)
+        self.assertEqual(result["Date"].iloc[0], dates[29])
+        self.assertEqual(result["Date"].iloc[-1], dates[-1])
+
+    def test_uniform_rate_output_is_grouped_with_tangent_angle_artifacts(self):
+        self.assertEqual(
+            features.TANGENT_DIR,
+            features.ROOT / "figures" / "tangent_angle",
+        )
+        self.assertEqual(
+            features.OUT_UNIFORM_RATES,
+            features.TANGENT_DIR / "uniform_rates.csv",
+        )
 
 
 if __name__ == "__main__":
