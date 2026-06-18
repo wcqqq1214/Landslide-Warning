@@ -29,12 +29,6 @@ design.md
 tmp/*
 literature/*
 
-# Project — docs (superpowers output, not committed)
-docs/*
-
-# Project — tests (squashed into feature commits, not standalone)
-tests/*
-
 # Project — Claude / agent instruction files (personal, not shared)
 CLAUDE.md
 AGENTS.md
