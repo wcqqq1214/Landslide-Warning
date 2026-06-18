@@ -9,13 +9,19 @@ import shap
 from ngboost import NGBClassifier, NGBRegressor
 from ngboost.distns import k_categorical
 from sklearn.metrics import mean_squared_error, roc_auc_score, recall_score, precision_score, f1_score
+from warning_thresholds import (
+    MONTH_WINDOW_DAYS,
+    classify_monthly_rates,
+    compute_station_thresholds,
+    monthly_displacement_rate,
+    threshold_rows,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_CSV = ROOT / "data" / "monitoring_data.csv"
-FIG_DIR = ROOT / "figures"
+FIG_DIR = ROOT / "figures" / "shap"
 
 WINDOW = 5
-WARNING_THRESHOLD = 0.3
 STATIONS = {
     "MJ9": "MJ9/mm",
     "MJ1": "MJ1/mm",
@@ -37,20 +43,40 @@ OUT_CLS_PNG = FIG_DIR / "shap_cls_summary.png"
 OUT_REG_CSV = FIG_DIR / "shap_reg_importance.csv"
 OUT_CLS_CSV = FIG_DIR / "shap_cls_importance.csv"
 OUT_METRICS_CSV = FIG_DIR / "shap_model_metrics.csv"
+OUT_THRESHOLDS_CSV = FIG_DIR / "v0_thresholds.csv"
 SHAP_SAMPLE_SIZE = 200
 
 
-def build_lagged_samples(df, stations=STATIONS, window=WINDOW, warning_threshold=WARNING_THRESHOLD):
+def build_lagged_samples(
+    df,
+    stations=STATIONS,
+    window=WINDOW,
+    month_window_days=MONTH_WINDOW_DAYS,
+    thresholds=None,
+):
     df = df.copy()
     df.columns = [c.strip() for c in df.columns]
     df["Date"] = pd.to_datetime(df["Date"])
     df = df.sort_values("Date").reset_index(drop=True)
 
+    if thresholds is None:
+        thresholds = compute_station_thresholds(
+            df,
+            stations,
+            month_window_days=month_window_days,
+        )
+
     rows, y_reg, y_cls, meta = [], [], [], []
     for station, disp_col in stations.items():
         disp = df[disp_col].astype(float)
         delta = disp.diff()
-        for t in range(window, len(df)):
+        monthly_rate = monthly_displacement_rate(disp, month_window_days)
+        warning_levels = classify_monthly_rates(
+            monthly_rate,
+            thresholds[station]["v0_mm_per_month"],
+        )
+        sample_start = max(window, month_window_days)
+        for t in range(sample_start, len(df)):
             row = {}
             for lag in range(1, window + 1):
                 row[f"disp_lag{lag}"] = disp.iloc[t - lag]
@@ -60,9 +86,15 @@ def build_lagged_samples(df, stations=STATIONS, window=WINDOW, warning_threshold
                 row[f"station_{name}"] = int(name == station)
             rows.append(row)
             y = float(delta.iloc[t])
+            warning_level = int(warning_levels[t])
             y_reg.append(y)
-            y_cls.append(int(y > warning_threshold))
-            meta.append({"Date": df["Date"].iloc[t], "station": station})
+            y_cls.append(int(warning_level >= 1))
+            meta.append({
+                "Date": df["Date"].iloc[t],
+                "station": station,
+                "monthly_rate": monthly_rate.iloc[t],
+                "warning_level": warning_level,
+            })
 
     return (
         pd.DataFrame(rows),
@@ -93,6 +125,15 @@ def train_models(X_train, y_reg_train, y_cls_train, n_estimators=300):
     reg.fit(X_train.values, y_reg_train.values)
     cls.fit(X_train.values, y_cls_train.values)
     return reg, cls
+
+
+def time_train_mask(meta, train_frac=0.8):
+    unique_dates = pd.DatetimeIndex(meta["Date"].unique()).sort_values()
+    if len(unique_dates) < 2:
+        raise ValueError("至少需要两个不同日期才能进行时间切分")
+    split_idx = min(max(int(len(unique_dates) * train_frac), 1), len(unique_dates) - 1)
+    split_date = unique_dates[split_idx]
+    return meta["Date"] < split_date, split_date
 
 
 def shap_matrix(model, background, sample, task):
@@ -128,10 +169,10 @@ def save_summary_plot(shap_values, X, path, title):
 
 def main():
     df = pd.read_csv(DATA_CSV)
-    X, y_reg, y_cls, meta = build_lagged_samples(df)
+    thresholds = compute_station_thresholds(df, STATIONS)
+    X, y_reg, y_cls, meta = build_lagged_samples(df, thresholds=thresholds)
 
-    split_date = meta["Date"].sort_values().iloc[int(len(meta["Date"].unique()) * 0.8)]
-    train_mask = meta["Date"] < split_date
+    train_mask, split_date = time_train_mask(meta)
     X_train, X_test = X.loc[train_mask], X.loc[~train_mask]
     y_reg_train, y_reg_test = y_reg.loc[train_mask], y_reg.loc[~train_mask]
     y_cls_train, y_cls_test = y_cls.loc[train_mask], y_cls.loc[~train_mask]
@@ -148,9 +189,13 @@ def main():
         "cls_precision": precision_score(y_cls_test, cls_pred, zero_division=0),
         "cls_f1": f1_score(y_cls_test, cls_pred, zero_division=0),
         "window": WINDOW,
-        "warning_threshold": WARNING_THRESHOLD,
+        "warning_method": "station_v0_monthly_rate",
+        "month_window_days": MONTH_WINDOW_DAYS,
+        "split_date": split_date.date().isoformat(),
         "train_rows": int(train_mask.sum()),
         "test_rows": int((~train_mask).sum()),
+        "train_warning_rows": int(y_cls_train.sum()),
+        "test_warning_rows": int(y_cls_test.sum()),
     }
 
     sample = X_train.tail(min(SHAP_SAMPLE_SIZE, len(X_train)))
@@ -164,10 +209,17 @@ def main():
     reg_importance.to_csv(OUT_REG_CSV, index=False)
     cls_importance.to_csv(OUT_CLS_CSV, index=False)
     pd.DataFrame([metrics]).to_csv(OUT_METRICS_CSV, index=False)
+    pd.DataFrame(threshold_rows(thresholds)).to_csv(OUT_THRESHOLDS_CSV, index=False)
     save_summary_plot(reg_shap, sample, OUT_REG_PNG, "SHAP summary - displacement increment")
     save_summary_plot(cls_shap, sample, OUT_CLS_PNG, "SHAP summary - warning state")
 
-    print(f"[shap] 模型: NGBoost; 样本窗口: {WINDOW} 天, 预警阈值: {WARNING_THRESHOLD} mm")
+    print(f"[shap] 模型: NGBoost; 样本窗口: {WINDOW} 天; 预警标签: 各测点动态 V0")
+    for station, values in thresholds.items():
+        print(
+            f"[shap] {station}: V0={values['v0_mm_per_month']:.3f}, "
+            f"5V0={values['v0_orange_threshold']:.3f}, "
+            f"10V0={values['v0_red_threshold']:.3f} mm/M"
+        )
     print(f"[shap] 回归 MSE: {metrics['reg_mse']:.4f}")
     print(f"[shap] 分类 AUC: {metrics['cls_auc']:.4f}")
     print(f"[shap] 输出: {OUT_REG_PNG}, {OUT_CLS_PNG}")

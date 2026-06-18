@@ -16,8 +16,9 @@ from grid_interp import load_coords, make_interpolator, GRID_H, GRID_W
 ROOT = Path(__file__).resolve().parent.parent
 FEAT_CSV = ROOT / "data" / "features.csv"
 OUT_PT = ROOT / "models" / "convlstm.pt"
-OUT_PNG = ROOT / "figures" / "forecast_interval.png"
-OUT_METRICS = ROOT / "figures" / "forecast_metrics.csv"
+FIG_DIR = ROOT / "figures" / "convlstm"
+OUT_PNG = FIG_DIR / "forecast_interval.png"
+OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
