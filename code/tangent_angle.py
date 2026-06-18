@@ -13,11 +13,12 @@ PERSIST_MIN_HITS = 3
 def _causal_linear_slopes(displacement, window):
     """Fit a trailing linear slope without using future observations."""
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
+    if window == 1:
+        return displacement.diff()
+
     x = np.arange(window, dtype=float)
 
     def linear_slope(values):
-        if window == 1:
-            return 0.0
         return float(np.polyfit(x, values, 1)[0])
 
     return displacement.rolling(window=window, min_periods=window).apply(
@@ -45,13 +46,17 @@ def tangent_angle_series(displacement, v_eq, smooth_window=SMOOTH_WINDOW):
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
     raw_rate = displacement.diff()
     smooth_rate = _causal_linear_slopes(displacement, smooth_window)
+    finite_raw_rate = raw_rate.where(np.isfinite(raw_rate))
+    finite_smooth_rate = smooth_rate.where(np.isfinite(smooth_rate))
 
     return pd.DataFrame(
         {
             "raw_rate": raw_rate,
             "smooth_rate": smooth_rate,
-            "alpha_raw": np.degrees(np.arctan(raw_rate / v_eq)),
-            "alpha_smooth": np.degrees(np.arctan(smooth_rate / v_eq)),
+            "alpha_raw": np.degrees(np.arctan(finite_raw_rate / v_eq)),
+            "alpha_smooth": np.degrees(
+                np.arctan(finite_smooth_rate / v_eq)
+            ),
         }
     )
 
@@ -60,7 +65,7 @@ def classify_tangent_angles(angles):
     """Classify tangent angles using the paper's warning boundaries."""
     angles = pd.Series(angles, dtype=float).reset_index(drop=True)
     levels = pd.Series(-1, index=angles.index, dtype=int)
-    valid = angles.notna()
+    valid = np.isfinite(angles)
 
     levels.loc[valid] = 0
     levels.loc[valid & angles.gt(45.0) & angles.lt(80.0)] = 1

@@ -126,6 +126,39 @@ class TangentAngleWarningTests(unittest.TestCase):
         self.assertEqual(result.tolist(), [0, 0, 1, 1, 2, 2, 3, -1, 0])
         self.assertTrue(pd.api.types.is_integer_dtype(result.dtype))
 
+    def test_classification_rejects_all_nonfinite_angles(self):
+        result = tangent_angle.classify_tangent_angles(
+            [np.inf, -np.inf, np.nan]
+        )
+
+        self.assertEqual(result.tolist(), [-1, -1, -1])
+
+    def test_nonfinite_displacement_never_produces_valid_angle_levels(self):
+        displacements = [
+            [0.0, 1.0, np.inf, 3.0, 4.0],
+            [0.0, 1.0, -np.inf, 3.0, 4.0],
+            [0.0, 1.0, np.nan, 3.0, 4.0],
+        ]
+
+        for displacement in displacements:
+            with self.subTest(displacement=displacement):
+                result = tangent_angle.tangent_angle_series(
+                    displacement,
+                    v_eq=1.0,
+                )
+
+                for rate_column, angle_column in [
+                    ("raw_rate", "alpha_raw"),
+                    ("smooth_rate", "alpha_smooth"),
+                ]:
+                    invalid_rate = ~np.isfinite(result[rate_column])
+                    self.assertTrue(invalid_rate.any())
+                    self.assertTrue(result.loc[invalid_rate, angle_column].isna().all())
+                    levels = tangent_angle.classify_tangent_angles(
+                        result[angle_column]
+                    )
+                    self.assertTrue(levels.loc[invalid_rate].eq(-1).all())
+
     def test_smoothing_is_causal_and_requires_a_full_window(self):
         first = tangent_angle.tangent_angle_series(
             [0.0, 1.0, 2.0, 3.0, 100.0],
@@ -141,6 +174,35 @@ class TangentAngleWarningTests(unittest.TestCase):
             first["alpha_smooth"].iloc[:4],
             changed_future["alpha_smooth"].iloc[:4],
             equal_nan=True,
+        )
+
+    def test_three_point_smoothing_has_known_linear_slope_and_angle(self):
+        result = tangent_angle.tangent_angle_series(
+            [0.0, 2.0, 4.0, 6.0],
+            v_eq=2.0,
+            smooth_window=3,
+        )
+
+        self.assertTrue(result["smooth_rate"].iloc[:2].isna().all())
+        np.testing.assert_allclose(result["smooth_rate"].iloc[2:], [2.0, 2.0])
+        np.testing.assert_allclose(result["alpha_smooth"].iloc[2:], [45.0, 45.0])
+
+    def test_one_point_smoothing_is_raw_rate_identity(self):
+        result = tangent_angle.tangent_angle_series(
+            [0.0, 2.0, 4.0, 1.0],
+            v_eq=2.0,
+            smooth_window=1,
+        )
+
+        pd.testing.assert_series_equal(
+            result["smooth_rate"],
+            result["raw_rate"],
+            check_names=False,
+        )
+        pd.testing.assert_series_equal(
+            result["alpha_smooth"],
+            result["alpha_raw"],
+            check_names=False,
         )
 
     def test_persistence_selects_highest_level_with_enough_hits(self):
@@ -161,6 +223,15 @@ class TangentAngleWarningTests(unittest.TestCase):
         )
 
         self.assertEqual(result.tolist(), [-1, -1, -1, -1, 0])
+
+    def test_persistence_counts_higher_levels_toward_yellow(self):
+        result = tangent_angle.persistent_warning_levels(
+            [0, 1, 2, 1, 0],
+            window=5,
+            min_hits=3,
+        )
+
+        self.assertEqual(result.tolist(), [-1, -1, -1, -1, 1])
 
     def test_persistence_is_invalid_when_window_contains_invalid_level(self):
         result = tangent_angle.persistent_warning_levels(
