@@ -26,6 +26,11 @@ STATIONS = {
     "MJ9": "MJ9/mm",
     "MJ1": "MJ1/mm",
     "MJ3": "MJ3/mm",
+    "ATU1": "ATU1/mm",
+    "ATU2": "ATU2/mm",
+    "ATU3": "ATU3/mm",
+    "ATU4": "ATU4/mm",
+    "ATU5": "ATU5/mm",
 }
 ENV_COLS = {
     "Rainfall": "Rainfall/mm",
