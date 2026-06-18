@@ -1,11 +1,41 @@
-literature/*
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+.eggs/
+*.egg
+
+# Virtual environment
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Project — planning documents
 framework.md
 design.md
-docs/*
+
+# Project — generated / transient
 tmp/*
+literature/*
+
+# Project — docs (superpowers output, not committed)
+docs/*
+
+# Project — tests (squashed into feature commits, not standalone)
 tests/*
+
+# Project — Claude / agent instruction files (personal, not shared)
 CLAUDE.md
 AGENTS.md
 codex.md
-.venv/*
-code/__pycache__/*
