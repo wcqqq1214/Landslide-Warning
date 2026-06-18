@@ -1,0 +1,11 @@
+literature/*
+framework.md
+design.md
+docs/*
+tmp/*
+tests/*
+CLAUDE.md
+AGENTS.md
+codex.md
+.venv/*
+code/__pycache__/*
