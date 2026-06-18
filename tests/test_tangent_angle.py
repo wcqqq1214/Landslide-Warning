@@ -105,5 +105,114 @@ class TangentAngleRateTests(unittest.TestCase):
                     )
 
 
+class TangentAngleWarningTests(unittest.TestCase):
+    def test_raw_angle_is_45_degrees_when_rate_equals_uniform_rate(self):
+        result = tangent_angle.tangent_angle_series(
+            [0.0, 2.0, 4.0, 6.0, 8.0],
+            v_eq=2.0,
+        )
+
+        self.assertEqual(
+            list(result.columns),
+            ["raw_rate", "smooth_rate", "alpha_raw", "alpha_smooth"],
+        )
+        self.assertEqual(result.loc[4, "alpha_raw"], 45.0)
+
+    def test_classification_uses_exact_paper_thresholds(self):
+        angles = [44.9, 45.0, 45.1, 79.9, 80.0, 84.9, 85.0, np.nan, -1.0]
+
+        result = tangent_angle.classify_tangent_angles(angles)
+
+        self.assertEqual(result.tolist(), [0, 0, 1, 1, 2, 2, 3, -1, 0])
+        self.assertTrue(pd.api.types.is_integer_dtype(result.dtype))
+
+    def test_smoothing_is_causal_and_requires_a_full_window(self):
+        first = tangent_angle.tangent_angle_series(
+            [0.0, 1.0, 2.0, 3.0, 100.0],
+            v_eq=1.0,
+        )
+        changed_future = tangent_angle.tangent_angle_series(
+            [0.0, 1.0, 2.0, 3.0, 1000.0],
+            v_eq=1.0,
+        )
+
+        self.assertTrue(first["alpha_smooth"].iloc[:2].isna().all())
+        np.testing.assert_allclose(
+            first["alpha_smooth"].iloc[:4],
+            changed_future["alpha_smooth"].iloc[:4],
+            equal_nan=True,
+        )
+
+    def test_persistence_selects_highest_level_with_enough_hits(self):
+        result = tangent_angle.persistent_warning_levels(
+            [0, 2, 2, 1, 2, 0],
+            window=5,
+            min_hits=3,
+        )
+
+        self.assertEqual(result.tolist(), [-1, -1, -1, -1, 2, 2])
+        self.assertTrue(pd.api.types.is_integer_dtype(result.dtype))
+
+    def test_persistence_stays_green_when_no_level_has_enough_hits(self):
+        result = tangent_angle.persistent_warning_levels(
+            [0, 1, 0, 1, 0],
+            window=5,
+            min_hits=3,
+        )
+
+        self.assertEqual(result.tolist(), [-1, -1, -1, -1, 0])
+
+    def test_persistence_is_invalid_when_window_contains_invalid_level(self):
+        result = tangent_angle.persistent_warning_levels(
+            [0, 2, -1, 2, 2],
+            window=5,
+            min_hits=3,
+        )
+
+        self.assertEqual(result.tolist(), [-1, -1, -1, -1, -1])
+
+    def test_tangent_angle_series_requires_finite_positive_uniform_rate(self):
+        for v_eq in [0.0, -1.0, np.nan, np.inf, -np.inf]:
+            with self.subTest(v_eq=v_eq):
+                with self.assertRaisesRegex(ValueError, "正数"):
+                    tangent_angle.tangent_angle_series([0.0, 1.0], v_eq=v_eq)
+
+    def test_smooth_window_must_be_positive_integer_and_not_bool(self):
+        for smooth_window in [0, -1, 1.5, True, False, np.bool_(True)]:
+            with self.subTest(smooth_window=smooth_window):
+                with self.assertRaises(ValueError):
+                    tangent_angle.tangent_angle_series(
+                        [0.0, 1.0],
+                        v_eq=1.0,
+                        smooth_window=smooth_window,
+                    )
+
+    def test_persistence_parameters_must_be_valid_positive_integers(self):
+        for window in [0, -1, 1.5, True, False, np.bool_(True)]:
+            with self.subTest(window=window):
+                with self.assertRaises(ValueError):
+                    tangent_angle.persistent_warning_levels(
+                        [0, 1, 2],
+                        window=window,
+                        min_hits=1,
+                    )
+
+        for min_hits in [0, -1, 1.5, True, False, np.bool_(True)]:
+            with self.subTest(min_hits=min_hits):
+                with self.assertRaises(ValueError):
+                    tangent_angle.persistent_warning_levels(
+                        [0, 1, 2],
+                        window=3,
+                        min_hits=min_hits,
+                    )
+
+        with self.assertRaises(ValueError):
+            tangent_angle.persistent_warning_levels(
+                [0, 1, 2],
+                window=2,
+                min_hits=3,
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
