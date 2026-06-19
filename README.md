@@ -1,8 +1,8 @@
 # Landslide-Warning
 
-基于机器学习与多指标融合的滑坡预警实验项目。当前代码以三峡库区藕塘滑坡日尺度监测数据为输入，完成特征工程、驱动因子解释筛选、ConvLSTM 位移区间预测和 NGBoost 预警等级分类。
+基于机器学习与多指标融合的滑坡位移预测及预警研究项目。当前代码以三峡库区藕塘滑坡日尺度监测数据为输入，完成特征工程、SHAP 模型贡献分析、ConvLSTM 位移区间预测、NGBoost 当日状态分类和 V0/切线角融合。
 
-> 说明:本 README 按当前代码实现整理。`design.md` 和 `framework.md` 是设计/思路记录，其中 `design.md` 里关于 `convlstm.py` 仍是“多通道退化版”的部分描述已经滞后；当前代码已通过 `grid_interp.py` 将 8 个测点 IDW 插值为规则网格，再进入 ConvLSTM。
+> 说明：本 README 只描述当前实现。研究终点、验证规则和证据边界见 `framework.md`，代码模块边界见 `design.md`。当前 NGBoost 预测的是动态 V0 当日状态，未来 1/3/7 日 onset 预警尚未实现。
 
 Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework_status.md`。
 
@@ -13,13 +13,13 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 ├── main.py                         # uv 初始化生成的模板入口,当前未编排业务管线
 ├── pyproject.toml                  # Python 3.10 + 依赖声明
 ├── uv.lock                         # uv 锁定文件
-├── design.md                       # 较完整的方案设计与阶段记录
-├── framework.md                    # 论文/方法框架草稿
+├── design.md                       # 当前代码架构、模块边界和运行顺序
+├── framework.md                    # 研究终点、验证和报告协议
 ├── code/
 │   ├── features.py                 # 管线第 1 段:特征工程
 │   ├── tangent_angle.py            # 等速阶段估计、改进切线角和持续性判级
 │   ├── warning_thresholds.py       # 测点动态 V0 阈值和四级判级
-│   ├── shap_select.py              # 管线第 2 段:SHAP 因子筛选
+│   ├── shap_select.py              # 管线第 2 段:SHAP 候选指标解释
 │   ├── grid_interp.py              # 测点坐标读取 + IDW 网格插值
 │   ├── convlstm.py                 # 管线第 3 段:ConvLSTM 位移区间预测
 │   ├── ngboost_warn.py             # 管线第 4 段:NGBoost 预警分类
@@ -44,11 +44,13 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   ├── shap_model_metrics.csv  # SHAP 阶段 NGBoost 验证指标
     │   ├── shap_binary_cv_metrics.csv # 二分类扩展窗口评价
     │   └── v0_thresholds.csv       # SHAP 阶段 8 测点动态 V0
+    ├── tangent_angle/
+    │   └── uniform_rates.csv       # 训练期等速候选段与参考速率
     ├── ngboost/
-        ├── confusion_matrix.png    # 预警分类混淆矩阵
-        ├── warning_metrics.csv     # 四级预警指标与各级支持数
-        ├── warning_probabilities.csv # 测试段逐日等级概率
-        └── v0_thresholds.csv       # 最终分类阶段 8 测点动态 V0
+    │   ├── confusion_matrix.png    # 预警分类混淆矩阵
+    │   ├── warning_metrics.csv     # 四级预警指标与各级支持数
+    │   ├── warning_probabilities.csv # 测试段逐日等级概率
+    │   └── v0_thresholds.csv       # 最终分类阶段 8 测点动态 V0
     └── warning_fusion/
         └── warning_fusion.csv      # 最终等级、融合原因和 NGBoost 旁证
 ```
@@ -93,7 +95,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
   - `*_alpha_raw`, `*_alpha_smooth`:原始/因果平滑改进切线角。
   - `*_alpha_daily_level`, `*_alpha_level`:逐日和 5 日持续性预警等级。
   - `*_alpha`:与 `*_alpha_smooth` 相同的兼容列。
-- 驱动因子生成:
+- 候选环境指标:
   - `RWL`:库水位。
   - `RWL_rate`:库水位变化速率。
   - `Rain`:当日降雨。
@@ -105,7 +107,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | --- | --- | --- | --- |
 | `code/features.py` | `data/monitoring_data.csv` | `data/features.csv`, `figures/tangent_angle/uniform_rates.csv` | 计算位移速率、加速度、可审计改进切线角、库水位速率和多窗口累计降雨 |
 | `code/warning_thresholds.py` | 原始累计位移 | 动态 V0 阈值和逐日四级标签 | 使用训练期 30 天月速率、90% 分位加速月剔除和 `V0 = 1.5 V_bar + 2 sigma` 计算测点独立阈值 |
-| `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/shap_reg_summary.png`, `figures/shap/shap_cls_summary.png` | 构造 5 天滞后样本,用 NGBoost 回归/分类并通过 SHAP 解释位移增量和动态 V0 预警状态 |
+| `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/shap_reg_summary.png`, `figures/shap/shap_cls_summary.png` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
@@ -138,7 +140,7 @@ flowchart TD
 推荐按下面顺序运行:
 
 1. `features.py` 先从原始数据生成统一特征表。
-2. `shap_select.py` 基于原始监测表构造 5 天滞后样本,用 NGBoost + SHAP 分析位移增量和动态 V0 预警状态的贡献因子。
+2. `shap_select.py` 基于原始监测表构造 5 天滞后样本，用 NGBoost + SHAP 分析位移增量和动态 V0 当日状态的模型贡献。
 3. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
 4. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
 5. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
@@ -161,6 +163,12 @@ uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
 uv run python code/warning_fusion.py
+```
+
+运行测试：
+
+```bash
+uv run --with pytest pytest -q
 ```
 
 如果已经使用仓库内 `.venv`,也可以直接运行:
@@ -196,13 +204,13 @@ uv run python code/warning_fusion.py
 5. 删除差分和滑窗造成的头部不完整行。
 6. 输出特征表和 `figures/tangent_angle/uniform_rates.csv` 审计参数。
 
-### 2. SHAP 因子筛选
+### 2. SHAP 候选指标解释
 
 `code/shap_select.py` 参考论文中的 5 天滑动窗口,对 8 个测点构造位移和环境因子的滞后样本。模型按 `framework.md` 使用 NGBoost。
 
 回归目标为每日位移增量。分类目标为测点 30 天月速率是否达到自身动态 `V0`，即黄色及以上预警状态。
 
-候选因子包括 5 天历史位移、降雨、库水位、地下水位、气温、露点、相对湿度和测点 one-hot 标识。
+候选指标包括 5 天历史位移、位移速率、位移加速度、日降雨、7/15/30 日累计降雨、库水位、库水位变化率、地下水位、地下水位变化率、气温、露点、相对湿度和测点 one-hot 标识。
 
 处理步骤:
 
@@ -210,7 +218,7 @@ uv run python code/warning_fusion.py
 2. 用训练期前 80% 数据计算各测点 `V0 = 1.5 V_bar + 2 sigma`，并生成 30 天月速率动态标签。
 3. 训练 `NGBRegressor` 预测位移增量。
 4. 训练 `NGBClassifier` 预测预警状态概率。
-5. 使用模型无关 SHAP permutation explainer 计算贡献值。
+5. 使用模型无关 SHAP permutation explainer 计算模型贡献值；结果不用于因果推断。
 6. 输出 SHAP 图、重要性、单次留出指标、5 折扩展窗口指标和 V0 阈值。
 7. 在终端打印回归和分类的 mean absolute SHAP top10。
 
@@ -272,8 +280,8 @@ uv run python code/warning_fusion.py
 
 1. 读取 `data/features.csv` 和 `data/monitoring_data.csv`。
 2. 计算 8 测点独立动态 V0，并生成每日整体最高预警等级。
-3. 构造统计特征和驱动因子特征。
-4. 按时间顺序切分训练集和测试集。
+3. 构造运动学统计特征和候选环境指标特征。
+4. 按时间顺序切分训练段和探索性留出段。
 5. 训练 `NGBClassifier`。
 6. 输出模型、混淆矩阵、V0、完整四级指标和逐日等级概率。
 7. 打印各等级样本数、测试集准确率和分类报告。
@@ -281,8 +289,10 @@ uv run python code/warning_fusion.py
 ## 当前注意事项
 
 - `README.md` 描述当前代码状态,不是论文最终方案。
-- `main.py` 当前不是项目入口；真实执行入口是 `code/` 下 4 个脚本。
+- `main.py` 当前不是项目入口；完整管线由 `code/` 下 5 个阶段脚本依次执行。
 - `data/features.csv`, `models/*`, `figures/*` 都是可再生成产物。
 - 如果更换数据集,优先修改各脚本顶部的 CONFIG 区,尤其是列名、数据路径和测点坐标。
 - ConvLSTM 依赖 `data/station_coords.csv`;坐标列和 `DISP_COLS` 顺序必须对齐。
 - 全样本含绿/黄/橙/红四级，但测试段仅含绿/黄，不得声称已验证橙/红召回能力。
+- 现有后 20% 数据已参与多轮检查，结果属于探索性内部验证，不得称为完全独立的最终测试。
+- 当前当日状态 NGBoost 未超过昨日状态持续性基线，后续应先完成未来 onset 任务和滚动时间验证，再重新调参。

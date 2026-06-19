@@ -1,106 +1,146 @@
-# 代码设计文档 — 基于机器学习与多指标的滑坡自适应在线智能预警
+# 滑坡位移预测与预警代码设计
 
-> 目标:先跑通 code(不考虑论文结构)。主线复刻 liu2025 的四段框架,迁移到库岸阶跃型滑坡场景。
-> 参考:liu2025(多指标融合预警框架)、许强 2009(改进切线角及预警判据)、吴爽爽(库岸/间歇式滑坡变形机制)。
+> 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以 `docs/results_report.md` 和 `figures/*/*.csv` 为准。
 
-## 1. 数据现状(已核对)
+## 1. 数据与约束
 
-- 数据集:**三峡库区藕塘滑坡**(库岸阶跃型)。后续可能换数据集试验 —— 因此各脚本把数据加载路径与列名集中在文件顶部一处,换数据集时只改这一处。
-- `data/monitoring_data.csv`:1461 行,日尺度,**2016-07-01 → 2020-06-30,0 缺失、0 日期断点**。
-- 8 个位移测点(累计位移 mm,单调累积+阶跃):`MJ9 MJ1 MJ3 ATU1 ATU2 ATU3 ATU4 ATU5`。
-- 诱发/环境因子:`Rainfall`(降雨)、`GWT`(地下水位)、`RWL`(库水位,145–175 m,4 年≈4 个消落周期)、`aveT/minT/maxT`(温度)、`DP`、`RH`。
-- 场景判定:库岸阶跃型 / 间歇式滑坡,驱动为库水位涨落 + 降雨。
+- 原始数据：`data/monitoring_data.csv`，1461 个连续日观测，2016-07-01 至 2020-06-30。
+- 位移测点：MJ9、MJ1、MJ3、ATU1、ATU2、ATU3、ATU4、ATU5。
+- 环境变量：Rainfall、GWT、RWL、aveT、minT、maxT、DP、RH。
+- 坐标数据：`data/station_coords.csv`，用于将 8 个测点 IDW 插值为规则网格。
+- 所有时间特征仅使用当前及历史观测；阈值、标准化参数和自动等速段只能由训练期估计。
 
-## 2. 与 liu2025 的映射 & 关键简化
+## 2. 当前架构
 
-liu2025 骨架四段:**数据预处理 → 多指标融合 → 自适应阈值 → 分类预警**。灾种由"煤矿瓦斯/顶板"换成"库岸滑坡",核心指标由 EMR/AE/微震换成位移派生量,辅助/驱动指标换成库水位速率与降雨。
-
-**简化决定:跳过 liu2025 第一段(xLSTM 异常检测 + BayOTIDE 插补)。**
-理由:本数据 0 缺失 0 断点,不为不存在的问题写代码。后续若要复刻,需像 liu2025 那样人工注入 3% 异常/缺失,届时再加,不属于跑通主线的必需。
-
-## 3. 锁定的设计选择
-
-| 决策点 | 选择 |
-| --- | --- |
-| NGBoost 分类标签来源 | **切线角自动打标**:用许强改进切线角阈值 45°/80°/85° → 4 级(等速 / 初加速 / 中加速 / 临滑) |
-| 8 测点建模方式 | **多通道退化版**:8 点作为 8 个输入通道喂多变量 LSTM。严格意义非空间卷积;待测点平面坐标到位可升级真 ConvLSTM(IDW/克里金插值成规则网格) |
-| ConvLSTM 预测目标 | **预测未来位移**,区间输出(分位数 pinball loss → P10/P50/P90) |
-| 预测步长 horizon | 起步 1 天,参数可调(7/30) |
-| 等速段速率 v̄ 估计 | 无人工标注 → 用整段一阶差分的稳健中位数近似;留参数可手动指定等速段区间 |
-
-## 4. 管线与文件结构
-
-四段拆成独立脚本放 `code/`,中间产物落 `data/`(派生特征)或 `models/`,图落 `figures/`。
-
-```
-1. code/features.py     位移速率 v / 加速度 a、改进切线角 α(先估等速段 v̄)、
-                        RWL 速率、降雨多窗累积(7/15/30 天)
-                        → 产出 data/features.csv
-   verify: 特征表头打印 + 无 NaN + 切线角范围合理(0–90°)
-
-2. code/shap_select.py  回归器(对位移速率建模)+ SHAP,量化 RWL 速率/降雨贡献
-                        → 产出 figures/shap_summary.png
-   verify: SHAP 图生成 + 打印 top 因子排序
-
-3. code/convlstm.py     8 点位移作 8 通道喂多变量 LSTM,预测未来 horizon 天位移 + 区间
-                        (pinball loss,P10/P50/P90)
-                        → 产出 models/convlstm.pt、figures/forecast_interval.png
-   verify: 测试集 RMSE 打印 + 区间覆盖率 ≈ 80% + 预测 vs 真值图
-
-4. code/ngboost_warn.py 切线角标签(45/80/85° → 4 级)做 y,NGBoost 输出等级概率分布
-                        → 产出 models/ngboost.pkl、figures/confusion_matrix.png
-   verify: 混淆矩阵 + 各级概率分布图
+```text
+monitoring_data.csv
+        |
+        v
+features.py ------------------------------+
+        |                                  |
+        | features.csv                     | tangent parameters
+        v                                  v
+shap_select.py      convlstm.py      tangent_angle.py
+        |                 |                 |
+        v                 v                 |
+figures/shap       models/convlstm.pt       |
+                    figures/convlstm        |
+        |                                   |
+        +------------> ngboost_warn.py <----+
+                            |
+                            v
+                   models/ngboost.pkl
+                   figures/ngboost
+                            |
+                            v
+                   warning_fusion.py
+                            |
+                            v
+              figures/warning_fusion/warning_fusion.csv
 ```
 
-## 5. Python 环境(uv 管理)
+## 3. 模块职责
+
+| 模块 | 职责 | 主要输出 |
+| --- | --- | --- |
+| `code/features.py` | 位移速率/加速度、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`figures/tangent_angle/uniform_rates.csv` |
+| `code/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级 | 由 `features.py` 调用 |
+| `code/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
+| `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*` |
+| `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
+| `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
+| `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*` |
+| `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
+
+## 4. 已锁定的实现选择
+
+### 4.1 特征工程
+
+- 位移速率：1 日一阶差分。
+- 位移加速度：位移速率的一阶差分。
+- 库水位速率：1 日一阶差分。
+- 累计降雨窗口：7、15、30 日。
+- 切线角当前速率：3 日尾随线性斜率，不使用未来观测。
+- 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口。
+
+### 4.2 ConvLSTM
+
+- 8 测点通过 IDW 插值到 `4 x 7` 规则网格，属于真实二维卷积循环结构。
+- 当前输入窗口：7 日。
+- 当前预测步长：1 日。
+- 输出：有序 P10/P50/P90 位移增量，再还原为累计位移。
+- 损失：分位数 pinball loss。
+- 当前校准比例 `CAL_FRAC=0.0`，保形校准尚未启用。
+
+### 4.3 NGBoost
+
+- 主模型：`NGBClassifier` 四分类概率模型。
+- 标签：动态 V0 当日四级状态，不是切线角标签。
+- 输入：8 测点位移速率/加速度聚合量、库水位、库水位速率和多窗口累计降雨。
+- 当前任务属于状态识别；未来 3/7 日 onset 任务尚未实现。
+
+### 4.4 预警融合
+
+- V0 是主判规则，融合结果不得低于 V0 等级。
+- 切线角仅使用 MJ9、MJ1、MJ3 三个关键测点执行升级复核。
+- 单测点切线角异常最高升级为黄色观察状态。
+- 多测点或多尺度一致时，才允许进一步升级。
+- NGBoost 概率保留为旁证，不直接覆盖规则等级。
+
+## 5. 运行顺序
 
 ```bash
-# 初始化(项目根目录)
-uv init --python 3.10
-uv add pandas numpy scikit-learn torch shap ngboost matplotlib
-
-# 运行各段
 uv run python code/features.py
 uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
+uv run python code/warning_fusion.py
 ```
 
-torch 走 CPU 即可(数据量小)。
-
-## 6. 跑通的成功标准
-
-四个脚本依次无报错跑完,各自产出 verify 行的指标与图;`models/` 有保存的模型,`figures/` 有 SHAP 图 / 预测区间图 / 混淆矩阵。即视为 "code 跑通"。
-
-## 7. 待升级项(非跑通必需)
-
-- 真 ConvLSTM:需 8 测点平面坐标 + 空间插值。
-- 预处理模块:人工注入异常/缺失后复刻 xLSTM + BayOTIDE。
-- 等速段 v̄:接入专家划分的等速变形阶段区间替代中位数近似。
-
-## 8. 跑通后的已知差距(非 bug,如实记录)
-
-四段管线均无报错跑通,产物齐全。以下是当前实现的诚实短板,后续可针对性改进:
-
-| 差距 | 现象 | 性质 | 可能的改进方向 |
-| --- | --- | --- | --- |
-| **区间校准偏窄** | convlstm 区间覆盖率 0.58 < 目标 0.80;P50 很准(测试集 RMSE 0.95 mm) | 分位数校准问题,非精度问题 | 增加训练轮次 / 小批量训练 / 用更宽的分位数(如 P05–P95)/ 训练后做保形预测(conformal)校准 |
-| **类别不平衡** | 切线角 4 级样本悬殊:stable 112 / early-accel 973 / mid-accel 193 / critical 154;mid-accel 测试集仅 7 例,f1 仅 0.35 | 数据本身分布,藕塘大部分时间处初加速段 | 重采样 / 类权重 / 合并相邻稀疏等级 / 更长时段数据 |
-| **切线角等速段近似** | v̄ 用整段速率中位数,非专家划分的等速变形阶段 | 无标注下的近似 | 接入专家划分区间(见第 7 节) |
-| **多通道≠空间卷积** | convlstm 是多变量 LSTM,非真 ConvLSTM | 缺测点坐标 | 补坐标 + 插值成网格(见第 7 节) |
-
-跑通阶段这些差距可接受;进入论文/精调阶段再逐项处理。
-
-## 9. Python 环境(uv)落地说明
-
-项目文件夹是跨系统挂载层(macOS 文件经 VM 挂载),不支持 uv 安装时的硬链接与
-`.data` 目录删除操作(fonttools/numba 会失败)。因此 venv 不放项目目录,而放 VM 本机磁盘:
+运行测试：
 
 ```bash
-# 在 VM 内运行各脚本(venv 在 /tmp,需带环境变量)
-export UV_LINK_MODE=copy UV_PROJECT_ENVIRONMENT=/tmp/.venv-landslide
-uv run --no-sync python code/features.py
+uv run --with pytest pytest -q
 ```
 
-**在你本机(macOS 终端)则无此限制**,可直接把 venv 建在项目里、直接运行,见下方"本机运行"。
-`pyproject.toml` + `uv.lock` 已在项目内,任何机器 `uv sync` 一行即可重建环境。
+`main.py` 不是当前执行入口。各阶段保持独立，是为了允许单独重跑和核对中间结果。
+
+## 6. 数据泄漏防线
+
+1. 所有数据先按日期排序，训练期必须早于验证/测试期。
+2. V0 和自动等速段只由训练期估计。
+3. 滞后、滚动累计和平滑只允许使用当前及历史数据。
+4. 同一日期的 8 个测点必须进入同一个数据分区。
+5. 标准化参数只由训练期拟合。
+6. 测试结果不能参与特征、阈值和超参数选择。
+
+现有后 20% 数据已经参与多轮分析，因此只能作为探索性留出结果。后续确认性评价必须使用新的时间折、新监测时段或外部滑坡数据。
+
+## 7. 完成标准
+
+“脚本无报错”只说明工程管线可运行，不等于研究假设成立。每次正式实验至少满足：
+
+- 代码和测试通过，输出文件可追溯到 Git 提交。
+- 所有阈值和变换遵守训练期边界。
+- 同时报告主模型、基线、类别/事件支持数和不确定性。
+- 位移预测同时报告误差、区间覆盖率和宽度。
+- 预警同时报告样本级、概率校准和事件级结果。
+- 结论与证据等级一致，不将状态识别描述为提前预警。
+
+## 8. 当前已知限制
+
+- ConvLSTM 的 P10-P90 覆盖率低于名义 80%，尚未完成校准。
+- NGBoost 未超过昨日状态持续性基线。
+- 测试段无橙色和红色样本，不能评价高等级识别能力。
+- 自动等速段尚未由专家阶段复核，部分 ATU 测点对参考速率敏感。
+- 当前融合结果尚无完整事件级提前量和误报评价。
+- 尚无外部时间或跨滑坡验证。
+
+## 9. 下一阶段实现顺序
+
+1. 实现未来 1/3/7 日 onset 标签与事件提取。
+2. 建立按日期的滚动时间验证和事件级评价。
+3. 在内部时间折上重新调节 NGBoost，不再使用现有测试段选参。
+4. 启用 ConvLSTM 校准集并评价校准前后覆盖率和宽度。
+5. 完成 V0、切线角参数敏感性和特征组消融。
+6. 获得新时段或新滑坡数据后进行确认性验证。
