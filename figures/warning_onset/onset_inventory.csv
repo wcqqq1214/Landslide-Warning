@@ -1,0 +1,4 @@
+label_scope,horizon_days,valid_at_risk_days,positive_days,negative_days,warning_events,forecastable_events
+exploratory_fixed_v0_first_80pct,1,1131,3,1128,4,3
+exploratory_fixed_v0_first_80pct,3,1131,9,1122,4,3
+exploratory_fixed_v0_first_80pct,7,1131,21,1110,4,3

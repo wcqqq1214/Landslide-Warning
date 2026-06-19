@@ -37,6 +37,9 @@ figures/shap       models/convlstm.pt       |
                             |
                             v
               figures/warning_fusion/warning_fusion.csv
+
+monitoring_data.csv -> onset_analysis.py -> warning_events.py
+                                         -> figures/warning_onset
 ```
 
 ## 3. 模块职责
@@ -46,6 +49,8 @@ figures/shap       models/convlstm.pt       |
 | `code/features.py` | 位移速率/加速度、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`figures/tangent_angle/uniform_rates.csv` |
 | `code/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级 | 由 `features.py` 调用 |
 | `code/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
+| `code/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
+| `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*` |
 | `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*` |
 | `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
@@ -77,7 +82,7 @@ figures/shap       models/convlstm.pt       |
 - 主模型：`NGBClassifier` 四分类概率模型。
 - 标签：动态 V0 当日四级状态，不是切线角标签。
 - 输入：8 测点位移速率/加速度聚合量、库水位、库水位速率和多窗口累计降雨。
-- 当前任务属于状态识别；未来 3/7 日 onset 任务尚未实现。
+- 当前模型任务属于状态识别；未来 1/3/7 日 onset 标签已实现，但模型验证因独立事件不足而暂停。
 
 ### 4.4 预警融合
 
@@ -91,6 +96,7 @@ figures/shap       models/convlstm.pt       |
 
 ```bash
 uv run python code/features.py
+uv run python code/onset_analysis.py
 uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
@@ -138,9 +144,9 @@ uv run --with pytest pytest -q
 
 ## 9. 下一阶段实现顺序
 
-1. 实现未来 1/3/7 日 onset 标签与事件提取。
+1. 获得包含更多独立 onset 的新监测时段或新滑坡数据。
 2. 建立按日期的滚动时间验证和事件级评价。
-3. 在内部时间折上重新调节 NGBoost，不再使用现有测试段选参。
+3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
 4. 启用 ConvLSTM 校准集并评价校准前后覆盖率和宽度。
 5. 完成 V0、切线角参数敏感性和特征组消融。
 6. 获得新时段或新滑坡数据后进行确认性验证。

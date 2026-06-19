@@ -2,7 +2,7 @@
 
 基于机器学习与多指标融合的滑坡位移预测及预警研究项目。当前代码以三峡库区藕塘滑坡日尺度监测数据为输入，完成特征工程、SHAP 模型贡献分析、ConvLSTM 位移区间预测、NGBoost 当日状态分类和 V0/切线角融合。
 
-> 说明：本 README 只描述当前实现。研究终点、验证规则和证据边界见 `framework.md`，代码模块边界见 `design.md`。当前 NGBoost 预测的是动态 V0 当日状态，未来 1/3/7 日 onset 预警尚未实现。
+> 说明：本 README 只描述当前实现。研究终点、验证规则和证据边界见 `framework.md`，代码模块边界见 `design.md`。当前 NGBoost 预测动态 V0 当日状态；未来 1/3/7 日 onset 标签已实现，但仅有 3 个可预测事件，尚未开展正式模型调参与性能评价。
 
 Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework_status.md`。
 
@@ -19,6 +19,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── features.py                 # 管线第 1 段:特征工程
 │   ├── tangent_angle.py            # 等速阶段估计、改进切线角和持续性判级
 │   ├── warning_thresholds.py       # 测点动态 V0 阈值和四级判级
+│   ├── warning_events.py           # 未来 onset 标签与事件级评价工具
+│   ├── onset_analysis.py           # 1/3/7 日标签和事件充分性盘点
 │   ├── shap_select.py              # 管线第 2 段:SHAP 候选指标解释
 │   ├── grid_interp.py              # 测点坐标读取 + IDW 网格插值
 │   ├── convlstm.py                 # 管线第 3 段:ConvLSTM 位移区间预测
@@ -46,6 +48,11 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   └── v0_thresholds.csv       # SHAP 阶段 8 测点动态 V0
     ├── tangent_angle/
     │   └── uniform_rates.csv       # 训练期等速候选段与参考速率
+    ├── warning_onset/
+    │   ├── onset_events.csv        # 连续黄色及以上事件清单
+    │   ├── onset_targets.csv       # 1/3/7 日 at-risk 未来标签
+    │   ├── onset_inventory.csv     # 正负日期与可预测事件数量
+    │   └── v0_thresholds.csv       # 本次盘点使用的动态 V0
     ├── ngboost/
     │   ├── confusion_matrix.png    # 预警分类混淆矩阵
     │   ├── warning_metrics.csv     # 四级预警指标与各级支持数
@@ -107,6 +114,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | --- | --- | --- | --- |
 | `code/features.py` | `data/monitoring_data.csv` | `data/features.csv`, `figures/tangent_angle/uniform_rates.csv` | 计算位移速率、加速度、可审计改进切线角、库水位速率和多窗口累计降雨 |
 | `code/warning_thresholds.py` | 原始累计位移 | 动态 V0 阈值和逐日四级标签 | 使用训练期 30 天月速率、90% 分位加速月剔除和 `V0 = 1.5 V_bar + 2 sigma` 计算测点独立阈值 |
+| `code/warning_events.py` | 日期和逐日等级 | 内存中的事件与未来标签 | 提取连续预警事件，生成 at-risk 未来 onset 标签并评价固定阈值报警 |
+| `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
 | `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/shap_reg_summary.png`, `figures/shap/shap_cls_summary.png` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
@@ -135,15 +144,18 @@ flowchart TD
     A --> N
     M --> N
     N --> O["figures/warning_fusion/<br/>最终预警序列"]
+    A --> P["code/onset_analysis.py<br/>未来 onset 与事件盘点"]
+    P --> Q["figures/warning_onset/<br/>事件、标签和样本充分性"]
 ```
 
 推荐按下面顺序运行:
 
 1. `features.py` 先从原始数据生成统一特征表。
-2. `shap_select.py` 基于原始监测表构造 5 天滞后样本，用 NGBoost + SHAP 分析位移增量和动态 V0 当日状态的模型贡献。
-3. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
-4. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
-5. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
+2. `onset_analysis.py` 生成 1/3/7 日未来标签并核对独立事件数量。
+3. `shap_select.py` 基于原始监测表构造 5 天滞后样本，用 NGBoost + SHAP 分析位移增量和动态 V0 当日状态的模型贡献。
+4. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
+5. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
+6. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
 
 ## 运行方式
 
@@ -159,6 +171,7 @@ uv sync
 
 ```bash
 uv run python code/features.py
+uv run python code/onset_analysis.py
 uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
@@ -175,6 +188,7 @@ uv run --with pytest pytest -q
 
 ```bash
 .venv/bin/python code/features.py
+.venv/bin/python code/onset_analysis.py
 .venv/bin/python code/shap_select.py
 .venv/bin/python code/convlstm.py
 .venv/bin/python code/ngboost_warn.py
@@ -289,10 +303,11 @@ uv run --with pytest pytest -q
 ## 当前注意事项
 
 - `README.md` 描述当前代码状态,不是论文最终方案。
-- `main.py` 当前不是项目入口；完整管线由 `code/` 下 5 个阶段脚本依次执行。
+- `main.py` 当前不是项目入口；当前有 5 个模型/融合阶段脚本和 1 个 onset 审计脚本。
 - `data/features.csv`, `models/*`, `figures/*` 都是可再生成产物。
 - 如果更换数据集,优先修改各脚本顶部的 CONFIG 区,尤其是列名、数据路径和测点坐标。
 - ConvLSTM 依赖 `data/station_coords.csv`;坐标列和 `DISP_COLS` 顺序必须对齐。
 - 全样本含绿/黄/橙/红四级，但测试段仅含绿/黄，不得声称已验证橙/红召回能力。
 - 现有后 20% 数据已参与多轮检查，结果属于探索性内部验证，不得称为完全独立的最终测试。
 - 当前当日状态 NGBoost 未超过昨日状态持续性基线，后续应先完成未来 onset 任务和滚动时间验证，再重新调参。
+- 当前只有 3 个具有有效前置窗口的独立 onset，代码已生成标签，但暂停正式滚动调参与性能宣称。

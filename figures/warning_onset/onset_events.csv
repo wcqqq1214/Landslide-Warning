@@ -1,0 +1,5 @@
+event_id,label_scope,start_date,end_date,duration_days,active_days,max_level,forecastable_h1,forecastable_h3,forecastable_h7
+1,exploratory_fixed_v0_first_80pct,2016-07-31,2016-08-16,17,17,1,False,False,False
+2,exploratory_fixed_v0_first_80pct,2017-02-24,2017-10-31,250,250,3,True,True,True
+3,exploratory_fixed_v0_first_80pct,2017-11-28,2017-12-12,15,15,1,True,True,True
+4,exploratory_fixed_v0_first_80pct,2020-06-13,2020-06-30,18,18,1,True,True,True
