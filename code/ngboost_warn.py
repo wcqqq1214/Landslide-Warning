@@ -8,7 +8,13 @@ import numpy as np
 import pandas as pd
 from ngboost import NGBClassifier
 from ngboost.distns import k_categorical
-from sklearn.metrics import confusion_matrix, classification_report
+from sklearn.metrics import (
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    recall_score,
+)
 from warning_thresholds import (
     MONTH_WINDOW_DAYS,
     build_warning_frame,
@@ -22,6 +28,8 @@ OUT_PKL = ROOT / "models" / "ngboost.pkl"
 FIG_DIR = ROOT / "figures" / "ngboost"
 OUT_PNG = FIG_DIR / "confusion_matrix.png"
 OUT_THRESHOLDS_CSV = FIG_DIR / "v0_thresholds.csv"
+OUT_METRICS_CSV = FIG_DIR / "warning_metrics.csv"
+OUT_PROBABILITIES_CSV = FIG_DIR / "warning_probabilities.csv"
 
 V_COLS = [f"{s}_v" for s in
           ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]]
@@ -76,6 +84,66 @@ def class_count_for_labels(labels):
     return class_count
 
 
+def multiclass_metrics(y_true, probability, level_names=LEVEL_NAMES):
+    """Return transparent metrics for observed and unobserved warning levels."""
+    y_true = np.asarray(y_true, dtype=int)
+    probability = np.asarray(probability, dtype=float)
+    labels = np.arange(len(level_names))
+    if probability.shape[1] > len(level_names):
+        raise ValueError("概率列数不能超过预警等级数")
+    if probability.shape[1] < len(level_names):
+        probability = np.pad(
+            probability,
+            ((0, 0), (0, len(level_names) - probability.shape[1])),
+        )
+    prediction = probability.argmax(axis=1)
+    recalls = recall_score(
+        y_true,
+        prediction,
+        labels=labels,
+        average=None,
+        zero_division=0,
+    )
+    one_hot = np.eye(len(level_names))[y_true]
+    metrics = {
+        "task": "four_level_warning",
+        "accuracy": accuracy_score(y_true, prediction),
+        "macro_f1": f1_score(
+            y_true,
+            prediction,
+            labels=labels,
+            average="macro",
+            zero_division=0,
+        ),
+        "weighted_f1": f1_score(
+            y_true,
+            prediction,
+            labels=labels,
+            average="weighted",
+            zero_division=0,
+        ),
+        "multiclass_brier": float(np.mean(np.sum((probability - one_hot) ** 2, axis=1))),
+        "test_rows": int(len(y_true)),
+    }
+    for level, name in enumerate(level_names):
+        metrics[f"{name}_support"] = int((y_true == level).sum())
+        metrics[f"{name}_recall"] = float(recalls[level])
+    return metrics
+
+
+def probability_frame(dates, y_true, probability, level_names=LEVEL_NAMES):
+    """Build an auditable row-level warning probability table."""
+    probability = np.asarray(probability, dtype=float)
+    out = pd.DataFrame({
+        "Date": pd.to_datetime(dates).reset_index(drop=True),
+        "actual_level": np.asarray(y_true, dtype=int),
+        "predicted_level": probability.argmax(axis=1),
+    })
+    for level, name in enumerate(level_names[:probability.shape[1]]):
+        out[f"prob_{name}"] = probability[:, level]
+    return out
+
+
 def main():
     features = pd.read_csv(FEAT_CSV)
     raw = pd.read_csv(RAW_CSV)
@@ -101,12 +169,20 @@ def main():
 
     proba = model.predict_proba(Xte.values)
     pred = proba.argmax(axis=1)
+    metrics = multiclass_metrics(yte, proba[:len(yte), :len(LEVEL_NAMES)])
 
     OUT_PKL.parent.mkdir(parents=True, exist_ok=True)
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     with open(OUT_PKL, "wb") as f:
         pickle.dump(model, f)
     pd.DataFrame(threshold_rows(thresholds)).to_csv(OUT_THRESHOLDS_CSV, index=False)
+    pd.DataFrame([metrics]).to_csv(OUT_METRICS_CSV, index=False)
+    probability_frame(
+        df["Date"].iloc[split:],
+        yte,
+        proba,
+        level_names=LEVEL_NAMES[:proba.shape[1]],
+    ).to_csv(OUT_PROBABILITIES_CSV, index=False)
 
     present = sorted(set(np.concatenate([yte, pred])))
     cm = confusion_matrix(yte, pred, labels=present)
@@ -126,6 +202,8 @@ def main():
     print(f"[ngboost] 模型输出: {OUT_PKL}")
     print(f"[ngboost] 混淆矩阵图: {OUT_PNG}")
     print(f"[ngboost] 动态阈值: {OUT_THRESHOLDS_CSV}")
+    print(f"[ngboost] 评价指标: {OUT_METRICS_CSV}")
+    print(f"[ngboost] 等级概率: {OUT_PROBABILITIES_CSV}")
     for station, values in thresholds.items():
         print(
             f"        {station}: V0={values['v0_mm_per_month']:.3f}, "
@@ -136,7 +214,7 @@ def main():
     for lv in range(len(LEVEL_NAMES)):
         print(f"        级{lv} {LEVEL_NAMES[lv]:12s}: {(y == lv).sum()}")
     print(f"[ngboost] 训练集实际类别数: {k}; 未出现的高等级保留在 V0 规则中，不参与本次拟合")
-    acc = (pred == yte).mean()
+    acc = metrics["accuracy"]
     print(f"[ngboost] 测试集准确率: {acc:.3f}")
     print(classification_report(yte, pred,
           labels=present, target_names=[LEVEL_NAMES[i] for i in present],

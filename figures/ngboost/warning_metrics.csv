@@ -1,0 +1,2 @@
+task,accuracy,macro_f1,weighted_f1,multiclass_brier,test_rows,green_support,green_recall,yellow_support,yellow_recall,orange_support,orange_recall,red_support,red_recall
+four_level_warning,0.9581881533101045,0.43179657794676807,0.9629376929293464,0.08822207288961678,287,269,0.9553903345724907,18,1.0,0,0.0,0,0.0

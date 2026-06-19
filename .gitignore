@@ -21,19 +21,12 @@ build/
 .vscode/
 .idea/
 
-# Project — planning documents
-framework.md
-design.md
-
 # Project — generated / transient
 tmp/*
 literature/*
 
-# Project — docs (superpowers output, not committed)
-docs/*
-
-# Project — tests (squashed into feature commits, not standalone)
-tests/*
+# Project — abandoned superpowers output
+docs/superpowers/
 
 # Project — Claude / agent instruction files (personal, not shared)
 CLAUDE.md
