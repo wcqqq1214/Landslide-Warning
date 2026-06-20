@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
 import tangent_angle
+import features
 
 
 class ReferenceStageLoadingTests(unittest.TestCase):
@@ -152,6 +153,28 @@ class ReferenceStageValidationTests(unittest.TestCase):
                 stages, self.dates, self.stations, train_frac=1.0,
             )
 
+    def test_station_whitespace_cannot_bypass_duplicate_check(self):
+        stages = pd.DataFrame({
+            "station": ["MJ9", " MJ9 "],
+            "start_date": ["2020-01-05", "2020-01-10"],
+            "end_date": ["2020-01-10", "2020-01-15"],
+            "status": ["approved", "approved"],
+            "source": ["expert_manual", "expert_manual"],
+        })
+
+        with self.assertRaisesRegex(ValueError, "多个已批准阶段"):
+            tangent_angle._build_manual_ranges_from_stages(
+                stages, self.dates, self.stations, train_frac=1.0,
+            )
+
+    def test_unknown_approved_station_raises(self):
+        stages = self._make_stage_df("approved", station="MJX")
+
+        with self.assertRaisesRegex(ValueError, "未知测点"):
+            tangent_angle._build_manual_ranges_from_stages(
+                stages, self.dates, self.stations, train_frac=1.0,
+            )
+
     def test_invalid_date_format_raises_clear_error(self):
         stages = pd.DataFrame({
             "station": ["MJ9"],
@@ -184,6 +207,18 @@ class ManualStageVeqTests(unittest.TestCase):
         self.assertEqual(result["end_date"], "2020-01-07")
         self.assertEqual(result["n_rate_samples"], 4)
 
+    def test_direct_manual_range_cannot_use_post_training_dates(self):
+        dates = pd.date_range("2020-01-01", periods=40)
+        displacement = np.arange(40, dtype=float)
+
+        with self.assertRaisesRegex(ValueError, "只能使用训练期数据"):
+            tangent_angle.estimate_uniform_rate(
+                dates,
+                displacement,
+                train_frac=0.8,
+                manual_range=("2020-02-02", "2020-02-05"),
+            )
+
 
 class NoManualConfigPreservesDefaultTests(unittest.TestCase):
     def test_no_reference_stages_produces_automatic_candidate(self):
@@ -212,6 +247,7 @@ class NoManualConfigPreservesDefaultTests(unittest.TestCase):
             params_default["MJ9"]["v_eq_mm_per_day"],
             params_with_none["MJ9"]["v_eq_mm_per_day"],
         )
+        self.assertEqual(params_default["MJ9"]["source"], "automatic_30d")
 
     def test_reference_stages_with_only_candidates_preserves_default(self):
         dates = pd.date_range("2020-01-01", periods=40)
@@ -341,6 +377,36 @@ class BuildTangetFrameWithReferenceStagesTests(unittest.TestCase):
         self.assertEqual(params["MJ9"]["method"], "manual")
         self.assertEqual(params["MJ9"]["start_date"], "2020-01-05")
         self.assertEqual(params["MJ9"]["end_date"], "2020-01-10")
+        self.assertEqual(params["MJ9"]["source"], "manual_ranges_argument")
+
+
+class FeaturePipelineReferenceStageTests(unittest.TestCase):
+    def test_build_features_applies_approved_reference_stage(self):
+        dates = pd.date_range("2020-01-01", periods=45)
+        frame = pd.DataFrame({
+            "Date": dates,
+            "RWL/m": np.linspace(170, 175, len(dates)),
+            "Rainfall/mm": np.zeros(len(dates)),
+        })
+        for index, column in enumerate(features.DISP_COLS, start=1):
+            frame[column] = np.arange(len(dates), dtype=float) * index
+        approved = pd.DataFrame({
+            "station": [" MJ9 "],
+            "start_date": ["2020-01-03"],
+            "end_date": ["2020-01-08"],
+            "status": [" approved "],
+            "source": [" expert_manual "],
+            "review_note": ["reviewed"],
+        })
+
+        _, parameters = features.build_features(
+            frame,
+            reference_stages=approved,
+        )
+
+        self.assertEqual(parameters["MJ9"]["method"], "manual")
+        self.assertEqual(parameters["MJ9"]["source"], "expert_manual")
+        self.assertEqual(parameters["MJ9"]["start_date"], "2020-01-03")
 
 
 class StageFeasibilityTests(unittest.TestCase):
@@ -395,7 +461,13 @@ class ReviewOutputTests(unittest.TestCase):
         df = pd.read_csv(csv_path)
 
         for col in ["station", "candidate_window_days", "method",
-                     "start_date", "end_date", "v_eq_mm_per_day"]:
+                     "source", "start_date", "end_date",
+                     "stage_duration_days", "v_eq_mm_per_day",
+                     "median_rate_mm_per_day", "alpha_green_days",
+                     "alpha_agreement_rate_vs_30d",
+                     "fusion_upgraded_days",
+                     "fusion_agreement_rate_vs_30d",
+                     "fusion_reason_alpha_watch_days"]:
             self.assertIn(col, df.columns, f"CSV missing column: {col}")
 
         self.assertEqual(set(df["station"]), {"MJ9", "MJ1", "MJ3"})

@@ -59,8 +59,8 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 | `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
-| `code/tangent_stage_review.py` | 为 MJ9/MJ1/MJ3 生成累计位移、速率、加速度和 15/30/60 日候选阶段复核图及 CSV 对比表 | `figures/tangent_angle/review/*` |
-| `config/tangent_reference_stages.csv` | 人工等速阶段配置接口；当前所有条目均为 `candidate`，没有任何阶段被自动批准 | 由 `tangent_angle.py` 读取 |
+| `code/tangent_stage_review.py` | 为 MJ9/MJ1/MJ3 生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
+| `config/tangent_reference_stages.csv` | 人工等速阶段配置接口；当前所有条目均为 `candidate`，没有任何阶段被自动批准 | 由 `features.py` 加载并交给 `tangent_angle.py` 校验 |
 
 ## 4. 已锁定的实现选择
 
@@ -73,7 +73,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 - 原始切线角：日增量除以 `v_eq` 后取反正切，并按许强等（2009）的严格 `>45`、`>80`、`>85` 阶段边界判定。
 - 工程切线角：3 日尾随线性斜率，不使用未来观测；再应用 5 日内至少 3 次命中的持续性确认。
 - 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口，属于专家阶段划分前的辅助候选，不是原文方法本身。
-- 人工等速阶段：通过 `config/tangent_reference_stages.csv` 配置。系统自动读取 `status=approved` 的行作为人工阶段；同一测点仅允许一个批准阶段，且必须完全位于训练期内。当前无任何批准阶段。
+- 人工等速阶段：`features.py` 每次正式运行时读取 `config/tangent_reference_stages.csv`，将 `status=approved` 的行交给 `tangent_angle.py`。配置表和直接参数使用同一套训练期、测点名、日期、样本数和正速率校验；同一测点仅允许一个批准阶段。当前无任何批准阶段。
 
 ### 4.2 ConvLSTM
 

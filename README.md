@@ -137,7 +137,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 | `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
-| `code/tangent_stage_review.py` | 原始累计位移 | `figures/tangent_angle/review/*` | 为 MJ9/MJ1/MJ3 生成累计位移、速率、加速度和 15/30/60 日候选阶段复核图与 CSV 对比表，仅提供审计证据不自动推荐阶段 |
+| `code/tangent_stage_review.py` | 原始累计位移 | `figures/tangent_angle/review/*` | 为 MJ9/MJ1/MJ3 生成候选阶段复核图，并审计参数、切线角等级及融合影响，不自动推荐阶段 |
 
 ## 执行流程
 
@@ -337,6 +337,7 @@ uv run --with pytest pytest -q
 - 当前只有 3 个具有有效前置窗口的独立 onset，代码已生成标签，但暂停正式滚动调参与性能宣称。
 - 预设敏感性结果表明切线角融合主要受自动等速阶段窗口影响；专家复核 `v_eq` 前，不应将默认 30 日窗口写成已验证最优参数。
 - `code/tangent_stage_review.py` 为三个关键测点生成复核图和 15/30/60 日候选阶段参数对比表，是供专家复核的辅助材料，不是文献原始方法。
-- `config/tangent_reference_stages.csv` 是人工等速阶段配置接口。当前所有条目均为 `status=candidate`，没有任何阶段被自动批准。Claude 不得自行将任何阶段设为 `approved`。
-- 同一测点只能有一个 `approved` 阶段。人工阶段必须完全位于训练期内，且 `v_eq > 0`；违反任一条件将明确报错。
+- `config/tangent_reference_stages.csv` 是人工等速阶段配置接口；`features.py` 每次正式重建特征时读取该文件。当前所有条目均为 `status=candidate`，没有任何阶段被自动批准。
+- 同一测点只能有一个 `approved` 阶段。配置表和直接传入的人工范围都必须完全位于训练期内、测点名有效且 `v_eq > 0`；违反任一条件将明确报错。
+- `candidate_stage_comparison.csv` 同时记录参数来源、速率统计、切线角等级分布、相对 30 日配置一致率和融合影响，供审计而非选优。
 - 最终等速阶段确定后，需更新该配置文件并将状态改为 `approved`，之后冻结 `v_eq` 再进行确认性切线角事件级评价。

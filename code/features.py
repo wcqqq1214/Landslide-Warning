@@ -3,11 +3,16 @@ from pathlib import Path
 
 import pandas as pd
 
-from tangent_angle import build_tangent_frame, uniform_rate_rows
+from tangent_angle import (
+    build_tangent_frame,
+    load_reference_stages,
+    uniform_rate_rows,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_CSV = ROOT / "data" / "features.csv"
+REFERENCE_STAGES_CSV = ROOT / "config" / "tangent_reference_stages.csv"
 
 DATE_COL = "Date"
 DISP_COLS = ["MJ9/mm", "MJ1/mm", "MJ3/mm",
@@ -27,7 +32,7 @@ def short(col: str) -> str:
     return col.split("/")[0]
 
 
-def build_features(df):
+def build_features(df, reference_stages=None):
     """Build model features and auditable tangent-angle warning columns."""
     df = df.rename(columns=lambda column: column.strip())
     df[DATE_COL] = pd.to_datetime(df[DATE_COL])
@@ -38,6 +43,7 @@ def build_features(df):
         df,
         stations,
         manual_ranges=UNIFORM_STAGE_RANGES,
+        reference_stages=reference_stages,
     )
 
     out = pd.DataFrame({DATE_COL: df[DATE_COL]})
@@ -69,7 +75,8 @@ def build_features(df):
 
 def main():
     df = pd.read_csv(DATA_CSV)
-    out, parameters = build_features(df)
+    reference_stages = load_reference_stages(REFERENCE_STAGES_CSV)
+    out, parameters = build_features(df, reference_stages=reference_stages)
     out.to_csv(OUT_CSV, index=False)
 
     print(f"[features] 输出 {OUT_CSV}")

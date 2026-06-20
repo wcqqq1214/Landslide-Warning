@@ -36,6 +36,7 @@ class TangentAngleRateTests(unittest.TestCase):
         result = tangent_angle.estimate_uniform_rate(
             dates,
             displacement,
+            train_frac=1.0,
             manual_range=("2020-01-02", "2020-01-05"),
         )
 

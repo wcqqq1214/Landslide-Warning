@@ -11,37 +11,68 @@ SMOOTH_WINDOW = 3
 PERSIST_WINDOW = 5
 PERSIST_MIN_HITS = 3
 
-REFERENCE_STAGES_PATH = None  # set to Path for default config loading
-
 _VALID_STATUSES = frozenset({"candidate", "approved", "rejected"})
 _VALID_SOURCES = frozenset(
     {"automatic_15d", "automatic_30d", "automatic_60d", "expert_manual"}
 )
 
 
-def load_reference_stages(csv_path):
-    """Read and validate the reference stages configuration file.
+def _validate_reference_stages(stages):
+    """Normalize and validate a reference-stage table."""
+    if not isinstance(stages, pd.DataFrame):
+        raise ValueError("参考阶段配置必须是 DataFrame")
 
-    Returns a DataFrame with columns: station, start_date, end_date,
-    status, source, review_note.  Rows with invalid status or source
-    raise ValueError.
-    """
-    stages = pd.read_csv(csv_path)
+    stages = stages.copy()
     stages.columns = [c.strip() for c in stages.columns]
     required = {"station", "start_date", "end_date", "status", "source"}
     missing = required - set(stages.columns)
     if missing:
         raise ValueError(f"参考阶段配置文件缺少必需列: {missing}")
 
-    unknown_status = set(stages["status"].str.strip()) - _VALID_STATUSES
+    for column in ("station", "status", "source"):
+        if stages[column].isna().any():
+            raise ValueError(f"参考阶段配置列 {column} 不能包含空值")
+        stages[column] = stages[column].astype(str).str.strip()
+        if stages[column].eq("").any():
+            raise ValueError(f"参考阶段配置列 {column} 不能为空")
+
+    unknown_status = set(stages["status"]) - _VALID_STATUSES
     if unknown_status:
         raise ValueError(f"无效的阶段状态值: {unknown_status}")
 
-    unknown_source = set(stages["source"].str.strip()) - _VALID_SOURCES
+    unknown_source = set(stages["source"]) - _VALID_SOURCES
     if unknown_source:
         raise ValueError(f"无效的阶段来源值: {unknown_source}")
 
-    return stages.copy()
+    for column in ("start_date", "end_date"):
+        parsed = pd.to_datetime(stages[column], errors="coerce")
+        if parsed.isna().any():
+            raise ValueError(f"参考阶段配置日期无效: {column}")
+        stages[column] = parsed
+
+    if "review_note" not in stages:
+        stages["review_note"] = ""
+    return stages
+
+
+def load_reference_stages(csv_path):
+    """Read and validate the reference stages configuration file."""
+    return _validate_reference_stages(pd.read_csv(csv_path))
+
+
+def _training_end_date(date_index, train_frac):
+    if (
+        isinstance(train_frac, (bool, np.bool_))
+        or not isinstance(train_frac, Real)
+        or not np.isfinite(train_frac)
+        or train_frac <= 0
+        or train_frac > 1
+    ):
+        raise ValueError("train_frac 必须在 (0, 1] 范围内")
+    n_train = int(len(date_index) * train_frac)
+    if n_train < 1:
+        raise ValueError("训练期长度不足")
+    return date_index[n_train - 1]
 
 
 def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_FRAC):
@@ -52,17 +83,16 @@ def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_F
     - Approved stage dates must exist in the data and start_date < end_date.
     - Approved stage must lie completely within the training period.
     - Rejects any station that has multiple approved stages.
-    - Only stations present in ``stations`` are considered.
+    - Approved stations not present in ``stations`` are rejected.
     """
+    stages = _validate_reference_stages(stages)
     date_index = validate_daily_dates(dates)
-    n_train = int(len(date_index) * train_frac)
-    train_end_date = date_index[n_train - 1]
+    train_end_date = _training_end_date(date_index, train_frac)
 
-    approved = stages[stages["status"].str.strip() == "approved"].copy()
+    approved = stages[stages["status"] == "approved"].copy()
     if approved.empty:
         return {}
 
-    # Check for multiple approved stages per station
     counts = approved.groupby("station").size()
     multi = counts[counts > 1]
     if not multi.empty:
@@ -71,20 +101,15 @@ def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_F
             f"{list(multi.index)}"
         )
 
+    unknown_stations = sorted(set(approved["station"]) - set(stations))
+    if unknown_stations:
+        raise ValueError(f"已批准阶段包含未知测点: {unknown_stations}")
+
     manual_ranges = {}
     for _, row in approved.iterrows():
-        station = row["station"].strip()
-        if station not in stations:
-            continue
-
-        try:
-            start_date = pd.Timestamp(row["start_date"])
-            end_date = pd.Timestamp(row["end_date"])
-        except (ValueError, TypeError):
-            raise ValueError(
-                f"测点 {station} 的人工等速阶段日期无效: "
-                f"{row['start_date']} – {row['end_date']}"
-            ) from None
+        station = row["station"]
+        start_date = pd.Timestamp(row["start_date"])
+        end_date = pd.Timestamp(row["end_date"])
 
         if start_date not in date_index or end_date not in date_index:
             raise ValueError(
@@ -111,11 +136,34 @@ def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_F
     return manual_ranges
 
 
-def _check_manual_range_feasibility(dates, displacement, manual_range):
-    """Raise ValueError if a manual range has too few samples or v_eq <= 0."""
+def _check_manual_range_feasibility(
+    dates,
+    displacement,
+    manual_range,
+    train_frac=TRAIN_FRAC,
+):
+    """Validate a manual range and return its indices and finite rates."""
     date_index = validate_daily_dates(dates)
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
-    start_date, end_date = map(pd.Timestamp, manual_range)
+    if len(date_index) != len(displacement):
+        raise ValueError("日期与位移序列长度必须一致")
+    try:
+        start_date, end_date = map(pd.Timestamp, manual_range)
+    except (TypeError, ValueError):
+        raise ValueError("人工等速阶段必须包含有效的起止日期") from None
+    if start_date not in date_index or end_date not in date_index:
+        raise ValueError("人工等速阶段起止日期必须存在于数据中")
+    if start_date >= end_date:
+        raise ValueError("人工等速阶段起点必须早于终点")
+
+    train_end_date = _training_end_date(date_index, train_frac)
+    if end_date > train_end_date:
+        raise ValueError(
+            f"人工等速阶段结束日期 ({end_date.strftime('%Y-%m-%d')}) "
+            f"超出训练期 ({train_end_date.strftime('%Y-%m-%d')})，"
+            "只能使用训练期数据"
+        )
+
     start_index = int(date_index.get_loc(start_date))
     end_index = int(date_index.get_loc(end_date))
     rates = displacement.diff().to_numpy(dtype=float)[start_index + 1:end_index + 1]
@@ -126,6 +174,8 @@ def _check_manual_range_feasibility(dates, displacement, manual_range):
             f"{end_date.strftime('%Y-%m-%d')} 有效速率样本不足 "
             f"({len(rates)} 个)"
         )
+    if not np.isfinite(rates).all():
+        raise ValueError("人工等速阶段不能包含缺失或非有限位移速率")
     mean_rate = float(np.mean(rates))
     if not np.isfinite(mean_rate) or mean_rate <= 0:
         raise ValueError(
@@ -133,6 +183,7 @@ def _check_manual_range_feasibility(dates, displacement, manual_range):
             f"{end_date.strftime('%Y-%m-%d')} 无法获得正的等速阶段速率 "
             f"(均值={mean_rate})"
         )
+    return start_index, end_index, rates
 
 
 def _causal_linear_slopes(displacement, window):
@@ -261,22 +312,23 @@ def _rate_statistics(rates):
         mean_abs_accel = float(np.mean(np.abs(np.diff(rates))))
     else:
         mean_abs_accel = 0.0
-    return mean_rate, rate_mad, mean_abs_accel
+    return mean_rate, median_rate, rate_mad, mean_abs_accel
 
 
 def _result(method, dates, start_index, end_index, rates, source=None):
-    mean_rate, rate_mad, mean_abs_accel = _rate_statistics(rates)
+    mean_rate, median_rate, rate_mad, mean_abs_accel = _rate_statistics(rates)
     entry = {
         "method": method,
+        "source": source,
         "start_date": dates[start_index].strftime("%Y-%m-%d"),
         "end_date": dates[end_index].strftime("%Y-%m-%d"),
+        "stage_duration_days": int((dates[end_index] - dates[start_index]).days),
         "v_eq_mm_per_day": mean_rate,
+        "median_rate_mm_per_day": median_rate,
         "rate_mad_mm_per_day": rate_mad,
         "mean_abs_accel_mm_per_day2": mean_abs_accel,
         "n_rate_samples": int(len(rates)),
     }
-    if source is not None:
-        entry["source"] = source
     return entry
 
 
@@ -305,18 +357,30 @@ def build_tangent_frame(
     date_col = date_col.strip()
     date_index = validate_daily_dates(df[date_col])
 
-    # Build manual_ranges from reference_stages if provided
     extra_manual = {}
+    manual_sources = {}
+    validated_stages = None
     if reference_stages is not None:
+        validated_stages = _validate_reference_stages(reference_stages)
         extra_manual = _build_manual_ranges_from_stages(
-            reference_stages,
+            validated_stages,
             date_index,
             stations,
             train_frac=train_frac,
         )
-    # Explicit manual_ranges override reference-stages entries
-    if manual_ranges:
+        approved = validated_stages[validated_stages["status"] == "approved"]
+        manual_sources.update(
+            dict(zip(approved["station"], approved["source"]))
+        )
+
+    if manual_ranges is not None:
+        unknown_manual = sorted(set(manual_ranges) - set(stations))
+        if unknown_manual:
+            raise ValueError(f"人工阶段包含未知测点: {unknown_manual}")
         extra_manual.update(manual_ranges)
+        manual_sources.update({
+            station: "manual_ranges_argument" for station in manual_ranges
+        })
 
     result = pd.DataFrame({"Date": date_index})
     parameters = {}
@@ -325,19 +389,6 @@ def build_tangent_frame(
         displacement = df[disp_col.strip()]
         manual_range = extra_manual.get(station)
 
-        # Pre-validate feasibility of approved manual ranges
-        if manual_range is not None and reference_stages is not None:
-            approved_for_station = reference_stages[
-                (reference_stages["station"].str.strip() == station)
-                & (reference_stages["status"].str.strip() == "approved")
-            ]
-            if not approved_for_station.empty:
-                _check_manual_range_feasibility(
-                    date_index,
-                    displacement,
-                    manual_range,
-                )
-
         rate_parameters = estimate_uniform_rate(
             date_index,
             displacement,
@@ -345,15 +396,8 @@ def build_tangent_frame(
             window=candidate_window,
             manual_range=manual_range,
         )
-        # Annotate source from reference stages when available
-        if reference_stages is not None and manual_range is not None:
-            approved_rows = reference_stages[
-                (reference_stages["station"].str.strip() == station)
-                & (reference_stages["status"].str.strip() == "approved")
-            ]
-            if not approved_rows.empty:
-                source_val = approved_rows.iloc[0]["source"].strip()
-                rate_parameters["source"] = source_val
+        if manual_range is not None:
+            rate_parameters["source"] = manual_sources[station]
         parameters[station] = rate_parameters
 
         angle_frame = tangent_angle_series(
@@ -402,29 +446,19 @@ def estimate_uniform_rate(
     rates = displacement.diff().to_numpy(dtype=float)
 
     if manual_range is not None:
-        try:
-            start_date, end_date = map(pd.Timestamp, manual_range)
-        except (TypeError, ValueError):
-            raise ValueError("人工等速阶段必须包含有效的起止日期") from None
-        if (
-            start_date not in date_index
-            or end_date not in date_index
-            or start_date >= end_date
-        ):
-            raise ValueError("人工等速阶段起止日期必须存在于数据中且起点早于终点")
-
-        start_index = int(date_index.get_loc(start_date))
-        end_index = int(date_index.get_loc(end_date))
-        selected_rates = rates[start_index + 1:end_index + 1]
-        mean_rate, _, _ = _rate_statistics(selected_rates)
-        if not np.isfinite(mean_rate) or mean_rate <= 0:
-            raise ValueError("无法获得正的等速阶段速率")
+        start_index, end_index, selected_rates = _check_manual_range_feasibility(
+            date_index,
+            displacement,
+            manual_range,
+            train_frac=train_frac,
+        )
         return _result(
             "manual",
             date_index,
             start_index,
             end_index,
             selected_rates,
+            source="manual_ranges_argument",
         )
 
     n_train = int(len(date_index) * train_frac)
@@ -435,7 +469,7 @@ def estimate_uniform_rate(
     for end_index in range(window, n_train):
         start_rate_index = end_index - window + 1
         candidate_rates = rates[start_rate_index:end_index + 1]
-        mean_rate, rate_mad, mean_abs_accel = _rate_statistics(candidate_rates)
+        mean_rate, _, rate_mad, mean_abs_accel = _rate_statistics(candidate_rates)
         if not np.isfinite(mean_rate) or mean_rate <= 0:
             continue
 
@@ -457,4 +491,5 @@ def estimate_uniform_rate(
         start_rate_index - 1,
         end_index,
         selected_rates,
+        source=f"automatic_{window}d",
     )

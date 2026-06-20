@@ -15,9 +15,12 @@ import pandas as pd
 from tangent_angle import (
     TRAIN_FRAC,
     _causal_linear_slopes,
+    build_tangent_frame,
     estimate_uniform_rate,
     validate_daily_dates,
 )
+from warning_fusion import WARNING_STATIONS, fuse_warning_levels
+from warning_thresholds import build_warning_frame
 
 # Use a CJK-capable font for Chinese labels. Fall back to default sans if unavailable.
 _CJK_CANDIDATES = ["Heiti TC", "STHeiti", "Lantinghei SC",
@@ -41,6 +44,15 @@ KEY_STATION_COLS = {
     "MJ1": "MJ1/mm",
     "MJ3": "MJ3/mm",
 }
+LEVEL_NAMES = ("green", "yellow", "orange", "red")
+FUSION_REASONS = (
+    "v0_green",
+    "alpha_watch",
+    "multi_station_confirmed",
+    "multi_scale_confirmed",
+    "v0_alpha_consistent",
+    "v0_primary",
+)
 
 
 def _load_ordered_raw(path=RAW_CSV, date_col="Date"):
@@ -104,7 +116,6 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
         fontweight="bold",
     )
 
-    # --- Panel 1: cumulative displacement ---
     ax = axes[0]
     ax.plot(dates, displacement, color="black", linewidth=0.8, label="累计位移")
     ax.axvline(train_boundary_date, color="gray", linestyle="--",
@@ -113,7 +124,6 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
     ax.legend(fontsize=8, loc="upper left")
     ax.set_title("(a) 全时段累计位移曲线", fontsize=10, loc="left")
 
-    # --- Panel 2: daily displacement rate ---
     ax = axes[1]
     ax.plot(dates, rates, color="silver", linewidth=0.5, alpha=0.7, label="日位移速率 (原始)")
     smooth_valid = smooth_rates.where(np.isfinite(smooth_rates))
@@ -124,33 +134,30 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
     ax.legend(fontsize=8, loc="upper left")
     ax.set_title("(b) 日位移速率与因果平滑速率", fontsize=10, loc="left")
 
-    # --- Panel 3: acceleration / rate stability ---
     ax = axes[2]
     ax.plot(dates, accel, color="darkorange", linewidth=0.5, alpha=0.6,
             label="日加速度 (原始)")
     ax.axhline(0, color="gray", linewidth=0.5, linestyle=":")
     ax.axvline(train_boundary_date, color="gray", linestyle="--", linewidth=0.8)
 
-    # Add within-candidate-stage rate dispersion markers
     colors = {15: "red", 30: "blue", 60: "green"}
     for _, row in candidate_table.iterrows():
-        if row["start_date"] is None:
+        if pd.isna(row["start_date"]):
             continue
         w = int(row["candidate_window_days"])
         sd = pd.Timestamp(row["start_date"])
         ed = pd.Timestamp(row["end_date"])
         ax.axvspan(sd, ed, alpha=0.12, color=colors.get(w, "gray"),
-                   label=f"{w} 日候选阶段" if _ == candidate_table.index[0] else "")
+                   label=f"{w} 日候选阶段")
 
     ax.set_ylabel("加速度 (mm/d²)")
     ax.legend(fontsize=7, loc="upper left")
     ax.set_title("(c) 日加速度与候选阶段位置", fontsize=10, loc="left")
 
-    # --- Panel 4: candidate stage summary as horizontal bars ---
     ax = axes[3]
     y_positions = {15: 3, 30: 2, 60: 1}
     for _, row in candidate_table.iterrows():
-        if row["start_date"] is None:
+        if pd.isna(row["start_date"]):
             continue
         w = int(row["candidate_window_days"])
         sd = pd.Timestamp(row["start_date"])
@@ -179,21 +186,107 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
     plt.close(fig)
 
 
+def _level_counts(prefix, levels):
+    levels = pd.Series(levels, dtype=int)
+    valid = levels[levels >= 0]
+    return {
+        f"{prefix}_{name}_days": int(valid.eq(level).sum())
+        for level, name in enumerate(LEVEL_NAMES)
+    }
+
+
+def _agreement_rate(reference, current):
+    reference = np.asarray(reference, dtype=int)
+    current = np.asarray(current, dtype=int)
+    common = (reference >= 0) & (current >= 0)
+    if not common.any():
+        return np.nan
+    return float((reference[common] == current[common]).mean())
+
+
 def build_candidate_comparison_csv(raw, stations=KEY_STATION_COLS):
-    """Build a comparison table of candidate stages for all key stations."""
+    """Build candidate, tangent-level, and fusion audit fields."""
     ordered = _load_ordered_raw(raw) if isinstance(raw, (str, Path)) else raw
     if not isinstance(ordered, pd.DataFrame):
         ordered = _load_ordered_raw()
+    ordered = ordered.rename(columns=lambda column: column.strip()).copy()
+    ordered["Date"] = pd.to_datetime(ordered["Date"])
+    ordered = ordered.sort_values("Date").reset_index(drop=True)
 
     all_rows = []
-    for station, disp_col in stations.items():
-        displacement = ordered[disp_col]
-        station_rows = _build_candidate_table(
-            ordered["Date"],
-            displacement,
+    tangent_frames = {}
+    for window in CANDIDATE_WINDOWS:
+        tangent_frame, parameters = build_tangent_frame(
+            ordered,
+            stations,
+            candidate_window=window,
         )
-        for _, row in station_rows.iterrows():
-            all_rows.append({"station": station, **row.to_dict()})
+        tangent_frames[window] = tangent_frame
+        for station, values in parameters.items():
+            all_rows.append({
+                "station": station,
+                "candidate_window_days": window,
+                **values,
+            })
+
+    reference_frame = tangent_frames[30]
+    for row in all_rows:
+        station = row["station"]
+        window = row["candidate_window_days"]
+        levels = tangent_frames[window][f"{station}_alpha_level"]
+        reference = reference_frame[f"{station}_alpha_level"]
+        row.update(_level_counts("alpha", levels))
+        row["alpha_agreement_rate_vs_30d"] = _agreement_rate(
+            reference,
+            levels,
+        )
+
+    available_warning_stations = {
+        station: column
+        for station, column in WARNING_STATIONS.items()
+        if column in ordered
+    }
+    warning_frame, _ = build_warning_frame(
+        ordered,
+        available_warning_stations,
+    )
+    fusion_outputs = {}
+    key_stations = tuple(stations)
+    alpha_columns = [f"{station}_alpha_level" for station in key_stations]
+    for window, tangent_frame in tangent_frames.items():
+        merged = tangent_frame[["Date", *alpha_columns]].merge(
+            warning_frame[["Date", "warning_level"]],
+            on="Date",
+            how="inner",
+        )
+        merged = merged[merged["warning_level"] >= 0].reset_index(drop=True)
+        fusion_outputs[window] = fuse_warning_levels(
+            merged["warning_level"],
+            merged[alpha_columns],
+            key_stations=key_stations,
+        )
+
+    reference_fusion = fusion_outputs[30]["final_level"]
+    fusion_summaries = {}
+    for window, fused in fusion_outputs.items():
+        reasons = fused["fusion_reason"].value_counts()
+        fusion_summaries[window] = {
+            **_level_counts("fusion", fused["final_level"]),
+            "fusion_upgraded_days": int(
+                fused["final_level"].gt(fused["v0_level"]).sum()
+            ),
+            "fusion_agreement_rate_vs_30d": _agreement_rate(
+                reference_fusion,
+                fused["final_level"],
+            ),
+            **{
+                f"fusion_reason_{reason}_days": int(reasons.get(reason, 0))
+                for reason in FUSION_REASONS
+            },
+        }
+
+    for row in all_rows:
+        row.update(fusion_summaries[row["candidate_window_days"]])
 
     return pd.DataFrame(all_rows)
 
@@ -201,7 +294,6 @@ def build_candidate_comparison_csv(raw, stations=KEY_STATION_COLS):
 def main():
     raw = _load_ordered_raw()
 
-    # Generate review figures for each key station
     for station, disp_col in KEY_STATION_COLS.items():
         fig_path = FIG_DIR / f"{station}_stage_review.png"
         displacement = raw[disp_col]
@@ -213,13 +305,11 @@ def main():
         )
         print(f"[review] 复核图: {fig_path}")
 
-    # Generate comparison CSV
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     comparison = build_candidate_comparison_csv(raw)
     comparison.to_csv(OUT_CSV, index=False)
     print(f"[review] 候选阶段对比表: {OUT_CSV}")
 
-    # Print summary
     print("\n[review] 关键测点候选阶段 v_eq 对比:")
     for station in KEY_STATION_COLS:
         subset = comparison[comparison["station"] == station]
@@ -227,7 +317,7 @@ def main():
         for _, row in subset.iterrows():
             w = row["candidate_window_days"]
             v = row["v_eq_mm_per_day"]
-            if v is not None:
+            if pd.notna(v):
                 values.append(f"{w}d={v:.4f}")
             else:
                 values.append(f"{w}d=无有效阶段")
