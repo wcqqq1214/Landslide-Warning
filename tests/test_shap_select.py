@@ -16,6 +16,7 @@ import warning_thresholds
 class ShapSelectTests(unittest.TestCase):
     def test_outputs_are_grouped_under_shap_figures(self):
         expected = ROOT / "figures" / "shap"
+        threshold_dir = ROOT / "figures" / "thresholds"
         outputs = [
             shap_select.OUT_REG_PNG,
             shap_select.OUT_CLS_PNG,
@@ -23,10 +24,10 @@ class ShapSelectTests(unittest.TestCase):
             shap_select.OUT_CLS_CSV,
             shap_select.OUT_METRICS_CSV,
             shap_select.OUT_CV_METRICS_CSV,
-            shap_select.OUT_THRESHOLDS_CSV,
         ]
 
         self.assertTrue(all(path.parent == expected for path in outputs))
+        self.assertEqual(shap_select.OUT_THRESHOLDS_CSV.parent, threshold_dir)
 
     def test_binary_metrics_report_discrimination_and_calibration(self):
         metrics = shap_select.binary_probability_metrics(

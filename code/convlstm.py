@@ -252,7 +252,8 @@ def main():
 
     delta_scale = make_delta_scale(ytr_delta)
     ytr_norm = (ytr_delta / delta_scale).astype(np.float32)
-    Xtr_t = torch.from_numpy(Xtr); ytr_t = torch.from_numpy(ytr_norm)
+    Xtr_t = torch.from_numpy(Xtr)
+    ytr_t = torch.from_numpy(ytr_norm)
     Xte_t = torch.from_numpy(Xte)
     readout_t = torch.from_numpy(readout_w)
 
@@ -271,11 +272,13 @@ def main():
     opt = torch.optim.Adam(model.parameters(), lr=LR)
 
     for ep in range(EPOCHS):
-        model.train(); opt.zero_grad()
+        model.train()
+        opt.zero_grad()
         pred_grid = model(Xfit_t)
         pred_station = readout_grid_at_stations(pred_grid, readout_t)
         loss = pinball_loss(pred_station, yfit_t, QUANTILES)
-        loss.backward(); opt.step()
+        loss.backward()
+        opt.step()
         if (ep + 1) % 20 == 0:
             print(f"[convlstm] epoch {ep+1}/{EPOCHS} pinball={loss.item():.4f}")
 
@@ -347,7 +350,9 @@ def main():
     axes[-1].set_xlabel("test time step")
     axes[0].legend(loc="upper left")
     fig.suptitle(f"ConvLSTM forecast intervals ({GRID_H}x{GRID_W}, lookback={LOOKBACK}d, horizon={HORIZON}d)")
-    plt.tight_layout(); plt.savefig(OUT_PNG, dpi=150); plt.close()
+    plt.tight_layout()
+    plt.savefig(OUT_PNG, dpi=150)
+    plt.close()
 
     pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
 

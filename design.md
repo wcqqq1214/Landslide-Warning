@@ -50,11 +50,11 @@ monitoring_data.csv -> onset_analysis.py -> warning_events.py
 | `code/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级 | 由 `features.py` 调用 |
 | `code/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
 | `code/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
-| `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*` |
-| `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*` |
+| `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
+| `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
-| `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*` |
+| `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 
 ## 4. 已锁定的实现选择
@@ -65,8 +65,9 @@ monitoring_data.csv -> onset_analysis.py -> warning_events.py
 - 位移加速度：位移速率的一阶差分。
 - 库水位速率：1 日一阶差分。
 - 累计降雨窗口：7、15、30 日。
-- 切线角当前速率：3 日尾随线性斜率，不使用未来观测。
-- 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口。
+- 原始切线角：日增量除以 `v_eq` 后取反正切，并按许强等（2009）的严格 `>45`、`>80`、`>85` 阶段边界判定。
+- 工程切线角：3 日尾随线性斜率，不使用未来观测；再应用 5 日内至少 3 次命中的持续性确认。
+- 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口，属于专家阶段划分前的辅助候选，不是原文方法本身。
 
 ### 4.2 ConvLSTM
 

@@ -14,7 +14,7 @@ OUT_DIR = ROOT / "figures" / "warning_onset"
 OUT_EVENTS_CSV = OUT_DIR / "onset_events.csv"
 OUT_TARGETS_CSV = OUT_DIR / "onset_targets.csv"
 OUT_INVENTORY_CSV = OUT_DIR / "onset_inventory.csv"
-OUT_THRESHOLDS_CSV = OUT_DIR / "v0_thresholds.csv"
+OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
 
 HORIZONS = (1, 3, 7)
 MIN_WARNING_LEVEL = 1
@@ -78,6 +78,7 @@ def main():
     inventory.insert(0, "label_scope", LABEL_SCOPE)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_THRESHOLDS_CSV.parent.mkdir(parents=True, exist_ok=True)
     events.to_csv(OUT_EVENTS_CSV, index=False)
     targets.to_csv(OUT_TARGETS_CSV, index=False)
     inventory.to_csv(OUT_INVENTORY_CSV, index=False)

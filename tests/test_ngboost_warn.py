@@ -14,11 +14,12 @@ import ngboost_warn
 class NgboostWarnTests(unittest.TestCase):
     def test_outputs_are_grouped_under_ngboost_figures(self):
         expected = ROOT / "figures" / "ngboost"
+        threshold_dir = ROOT / "figures" / "thresholds"
 
         self.assertEqual(ngboost_warn.OUT_PNG.parent, expected)
-        self.assertEqual(ngboost_warn.OUT_THRESHOLDS_CSV.parent, expected)
         self.assertEqual(ngboost_warn.OUT_METRICS_CSV.parent, expected)
         self.assertEqual(ngboost_warn.OUT_PROBABILITIES_CSV.parent, expected)
+        self.assertEqual(ngboost_warn.OUT_THRESHOLDS_CSV.parent, threshold_dir)
 
     def test_multiclass_metrics_expose_missing_high_level_support(self):
         probability = np.array([

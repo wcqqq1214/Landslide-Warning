@@ -82,10 +82,12 @@ class WarningEventTests(unittest.TestCase):
 
     def test_outputs_are_grouped_under_warning_onset_figures(self):
         expected = ROOT / "figures" / "warning_onset"
+        threshold_dir = ROOT / "figures" / "thresholds"
 
         self.assertEqual(onset_analysis.OUT_EVENTS_CSV.parent, expected)
         self.assertEqual(onset_analysis.OUT_TARGETS_CSV.parent, expected)
         self.assertEqual(onset_analysis.OUT_INVENTORY_CSV.parent, expected)
+        self.assertEqual(onset_analysis.OUT_THRESHOLDS_CSV.parent, threshold_dir)
 
     def test_inventory_separates_total_and_forecastable_events(self):
         levels = [-1, 1, 0, 0, 0, 1, 1, 0, 0, 0]

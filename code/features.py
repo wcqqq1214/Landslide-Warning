@@ -50,12 +50,12 @@ def build_features(df):
         for suffix in (
             "_alpha_raw",
             "_alpha_smooth",
+            "_alpha_raw_level",
             "_alpha_daily_level",
             "_alpha_level",
         ):
             out[f"{station}{suffix}"] = tangent_frame[f"{station}{suffix}"]
 
-        # Keep the original name for downstream compatibility.
         out[f"{station}_alpha"] = out[f"{station}_alpha_smooth"]
 
     out["RWL"] = df[RWL_COL]

@@ -35,6 +35,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── convlstm.pt                 # ConvLSTM 模型权重
 │   └── ngboost.pkl                 # NGBoost 分类模型
 └── figures/
+    ├── README.md                   # 逐文件用途、性质和保留规则
     ├── convlstm/
     │   ├── forecast_interval.png   # 位移预测区间图
     │   └── forecast_metrics.csv    # 各测点预测指标
@@ -44,20 +45,19 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   ├── shap_reg_importance.csv # 回归 mean absolute SHAP 排序
     │   ├── shap_cls_importance.csv # 分类 mean absolute SHAP 排序
     │   ├── shap_model_metrics.csv  # SHAP 阶段 NGBoost 验证指标
-    │   ├── shap_binary_cv_metrics.csv # 二分类扩展窗口评价
-    │   └── v0_thresholds.csv       # SHAP 阶段 8 测点动态 V0
+    │   └── shap_binary_cv_metrics.csv # 二分类扩展窗口评价
     ├── tangent_angle/
     │   └── uniform_rates.csv       # 训练期等速候选段与参考速率
     ├── warning_onset/
     │   ├── onset_events.csv        # 连续黄色及以上事件清单
     │   ├── onset_targets.csv       # 1/3/7 日 at-risk 未来标签
-    │   ├── onset_inventory.csv     # 正负日期与可预测事件数量
-    │   └── v0_thresholds.csv       # 本次盘点使用的动态 V0
+    │   └── onset_inventory.csv     # 正负日期与可预测事件数量
     ├── ngboost/
     │   ├── confusion_matrix.png    # 预警分类混淆矩阵
     │   ├── warning_metrics.csv     # 四级预警指标与各级支持数
-    │   ├── warning_probabilities.csv # 测试段逐日等级概率
-    │   └── v0_thresholds.csv       # 最终分类阶段 8 测点动态 V0
+    │   └── warning_probabilities.csv # 测试段逐日等级概率
+    ├── thresholds/
+    │   └── v0_thresholds.csv       # 三个阶段共享的 8 测点动态 V0
     └── warning_fusion/
         └── warning_fusion.csv      # 最终等级、融合原因和 NGBoost 旁证
 ```
@@ -100,7 +100,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
   - `*_v`:位移速率。
   - `*_a`:位移加速度。
   - `*_alpha_raw`, `*_alpha_smooth`:原始/因果平滑改进切线角。
-  - `*_alpha_daily_level`, `*_alpha_level`:逐日和 5 日持续性预警等级。
+  - `*_alpha_raw_level`:按许强等（2009）原始角和严格边界得到的阶段等级。
+  - `*_alpha_daily_level`, `*_alpha_level`:按平滑角得到的逐日等级和 5 日持续性工程等级。
   - `*_alpha`:与 `*_alpha_smooth` 相同的兼容列。
 - 候选环境指标:
   - `RWL`:库水位。
@@ -115,11 +116,11 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/features.py` | `data/monitoring_data.csv` | `data/features.csv`, `figures/tangent_angle/uniform_rates.csv` | 计算位移速率、加速度、可审计改进切线角、库水位速率和多窗口累计降雨 |
 | `code/warning_thresholds.py` | 原始累计位移 | 动态 V0 阈值和逐日四级标签 | 使用训练期 30 天月速率、90% 分位加速月剔除和 `V0 = 1.5 V_bar + 2 sigma` 计算测点独立阈值 |
 | `code/warning_events.py` | 日期和逐日等级 | 内存中的事件与未来标签 | 提取连续预警事件，生成 at-risk 未来 onset 标签并评价固定阈值报警 |
-| `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
-| `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/shap_reg_summary.png`, `figures/shap/shap_cls_summary.png` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
+| `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*`, `figures/thresholds/v0_thresholds.csv` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
+| `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/*`, `figures/thresholds/v0_thresholds.csv` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
-| `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
+| `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 
 ## 执行流程
@@ -233,7 +234,7 @@ uv run --with pytest pytest -q
 3. 训练 `NGBRegressor` 预测位移增量。
 4. 训练 `NGBClassifier` 预测预警状态概率。
 5. 使用模型无关 SHAP permutation explainer 计算模型贡献值；结果不用于因果推断。
-6. 输出 SHAP 图、重要性、单次留出指标、5 折扩展窗口指标和 V0 阈值。
+6. 输出 SHAP 图、重要性、单次留出指标、5 折扩展窗口指标和公共 V0 审计表。
 7. 在终端打印回归和分类的 mean absolute SHAP top10。
 
 ### 3. IDW 网格插值
@@ -297,7 +298,7 @@ uv run --with pytest pytest -q
 3. 构造运动学统计特征和候选环境指标特征。
 4. 按时间顺序切分训练段和探索性留出段。
 5. 训练 `NGBClassifier`。
-6. 输出模型、混淆矩阵、V0、完整四级指标和逐日等级概率。
+6. 输出模型、混淆矩阵、公共 V0 审计表、完整四级指标和逐日等级概率。
 7. 打印各等级样本数、测试集准确率和分类报告。
 
 ## 当前注意事项
@@ -305,6 +306,7 @@ uv run --with pytest pytest -q
 - `README.md` 描述当前代码状态,不是论文最终方案。
 - `main.py` 当前不是项目入口；当前有 5 个模型/融合阶段脚本和 1 个 onset 审计脚本。
 - `data/features.csv`, `models/*`, `figures/*` 都是可再生成产物。
+- `figures/README.md` 说明每个 PNG/CSV 的生成脚本、科研用途和保留原则。
 - 如果更换数据集,优先修改各脚本顶部的 CONFIG 区,尤其是列名、数据路径和测点坐标。
 - ConvLSTM 依赖 `data/station_coords.csv`;坐标列和 `DISP_COLS` 顺序必须对齐。
 - 全样本含绿/黄/橙/红四级，但测试段仅含绿/黄，不得声称已验证橙/红召回能力。

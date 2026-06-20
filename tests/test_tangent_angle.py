@@ -120,7 +120,17 @@ class TangentAngleWarningTests(unittest.TestCase):
         self.assertEqual(result.loc[4, "alpha_raw"], 45.0)
 
     def test_classification_uses_exact_paper_thresholds(self):
-        angles = [44.9, 45.0, 45.1, 79.9, 80.0, 84.9, 85.0, np.nan, -1.0]
+        angles = [
+            44.9,
+            45.0,
+            45.1,
+            80.0,
+            80.1,
+            85.0,
+            85.1,
+            np.nan,
+            -1.0,
+        ]
 
         result = tangent_angle.classify_tangent_angles(angles)
 
@@ -309,6 +319,7 @@ class TangentAngleFrameTests(unittest.TestCase):
                 "Date",
                 "MJ9_alpha_raw",
                 "MJ9_alpha_smooth",
+                "MJ9_alpha_raw_level",
                 "MJ9_alpha_daily_level",
                 "MJ9_alpha_level",
             ],
@@ -398,6 +409,7 @@ class FeatureGenerationTests(unittest.TestCase):
             "MJ9_a",
             "MJ9_alpha_raw",
             "MJ9_alpha_smooth",
+            "MJ9_alpha_raw_level",
             "MJ9_alpha_daily_level",
             "MJ9_alpha_level",
             "MJ9_alpha",

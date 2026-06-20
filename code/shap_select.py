@@ -59,7 +59,7 @@ OUT_REG_CSV = FIG_DIR / "shap_reg_importance.csv"
 OUT_CLS_CSV = FIG_DIR / "shap_cls_importance.csv"
 OUT_METRICS_CSV = FIG_DIR / "shap_model_metrics.csv"
 OUT_CV_METRICS_CSV = FIG_DIR / "shap_binary_cv_metrics.csv"
-OUT_THRESHOLDS_CSV = FIG_DIR / "v0_thresholds.csv"
+OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
 SHAP_SAMPLE_SIZE = 200
 
 
@@ -380,6 +380,7 @@ def main():
     cls_importance = importance_frame(cls_shap, sample.columns)
 
     FIG_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_THRESHOLDS_CSV.parent.mkdir(parents=True, exist_ok=True)
     reg_importance.to_csv(OUT_REG_CSV, index=False)
     cls_importance.to_csv(OUT_CLS_CSV, index=False)
     pd.DataFrame([metrics]).to_csv(OUT_METRICS_CSV, index=False)

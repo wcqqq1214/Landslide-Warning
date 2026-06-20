@@ -64,15 +64,15 @@ def tangent_angle_series(displacement, v_eq, smooth_window=SMOOTH_WINDOW):
 
 
 def classify_tangent_angles(angles):
-    """Classify tangent angles using the paper's warning boundaries."""
+    """Classify tangent angles using Xu et al. (2009) strict boundaries."""
     angles = pd.Series(angles, dtype=float).reset_index(drop=True)
     levels = pd.Series(-1, index=angles.index, dtype=int)
     valid = np.isfinite(angles)
 
     levels.loc[valid] = 0
-    levels.loc[valid & angles.gt(45.0) & angles.lt(80.0)] = 1
-    levels.loc[valid & angles.ge(80.0) & angles.lt(85.0)] = 2
-    levels.loc[valid & angles.ge(85.0)] = 3
+    levels.loc[valid & angles.gt(45.0)] = 1
+    levels.loc[valid & angles.gt(80.0)] = 2
+    levels.loc[valid & angles.gt(85.0)] = 3
     return levels
 
 
@@ -189,11 +189,13 @@ def build_tangent_frame(
             displacement,
             rate_parameters["v_eq_mm_per_day"],
         )
+        raw_levels = classify_tangent_angles(angle_frame["alpha_raw"])
         daily_levels = classify_tangent_angles(angle_frame["alpha_smooth"])
         persistent_levels = persistent_warning_levels(daily_levels)
 
         result[f"{station}_alpha_raw"] = angle_frame["alpha_raw"]
         result[f"{station}_alpha_smooth"] = angle_frame["alpha_smooth"]
+        result[f"{station}_alpha_raw_level"] = raw_levels
         result[f"{station}_alpha_daily_level"] = daily_levels
         result[f"{station}_alpha_level"] = persistent_levels
 

@@ -27,7 +27,7 @@ RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_PKL = ROOT / "models" / "ngboost.pkl"
 FIG_DIR = ROOT / "figures" / "ngboost"
 OUT_PNG = FIG_DIR / "confusion_matrix.png"
-OUT_THRESHOLDS_CSV = FIG_DIR / "v0_thresholds.csv"
+OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
 OUT_METRICS_CSV = FIG_DIR / "warning_metrics.csv"
 OUT_PROBABILITIES_CSV = FIG_DIR / "warning_probabilities.csv"
 
@@ -173,6 +173,7 @@ def main():
 
     OUT_PKL.parent.mkdir(parents=True, exist_ok=True)
     FIG_DIR.mkdir(parents=True, exist_ok=True)
+    OUT_THRESHOLDS_CSV.parent.mkdir(parents=True, exist_ok=True)
     with open(OUT_PKL, "wb") as f:
         pickle.dump(model, f)
     pd.DataFrame(threshold_rows(thresholds)).to_csv(OUT_THRESHOLDS_CSV, index=False)
@@ -188,16 +189,22 @@ def main():
     cm = confusion_matrix(yte, pred, labels=present)
     fig, ax = plt.subplots(figsize=(6, 5))
     im = ax.imshow(cm, cmap="Blues")
-    ax.set_xticks(range(len(present))); ax.set_yticks(range(len(present)))
+    ax.set_xticks(range(len(present)))
+    ax.set_yticks(range(len(present)))
     labs = [LEVEL_NAMES[i] for i in present]
-    ax.set_xticklabels(labs, rotation=45, ha="right"); ax.set_yticklabels(labs)
-    ax.set_xlabel("predicted"); ax.set_ylabel("actual")
+    ax.set_xticklabels(labs, rotation=45, ha="right")
+    ax.set_yticklabels(labs)
+    ax.set_xlabel("predicted")
+    ax.set_ylabel("actual")
     ax.set_title("NGBoost warning-level confusion matrix (test set)")
     for i in range(len(present)):
         for j in range(len(present)):
             ax.text(j, i, cm[i, j], ha="center", va="center",
                     color="white" if cm[i, j] > cm.max() / 2 else "black")
-    fig.colorbar(im); plt.tight_layout(); plt.savefig(OUT_PNG, dpi=150); plt.close()
+    fig.colorbar(im)
+    plt.tight_layout()
+    plt.savefig(OUT_PNG, dpi=150)
+    plt.close()
 
     print(f"[ngboost] 模型输出: {OUT_PKL}")
     print(f"[ngboost] 混淆矩阵图: {OUT_PNG}")
@@ -210,7 +217,7 @@ def main():
             f"5V0={values['v0_orange_threshold']:.3f}, "
             f"10V0={values['v0_red_threshold']:.3f} mm/M"
         )
-    print(f"[ngboost] 全样本各级数量(类别不平衡透明化):")
+    print("[ngboost] 全样本各级数量(类别不平衡透明化):")
     for lv in range(len(LEVEL_NAMES)):
         print(f"        级{lv} {LEVEL_NAMES[lv]:12s}: {(y == lv).sum()}")
     print(f"[ngboost] 训练集实际类别数: {k}; 未出现的高等级保留在 V0 规则中，不参与本次拟合")
