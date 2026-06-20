@@ -1,7 +1,7 @@
 [project]
 name = "landslide-warning"
 version = "0.1.0"
-description = "Add your description here"
+description = "Reproducible landslide displacement forecasting and warning pipeline"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

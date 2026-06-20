@@ -97,7 +97,11 @@ Y_onset(t,h) = 0, otherwise
 V0 = 1.5 * mean(V_steady) + 2 * std(V_steady)
 ```
 
-当前 `30 日`、`90% 分位`、`1.5`、`2`、`5V0` 和 `10V0` 均应在论文中分别标明为文献规则、数据估计或工程设定。未找到直接文献依据的参数不得表述为普适阈值。
+本项目将上述 `V0` 作为一级注意阈值。该均值-标准差公式及其中 `30 日`、`90% 分位`、`1.5` 和 `2` 均为导师指定的本研究统计规则，不是 Chen et al.（2024）的 VaR 公式；保留它是因为研究方案已预先指定，而不是因为两种公式可以互换。
+
+Chen et al.（2024）对长期缓慢变形、具有多阶段加速特征的近坝库岸边坡进行速率统计，使用 GPD/POT 与 `q=95%` 的 VaR 确定一级注意阈值 `v1`，再通过式（10）`v = vd * v1` 定义高等级阈值。论文建议无特殊要求时，警戒和报警等级分别取 `vd=5` 和 `vd=10`。因此，本项目的 `5V0` 和 `10V0` 有该论文的默认倍数依据，对应 vigilance 和 alarm；绿色/黄色/橙色/红色名称是本项目对正常状态和三个预警等级的工程映射。
+
+需要明确的差异是：当前实现没有拟合 GPD、没有使用 Kurtosis 方法选择 POT 阈值，也没有计算 VaR/CVaR；不能表述为“复现 Chen et al.（2024）完整方法”。当前证据只能支持“参考该文的速率分级思想和 5/10 倍高等级阈值”。保留质疑的理由包括一级阈值估计方法不同、当前 V0 为离线固定值，以及论文建议随变形阶段定期更新统计参数和阈值。
 
 ### 4.2 改进切线角
 
@@ -240,5 +244,5 @@ alpha(t) = arctan(v(t) / v_eq)
 - Saito and Rehmsmeier (2015), The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets.
 - Cerqueira et al. (2020), Evaluating Time Series Forecasting Models: An Empirical Study on Performance Estimation Methods.
 - Collins et al. (2024), TRIPOD+AI Statement. 该规范来自临床预测研究，在本项目中仅作为预测模型透明报告清单参考。
+- Chen, M., Feng, A., Wei, W., Jiang, Q. (2024). Statistical analysis of long-term deformations and determination of warning thresholds for near-dam reservoir bank slopes. Bulletin of Engineering Geology and the Environment, 83, 437. https://doi.org/10.1007/s10064-024-03928-y. 仓库原文：`literature/chen2024-Statistical analysis of long-term deformations and determination of warning thresholds for near-dam reservoir bank slopes.pdf`。
 - 许强, 曾裕平, 钱江澎, 王承俊, 何成江. 一种改进的切线角及对应的滑坡预警判据. 地质通报, 2009, 28(4): 501-505. 仓库原文：`literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf`。
-- 动态 V0 的中文文献依据仍需在论文定稿前补齐作者、题名、期刊、年份、卷期、页码和 DOI/URL；未找到直接来源的参数必须标为工程设定。

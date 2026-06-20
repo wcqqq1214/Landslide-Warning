@@ -88,6 +88,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 
 - 主模型：`NGBClassifier` 四分类概率模型。
 - 标签：动态 V0 当日四级状态，不是切线角标签。
+- 一级 `V0` 使用导师指定的稳定月均值-标准差公式；5/10 倍高等级阈值参考 Chen et al.（2024）式（10）的默认 `vd`。当前实现不包含该文的 GPD/POT、VaR 或 CVaR 估计。
 - 输入：8 测点位移速率/加速度聚合量、库水位、库水位速率和多窗口累计降雨。
 - 当前模型任务属于状态识别；未来 1/3/7 日 onset 标签已实现，但模型验证因独立事件不足而暂停。
 
@@ -102,14 +103,10 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 ## 5. 运行顺序
 
 ```bash
-uv run python code/features.py
-uv run python code/onset_analysis.py
-uv run python code/shap_select.py
-uv run python code/convlstm.py
-uv run python code/ngboost_warn.py
-uv run python code/warning_fusion.py
-uv run python code/sensitivity_analysis.py
+uv run python main.py
 ```
+
+`main.py` 按 `features -> onset -> shap -> convlstm -> ngboost -> fusion -> sensitivity -> tangent-review` 编排八个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。
 
 运行测试：
 
@@ -117,7 +114,7 @@ uv run python code/sensitivity_analysis.py
 uv run --with pytest pytest -q
 ```
 
-`main.py` 不是当前执行入口。各阶段保持独立，是为了允许单独重跑和核对中间结果。
+各阶段仍保持独立脚本，以便单独重跑和核对中间结果；统一入口只负责顺序、失败传播和耗时汇总，不改变模型内部实现。
 
 ## 6. 数据泄漏防线
 

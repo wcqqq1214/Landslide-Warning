@@ -74,6 +74,14 @@ class ShapSelectTests(unittest.TestCase):
         )
         self.assertAlmostEqual(result["v0_orange_threshold"], 5 * result["v0_mm_per_month"])
         self.assertAlmostEqual(result["v0_red_threshold"], 10 * result["v0_mm_per_month"])
+        self.assertEqual(
+            result["v0_estimation_method"],
+            "supervisor_specified_steady_mean_std",
+        )
+        self.assertEqual(
+            result["high_level_threshold_source"],
+            "chen_et_al_2024_eq10_default_vd",
+        )
 
     def test_classify_monthly_rates_uses_v0_warning_levels(self):
         levels = warning_thresholds.classify_monthly_rates(

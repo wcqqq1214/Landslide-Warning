@@ -10,7 +10,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 
 ```text
 .
-├── main.py                         # uv 初始化生成的模板入口,当前未编排业务管线
+├── main.py                         # 完整管线入口，支持阶段选择、跳过和 dry-run
 ├── pyproject.toml                  # Python 3.10 + 依赖声明
 ├── uv.lock                         # uv 锁定文件
 ├── design.md                       # 当前代码架构、模块边界和运行顺序
@@ -188,17 +188,22 @@ flowchart TD
 uv sync
 ```
 
-依次运行完整管线:
+运行完整管线:
 
 ```bash
-uv run python code/features.py
-uv run python code/onset_analysis.py
-uv run python code/shap_select.py
-uv run python code/convlstm.py
-uv run python code/ngboost_warn.py
-uv run python code/warning_fusion.py
-uv run python code/sensitivity_analysis.py
+uv run python main.py
 ```
+
+查看阶段、检查命令或只运行部分阶段:
+
+```bash
+uv run python main.py --list
+uv run python main.py --dry-run
+uv run python main.py --stage features --stage onset
+uv run python main.py --skip shap --skip convlstm
+```
+
+`--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
 
 运行测试：
 
@@ -209,16 +214,8 @@ uv run --with pytest pytest -q
 如果已经使用仓库内 `.venv`,也可以直接运行:
 
 ```bash
-.venv/bin/python code/features.py
-.venv/bin/python code/onset_analysis.py
-.venv/bin/python code/shap_select.py
-.venv/bin/python code/convlstm.py
-.venv/bin/python code/ngboost_warn.py
-.venv/bin/python code/warning_fusion.py
-.venv/bin/python code/sensitivity_analysis.py
+.venv/bin/python main.py
 ```
-
-当前 `main.py` 只会打印模板文本,不会执行上述管线。
 
 ## 各阶段关键逻辑
 
@@ -307,6 +304,8 @@ uv run --with pytest pytest -q
 
 当天整体预警等级取 8 个测点中的最高等级。每个测点的 V0 只使用训练期数据计算。
 
+来源边界：`V0 = 1.5 V_bar + 2 sigma` 及稳定月筛选是导师指定的本研究规则；Chen et al.（2024）采用 GPD/POT 和 VaR 确定一级阈值，并建议高等级阈值默认使用一级阈值的 5 倍和 10 倍。当前代码参考其速率分级与倍数设置，但不是对该文 VaR 方法的完整复现。参数审计表会记录两部分来源。
+
 模型输入特征包括:
 
 - 8 测点位移速率的均值和最大值。
@@ -326,7 +325,7 @@ uv run --with pytest pytest -q
 ## 当前注意事项
 
 - `README.md` 描述当前代码状态,不是论文最终方案。
-- `main.py` 当前不是项目入口；各模型、规则融合、onset 盘点和敏感性分析均使用独立脚本。
+- `main.py` 是统一编排入口；各模型、规则融合、onset 盘点和敏感性分析仍保留独立脚本，支持局部重跑。
 - `data/features.csv`, `models/*`, `figures/*` 都是可再生成产物。
 - `figures/README.md` 说明每个 PNG/CSV 的生成脚本、科研用途和保留原则。
 - 如果更换数据集,优先修改各脚本顶部的 CONFIG 区,尤其是列名、数据路径和测点坐标。

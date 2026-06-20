@@ -5,6 +5,10 @@ import pandas as pd
 TRAIN_FRAC = 0.8
 MONTH_WINDOW_DAYS = 30
 ACCEL_PERCENTILE = 0.90
+VIGILANCE_MULTIPLIER = 5.0
+ALARM_MULTIPLIER = 10.0
+V0_ESTIMATION_METHOD = "supervisor_specified_steady_mean_std"
+HIGH_LEVEL_THRESHOLD_SOURCE = "chen_et_al_2024_eq10_default_vd"
 
 
 def compute_v0(
@@ -37,8 +41,14 @@ def compute_v0(
         "accel_cutoff_mm_per_month": cutoff,
         "v0_mm_per_month": v0,
         "v0_yellow_threshold": v0,
-        "v0_orange_threshold": 5 * v0,
-        "v0_red_threshold": 10 * v0,
+        "v0_orange_threshold": VIGILANCE_MULTIPLIER * v0,
+        "v0_red_threshold": ALARM_MULTIPLIER * v0,
+        "month_window_days": int(month_window_days),
+        "accel_percentile": float(accel_percentile),
+        "vigilance_multiplier": VIGILANCE_MULTIPLIER,
+        "alarm_multiplier": ALARM_MULTIPLIER,
+        "v0_estimation_method": V0_ESTIMATION_METHOD,
+        "high_level_threshold_source": HIGH_LEVEL_THRESHOLD_SOURCE,
         "n_monthly_samples": int(len(monthly_rates)),
         "n_steady_months": int(len(steady_rates)),
     }
@@ -72,9 +82,11 @@ def classify_monthly_rates(monthly_rates, v0):
     valid = np.isfinite(rates)
     levels = np.full(rates.shape, -1, dtype=int)
     levels[valid & (rates < v0)] = 0
-    levels[valid & (rates >= v0) & (rates < 5 * v0)] = 1
-    levels[valid & (rates >= 5 * v0) & (rates < 10 * v0)] = 2
-    levels[valid & (rates >= 10 * v0)] = 3
+    vigilance = VIGILANCE_MULTIPLIER * v0
+    alarm = ALARM_MULTIPLIER * v0
+    levels[valid & (rates >= v0) & (rates < vigilance)] = 1
+    levels[valid & (rates >= vigilance) & (rates < alarm)] = 2
+    levels[valid & (rates >= alarm)] = 3
     return levels
 
 
