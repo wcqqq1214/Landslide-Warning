@@ -57,7 +57,11 @@ class PipelineTests(unittest.TestCase):
             calls.append((command, kwargs))
             return subprocess.CompletedProcess(command, 0)
 
-        pipeline.run_pipeline(pipeline.select_stages(["features"]), runner=record)
+        pipeline.run_pipeline(
+            pipeline.select_stages(["features"]),
+            runner=record,
+            verify_contracts=False,
+        )
 
         command, kwargs = calls[0]
         self.assertEqual(command[0], sys.executable)
@@ -87,6 +91,7 @@ class PipelineTests(unittest.TestCase):
                     str(manifest),
                 ],
                 runner=fail_on_onset,
+                verify_contracts=False,
             )
             report = json.loads(manifest.read_text(encoding="utf-8"))
 
@@ -109,10 +114,11 @@ class PipelineTests(unittest.TestCase):
                 pipeline.select_stages(["features", "onset"]),
                 runner=succeed,
                 manifest_path=manifest,
+                verify_contracts=False,
             )
             report = json.loads(manifest.read_text(encoding="utf-8"))
 
-        self.assertEqual(report["schema_version"], 1)
+        self.assertEqual(report["schema_version"], 2)
         self.assertEqual(report["status"], "completed")
         self.assertEqual(report["failed_stage"], None)
         self.assertEqual(len(report["source_sha256"]), 64)
@@ -121,6 +127,100 @@ class PipelineTests(unittest.TestCase):
             ["features", "onset"],
         )
         self.assertTrue(all(stage["returncode"] == 0 for stage in report["stages"]))
+
+    def test_contract_records_output_fingerprint(self):
+        stage = pipeline.Stage(
+            "demo",
+            "demo.py",
+            "demo stage",
+            inputs=("input.txt",),
+            outputs=("output.txt",),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "input.txt").write_text("input", encoding="utf-8")
+
+            def produce_output(command, **kwargs):
+                (root / "output.txt").write_text("result", encoding="utf-8")
+                return subprocess.CompletedProcess(command, 0)
+
+            report = pipeline.run_pipeline(
+                [stage],
+                runner=produce_output,
+                root=root,
+            )
+
+        output = report["stages"][0]["outputs"][0]
+        self.assertEqual(report["stages"][0]["contract_status"], "passed")
+        self.assertEqual(output["path"], "output.txt")
+        self.assertEqual(output["size_bytes"], 6)
+        self.assertEqual(len(output["sha256"]), 64)
+
+    def test_contract_rejects_missing_input_before_runner(self):
+        calls = []
+        stage = pipeline.Stage(
+            "demo",
+            "demo.py",
+            "demo stage",
+            inputs=("missing.txt",),
+            outputs=("output.txt",),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            with self.assertRaises(pipeline.PipelineContractError) as raised:
+                pipeline.run_pipeline(
+                    [stage],
+                    runner=lambda *args, **kwargs: calls.append((args, kwargs)),
+                    root=Path(tmp_dir),
+                )
+
+        self.assertEqual(raised.exception.kind, "missing_inputs")
+        self.assertEqual(calls, [])
+
+    def test_contract_rejects_missing_output_after_successful_process(self):
+        stage = pipeline.Stage(
+            "demo",
+            "demo.py",
+            "demo stage",
+            outputs=("missing.txt",),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            with self.assertRaises(pipeline.PipelineContractError) as raised:
+                pipeline.run_pipeline(
+                    [stage],
+                    runner=lambda command, **kwargs: subprocess.CompletedProcess(
+                        command,
+                        0,
+                    ),
+                    root=Path(tmp_dir),
+                )
+
+        self.assertEqual(raised.exception.kind, "missing_outputs")
+
+    def test_contract_rejects_unchanged_stale_output(self):
+        stage = pipeline.Stage(
+            "demo",
+            "demo.py",
+            "demo stage",
+            outputs=("stale.txt",),
+        )
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            root = Path(tmp_dir)
+            (root / "stale.txt").write_text("old", encoding="utf-8")
+            with self.assertRaises(pipeline.PipelineContractError) as raised:
+                pipeline.run_pipeline(
+                    [stage],
+                    runner=lambda command, **kwargs: subprocess.CompletedProcess(
+                        command,
+                        0,
+                    ),
+                    root=root,
+                )
+
+        self.assertEqual(raised.exception.kind, "unchanged_outputs")
 
     def test_cli_rejects_unknown_stage(self):
         with self.assertRaises(SystemExit):

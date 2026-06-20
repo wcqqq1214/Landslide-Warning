@@ -19,6 +19,7 @@ OUT_PT = ROOT / "models" / "convlstm.pt"
 FIG_DIR = ROOT / "figures" / "convlstm"
 OUT_PNG = FIG_DIR / "forecast_interval.png"
 OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
+OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
@@ -157,13 +158,49 @@ def compute_forecast_metrics(p10, p50, p90, y_true, last):
     baseline_err = last - y_true
     baseline_rmse = float(np.sqrt((baseline_err ** 2).mean()))
     model_rmse = float(np.sqrt((model_err ** 2).mean()))
+    target_mean = float(y_true.mean())
+    denominator = float(((y_true - target_mean) ** 2).sum())
+    model_efficiency = (
+        float(1.0 - (model_err ** 2).sum() / denominator)
+        if denominator > 0
+        else np.nan
+    )
+    baseline_efficiency = (
+        float(1.0 - (baseline_err ** 2).sum() / denominator)
+        if denominator > 0
+        else np.nan
+    )
+    pinball = {}
+    for quantile, prediction in zip(QUANTILES, (p10, p50, p90)):
+        error = y_true - prediction
+        pinball[quantile] = float(
+            np.maximum(quantile * error, (quantile - 1) * error).mean()
+        )
+    alpha = 1.0 - TARGET_COVERAGE
+    width = p90 - p10
+    interval_score = (
+        width
+        + (2.0 / alpha) * np.maximum(p10 - y_true, 0.0)
+        + (2.0 / alpha) * np.maximum(y_true - p90, 0.0)
+    )
+    coverage = float(((y_true >= p10) & (y_true <= p90)).mean())
     metrics = {
         "model_rmse": model_rmse,
         "model_mae": float(np.abs(model_err).mean()),
+        "model_r2": model_efficiency,
+        "model_nse": model_efficiency,
         "baseline_rmse": baseline_rmse,
         "baseline_mae": float(np.abs(baseline_err).mean()),
-        "coverage": float(((y_true >= p10) & (y_true <= p90)).mean()),
-        "mean_width": float((p90 - p10).mean()),
+        "baseline_r2": baseline_efficiency,
+        "baseline_nse": baseline_efficiency,
+        "pinball_p10": pinball[0.1],
+        "pinball_p50": pinball[0.5],
+        "pinball_p90": pinball[0.9],
+        "mean_pinball": float(np.mean(list(pinball.values()))),
+        "coverage": coverage,
+        "coverage_gap": coverage - TARGET_COVERAGE,
+        "mean_width": float(width.mean()),
+        "interval_score_80": float(interval_score.mean()),
         "p10_gt_p50": int((p10 > p50).sum()),
         "p50_gt_p90": int((p50 > p90).sum()),
         "total_points": int(p50.size),
@@ -184,6 +221,40 @@ def station_metric_rows(p10, p50, p90, y_true, last, station_names, thesis_windo
         rows.append({
             "station": station,
             "thesis_window": thesis_windows.get(station, ""),
+            **metrics,
+        })
+    return rows
+
+
+def period_metric_rows(
+    p10,
+    p50,
+    p90,
+    y_true,
+    last,
+    dates,
+    n_periods=3,
+):
+    """Evaluate contiguous test-period blocks without reshuffling dates."""
+    dates = pd.DatetimeIndex(pd.to_datetime(dates))
+    if len(dates) != len(y_true):
+        raise ValueError("dates 与预测目标长度不一致")
+    rows = []
+    for number, indices in enumerate(np.array_split(np.arange(len(dates)), n_periods), 1):
+        if len(indices) == 0:
+            continue
+        metrics = compute_forecast_metrics(
+            p10[indices],
+            p50[indices],
+            p90[indices],
+            y_true[indices],
+            last[indices],
+        )
+        rows.append({
+            "period": f"test_block_{number}",
+            "start_date": dates[indices[0]].date().isoformat(),
+            "end_date": dates[indices[-1]].date().isoformat(),
+            "n_dates": int(len(indices)),
             **metrics,
         })
     return rows
@@ -316,6 +387,15 @@ def main():
     rows = station_metric_rows(
         p10, p50, p90, yte_real, last_te, station_names, THESIS_WINDOWS
     )
+    test_dates = pd.to_datetime(df["Date"]).iloc[split + HORIZON - 1:].reset_index(drop=True)
+    period_rows = period_metric_rows(
+        p10,
+        p50,
+        p90,
+        yte_real,
+        last_te,
+        test_dates,
+    )
 
     OUT_PT.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
@@ -355,10 +435,12 @@ def main():
     plt.close()
 
     pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
+    pd.DataFrame(period_rows).to_csv(OUT_PERIOD_METRICS, index=False)
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
     print(f"[convlstm] 测点指标: {OUT_METRICS}")
+    print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
     print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
     print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
     print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
@@ -372,6 +454,8 @@ def main():
     print(f"[convlstm] conformal qhat: {qhat:.3f} mm")
     print(f"[convlstm] 校准后区间覆盖率(P10-P90): {metrics['coverage']:.3f}  (目标≈0.80)")
     print(f"[convlstm] 平均区间宽度: {metrics['mean_width']:.3f} mm")
+    print(f"[convlstm] 平均 pinball loss: {metrics['mean_pinball']:.4f} mm")
+    print(f"[convlstm] 80% interval score: {metrics['interval_score_80']:.3f} mm")
     print(f"[convlstm] 分位数交叉: P10>P50 {metrics['p10_gt_p50']}, "
           f"P50>P90 {metrics['p50_gt_p90']} / {metrics['total_points']}")
 

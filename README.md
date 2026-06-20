@@ -42,7 +42,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     ├── README.md                   # 逐文件用途、性质和保留规则
     ├── convlstm/
     │   ├── forecast_interval.png   # 位移预测区间图
-    │   └── forecast_metrics.csv    # 各测点预测指标
+    │   ├── forecast_metrics.csv    # 各测点预测指标
+    │   └── forecast_period_metrics.csv # 连续测试时段指标
     ├── shap/
     │   ├── shap_reg_summary.png    # NGBoost 回归 SHAP 因子贡献图
     │   ├── shap_cls_summary.png    # NGBoost 预警分类 SHAP 因子贡献图
@@ -133,7 +134,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*`, `figures/thresholds/v0_thresholds.csv` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
 | `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/*`, `figures/thresholds/v0_thresholds.csv` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
-| `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
+| `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv`, `figures/convlstm/forecast_period_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 | `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
@@ -206,6 +207,8 @@ uv run python main.py --skip shap --skip convlstm
 `--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
 
 实际执行会把提交哈希、执行源码 SHA-256 指纹、Python 版本、各阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`。失败时也会保留已完成阶段和失败点；`--dry-run` 不写清单。使用 `--manifest <path>` 可指定其他清单路径。
+
+每个阶段还声明必需输入和预期输出。管线会在执行前拒绝缺失输入，并在脚本退出后检查所有预期产物是否确实新建或更新；仅返回退出码 0 但没有更新产物仍视为失败。通过检查的产物大小和 SHA-256 会写入运行清单。
 
 运行测试：
 
@@ -290,8 +293,11 @@ uv run --with pytest pytest -q
 6. 用 pinball loss 训练 ConvLSTM 分位数预测模型。
 7. 在测试段输出 P10/P50/P90 区间。
 8. 保存模型到 `models/convlstm.pt`,保存图到 `figures/convlstm/forecast_interval.png`。
-9. 保存各测点指标到 `figures/convlstm/forecast_metrics.csv`。
-10. 打印 RMSE、MAE、persistence 基线、P10-P90 区间覆盖率和分位数交叉统计。
+9. 保存各测点 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 interval score 到 `figures/convlstm/forecast_metrics.csv`。
+10. 按日期连续切分三个测试块，将同组指标保存到 `figures/convlstm/forecast_period_metrics.csv`，用于检查测试期内的性能漂移。
+11. 打印总体误差、持久性基线、区间质量和分位数交叉统计。
+
+R2 与 NSE 在当前平方误差定义下数值相同。累计位移具有强时间趋势，两者可能接近 1，因此只作补充指标；模型增量价值主要依据 MAE/RMSE 相对持久性基线的变化，区间质量同时依据 pinball loss、覆盖率、宽度和 interval score 判断。
 
 ### 5. NGBoost 预警等级分类
 

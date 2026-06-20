@@ -82,6 +82,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 - 当前预测步长：1 日。
 - 输出：有序 P10/P50/P90 位移增量，再还原为累计位移。
 - 损失：分位数 pinball loss。
+- 评价：按测点及三个连续测试时段报告点误差、持久性基线、分位数损失、覆盖率、宽度和 80% interval score；R2/NSE 仅作趋势敏感的补充指标。
 - 当前校准比例 `CAL_FRAC=0.0`，保形校准尚未启用。
 
 ### 4.3 NGBoost
@@ -107,6 +108,8 @@ uv run python main.py
 ```
 
 `main.py` 按 `features -> onset -> shap -> convlstm -> ngboost -> fusion -> sensitivity -> tangent-review` 编排八个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
+
+阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 
 运行测试：
 

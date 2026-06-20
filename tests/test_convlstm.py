@@ -3,12 +3,13 @@ import unittest
 from pathlib import Path
 
 import numpy as np
+import pandas as pd
 import torch
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
-import convlstm
+import convlstm  # noqa: E402
 
 
 class ConvLSTMForecastTests(unittest.TestCase):
@@ -17,6 +18,7 @@ class ConvLSTMForecastTests(unittest.TestCase):
 
         self.assertEqual(convlstm.OUT_PNG.parent, expected)
         self.assertEqual(convlstm.OUT_METRICS.parent, expected)
+        self.assertEqual(convlstm.OUT_PERIOD_METRICS.parent, expected)
 
     def test_default_lookback_matches_thesis_max_window(self):
         self.assertEqual(convlstm.HORIZON, 1)
@@ -69,9 +71,30 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertIn("model_rmse", metrics)
         self.assertIn("baseline_rmse", metrics)
         self.assertIn("coverage", metrics)
+        self.assertIn("mean_pinball", metrics)
+        self.assertIn("interval_score_80", metrics)
+        self.assertAlmostEqual(metrics["model_r2"], metrics["model_nse"])
         self.assertEqual(metrics["p50_gt_p90"], 1)
         self.assertEqual(metrics["p10_gt_p50"], 1)
         self.assertGreater(metrics["baseline_rmse"], 0)
+
+    def test_forecast_interval_metrics_match_hand_calculation(self):
+        y_true = np.array([1.0, 2.0])
+        last = np.array([0.0, 1.0])
+        p10 = y_true - 0.5
+        p50 = y_true.copy()
+        p90 = y_true + 0.5
+
+        metrics = convlstm.compute_forecast_metrics(p10, p50, p90, y_true, last)
+
+        self.assertAlmostEqual(metrics["pinball_p10"], 0.05)
+        self.assertAlmostEqual(metrics["pinball_p50"], 0.0)
+        self.assertAlmostEqual(metrics["pinball_p90"], 0.05)
+        self.assertAlmostEqual(metrics["mean_pinball"], 1.0 / 30.0)
+        self.assertAlmostEqual(metrics["coverage"], 1.0)
+        self.assertAlmostEqual(metrics["coverage_gap"], 0.2)
+        self.assertAlmostEqual(metrics["mean_width"], 1.0)
+        self.assertAlmostEqual(metrics["interval_score_80"], 1.0)
 
     def test_delta_scale_uses_increment_variability(self):
         train_delta = np.array([
@@ -127,6 +150,30 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(rows[0]["thesis_window"], 7)
         self.assertEqual(rows[1]["thesis_window"], "")
         self.assertIn("rmse_skill_vs_baseline", rows[0])
+
+    def test_period_metrics_keep_contiguous_date_blocks(self):
+        dates = pd.date_range("2020-01-01", periods=6)
+        y_true = np.arange(12, dtype=float).reshape(6, 2)
+        last = y_true - 1.0
+        p10 = y_true - 0.5
+        p50 = y_true
+        p90 = y_true + 0.5
+
+        rows = convlstm.period_metric_rows(
+            p10,
+            p50,
+            p90,
+            y_true,
+            last,
+            dates,
+            n_periods=3,
+        )
+
+        self.assertEqual(len(rows), 3)
+        self.assertEqual(rows[0]["start_date"], "2020-01-01")
+        self.assertEqual(rows[0]["end_date"], "2020-01-02")
+        self.assertEqual(rows[-1]["start_date"], "2020-01-05")
+        self.assertEqual(rows[-1]["n_dates"], 2)
 
 
 if __name__ == "__main__":

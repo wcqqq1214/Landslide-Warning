@@ -23,24 +23,116 @@ class Stage:
     name: str
     script: str
     description: str
+    inputs: tuple[str, ...] = ()
+    outputs: tuple[str, ...] = ()
 
 
 STAGES = (
-    Stage("features", "code/features.py", "生成统一特征表和切线角参数"),
-    Stage("onset", "code/onset_analysis.py", "生成未来 onset 标签和事件盘点"),
-    Stage("shap", "code/shap_select.py", "训练解释模型并输出 SHAP 分析"),
-    Stage("convlstm", "code/convlstm.py", "训练 ConvLSTM 位移区间预测模型"),
-    Stage("ngboost", "code/ngboost_warn.py", "训练 NGBoost 预警概率模型"),
-    Stage("fusion", "code/warning_fusion.py", "融合 V0、切线角和概率旁证"),
-    Stage("sensitivity", "code/sensitivity_analysis.py", "执行预设参数敏感性分析"),
+    Stage(
+        "features",
+        "code/features.py",
+        "生成统一特征表和切线角参数",
+        inputs=("data/monitoring_data.csv", "config/tangent_reference_stages.csv"),
+        outputs=("data/features.csv", "figures/tangent_angle/uniform_rates.csv"),
+    ),
+    Stage(
+        "onset",
+        "code/onset_analysis.py",
+        "生成未来 onset 标签和事件盘点",
+        inputs=("data/monitoring_data.csv",),
+        outputs=(
+            "figures/warning_onset/onset_events.csv",
+            "figures/warning_onset/onset_targets.csv",
+            "figures/warning_onset/onset_inventory.csv",
+            "figures/thresholds/v0_thresholds.csv",
+        ),
+    ),
+    Stage(
+        "shap",
+        "code/shap_select.py",
+        "训练解释模型并输出 SHAP 分析",
+        inputs=("data/monitoring_data.csv",),
+        outputs=(
+            "figures/shap/shap_reg_summary.png",
+            "figures/shap/shap_cls_summary.png",
+            "figures/shap/shap_reg_importance.csv",
+            "figures/shap/shap_cls_importance.csv",
+            "figures/shap/shap_model_metrics.csv",
+            "figures/shap/shap_binary_cv_metrics.csv",
+            "figures/thresholds/v0_thresholds.csv",
+        ),
+    ),
+    Stage(
+        "convlstm",
+        "code/convlstm.py",
+        "训练 ConvLSTM 位移区间预测模型",
+        inputs=("data/features.csv", "data/station_coords.csv"),
+        outputs=(
+            "models/convlstm.pt",
+            "figures/convlstm/forecast_interval.png",
+            "figures/convlstm/forecast_metrics.csv",
+            "figures/convlstm/forecast_period_metrics.csv",
+        ),
+    ),
+    Stage(
+        "ngboost",
+        "code/ngboost_warn.py",
+        "训练 NGBoost 预警概率模型",
+        inputs=("data/features.csv", "data/monitoring_data.csv"),
+        outputs=(
+            "models/ngboost.pkl",
+            "figures/ngboost/confusion_matrix.png",
+            "figures/ngboost/warning_metrics.csv",
+            "figures/ngboost/warning_probabilities.csv",
+            "figures/thresholds/v0_thresholds.csv",
+        ),
+    ),
+    Stage(
+        "fusion",
+        "code/warning_fusion.py",
+        "融合 V0、切线角和概率旁证",
+        inputs=(
+            "data/features.csv",
+            "data/monitoring_data.csv",
+            "figures/ngboost/warning_probabilities.csv",
+        ),
+        outputs=("figures/warning_fusion/warning_fusion.csv",),
+    ),
+    Stage(
+        "sensitivity",
+        "code/sensitivity_analysis.py",
+        "执行预设参数敏感性分析",
+        inputs=("data/monitoring_data.csv",),
+        outputs=(
+            "figures/sensitivity/v0_sensitivity.csv",
+            "figures/sensitivity/v0_parameters.csv",
+            "figures/sensitivity/tangent_sensitivity.csv",
+            "figures/sensitivity/tangent_parameters.csv",
+        ),
+    ),
     Stage(
         "tangent-review",
         "code/tangent_stage_review.py",
         "生成等速阶段专家复核材料",
+        inputs=("data/monitoring_data.csv",),
+        outputs=(
+            "figures/tangent_angle/review/MJ9_stage_review.png",
+            "figures/tangent_angle/review/MJ1_stage_review.png",
+            "figures/tangent_angle/review/MJ3_stage_review.png",
+            "figures/tangent_angle/review/candidate_stage_comparison.csv",
+        ),
     ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
 Runner = Callable[..., subprocess.CompletedProcess]
+
+
+class PipelineContractError(RuntimeError):
+    def __init__(self, stage: str, kind: str, paths: Sequence[str]):
+        self.stage = stage
+        self.kind = kind
+        self.paths = list(paths)
+        super().__init__(f"{stage}: {kind}: {', '.join(self.paths)}")
 
 
 def current_git_commit() -> str | None:
@@ -72,6 +164,18 @@ def source_fingerprint() -> str:
     return digest.hexdigest()
 
 
+def file_fingerprint(path: Path, root: Path) -> dict:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return {
+        "path": str(path.relative_to(root)),
+        "size_bytes": path.stat().st_size,
+        "sha256": digest.hexdigest(),
+    }
+
+
 def write_manifest(path: Path, manifest: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
@@ -100,6 +204,8 @@ def run_pipeline(
     dry_run: bool = False,
     runner: Runner = subprocess.run,
     manifest_path: Path | None = None,
+    root: Path = ROOT,
+    verify_contracts: bool = True,
 ) -> dict | None:
     """Run each stage in an isolated Python process and stop on first failure."""
     if not stages:
@@ -109,7 +215,7 @@ def run_pipeline(
     total_start = time.perf_counter()
     completed: list[tuple[str, float]] = []
     manifest = {
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "running",
         "started_at": timestamp(),
         "finished_at": None,
@@ -127,7 +233,7 @@ def run_pipeline(
     )
 
     for index, stage in enumerate(stages, start=1):
-        command = [sys.executable, str(ROOT / stage.script)]
+        command = [sys.executable, str(root / stage.script)]
         print(
             f"\n[pipeline] [{index}/{len(stages)}] {stage.name}: {stage.description}",
             flush=True,
@@ -143,10 +249,42 @@ def run_pipeline(
             "status": "running",
             "elapsed_seconds": None,
             "returncode": None,
+            "contract_status": "pending" if verify_contracts else "not_checked",
+            "inputs": list(stage.inputs),
+            "outputs": [],
+            "contract_error": None,
         }
         manifest["stages"].append(stage_result)
+        input_paths = [root / path for path in stage.inputs]
+        missing_inputs = [
+            str(path.relative_to(root)) for path in input_paths if not path.is_file()
+        ]
+        if verify_contracts and missing_inputs:
+            elapsed = time.perf_counter() - stage_start
+            total_elapsed = time.perf_counter() - total_start
+            stage_result.update(
+                status="failed",
+                elapsed_seconds=round(elapsed, 3),
+                contract_status="failed",
+                contract_error={"kind": "missing_inputs", "paths": missing_inputs},
+            )
+            manifest.update(
+                status="failed",
+                finished_at=timestamp(),
+                total_elapsed_seconds=round(total_elapsed, 3),
+                failed_stage=stage.name,
+            )
+            if manifest_path is not None:
+                write_manifest(manifest_path, manifest)
+            raise PipelineContractError(stage.name, "missing_inputs", missing_inputs)
+
+        output_paths = [root / path for path in stage.outputs]
+        output_mtimes = {
+            path: path.stat().st_mtime_ns if path.is_file() else None
+            for path in output_paths
+        }
         try:
-            runner(command, cwd=ROOT, check=True)
+            runner(command, cwd=root, check=True)
         except subprocess.CalledProcessError as exc:
             elapsed = time.perf_counter() - stage_start
             total_elapsed = time.perf_counter() - total_start
@@ -154,6 +292,7 @@ def run_pipeline(
                 status="failed",
                 elapsed_seconds=round(elapsed, 3),
                 returncode=exc.returncode,
+                contract_status="not_checked",
             )
             manifest.update(
                 status="failed",
@@ -171,10 +310,48 @@ def run_pipeline(
             )
             raise
         elapsed = time.perf_counter() - stage_start
+        if verify_contracts:
+            missing_outputs = [
+                str(path.relative_to(root))
+                for path in output_paths
+                if not path.is_file()
+            ]
+            unchanged_outputs = [
+                str(path.relative_to(root))
+                for path in output_paths
+                if path.is_file()
+                and output_mtimes[path] is not None
+                and path.stat().st_mtime_ns <= output_mtimes[path]
+            ]
+            if missing_outputs or unchanged_outputs:
+                kind = "missing_outputs" if missing_outputs else "unchanged_outputs"
+                paths = missing_outputs or unchanged_outputs
+                total_elapsed = time.perf_counter() - total_start
+                stage_result.update(
+                    status="failed",
+                    elapsed_seconds=round(elapsed, 3),
+                    returncode=0,
+                    contract_status="failed",
+                    contract_error={"kind": kind, "paths": paths},
+                )
+                manifest.update(
+                    status="failed",
+                    finished_at=timestamp(),
+                    total_elapsed_seconds=round(total_elapsed, 3),
+                    failed_stage=stage.name,
+                )
+                if manifest_path is not None:
+                    write_manifest(manifest_path, manifest)
+                raise PipelineContractError(stage.name, kind, paths)
+
+            stage_result["outputs"] = [
+                file_fingerprint(path, root) for path in output_paths
+            ]
         stage_result.update(
             status="completed",
             elapsed_seconds=round(elapsed, 3),
             returncode=0,
+            contract_status="passed" if verify_contracts else "not_checked",
         )
         completed.append((stage.name, elapsed))
         print(f"[pipeline] 完成: {stage.name} ({elapsed:.1f}s)")
@@ -227,6 +404,7 @@ def main(
     argv: Sequence[str] | None = None,
     *,
     runner: Runner = subprocess.run,
+    verify_contracts: bool = True,
 ) -> int:
     args = build_parser().parse_args(argv)
     if args.list:
@@ -244,9 +422,13 @@ def main(
             dry_run=args.dry_run,
             runner=runner,
             manifest_path=manifest_path,
+            verify_contracts=verify_contracts,
         )
     except subprocess.CalledProcessError as exc:
         return exc.returncode or 1
+    except PipelineContractError as exc:
+        print(f"[pipeline] 契约失败: {exc}", file=sys.stderr)
+        return 2
     return 0
 
 
