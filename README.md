@@ -205,6 +205,8 @@ uv run python main.py --skip shap --skip convlstm
 
 `--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
 
+实际执行会把提交哈希、执行源码 SHA-256 指纹、Python 版本、各阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`。失败时也会保留已完成阶段和失败点；`--dry-run` 不写清单。使用 `--manifest <path>` 可指定其他清单路径。
+
 运行测试：
 
 ```bash

@@ -1,6 +1,7 @@
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import pandas as pd
 import numpy as np
@@ -218,6 +219,22 @@ class ShapSelectTests(unittest.TestCase):
 
         self.assertIsInstance(reg, NGBRegressor)
         self.assertIsInstance(cls, NGBClassifier)
+
+    def test_shap_explainer_uses_fixed_seed(self):
+        background = pd.DataFrame({"x": [0.0, 1.0]})
+        sample = pd.DataFrame({"x": [0.5]})
+
+        with patch.object(shap_select.shap, "Explainer") as factory:
+            factory.return_value.return_value.values = np.array([[0.1]])
+            values = shap_select.shap_matrix(
+                object(),
+                background,
+                sample,
+                "regression",
+            )
+
+        self.assertEqual(factory.call_args.kwargs["seed"], shap_select.SEED)
+        np.testing.assert_array_equal(values, [[0.1]])
 
 
 if __name__ == "__main__":

@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "started_at": "2026-06-20T23:42:31+08:00",
+  "finished_at": "2026-06-21T00:47:10+08:00",
+  "git_commit": "79f45e32d3a99b17539d87b71ece74022094aa90",
+  "source_sha256": "edda7d84a50916b458c148053a3b6a798802771e86e3cd80bb524bc0624df19b",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 584.907,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "features",
+      "script": "code/features.py",
+      "status": "completed",
+      "elapsed_seconds": 1.449,
+      "returncode": 0
+    },
+    {
+      "name": "onset",
+      "script": "code/onset_analysis.py",
+      "status": "completed",
+      "elapsed_seconds": 1.2,
+      "returncode": 0
+    },
+    {
+      "name": "shap",
+      "script": "code/shap_select.py",
+      "status": "completed",
+      "elapsed_seconds": 510.891,
+      "returncode": 0
+    },
+    {
+      "name": "convlstm",
+      "script": "code/convlstm.py",
+      "status": "completed",
+      "elapsed_seconds": 29.788,
+      "returncode": 0
+    },
+    {
+      "name": "ngboost",
+      "script": "code/ngboost_warn.py",
+      "status": "completed",
+      "elapsed_seconds": 3.882,
+      "returncode": 0
+    },
+    {
+      "name": "fusion",
+      "script": "code/warning_fusion.py",
+      "status": "completed",
+      "elapsed_seconds": 0.165,
+      "returncode": 0
+    },
+    {
+      "name": "sensitivity",
+      "script": "code/sensitivity_analysis.py",
+      "status": "completed",
+      "elapsed_seconds": 34.373,
+      "returncode": 0
+    },
+    {
+      "name": "tangent-review",
+      "script": "code/tangent_stage_review.py",
+      "status": "completed",
+      "elapsed_seconds": 3.149,
+      "returncode": 0
+    }
+  ]
+}

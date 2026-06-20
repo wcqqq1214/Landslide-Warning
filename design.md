@@ -106,7 +106,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 uv run python main.py
 ```
 
-`main.py` 按 `features -> onset -> shap -> convlstm -> ngboost -> fusion -> sensitivity -> tangent-review` 编排八个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。
+`main.py` 按 `features -> onset -> shap -> convlstm -> ngboost -> fusion -> sensitivity -> tangent-review` 编排八个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
 
 运行测试：
 

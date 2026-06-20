@@ -1,7 +1,9 @@
 import importlib.util
 import subprocess
 import sys
+import tempfile
 import unittest
+import json
 from pathlib import Path
 
 
@@ -35,11 +37,16 @@ class PipelineTests(unittest.TestCase):
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 
-        pipeline.run_pipeline(
-            pipeline.select_stages(["features"]),
-            dry_run=True,
-            runner=lambda *args, **kwargs: calls.append((args, kwargs)),
-        )
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            manifest = Path(tmp_dir) / "run.json"
+            pipeline.run_pipeline(
+                pipeline.select_stages(["features"]),
+                dry_run=True,
+                runner=lambda *args, **kwargs: calls.append((args, kwargs)),
+                manifest_path=manifest,
+            )
+
+            self.assertFalse(manifest.exists())
 
         self.assertEqual(calls, [])
 
@@ -66,13 +73,54 @@ class PipelineTests(unittest.TestCase):
                 raise subprocess.CalledProcessError(7, command)
             return subprocess.CompletedProcess(command, 0)
 
-        exit_code = pipeline.main(
-            ["--stage", "features", "--stage", "onset", "--stage", "shap"],
-            runner=fail_on_onset,
-        )
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            manifest = Path(tmp_dir) / "failed.json"
+            exit_code = pipeline.main(
+                [
+                    "--stage",
+                    "features",
+                    "--stage",
+                    "onset",
+                    "--stage",
+                    "shap",
+                    "--manifest",
+                    str(manifest),
+                ],
+                runner=fail_on_onset,
+            )
+            report = json.loads(manifest.read_text(encoding="utf-8"))
 
         self.assertEqual(exit_code, 7)
         self.assertEqual(calls, ["features", "onset_analysis"])
+        self.assertEqual(report["status"], "failed")
+        self.assertEqual(report["failed_stage"], "onset")
+        self.assertEqual(
+            [stage["status"] for stage in report["stages"]],
+            ["completed", "failed"],
+        )
+
+    def test_successful_run_writes_manifest(self):
+        def succeed(command, **kwargs):
+            return subprocess.CompletedProcess(command, 0)
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            manifest = Path(tmp_dir) / "completed.json"
+            pipeline.run_pipeline(
+                pipeline.select_stages(["features", "onset"]),
+                runner=succeed,
+                manifest_path=manifest,
+            )
+            report = json.loads(manifest.read_text(encoding="utf-8"))
+
+        self.assertEqual(report["schema_version"], 1)
+        self.assertEqual(report["status"], "completed")
+        self.assertEqual(report["failed_stage"], None)
+        self.assertEqual(len(report["source_sha256"]), 64)
+        self.assertEqual(
+            [stage["name"] for stage in report["stages"]],
+            ["features", "onset"],
+        )
+        self.assertTrue(all(stage["returncode"] == 0 for stage in report["stages"]))
 
     def test_cli_rejects_unknown_stage(self):
         with self.assertRaises(SystemExit):

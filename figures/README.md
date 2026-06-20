@@ -4,6 +4,7 @@
 
 | 文件 | 作用 | 类型 | 论文用途 |
 | --- | --- | --- | --- |
+| `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段状态、退出码和耗时 | 工程验收清单 | 证明管线执行范围和失败点，不作为模型性能证据 |
 | `convlstm/forecast_interval.png` | 展示 8 个测点的一日位移 P10/P50/P90 预测区间 | 最终图 | 位移预测主图 |
 | `convlstm/forecast_metrics.csv` | 保存各测点 RMSE、MAE、持久性基线、覆盖率和区间宽度 | 最终评估表 | 生成位移预测结果表 |
 | `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |

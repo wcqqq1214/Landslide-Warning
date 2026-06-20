@@ -61,6 +61,7 @@ OUT_METRICS_CSV = FIG_DIR / "shap_model_metrics.csv"
 OUT_CV_METRICS_CSV = FIG_DIR / "shap_binary_cv_metrics.csv"
 OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
 SHAP_SAMPLE_SIZE = 200
+SEED = 0
 
 
 def build_lagged_samples(
@@ -151,7 +152,7 @@ def make_classifier(n_estimators=300):
         learning_rate=0.03,
         minibatch_frac=0.8,
         col_sample=0.8,
-        random_state=0,
+        random_state=SEED,
         verbose=False,
     )
 
@@ -162,7 +163,7 @@ def train_models(X_train, y_reg_train, y_cls_train, n_estimators=300):
         learning_rate=0.03,
         minibatch_frac=0.8,
         col_sample=0.8,
-        random_state=0,
+        random_state=SEED,
         verbose=False,
     )
     cls = make_classifier(n_estimators=n_estimators)
@@ -314,7 +315,12 @@ def shap_matrix(model, background, sample, task):
         return model.predict(values)
 
     masker = shap.maskers.Independent(background.values)
-    explainer = shap.Explainer(predict_fn, masker, algorithm="permutation")
+    explainer = shap.Explainer(
+        predict_fn,
+        masker,
+        algorithm="permutation",
+        seed=SEED,
+    )
     explanation = explainer(sample.values, max_evals=2 * len(columns) + 1)
     return np.asarray(explanation.values)
 
@@ -327,7 +333,13 @@ def importance_frame(shap_values, columns):
 
 def save_summary_plot(shap_values, X, path, title):
     plt.figure(figsize=(10, 7))
-    shap.summary_plot(shap_values, X, show=False, max_display=20)
+    shap.summary_plot(
+        shap_values,
+        X,
+        show=False,
+        max_display=20,
+        rng=np.random.default_rng(SEED),
+    )
     plt.title(title)
     plt.tight_layout()
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -336,6 +348,7 @@ def save_summary_plot(shap_values, X, path, title):
 
 
 def main():
+    np.random.seed(SEED)
     df = pd.read_csv(DATA_CSV)
     thresholds = compute_station_thresholds(df, STATIONS)
     X, y_reg, y_cls, meta = build_lagged_samples(df, thresholds=thresholds)
