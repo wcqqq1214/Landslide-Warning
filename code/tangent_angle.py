@@ -11,6 +11,129 @@ SMOOTH_WINDOW = 3
 PERSIST_WINDOW = 5
 PERSIST_MIN_HITS = 3
 
+REFERENCE_STAGES_PATH = None  # set to Path for default config loading
+
+_VALID_STATUSES = frozenset({"candidate", "approved", "rejected"})
+_VALID_SOURCES = frozenset(
+    {"automatic_15d", "automatic_30d", "automatic_60d", "expert_manual"}
+)
+
+
+def load_reference_stages(csv_path):
+    """Read and validate the reference stages configuration file.
+
+    Returns a DataFrame with columns: station, start_date, end_date,
+    status, source, review_note.  Rows with invalid status or source
+    raise ValueError.
+    """
+    stages = pd.read_csv(csv_path)
+    stages.columns = [c.strip() for c in stages.columns]
+    required = {"station", "start_date", "end_date", "status", "source"}
+    missing = required - set(stages.columns)
+    if missing:
+        raise ValueError(f"参考阶段配置文件缺少必需列: {missing}")
+
+    unknown_status = set(stages["status"].str.strip()) - _VALID_STATUSES
+    if unknown_status:
+        raise ValueError(f"无效的阶段状态值: {unknown_status}")
+
+    unknown_source = set(stages["source"].str.strip()) - _VALID_SOURCES
+    if unknown_source:
+        raise ValueError(f"无效的阶段来源值: {unknown_source}")
+
+    return stages.copy()
+
+
+def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_FRAC):
+    """Validate approved stages and return a ``manual_ranges`` dict.
+
+    Rules enforced:
+    - At most one approved stage per station.
+    - Approved stage dates must exist in the data and start_date < end_date.
+    - Approved stage must lie completely within the training period.
+    - Rejects any station that has multiple approved stages.
+    - Only stations present in ``stations`` are considered.
+    """
+    date_index = validate_daily_dates(dates)
+    n_train = int(len(date_index) * train_frac)
+    train_end_date = date_index[n_train - 1]
+
+    approved = stages[stages["status"].str.strip() == "approved"].copy()
+    if approved.empty:
+        return {}
+
+    # Check for multiple approved stages per station
+    counts = approved.groupby("station").size()
+    multi = counts[counts > 1]
+    if not multi.empty:
+        raise ValueError(
+            f"以下测点存在多个已批准阶段，必须只有一个: "
+            f"{list(multi.index)}"
+        )
+
+    manual_ranges = {}
+    for _, row in approved.iterrows():
+        station = row["station"].strip()
+        if station not in stations:
+            continue
+
+        try:
+            start_date = pd.Timestamp(row["start_date"])
+            end_date = pd.Timestamp(row["end_date"])
+        except (ValueError, TypeError):
+            raise ValueError(
+                f"测点 {station} 的人工等速阶段日期无效: "
+                f"{row['start_date']} – {row['end_date']}"
+            ) from None
+
+        if start_date not in date_index or end_date not in date_index:
+            raise ValueError(
+                f"测点 {station} 的人工等速阶段日期不在数据中: "
+                f"{start_date.strftime('%Y-%m-%d')} – "
+                f"{end_date.strftime('%Y-%m-%d')}"
+            )
+        if start_date >= end_date:
+            raise ValueError(
+                f"测点 {station} 的人工等速阶段起始必须早于结束: "
+                f"{start_date.strftime('%Y-%m-%d')} – "
+                f"{end_date.strftime('%Y-%m-%d')}"
+            )
+        if end_date > train_end_date:
+            raise ValueError(
+                f"测点 {station} 的人工等速阶段结束日期 "
+                f"({end_date.strftime('%Y-%m-%d')}) 超出训练期 "
+                f"({train_end_date.strftime('%Y-%m-%d')})，"
+                f"只能使用训练期数据"
+            )
+
+        manual_ranges[station] = (start_date, end_date)
+
+    return manual_ranges
+
+
+def _check_manual_range_feasibility(dates, displacement, manual_range):
+    """Raise ValueError if a manual range has too few samples or v_eq <= 0."""
+    date_index = validate_daily_dates(dates)
+    displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
+    start_date, end_date = map(pd.Timestamp, manual_range)
+    start_index = int(date_index.get_loc(start_date))
+    end_index = int(date_index.get_loc(end_date))
+    rates = displacement.diff().to_numpy(dtype=float)[start_index + 1:end_index + 1]
+
+    if len(rates) < 2:
+        raise ValueError(
+            f"人工阶段 {start_date.strftime('%Y-%m-%d')} – "
+            f"{end_date.strftime('%Y-%m-%d')} 有效速率样本不足 "
+            f"({len(rates)} 个)"
+        )
+    mean_rate = float(np.mean(rates))
+    if not np.isfinite(mean_rate) or mean_rate <= 0:
+        raise ValueError(
+            f"人工阶段 {start_date.strftime('%Y-%m-%d')} – "
+            f"{end_date.strftime('%Y-%m-%d')} 无法获得正的等速阶段速率 "
+            f"(均值={mean_rate})"
+        )
+
 
 def _causal_linear_slopes(displacement, window):
     """Fit a trailing linear slope without using future observations."""
@@ -141,9 +264,9 @@ def _rate_statistics(rates):
     return mean_rate, rate_mad, mean_abs_accel
 
 
-def _result(method, dates, start_index, end_index, rates):
+def _result(method, dates, start_index, end_index, rates, source=None):
     mean_rate, rate_mad, mean_abs_accel = _rate_statistics(rates)
-    return {
+    entry = {
         "method": method,
         "start_date": dates[start_index].strftime("%Y-%m-%d"),
         "end_date": dates[end_index].strftime("%Y-%m-%d"),
@@ -152,6 +275,9 @@ def _result(method, dates, start_index, end_index, rates):
         "mean_abs_accel_mm_per_day2": mean_abs_accel,
         "n_rate_samples": int(len(rates)),
     }
+    if source is not None:
+        entry["source"] = source
+    return entry
 
 
 def build_tangent_frame(
@@ -164,20 +290,53 @@ def build_tangent_frame(
     smooth_window=SMOOTH_WINDOW,
     persist_window=PERSIST_WINDOW,
     persist_min_hits=PERSIST_MIN_HITS,
+    reference_stages=None,
 ):
-    """Build auditable tangent-angle and persistent warning columns."""
+    """Build auditable tangent-angle and persistent warning columns.
+
+    Parameters
+    ----------
+    reference_stages : DataFrame or None
+        If given, must contain columns ``station``, ``start_date``,
+        ``end_date``, ``status``, ``source``.  Rows with
+        ``status == "approved"`` are used as manual ranges.
+    """
     df = df.rename(columns=lambda column: column.strip())
     date_col = date_col.strip()
     date_index = validate_daily_dates(df[date_col])
+
+    # Build manual_ranges from reference_stages if provided
+    extra_manual = {}
+    if reference_stages is not None:
+        extra_manual = _build_manual_ranges_from_stages(
+            reference_stages,
+            date_index,
+            stations,
+            train_frac=train_frac,
+        )
+    # Explicit manual_ranges override reference-stages entries
+    if manual_ranges:
+        extra_manual.update(manual_ranges)
 
     result = pd.DataFrame({"Date": date_index})
     parameters = {}
 
     for station, disp_col in stations.items():
         displacement = df[disp_col.strip()]
-        manual_range = None
-        if manual_ranges and station in manual_ranges:
-            manual_range = manual_ranges[station]
+        manual_range = extra_manual.get(station)
+
+        # Pre-validate feasibility of approved manual ranges
+        if manual_range is not None and reference_stages is not None:
+            approved_for_station = reference_stages[
+                (reference_stages["station"].str.strip() == station)
+                & (reference_stages["status"].str.strip() == "approved")
+            ]
+            if not approved_for_station.empty:
+                _check_manual_range_feasibility(
+                    date_index,
+                    displacement,
+                    manual_range,
+                )
 
         rate_parameters = estimate_uniform_rate(
             date_index,
@@ -186,6 +345,15 @@ def build_tangent_frame(
             window=candidate_window,
             manual_range=manual_range,
         )
+        # Annotate source from reference stages when available
+        if reference_stages is not None and manual_range is not None:
+            approved_rows = reference_stages[
+                (reference_stages["station"].str.strip() == station)
+                & (reference_stages["status"].str.strip() == "approved")
+            ]
+            if not approved_rows.empty:
+                source_val = approved_rows.iloc[0]["source"].strip()
+                rate_parameters["source"] = source_val
         parameters[station] = rate_parameters
 
         angle_frame = tangent_angle_series(
