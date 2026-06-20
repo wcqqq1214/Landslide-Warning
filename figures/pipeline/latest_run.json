@@ -1,70 +1,286 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "status": "completed",
-  "started_at": "2026-06-20T23:42:31+08:00",
-  "finished_at": "2026-06-21T00:47:10+08:00",
-  "git_commit": "79f45e32d3a99b17539d87b71ece74022094aa90",
-  "source_sha256": "edda7d84a50916b458c148053a3b6a798802771e86e3cd80bb524bc0624df19b",
+  "started_at": "2026-06-21T04:04:43+08:00",
+  "finished_at": "2026-06-21T04:46:09+08:00",
+  "git_commit": "fa3e41a83577ff532f13560c49fcf26c38fd4814",
+  "source_sha256": "3a25bee5f43a5d0d214dfbd8746858bd04c1b9b0e216297553eed602ed0bb50f",
   "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 584.907,
+  "total_elapsed_seconds": 527.818,
   "failed_stage": null,
   "stages": [
     {
       "name": "features",
       "script": "code/features.py",
       "status": "completed",
-      "elapsed_seconds": 1.449,
-      "returncode": 0
+      "elapsed_seconds": 1.451,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv",
+        "config/tangent_reference_stages.csv"
+      ],
+      "outputs": [
+        {
+          "path": "data/features.csv",
+          "size_bytes": 1424160,
+          "sha256": "64e116b8fbae27f527d69635d8ee34c7c4b63cb70ac1dc9fe44fc6b028910200"
+        },
+        {
+          "path": "figures/tangent_angle/uniform_rates.csv",
+          "size_bytes": 1266,
+          "sha256": "9c679b5004b10b81e2f8296389bb87c993d5b368f59f5e4d9e231eed090d9146"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "onset",
       "script": "code/onset_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 1.2,
-      "returncode": 0
+      "elapsed_seconds": 1.199,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/warning_onset/onset_events.csv",
+          "size_bytes": 450,
+          "sha256": "8bd3b23030da99431e6e6d1b1cbaed3162327c5cfc06765f5790d6c13b49c14e"
+        },
+        {
+          "path": "figures/warning_onset/onset_targets.csv",
+          "size_bytes": 91488,
+          "sha256": "519a6d9895b5e80a3c0ebf9221f466cdfe158ca83731f05e4eecdc72eccc56d2"
+        },
+        {
+          "path": "figures/warning_onset/onset_inventory.csv",
+          "size_bytes": 261,
+          "sha256": "a19c259959235e0910d1dc2c495c86e4f17f3c1b7456429dceebae95b2177938"
+        },
+        {
+          "path": "figures/thresholds/v0_thresholds.csv",
+          "size_bytes": 2130,
+          "sha256": "ad2e374a7b7b03f1d8c23794fd304b99e68638f1644d9885b3551ee1d6390dca"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "shap",
       "script": "code/shap_select.py",
       "status": "completed",
-      "elapsed_seconds": 510.891,
-      "returncode": 0
+      "elapsed_seconds": 450.651,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/shap/shap_reg_summary.png",
+          "size_bytes": 140717,
+          "sha256": "fce665023b5ef0fd78dad0843a2c5c6053f040297fb28f841c26ab72b1003641"
+        },
+        {
+          "path": "figures/shap/shap_cls_summary.png",
+          "size_bytes": 174327,
+          "sha256": "89b003199af4b6cbc4f3310216c2196539a42d11efb0727ce496ad6aad641fcb"
+        },
+        {
+          "path": "figures/shap/shap_reg_importance.csv",
+          "size_bytes": 2741,
+          "sha256": "82f70bba6afa8b33903c54292e66ce33b5afd94bd6048ebb0dd4daedb027f84d"
+        },
+        {
+          "path": "figures/shap/shap_cls_importance.csv",
+          "size_bytes": 2298,
+          "sha256": "1d25f77719a84f5d8379e94d60d601ce27da0a1998709dd42c6ec25e6163190e"
+        },
+        {
+          "path": "figures/shap/shap_model_metrics.csv",
+          "size_bytes": 635,
+          "sha256": "1c3eb3e7f02605776928f71ac406be27afb96f68d80657e456109e8d356da9e6"
+        },
+        {
+          "path": "figures/shap/shap_binary_cv_metrics.csv",
+          "size_bytes": 1397,
+          "sha256": "1a19c4e9ee1fffb878fdc73ae2e975d9d04c265a824feca5ed9af9edcc148c8c"
+        },
+        {
+          "path": "figures/thresholds/v0_thresholds.csv",
+          "size_bytes": 2130,
+          "sha256": "ad2e374a7b7b03f1d8c23794fd304b99e68638f1644d9885b3551ee1d6390dca"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "convlstm",
       "script": "code/convlstm.py",
       "status": "completed",
-      "elapsed_seconds": 29.788,
-      "returncode": 0
+      "elapsed_seconds": 29.863,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "models/convlstm.pt",
+          "size_bytes": 55591,
+          "sha256": "92628f0d0b29611c2f742330b0af5e4f19f68a78aba0db1629aba8d699d816eb"
+        },
+        {
+          "path": "figures/convlstm/forecast_interval.png",
+          "size_bytes": 136568,
+          "sha256": "85b30017b8cc57b43c5ddb92ef6ad081eaab9ed408ddc80025466a91c6cd0d6a"
+        },
+        {
+          "path": "figures/convlstm/forecast_metrics.csv",
+          "size_bytes": 3040,
+          "sha256": "6fbc4cc0ae7b124751f90352bf325b64dfc606f292436af6230ab87fa50366a3"
+        },
+        {
+          "path": "figures/convlstm/forecast_period_metrics.csv",
+          "size_bytes": 1431,
+          "sha256": "a779e1befe3c938bec95923ae70ce525a2180e31c928e0bee578826201d4c4fe"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "ngboost",
       "script": "code/ngboost_warn.py",
       "status": "completed",
-      "elapsed_seconds": 3.882,
-      "returncode": 0
+      "elapsed_seconds": 4.131,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "models/ngboost.pkl",
+          "size_bytes": 1893153,
+          "sha256": "a72e793ec4a893782687ebe8e830a730197cecca4057f6ba917cd18fd6d8cbdd"
+        },
+        {
+          "path": "figures/ngboost/confusion_matrix.png",
+          "size_bytes": 33517,
+          "sha256": "77f317e971a697e925d996a365a6387dec6ec153da292c260a3df74450241e40"
+        },
+        {
+          "path": "figures/ngboost/warning_metrics.csv",
+          "size_bytes": 313,
+          "sha256": "db407136cfc5f26631c5541c7f08b18e46dd645c4b076fb564715d7b3621498a"
+        },
+        {
+          "path": "figures/ngboost/warning_probabilities.csv",
+          "size_bytes": 28546,
+          "sha256": "8b68dd70d18feef75a5afce994981cb4ab58bc2bde99d98cb1766ab4383abc9f"
+        },
+        {
+          "path": "figures/thresholds/v0_thresholds.csv",
+          "size_bytes": 2130,
+          "sha256": "ad2e374a7b7b03f1d8c23794fd304b99e68638f1644d9885b3551ee1d6390dca"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "fusion",
       "script": "code/warning_fusion.py",
       "status": "completed",
-      "elapsed_seconds": 0.165,
-      "returncode": 0
+      "elapsed_seconds": 0.172,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/monitoring_data.csv",
+        "figures/ngboost/warning_probabilities.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/warning_fusion/warning_fusion.csv",
+          "size_bytes": 88018,
+          "sha256": "17be680fbbdd9b93b7db20225a1b7af15cc23097ac57597cd382cc2ec863a4f2"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "sensitivity",
       "script": "code/sensitivity_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 34.373,
-      "returncode": 0
+      "elapsed_seconds": 36.908,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/sensitivity/v0_sensitivity.csv",
+          "size_bytes": 1125,
+          "sha256": "71dcd990642c5d52527c71889d34afb2da9cc656ece3c20eb462808ad610eac4"
+        },
+        {
+          "path": "figures/sensitivity/v0_parameters.csv",
+          "size_bytes": 19488,
+          "sha256": "fdaa06e277215461c2e0bdfc1a41edcad6b5874f4122accb74d9d7b10407e765"
+        },
+        {
+          "path": "figures/sensitivity/tangent_sensitivity.csv",
+          "size_bytes": 4905,
+          "sha256": "265d0dbf5936e2545bda001dcda1dbeb0f56b0f588ca7956fa051d9794e5441b"
+        },
+        {
+          "path": "figures/sensitivity/tangent_parameters.csv",
+          "size_bytes": 4367,
+          "sha256": "5f7d8130753122c558ab586f2e34d2cb2c03bd49ede4d0c15b4e3ec2db71aab0"
+        }
+      ],
+      "contract_error": null
     },
     {
       "name": "tangent-review",
       "script": "code/tangent_stage_review.py",
       "status": "completed",
-      "elapsed_seconds": 3.149,
-      "returncode": 0
+      "elapsed_seconds": 3.427,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/tangent_angle/review/MJ9_stage_review.png",
+          "size_bytes": 270581,
+          "sha256": "98471658649d92ef1427f837ee612f95b1a78df862ec4da3885bf8fd6a5dec18"
+        },
+        {
+          "path": "figures/tangent_angle/review/MJ1_stage_review.png",
+          "size_bytes": 275851,
+          "sha256": "3905f282a18ac7959cbae7eac5a3cc4d107270b31f86756de5a219d0d836f8fb"
+        },
+        {
+          "path": "figures/tangent_angle/review/MJ3_stage_review.png",
+          "size_bytes": 257128,
+          "sha256": "bf4065d0e35bd0865df43e19218e4714c6424e2736873df83d652cdc19348ce7"
+        },
+        {
+          "path": "figures/tangent_angle/review/candidate_stage_comparison.csv",
+          "size_bytes": 2646,
+          "sha256": "b856c15983f4a64608d2e7f306903b47a8f37dc3a651f9c5e3bf71b3b4ec20aa"
+        }
+      ],
+      "contract_error": null
     }
   ]
 }
