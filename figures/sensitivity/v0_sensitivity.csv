@@ -1,0 +1,10 @@
+analysis_scope,month_window_days,accel_percentile,is_default,valid_days,green_days,yellow_days,orange_days,red_days,yellow_plus_days,orange_plus_days,warning_events,common_valid_days,changed_days_vs_default,agreement_rate_vs_default
+retrospective_fixed_first_80pct,15,0.85,False,1446,1066,342,15,23,380,38,6,1431,115,0.9196366177498253
+retrospective_fixed_first_80pct,15,0.9,False,1446,1118,294,17,17,328,34,5,1431,90,0.9371069182389937
+retrospective_fixed_first_80pct,15,0.95,False,1446,1177,242,27,0,269,27,4,1431,86,0.9399021663172606
+retrospective_fixed_first_80pct,30,0.85,False,1431,1075,313,20,23,356,43,5,1431,78,0.9454926624737946
+retrospective_fixed_first_80pct,30,0.9,True,1431,1131,263,30,7,300,37,4,1431,0,1.0
+retrospective_fixed_first_80pct,30,0.95,False,1431,1179,227,25,0,252,25,4,1431,67,0.9531795946890287
+retrospective_fixed_first_80pct,60,0.85,False,1401,1109,235,57,0,292,57,3,1401,89,0.9364739471805853
+retrospective_fixed_first_80pct,60,0.9,False,1401,1141,232,28,0,260,28,2,1401,109,0.9221984296930764
+retrospective_fixed_first_80pct,60,0.95,False,1401,1172,229,0,0,229,0,2,1401,139,0.900785153461813

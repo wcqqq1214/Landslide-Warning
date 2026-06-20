@@ -161,6 +161,9 @@ def build_tangent_frame(
     date_col="Date",
     train_frac=TRAIN_FRAC,
     candidate_window=CANDIDATE_WINDOW,
+    smooth_window=SMOOTH_WINDOW,
+    persist_window=PERSIST_WINDOW,
+    persist_min_hits=PERSIST_MIN_HITS,
 ):
     """Build auditable tangent-angle and persistent warning columns."""
     df = df.rename(columns=lambda column: column.strip())
@@ -188,10 +191,15 @@ def build_tangent_frame(
         angle_frame = tangent_angle_series(
             displacement,
             rate_parameters["v_eq_mm_per_day"],
+            smooth_window=smooth_window,
         )
         raw_levels = classify_tangent_angles(angle_frame["alpha_raw"])
         daily_levels = classify_tangent_angles(angle_frame["alpha_smooth"])
-        persistent_levels = persistent_warning_levels(daily_levels)
+        persistent_levels = persistent_warning_levels(
+            daily_levels,
+            window=persist_window,
+            min_hits=persist_min_hits,
+        )
 
         result[f"{station}_alpha_raw"] = angle_frame["alpha_raw"]
         result[f"{station}_alpha_smooth"] = angle_frame["alpha_smooth"]

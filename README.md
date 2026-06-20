@@ -25,7 +25,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── grid_interp.py              # 测点坐标读取 + IDW 网格插值
 │   ├── convlstm.py                 # 管线第 3 段:ConvLSTM 位移区间预测
 │   ├── ngboost_warn.py             # 管线第 4 段:NGBoost 预警分类
-│   └── warning_fusion.py           # 管线第 5 段:V0 主判 + 切线角复核
+│   ├── warning_fusion.py           # 管线第 5 段:V0 主判 + 切线角复核
+│   └── sensitivity_analysis.py     # V0 与切线角预设参数稳健性分析
 ├── data/
 │   ├── monitoring_data.csv         # 原始日尺度监测数据
 │   ├── monitoring_data.xlsx        # 原始数据 Excel 版本
@@ -58,6 +59,11 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   └── warning_probabilities.csv # 测试段逐日等级概率
     ├── thresholds/
     │   └── v0_thresholds.csv       # 三个阶段共享的 8 测点动态 V0
+    ├── sensitivity/
+    │   ├── v0_sensitivity.csv      # 9 组 V0 参数的等级与事件摘要
+    │   ├── v0_parameters.csv       # 各组合的测点 V0 参数
+    │   ├── tangent_sensitivity.csv # 27 组切线角参数的融合摘要
+    │   └── tangent_parameters.csv  # 不同候选窗口的等速段参数
     └── warning_fusion/
         └── warning_fusion.csv      # 最终等级、融合原因和 NGBoost 旁证
 ```
@@ -122,6 +128,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
+| `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
 
 ## 执行流程
 
@@ -147,6 +154,8 @@ flowchart TD
     N --> O["figures/warning_fusion/<br/>最终预警序列"]
     A --> P["code/onset_analysis.py<br/>未来 onset 与事件盘点"]
     P --> Q["figures/warning_onset/<br/>事件、标签和样本充分性"]
+    A --> R["code/sensitivity_analysis.py<br/>预设参数敏感性"]
+    R --> S["figures/sensitivity/<br/>参数、等级和事件摘要"]
 ```
 
 推荐按下面顺序运行:
@@ -157,6 +166,7 @@ flowchart TD
 4. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
 5. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
 6. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
+7. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
 
 ## 运行方式
 
@@ -177,6 +187,7 @@ uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
 uv run python code/warning_fusion.py
+uv run python code/sensitivity_analysis.py
 ```
 
 运行测试：
@@ -194,6 +205,7 @@ uv run --with pytest pytest -q
 .venv/bin/python code/convlstm.py
 .venv/bin/python code/ngboost_warn.py
 .venv/bin/python code/warning_fusion.py
+.venv/bin/python code/sensitivity_analysis.py
 ```
 
 当前 `main.py` 只会打印模板文本,不会执行上述管线。
@@ -304,7 +316,7 @@ uv run --with pytest pytest -q
 ## 当前注意事项
 
 - `README.md` 描述当前代码状态,不是论文最终方案。
-- `main.py` 当前不是项目入口；当前有 5 个模型/融合阶段脚本和 1 个 onset 审计脚本。
+- `main.py` 当前不是项目入口；各模型、规则融合、onset 盘点和敏感性分析均使用独立脚本。
 - `data/features.csv`, `models/*`, `figures/*` 都是可再生成产物。
 - `figures/README.md` 说明每个 PNG/CSV 的生成脚本、科研用途和保留原则。
 - 如果更换数据集,优先修改各脚本顶部的 CONFIG 区,尤其是列名、数据路径和测点坐标。
@@ -313,3 +325,4 @@ uv run --with pytest pytest -q
 - 现有后 20% 数据已参与多轮检查，结果属于探索性内部验证，不得称为完全独立的最终测试。
 - 当前当日状态 NGBoost 未超过昨日状态持续性基线，后续应先完成未来 onset 任务和滚动时间验证，再重新调参。
 - 当前只有 3 个具有有效前置窗口的独立 onset，代码已生成标签，但暂停正式滚动调参与性能宣称。
+- 预设敏感性结果表明切线角融合主要受自动等速阶段窗口影响；专家复核 `v_eq` 前，不应将默认 30 日窗口写成已验证最优参数。

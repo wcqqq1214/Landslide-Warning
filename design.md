@@ -40,6 +40,8 @@ figures/shap       models/convlstm.pt       |
 
 monitoring_data.csv -> onset_analysis.py -> warning_events.py
                                          -> figures/warning_onset
+
+monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 ```
 
 ## 3. 模块职责
@@ -56,6 +58,7 @@ monitoring_data.csv -> onset_analysis.py -> warning_events.py
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
+| `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
 
 ## 4. 已锁定的实现选择
 
@@ -102,6 +105,7 @@ uv run python code/shap_select.py
 uv run python code/convlstm.py
 uv run python code/ngboost_warn.py
 uv run python code/warning_fusion.py
+uv run python code/sensitivity_analysis.py
 ```
 
 运行测试：
@@ -139,7 +143,7 @@ uv run --with pytest pytest -q
 - ConvLSTM 的 P10-P90 覆盖率低于名义 80%，尚未完成校准。
 - NGBoost 未超过昨日状态持续性基线。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
-- 自动等速段尚未由专家阶段复核，部分 ATU 测点对参考速率敏感。
+- 自动等速段尚未由专家阶段复核；15/30/60 日候选窗口会为关键测点选出显著不同的参考速率，并大幅改变融合结果。
 - 当前融合结果尚无完整事件级提前量和误报评价。
 - 尚无外部时间或跨滑坡验证。
 
@@ -149,5 +153,6 @@ uv run --with pytest pytest -q
 2. 建立按日期的滚动时间验证和事件级评价。
 3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
 4. 启用 ConvLSTM 校准集并评价校准前后覆盖率和宽度。
-5. 完成 V0、切线角参数敏感性和特征组消融。
-6. 获得新时段或新滑坡数据后进行确认性验证。
+5. 根据累计位移曲线和宏观变形资料专家复核等速阶段，再冻结切线角参数。
+6. 完成特征组消融和 SHAP 跨折稳定性分析。
+7. 获得新时段或新滑坡数据后进行确认性验证。
