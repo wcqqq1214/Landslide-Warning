@@ -4,7 +4,7 @@
 
 > 说明：本 README 只描述当前实现。研究终点、验证规则和证据边界见 `framework.md`，代码模块边界见 `design.md`。当前 NGBoost 预测动态 V0 当日状态；未来 1/3/7 日 onset 标签已实现，但仅有 3 个可预测事件，尚未开展正式模型调参与性能评价。
 
-Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework_status.md`。
+Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework_status.md`；外部科研工具的适配判断、风险和采用状态见 `docs/research_tools.md`。
 
 ## 目录结构
 
