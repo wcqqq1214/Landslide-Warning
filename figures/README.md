@@ -17,6 +17,13 @@
 | `convlstm/seed_stability_metrics.csv` | 保存逐种子、逐折、总体/测点的点误差、增量响应和区间指标 | 多种子明细表 | 逐次报告初始化波动，不以跨种子均值替代失败运行 |
 | `convlstm/seed_stability_summary.csv` | 保存五种子均值、样本标准差、范围、正 skill 数量和符号一致性 | 稳定性汇总表 | 判断结果方向是否依赖初始化；仍属已查看测试折上的探索性诊断 |
 | `convlstm/seed_stability_training.csv` | 保存 15 次训练每个 epoch 的全批量 pinball loss 与梯度 L2 范数 | 优化轨迹表 | 检查数值稳定和损失趋势，不把训练损失当作泛化证据 |
+| `convlstm/inner_validation_runs.csv` | 保存内层训练/验证、外层校准/测试边界、停止参数、所选 epoch、停止原因、尺度和 `qhat` | 早停协议审计表 | 证明 epoch 仅由拟合期内部信息选择，未选择最佳种子 |
+| `convlstm/inner_validation_selection_history.csv` | 保存 15 次内层选择的逐轮训练/验证 pinball loss、梯度和耐心计数 | 模型选择轨迹表 | 复核停止触发和绝对最小验证 loss，不作为外层性能证据 |
+| `convlstm/inner_validation_refit_history.csv` | 保存按所选 epoch 在完整拟合期重新初始化训练的逐轮 loss 和梯度 | 最终重训轨迹表 | 证明最终模型训练轮数与内层选择一致 |
+| `convlstm/inner_validation_metrics.csv` | 保存早停版本逐种子、逐折和逐测点的外层预测指标 | 探索性外层评估表 | 与固定 120 轮同口径比较，外层测试已查看，不能称为确认性验证 |
+| `convlstm/inner_validation_summary.csv` | 保存早停版本五种子均值、样本标准差、范围及 skill 方向 | 稳定性汇总表 | 判断内层 epoch 选择是否带来跨时期一致改善 |
+| `convlstm/inner_validation_predictions.csv` | 保存早停版本 15 次外层测试的逐日逐测点预测 | 逐日审计表 | 复算指标和诊断响应，不用于二次选择 epoch |
+| `convlstm/inner_validation_comparison.csv` | 将早停与固定 120 轮按种子、折、测点和区间版本一一配对 | 训练轮数诊断表 | 同时保留改善与退化，不按单折挑选方案 |
 | `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |
 | `ngboost/warning_metrics.csv` | 保存 accuracy、F1、Brier、各等级支持数和召回率 | 最终评估表 | 支撑状态识别结果；无支持等级应写“不可评价” |
 | `ngboost/warning_probabilities.csv` | 保存测试段逐日真实等级、预测等级和四级概率 | 逐日审计表 | 供概率校准、误差复核和融合旁证使用 |

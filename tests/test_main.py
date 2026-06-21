@@ -66,6 +66,20 @@ class PipelineTests(unittest.TestCase):
             ),
         )
 
+    def test_convlstm_inner_validation_follows_fixed_seed_diagnostic(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["convlstm-inner-validation"]
+
+        self.assertEqual(
+            names.index("convlstm-inner-validation"),
+            names.index("convlstm-seeds") + 1,
+        )
+        self.assertIn(
+            "figures/convlstm/seed_stability_metrics.csv",
+            stage.inputs,
+        )
+        self.assertEqual(len(stage.outputs), 7)
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

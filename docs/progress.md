@@ -1,16 +1,17 @@
 # 项目工作进度
 
-> 更新日期：2026-06-21。本文件记录工程与研究实现进度；研究协议以 `framework.md` 为准，结果数值以 `docs/results_report.md` 和版本化 CSV 为准。
+> 更新日期：2026-06-22。本文件记录工程与研究实现进度；研究协议以 `framework.md` 为准，结果数值以 `docs/results_report.md` 和版本化 CSV 为准。
 
 ## 当前阶段
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 十阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 10/10 阶段成功、40 个产物哈希通过 |
+| 最近一次十阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 10/10 阶段成功、40 个产物哈希通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
 | ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
+| ConvLSTM 内层时间验证与早停 | 协议和代码已实现，待正式运行 | 预注册提交 `3c9a616`；阶段 `convlstm-inner-validation` |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -57,3 +58,9 @@
 - 全量门禁：143 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。
 - 十阶段完整管线通过，运行清单源码指纹与功能提交 `97c4acf` 一致，40/40 个产物哈希复核通过。
 - 四张五种子 CSV 在独立运行和完整管线运行间 SHA-256 完全一致；运行清单及本进度记录随后的维护提交另行保存。
+
+## 2026-06-22 内层验证实施记录
+
+- 在任何新结果产生前，已将 80%/20% 内层时间切分、300 轮上限、30 轮最少观察、30 轮耐心、0.1% 最小相对改进和验证 pinball loss 选择规则写入 `framework.md`，并以提交 `3c9a616` 单独保存和推送。
+- 新阶段保留原固定 120 轮结果，不修改模型结构、学习率、输入窗口、损失函数或特征；每个种子和外层折独立选择 epoch，再在完整拟合期重新初始化训练。
+- 代码和相关单元测试已完成；正式结果、完整管线验收和结论将在运行后补充，当前不得提前声称早停有效。

@@ -59,6 +59,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
 | `code/convlstm_rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
 | `code/convlstm_seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
+| `code/convlstm_inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 | `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
@@ -90,6 +91,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 - 不确定性：固定模型与校准量，以连续日期块同步重采样所有测点；14 日为预设主块长，7/30 日为敏感性分析，各 1000 次。输出模型-基线及校准-原始的配对差值，不把两个单独区间是否重叠当作差异检验。
 - 滚动验证：测试长度沿用现有 287 日留出尺度，三个测试折互不重叠，训练历史逐折扩展；每折重新拟合标准化、增量尺度、模型和 `qhat`。固定同一随机种子以减少初始化差异，但不把固定种子解释为统计稳健性。
 - 多种子诊断：预设种子 0-4，保持滚动折和全部参数不变，保存每轮训练 loss/梯度、逐种子指标和跨种子汇总；不得选择最佳种子或据测试折调整 epoch。
+- 内层 epoch 选择：原拟合期按日期切为 80% 内层训练和 20% 内层验证，最多 300 轮并按预注册早停规则选 epoch；同一种子在完整拟合期重训后，原校准段只估计 `qhat`，外层测试段只评价。固定 120 轮结果保留为配对参照。
 
 ### 4.3 NGBoost
 
@@ -113,7 +115,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 uv run python main.py
 ```
 
-`main.py` 按 `features -> onset -> shap -> convlstm -> convlstm-rolling -> convlstm-seeds -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
+`main.py` 按 `features -> onset -> shap -> convlstm -> convlstm-rolling -> convlstm-seeds -> convlstm-inner-validation -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十一个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
 
 阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 

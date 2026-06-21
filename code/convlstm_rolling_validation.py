@@ -142,8 +142,21 @@ def split_metadata(split, dates, *, seed=VALIDATION_SEED):
     }
 
 
-def train_predict_fold(df, disp, interp, readout_weights, split, *, seed):
+def train_predict_fold(
+    df,
+    disp,
+    interp,
+    readout_weights,
+    split,
+    *,
+    seed,
+    epochs=base.EPOCHS,
+):
     """Fit, calibrate and predict one fold without accessing its future targets."""
+    if not isinstance(epochs, (int, np.integer)):
+        raise TypeError("训练轮数必须为整数")
+    if epochs <= 0:
+        raise ValueError("训练轮数必须为正数")
     torch.manual_seed(seed)
     np.random.seed(seed)
 
@@ -192,7 +205,7 @@ def train_predict_fold(df, disp, interp, readout_weights, split, *, seed):
     )
     optimizer = torch.optim.Adam(model.parameters(), lr=base.LR)
     training_history = []
-    for epoch in range(base.EPOCHS):
+    for epoch in range(epochs):
         model.train()
         optimizer.zero_grad()
         prediction_grid = model(x_train_tensor[:split.fit_windows])

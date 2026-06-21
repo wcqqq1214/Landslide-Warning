@@ -100,6 +100,25 @@ STAGES = (
         ),
     ),
     Stage(
+        "convlstm-inner-validation",
+        "code/convlstm_inner_validation.py",
+        "执行 ConvLSTM 内层时间验证和早停诊断",
+        inputs=(
+            "data/features.csv",
+            "data/station_coords.csv",
+            "figures/convlstm/seed_stability_metrics.csv",
+        ),
+        outputs=(
+            "figures/convlstm/inner_validation_runs.csv",
+            "figures/convlstm/inner_validation_selection_history.csv",
+            "figures/convlstm/inner_validation_refit_history.csv",
+            "figures/convlstm/inner_validation_metrics.csv",
+            "figures/convlstm/inner_validation_summary.csv",
+            "figures/convlstm/inner_validation_predictions.csv",
+            "figures/convlstm/inner_validation_comparison.csv",
+        ),
+    ),
+    Stage(
         "ngboost",
         "code/ngboost_warn.py",
         "训练 NGBoost 预警概率模型",
