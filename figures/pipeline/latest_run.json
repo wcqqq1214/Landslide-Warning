@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
   "status": "completed",
-  "started_at": "2026-06-21T18:15:07+08:00",
-  "finished_at": "2026-06-21T18:24:04+08:00",
-  "git_commit": "d1307a6a654cce65c06e0799911dcc15f278df56",
-  "source_sha256": "df3ccafc2274abf88a3d1a680a3c8329bc6a7c2aff4245b6657229eda8331cdb",
-  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python",
+  "started_at": "2026-06-21T18:38:36+08:00",
+  "finished_at": "2026-06-21T18:49:06+08:00",
+  "git_commit": "53aebced51ef5a3f9a17dda03259f3d8b01887e6",
+  "source_sha256": "0b27d04de753e3ed18921646e8d1f9e456d31cbcf7dafedc1c9291237a250419",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 536.281,
+  "total_elapsed_seconds": 630.267,
   "failed_stage": null,
   "stages": [
     {
       "name": "features",
       "script": "code/features.py",
       "status": "completed",
-      "elapsed_seconds": 1.443,
+      "elapsed_seconds": 1.446,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -39,7 +39,7 @@
       "name": "onset",
       "script": "code/onset_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 1.177,
+      "elapsed_seconds": 1.202,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -73,7 +73,7 @@
       "name": "shap",
       "script": "code/shap_select.py",
       "status": "completed",
-      "elapsed_seconds": 456.045,
+      "elapsed_seconds": 533.795,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -122,7 +122,7 @@
       "name": "convlstm",
       "script": "code/convlstm.py",
       "status": "completed",
-      "elapsed_seconds": 29.954,
+      "elapsed_seconds": 37.751,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -132,8 +132,8 @@
       "outputs": [
         {
           "path": "models/convlstm.pt",
-          "size_bytes": 56295,
-          "sha256": "d15a5a6a32cb8699ee1b215480bcde0bf1329616b1ba14651a7e1597cb975384"
+          "size_bytes": 56423,
+          "sha256": "1dcdda99125a2de11d7f8ad8b98cf3b29f7d31bd1741fd0957a8156d0c17ac44"
         },
         {
           "path": "figures/convlstm/forecast_interval.png",
@@ -142,18 +142,23 @@
         },
         {
           "path": "figures/convlstm/forecast_metrics.csv",
-          "size_bytes": 5930,
-          "sha256": "1ab0913f7eb4606f9eddc21939551d0a3d1c385c5bb60aef23599ad7be25566f"
+          "size_bytes": 7025,
+          "sha256": "1e128b3e4a5c9f68738104c4879965de07d2427dc72a370b769b96a9c76bb2df"
         },
         {
           "path": "figures/convlstm/forecast_period_metrics.csv",
-          "size_bytes": 2595,
-          "sha256": "f45956507f077e2378f0e2a3067072a0792ddb814ff5a5aa124c4b65ce223643"
+          "size_bytes": 3054,
+          "sha256": "815e2cf10cdbd1acfac1c0083d8a6295c7e12094c7063fd37e151bdebd7281bf"
         },
         {
           "path": "figures/convlstm/forecast_calibration_metrics.csv",
           "size_bytes": 4821,
           "sha256": "af1d343c013d71d2b0d34ffd149e9d306ac5d4e6fa1b70a9e1bc72206bdd2d97"
+        },
+        {
+          "path": "figures/convlstm/forecast_bootstrap_ci.csv",
+          "size_bytes": 180008,
+          "sha256": "2ba3c37c0a33c38c45afb83778bc55cd00adeb867d4c8b8388f3c8bf8945208b"
         }
       ],
       "contract_error": null
@@ -162,7 +167,7 @@
       "name": "ngboost",
       "script": "code/ngboost_warn.py",
       "status": "completed",
-      "elapsed_seconds": 4.25,
+      "elapsed_seconds": 5.088,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -223,7 +228,7 @@
       "name": "sensitivity",
       "script": "code/sensitivity_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 39.607,
+      "elapsed_seconds": 46.549,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -257,7 +262,7 @@
       "name": "tangent-review",
       "script": "code/tangent_stage_review.py",
       "status": "completed",
-      "elapsed_seconds": 3.598,
+      "elapsed_seconds": 4.229,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
