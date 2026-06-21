@@ -2,7 +2,7 @@
 
 > 更新日期：2026-06-21。状态分为“已实现”“部分实现”“未实现”。模型数值来自当前探索性时间留出结果，不等同于最终确认性评价。
 
-工程验收：统一入口包含 `features -> onset -> shap -> convlstm -> convlstm-rolling -> ngboost -> fusion -> sensitivity -> tangent-review` 九个阶段，阶段状态、退出码、耗时和源码指纹见 `figures/pipeline/latest_run.json`。该结果只证明架构可端到端执行，不等同于阈值、模型或预警效果已获确认。
+工程验收：统一入口包含 `features -> onset -> shap -> convlstm -> convlstm-rolling -> convlstm-seeds -> ngboost -> fusion -> sensitivity -> tangent-review` 十个阶段，阶段状态、退出码、耗时和源码指纹见 `figures/pipeline/latest_run.json`。该结果只证明架构可端到端执行，不等同于阈值、模型或预警效果已获确认。
 
 ## 1. 指标与方法覆盖
 

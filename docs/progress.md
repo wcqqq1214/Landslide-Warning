@@ -6,11 +6,11 @@
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 九阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 9/9 阶段成功、36 个产物哈希通过 |
+| 十阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 10/10 阶段成功、40 个产物哈希通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
-| ConvLSTM 五种子稳定性诊断 | 已完成，完整管线待验收 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
+| ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -36,7 +36,7 @@
 - 逐测点 RMSE 优于基线数量：0/8、0/8、8/8；当前 ConvLSTM 不能表述为跨时期稳定优于持久性基线。
 - 校准覆盖率：48.8%、94.9%、75.2%；第二折覆盖率上升伴随区间过宽和 interval score 恶化。
 - 全量门禁：135 项测试和 32 个子测试通过；Ruff、编译、CSV 完整性及有限数检查通过。
-- 九阶段完整管线通过，运行清单源码指纹与当前代码一致，36/36 个产物哈希复核通过。
+- 当时的九阶段完整管线通过，运行清单源码指纹与代码一致，36/36 个产物哈希复核通过；最新十阶段验收见下文。
 - 功能提交：`bdf14e5`（`feat: add convlstm rolling validation`）；运行清单及本进度记录随后的维护提交另行保存。
 
 ## 2026-06-21 后续诊断与外部工具筛选
@@ -54,4 +54,6 @@
 - 折 1/2 的 RMSE 为 2.385 +/- 0.574 和 0.390 +/- 0.143 mm，基线为 0.245 和 0.120 mm；折 3 为 0.323 +/- 0.008 mm，基线为 0.340 mm。
 - 折 3 日增量相关性为 -0.048 +/- 0.220，预测/实际增量标准差比为 0.164 +/- 0.022；不能把点误差优势解释为稳定捕捉加速/减速。
 - 所有训练 loss 下降且梯度有限，但最后 10 个 epoch 的 loss 仍下降 4.4%-8.3%。下一步应先在拟合期内部锁定时间验证和停止规则，再决定有限调参；现有校准段和测试折不得参与选择。
-- 当前待完成：全量测试、十阶段完整管线、源码/产物哈希核验、功能提交与推送。
+- 全量门禁：143 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。
+- 十阶段完整管线通过，运行清单源码指纹与功能提交 `97c4acf` 一致，40/40 个产物哈希复核通过。
+- 四张五种子 CSV 在独立运行和完整管线运行间 SHA-256 完全一致；运行清单及本进度记录随后的维护提交另行保存。
