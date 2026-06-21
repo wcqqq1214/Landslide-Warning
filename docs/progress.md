@@ -10,6 +10,7 @@
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
+| ConvLSTM 五种子稳定性诊断 | 已完成，完整管线待验收 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -42,7 +43,15 @@
 
 - 基于已冻结的逐日预测结果开展事后诊断，未重新训练或修改参数。三折总体日增量相关系数分别为 0.182、0.148、0.011，逐测点相关系数中位数分别为 0.062、0.055、-0.068。
 - 第三折相对持久性基线的 RMSE 优势伴随预测增量方差明显偏小，因此目前只能表述为该折点误差较低，不能表述为已稳定捕捉位移加速和减速过程。
-- 调参前的下一项任务已在 `framework.md` 锁定为种子 `0-4` 的固定三折训练稳定性诊断，报告全部种子而不选择最佳种子；代码与结果尚未生成。
+- 种子 `0-4` 的固定三折训练稳定性诊断已经完成，共 15 次训练，未选择最佳种子或修改超参数。
 - 已检查 `modelscope/Awesome-Vibe-Research` 及相关候选项目。PaperQA2、RefChecker 和 `nature-figure` 分别可能用于本地文献核对、投稿前参考文献验证和图件审查；Curie/EurekAgent 的实验隔离思想可参考，但其指标驱动自动优化不宜直接用于当前已查看的测试折。
 - 当前未向本仓库或本机 Codex 环境接入任何上述外部项目；接入前必须取得用户明确批准。
 - 工具用途、风险、采用时机和状态已持久化到 `docs/research_tools.md`。
+
+## 2026-06-21 五种子诊断记录
+
+- 折 1/2 的 RMSE 和 MAE 均为 0/5 种子超过持久性基线；折 3 均为 5/5，说明初始化影响幅度但不改变跨折方向。
+- 折 1/2 的 RMSE 为 2.385 +/- 0.574 和 0.390 +/- 0.143 mm，基线为 0.245 和 0.120 mm；折 3 为 0.323 +/- 0.008 mm，基线为 0.340 mm。
+- 折 3 日增量相关性为 -0.048 +/- 0.220，预测/实际增量标准差比为 0.164 +/- 0.022；不能把点误差优势解释为稳定捕捉加速/减速。
+- 所有训练 loss 下降且梯度有限，但最后 10 个 epoch 的 loss 仍下降 4.4%-8.3%。下一步应先在拟合期内部锁定时间验证和停止规则，再决定有限调参；现有校准段和测试折不得参与选择。
+- 当前待完成：全量测试、十阶段完整管线、源码/产物哈希核验、功能提交与推送。

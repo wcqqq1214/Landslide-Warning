@@ -48,6 +48,24 @@ class PipelineTests(unittest.TestCase):
             ),
         )
 
+    def test_convlstm_seed_stage_follows_rolling_validation(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        seed_stage = pipeline.STAGE_BY_NAME["convlstm-seeds"]
+
+        self.assertEqual(
+            names.index("convlstm-seeds"),
+            names.index("convlstm-rolling") + 1,
+        )
+        self.assertEqual(
+            seed_stage.outputs,
+            (
+                "figures/convlstm/seed_stability_runs.csv",
+                "figures/convlstm/seed_stability_metrics.csv",
+                "figures/convlstm/seed_stability_summary.csv",
+                "figures/convlstm/seed_stability_training.csv",
+            ),
+        )
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

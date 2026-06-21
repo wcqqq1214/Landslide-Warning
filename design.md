@@ -58,6 +58,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `convlstm.py` 调用 |
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
 | `code/convlstm_rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
+| `code/convlstm_seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 | `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
@@ -88,6 +89,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 - 校准：原训练窗口前 80% 用于拟合、后 20% 连续日期用于按测点对称 split-conformal 校准；标准化和增量尺度只拟合于前者。时间自相关使经典覆盖保证不成立，因此结果按探索性校准报告。
 - 不确定性：固定模型与校准量，以连续日期块同步重采样所有测点；14 日为预设主块长，7/30 日为敏感性分析，各 1000 次。输出模型-基线及校准-原始的配对差值，不把两个单独区间是否重叠当作差异检验。
 - 滚动验证：测试长度沿用现有 287 日留出尺度，三个测试折互不重叠，训练历史逐折扩展；每折重新拟合标准化、增量尺度、模型和 `qhat`。固定同一随机种子以减少初始化差异，但不把固定种子解释为统计稳健性。
+- 多种子诊断：预设种子 0-4，保持滚动折和全部参数不变，保存每轮训练 loss/梯度、逐种子指标和跨种子汇总；不得选择最佳种子或据测试折调整 epoch。
 
 ### 4.3 NGBoost
 
@@ -111,7 +113,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 uv run python main.py
 ```
 
-`main.py` 按 `features -> onset -> shap -> convlstm -> convlstm-rolling -> ngboost -> fusion -> sensitivity -> tangent-review` 编排九个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
+`main.py` 按 `features -> onset -> shap -> convlstm -> convlstm-rolling -> convlstm-seeds -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
 
 阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 
@@ -149,7 +151,7 @@ uv run --with pytest pytest -q
 
 - ConvLSTM 已启用独立时间校准，但 P10-P90 测试覆盖率仍低于名义 80%，最后连续测试块退化明显。
 - ConvLSTM 已输出日期块 95% 置信区间，但其局部平稳假设与已观察到的后期漂移冲突；区间不包含训练过程和未来制度变化的不确定性。
-- ConvLSTM 滚动验证只在第三折超过持久性基线；前两折均出现系统性高估。该差异可能同时来自训练样本量、优化和时间分布变化，当前尚未分离机制。
+- ConvLSTM 五种子诊断中，折 1/2 的方向性失败对初始化稳定，折 3 的点误差优势也对种子稳定但伴随明显方差收缩和接近零的平均增量相关性。初始化影响误差幅度，但不能解释跨折方向反转；训练样本量和时间分布作用仍未分离。
 - NGBoost 未超过昨日状态持续性基线。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
 - 自动等速段尚未由专家阶段复核；15/30/60 日候选窗口会为关键测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），人工配置接口已就绪（`config/tangent_reference_stages.csv`），等待专家独立确定等速阶段。
@@ -159,7 +161,7 @@ uv run --with pytest pytest -q
 ## 9. 下一阶段实现顺序
 
 1. 获得包含更多独立 onset 的新监测时段或新滑坡数据。
-2. 在固定滚动折上诊断 ConvLSTM 的初始化、训练样本量和时间漂移敏感性，不使用测试折选参。
+2. 在拟合期内部建立时间验证和停止规则，进一步诊断 ConvLSTM 训练时长与样本量；不得用现有测试折选择 epoch。
 3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
 4. 在新增时段上评价 ConvLSTM 静态校准的跨期稳定性，必要时预先设计滚动校准协议。
 5. 根据累计位移曲线和宏观变形资料专家复核等速阶段，再冻结切线角参数。

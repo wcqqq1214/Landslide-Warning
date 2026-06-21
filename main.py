@@ -88,6 +88,18 @@ STAGES = (
         ),
     ),
     Stage(
+        "convlstm-seeds",
+        "code/convlstm_seed_stability.py",
+        "执行 ConvLSTM 固定协议多随机种子诊断",
+        inputs=("data/features.csv", "data/station_coords.csv"),
+        outputs=(
+            "figures/convlstm/seed_stability_runs.csv",
+            "figures/convlstm/seed_stability_metrics.csv",
+            "figures/convlstm/seed_stability_summary.csv",
+            "figures/convlstm/seed_stability_training.csv",
+        ),
+    ),
+    Stage(
         "ngboost",
         "code/ngboost_warn.py",
         "训练 NGBoost 预警概率模型",

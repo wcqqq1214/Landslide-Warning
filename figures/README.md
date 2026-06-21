@@ -13,6 +13,10 @@
 | `convlstm/rolling_validation_folds.csv` | 保存三个扩展窗口折的拟合/校准/测试边界、模型配置、随机种子和逐测点 `qhat` | 验证协议审计表 | 证明每折时间隔离和测试长度来源；明确属于内部探索性验证 |
 | `convlstm/rolling_validation_metrics.csv` | 保存每折总体及 8 测点的原始/校准区间指标、持久性基线和增量偏差 | 滚动评估表 | 必须逐折报告，不以平均值掩盖前两折失败 |
 | `convlstm/rolling_validation_predictions.csv` | 保存三个测试折逐日逐测点的真实值、持久性、P10/P50/P90、校准端点和 `qhat` | 逐日审计表 | 复算滚动指标和诊断系统性高估/低估，不作独立外部证据 |
+| `convlstm/seed_stability_runs.csv` | 保存种子 0-4 各折时间边界、固定参数、`qhat` 和增量尺度 | 多种子协议审计表 | 证明没有增删种子、改参或选择最佳种子 |
+| `convlstm/seed_stability_metrics.csv` | 保存逐种子、逐折、总体/测点的点误差、增量响应和区间指标 | 多种子明细表 | 逐次报告初始化波动，不以跨种子均值替代失败运行 |
+| `convlstm/seed_stability_summary.csv` | 保存五种子均值、样本标准差、范围、正 skill 数量和符号一致性 | 稳定性汇总表 | 判断结果方向是否依赖初始化；仍属已查看测试折上的探索性诊断 |
+| `convlstm/seed_stability_training.csv` | 保存 15 次训练每个 epoch 的全批量 pinball loss 与梯度 L2 范数 | 优化轨迹表 | 检查数值稳定和损失趋势，不把训练损失当作泛化证据 |
 | `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |
 | `ngboost/warning_metrics.csv` | 保存 accuracy、F1、Brier、各等级支持数和召回率 | 最终评估表 | 支撑状态识别结果；无支持等级应写“不可评价” |
 | `ngboost/warning_probabilities.csv` | 保存测试段逐日真实等级、预测等级和四级概率 | 逐日审计表 | 供概率校准、误差复核和融合旁证使用 |

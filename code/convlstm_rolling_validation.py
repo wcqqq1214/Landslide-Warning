@@ -191,7 +191,8 @@ def train_predict_fold(df, disp, interp, readout_weights, split, *, seed):
         quantiles=base.QUANTILES,
     )
     optimizer = torch.optim.Adam(model.parameters(), lr=base.LR)
-    for _ in range(base.EPOCHS):
+    training_history = []
+    for epoch in range(base.EPOCHS):
         model.train()
         optimizer.zero_grad()
         prediction_grid = model(x_train_tensor[:split.fit_windows])
@@ -205,7 +206,17 @@ def train_predict_fold(df, disp, interp, readout_weights, split, *, seed):
             base.QUANTILES,
         )
         loss.backward()
+        gradient_l2_norm = float(torch.sqrt(sum(
+            parameter.grad.detach().square().sum()
+            for parameter in model.parameters()
+            if parameter.grad is not None
+        )))
         optimizer.step()
+        training_history.append({
+            "epoch": epoch + 1,
+            "train_pinball_loss": float(loss.detach()),
+            "gradient_l2_norm": gradient_l2_norm,
+        })
 
     model.eval()
     quantile_index = {quantile: i for i, quantile in enumerate(base.QUANTILES)}
@@ -252,6 +263,36 @@ def train_predict_fold(df, disp, interp, readout_weights, split, *, seed):
         "actual": y_test,
         "persistence": last_test,
         "qhat": qhat,
+        "delta_scale": delta_scale,
+        "training_history": training_history,
+    }
+
+
+def increment_diagnostics(actual, predicted, persistence):
+    """Describe whether predicted increments track observed temporal changes."""
+    actual_increment = np.asarray(actual - persistence).reshape(-1)
+    predicted_increment = np.asarray(predicted - persistence).reshape(-1)
+    if len(actual_increment) < 2:
+        return {
+            "actual_increment_std": np.nan,
+            "predicted_increment_std": np.nan,
+            "increment_std_ratio": np.nan,
+            "increment_correlation": np.nan,
+        }
+    actual_std = float(actual_increment.std(ddof=1))
+    predicted_std = float(predicted_increment.std(ddof=1))
+    correlation = (
+        float(np.corrcoef(actual_increment, predicted_increment)[0, 1])
+        if actual_std > 0 and predicted_std > 0
+        else np.nan
+    )
+    return {
+        "actual_increment_std": actual_std,
+        "predicted_increment_std": predicted_std,
+        "increment_std_ratio": (
+            predicted_std / actual_std if actual_std > 0 else np.nan
+        ),
+        "increment_correlation": correlation,
     }
 
 
@@ -277,6 +318,7 @@ def metric_rows(result, station_names, metadata):
             actual = select(result["actual"])
             persistence = select(result["persistence"])
             p50 = select(result["p50"])
+            increment_metrics = increment_diagnostics(actual, p50, persistence)
             rows.append({
                 "fold": metadata["fold"],
                 "scope": scope,
@@ -289,6 +331,7 @@ def metric_rows(result, station_names, metadata):
                 "baseline_mean_error": float((persistence - actual).mean()),
                 "mean_actual_increment": float((actual - persistence).mean()),
                 "mean_predicted_increment": float((p50 - persistence).mean()),
+                **increment_metrics,
                 **metrics,
             })
     return rows
