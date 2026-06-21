@@ -20,6 +20,7 @@ FIG_DIR = ROOT / "figures" / "convlstm"
 OUT_PNG = FIG_DIR / "forecast_interval.png"
 OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
+OUT_CALIBRATION_METRICS = FIG_DIR / "forecast_calibration_metrics.csv"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
@@ -29,7 +30,7 @@ PLOT_STATIONS = ["MJ9", "MJ1", "MJ3"]
 LOOKBACK = max(THESIS_WINDOWS.values())
 HORIZON = 1
 TRAIN_FRAC = 0.8
-CAL_FRAC = 0.0
+CAL_FRAC = 0.2
 TARGET_COVERAGE = 0.8
 QUANTILES = [0.1, 0.5, 0.9]
 HIDDEN = 16
@@ -211,7 +212,16 @@ def compute_forecast_metrics(p10, p50, p90, y_true, last):
     return metrics
 
 
-def station_metric_rows(p10, p50, p90, y_true, last, station_names, thesis_windows=None):
+def station_metric_rows(
+    p10,
+    p50,
+    p90,
+    y_true,
+    last,
+    station_names,
+    thesis_windows=None,
+    interval_variant="calibrated",
+):
     rows = []
     thesis_windows = {} if thesis_windows is None else thesis_windows
     for i, station in enumerate(station_names):
@@ -221,6 +231,7 @@ def station_metric_rows(p10, p50, p90, y_true, last, station_names, thesis_windo
         rows.append({
             "station": station,
             "thesis_window": thesis_windows.get(station, ""),
+            "interval_variant": interval_variant,
             **metrics,
         })
     return rows
@@ -234,6 +245,7 @@ def period_metric_rows(
     last,
     dates,
     n_periods=3,
+    interval_variant="calibrated",
 ):
     """Evaluate contiguous test-period blocks without reshuffling dates."""
     dates = pd.DatetimeIndex(pd.to_datetime(dates))
@@ -252,6 +264,7 @@ def period_metric_rows(
         )
         rows.append({
             "period": f"test_block_{number}",
+            "interval_variant": interval_variant,
             "start_date": dates[indices[0]].date().isoformat(),
             "end_date": dates[indices[-1]].date().isoformat(),
             "n_dates": int(len(indices)),
@@ -265,31 +278,89 @@ def make_delta_scale(train_delta, floor=0.05):
     return np.maximum(train_delta.std(axis=0), floor)
 
 
-def calibrate_intervals(p10, p50, p90, y_true, target_coverage=TARGET_COVERAGE):
-    """用 split conformal 分数给 P10/P90 做统一扩张校准。
+def chronological_fit_calibration_split(n_windows, calibration_fraction):
+    """Return chronological fit/calibration counts without shuffling."""
+    if n_windows <= 0:
+        raise ValueError("n_windows 必须为正数")
+    if not 0 <= calibration_fraction < 1:
+        raise ValueError("calibration_fraction 必须在 [0, 1) 内")
+    n_calibration = int(n_windows * calibration_fraction)
+    if calibration_fraction > 0 and n_calibration == 0:
+        raise ValueError("校准比例非零但校准窗口数量为 0")
+    n_fit = n_windows - n_calibration
+    if n_fit <= 0:
+        raise ValueError("拟合窗口数量必须为正数")
+    return n_fit, n_calibration
 
-    p50 保持不变。
-    """
-    _ = p50
-    scores = np.maximum(p10 - y_true, y_true - p90).ravel()
-    if len(scores) == 0:
-        return p10, p90, 0.0
-    level = min(1.0, np.ceil((len(scores) + 1) * target_coverage) / len(scores))
-    qhat = float(np.quantile(scores, level, method="higher"))
-    qhat = max(qhat, 0.0)
-    return p10 - qhat, p90 + qhat, qhat
+
+def calibrate_intervals(p10, p90, y_true, target_coverage=TARGET_COVERAGE):
+    """Expand P10/P90 using a separate conformal score for each station."""
+    if not 0 < target_coverage < 1:
+        raise ValueError("target_coverage 必须在 (0, 1) 内")
+    p10 = np.asarray(p10, dtype=float)
+    p90 = np.asarray(p90, dtype=float)
+    y_true = np.asarray(y_true, dtype=float)
+    if p10.shape != p90.shape or p10.shape != y_true.shape:
+        raise ValueError("校准预测与真实值形状必须一致")
+    if p10.ndim != 2 or p10.shape[0] == 0:
+        raise ValueError("校准输入必须是非空的日期 x 测点二维数组")
+
+    scores = np.maximum(p10 - y_true, y_true - p90)
+    level = min(
+        1.0,
+        np.ceil((len(scores) + 1) * target_coverage) / len(scores),
+    )
+    qhat = np.quantile(scores, level, axis=0, method="higher")
+    qhat = np.maximum(qhat, 0.0)
+    return p10 - qhat[None, :], p90 + qhat[None, :], qhat
 
 
-def make_model_inputs(df, disp, split, interp):
+def calibration_metric_rows(
+    station_names,
+    qhat,
+    calibration_raw,
+    calibration_adjusted,
+    test_raw,
+    test_adjusted,
+    split_metadata,
+):
+    """Build an auditable raw-versus-calibrated interval comparison."""
+    rows = []
+    for index, station in enumerate(station_names):
+        row = {
+            "station": station,
+            "qhat_mm": float(qhat[index]),
+            **split_metadata,
+        }
+        for sample_name, raw_metrics, adjusted_metrics in (
+            ("calibration", calibration_raw[index], calibration_adjusted[index]),
+            ("test", test_raw[index], test_adjusted[index]),
+        ):
+            for metric_name in (
+                "coverage",
+                "coverage_gap",
+                "mean_width",
+                "mean_pinball",
+                "interval_score_80",
+            ):
+                row[f"{sample_name}_raw_{metric_name}"] = raw_metrics[metric_name]
+                row[f"{sample_name}_calibrated_{metric_name}"] = adjusted_metrics[
+                    metric_name
+                ]
+        rows.append(row)
+    return rows
+
+
+def make_model_inputs(df, disp, stats_stop, interp):
     """Build input channels from displacement grids and broadcast exogenous drivers."""
-    disp_mu = disp[:split].mean(0)
-    disp_sigma = np.maximum(disp[:split].std(0), 1.0)
+    disp_mu = disp[:stats_stop].mean(0)
+    disp_sigma = np.maximum(disp[:stats_stop].std(0), 1.0)
     disp_norm = (disp - disp_mu) / disp_sigma
     disp_grid = interp(disp_norm).astype(np.float32)[:, None, :, :]
 
     exog = df[EXOG_COLS].values.astype(np.float64)
-    exog_mu = exog[:split].mean(0)
-    exog_sigma = np.maximum(exog[:split].std(0), 1e-6)
+    exog_mu = exog[:stats_stop].mean(0)
+    exog_sigma = np.maximum(exog[:stats_stop].std(0), 1e-6)
     exog_norm = ((exog - exog_mu) / exog_sigma).astype(np.float32)
     exog_grid = np.broadcast_to(
         exog_norm[:, :, None, None],
@@ -307,7 +378,15 @@ def main():
     interp, (gx, gy) = make_interpolator(xy, GRID_H, GRID_W)
 
     split = int(len(disp) * TRAIN_FRAC)
-    inputs, _ = make_model_inputs(df, disp, split, interp)
+    n_train_windows = split - LOOKBACK - HORIZON + 1
+    n_fit, n_cal = chronological_fit_calibration_split(
+        n_train_windows,
+        CAL_FRAC,
+    )
+    if n_cal == 0:
+        raise RuntimeError("独立区间校准要求至少一个校准窗口")
+    fit_stats_stop = n_fit + LOOKBACK + HORIZON - 1
+    inputs, _ = make_model_inputs(df, disp, fit_stats_stop, interp)
     readout_w = station_readout_weights(gx, gy, xy)
 
     Xtr, _, _ = make_windows(inputs[:split], LOOKBACK, HORIZON)
@@ -321,17 +400,16 @@ def main():
     if len(Xtr) != len(ytr_delta) or len(Xte) != len(yte_real):
         raise RuntimeError("输入窗口和真实测点目标数量不一致")
 
-    delta_scale = make_delta_scale(ytr_delta)
+    if len(Xtr) != n_train_windows:
+        raise RuntimeError("训练窗口数量与切分计划不一致")
+
+    delta_scale = make_delta_scale(ytr_delta[:n_fit])
     ytr_norm = (ytr_delta / delta_scale).astype(np.float32)
     Xtr_t = torch.from_numpy(Xtr)
     ytr_t = torch.from_numpy(ytr_norm)
     Xte_t = torch.from_numpy(Xte)
     readout_t = torch.from_numpy(readout_w)
 
-    n_cal = int(len(Xtr_t) * CAL_FRAC)
-    n_fit = len(Xtr_t) - n_cal
-    if n_fit <= 0:
-        raise RuntimeError("训练窗口太少,无法划分 fit/calibration")
     Xfit_t, yfit_t = Xtr_t[:n_fit], ytr_t[:n_fit]
 
     model = ConvLSTMForecast(
@@ -353,25 +431,26 @@ def main():
         if (ep + 1) % 20 == 0:
             print(f"[convlstm] epoch {ep+1}/{EPOCHS} pinball={loss.item():.4f}")
 
-    qhat = 0.0
     model.eval()
     qi = {q: i for i, q in enumerate(QUANTILES)}
-    if n_cal > 0:
-        Xcal_t = Xtr_t[n_fit:]
-        ycal_real = ytr_future[n_fit:]
-        last_cal = ytr_last[n_fit:]
-        with torch.no_grad():
-            cal_grid = model(Xcal_t)
-            cal_norm = readout_grid_at_stations(cal_grid, readout_t).numpy()
-        cal_pred = last_cal[:, None, :] + cal_norm * delta_scale[None, None, :]
-        cal_p10, cal_p50, cal_p90 = (
-            cal_pred[:, qi[0.1]],
-            cal_pred[:, qi[0.5]],
-            cal_pred[:, qi[0.9]],
-        )
-        _, _, qhat = calibrate_intervals(
-            cal_p10, cal_p50, cal_p90, ycal_real, target_coverage=TARGET_COVERAGE
-        )
+    Xcal_t = Xtr_t[n_fit:]
+    ycal_real = ytr_future[n_fit:]
+    last_cal = ytr_last[n_fit:]
+    with torch.no_grad():
+        cal_grid = model(Xcal_t)
+        cal_norm = readout_grid_at_stations(cal_grid, readout_t).numpy()
+    cal_pred = last_cal[:, None, :] + cal_norm * delta_scale[None, None, :]
+    cal_p10, cal_p50, cal_p90 = (
+        cal_pred[:, qi[0.1]],
+        cal_pred[:, qi[0.5]],
+        cal_pred[:, qi[0.9]],
+    )
+    cal_p10_adjusted, cal_p90_adjusted, qhat = calibrate_intervals(
+        cal_p10,
+        cal_p90,
+        ycal_real,
+        target_coverage=TARGET_COVERAGE,
+    )
 
     with torch.no_grad():
         dgrid = model(Xte_t)
@@ -379,23 +458,110 @@ def main():
 
     pred = last_te[:, None, :] + dpred_norm * delta_scale[None, None, :]
 
-    p10, p50, p90 = pred[:, qi[0.1]], pred[:, qi[0.5]], pred[:, qi[0.9]]
-    raw_metrics = compute_forecast_metrics(p10, p50, p90, yte_real, last_te)
-    p10, p90 = pred[:, qi[0.1]] - qhat, pred[:, qi[0.9]] + qhat
+    raw_p10, p50, raw_p90 = (
+        pred[:, qi[0.1]],
+        pred[:, qi[0.5]],
+        pred[:, qi[0.9]],
+    )
+    raw_metrics = compute_forecast_metrics(
+        raw_p10,
+        p50,
+        raw_p90,
+        yte_real,
+        last_te,
+    )
+    p10 = raw_p10 - qhat[None, :]
+    p90 = raw_p90 + qhat[None, :]
     metrics = compute_forecast_metrics(p10, p50, p90, yte_real, last_te)
     station_names = [c.replace("_disp", "") for c in DISP_COLS]
-    rows = station_metric_rows(
-        p10, p50, p90, yte_real, last_te, station_names, THESIS_WINDOWS
+    calibration_raw_rows = station_metric_rows(
+        cal_p10,
+        cal_p50,
+        cal_p90,
+        ycal_real,
+        last_cal,
+        station_names,
+        THESIS_WINDOWS,
+        interval_variant="raw",
     )
-    test_dates = pd.to_datetime(df["Date"]).iloc[split + HORIZON - 1:].reset_index(drop=True)
-    period_rows = period_metric_rows(
+    calibration_adjusted_rows = station_metric_rows(
+        cal_p10_adjusted,
+        cal_p50,
+        cal_p90_adjusted,
+        ycal_real,
+        last_cal,
+        station_names,
+        THESIS_WINDOWS,
+        interval_variant="calibrated",
+    )
+    raw_rows = station_metric_rows(
+        raw_p10,
+        p50,
+        raw_p90,
+        yte_real,
+        last_te,
+        station_names,
+        THESIS_WINDOWS,
+        interval_variant="raw",
+    )
+    calibrated_rows = station_metric_rows(
+        p10,
+        p50,
+        p90,
+        yte_real,
+        last_te,
+        station_names,
+        THESIS_WINDOWS,
+        interval_variant="calibrated",
+    )
+    rows = raw_rows + calibrated_rows
+
+    dates = pd.to_datetime(df["Date"])
+    first_train_target = LOOKBACK + HORIZON - 1
+    fit_dates = dates.iloc[first_train_target:first_train_target + n_fit]
+    calibration_dates = dates.iloc[first_train_target + n_fit:split]
+    test_dates = dates.iloc[split + HORIZON - 1:].reset_index(drop=True)
+    split_metadata = {
+        "fit_start_date": fit_dates.iloc[0].date().isoformat(),
+        "fit_end_date": fit_dates.iloc[-1].date().isoformat(),
+        "fit_windows": n_fit,
+        "calibration_start_date": calibration_dates.iloc[0].date().isoformat(),
+        "calibration_end_date": calibration_dates.iloc[-1].date().isoformat(),
+        "calibration_windows": n_cal,
+        "test_start_date": test_dates.iloc[0].date().isoformat(),
+        "test_end_date": test_dates.iloc[-1].date().isoformat(),
+        "test_windows": len(test_dates),
+        "target_coverage": TARGET_COVERAGE,
+        "method": "stationwise_symmetric_split_conformal",
+    }
+    calibration_rows = calibration_metric_rows(
+        station_names,
+        qhat,
+        calibration_raw_rows,
+        calibration_adjusted_rows,
+        raw_rows,
+        calibrated_rows,
+        split_metadata,
+    )
+    raw_period_rows = period_metric_rows(
+        raw_p10,
+        p50,
+        raw_p90,
+        yte_real,
+        last_te,
+        test_dates,
+        interval_variant="raw",
+    )
+    calibrated_period_rows = period_metric_rows(
         p10,
         p50,
         p90,
         yte_real,
         last_te,
         test_dates,
+        interval_variant="calibrated",
     )
+    period_rows = raw_period_rows + calibrated_period_rows
 
     OUT_PT.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
@@ -410,6 +576,11 @@ def main():
             "exog_cols": EXOG_COLS,
             "grid_h": GRID_H,
             "grid_w": GRID_W,
+            "train_fraction": TRAIN_FRAC,
+            "calibration_fraction_within_train": CAL_FRAC,
+            "target_coverage": TARGET_COVERAGE,
+            "calibration_method": "stationwise_symmetric_split_conformal",
+            "split_metadata": split_metadata,
         },
         "delta_scale": delta_scale,
         "readout_weights": readout_w,
@@ -424,7 +595,7 @@ def main():
         ax.plot(last_te[:, ch], label="persistence", color="0.55", lw=1, ls="--")
         ax.plot(p50[:, ch], label="P50", color="C1", lw=1)
         ax.fill_between(range(len(p50)), p10[:, ch], p90[:, ch],
-                        alpha=0.25, color="C1", label="P10-P90")
+                        alpha=0.25, color="C1", label="calibrated P10-P90")
         ax.set_title(f"{station} forecast interval")
         ax.set_ylabel("mm")
     axes[-1].set_xlabel("test time step")
@@ -436,26 +607,44 @@ def main():
 
     pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
     pd.DataFrame(period_rows).to_csv(OUT_PERIOD_METRICS, index=False)
+    pd.DataFrame(calibration_rows).to_csv(OUT_CALIBRATION_METRICS, index=False)
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
     print(f"[convlstm] 测点指标: {OUT_METRICS}")
     print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
+    print(f"[convlstm] 校准审计: {OUT_CALIBRATION_METRICS}")
     print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
     print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
     print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
-    print(f"[convlstm] fit/calibration 窗口: {n_fit}/{n_cal}")
+    print(
+        "[convlstm] fit/calibration/test 窗口: "
+        f"{n_fit}/{n_cal}/{len(test_dates)}"
+    )
     print(f"[convlstm] 测试集 RMSE(P50, 全测点): {metrics['model_rmse']:.3f} mm")
     print(f"[convlstm] persistence 基线 RMSE: {metrics['baseline_rmse']:.3f} mm")
     print(f"[convlstm] RMSE skill vs baseline: {metrics['rmse_skill_vs_baseline']:.3f}")
     print(f"[convlstm] 测试集 MAE(P50, 全测点): {metrics['model_mae']:.3f} mm")
     print(f"[convlstm] persistence 基线 MAE: {metrics['baseline_mae']:.3f} mm")
     print(f"[convlstm] 原始区间覆盖率(P10-P90): {raw_metrics['coverage']:.3f}")
-    print(f"[convlstm] conformal qhat: {qhat:.3f} mm")
+    qhat_text = ", ".join(
+        f"{station}={value:.3f}" for station, value in zip(station_names, qhat)
+    )
+    print(f"[convlstm] stationwise conformal qhat: {qhat_text} mm")
     print(f"[convlstm] 校准后区间覆盖率(P10-P90): {metrics['coverage']:.3f}  (目标≈0.80)")
-    print(f"[convlstm] 平均区间宽度: {metrics['mean_width']:.3f} mm")
-    print(f"[convlstm] 平均 pinball loss: {metrics['mean_pinball']:.4f} mm")
-    print(f"[convlstm] 80% interval score: {metrics['interval_score_80']:.3f} mm")
+    print(
+        "[convlstm] 平均区间宽度 raw/calibrated: "
+        f"{raw_metrics['mean_width']:.3f}/{metrics['mean_width']:.3f} mm"
+    )
+    print(
+        "[convlstm] 平均 pinball loss raw/calibrated: "
+        f"{raw_metrics['mean_pinball']:.4f}/{metrics['mean_pinball']:.4f} mm"
+    )
+    print(
+        "[convlstm] 80% interval score raw/calibrated: "
+        f"{raw_metrics['interval_score_80']:.3f}/"
+        f"{metrics['interval_score_80']:.3f} mm"
+    )
     print(f"[convlstm] 分位数交叉: P10>P50 {metrics['p10_gt_p50']}, "
           f"P50>P90 {metrics['p50_gt_p90']} / {metrics['total_points']}")
 

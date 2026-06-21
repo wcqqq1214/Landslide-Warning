@@ -43,7 +43,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     ├── convlstm/
     │   ├── forecast_interval.png   # 位移预测区间图
     │   ├── forecast_metrics.csv    # 各测点预测指标
-    │   └── forecast_period_metrics.csv # 连续测试时段指标
+    │   ├── forecast_period_metrics.csv # 连续测试时段指标
+    │   └── forecast_calibration_metrics.csv # 校准前后审计表
     ├── shap/
     │   ├── shap_reg_summary.png    # NGBoost 回归 SHAP 因子贡献图
     │   ├── shap_cls_summary.png    # NGBoost 预警分类 SHAP 因子贡献图
@@ -134,7 +135,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*`, `figures/thresholds/v0_thresholds.csv` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
 | `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/*`, `figures/thresholds/v0_thresholds.csv` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
-| `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv`, `figures/convlstm/forecast_period_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
+| `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/forecast_interval.png`, `figures/convlstm/forecast_metrics.csv`, `figures/convlstm/forecast_period_metrics.csv`, `figures/convlstm/forecast_calibration_metrics.csv` | 将 8 测点位移插值为 `4 x 7` 网格,训练 ConvLSTM 输出 P10/P50/P90 位移预测区间 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 | `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
@@ -280,6 +281,7 @@ uv run --with pytest pytest -q
 - `LOOKBACK = 7`:当前 ConvLSTM 使用论文窗口中的最大值作为统一输入窗口。
 - `HORIZON = 1`:预测未来 1 天。
 - `TRAIN_FRAC = 0.8`:前 80% 时间序列作为训练段。
+- `CAL_FRAC = 0.2`:从训练窗口末尾保留 20% 连续日期作独立校准，不随机打乱。
 - `QUANTILES = [0.1, 0.5, 0.9]`:输出 P10/P50/P90 区间。
 - `GRID_H = 4`, `GRID_W = 7`:来自 `grid_interp.py`。
 
@@ -287,17 +289,20 @@ uv run --with pytest pytest -q
 
 1. 读取 `data/features.csv` 中 8 个测点位移。
 2. 读取测点坐标并构建 IDW 插值器。
-3. 只用训练段统计量做标准化,避免时序泄漏。
+3. 将原训练窗口按时间切为 911 个拟合窗口和 227 个校准窗口；标准化和增量尺度只使用拟合期。
 4. 将测点位移插值为规则网格序列。
 5. 构造滑动窗口,目标为未来位移增量。
 6. 用 pinball loss 训练 ConvLSTM 分位数预测模型。
-7. 在测试段输出 P10/P50/P90 区间。
+7. 在独立校准期按测点计算对称 split-conformal 扩张量，再应用到测试段 P10-P90 区间；P50 不变。
 8. 保存模型到 `models/convlstm.pt`,保存图到 `figures/convlstm/forecast_interval.png`。
-9. 保存各测点 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 interval score 到 `figures/convlstm/forecast_metrics.csv`。
-10. 按日期连续切分三个测试块，将同组指标保存到 `figures/convlstm/forecast_period_metrics.csv`，用于检查测试期内的性能漂移。
-11. 打印总体误差、持久性基线、区间质量和分位数交叉统计。
+9. 将各测点校准前后指标保存到 `figures/convlstm/forecast_metrics.csv`。
+10. 按日期连续切分三个测试块，将校准前后同组指标保存到 `figures/convlstm/forecast_period_metrics.csv`。
+11. 将拟合/校准/测试边界、测点 `qhat` 及校准前后覆盖率、宽度和评分保存到 `figures/convlstm/forecast_calibration_metrics.csv`。
+12. 打印总体误差、持久性基线、区间质量和分位数交叉统计。
 
 R2 与 NSE 在当前平方误差定义下数值相同。累计位移具有强时间趋势，两者可能接近 1，因此只作补充指标；模型增量价值主要依据 MAE/RMSE 相对持久性基线的变化，区间质量同时依据 pinball loss、覆盖率、宽度和 interval score 判断。
+
+当前校准是时间有序、按测点独立估计的探索性 split-conformal 校准。监测序列存在自相关和分布漂移，不满足经典 exchangeability 假设，因此 80% 是评价目标而不是有限样本覆盖保证；禁止根据测试集反向调整校准比例或 `qhat`。
 
 ### 5. NGBoost 预警等级分类
 

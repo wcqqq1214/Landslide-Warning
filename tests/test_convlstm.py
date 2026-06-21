@@ -19,10 +19,12 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(convlstm.OUT_PNG.parent, expected)
         self.assertEqual(convlstm.OUT_METRICS.parent, expected)
         self.assertEqual(convlstm.OUT_PERIOD_METRICS.parent, expected)
+        self.assertEqual(convlstm.OUT_CALIBRATION_METRICS.parent, expected)
 
     def test_default_lookback_matches_thesis_max_window(self):
         self.assertEqual(convlstm.HORIZON, 1)
         self.assertEqual(convlstm.LOOKBACK, 7)
+        self.assertEqual(convlstm.CAL_FRAC, 0.2)
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ9"], 7)
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ1"], 2)
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ3"], 2)
@@ -109,25 +111,76 @@ class ConvLSTMForecastTests(unittest.TestCase):
         np.testing.assert_allclose(scale, train_delta.std(axis=0), rtol=1e-12)
         self.assertLess(scale[0], scale[1])
 
-    def test_conformal_interval_calibration_expands_bounds(self):
-        p10 = np.array([[0.0, 0.0]])
-        p50 = np.array([[0.5, 0.5]])
-        p90 = np.array([[1.0, 1.0]])
-        y_true = np.array([[0.5, 1.4]])
+    def test_conformal_interval_calibration_is_station_specific(self):
+        p10 = np.array([[0.0, 0.0], [0.0, 0.0]])
+        p90 = np.array([[1.0, 1.0], [1.0, 1.0]])
+        y_true = np.array([[0.5, 1.4], [0.5, 1.3]])
 
         p10_cal, p90_cal, qhat = convlstm.calibrate_intervals(
             p10,
-            p50,
             p90,
             y_true,
             target_coverage=0.8,
         )
 
-        self.assertAlmostEqual(qhat, 0.4)
-        self.assertTrue(np.all(p10_cal <= p50))
-        self.assertTrue(np.all(p50 <= p90_cal))
+        np.testing.assert_allclose(qhat, [0.0, 0.4])
+        np.testing.assert_allclose(p10_cal[:, 0], p10[:, 0])
+        np.testing.assert_allclose(p90_cal[:, 0], p90[:, 0])
         self.assertLessEqual(p10_cal[0, 0], p10[0, 0])
         self.assertGreaterEqual(p90_cal[0, 1], y_true[0, 1])
+
+    def test_conformal_interval_calibration_rejects_invalid_target(self):
+        values = np.ones((2, 1))
+
+        with self.assertRaises(ValueError):
+            convlstm.calibrate_intervals(values, values, values, 1.0)
+
+    def test_chronological_calibration_split_keeps_latest_training_windows(self):
+        n_fit, n_calibration = convlstm.chronological_fit_calibration_split(
+            1138,
+            0.2,
+        )
+
+        self.assertEqual(n_fit, 911)
+        self.assertEqual(n_calibration, 227)
+        self.assertEqual(n_fit + n_calibration, 1138)
+
+    def test_chronological_calibration_split_rejects_invalid_fraction(self):
+        with self.assertRaises(ValueError):
+            convlstm.chronological_fit_calibration_split(100, 1.0)
+
+    def test_model_input_scaling_ignores_post_fit_values(self):
+        df = pd.DataFrame({
+            column: [1.0, 2.0, 3.0, 4.0]
+            for column in convlstm.EXOG_COLS
+        })
+        disp = np.array([
+            [1.0, 10.0],
+            [2.0, 20.0],
+            [3.0, 30.0],
+            [4.0, 40.0],
+        ])
+        modified_df = df.copy()
+        modified_df.loc[2:, convlstm.EXOG_COLS] = 10000.0
+        modified_disp = disp.copy()
+        modified_disp[2:] = 10000.0
+        def interp(values):
+            means = values.mean(axis=1)[:, None, None]
+            return np.broadcast_to(
+                means,
+                (len(values), convlstm.GRID_H, convlstm.GRID_W),
+            )
+
+        inputs, scale = convlstm.make_model_inputs(df, disp, 2, interp)
+        modified_inputs, modified_scale = convlstm.make_model_inputs(
+            modified_df,
+            modified_disp,
+            2,
+            interp,
+        )
+
+        np.testing.assert_allclose(inputs[:2], modified_inputs[:2])
+        np.testing.assert_allclose(scale, modified_scale)
 
     def test_station_metric_rows_include_each_station(self):
         y_true = np.array([[1.0, 2.0], [3.0, 5.0]])
@@ -149,6 +202,7 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual([row["station"] for row in rows], ["MJ9", "MJ1"])
         self.assertEqual(rows[0]["thesis_window"], 7)
         self.assertEqual(rows[1]["thesis_window"], "")
+        self.assertEqual(rows[0]["interval_variant"], "calibrated")
         self.assertIn("rmse_skill_vs_baseline", rows[0])
 
     def test_period_metrics_keep_contiguous_date_blocks(self):
@@ -172,6 +226,7 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(len(rows), 3)
         self.assertEqual(rows[0]["start_date"], "2020-01-01")
         self.assertEqual(rows[0]["end_date"], "2020-01-02")
+        self.assertEqual(rows[0]["interval_variant"], "calibrated")
         self.assertEqual(rows[-1]["start_date"], "2020-01-05")
         self.assertEqual(rows[-1]["n_dates"], 2)
 

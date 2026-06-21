@@ -6,8 +6,9 @@
 | --- | --- | --- | --- |
 | `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
 | `convlstm/forecast_interval.png` | 展示 8 个测点的一日位移 P10/P50/P90 预测区间 | 最终图 | 位移预测主图 |
-| `convlstm/forecast_metrics.csv` | 保存各测点 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；R2/NSE 仅作补充 |
-| `convlstm/forecast_period_metrics.csv` | 将 287 日测试段按日期连续分为三个块并保存同组指标 | 时间稳定性审计表 | 检查总体均值是否掩盖后期性能退化，不代替滚动验证或置信区间 |
+| `convlstm/forecast_metrics.csv` | 保存各测点校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；用 `interval_variant` 区分原始和校准区间，R2/NSE 仅作补充 |
+| `convlstm/forecast_period_metrics.csv` | 将 287 日测试段按日期连续分为三个块并保存校准前后同组指标 | 时间稳定性审计表 | 检查总体均值是否掩盖后期性能退化，不代替滚动验证或置信区间 |
+| `convlstm/forecast_calibration_metrics.csv` | 保存拟合/校准/测试日期边界、测点独立 `qhat` 及校准前后覆盖率、宽度、pinball 和 interval score | 校准审计表 | 证明校准期早于测试期并量化宽度-覆盖率代价；不提供时间序列下的严格覆盖保证 |
 | `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |
 | `ngboost/warning_metrics.csv` | 保存 accuracy、F1、Brier、各等级支持数和召回率 | 最终评估表 | 支撑状态识别结果；无支持等级应写“不可评价” |
 | `ngboost/warning_probabilities.csv` | 保存测试段逐日真实等级、预测等级和四级概率 | 逐日审计表 | 供概率校准、误差复核和融合旁证使用 |
