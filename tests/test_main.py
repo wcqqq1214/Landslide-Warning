@@ -34,6 +34,20 @@ class PipelineTests(unittest.TestCase):
         self.assertNotIn("convlstm", [stage.name for stage in stages])
         self.assertEqual(len(stages), len(pipeline.STAGES) - 2)
 
+    def test_convlstm_rolling_stage_follows_single_holdout_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        rolling_stage = pipeline.STAGE_BY_NAME["convlstm-rolling"]
+
+        self.assertEqual(names.index("convlstm-rolling"), names.index("convlstm") + 1)
+        self.assertEqual(
+            rolling_stage.outputs,
+            (
+                "figures/convlstm/rolling_validation_folds.csv",
+                "figures/convlstm/rolling_validation_metrics.csv",
+                "figures/convlstm/rolling_validation_predictions.csv",
+            ),
+        )
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

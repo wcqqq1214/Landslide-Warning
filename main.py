@@ -77,6 +77,17 @@ STAGES = (
         ),
     ),
     Stage(
+        "convlstm-rolling",
+        "code/convlstm_rolling_validation.py",
+        "执行 ConvLSTM 扩展窗口滚动时间验证",
+        inputs=("data/features.csv", "data/station_coords.csv"),
+        outputs=(
+            "figures/convlstm/rolling_validation_folds.csv",
+            "figures/convlstm/rolling_validation_metrics.csv",
+            "figures/convlstm/rolling_validation_predictions.csv",
+        ),
+    ),
+    Stage(
         "ngboost",
         "code/ngboost_warn.py",
         "训练 NGBoost 预警概率模型",

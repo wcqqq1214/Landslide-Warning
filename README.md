@@ -20,15 +20,16 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── tangent_angle.py            # 等速阶段估计、改进切线角和持续性判级
 │   ├── warning_thresholds.py       # 测点动态 V0 阈值和四级判级
 │   ├── warning_events.py           # 未来 onset 标签与事件级评价工具
-│   ├── onset_analysis.py           # 1/3/7 日标签和事件充分性盘点
-│   ├── shap_select.py              # 管线第 2 段:SHAP 候选指标解释
+│   ├── onset_analysis.py           # 管线第 2 段:1/3/7 日标签和事件盘点
+│   ├── shap_select.py              # 管线第 3 段:SHAP 候选指标解释
 │   ├── grid_interp.py              # 测点坐标读取 + IDW 网格插值
 │   ├── block_bootstrap.py           # 连续日期块重采样与百分位区间
-│   ├── convlstm.py                 # 管线第 3 段:ConvLSTM 位移区间预测
-│   ├── ngboost_warn.py             # 管线第 4 段:NGBoost 预警分类
-│   ├── warning_fusion.py           # 管线第 5 段:V0 主判 + 切线角复核
-│   ├── tangent_stage_review.py     # 等速阶段专家复核图与候选对比表
-│   └── sensitivity_analysis.py     # V0 与切线角预设参数稳健性分析
+│   ├── convlstm.py                 # 管线第 4 段:ConvLSTM 位移区间预测
+│   ├── convlstm_rolling_validation.py # 管线第 5 段:ConvLSTM 滚动时间验证
+│   ├── ngboost_warn.py             # 管线第 6 段:NGBoost 预警分类
+│   ├── warning_fusion.py           # 管线第 7 段:V0 主判 + 切线角复核
+│   ├── sensitivity_analysis.py     # 管线第 8 段:预设参数稳健性分析
+│   └── tangent_stage_review.py     # 管线第 9 段:等速阶段专家复核
 ├── config/
 │   └── tangent_reference_stages.csv # 人工等速阶段配置接口 (当前均为候选状态)
 ├── data/
@@ -46,7 +47,10 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   ├── forecast_metrics.csv    # 各测点预测指标
     │   ├── forecast_period_metrics.csv # 连续测试时段指标
     │   ├── forecast_calibration_metrics.csv # 校准前后审计表
-    │   └── forecast_bootstrap_ci.csv # 配对日期块 95% 置信区间
+    │   ├── forecast_bootstrap_ci.csv # 配对日期块 95% 置信区间
+    │   ├── rolling_validation_folds.csv # 滚动折边界和参数
+    │   ├── rolling_validation_metrics.csv # 逐折和逐测点指标
+    │   └── rolling_validation_predictions.csv # 逐日滚动预测
     ├── shap/
     │   ├── shap_reg_summary.png    # NGBoost 回归 SHAP 因子贡献图
     │   ├── shap_cls_summary.png    # NGBoost 预警分类 SHAP 因子贡献图
@@ -139,6 +143,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
 | `code/block_bootstrap.py` | 日期数、块长和随机数生成器 | 连续日期索引、百分位区间 | 实现非循环重叠 moving-block bootstrap 基础操作 |
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/*` | 将 8 测点位移插值为 `4 x 7` 网格，训练 ConvLSTM 输出 P10/P50/P90 位移预测区间并估计条件性时间块置信区间 |
+| `code/convlstm_rolling_validation.py` | `data/features.csv`, `data/station_coords.csv` | `figures/convlstm/rolling_validation_*.csv` | 保持模型结构不变，以三个非重叠 287 日测试折执行扩展窗口验证并保存逐日预测 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 | `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
@@ -158,6 +163,9 @@ flowchart TD
     H --> F
     F --> I["models/convlstm.pt"]
     F --> J["figures/convlstm/<br/>预测区间和指标"]
+    C --> T["code/convlstm_rolling_validation.py<br/>滚动时间验证"]
+    G --> T
+    T --> U["figures/convlstm/<br/>滚动折、指标和逐日预测"]
     C --> K["code/ngboost_warn.py<br/>预警等级分类"]
     A --> K
     K --> L["models/ngboost.pkl"]
@@ -178,10 +186,11 @@ flowchart TD
 2. `onset_analysis.py` 生成 1/3/7 日未来标签并核对独立事件数量。
 3. `shap_select.py` 基于原始监测表构造 5 天滞后样本，用 NGBoost + SHAP 分析位移增量和动态 V0 当日状态的模型贡献。
 4. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
-5. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
-6. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
-7. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
-8. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
+5. `convlstm_rolling_validation.py` 保持同一模型结构，在三个连续且互不重叠的 287 日测试折上执行扩展窗口验证。
+6. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
+7. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
+8. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
+9. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
 
 ## 运行方式
 
@@ -205,7 +214,7 @@ uv run python main.py
 uv run python main.py --list
 uv run python main.py --dry-run
 uv run python main.py --stage features --stage onset
-uv run python main.py --skip shap --skip convlstm
+uv run python main.py --skip shap --skip convlstm --skip convlstm-rolling
 ```
 
 `--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
@@ -309,6 +318,8 @@ R2 与 NSE 在当前平方误差定义下数值相同。累计位移具有强时
 当前校准是时间有序、按测点独立估计的探索性 split-conformal 校准。监测序列存在自相关和分布漂移，不满足经典 exchangeability 假设，因此 80% 是评价目标而不是有限样本覆盖保证；禁止根据测试集反向调整校准比例或 `qhat`。
 
 时间块区间固定已拟合模型和 `qhat`，每次同步抽取同一连续日期上的 8 个测点，并在同一重采样内比较 ConvLSTM 与持久性基线、校准与原始区间。主分析块长为输入窗口两倍的 14 日，7 日和 30 日只作预设敏感性分析，均执行 1000 次重采样。该区间只量化当前测试样本在局部平稳假设下的条件性抽样不确定性，不包括训练、调参或未来分布漂移的不确定性。
+
+`code/convlstm_rolling_validation.py` 另外执行三个扩展窗口折。每折测试长度固定为与现有留出段相同的 287 日，三个测试段互不重叠；训练历史逐折扩展，训练末 20% 独立用于测点级区间校准。第一至第三折的 RMSE 分别为 2.123/0.492/0.318 mm，持久性基线为 0.245/0.120/0.340 mm。模型只在第三折超过基线，因此当前不能声称具有稳定的跨时期增量价值。
 
 ### 5. NGBoost 预警等级分类
 
