@@ -192,6 +192,8 @@ alpha(t) = arctan(v(t) / v_eq)
 - 由于相邻日期相关且同日测点不独立，不能使用逐行独立 bootstrap。
 - 样本级指标采用按日期连续块重采样；事件级指标采用事件重采样。
 - 默认至少 1000 次重采样，并报告重采样单位、块长度和随机种子。
+- ConvLSTM 使用非循环重叠 moving-block bootstrap：同一抽中日期的 8 个测点同步进入样本，模型与持久性基线、校准与原始区间在同一重采样内配对比较。14 日块长为预设主分析，7 日和 30 日分别对应模型输入窗口和月尺度敏感性分析，不根据结果选择块长。
+- ConvLSTM 重采样时固定已训练模型和校准期 `qhat`，因此区间只表示当前测试样本在局部平稳假设下的条件性不确定性，不包含模型训练、参数选择或未来分布漂移。发现明显时间漂移时必须同时报告分时段结果，不得用窄区间淡化漂移证据。
 - 当事件数过少导致区间不稳定时，以事件计数、逐事件结果和定性限制为主，不进行过度统计推断。
 
 ## 9. NGBoost 调参与停止规则
@@ -235,7 +237,7 @@ alpha(t) = arctan(v(t) / v_eq)
 | 等速阶段复核支持 | 已实现；复核图和含等级/融合影响的审计表已生成，人工配置已接入特征工程并执行训练期校验，当前无已批准阶段 |
 | 1/3/7 日未来 onset 标签与事件清单 | 已实现；只有 3 个可预测事件 |
 | 未来 onset NGBoost 验证与调参 | 暂停；当前独立事件不足 |
-| 时间块置信区间与概率校准图 | 未实现 |
+| 时间块置信区间与概率校准图 | ConvLSTM 时间块区间已实现；预警指标区间和概率校准图未实现 |
 | 外部时段或跨滑坡验证 | 未实现 |
 
 ## 13. 参考规范
@@ -244,6 +246,8 @@ alpha(t) = arctan(v(t) / v_eq)
 - Lundberg and Lee (2017), A Unified Approach to Interpreting Model Predictions.
 - Saito and Rehmsmeier (2015), The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets.
 - Cerqueira et al. (2020), Evaluating Time Series Forecasting Models: An Empirical Study on Performance Estimation Methods.
+- Künsch, H. R. (1989), The Jackknife and the Bootstrap for General Stationary Observations. The Annals of Statistics, 17(3), 1217-1241. https://doi.org/10.1214/aos/1176347265.
+- Politis, D. N., and White, H. (2004), Automatic Block-Length Selection for the Dependent Bootstrap. Econometric Reviews, 23(1), 53-70. https://doi.org/10.1081/ETC-120028836. 本研究未使用事后自动选块长，而是预先固定主块长并报告敏感性；勘误见 Patton, Politis, and White (2009), https://doi.org/10.1080/07474930802459016.
 - Collins et al. (2024), TRIPOD+AI Statement. 该规范来自临床预测研究，在本项目中仅作为预测模型透明报告清单参考。
 - Chen, M., Feng, A., Wei, W., Jiang, Q. (2024). Statistical analysis of long-term deformations and determination of warning thresholds for near-dam reservoir bank slopes. Bulletin of Engineering Geology and the Environment, 83, 437. https://doi.org/10.1007/s10064-024-03928-y. 仓库原文：`literature/chen2024-Statistical analysis of long-term deformations and determination of warning thresholds for near-dam reservoir bank slopes.pdf`。
 - 许强, 曾裕平, 钱江澎, 王承俊, 何成江. 一种改进的切线角及对应的滑坡预警判据. 地质通报, 2009, 28(4): 501-505. 仓库原文：`literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf`。

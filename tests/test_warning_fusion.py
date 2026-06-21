@@ -7,7 +7,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
-import warning_fusion
+import warning_fusion  # noqa: E402
 
 
 class WarningFusionTests(unittest.TestCase):

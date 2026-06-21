@@ -55,6 +55,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
+| `code/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `convlstm.py` 调用 |
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
@@ -84,6 +85,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 - 损失：分位数 pinball loss。
 - 评价：按测点及三个连续测试时段报告点误差、持久性基线、分位数损失、覆盖率、宽度和 80% interval score；R2/NSE 仅作趋势敏感的补充指标。
 - 校准：原训练窗口前 80% 用于拟合、后 20% 连续日期用于按测点对称 split-conformal 校准；标准化和增量尺度只拟合于前者。时间自相关使经典覆盖保证不成立，因此结果按探索性校准报告。
+- 不确定性：固定模型与校准量，以连续日期块同步重采样所有测点；14 日为预设主块长，7/30 日为敏感性分析，各 1000 次。输出模型-基线及校准-原始的配对差值，不把两个单独区间是否重叠当作差异检验。
 
 ### 4.3 NGBoost
 
@@ -144,6 +146,7 @@ uv run --with pytest pytest -q
 ## 8. 当前已知限制
 
 - ConvLSTM 已启用独立时间校准，但 P10-P90 测试覆盖率仍低于名义 80%，最后连续测试块退化明显。
+- ConvLSTM 已输出日期块 95% 置信区间，但其局部平稳假设与已观察到的后期漂移冲突；区间不包含训练过程和未来制度变化的不确定性。
 - NGBoost 未超过昨日状态持续性基线。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
 - 自动等速段尚未由专家阶段复核；15/30/60 日候选窗口会为关键测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），人工配置接口已就绪（`config/tangent_reference_stages.csv`），等待专家独立确定等速阶段。

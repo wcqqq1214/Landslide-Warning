@@ -20,6 +20,7 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(convlstm.OUT_METRICS.parent, expected)
         self.assertEqual(convlstm.OUT_PERIOD_METRICS.parent, expected)
         self.assertEqual(convlstm.OUT_CALIBRATION_METRICS.parent, expected)
+        self.assertEqual(convlstm.OUT_BOOTSTRAP_CI.parent, expected)
 
     def test_default_lookback_matches_thesis_max_window(self):
         self.assertEqual(convlstm.HORIZON, 1)
@@ -28,6 +29,12 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ9"], 7)
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ1"], 2)
         self.assertEqual(convlstm.THESIS_WINDOWS["MJ3"], 2)
+
+    def test_bootstrap_protocol_is_predeclared(self):
+        self.assertEqual(convlstm.BOOTSTRAP_RESAMPLES, 1000)
+        self.assertEqual(convlstm.BOOTSTRAP_BLOCK_LENGTHS, (7, 14, 30))
+        self.assertEqual(convlstm.BOOTSTRAP_PRIMARY_BLOCK_LENGTH, 14)
+        self.assertEqual(convlstm.BOOTSTRAP_CONFIDENCE_LEVEL, 0.95)
 
     def test_forecast_outputs_ordered_quantiles(self):
         model = convlstm.ConvLSTMForecast(
@@ -79,6 +86,18 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(metrics["p50_gt_p90"], 1)
         self.assertEqual(metrics["p10_gt_p50"], 1)
         self.assertGreater(metrics["baseline_rmse"], 0)
+        self.assertAlmostEqual(
+            metrics["rmse_difference_vs_baseline"],
+            metrics["model_rmse"] - metrics["baseline_rmse"],
+        )
+        self.assertAlmostEqual(
+            metrics["mae_difference_vs_baseline"],
+            metrics["model_mae"] - metrics["baseline_mae"],
+        )
+        self.assertAlmostEqual(
+            metrics["mae_skill_vs_baseline"],
+            1.0 - metrics["model_mae"] / metrics["baseline_mae"],
+        )
 
     def test_forecast_interval_metrics_match_hand_calculation(self):
         y_true = np.array([1.0, 2.0])
@@ -229,6 +248,117 @@ class ConvLSTMForecastTests(unittest.TestCase):
         self.assertEqual(rows[0]["interval_variant"], "calibrated")
         self.assertEqual(rows[-1]["start_date"], "2020-01-05")
         self.assertEqual(rows[-1]["n_dates"], 2)
+
+    def test_bootstrap_ci_rows_are_deterministic_and_paired(self):
+        dates = pd.date_range("2020-01-01", periods=6)
+        y_true = np.arange(12, dtype=float).reshape(6, 2)
+        last = y_true - 1.0
+        signed_error = np.tile(np.array([[-0.3], [0.3]]), (3, 2))
+        p50 = y_true + signed_error
+        raw_p10 = p50 - 0.2
+        raw_p90 = p50 + 0.2
+        calibrated_p10 = p50 - 0.6
+        calibrated_p90 = p50 + 0.6
+        kwargs = {
+            "block_lengths": (2,),
+            "resamples": 20,
+            "confidence_level": 0.95,
+            "seed": 11,
+            "primary_block_length": 2,
+        }
+
+        first = convlstm.bootstrap_ci_rows(
+            raw_p10,
+            p50,
+            raw_p90,
+            calibrated_p10,
+            calibrated_p90,
+            y_true,
+            last,
+            ["A", "B"],
+            dates,
+            **kwargs,
+        )
+        second = convlstm.bootstrap_ci_rows(
+            raw_p10,
+            p50,
+            raw_p90,
+            calibrated_p10,
+            calibrated_p90,
+            y_true,
+            last,
+            ["A", "B"],
+            dates,
+            **kwargs,
+        )
+
+        self.assertEqual(first, second)
+        self.assertEqual(len(first), 63)
+        self.assertTrue(all(row["primary_block_length"] for row in first))
+        self.assertTrue(all(row["n_dates"] == 6 for row in first))
+        self.assertTrue(all(not row["model_refit_each_resample"] for row in first))
+        self.assertTrue(all(not row["qhat_reestimated_each_resample"] for row in first))
+        self.assertEqual(
+            {row["resampling_unit"] for row in first},
+            {"date_block_all_stations_paired"},
+        )
+        coverage = next(
+            row
+            for row in first
+            if row["scope"] == "overall"
+            and row["interval_variant"] == "calibrated"
+            and row["metric"] == "coverage"
+        )
+        self.assertAlmostEqual(coverage["estimate"], 1.0)
+        coverage_gap_change = next(
+            row
+            for row in first
+            if row["scope"] == "overall"
+            and row["interval_variant"] == "calibrated_minus_raw"
+            and row["metric"] == "absolute_coverage_gap"
+        )
+        self.assertAlmostEqual(coverage_gap_change["estimate"], -0.6)
+        rmse_difference = next(
+            row
+            for row in first
+            if row["scope"] == "overall"
+            and row["metric"] == "rmse_difference_vs_baseline"
+        )
+        self.assertEqual(rmse_difference["interval_variant"], "not_applicable")
+        self.assertLess(rmse_difference["estimate"], 0.0)
+
+    def test_bootstrap_ci_rows_reject_invalid_contracts(self):
+        values = np.ones((4, 2))
+        dates = pd.date_range("2020-01-01", periods=4)
+
+        with self.assertRaises(ValueError):
+            convlstm.bootstrap_ci_rows(
+                values,
+                values,
+                values[:, :1],
+                values,
+                values,
+                values,
+                values,
+                ["A", "B"],
+                dates,
+                block_lengths=(2,),
+                primary_block_length=2,
+            )
+        with self.assertRaises(ValueError):
+            convlstm.bootstrap_ci_rows(
+                values,
+                values,
+                values,
+                values,
+                values,
+                values,
+                values,
+                ["A", "B"],
+                dates.delete(1).append(pd.DatetimeIndex([dates[-1] + pd.Timedelta(days=1)])),
+                block_lengths=(2,),
+                primary_block_length=2,
+            )
 
 
 if __name__ == "__main__":

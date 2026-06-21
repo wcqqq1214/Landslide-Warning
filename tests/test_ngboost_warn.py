@@ -8,7 +8,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
-import ngboost_warn
+import ngboost_warn  # noqa: E402
 
 
 class NgboostWarnTests(unittest.TestCase):

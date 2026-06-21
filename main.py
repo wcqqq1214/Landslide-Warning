@@ -73,6 +73,7 @@ STAGES = (
             "figures/convlstm/forecast_metrics.csv",
             "figures/convlstm/forecast_period_metrics.csv",
             "figures/convlstm/forecast_calibration_metrics.csv",
+            "figures/convlstm/forecast_bootstrap_ci.csv",
         ),
     ),
     Stage(

@@ -8,8 +8,8 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
-import tangent_angle
-import features
+import tangent_angle  # noqa: E402
+import features  # noqa: E402
 
 
 class TangentAngleRateTests(unittest.TestCase):

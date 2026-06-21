@@ -10,8 +10,8 @@ from ngboost import NGBClassifier, NGBRegressor
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT / "code"))
 
-import shap_select
-import warning_thresholds
+import shap_select  # noqa: E402
+import warning_thresholds  # noqa: E402
 
 
 class ShapSelectTests(unittest.TestCase):

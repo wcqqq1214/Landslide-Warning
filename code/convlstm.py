@@ -11,6 +11,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 sys.path.append(str(Path(__file__).resolve().parent))
+from block_bootstrap import moving_block_indices, percentile_interval
 from grid_interp import load_coords, make_interpolator, GRID_H, GRID_W
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -21,6 +22,7 @@ OUT_PNG = FIG_DIR / "forecast_interval.png"
 OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
 OUT_CALIBRATION_METRICS = FIG_DIR / "forecast_calibration_metrics.csv"
+OUT_BOOTSTRAP_CI = FIG_DIR / "forecast_bootstrap_ci.csv"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
@@ -38,6 +40,35 @@ KERNEL = 3
 EPOCHS = 120
 LR = 1e-3
 SEED = 0
+BOOTSTRAP_RESAMPLES = 1000
+BOOTSTRAP_BLOCK_LENGTHS = (7, 14, 30)
+BOOTSTRAP_PRIMARY_BLOCK_LENGTH = 14
+BOOTSTRAP_CONFIDENCE_LEVEL = 0.95
+BOOTSTRAP_SEED = 20260621
+
+POINT_BOOTSTRAP_METRICS = (
+    "model_rmse",
+    "baseline_rmse",
+    "rmse_difference_vs_baseline",
+    "rmse_skill_vs_baseline",
+    "model_mae",
+    "baseline_mae",
+    "mae_difference_vs_baseline",
+    "mae_skill_vs_baseline",
+)
+INTERVAL_BOOTSTRAP_METRICS = (
+    "coverage",
+    "mean_width",
+    "mean_pinball",
+    "interval_score_80",
+)
+CALIBRATION_COMPARISON_BOOTSTRAP_METRICS = (
+    "coverage",
+    "absolute_coverage_gap",
+    "mean_width",
+    "mean_pinball",
+    "interval_score_80",
+)
 
 torch.manual_seed(SEED)
 np.random.seed(SEED)
@@ -209,6 +240,15 @@ def compute_forecast_metrics(p10, p50, p90, y_true, last):
     metrics["rmse_skill_vs_baseline"] = (
         float(1.0 - model_rmse / baseline_rmse) if baseline_rmse > 0 else np.nan
     )
+    metrics["rmse_difference_vs_baseline"] = model_rmse - baseline_rmse
+    metrics["mae_difference_vs_baseline"] = (
+        metrics["model_mae"] - metrics["baseline_mae"]
+    )
+    metrics["mae_skill_vs_baseline"] = (
+        float(1.0 - metrics["model_mae"] / metrics["baseline_mae"])
+        if metrics["baseline_mae"] > 0
+        else np.nan
+    )
     return metrics
 
 
@@ -348,6 +388,228 @@ def calibration_metric_rows(
                     metric_name
                 ]
         rows.append(row)
+    return rows
+
+
+def bootstrap_ci_rows(
+    raw_p10,
+    p50,
+    raw_p90,
+    calibrated_p10,
+    calibrated_p90,
+    y_true,
+    last,
+    station_names,
+    test_dates,
+    *,
+    block_lengths=BOOTSTRAP_BLOCK_LENGTHS,
+    resamples=BOOTSTRAP_RESAMPLES,
+    confidence_level=BOOTSTRAP_CONFIDENCE_LEVEL,
+    seed=BOOTSTRAP_SEED,
+    primary_block_length=BOOTSTRAP_PRIMARY_BLOCK_LENGTH,
+    target_coverage=TARGET_COVERAGE,
+):
+    """Estimate paired metric uncertainty with date-level moving blocks."""
+    arrays = [raw_p10, p50, raw_p90, calibrated_p10, calibrated_p90, y_true, last]
+    arrays = [np.asarray(values, dtype=float) for values in arrays]
+    expected_shape = arrays[0].shape
+    if any(values.shape != expected_shape for values in arrays):
+        raise ValueError("bootstrap 输入数组形状必须一致")
+    if len(expected_shape) != 2 or expected_shape[0] == 0:
+        raise ValueError("bootstrap 输入必须是非空的日期 x 测点二维数组")
+    if expected_shape[1] != len(station_names):
+        raise ValueError("station_names 与预测数组测点数不一致")
+    if len(set(station_names)) != len(station_names):
+        raise ValueError("station_names 不得重复")
+    if resamples <= 0:
+        raise ValueError("resamples 必须为正数")
+    if not 0 < confidence_level < 1:
+        raise ValueError("confidence_level 必须在 0 和 1 之间")
+    if not 0 < target_coverage < 1:
+        raise ValueError("target_coverage 必须在 0 和 1 之间")
+
+    dates = pd.DatetimeIndex(pd.to_datetime(test_dates))
+    if len(dates) != expected_shape[0]:
+        raise ValueError("test_dates 与预测日期数不一致")
+    if dates.has_duplicates or not dates.is_monotonic_increasing:
+        raise ValueError("test_dates 必须严格递增且不得重复")
+    if len(dates) > 1 and not np.all(np.diff(dates.asi8) == pd.Timedelta(days=1).value):
+        raise ValueError("以天为单位的 block bootstrap 要求测试日期逐日连续")
+
+    block_lengths = tuple(int(length) for length in block_lengths)
+    if not block_lengths:
+        raise ValueError("block_lengths 不得为空")
+    if len(set(block_lengths)) != len(block_lengths):
+        raise ValueError("block_lengths 不得重复")
+    if any(length < 1 or length > len(dates) for length in block_lengths):
+        raise ValueError("block_lengths 必须在 1 和测试日期数之间")
+    if int(primary_block_length) not in block_lengths:
+        raise ValueError("primary_block_length 必须包含在 block_lengths 中")
+
+    raw_p10, p50, raw_p90, calibrated_p10, calibrated_p90, y_true, last = arrays
+    scopes = [("overall", None), *zip(station_names, range(len(station_names)))]
+
+    def select_scope(values, indices, station_index):
+        selected = values[indices]
+        return selected if station_index is None else selected[:, station_index]
+
+    rows = []
+    for block_length in block_lengths:
+        effective_seed = seed + int(block_length)
+        rng = np.random.default_rng(effective_seed)
+        samples = {}
+        for scope, station_index in scopes:
+            for metric_name in POINT_BOOTSTRAP_METRICS:
+                samples[(scope, "not_applicable", metric_name)] = []
+            for variant in ("raw", "calibrated"):
+                for metric_name in INTERVAL_BOOTSTRAP_METRICS:
+                    samples[(scope, variant, metric_name)] = []
+            for metric_name in CALIBRATION_COMPARISON_BOOTSTRAP_METRICS:
+                samples[(scope, "calibrated_minus_raw", metric_name)] = []
+
+        for _ in range(resamples):
+            indices = moving_block_indices(len(dates), block_length, rng)
+            for scope, station_index in scopes:
+                raw_metrics = compute_forecast_metrics(
+                    select_scope(raw_p10, indices, station_index),
+                    select_scope(p50, indices, station_index),
+                    select_scope(raw_p90, indices, station_index),
+                    select_scope(y_true, indices, station_index),
+                    select_scope(last, indices, station_index),
+                )
+                calibrated_metrics = compute_forecast_metrics(
+                    select_scope(calibrated_p10, indices, station_index),
+                    select_scope(p50, indices, station_index),
+                    select_scope(calibrated_p90, indices, station_index),
+                    select_scope(y_true, indices, station_index),
+                    select_scope(last, indices, station_index),
+                )
+                for metric_name in POINT_BOOTSTRAP_METRICS:
+                    samples[(scope, "not_applicable", metric_name)].append(
+                        raw_metrics[metric_name]
+                    )
+                for metric_name in INTERVAL_BOOTSTRAP_METRICS:
+                    samples[(scope, "raw", metric_name)].append(
+                        raw_metrics[metric_name]
+                    )
+                    samples[(scope, "calibrated", metric_name)].append(
+                        calibrated_metrics[metric_name]
+                    )
+                calibration_comparison = {
+                    metric_name: calibrated_metrics[metric_name]
+                    - raw_metrics[metric_name]
+                    for metric_name in (
+                        "coverage",
+                        "mean_width",
+                        "mean_pinball",
+                        "interval_score_80",
+                    )
+                }
+                calibration_comparison["absolute_coverage_gap"] = (
+                    abs(calibrated_metrics["coverage"] - target_coverage)
+                    - abs(raw_metrics["coverage"] - target_coverage)
+                )
+                for metric_name in CALIBRATION_COMPARISON_BOOTSTRAP_METRICS:
+                    samples[(
+                        scope,
+                        "calibrated_minus_raw",
+                        metric_name,
+                    )].append(calibration_comparison[metric_name])
+
+        block_basis = {
+            7: "model_lookback",
+            14: "two_times_lookback_primary",
+            30: "monthly_sensitivity",
+        }.get(int(block_length), "sensitivity")
+        for scope, station_index in scopes:
+            raw_estimate = compute_forecast_metrics(
+                raw_p10 if station_index is None else raw_p10[:, station_index],
+                p50 if station_index is None else p50[:, station_index],
+                raw_p90 if station_index is None else raw_p90[:, station_index],
+                y_true if station_index is None else y_true[:, station_index],
+                last if station_index is None else last[:, station_index],
+            )
+            calibrated_estimate = compute_forecast_metrics(
+                calibrated_p10
+                if station_index is None
+                else calibrated_p10[:, station_index],
+                p50 if station_index is None else p50[:, station_index],
+                calibrated_p90
+                if station_index is None
+                else calibrated_p90[:, station_index],
+                y_true if station_index is None else y_true[:, station_index],
+                last if station_index is None else last[:, station_index],
+            )
+            metric_specs = [
+                ("not_applicable", metric_name, raw_estimate[metric_name])
+                for metric_name in POINT_BOOTSTRAP_METRICS
+            ]
+            metric_specs.extend(
+                ("raw", metric_name, raw_estimate[metric_name])
+                for metric_name in INTERVAL_BOOTSTRAP_METRICS
+            )
+            metric_specs.extend(
+                ("calibrated", metric_name, calibrated_estimate[metric_name])
+                for metric_name in INTERVAL_BOOTSTRAP_METRICS
+            )
+            calibration_comparison_estimate = {
+                metric_name: calibrated_estimate[metric_name]
+                - raw_estimate[metric_name]
+                for metric_name in (
+                    "coverage",
+                    "mean_width",
+                    "mean_pinball",
+                    "interval_score_80",
+                )
+            }
+            calibration_comparison_estimate["absolute_coverage_gap"] = (
+                abs(calibrated_estimate["coverage"] - target_coverage)
+                - abs(raw_estimate["coverage"] - target_coverage)
+            )
+            metric_specs.extend(
+                (
+                    "calibrated_minus_raw",
+                    metric_name,
+                    calibration_comparison_estimate[metric_name],
+                )
+                for metric_name in CALIBRATION_COMPARISON_BOOTSTRAP_METRICS
+            )
+            for variant, metric_name, estimate in metric_specs:
+                lower, upper = percentile_interval(
+                    samples[(scope, variant, metric_name)],
+                    confidence_level,
+                )
+                rows.append({
+                    "scope": scope,
+                    "interval_variant": variant,
+                    "metric": metric_name,
+                    "estimate": estimate,
+                    "ci_lower": lower,
+                    "ci_upper": upper,
+                    "confidence_level": confidence_level,
+                    "target_coverage": target_coverage,
+                    "method": "overlapping_moving_block_bootstrap_percentile",
+                    "resampling_unit": "date_block_all_stations_paired",
+                    "block_length_days": int(block_length),
+                    "block_length_basis": block_basis,
+                    "primary_block_length": (
+                        int(block_length) == int(primary_block_length)
+                    ),
+                    "resamples": int(resamples),
+                    "bootstrap_seed_base": int(seed),
+                    "effective_seed": effective_seed,
+                    "n_dates": len(dates),
+                    "n_stations": (
+                        len(station_names) if station_index is None else 1
+                    ),
+                    "test_start_date": dates[0].date().isoformat(),
+                    "test_end_date": dates[-1].date().isoformat(),
+                    "model_refit_each_resample": False,
+                    "qhat_reestimated_each_resample": False,
+                    "stationarity_note": (
+                        "local_stationarity_required_but_test_drift_detected"
+                    ),
+                })
     return rows
 
 
@@ -562,6 +824,17 @@ def main():
         interval_variant="calibrated",
     )
     period_rows = raw_period_rows + calibrated_period_rows
+    bootstrap_rows = bootstrap_ci_rows(
+        raw_p10,
+        p50,
+        raw_p90,
+        p10,
+        p90,
+        yte_real,
+        last_te,
+        station_names,
+        test_dates,
+    )
 
     OUT_PT.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
@@ -581,6 +854,11 @@ def main():
             "target_coverage": TARGET_COVERAGE,
             "calibration_method": "stationwise_symmetric_split_conformal",
             "split_metadata": split_metadata,
+            "bootstrap_resamples": BOOTSTRAP_RESAMPLES,
+            "bootstrap_block_lengths": BOOTSTRAP_BLOCK_LENGTHS,
+            "bootstrap_primary_block_length": BOOTSTRAP_PRIMARY_BLOCK_LENGTH,
+            "bootstrap_confidence_level": BOOTSTRAP_CONFIDENCE_LEVEL,
+            "bootstrap_seed": BOOTSTRAP_SEED,
         },
         "delta_scale": delta_scale,
         "readout_weights": readout_w,
@@ -608,12 +886,14 @@ def main():
     pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
     pd.DataFrame(period_rows).to_csv(OUT_PERIOD_METRICS, index=False)
     pd.DataFrame(calibration_rows).to_csv(OUT_CALIBRATION_METRICS, index=False)
+    pd.DataFrame(bootstrap_rows).to_csv(OUT_BOOTSTRAP_CI, index=False)
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
     print(f"[convlstm] 测点指标: {OUT_METRICS}")
     print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
     print(f"[convlstm] 校准审计: {OUT_CALIBRATION_METRICS}")
+    print(f"[convlstm] 时间块置信区间: {OUT_BOOTSTRAP_CI}")
     print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
     print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
     print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
