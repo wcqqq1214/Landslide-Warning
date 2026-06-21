@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
   "status": "completed",
-  "started_at": "2026-06-21T18:38:36+08:00",
-  "finished_at": "2026-06-21T18:49:06+08:00",
-  "git_commit": "53aebced51ef5a3f9a17dda03259f3d8b01887e6",
-  "source_sha256": "0b27d04de753e3ed18921646e8d1f9e456d31cbcf7dafedc1c9291237a250419",
+  "started_at": "2026-06-21T19:08:35+08:00",
+  "finished_at": "2026-06-21T19:21:50+08:00",
+  "git_commit": "bdf14e5a1e2db43f2d604283e28742b72b50198f",
+  "source_sha256": "ab2cff16d57883d249476746f59022f69e9da44ad20fc598fe8d411be3aff460",
   "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 630.267,
+  "total_elapsed_seconds": 741.48,
   "failed_stage": null,
   "stages": [
     {
       "name": "features",
       "script": "code/features.py",
       "status": "completed",
-      "elapsed_seconds": 1.446,
+      "elapsed_seconds": 1.47,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -39,7 +39,7 @@
       "name": "onset",
       "script": "code/onset_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 1.202,
+      "elapsed_seconds": 1.188,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -73,7 +73,7 @@
       "name": "shap",
       "script": "code/shap_select.py",
       "status": "completed",
-      "elapsed_seconds": 533.795,
+      "elapsed_seconds": 591.029,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -122,7 +122,7 @@
       "name": "convlstm",
       "script": "code/convlstm.py",
       "status": "completed",
-      "elapsed_seconds": 37.751,
+      "elapsed_seconds": 26.429,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -164,10 +164,40 @@
       "contract_error": null
     },
     {
+      "name": "convlstm-rolling",
+      "script": "code/convlstm_rolling_validation.py",
+      "status": "completed",
+      "elapsed_seconds": 57.062,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/convlstm/rolling_validation_folds.csv",
+          "size_bytes": 1485,
+          "sha256": "099e738917d99673953c2c8d732446613837e5277fd761e806d63a2dcc58250f"
+        },
+        {
+          "path": "figures/convlstm/rolling_validation_metrics.csv",
+          "size_bytes": 28508,
+          "sha256": "fc75ae6a1588391b3c5f7e0c4604e9422d680d49090e50c4602d5296774e6a81"
+        },
+        {
+          "path": "figures/convlstm/rolling_validation_predictions.csv",
+          "size_bytes": 1030721,
+          "sha256": "7b11ea2ac05afadf1678e3a53fa87259603bbf710e0217af8b7732570e8997f6"
+        }
+      ],
+      "contract_error": null
+    },
+    {
       "name": "ngboost",
       "script": "code/ngboost_warn.py",
       "status": "completed",
-      "elapsed_seconds": 5.088,
+      "elapsed_seconds": 4.992,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -207,7 +237,7 @@
       "name": "fusion",
       "script": "code/warning_fusion.py",
       "status": "completed",
-      "elapsed_seconds": 0.192,
+      "elapsed_seconds": 0.214,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -228,7 +258,7 @@
       "name": "sensitivity",
       "script": "code/sensitivity_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 46.549,
+      "elapsed_seconds": 54.154,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -262,7 +292,7 @@
       "name": "tangent-review",
       "script": "code/tangent_stage_review.py",
       "status": "completed",
-      "elapsed_seconds": 4.229,
+      "elapsed_seconds": 4.924,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
