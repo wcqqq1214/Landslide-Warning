@@ -102,8 +102,10 @@ def evenly_spaced_date_sample(X, meta, mask, date_count):
 
 def spearman_from_values(left, right):
     """Compute Spearman correlation without inferential significance tests."""
-    left = pd.Series(left, dtype=float)
-    right = pd.Series(right, dtype=float)
+    left = pd.Series(np.asarray(left, dtype=float))
+    right = pd.Series(np.asarray(right, dtype=float))
+    if len(left) != len(right):
+        raise ValueError("秩相关输入长度不一致")
     valid = left.notna() & right.notna()
     left = left.loc[valid]
     right = right.loc[valid]

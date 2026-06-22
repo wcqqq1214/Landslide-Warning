@@ -86,6 +86,13 @@ class ShapStabilityTests(unittest.TestCase):
             np.isnan(shap_stability.spearman_from_values([1, 1, 1], [1, 2, 3]))
         )
 
+    def test_spearman_direction_ignores_dataframe_row_index(self):
+        feature = pd.Series([1.0, 2.0, 3.0], index=[100, 200, 300])
+
+        result = shap_stability.spearman_from_values(feature, [2.0, 4.0, 8.0])
+
+        self.assertAlmostEqual(result, 1.0)
+
     def test_score_degradation_has_positive_worse_orientation(self):
         self.assertAlmostEqual(
             shap_stability.score_degradation("regression", "mae", 1.0, 1.3),
