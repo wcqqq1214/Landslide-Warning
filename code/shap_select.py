@@ -157,8 +157,9 @@ def make_classifier(n_estimators=300):
     )
 
 
-def train_models(X_train, y_reg_train, y_cls_train, n_estimators=300):
-    reg = NGBRegressor(
+def make_regressor(n_estimators=300):
+    """Create the NGBoost regressor used by SHAP and evaluation."""
+    return NGBRegressor(
         n_estimators=n_estimators,
         learning_rate=0.03,
         minibatch_frac=0.8,
@@ -166,6 +167,10 @@ def train_models(X_train, y_reg_train, y_cls_train, n_estimators=300):
         random_state=SEED,
         verbose=False,
     )
+
+
+def train_models(X_train, y_reg_train, y_cls_train, n_estimators=300):
+    reg = make_regressor(n_estimators=n_estimators)
     cls = make_classifier(n_estimators=n_estimators)
     reg.fit(X_train.values, y_reg_train.values)
     cls.fit(X_train.values, y_cls_train.values)

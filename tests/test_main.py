@@ -48,6 +48,14 @@ class PipelineTests(unittest.TestCase):
             ),
         )
 
+    def test_shap_stability_stage_follows_base_shap_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["shap-stability"]
+
+        self.assertEqual(names.index("shap-stability"), names.index("shap") + 1)
+        self.assertEqual(stage.script, "code/shap_stability.py")
+        self.assertEqual(len(stage.outputs), 9)
+
     def test_convlstm_seed_stage_follows_rolling_validation(self):
         names = [stage.name for stage in pipeline.STAGES]
         seed_stage = pipeline.STAGE_BY_NAME["convlstm-seeds"]

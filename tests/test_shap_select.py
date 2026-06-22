@@ -220,6 +220,15 @@ class ShapSelectTests(unittest.TestCase):
         self.assertIsInstance(reg, NGBRegressor)
         self.assertIsInstance(cls, NGBClassifier)
 
+    def test_model_factories_share_fixed_configuration(self):
+        reg = shap_select.make_regressor(n_estimators=7)
+        cls = shap_select.make_classifier(n_estimators=7)
+
+        self.assertEqual(reg.n_estimators, 7)
+        self.assertEqual(cls.n_estimators, 7)
+        self.assertEqual(reg.random_state.get_state()[1][0], shap_select.SEED)
+        self.assertEqual(cls.random_state.get_state()[1][0], shap_select.SEED)
+
     def test_shap_explainer_uses_fixed_seed(self):
         background = pd.DataFrame({"x": [0.0, 1.0]})
         sample = pd.DataFrame({"x": [0.5]})

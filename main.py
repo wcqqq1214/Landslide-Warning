@@ -63,6 +63,23 @@ STAGES = (
         ),
     ),
     Stage(
+        "shap-stability",
+        "code/shap_stability.py",
+        "执行跨折 SHAP 稳定性和预注册特征组消融",
+        inputs=("data/monitoring_data.csv", "docs/shap_stability_protocol.md"),
+        outputs=(
+            "figures/shap/stability/cross_fold_protocol.csv",
+            "figures/shap/stability/cross_fold_feature_importance.csv",
+            "figures/shap/stability/cross_fold_feature_stability.csv",
+            "figures/shap/stability/cross_fold_rank_stability.csv",
+            "figures/shap/stability/cross_fold_group_importance.csv",
+            "figures/shap/stability/group_ablation_fold_metrics.csv",
+            "figures/shap/stability/group_ablation_summary.csv",
+            "figures/shap/stability/shap_group_stability.png",
+            "figures/shap/stability/group_ablation.png",
+        ),
+    ),
+    Stage(
         "convlstm",
         "code/convlstm.py",
         "训练 ConvLSTM 位移区间预测模型",
