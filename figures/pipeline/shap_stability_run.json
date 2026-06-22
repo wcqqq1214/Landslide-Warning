@@ -1,0 +1,74 @@
+{
+  "schema_version": 2,
+  "status": "completed",
+  "started_at": "2026-06-23T01:15:00+08:00",
+  "finished_at": "2026-06-23T02:10:23+08:00",
+  "git_commit": "3c06d3881ba9f9298a6d2b40c75e2b83857ab7ac",
+  "source_sha256": "13bb4d802c2d02643a3af39ccd7504bc15dc293f837fe56749a2ae24c4672dbb",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 3291.279,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "shap-stability",
+      "script": "code/shap_stability.py",
+      "status": "completed",
+      "elapsed_seconds": 3291.268,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv",
+        "docs/shap_stability_protocol.md"
+      ],
+      "outputs": [
+        {
+          "path": "figures/shap/stability/cross_fold_protocol.csv",
+          "size_bytes": 2395,
+          "sha256": "f3ef4c11219307f7390951a379d7018cf779be606805a4f6511c41a46b2464cf"
+        },
+        {
+          "path": "figures/shap/stability/cross_fold_feature_importance.csv",
+          "size_bytes": 86925,
+          "sha256": "3e059c2a0a926ebc83bd96a35d1bc60f5df4c338cc1f1bb90f14abac3bc48f41"
+        },
+        {
+          "path": "figures/shap/stability/cross_fold_feature_stability.csv",
+          "size_bytes": 25104,
+          "sha256": "d19135746e269be5b1e93949d03bec7f4258fc35d5ed91cd3cd5cfd1e00695e7"
+        },
+        {
+          "path": "figures/shap/stability/cross_fold_rank_stability.csv",
+          "size_bytes": 1767,
+          "sha256": "e80bea7a2e9df403d3fd5063b302c8339e56d6ee4de3f8dc9faf6fdebfcb8f5c"
+        },
+        {
+          "path": "figures/shap/stability/cross_fold_group_importance.csv",
+          "size_bytes": 4189,
+          "sha256": "ffab161187f6a193b134109a231c6113630c36cd43caa210a2c0b74ba5cd9fa3"
+        },
+        {
+          "path": "figures/shap/stability/group_ablation_fold_metrics.csv",
+          "size_bytes": 8861,
+          "sha256": "a2f9ec194d2fde1a0e6e912e59cbe778b09493052ae5784859dc11a8f4307bec"
+        },
+        {
+          "path": "figures/shap/stability/group_ablation_summary.csv",
+          "size_bytes": 1736,
+          "sha256": "a4f8111ff395a58fbde2503161170cc8a5a5414a6269a86e5cba9c69866cd58a"
+        },
+        {
+          "path": "figures/shap/stability/shap_group_stability.png",
+          "size_bytes": 90985,
+          "sha256": "91abd03cb0f0b71fc0d60b1c38270059545854a09f772955e9896c2d27d12606"
+        },
+        {
+          "path": "figures/shap/stability/group_ablation.png",
+          "size_bytes": 107740,
+          "sha256": "df8c8f87c75090a84f1b9ae188bcb6dec059b35ca3aa19b2ec8b89586a82f0e6"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}

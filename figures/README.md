@@ -5,6 +5,7 @@
 | 文件 | 作用 | 类型 | 论文用途 |
 | --- | --- | --- | --- |
 | `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
+| `pipeline/shap_stability_run.json` | 保存修复后 SHAP 稳定性单阶段正式运行的源码指纹、耗时和 9 个产物哈希 | 单阶段工程清单 | 追溯正式结果到提交 `3c06d38`；不替代完整管线清单 |
 | `convlstm/forecast_interval.png` | 展示 8 个测点的一日位移 P10/P50/P90 预测区间 | 最终图 | 位移预测主图 |
 | `convlstm/forecast_metrics.csv` | 保存各测点校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；用 `interval_variant` 区分原始和校准区间，R2/NSE 仅作补充 |
 | `convlstm/forecast_period_metrics.csv` | 将 287 日测试段按日期连续分为三个块并保存校准前后同组指标 | 时间稳定性审计表 | 检查总体均值是否掩盖后期性能退化，不代替滚动时间验证 |
@@ -42,6 +43,15 @@
 | `shap/shap_cls_importance.csv` | 保存分类 mean absolute SHAP 排序 | 支撑表 | 生成变量重要性表和跨折稳定性分析 |
 | `shap/shap_model_metrics.csv` | 保存单次时间留出的回归/分类指标和样本信息 | 最终评估表 | 说明当前探索性性能和类别不平衡 |
 | `shap/shap_binary_cv_metrics.csv` | 保存 5 折扩展窗口分类结果及持续性基线 | 交叉验证审计表 | 逐折报告；单类别折不能汇总 AUC |
+| `shap/stability/cross_fold_protocol.csv` | 保存两个任务五折的时间边界、抽样量、参数、目标和主指标 | 协议审计表 | 核对每折仅使用允许的训练历史和固定解释预算 |
+| `shap/stability/cross_fold_feature_importance.csv` | 保存 88 个特征逐任务逐折的绝对/归一化 SHAP、排名和方向相关 | 明细解释表 | 支撑特征排名与方向复算；方向仅为模型依赖 |
+| `shap/stability/cross_fold_feature_stability.csv` | 汇总每个特征的跨折排名、top10 次数和方向一致性 | 稳定性汇总表 | 识别跨折重复依赖，不作因果解释 |
+| `shap/stability/cross_fold_rank_stability.csv` | 保存所有折对的特征级和组级 Spearman 排名相关 | 稳定性审计表 | 描述时间折间排序一致性；折间训练历史重叠，不做独立显著性检验 |
+| `shap/stability/cross_fold_group_importance.csv` | 保存五个预设特征组逐任务逐折的归一化 SHAP 份额和排名 | 组级解释表 | 与删组消融联合判断模型依赖，不能单独按份额选特征 |
+| `shap/stability/group_ablation_fold_metrics.csv` | 保存完整模型及五个删组模型的逐折主/辅助指标 | 消融明细表 | 报告全部折，正退化表示删组后主指标变差 |
+| `shap/stability/group_ablation_summary.csv` | 汇总各组退化量的均值、中位数、范围和符号折数 | 消融汇总表 | 判断删组影响方向是否跨折一致，不以均值掩盖单折反转 |
+| `shap/stability/shap_group_stability.png` | 展示两个任务五折的组级归一化 SHAP 份额 | 诊断图 | 直观看回归稳定与分类时期异质性；数值以 CSV 为准 |
+| `shap/stability/group_ablation.png` | 展示各删组主指标退化量及均值 | 诊断图 | 比较跨折方向；不作为显著性检验或因果证据 |
 | `tangent_angle/uniform_rates.csv` | 保存各测点自动等速候选段、参考速率和稳定性统计 | 参数审计表 | 专家复核 `v_eq`，不能直接当作已验证参数 |
 | `tangent_angle/review/MJ9_stage_review.png` | MJ9 累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 供专家结合宏观变形资料独立确定等速阶段，不标注"最佳阶段" |
 | `tangent_angle/review/MJ1_stage_review.png` | MJ1 累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 同上 |

@@ -22,17 +22,18 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── warning_events.py           # 未来 onset 标签与事件级评价工具
 │   ├── onset_analysis.py           # 管线第 2 段:1/3/7 日标签和事件盘点
 │   ├── shap_select.py              # 管线第 3 段:SHAP 候选指标解释
+│   ├── shap_stability.py           # 管线第 4 段:跨折稳定性与特征组消融
 │   ├── grid_interp.py              # 测点坐标读取 + IDW 网格插值
 │   ├── block_bootstrap.py           # 连续日期块重采样与百分位区间
-│   ├── convlstm.py                 # 管线第 4 段:ConvLSTM 位移区间预测
-│   ├── convlstm_rolling_validation.py # 管线第 5 段:ConvLSTM 滚动时间验证
-│   ├── convlstm_seed_stability.py  # 管线第 6 段:固定协议多种子诊断
-│   ├── convlstm_inner_validation.py # 管线第 7 段:内层时间验证与早停
-│   ├── convlstm_capacity_sensitivity.py # 管线第 8 段:有限容量/正则化诊断
-│   ├── ngboost_warn.py             # 管线第 9 段:NGBoost 预警分类
-│   ├── warning_fusion.py           # 管线第 10 段:V0 主判 + 切线角复核
-│   ├── sensitivity_analysis.py     # 管线第 11 段:预设参数稳健性分析
-│   └── tangent_stage_review.py     # 管线第 12 段:等速阶段专家复核
+│   ├── convlstm.py                 # 管线第 5 段:ConvLSTM 位移区间预测
+│   ├── convlstm_rolling_validation.py # 管线第 6 段:ConvLSTM 滚动时间验证
+│   ├── convlstm_seed_stability.py  # 管线第 7 段:固定协议多种子诊断
+│   ├── convlstm_inner_validation.py # 管线第 8 段:内层时间验证与早停
+│   ├── convlstm_capacity_sensitivity.py # 管线第 9 段:有限容量/正则化诊断
+│   ├── ngboost_warn.py             # 管线第 10 段:NGBoost 预警分类
+│   ├── warning_fusion.py           # 管线第 11 段:V0 主判 + 切线角复核
+│   ├── sensitivity_analysis.py     # 管线第 12 段:预设参数稳健性分析
+│   └── tangent_stage_review.py     # 管线第 13 段:等速阶段专家复核
 ├── config/
 │   └── tangent_reference_stages.csv # 人工等速阶段配置接口 (当前均为候选状态)
 ├── data/
@@ -80,7 +81,8 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   ├── shap_reg_importance.csv # 回归 mean absolute SHAP 排序
     │   ├── shap_cls_importance.csv # 分类 mean absolute SHAP 排序
     │   ├── shap_model_metrics.csv  # SHAP 阶段 NGBoost 验证指标
-    │   └── shap_binary_cv_metrics.csv # 二分类扩展窗口评价
+    │   ├── shap_binary_cv_metrics.csv # 二分类扩展窗口评价
+    │   └── stability/              # 跨折排名、方向、组贡献和删组消融
     ├── tangent_angle/
     │   ├── uniform_rates.csv       # 训练期等速候选段与参考速率
     │   └── review/
@@ -163,6 +165,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/warning_events.py` | 日期和逐日等级 | 内存中的事件与未来标签 | 提取连续预警事件，生成 at-risk 未来 onset 标签并评价固定阈值报警 |
 | `code/onset_analysis.py` | `data/monitoring_data.csv` | `figures/warning_onset/*`, `figures/thresholds/v0_thresholds.csv` | 使用当前固定 V0 输出回顾性的 1/3/7 日标签、事件清单和可评价样本盘点 |
 | `code/shap_select.py` | `data/monitoring_data.csv` | `figures/shap/*`, `figures/thresholds/v0_thresholds.csv` | 构造 5 天滞后样本，用 NGBoost 回归/分类并通过 SHAP 解释模型对位移增量和动态 V0 当日状态的依赖 |
+| `code/shap_stability.py` | 原始监测数据、锁定协议 | `figures/shap/stability/*` | 在 5 个扩展窗口折中重训 NGBoost，计算 SHAP 排名/方向稳定性，并按预设五组执行 drop-one-group 消融 |
 | `code/grid_interp.py` | `data/station_coords.csv` | 内存中的 `H x W` 网格 | 读取 8 个测点坐标,构建规则网格,提供 IDW 插值函数 |
 | `code/block_bootstrap.py` | 日期数、块长和随机数生成器 | 连续日期索引、百分位区间 | 实现非循环重叠 moving-block bootstrap 基础操作 |
 | `code/convlstm.py` | `data/features.csv`, `data/station_coords.csv` | `models/convlstm.pt`, `figures/convlstm/*` | 将 8 测点位移插值为 `4 x 7` 网格，训练 ConvLSTM 输出 P10/P50/P90 位移预测区间并估计条件性时间块置信区间 |
@@ -184,6 +187,8 @@ flowchart TD
     C --> D["code/shap_select.py<br/>SHAP 因子筛选"]
     A --> D
     D --> E["figures/shap/<br/>SHAP 图、重要性和指标"]
+    A --> DS["code/shap_stability.py<br/>跨折稳定性与组消融"]
+    DS --> DE["figures/shap/stability/<br/>排名、方向和删组指标"]
     C --> F["code/convlstm.py<br/>位移区间预测"]
     G["data/station_coords.csv<br/>测点坐标"] --> H["code/grid_interp.py<br/>IDW 网格插值"]
     H --> F
@@ -222,15 +227,16 @@ flowchart TD
 1. `features.py` 先从原始数据生成统一特征表。
 2. `onset_analysis.py` 生成 1/3/7 日未来标签并核对独立事件数量。
 3. `shap_select.py` 基于原始监测表构造 5 天滞后样本，用 NGBoost + SHAP 分析位移增量和动态 V0 当日状态的模型贡献。
-4. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
-5. `convlstm_rolling_validation.py` 保持同一模型结构，在三个连续且互不重叠的 287 日测试折上执行扩展窗口验证。
-6. `convlstm_seed_stability.py` 在同一三折协议下运行种子 0-4，诊断初始化、训练轨迹和时序响应，不选取最佳种子。
-7. `convlstm_inner_validation.py` 在每折拟合期内部按时间选择 epoch，用完整拟合期重训后再校准和评价，并与固定 120 轮结果配对。
-8. `convlstm_capacity_sensitivity.py` 比较预注册的隐藏通道 `8/16` 与权重衰减 `0/1e-4`，每折仅按内层验证 loss 选择配置。
-9. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
-10. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
-11. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
-12. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
+4. `shap_stability.py` 按锁定协议执行 5 折 SHAP 稳定性和五组 drop-one-group 消融。
+5. `convlstm.py` 基于特征表中的 8 测点位移和测点坐标,训练位移区间预测模型。
+6. `convlstm_rolling_validation.py` 保持同一模型结构，在三个连续且互不重叠的 287 日测试折上执行扩展窗口验证。
+7. `convlstm_seed_stability.py` 在同一三折协议下运行种子 0-4，诊断初始化、训练轨迹和时序响应，不选取最佳种子。
+8. `convlstm_inner_validation.py` 在每折拟合期内部按时间选择 epoch，用完整拟合期重训后再校准和评价，并与固定 120 轮结果配对。
+9. `convlstm_capacity_sensitivity.py` 比较预注册的隐藏通道 `8/16` 与权重衰减 `0/1e-4`，每折仅按内层验证 loss 选择配置。
+10. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
+11. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
+12. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
+13. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
 
 ## 运行方式
 
@@ -254,7 +260,7 @@ uv run python main.py
 uv run python main.py --list
 uv run python main.py --dry-run
 uv run python main.py --stage features --stage onset
-uv run python main.py --skip shap --skip convlstm --skip convlstm-rolling --skip convlstm-seeds --skip convlstm-inner-validation --skip convlstm-capacity
+uv run python main.py --skip shap --skip shap-stability --skip convlstm --skip convlstm-rolling --skip convlstm-seeds --skip convlstm-inner-validation --skip convlstm-capacity
 ```
 
 `--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
@@ -313,6 +319,8 @@ uv run --with pytest pytest -q
 5. 使用模型无关 SHAP permutation explainer 计算模型贡献值；结果不用于因果推断。
 6. 输出 SHAP 图、重要性、单次留出指标、5 折扩展窗口指标和公共 V0 审计表。
 7. 在终端打印回归和分类的 mean absolute SHAP top10。
+
+`code/shap_stability.py` 另按 `docs/shap_stability_protocol.md` 固定的五折、抽样量、特征组和主指标开展内部稳定性分析。当前结果仅支持位移运动学组在两个任务中均有一致的折外增量贡献；环境组的删组结果方向不稳定，不能据此断言其无物理作用。
 
 ### 3. IDW 网格插值
 

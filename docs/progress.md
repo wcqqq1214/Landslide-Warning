@@ -1,19 +1,19 @@
 # 项目工作进度
 
-> 更新日期：2026-06-22。本文件记录工程与研究实现进度；研究协议以 `framework.md` 为准，结果数值以 `docs/results_report.md` 和版本化 CSV 为准。
+> 更新日期：2026-06-23。本文件记录工程与研究实现进度；研究协议以 `framework.md` 为准，结果数值以 `docs/results_report.md` 和版本化 CSV 为准。
 
 ## 当前阶段
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 十二阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 12/12 阶段成功、56 个产物哈希通过 |
+| 十三阶段统一管线 | 待最终完整重跑 | 原 12/12 已通过；新增 `shap-stability` 单阶段及 9 个产物契约已通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
 | ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
 | ConvLSTM 内层时间验证与早停 | 已完成 | 预注册提交 `3c9a616`；7 张 `inner_validation_*.csv` |
 | ConvLSTM 有限容量/正则化敏感性 | 已完成，停止继续扩搜 | 预注册提交 `d13292e`；9 张 `capacity_*.csv` |
-| SHAP 跨折稳定性与特征组消融 | 协议已锁定，待运行 | `docs/shap_stability_protocol.md`；固定 5 折、5 个特征组和任务专属主指标 |
+| SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -81,3 +81,13 @@
 - 首次运行的严格零容差参照检查因最大 `2.22e-16` 的 CSV 浮点尾差停止，未写出结果；随后以 `5 x float64 epsilon` 锁定验证 loss 容差，并用 `1e-12` 配对指标容差避免将数值噪声标记为改善。修复提交为 `e9711cc` 和 `875f832`。
 - 十二阶段完整管线耗时 1693.9 秒，12/12 阶段、56/56 个产物哈希和源码指纹均通过。八张不受配对标签修复影响的容量 CSV 与先前单阶段运行 SHA-256 一致。
 - 全量门禁：160 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。功能提交为 `7507dac`，最终结果与清单随后的维护提交另行保存。
+
+## 2026-06-23 SHAP 稳定性与组消融记录
+
+- 在结果产生前以提交 `7456598` 锁定五折、每折背景/解释日期、88 个特征、五个特征组、回归 MAE 和分类 Brier 主指标；当前数据已被探索，协议不表述为前瞻性注册。
+- 功能提交 `38713fd` 实现跨折 SHAP 排名、方向相关、组级贡献和 drop-one-group 消融，并接入统一入口为第 4 阶段。
+- 首次正式运行暴露方向统计的 pandas 索引对齐错误：SHAP 数组使用位置索引，而样本特征保留原索引，导致方向全为空。修复提交 `3c06d38` 将两者显式按位置对齐；绝对 SHAP、排名和消融结果不受影响。
+- 修复后正式运行耗时 3291.3 秒，阶段及 9/9 产物契约通过，源码指纹和产物哈希见 `figures/pipeline/shap_stability_run.json`。运行使用 `caffeinate -i`，避免 Mac 熄屏暂停进程；网络断开不影响本地训练。
+- 回归组排名折间 Spearman 中位数为 1.000，分类为 0.500；只有位移运动学组在回归 MAE 和分类 Brier 中均为 5/5 折删去后变差。
+- 环境组的删组方向不一致，不能解释为环境因素无物理作用；分类运动学贡献又与 30 日位移速率标签存在定义耦合，不能当作独立提前预警发现。
+- 全量门禁在修复后为 171 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。新增阶段后的十三阶段完整重跑仍待最终验收。

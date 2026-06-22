@@ -54,6 +54,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
 | `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
+| `code/shap_stability.py` | 按锁定五折协议重训解释模型，汇总特征/组排名、方向稳定性并执行五组删组消融 | `figures/shap/stability/*` |
 | `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
 | `code/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `convlstm.py` 调用 |
 | `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
@@ -117,7 +118,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 uv run python main.py
 ```
 
-`main.py` 按 `features -> onset -> shap -> convlstm -> convlstm-rolling -> convlstm-seeds -> convlstm-inner-validation -> convlstm-capacity -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十二个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
+`main.py` 按 `features -> onset -> shap -> shap-stability -> convlstm -> convlstm-rolling -> convlstm-seeds -> convlstm-inner-validation -> convlstm-capacity -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十三个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
 
 阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 
@@ -159,6 +160,7 @@ uv run --with pytest pytest -q
 - ConvLSTM 内层早停降低了多数固定 120 轮配对误差，但折 1/2 仍未超过持久性基线；第三折覆盖率改善伴随区间宽度和 interval score 恶化，所选 epoch 也存在明显种子差异。
 - ConvLSTM 有限容量/正则化诊断在三个折选出不同配置，且折 2 的内层选择未迁移为外层改善；仅折 3 达到多数种子双指标正 skill，当前数据已停止继续扩搜。
 - NGBoost 未超过昨日状态持续性基线。
+- 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
 - 自动等速段尚未由专家阶段复核；15/30/60 日候选窗口会为关键测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），人工配置接口已就绪（`config/tangent_reference_stages.csv`），等待专家独立确定等速阶段。
 - 当前融合结果尚无完整事件级提前量和误报评价。
@@ -168,8 +170,7 @@ uv run --with pytest pytest -q
 
 1. 获得包含更多独立 onset 的新监测时段或新滑坡数据。
 2. 停止在当前已查看折上扩大 ConvLSTM 超参数搜索；新增时段到来后先评价冻结方案。
-3. 按 `docs/shap_stability_protocol.md` 完成特征组消融和 SHAP 跨折稳定性分析；协议已经锁定，结果尚未生成。
-4. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
-5. 在新增时段上评价 ConvLSTM 静态校准的跨期稳定性，必要时预先设计滚动校准协议。
-6. 根据累计位移曲线和宏观变形资料专家复核等速阶段，再冻结切线角参数。
-7. 获得新时段或新滑坡数据后进行确认性验证。
+3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
+4. 在新增时段上评价 ConvLSTM 静态校准及 SHAP 组贡献的跨期稳定性。
+5. 根据累计位移曲线和宏观变形资料专家复核等速阶段，再冻结切线角参数。
+6. 获得新时段或新滑坡数据后进行确认性验证。
