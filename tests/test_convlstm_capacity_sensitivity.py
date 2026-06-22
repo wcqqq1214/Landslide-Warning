@@ -114,7 +114,21 @@ class ConvLSTMCapacitySensitivityTests(unittest.TestCase):
             pd.DataFrame(candidate_rows),
             pd.DataFrame(reference_rows),
         )
+        candidate_rows[0]["selected_validation_loss"] += (
+            capacity.REFERENCE_LOSS_ATOL
+        )
+        capacity.validate_reference_candidate(
+            pd.DataFrame(candidate_rows),
+            pd.DataFrame(reference_rows),
+        )
         candidate_rows[0]["selected_epoch"] += 1
+        with self.assertRaises(RuntimeError):
+            capacity.validate_reference_candidate(
+                pd.DataFrame(candidate_rows),
+                pd.DataFrame(reference_rows),
+            )
+        candidate_rows[0]["selected_epoch"] -= 1
+        candidate_rows[0]["selected_validation_loss"] += 1e-10
         with self.assertRaises(RuntimeError):
             capacity.validate_reference_candidate(
                 pd.DataFrame(candidate_rows),

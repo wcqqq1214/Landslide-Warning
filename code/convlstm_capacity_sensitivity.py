@@ -30,6 +30,7 @@ REFERENCE_METRICS = inner.OUT_METRICS
 
 ANALYSIS_METHOD = "predeclared_2x2_capacity_weight_decay_sensitivity"
 REFERENCE_CONFIG_ID = "h16_wd0"
+REFERENCE_LOSS_ATOL = 5 * np.finfo(float).eps
 
 
 @dataclass(frozen=True)
@@ -198,9 +199,9 @@ def validate_reference_candidate(candidates, reference_runs):
         merged["selected_validation_loss_candidate"],
         merged["selected_validation_loss_reference"],
         rtol=0,
-        atol=0,
+        atol=REFERENCE_LOSS_ATOL,
     ):
-        raise RuntimeError("当前配置未逐值复现早停参照验证 loss")
+        raise RuntimeError("当前配置未在机器精度容差内复现早停参照验证 loss")
 
 
 def selected_run_row(
