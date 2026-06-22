@@ -6,12 +6,12 @@
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 最近一次十阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 10/10 阶段成功、40 个产物哈希通过 |
+| 十一阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 11/11 阶段成功、47 个产物哈希通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
 | ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
-| ConvLSTM 内层时间验证与早停 | 协议和代码已实现，待正式运行 | 预注册提交 `3c9a616`；阶段 `convlstm-inner-validation` |
+| ConvLSTM 内层时间验证与早停 | 已完成 | 预注册提交 `3c9a616`；7 张 `inner_validation_*.csv` |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -37,7 +37,7 @@
 - 逐测点 RMSE 优于基线数量：0/8、0/8、8/8；当前 ConvLSTM 不能表述为跨时期稳定优于持久性基线。
 - 校准覆盖率：48.8%、94.9%、75.2%；第二折覆盖率上升伴随区间过宽和 interval score 恶化。
 - 全量门禁：135 项测试和 32 个子测试通过；Ruff、编译、CSV 完整性及有限数检查通过。
-- 当时的九阶段完整管线通过，运行清单源码指纹与代码一致，36/36 个产物哈希复核通过；最新十阶段验收见下文。
+- 当时的九阶段完整管线通过，运行清单源码指纹与代码一致，36/36 个产物哈希复核通过；最新十一阶段验收见下文。
 - 功能提交：`bdf14e5`（`feat: add convlstm rolling validation`）；运行清单及本进度记录随后的维护提交另行保存。
 
 ## 2026-06-21 后续诊断与外部工具筛选
@@ -63,4 +63,8 @@
 
 - 在任何新结果产生前，已将 80%/20% 内层时间切分、300 轮上限、30 轮最少观察、30 轮耐心、0.1% 最小相对改进和验证 pinball loss 选择规则写入 `framework.md`，并以提交 `3c9a616` 单独保存和推送。
 - 新阶段保留原固定 120 轮结果，不修改模型结构、学习率、输入窗口、损失函数或特征；每个种子和外层折独立选择 epoch，再在完整拟合期重新初始化训练。
-- 代码和相关单元测试已完成；正式结果、完整管线验收和结论将在运行后补充，当前不得提前声称早停有效。
+- 15/15 次内层选择均由耐心规则停止；折 1/2/3 的所选 epoch 中位数为 22/7/1，范围为 16-61、3-20、1-98，没有运行达到 300 轮上限。
+- 相对固定 120 轮，三折总体 RMSE 分别有 5/5、5/5、4/5 个种子改善；但相对持久性基线，折 1/2 仍为 0/5，折 3 为 5/5。训练轮数影响失败幅度，但没有解决跨时期失效。
+- 第三折覆盖率由 75.2% 升至 81.1%，同时宽度由 0.471 增至 0.977 mm、interval score 由 1.037 恶化至 1.248 mm；早停不能概括为所有评价维度均改善。
+- 七张结果 CSV 在单阶段运行和完整管线运行间 SHA-256 完全一致。十一阶段完整管线耗时 1172.5 秒，11/11 阶段和 47/47 个产物哈希通过。
+- 全量门禁：152 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。功能提交为 `ae41ef9`，运行清单及结果文档随后的维护提交另行保存。
