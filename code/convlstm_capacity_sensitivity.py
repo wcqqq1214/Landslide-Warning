@@ -31,6 +31,7 @@ REFERENCE_METRICS = inner.OUT_METRICS
 ANALYSIS_METHOD = "predeclared_2x2_capacity_weight_decay_sensitivity"
 REFERENCE_CONFIG_ID = "h16_wd0"
 REFERENCE_LOSS_ATOL = 5 * np.finfo(float).eps
+COMPARISON_METRIC_ATOL = 1e-12
 
 
 @dataclass(frozen=True)
@@ -243,6 +244,19 @@ def build_reference_comparison(metrics, reference_metrics, runs):
         elif column.startswith("early_"):
             renames[column] = "selected_" + column.removeprefix("early_")
     comparison = comparison.rename(columns=renames)
+    comparison["rmse_improved"] = (
+        comparison["delta_model_rmse"] < -COMPARISON_METRIC_ATOL
+    )
+    comparison["mae_improved"] = (
+        comparison["delta_model_mae"] < -COMPARISON_METRIC_ATOL
+    )
+    comparison["rmse_numerically_equal"] = (
+        comparison["delta_model_rmse"].abs() <= COMPARISON_METRIC_ATOL
+    )
+    comparison["mae_numerically_equal"] = (
+        comparison["delta_model_mae"].abs() <= COMPARISON_METRIC_ATOL
+    )
+    comparison["comparison_metric_atol"] = COMPARISON_METRIC_ATOL
     comparison["analysis_method"] = ANALYSIS_METHOD
     comparison["reference_config_id"] = REFERENCE_CONFIG_ID
     comparison["outer_test_used_for_ranking"] = False

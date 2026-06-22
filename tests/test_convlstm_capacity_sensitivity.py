@@ -174,6 +174,18 @@ class ConvLSTMCapacitySensitivityTests(unittest.TestCase):
         self.assertIn("selected_model_rmse", comparison)
         self.assertNotIn("fixed_model_rmse", comparison)
         self.assertAlmostEqual(comparison.loc[0, "delta_model_rmse"], -0.1)
+        self.assertTrue(comparison.loc[0, "rmse_improved"])
+
+        selected.loc[0, "model_rmse"] = (
+            reference.loc[0, "model_rmse"] - 1e-14
+        )
+        comparison = capacity.build_reference_comparison(
+            selected,
+            reference,
+            runs,
+        )
+        self.assertFalse(comparison.loc[0, "rmse_improved"])
+        self.assertTrue(comparison.loc[0, "rmse_numerically_equal"])
 
     def test_existing_inner_selection_defaults_remain_current_configuration(self):
         self.assertEqual(inner.run_epoch_selection.__kwdefaults__["hidden_channels"], 16)
