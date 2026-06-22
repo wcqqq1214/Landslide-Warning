@@ -151,12 +151,20 @@ def train_predict_fold(
     *,
     seed,
     epochs=base.EPOCHS,
+    hidden_channels=base.HIDDEN,
+    weight_decay=0.0,
 ):
     """Fit, calibrate and predict one fold without accessing its future targets."""
     if not isinstance(epochs, (int, np.integer)):
         raise TypeError("训练轮数必须为整数")
     if epochs <= 0:
         raise ValueError("训练轮数必须为正数")
+    if not isinstance(hidden_channels, (int, np.integer)):
+        raise TypeError("隐藏通道数必须为整数")
+    if hidden_channels <= 0:
+        raise ValueError("隐藏通道数必须为正数")
+    if not np.isfinite(weight_decay) or weight_decay < 0:
+        raise ValueError("权重衰减必须为非负有限数值")
     torch.manual_seed(seed)
     np.random.seed(seed)
 
@@ -199,11 +207,15 @@ def train_predict_fold(
 
     model = base.ConvLSTMForecast(
         in_ch=x_train_tensor.shape[2],
-        hid_ch=base.HIDDEN,
+        hid_ch=hidden_channels,
         kernel=base.KERNEL,
         quantiles=base.QUANTILES,
     )
-    optimizer = torch.optim.Adam(model.parameters(), lr=base.LR)
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=base.LR,
+        weight_decay=weight_decay,
+    )
     training_history = []
     for epoch in range(epochs):
         model.train()

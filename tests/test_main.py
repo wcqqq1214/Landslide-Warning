@@ -80,6 +80,20 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertEqual(len(stage.outputs), 7)
 
+    def test_convlstm_capacity_stage_follows_inner_validation(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["convlstm-capacity"]
+
+        self.assertEqual(
+            names.index("convlstm-capacity"),
+            names.index("convlstm-inner-validation") + 1,
+        )
+        self.assertIn(
+            "figures/convlstm/inner_validation_metrics.csv",
+            stage.inputs,
+        )
+        self.assertEqual(len(stage.outputs), 9)
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

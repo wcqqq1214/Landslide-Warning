@@ -119,6 +119,28 @@ STAGES = (
         ),
     ),
     Stage(
+        "convlstm-capacity",
+        "code/convlstm_capacity_sensitivity.py",
+        "执行 ConvLSTM 有限容量与正则化敏感性诊断",
+        inputs=(
+            "data/features.csv",
+            "data/station_coords.csv",
+            "figures/convlstm/inner_validation_runs.csv",
+            "figures/convlstm/inner_validation_metrics.csv",
+        ),
+        outputs=(
+            "figures/convlstm/capacity_candidates.csv",
+            "figures/convlstm/capacity_selection_summary.csv",
+            "figures/convlstm/capacity_selection_history.csv",
+            "figures/convlstm/capacity_selected_runs.csv",
+            "figures/convlstm/capacity_selected_refit_history.csv",
+            "figures/convlstm/capacity_selected_metrics.csv",
+            "figures/convlstm/capacity_selected_summary.csv",
+            "figures/convlstm/capacity_selected_predictions.csv",
+            "figures/convlstm/capacity_selected_comparison.csv",
+        ),
+    ),
+    Stage(
         "ngboost",
         "code/ngboost_warn.py",
         "训练 NGBoost 预警概率模型",

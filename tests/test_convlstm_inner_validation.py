@@ -148,6 +148,28 @@ class ConvLSTMInnerValidationTests(unittest.TestCase):
                 epochs=0,
             )
 
+    def test_fold_training_rejects_invalid_capacity_parameters(self):
+        with self.assertRaises(ValueError):
+            rolling.train_predict_fold(
+                None,
+                None,
+                None,
+                None,
+                None,
+                seed=0,
+                hidden_channels=0,
+            )
+        with self.assertRaises(ValueError):
+            rolling.train_predict_fold(
+                None,
+                None,
+                None,
+                None,
+                None,
+                seed=0,
+                weight_decay=-1e-4,
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

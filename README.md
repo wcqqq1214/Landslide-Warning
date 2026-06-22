@@ -28,10 +28,11 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 │   ├── convlstm_rolling_validation.py # 管线第 5 段:ConvLSTM 滚动时间验证
 │   ├── convlstm_seed_stability.py  # 管线第 6 段:固定协议多种子诊断
 │   ├── convlstm_inner_validation.py # 管线第 7 段:内层时间验证与早停
-│   ├── ngboost_warn.py             # 管线第 8 段:NGBoost 预警分类
-│   ├── warning_fusion.py           # 管线第 9 段:V0 主判 + 切线角复核
-│   ├── sensitivity_analysis.py     # 管线第 10 段:预设参数稳健性分析
-│   └── tangent_stage_review.py     # 管线第 11 段:等速阶段专家复核
+│   ├── convlstm_capacity_sensitivity.py # 管线第 8 段:有限容量/正则化诊断
+│   ├── ngboost_warn.py             # 管线第 9 段:NGBoost 预警分类
+│   ├── warning_fusion.py           # 管线第 10 段:V0 主判 + 切线角复核
+│   ├── sensitivity_analysis.py     # 管线第 11 段:预设参数稳健性分析
+│   └── tangent_stage_review.py     # 管线第 12 段:等速阶段专家复核
 ├── config/
 │   └── tangent_reference_stages.csv # 人工等速阶段配置接口 (当前均为候选状态)
 ├── data/
@@ -63,7 +64,16 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
     │   ├── inner_validation_metrics.csv # 早停版本逐种子外层指标
     │   ├── inner_validation_summary.csv # 早停版本跨种子汇总
     │   ├── inner_validation_predictions.csv # 早停版本逐日预测
-    │   └── inner_validation_comparison.csv # 与固定 120 轮的配对比较
+    │   ├── inner_validation_comparison.csv # 与固定 120 轮的配对比较
+    │   ├── capacity_candidates.csv # 2x2 候选逐种子选择结果
+    │   ├── capacity_selection_summary.csv # 仅按内层 loss 的候选排名
+    │   ├── capacity_selection_history.csv # 全候选逐轮轨迹
+    │   ├── capacity_selected_runs.csv # 每折所选配置最终运行协议
+    │   ├── capacity_selected_refit_history.csv # 所选配置重训轨迹
+    │   ├── capacity_selected_metrics.csv # 所选配置外层指标
+    │   ├── capacity_selected_summary.csv # 所选配置跨种子汇总
+    │   ├── capacity_selected_predictions.csv # 所选配置逐日预测
+    │   └── capacity_selected_comparison.csv # 与当前早停参照配对
     ├── shap/
     │   ├── shap_reg_summary.png    # NGBoost 回归 SHAP 因子贡献图
     │   ├── shap_cls_summary.png    # NGBoost 预警分类 SHAP 因子贡献图
@@ -159,6 +169,7 @@ Framework 指标覆盖、当前模型结果和改进优先级见 `docs/framework
 | `code/convlstm_rolling_validation.py` | `data/features.csv`, `data/station_coords.csv` | `figures/convlstm/rolling_validation_*.csv` | 保持模型结构不变，以三个非重叠 287 日测试折执行扩展窗口验证并保存逐日预测 |
 | `code/convlstm_seed_stability.py` | `data/features.csv`, `data/station_coords.csv` | `figures/convlstm/seed_stability_*.csv` | 固定全部模型与时间协议，运行预设种子 0-4，保存训练轨迹、逐种子指标和汇总，不选择最佳种子 |
 | `code/convlstm_inner_validation.py` | 特征、坐标、固定 120 轮指标 | `figures/convlstm/inner_validation_*.csv` | 在每折拟合期内部按时间选择训练轮数，再重训、校准并与固定轮数逐项配对；不选择最佳种子 |
+| `code/convlstm_capacity_sensitivity.py` | 特征、坐标、当前早停运行与指标 | `figures/convlstm/capacity_*.csv` | 比较预注册的 2x2 隐藏通道/权重衰减矩阵，仅按折内五种子验证 loss 选配置，再执行最终重训与参照配对 |
 | `code/ngboost_warn.py` | `data/features.csv`, `data/monitoring_data.csv` | `models/ngboost.pkl`, `figures/ngboost/*`, `figures/thresholds/v0_thresholds.csv` | 按 8 测点动态 V0 标签训练 NGBoost 输出预警等级概率 |
 | `code/warning_fusion.py` | 特征表、原始位移、NGBoost 概率 | `figures/warning_fusion/warning_fusion.csv` | V0 主判，切线角只升级不降级，NGBoost 概率仅作旁证 |
 | `code/sensitivity_analysis.py` | 原始累计位移 | `figures/sensitivity/*` | 按 `framework.md` 的预设组合评价 V0 与切线角规则稳健性，不在留出结果上选优 |
@@ -188,6 +199,10 @@ flowchart TD
     G --> X
     W --> X
     X --> Y["figures/convlstm/<br/>停止轨迹、外层指标和配对比较"]
+    C --> Z["code/convlstm_capacity_sensitivity.py<br/>2x2 容量与正则化诊断"]
+    G --> Z
+    Y --> Z
+    Z --> ZA["figures/convlstm/<br/>候选排名、最终指标和参照配对"]
     C --> K["code/ngboost_warn.py<br/>预警等级分类"]
     A --> K
     K --> L["models/ngboost.pkl"]
@@ -211,10 +226,11 @@ flowchart TD
 5. `convlstm_rolling_validation.py` 保持同一模型结构，在三个连续且互不重叠的 287 日测试折上执行扩展窗口验证。
 6. `convlstm_seed_stability.py` 在同一三折协议下运行种子 0-4，诊断初始化、训练轨迹和时序响应，不选取最佳种子。
 7. `convlstm_inner_validation.py` 在每折拟合期内部按时间选择 epoch，用完整拟合期重训后再校准和评价，并与固定 120 轮结果配对。
-8. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
-9. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
-10. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
-11. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
+8. `convlstm_capacity_sensitivity.py` 比较预注册的隐藏通道 `8/16` 与权重衰减 `0/1e-4`，每折仅按内层验证 loss 选择配置。
+9. `ngboost_warn.py` 基于 8 测点独立动态 V0 阈值生成四级标签,训练概率分类模型。
+10. `warning_fusion.py` 保留 V0 主判结果，用关键测点持续切线角进行升级复核。
+11. `sensitivity_analysis.py` 独立重算预设 V0/切线角组合，用于稳健性审计，不改写默认参数。
+12. `tangent_stage_review.py` 为关键测点生成等速阶段复核图，供专家独立确定等速阶段，不得根据预警结果反向选择。
 
 ## 运行方式
 
@@ -238,7 +254,7 @@ uv run python main.py
 uv run python main.py --list
 uv run python main.py --dry-run
 uv run python main.py --stage features --stage onset
-uv run python main.py --skip shap --skip convlstm --skip convlstm-rolling --skip convlstm-seeds --skip convlstm-inner-validation
+uv run python main.py --skip shap --skip convlstm --skip convlstm-rolling --skip convlstm-seeds --skip convlstm-inner-validation --skip convlstm-capacity
 ```
 
 `--stage` 只执行明确选中的阶段，并按标准流程顺序去重；它不会自动补跑上游阶段，因此单独运行模型或融合阶段前应确认所需中间文件已存在。各 `code/*.py` 仍可独立执行，便于调试和核对中间结果。任一阶段失败时，管线立即停止并返回该脚本的错误码。
@@ -350,6 +366,8 @@ R2 与 NSE 在当前平方误差定义下数值相同。累计位移具有强时
 `code/convlstm_inner_validation.py` 不改变模型结构和学习率。它将每折原拟合期前 80% 用作内层训练、后 20% 用作内层验证，以预注册的 pinball loss、300 轮上限、30 轮耐心和 0.1% 最小相对改进选择 epoch；随后用同一种子在完整拟合期重训，再使用原独立校准段和外层测试段。该阶段保留所有五个种子，并与固定 120 轮结果逐项配对，不把已查看的外层测试折重新定义为确认性证据。
 
 早停相对固定 120 轮在三个外层折分别有 5/5、5/5、4/5 个种子的 RMSE 改善，但折 1/2 仍为 0/5 超过持久性基线。第三折覆盖率接近 80% 的同时区间宽度约翻倍、interval score 恶化。因此当前证据支持保留内层停止规则，不支持声称 ConvLSTM 已获得稳定的跨时期增量价值。
+
+`code/convlstm_capacity_sensitivity.py` 进一步执行结果产生前锁定的 2x2 小型敏感性矩阵：隐藏通道 `8/16` 与 Adam `weight_decay=0/1e-4`。四个配置保留相同数据、折、种子、学习率、窗口和早停规则；每折只按五种子的最小内层验证 pinball loss 均值选择配置，外层测试不参与排名。
 
 ### 5. NGBoost 预警等级分类
 

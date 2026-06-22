@@ -140,10 +140,18 @@ def run_epoch_selection(
     inner_split,
     *,
     seed,
+    hidden_channels=base.HIDDEN,
+    weight_decay=0.0,
 ):
     """Choose an epoch using only the chronological inner validation segment."""
     torch.manual_seed(seed)
     np.random.seed(seed)
+    if not isinstance(hidden_channels, (int, np.integer)):
+        raise TypeError("隐藏通道数必须为整数")
+    if hidden_channels <= 0:
+        raise ValueError("隐藏通道数必须为正数")
+    if not np.isfinite(weight_decay) or weight_decay < 0:
+        raise ValueError("权重衰减必须为非负有限数值")
 
     stats_stop = (
         inner_split.train_windows + base.LOOKBACK + base.HORIZON - 1
@@ -176,11 +184,15 @@ def run_epoch_selection(
 
     model = base.ConvLSTMForecast(
         in_ch=x_tensor.shape[2],
-        hid_ch=base.HIDDEN,
+        hid_ch=hidden_channels,
         kernel=base.KERNEL,
         quantiles=base.QUANTILES,
     )
-    optimizer = torch.optim.Adam(model.parameters(), lr=base.LR)
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=base.LR,
+        weight_decay=weight_decay,
+    )
     history = []
     monitored_best = None
     stale_epochs = 0
