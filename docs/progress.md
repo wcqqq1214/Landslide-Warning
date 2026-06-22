@@ -6,7 +6,7 @@
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 十三阶段统一管线 | 待最终完整重跑 | 原 12/12 已通过；新增 `shap-stability` 单阶段及 9 个产物契约已通过 |
+| 十三阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 13/13 阶段成功、65 个产物哈希通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
@@ -90,4 +90,5 @@
 - 修复后正式运行耗时 3291.3 秒，阶段及 9/9 产物契约通过，源码指纹和产物哈希见 `figures/pipeline/shap_stability_run.json`。运行使用 `caffeinate -i`，避免 Mac 熄屏暂停进程；网络断开不影响本地训练。
 - 回归组排名折间 Spearman 中位数为 1.000，分类为 0.500；只有位移运动学组在回归 MAE 和分类 Brier 中均为 5/5 折删去后变差。
 - 环境组的删组方向不一致，不能解释为环境因素无物理作用；分类运动学贡献又与 30 日位移速率标签存在定义耦合，不能当作独立提前预警发现。
-- 全量门禁在修复后为 171 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。新增阶段后的十三阶段完整重跑仍待最终验收。
+- 全量门禁在修复后为 171 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。
+- 十三阶段完整管线耗时 3731.9 秒，13/13 阶段、65/65 个产物哈希和提交 `6cdcc35` 均通过。`shap-stability` 在保持输出数值一致的情况下耗时 2243.9 秒；先前单阶段 3291.3 秒的额外耗时与 Mac 熄屏暂停或系统负载有关，不作为模型性能证据。

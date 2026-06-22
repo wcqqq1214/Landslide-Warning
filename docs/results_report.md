@@ -2,7 +2,7 @@
 
 > 结果日期：2026-06-23。当前后 20% 留出段已用于多轮模型检查，以下结果属于探索性内部时间验证，不作为最终确认性测试结果。ConvLSTM 已计算条件性时间块 95% 置信区间，预警分类与事件指标尚未计算相应区间。
 
-当前 ConvLSTM、NGBoost 和 SHAP permutation explainer 均使用固定随机种子；ConvLSTM 另按预先锁定的种子 0-4 完成优化稳定性和内层时间验证诊断。原十二阶段完整重跑记录在 `figures/pipeline/latest_run.json`，新增 SHAP 稳定性阶段的正式运行记录在 `figures/pipeline/shap_stability_run.json`。固定种子用于保证工程复现，多种子分布用于描述初始化敏感性，两者均不增加外部证据强度。
+当前 ConvLSTM、NGBoost 和 SHAP permutation explainer 均使用固定随机种子；ConvLSTM 另按预先锁定的种子 0-4 完成优化稳定性和内层时间验证诊断。十三阶段完整重跑记录在 `figures/pipeline/latest_run.json`，SHAP 稳定性单阶段正式运行另见 `figures/pipeline/shap_stability_run.json`。固定种子用于保证工程复现，多种子分布用于描述初始化敏感性，两者均不增加外部证据强度。
 
 ## 1. 数据与任务
 
