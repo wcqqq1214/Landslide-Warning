@@ -1,20 +1,20 @@
 {
   "schema_version": 2,
   "status": "completed",
-  "started_at": "2026-06-22T05:15:44+08:00",
-  "finished_at": "2026-06-22T08:09:25+08:00",
-  "git_commit": "ae41ef9df77084f878452780544f87a5169f0288",
-  "source_sha256": "6a97cc562f9bc64d902d1d276a1189c0cff07d4ff3eee3487946ca39014e9943",
+  "started_at": "2026-06-22T17:23:01+08:00",
+  "finished_at": "2026-06-22T17:51:15+08:00",
+  "git_commit": "875f8327cd7eb70b5462958f8ab6ea5a6fb6f87d",
+  "source_sha256": "6fe77a1b8c11b4a7df4135e1171d60ec57b2020f479acc4b6cce304247da5cde",
   "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 1172.495,
+  "total_elapsed_seconds": 1693.921,
   "failed_stage": null,
   "stages": [
     {
       "name": "features",
       "script": "code/features.py",
       "status": "completed",
-      "elapsed_seconds": 1.451,
+      "elapsed_seconds": 1.443,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -39,7 +39,7 @@
       "name": "onset",
       "script": "code/onset_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 1.431,
+      "elapsed_seconds": 1.429,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -73,7 +73,7 @@
       "name": "shap",
       "script": "code/shap_select.py",
       "status": "completed",
-      "elapsed_seconds": 461.901,
+      "elapsed_seconds": 476.972,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -122,7 +122,7 @@
       "name": "convlstm",
       "script": "code/convlstm.py",
       "status": "completed",
-      "elapsed_seconds": 33.294,
+      "elapsed_seconds": 33.117,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -167,7 +167,7 @@
       "name": "convlstm-rolling",
       "script": "code/convlstm_rolling_validation.py",
       "status": "completed",
-      "elapsed_seconds": 67.435,
+      "elapsed_seconds": 64.226,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -197,7 +197,7 @@
       "name": "convlstm-seeds",
       "script": "code/convlstm_seed_stability.py",
       "status": "completed",
-      "elapsed_seconds": 359.851,
+      "elapsed_seconds": 322.479,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -232,7 +232,7 @@
       "name": "convlstm-inner-validation",
       "script": "code/convlstm_inner_validation.py",
       "status": "completed",
-      "elapsed_seconds": 190.239,
+      "elapsed_seconds": 178.332,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -280,10 +280,72 @@
       "contract_error": null
     },
     {
+      "name": "convlstm-capacity",
+      "script": "code/convlstm_capacity_sensitivity.py",
+      "status": "completed",
+      "elapsed_seconds": 567.802,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv",
+        "figures/convlstm/inner_validation_runs.csv",
+        "figures/convlstm/inner_validation_metrics.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/convlstm/capacity_candidates.csv",
+          "size_bytes": 5146,
+          "sha256": "d17b2758420b9875be463f784135c3d686952e88fa3304f7e2ba119af8920ff9"
+        },
+        {
+          "path": "figures/convlstm/capacity_selection_summary.csv",
+          "size_bytes": 2306,
+          "sha256": "59c97f74913c252d51c0104c4c8b35c4d08c376e44230a2d520ec7ed50efedaa"
+        },
+        {
+          "path": "figures/convlstm/capacity_selection_history.csv",
+          "size_bytes": 333579,
+          "sha256": "da8584851bd5f557649400944e3ad6f9940cc59d5800d66b1783b2533cf59fc4"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_runs.csv",
+          "size_bytes": 14176,
+          "sha256": "50d8c55cd2d12b9fc453217bb58d79ccf3c0dd9c1a43c4498fb955687f59d402"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_refit_history.csv",
+          "size_bytes": 32100,
+          "sha256": "c01a248cb93ac6cbf12b4f42dda25a095bd436ed6687001df20c5553d661855d"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_metrics.csv",
+          "size_bytes": 162328,
+          "sha256": "611de66ec3a5ca0be9d5797bdf10d333ed73feebe6891445b6f2d2fad2015bd5"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_summary.csv",
+          "size_bytes": 65594,
+          "sha256": "8fda802191257374e0150738fd4911a76c70f3dfe91f7f992438adccb5e57b1d"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_predictions.csv",
+          "size_bytes": 5043078,
+          "sha256": "4994ce744872faa7b0eaf5e58473b0c5651148e7960640d1efc88c857db06ad5"
+        },
+        {
+          "path": "figures/convlstm/capacity_selected_comparison.csv",
+          "size_bytes": 237883,
+          "sha256": "9683bda8747b22719eecb63126b159413202c645a96f0816b4acc21339ee450c"
+        }
+      ],
+      "contract_error": null
+    },
+    {
       "name": "ngboost",
       "script": "code/ngboost_warn.py",
       "status": "completed",
-      "elapsed_seconds": 5.198,
+      "elapsed_seconds": 4.813,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -323,7 +385,7 @@
       "name": "fusion",
       "script": "code/warning_fusion.py",
       "status": "completed",
-      "elapsed_seconds": 0.201,
+      "elapsed_seconds": 0.18,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -344,7 +406,7 @@
       "name": "sensitivity",
       "script": "code/sensitivity_analysis.py",
       "status": "completed",
-      "elapsed_seconds": 46.792,
+      "elapsed_seconds": 39.549,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -378,7 +440,7 @@
       "name": "tangent-review",
       "script": "code/tangent_stage_review.py",
       "status": "completed",
-      "elapsed_seconds": 4.676,
+      "elapsed_seconds": 3.552,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [

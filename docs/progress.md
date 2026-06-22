@@ -6,13 +6,13 @@
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 十一阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 11/11 阶段成功、47 个产物哈希通过 |
+| 十二阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 12/12 阶段成功、56 个产物哈希通过 |
 | ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
 | ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
 | ConvLSTM 内层时间验证与早停 | 已完成 | 预注册提交 `3c9a616`；7 张 `inner_validation_*.csv` |
-| ConvLSTM 有限容量/正则化敏感性 | 协议和代码已实现，待正式运行 | 预注册提交 `d13292e`；阶段 `convlstm-capacity` |
+| ConvLSTM 有限容量/正则化敏感性 | 已完成，停止继续扩搜 | 预注册提交 `d13292e`；9 张 `capacity_*.csv` |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
 
@@ -74,4 +74,9 @@
 
 - 在任何候选结果产生前，已将隐藏通道 `8/16`、Adam 权重衰减 `0/1e-4`、折内五种子平均验证 loss 排名、并列规则和停止扩搜判据写入 `framework.md`，并以提交 `d13292e` 单独保存和推送。
 - 新阶段保留当前 `16/0` 配置作为参照，不改变学习率、输入窗口、卷积核、特征、外层折或校准规则；外层测试不参与配置排名。
-- 代码和相关单元测试已完成；正式结果、十二阶段完整管线与结论待运行后补充。
+- 折 1/2/3 仅按内层五种子均值分别选择 `h16_wd0`、`h08_wd0`、`h16_wd1e4`；三个折没有共同最优配置，第一/二名 loss 差值均远小于种子标准差。
+- 最终相对持久性基线的 RMSE/MAE 正 skill 种子数为 0/5、0/5；0/5、0/5；5/5、4/5。只有折 3 达到多数种子双指标正 skill，触发预注册的停止扩搜规则。
+- 折 2 内层选择的小模型在外层较当前早停参照平均增加 0.070 mm RMSE 和 0.061 mm MAE；不能把内层微小排名差异解释为稳定泛化增益。
+- 首次运行的严格零容差参照检查因最大 `2.22e-16` 的 CSV 浮点尾差停止，未写出结果；随后以 `5 x float64 epsilon` 锁定验证 loss 容差，并用 `1e-12` 配对指标容差避免将数值噪声标记为改善。修复提交为 `e9711cc` 和 `875f832`。
+- 十二阶段完整管线耗时 1693.9 秒，12/12 阶段、56/56 个产物哈希和源码指纹均通过。八张不受配对标签修复影响的容量 CSV 与先前单阶段运行 SHA-256 一致。
+- 全量门禁：160 项测试和 32 个子测试通过；Ruff、编译和差异检查通过。功能提交为 `7507dac`，最终结果与清单随后的维护提交另行保存。
