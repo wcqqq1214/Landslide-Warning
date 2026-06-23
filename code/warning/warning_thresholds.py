@@ -7,7 +7,7 @@ MONTH_WINDOW_DAYS = 30
 ACCEL_PERCENTILE = 0.90
 VIGILANCE_MULTIPLIER = 5.0
 ALARM_MULTIPLIER = 10.0
-V0_ESTIMATION_METHOD = "supervisor_specified_steady_mean_std"
+V0_ESTIMATION_METHOD = "thesis_steady_stage_velocity_statistic"
 HIGH_LEVEL_THRESHOLD_SOURCE = "chen_et_al_2024_eq10_default_vd"
 
 
