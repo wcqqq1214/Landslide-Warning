@@ -24,15 +24,6 @@ uv sync
 uv run python main.py
 ```
 
-常用命令：
-
-```bash
-uv run python main.py --list
-uv run python main.py --dry-run
-uv run python main.py --stage features --stage onset
-uv run --with pytest pytest -q
-```
-
 完整运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。
 
 ## 代码结构
