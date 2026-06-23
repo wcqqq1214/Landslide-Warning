@@ -75,7 +75,9 @@ def build_features(df, reference_stages=None):
 
 def main():
     df = pd.read_csv(DATA_CSV)
-    reference_stages = load_reference_stages(REFERENCE_STAGES_CSV)
+    reference_stages = None
+    if REFERENCE_STAGES_CSV.exists():
+        reference_stages = load_reference_stages(REFERENCE_STAGES_CSV)
     out, parameters = build_features(df, reference_stages=reference_stages)
     out.to_csv(OUT_CSV, index=False)
 

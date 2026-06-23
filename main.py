@@ -32,7 +32,7 @@ STAGES = (
         "features",
         "code/features.py",
         "生成统一特征表和切线角参数",
-        inputs=("data/monitoring_data.csv", "config/tangent_reference_stages.csv"),
+        inputs=("data/monitoring_data.csv",),
         outputs=("data/features.csv", "figures/tangent_angle/uniform_rates.csv"),
     ),
     Stage(
