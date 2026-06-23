@@ -84,8 +84,6 @@ features -> onset -> shap -> shap-stability -> convlstm
 
 | 文件 | 内容 |
 | --- | --- |
-| `docs/advisor_brief_report.pdf` | 面向导师汇报的精简版 PDF 结果说明 |
-| `docs/advisor_brief_report.tex` | 上述 PDF 的 LaTeX 源文件 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
 | `docs/framework_status.md` | 研究框架覆盖、已实现指标和缺口 |
 | `docs/progress.md` | 阶段进度和运行记录 |
@@ -118,8 +116,8 @@ features -> onset -> shap -> shap-stability -> convlstm
 
 建议优先展示：
 
-1. `docs/advisor_brief_report.pdf`
-2. `docs/results_report.md`
+1. `docs/results_report.md`
+2. `docs/framework_status.md`
 3. `figures/convlstm/forecast_interval.png`
 4. `figures/ngboost/confusion_matrix.png`
 5. `figures/shap/*.png`
