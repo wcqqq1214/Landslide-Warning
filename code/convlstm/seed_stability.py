@@ -3,15 +3,20 @@
 from __future__ import annotations
 
 from pathlib import Path
+import sys
 
 import numpy as np
 import pandas as pd
 
-import convlstm as base
-import convlstm_rolling_validation as rolling
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from convlstm import model as base  # noqa: E402
+from convlstm import rolling_validation as rolling  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 OUT_RUNS = ROOT / "figures" / "convlstm" / "seed_stability_runs.csv"
 OUT_METRICS = ROOT / "figures" / "convlstm" / "seed_stability_metrics.csv"
 OUT_SUMMARY = ROOT / "figures" / "convlstm" / "seed_stability_summary.csv"

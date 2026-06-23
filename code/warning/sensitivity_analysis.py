@@ -2,16 +2,21 @@
 
 from itertools import product
 from pathlib import Path
+import sys
 
 import numpy as np
 import pandas as pd
 
-from tangent_angle import build_tangent_frame, uniform_rate_rows
-from warning_events import extract_warning_events
-from warning_fusion import KEY_STATIONS, WARNING_STATIONS, fuse_warning_levels
-from warning_thresholds import build_warning_frame, threshold_rows
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
-ROOT = Path(__file__).resolve().parent.parent
+from features.tangent_angle import build_tangent_frame, uniform_rate_rows  # noqa: E402
+from warning.warning_events import extract_warning_events  # noqa: E402
+from warning.warning_fusion import KEY_STATIONS, WARNING_STATIONS, fuse_warning_levels  # noqa: E402
+from warning.warning_thresholds import build_warning_frame, threshold_rows  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_DIR = ROOT / "figures" / "sensitivity"
 OUT_V0_SUMMARY = OUT_DIR / "v0_sensitivity.csv"

@@ -6,21 +6,26 @@ recommend, or approve any stage automatically.
 
 import warnings
 from pathlib import Path
+import sys
 
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from tangent_angle import (
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from features.tangent_angle import (  # noqa: E402
     TRAIN_FRAC,
     _causal_linear_slopes,
     build_tangent_frame,
     estimate_uniform_rate,
     validate_daily_dates,
 )
-from warning_fusion import WARNING_STATIONS, fuse_warning_levels
-from warning_thresholds import build_warning_frame
+from warning.warning_fusion import WARNING_STATIONS, fuse_warning_levels  # noqa: E402
+from warning.warning_thresholds import build_warning_frame  # noqa: E402
 
 # Use a CJK-capable font for Chinese labels. Fall back to default sans if unavailable.
 _CJK_CANDIDATES = ["Heiti TC", "STHeiti", "Lantinghei SC",
@@ -33,7 +38,7 @@ if _cjk_font:
 # Suppress CJK font missing-glyph warnings — fallback glyphs are used
 warnings.filterwarnings("ignore", message="Glyph.*missing from font")
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 FIG_DIR = ROOT / "figures" / "tangent_angle" / "review"
 OUT_CSV = FIG_DIR / "candidate_stage_comparison.csv"

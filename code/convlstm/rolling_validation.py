@@ -4,15 +4,20 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import sys
 
 import numpy as np
 import pandas as pd
 import torch
 
-import convlstm as base
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from convlstm import model as base  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 OUT_FOLDS = ROOT / "figures" / "convlstm" / "rolling_validation_folds.csv"
 OUT_METRICS = ROOT / "figures" / "convlstm" / "rolling_validation_metrics.csv"
 OUT_PREDICTIONS = (

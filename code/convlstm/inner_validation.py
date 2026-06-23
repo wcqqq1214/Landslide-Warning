@@ -4,17 +4,22 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import sys
 
 import numpy as np
 import pandas as pd
 import torch
 
-import convlstm as base
-import convlstm_rolling_validation as rolling
-import convlstm_seed_stability as stability
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from convlstm import model as base  # noqa: E402
+from convlstm import rolling_validation as rolling  # noqa: E402
+from convlstm import seed_stability as stability  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 FIG_DIR = ROOT / "figures" / "convlstm"
 OUT_RUNS = FIG_DIR / "inner_validation_runs.csv"
 OUT_SELECTION = FIG_DIR / "inner_validation_selection_history.csv"

@@ -1,12 +1,17 @@
 """Fuse dynamic V0 and persistent tangent-angle warning evidence."""
 
 from pathlib import Path
+import sys
 
 import pandas as pd
 
-from warning_thresholds import build_warning_frame
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
-ROOT = Path(__file__).resolve().parent.parent
+from warning.warning_thresholds import build_warning_frame  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
 FEATURE_CSV = ROOT / "data" / "features.csv"
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 NGBOOST_PROBABILITIES_CSV = ROOT / "figures" / "ngboost" / "warning_probabilities.csv"

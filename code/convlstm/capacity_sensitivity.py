@@ -4,17 +4,22 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import sys
 
 import numpy as np
 import pandas as pd
 
-import convlstm as base
-import convlstm_inner_validation as inner
-import convlstm_rolling_validation as rolling
-import convlstm_seed_stability as stability
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from convlstm import inner_validation as inner  # noqa: E402
+from convlstm import model as base  # noqa: E402
+from convlstm import rolling_validation as rolling  # noqa: E402
+from convlstm import seed_stability as stability  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 FIG_DIR = ROOT / "figures" / "convlstm"
 OUT_CANDIDATES = FIG_DIR / "capacity_candidates.csv"
 OUT_SELECTION_SUMMARY = FIG_DIR / "capacity_selection_summary.csv"

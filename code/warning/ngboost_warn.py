@@ -1,6 +1,7 @@
 """NGBoost warning-level classifier from station-specific V0 labels."""
 from pathlib import Path
 import pickle
+import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -15,13 +16,18 @@ from sklearn.metrics import (
     f1_score,
     recall_score,
 )
-from warning_thresholds import (
+
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from warning.warning_thresholds import (  # noqa: E402
     MONTH_WINDOW_DAYS,
     build_warning_frame,
     threshold_rows,
 )
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_PKL = ROOT / "models" / "ngboost.pkl"

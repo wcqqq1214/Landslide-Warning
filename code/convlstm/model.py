@@ -10,11 +10,14 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-sys.path.append(str(Path(__file__).resolve().parent))
-from block_bootstrap import moving_block_indices, percentile_interval
-from grid_interp import load_coords, make_interpolator, GRID_H, GRID_W
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
-ROOT = Path(__file__).resolve().parent.parent
+from convlstm.block_bootstrap import moving_block_indices, percentile_interval  # noqa: E402
+from convlstm.grid_interp import GRID_H, GRID_W, load_coords, make_interpolator  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
 OUT_PT = ROOT / "models" / "convlstm.pt"
 FIG_DIR = ROOT / "figures" / "convlstm"

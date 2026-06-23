@@ -2,6 +2,7 @@
 
 from itertools import combinations
 from pathlib import Path
+import sys
 
 import matplotlib
 
@@ -11,7 +12,11 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from shap_select import (
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from explainability.shap_select import (  # noqa: E402
     DATA_CSV,
     ENV_COLS,
     MONTH_WINDOW_DAYS,
@@ -26,9 +31,9 @@ from shap_select import (
     shap_matrix,
     walk_forward_date_ranges,
 )
-from warning_thresholds import compute_station_thresholds
+from warning.warning_thresholds import compute_station_thresholds  # noqa: E402
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "figures" / "shap" / "stability"
 OUT_PROTOCOL = OUT_DIR / "cross_fold_protocol.csv"
 OUT_FEATURE_IMPORTANCE = OUT_DIR / "cross_fold_feature_importance.csv"

@@ -14,58 +14,46 @@
 
 ```text
 monitoring_data.csv
-        |
-        v
-features.py ------------------------------+
-        |                                  |
-        | features.csv                     | tangent parameters
-        v                                  v
-shap_select.py      convlstm.py      tangent_angle.py
-        |                 |                 |
-        v                 v                 |
-figures/shap       models/convlstm.pt       |
-                    figures/convlstm        |
-        |                                   |
-        +------------> ngboost_warn.py <----+
-                            |
-                            v
-                   models/ngboost.pkl
-                   figures/ngboost
-                            |
-                            v
-                   warning_fusion.py
-                            |
-                            v
-              figures/warning_fusion/warning_fusion.csv
+  -> features/build_features.py
+       -> data/features.csv
+       -> figures/tangent_angle/uniform_rates.csv
 
-monitoring_data.csv -> onset_analysis.py -> warning_events.py
-                                         -> figures/warning_onset
+data/features.csv + data/station_coords.csv
+  -> convlstm/model.py -> models/convlstm.pt + figures/convlstm
 
-monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
+monitoring_data.csv
+  -> explainability/shap_select.py -> figures/shap
+  -> warning/onset_analysis.py + warning/warning_events.py -> figures/warning_onset
+  -> warning/sensitivity_analysis.py -> figures/sensitivity
+  -> features/tangent_stage_review.py -> figures/tangent_angle/review
+
+data/features.csv + monitoring_data.csv
+  -> warning/ngboost_warn.py -> models/ngboost.pkl + figures/ngboost
+  -> warning/warning_fusion.py -> figures/warning_fusion/warning_fusion.csv
 ```
 
 ## 3. 模块职责
 
 | 模块 | 职责 | 主要输出 |
 | --- | --- | --- |
-| `code/features.py` | 位移速率/加速度、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`figures/tangent_angle/uniform_rates.csv` |
-| `code/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级；支持可选人工等速阶段表 | 由 `features.py` 调用 |
-| `code/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
-| `code/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
-| `code/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/shap_stability.py` | 按锁定五折协议重训解释模型，汇总特征/组排名、方向稳定性并执行五组删组消融 | `figures/shap/stability/*` |
-| `code/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `convlstm.py` 调用 |
-| `code/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `convlstm.py` 调用 |
-| `code/convlstm.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
-| `code/convlstm_rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
-| `code/convlstm_seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
-| `code/convlstm_inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
-| `code/convlstm_capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
-| `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/warning_fusion.py` | V0 主判、8 测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
-| `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
-| `code/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
+| `code/features/build_features.py` | 位移速率/加速度、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`figures/tangent_angle/uniform_rates.csv` |
+| `code/features/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级；支持可选人工等速阶段表 | 由 `build_features.py` 调用 |
+| `code/warning/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
+| `code/warning/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
+| `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
+| `code/explainability/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
+| `code/explainability/shap_stability.py` | 按锁定五折协议重训解释模型，汇总特征/组排名、方向稳定性并执行五组删组消融 | `figures/shap/stability/*` |
+| `code/convlstm/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `model.py` 调用 |
+| `code/convlstm/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
+| `code/convlstm/model.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
+| `code/convlstm/rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
+| `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
+| `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
+| `code/convlstm/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
+| `code/warning/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
+| `code/warning/warning_fusion.py` | V0 主判、8 测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
+| `code/warning/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
+| `code/features/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
 
 ## 4. 已锁定的实现选择
 

@@ -1,14 +1,19 @@
 """Create auditable future-onset labels and event inventory."""
 
 from pathlib import Path
+import sys
 
 import pandas as pd
 
-from ngboost_warn import WARNING_STATIONS
-from warning_events import build_onset_targets, extract_warning_events
-from warning_thresholds import build_warning_frame, threshold_rows
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
 
-ROOT = Path(__file__).resolve().parent.parent
+from warning.ngboost_warn import WARNING_STATIONS  # noqa: E402
+from warning.warning_events import build_onset_targets, extract_warning_events  # noqa: E402
+from warning.warning_thresholds import build_warning_frame, threshold_rows  # noqa: E402
+
+ROOT = Path(__file__).resolve().parents[2]
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_DIR = ROOT / "figures" / "warning_onset"
 OUT_EVENTS_CSV = OUT_DIR / "onset_events.csv"

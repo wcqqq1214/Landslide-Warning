@@ -31,7 +31,11 @@ uv run python main.py
 ```text
 .
 ├── main.py                  # 统一管线入口
-├── code/                    # 特征、模型、解释、融合和敏感性分析脚本
+├── code/                    # 按流程分组的特征、预警、解释和 ConvLSTM 脚本
+│   ├── features/            # 特征工程、切线角和等速阶段复核
+│   ├── warning/             # V0 阈值、事件、NGBoost、融合和敏感性分析
+│   ├── explainability/      # SHAP 分析和稳定性验证
+│   └── convlstm/            # ConvLSTM 预测模型及滚动/稳定性/容量诊断
 ├── data/                    # 原始数据、测点坐标和派生特征
 ├── models/                  # 可再生成的模型文件
 ├── figures/                 # 可再生成的图表、指标和审计表
@@ -42,19 +46,19 @@ uv run python main.py
 
 | 脚本 | 作用 |
 | --- | --- |
-| `code/features.py` | 生成位移速率、加速度、降雨/库水位特征和切线角特征 |
-| `code/onset_analysis.py` | 生成未来 1/3/7 日 onset 标签和事件盘点 |
-| `code/shap_select.py` | 训练 NGBoost 解释模型并输出 SHAP 图和重要性 |
-| `code/shap_stability.py` | 执行五折 SHAP 稳定性和特征组消融 |
-| `code/convlstm.py` | 训练 ConvLSTM 位移 P10/P50/P90 区间预测模型 |
-| `code/convlstm_rolling_validation.py` | 执行三个扩展窗口滚动时间验证 |
-| `code/convlstm_seed_stability.py` | 执行固定协议五种子稳定性诊断 |
-| `code/convlstm_inner_validation.py` | 执行内层时间验证和早停诊断 |
-| `code/convlstm_capacity_sensitivity.py` | 执行有限容量和正则化敏感性诊断 |
-| `code/ngboost_warn.py` | 训练 NGBoost 当日四级状态概率模型 |
-| `code/warning_fusion.py` | 融合 V0、切线角和 NGBoost 概率旁证 |
-| `code/sensitivity_analysis.py` | 执行 V0 与切线角预设参数敏感性分析 |
-| `code/tangent_stage_review.py` | 生成 8 个测点等速阶段复核材料 |
+| `code/features/build_features.py` | 生成位移速率、加速度、降雨/库水位特征和切线角特征 |
+| `code/warning/onset_analysis.py` | 生成未来 1/3/7 日 onset 标签和事件盘点 |
+| `code/explainability/shap_select.py` | 训练 NGBoost 解释模型并输出 SHAP 图和重要性 |
+| `code/explainability/shap_stability.py` | 执行五折 SHAP 稳定性和特征组消融 |
+| `code/convlstm/model.py` | 训练 ConvLSTM 位移 P10/P50/P90 区间预测模型 |
+| `code/convlstm/rolling_validation.py` | 执行三个扩展窗口滚动时间验证 |
+| `code/convlstm/seed_stability.py` | 执行固定协议五种子稳定性诊断 |
+| `code/convlstm/inner_validation.py` | 执行内层时间验证和早停诊断 |
+| `code/convlstm/capacity_sensitivity.py` | 执行有限容量和正则化敏感性诊断 |
+| `code/warning/ngboost_warn.py` | 训练 NGBoost 当日四级状态概率模型 |
+| `code/warning/warning_fusion.py` | 融合 V0、切线角和 NGBoost 概率旁证 |
+| `code/warning/sensitivity_analysis.py` | 执行 V0 与切线角预设参数敏感性分析 |
+| `code/features/tangent_stage_review.py` | 生成 8 个测点等速阶段复核材料 |
 
 ## 管线阶段
 

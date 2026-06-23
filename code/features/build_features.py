@@ -1,15 +1,20 @@
 """Feature engineering for displacement, reservoir level and rainfall drivers."""
 from pathlib import Path
+import sys
 
 import pandas as pd
 
-from tangent_angle import (
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from features.tangent_angle import (  # noqa: E402
     build_tangent_frame,
     load_reference_stages,
     uniform_rate_rows,
 )
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 DATA_CSV = ROOT / "data" / "monitoring_data.csv"
 OUT_CSV = ROOT / "data" / "features.csv"
 REFERENCE_STAGES_CSV = ROOT / "config" / "tangent_reference_stages.csv"

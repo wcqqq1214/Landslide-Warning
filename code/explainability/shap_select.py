@@ -1,5 +1,6 @@
 """SHAP feature analysis with five-day lagged monitoring factors."""
 from pathlib import Path
+import sys
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -18,7 +19,12 @@ from sklearn.metrics import (
     roc_auc_score,
 )
 from sklearn.model_selection import TimeSeriesSplit
-from warning_thresholds import (
+
+CODE_DIR = Path(__file__).resolve().parents[1]
+if str(CODE_DIR) not in sys.path:
+    sys.path.insert(0, str(CODE_DIR))
+
+from warning.warning_thresholds import (  # noqa: E402
     MONTH_WINDOW_DAYS,
     classify_monthly_rates,
     compute_station_thresholds,
@@ -26,7 +32,7 @@ from warning_thresholds import (
     threshold_rows,
 )
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 DATA_CSV = ROOT / "data" / "monitoring_data.csv"
 FIG_DIR = ROOT / "figures" / "shap"
 

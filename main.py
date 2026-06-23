@@ -30,14 +30,14 @@ class Stage:
 STAGES = (
     Stage(
         "features",
-        "code/features.py",
+        "code/features/build_features.py",
         "生成统一特征表和切线角参数",
         inputs=("data/monitoring_data.csv",),
         outputs=("data/features.csv", "figures/tangent_angle/uniform_rates.csv"),
     ),
     Stage(
         "onset",
-        "code/onset_analysis.py",
+        "code/warning/onset_analysis.py",
         "生成未来 onset 标签和事件盘点",
         inputs=("data/monitoring_data.csv",),
         outputs=(
@@ -49,7 +49,7 @@ STAGES = (
     ),
     Stage(
         "shap",
-        "code/shap_select.py",
+        "code/explainability/shap_select.py",
         "训练解释模型并输出 SHAP 分析",
         inputs=("data/monitoring_data.csv",),
         outputs=(
@@ -64,7 +64,7 @@ STAGES = (
     ),
     Stage(
         "shap-stability",
-        "code/shap_stability.py",
+        "code/explainability/shap_stability.py",
         "执行跨折 SHAP 稳定性和预注册特征组消融",
         inputs=("data/monitoring_data.csv", "docs/shap_stability_protocol.md"),
         outputs=(
@@ -81,7 +81,7 @@ STAGES = (
     ),
     Stage(
         "convlstm",
-        "code/convlstm.py",
+        "code/convlstm/model.py",
         "训练 ConvLSTM 位移区间预测模型",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -95,7 +95,7 @@ STAGES = (
     ),
     Stage(
         "convlstm-rolling",
-        "code/convlstm_rolling_validation.py",
+        "code/convlstm/rolling_validation.py",
         "执行 ConvLSTM 扩展窗口滚动时间验证",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -106,7 +106,7 @@ STAGES = (
     ),
     Stage(
         "convlstm-seeds",
-        "code/convlstm_seed_stability.py",
+        "code/convlstm/seed_stability.py",
         "执行 ConvLSTM 固定协议多随机种子诊断",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -118,7 +118,7 @@ STAGES = (
     ),
     Stage(
         "convlstm-inner-validation",
-        "code/convlstm_inner_validation.py",
+        "code/convlstm/inner_validation.py",
         "执行 ConvLSTM 内层时间验证和早停诊断",
         inputs=(
             "data/features.csv",
@@ -137,7 +137,7 @@ STAGES = (
     ),
     Stage(
         "convlstm-capacity",
-        "code/convlstm_capacity_sensitivity.py",
+        "code/convlstm/capacity_sensitivity.py",
         "执行 ConvLSTM 有限容量与正则化敏感性诊断",
         inputs=(
             "data/features.csv",
@@ -159,7 +159,7 @@ STAGES = (
     ),
     Stage(
         "ngboost",
-        "code/ngboost_warn.py",
+        "code/warning/ngboost_warn.py",
         "训练 NGBoost 预警概率模型",
         inputs=("data/features.csv", "data/monitoring_data.csv"),
         outputs=(
@@ -172,7 +172,7 @@ STAGES = (
     ),
     Stage(
         "fusion",
-        "code/warning_fusion.py",
+        "code/warning/warning_fusion.py",
         "融合 V0、切线角和概率旁证",
         inputs=(
             "data/features.csv",
@@ -183,7 +183,7 @@ STAGES = (
     ),
     Stage(
         "sensitivity",
-        "code/sensitivity_analysis.py",
+        "code/warning/sensitivity_analysis.py",
         "执行预设参数敏感性分析",
         inputs=("data/monitoring_data.csv",),
         outputs=(
@@ -195,7 +195,7 @@ STAGES = (
     ),
     Stage(
         "tangent-review",
-        "code/tangent_stage_review.py",
+        "code/features/tangent_stage_review.py",
         "生成等速阶段专家复核材料",
         inputs=("data/monitoring_data.csv",),
         outputs=(
@@ -242,7 +242,7 @@ def timestamp() -> str:
 
 def source_fingerprint() -> str:
     paths = [ROOT / "main.py", ROOT / "pyproject.toml", ROOT / "uv.lock"]
-    paths.extend(sorted((ROOT / "code").glob("*.py")))
+    paths.extend(sorted((ROOT / "code").rglob("*.py")))
     digest = hashlib.sha256()
     for path in paths:
         digest.update(str(path.relative_to(ROOT)).encode("utf-8"))
