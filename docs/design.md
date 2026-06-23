@@ -1,6 +1,6 @@
 # 滑坡位移预测与预警代码设计
 
-> 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以 `docs/results_report.md` 和 `figures/*/*.csv` 为准。
+> 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以 `results_report.md` 和 `../figures/*/*.csv` 为准。
 
 ## 1. 数据与约束
 

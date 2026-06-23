@@ -45,9 +45,7 @@ uv run --with pytest pytest -q
 ├── data/                    # 原始数据、测点坐标和派生特征
 ├── models/                  # 可再生成的模型文件
 ├── figures/                 # 可再生成的图表、指标和审计表
-├── docs/                    # 结果报告、限制说明和阶段汇报材料
-├── framework.md             # 研究框架、验证规则和报告边界
-└── design.md                # 代码架构和模块边界
+└── docs/                    # 研究框架、代码设计、结果报告和限制说明
 ```
 
 核心脚本：
@@ -84,6 +82,8 @@ features -> onset -> shap -> shap-stability -> convlstm
 
 | 文件 | 内容 |
 | --- | --- |
+| `docs/framework.md` | 研究框架、验证规则和报告边界 |
+| `docs/design.md` | 代码架构和模块边界 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
 | `docs/framework_status.md` | 研究框架覆盖、已实现指标和缺口 |
 | `docs/progress.md` | 阶段进度和运行记录 |
