@@ -53,10 +53,8 @@
 | `shap/stability/shap_group_stability.png` | 展示两个任务五折的组级归一化 SHAP 份额 | 诊断图 | 直观看回归稳定与分类时期异质性；数值以 CSV 为准 |
 | `shap/stability/group_ablation.png` | 展示各删组主指标退化量及均值 | 诊断图 | 比较跨折方向；不作为显著性检验或因果证据 |
 | `tangent_angle/uniform_rates.csv` | 保存各测点自动等速候选段、参考速率和稳定性统计 | 参数审计表 | 专家复核 `v_eq`，不能直接当作已验证参数 |
-| `tangent_angle/review/MJ9_stage_review.png` | MJ9 累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 供专家结合宏观变形资料独立确定等速阶段，不标注"最佳阶段" |
-| `tangent_angle/review/MJ1_stage_review.png` | MJ1 累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 同上 |
-| `tangent_angle/review/MJ3_stage_review.png` | MJ3 累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 同上 |
-| `tangent_angle/review/candidate_stage_comparison.csv` | 三个关键测点在 15/30/60 日窗口下的参数来源、速率统计、切线角等级、相对 30 日一致率及融合影响 | 综合审计表 | 供专家核对参数影响，不得按一致率或报警天数自动选优 |
+| `tangent_angle/review/*_stage_review.png` | 8 个测点的累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 供专家结合宏观变形资料独立确定等速阶段，不标注"最佳阶段" |
+| `tangent_angle/review/candidate_stage_comparison.csv` | 8 个测点在 15/30/60 日窗口下的参数来源、速率统计、切线角等级、相对 30 日一致率及融合影响 | 综合审计表 | 供专家核对参数影响，不得按一致率或报警天数自动选优 |
 | `thresholds/v0_thresholds.csv` | 保存 8 个测点共享的动态 V0、5V0、10V0、公式参数和方法来源 | 参数审计表 | 区分导师指定一级公式与 Chen（2024）高等级倍数来源 |
 | `sensitivity/v0_sensitivity.csv` | 汇总 15/30/60 日窗口与 0.85/0.90/0.95 截断分位数组合的等级、事件和默认一致率 | 敏感性摘要表 | 说明 V0 结论对预设参数的依赖范围，不用于选优 |
 | `sensitivity/v0_parameters.csv` | 保存 9 组配置下每个测点的 V0、5V0、10V0 和估计样本数 | 参数审计表 | 追溯 V0 敏感性结果到测点参数 |

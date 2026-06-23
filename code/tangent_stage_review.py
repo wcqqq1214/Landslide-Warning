@@ -39,11 +39,7 @@ FIG_DIR = ROOT / "figures" / "tangent_angle" / "review"
 OUT_CSV = FIG_DIR / "candidate_stage_comparison.csv"
 
 CANDIDATE_WINDOWS = (15, 30, 60)
-KEY_STATION_COLS = {
-    "MJ9": "MJ9/mm",
-    "MJ1": "MJ1/mm",
-    "MJ3": "MJ3/mm",
-}
+KEY_STATION_COLS = dict(WARNING_STATIONS)
 LEVEL_NAMES = ("green", "yellow", "orange", "red")
 FUSION_REASONS = (
     "v0_green",
@@ -310,7 +306,7 @@ def main():
     comparison.to_csv(OUT_CSV, index=False)
     print(f"[review] 候选阶段对比表: {OUT_CSV}")
 
-    print("\n[review] 关键测点候选阶段 v_eq 对比:")
+    print("\n[review] 测点候选阶段 v_eq 对比:")
     for station in KEY_STATION_COLS:
         subset = comparison[comparison["station"] == station]
         values = []

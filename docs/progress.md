@@ -15,7 +15,7 @@
 | ConvLSTM 有限容量/正则化敏感性 | 已完成，停止继续扩搜 | 预注册提交 `d13292e`；9 张 `capacity_*.csv` |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
-| 切线角等速阶段冻结 | 待专家决定 | `figures/tangent_angle/review/`；当前无 `approved` 人工阶段 |
+| 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 
 ## 当前滚动验证协议
 

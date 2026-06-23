@@ -63,9 +63,9 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 | `code/convlstm_inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
 | `code/convlstm_capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
 | `code/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/warning_fusion.py` | V0 主判、关键测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
+| `code/warning_fusion.py` | V0 主判、8 测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 | `code/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
-| `code/tangent_stage_review.py` | 为 MJ9/MJ1/MJ3 生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
+| `code/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
 | `config/tangent_reference_stages.csv` | 人工等速阶段配置接口；当前所有条目均为 `candidate`，没有任何阶段被自动批准 | 由 `features.py` 加载并交给 `tangent_angle.py` 校验 |
 
 ## 4. 已锁定的实现选择
@@ -107,7 +107,7 @@ monitoring_data.csv -> sensitivity_analysis.py -> figures/sensitivity
 ### 4.4 预警融合
 
 - V0 是主判规则，融合结果不得低于 V0 等级。
-- 切线角仅使用 MJ9、MJ1、MJ3 三个关键测点执行升级复核。
+- 切线角使用 MJ9、MJ1、MJ3、ATU1、ATU2、ATU3、ATU4、ATU5 共 8 个测点执行升级复核。
 - 单测点切线角异常最高升级为黄色观察状态。
 - 多测点或多尺度一致时，才允许进一步升级。
 - NGBoost 概率保留为旁证，不直接覆盖规则等级。
@@ -162,7 +162,7 @@ uv run --with pytest pytest -q
 - NGBoost 未超过昨日状态持续性基线。
 - 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
-- 自动等速段尚未由专家阶段复核；15/30/60 日候选窗口会为关键测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），人工配置接口已就绪（`config/tangent_reference_stages.csv`），等待专家独立确定等速阶段。
+- 自动等速段尚未由导师或现场资料确认；15/30/60 日候选窗口会为部分测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），人工配置接口已就绪（`config/tangent_reference_stages.csv`），等待独立确定等速阶段。
 - 当前融合结果尚无完整事件级提前量和误报评价。
 - 尚无外部时间或跨滑坡验证。
 
@@ -172,5 +172,5 @@ uv run --with pytest pytest -q
 2. 停止在当前已查看折上扩大 ConvLSTM 超参数搜索；新增时段到来后先评价冻结方案。
 3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
 4. 在新增时段上评价 ConvLSTM 静态校准及 SHAP 组贡献的跨期稳定性。
-5. 根据累计位移曲线和宏观变形资料专家复核等速阶段，再冻结切线角参数。
+5. 根据累计位移曲线和宏观变形资料复核等速阶段，确认后再固定切线角参数。
 6. 获得新时段或新滑坡数据后进行确认性验证。

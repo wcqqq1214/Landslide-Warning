@@ -13,10 +13,11 @@ NGBOOST_PROBABILITIES_CSV = ROOT / "figures" / "ngboost" / "warning_probabilitie
 FIG_DIR = ROOT / "figures" / "warning_fusion"
 OUT_CSV = FIG_DIR / "warning_fusion.csv"
 
-KEY_STATIONS = ("MJ9", "MJ1", "MJ3")
+STATION_ORDER = ("MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5")
+KEY_STATIONS = STATION_ORDER
 WARNING_STATIONS = {
     station: f"{station}/mm"
-    for station in ("MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5")
+    for station in STATION_ORDER
 }
 
 

@@ -29,6 +29,27 @@ tests/
 tmp/*
 literature/*
 
+# LaTeX / paper outputs
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.synctex.gz
+paper/*.pdf
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex.gz
+
 # Project — abandoned superpowers output
 docs/superpowers/
 
