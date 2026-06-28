@@ -19,8 +19,8 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from convlstm.block_bootstrap import moving_block_indices, percentile_interval  # noqa: E402
-from convlstm.grid_interp import GRID_H, GRID_W, load_coords, make_interpolator  # noqa: E402
+from cnn_mamba.block_bootstrap import moving_block_indices, percentile_interval  # noqa: E402
+from cnn_mamba.grid_interp import GRID_H, GRID_W, load_coords, make_interpolator  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
@@ -139,7 +139,7 @@ class CNNMambaForecast(nn.Module):
             nn.Conv2d(hid_ch, hid_ch, 1),
             nn.SiLU(),
         )
-        self.temporal = Mamba(
+        self.mamba = Mamba(
             d_model=hid_ch,
             d_state=state_dim,
             d_conv=mamba_conv,
@@ -164,7 +164,7 @@ class CNNMambaForecast(nn.Module):
             steps,
             -1,
         )
-        mixed = self.temporal(tokens)[:, -1]
+        mixed = self.mamba(tokens)[:, -1]
         latest = mixed.reshape(batch, height, width, -1).permute(0, 3, 1, 2)
         raw = self.head(latest)
         return ordered_quantiles_from_raw(raw)

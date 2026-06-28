@@ -8,8 +8,8 @@
 
 | 模块 | 当前状态 |
 | --- | --- |
-| 统一管线 | `main.py` 串联 13 个阶段，最近一次完整运行 13/13 通过 |
-| ConvLSTM 位移预测 | 已输出留出、滚动验证、五种子、早停和容量敏感性结果 |
+| 统一管线 | `main.py` 串联 13 个阶段，当前分支将位移预测阶段切换为 CNN-Mamba |
+| CNN-Mamba 位移预测 | 已接入官方 `mamba-ssm` CUDA 实现，输出独立写入 `models/cnn_mamba.pt` 和 `figures/cnn_mamba/` |
 | NGBoost 状态分类 | 当前为动态 V0 当日状态识别，不是未来 onset 预警 |
 | SHAP 解释 | 已输出单次 SHAP、五折稳定性和特征组消融 |
 | V0/切线角融合 | 8 个测点均进入融合；切线角等速阶段仍需导师或现场资料确认 |
@@ -20,7 +20,7 @@
 项目使用 `uv` 管理依赖，Python 版本为 3.10。
 
 ```bash
-uv sync
+uv sync --torch-backend cu128 --no-build-isolation
 uv run python main.py
 ```
 
@@ -31,11 +31,11 @@ uv run python main.py
 ```text
 .
 ├── main.py                  # 统一管线入口
-├── code/                    # 按流程分组的特征、预警、解释和 ConvLSTM 脚本
+├── code/                    # 按流程分组的特征、预警、解释和 CNN-Mamba 脚本
 │   ├── features/            # 特征工程、切线角和等速阶段复核
 │   ├── warning/             # V0 阈值、事件、NGBoost、融合和敏感性分析
 │   ├── explainability/      # SHAP 分析和稳定性验证
-│   └── convlstm/            # ConvLSTM 预测模型及滚动/稳定性/容量诊断
+│   └── cnn_mamba/           # CNN-Mamba 预测模型及滚动/稳定性/容量诊断
 ├── data/                    # 原始数据、测点坐标和派生特征
 ├── models/                  # 可再生成的模型文件
 ├── figures/                 # 可再生成的图表、指标和审计表
@@ -57,7 +57,7 @@ uv run python main.py
 
 ## 当前结论边界
 
-- ConvLSTM 在最后 287 日留出段略优于持久性基线，但三个滚动时间折中前两折未优于基线，因此不能声称跨时期稳定优于基线。
+- 已有旧模型结果仍只作为历史基线记录；当前 CNN-Mamba 分支需要在 WSL/Linux + NVIDIA CUDA 环境重新生成位移预测指标。
 - NGBoost 当前识别的是当日动态 V0 状态；留出段没有 orange/red 样本，不能评价高等级预警召回。
 - SHAP 结果描述模型依赖关系，不代表致灾因果关系。
 - V0 和切线角规则已跑通，但切线角参考等速阶段尚未由导师或现场资料确认，不能写成确认性切线角结论。

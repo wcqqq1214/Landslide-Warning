@@ -13,10 +13,10 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from convlstm import inner_validation as inner  # noqa: E402
-from convlstm import model as base  # noqa: E402
-from convlstm import rolling_validation as rolling  # noqa: E402
-from convlstm import seed_stability as stability  # noqa: E402
+from cnn_mamba import inner_validation as inner  # noqa: E402
+from cnn_mamba import model as base  # noqa: E402
+from cnn_mamba import rolling_validation as rolling  # noqa: E402
+from cnn_mamba import seed_stability as stability  # noqa: E402
 
 
 FIG_DIR = base.FIG_DIR

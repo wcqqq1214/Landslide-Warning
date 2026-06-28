@@ -19,7 +19,7 @@ monitoring_data.csv
        -> figures/tangent_angle/uniform_rates.csv
 
 data/features.csv + data/station_coords.csv
-  -> convlstm/model.py -> models/convlstm.pt + figures/convlstm
+  -> cnn_mamba/model.py -> models/cnn_mamba.pt + figures/cnn_mamba
 
 monitoring_data.csv
   -> explainability/shap_select.py -> figures/shap
@@ -43,13 +43,13 @@ data/features.csv + monitoring_data.csv
 | `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/explainability/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/explainability/shap_stability.py` | 按锁定五折协议重训解释模型，汇总特征/组排名、方向稳定性并执行五组删组消融 | `figures/shap/stability/*` |
-| `code/convlstm/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `model.py` 调用 |
-| `code/convlstm/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
-| `code/convlstm/model.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
-| `code/convlstm/rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
-| `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
-| `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
-| `code/convlstm/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
+| `code/cnn_mamba/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `model.py` 调用 |
+| `code/cnn_mamba/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
+| `code/cnn_mamba/model.py` | 8 测点空间网格 CNN-Mamba，输出 P10/P50/P90 位移 | `models/cnn_mamba.pt`、`figures/cnn_mamba/*` |
+| `code/cnn_mamba/rolling_validation.py` | 固定现有 CNN-Mamba 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/cnn_mamba/rolling_validation_*.csv` |
+| `code/cnn_mamba/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/cnn_mamba/seed_stability_*.csv` |
+| `code/cnn_mamba/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/cnn_mamba/inner_validation_*.csv` |
+| `code/cnn_mamba/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/cnn_mamba/capacity_*.csv` |
 | `code/warning/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/warning/warning_fusion.py` | V0 主判、8 测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
 | `code/warning/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
@@ -68,13 +68,15 @@ data/features.csv + monitoring_data.csv
 - 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口，属于专家阶段划分前的辅助候选，不是原文方法本身。
 - 人工等速阶段：当前仓库不保留默认配置文件。若后续需要固定人工等速阶段，可临时提供同结构 CSV，并将 `status=approved` 的行交给 `tangent_angle.py` 校验；同一测点仅允许一个批准阶段，日期必须位于训练期内。
 
-### 4.2 ConvLSTM
+### 4.2 CNN-Mamba
 
-- 8 测点通过 IDW 插值到 `4 x 7` 规则网格，属于真实二维卷积循环结构。
+- 8 测点通过 IDW 插值到 `4 x 7` 规则网格，每个时间步先经 CNN 空间编码，再按网格点送入官方 `mamba-ssm.Mamba` 时间混合器。
 - 当前输入窗口：7 日。
 - 当前预测步长：1 日。
 - 输出：有序 P10/P50/P90 位移增量，再还原为累计位移。
 - 损失：分位数 pinball loss。
+- Mamba 配置：`d_state=16`、`d_conv=4`、`expand=2`。
+- 运行要求：WSL/Linux + NVIDIA CUDA + 官方 `mamba-ssm[causal-conv1d]`。
 - 评价：按测点及三个连续测试时段报告点误差、持久性基线、分位数损失、覆盖率、宽度和 80% interval score；R2/NSE 仅作趋势敏感的补充指标。
 - 校准：原训练窗口前 80% 用于拟合、后 20% 连续日期用于按测点对称 split-conformal 校准；标准化和增量尺度只拟合于前者。时间自相关使经典覆盖保证不成立，因此结果按探索性校准报告。
 - 不确定性：固定模型与校准量，以连续日期块同步重采样所有测点；14 日为预设主块长，7/30 日为敏感性分析，各 1000 次。输出模型-基线及校准-原始的配对差值，不把两个单独区间是否重叠当作差异检验。
@@ -105,7 +107,7 @@ data/features.csv + monitoring_data.csv
 uv run python main.py
 ```
 
-`main.py` 按 `features -> onset -> shap -> shap-stability -> convlstm -> convlstm-rolling -> convlstm-seeds -> convlstm-inner-validation -> convlstm-capacity -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十三个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
+`main.py` 按 `features -> onset -> shap -> shap-stability -> cnn-mamba -> cnn-mamba-rolling -> cnn-mamba-seeds -> cnn-mamba-inner-validation -> cnn-mamba-capacity -> ngboost -> fusion -> sensitivity -> tangent-review` 编排十三个独立进程。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动解析或补跑上游依赖。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 `figures/pipeline/latest_run.json`，失败时同样保留记录。
 
 阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 
@@ -141,11 +143,9 @@ uv run --with pytest pytest -q
 
 ## 8. 当前已知限制
 
-- ConvLSTM 已启用独立时间校准，但 P10-P90 测试覆盖率仍低于名义 80%，最后连续测试块退化明显。
-- ConvLSTM 已输出日期块 95% 置信区间，但其局部平稳假设与已观察到的后期漂移冲突；区间不包含训练过程和未来制度变化的不确定性。
-- ConvLSTM 五种子诊断中，折 1/2 的方向性失败对初始化稳定，折 3 的点误差优势也对种子稳定但伴随明显方差收缩和接近零的平均增量相关性。初始化影响误差幅度，但不能解释跨折方向反转；训练样本量和时间分布作用仍未分离。
-- ConvLSTM 内层早停降低了多数固定 120 轮配对误差，但折 1/2 仍未超过持久性基线；第三折覆盖率改善伴随区间宽度和 interval score 恶化，所选 epoch 也存在明显种子差异。
-- ConvLSTM 有限容量/正则化诊断在三个折选出不同配置，且折 2 的内层选择未迁移为外层改善；仅折 3 达到多数种子双指标正 skill，当前数据已停止继续扩搜。
+- CNN-Mamba 分支需要 WSL/Linux + NVIDIA CUDA 环境，当前 macOS 本机只能完成静态和结构自检，不能实际运行官方 `mamba-ssm` CUDA kernel。
+- CNN-Mamba 尚未重新生成完整留出、滚动验证、五种子、早停和容量敏感性结果；旧位移预测结果只能作为历史基线，不得移植为 CNN-Mamba 性能结论。
+- 官方 `mamba-ssm` 依赖 CUDA 扩展和 causal convolution 扩展，环境构建失败时应先解决依赖，不应回退到简化 PyTorch 实现并继续称为官方 Mamba。
 - NGBoost 未超过昨日状态持续性基线。
 - 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
@@ -156,8 +156,8 @@ uv run --with pytest pytest -q
 ## 9. 下一阶段实现顺序
 
 1. 获得包含更多独立 onset 的新监测时段或新滑坡数据。
-2. 停止在当前已查看折上扩大 ConvLSTM 超参数搜索；新增时段到来后先评价冻结方案。
+2. 先在 WSL/Linux + NVIDIA CUDA 环境运行 CNN-Mamba 留出段和滚动验证，确认依赖、输出契约和指标表完整。
 3. 事件数量足以支持内外层评价后，重新调节 NGBoost，不再使用现有测试段选参。
-4. 在新增时段上评价 ConvLSTM 静态校准及 SHAP 组贡献的跨期稳定性。
+4. 在新增时段上评价 CNN-Mamba 静态校准及 SHAP 组贡献的跨期稳定性。
 5. 根据累计位移曲线和宏观变形资料复核等速阶段，确认后再固定切线角参数。
 6. 获得新时段或新滑坡数据后进行确认性验证。

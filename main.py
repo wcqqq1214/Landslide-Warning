@@ -80,8 +80,8 @@ STAGES = (
         ),
     ),
     Stage(
-        "convlstm",
-        "code/convlstm/model.py",
+        "cnn-mamba",
+        "code/cnn_mamba/model.py",
         "训练 CNN-Mamba 位移区间预测模型",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -94,8 +94,8 @@ STAGES = (
         ),
     ),
     Stage(
-        "convlstm-rolling",
-        "code/convlstm/rolling_validation.py",
+        "cnn-mamba-rolling",
+        "code/cnn_mamba/rolling_validation.py",
         "执行 CNN-Mamba 扩展窗口滚动时间验证",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -105,8 +105,8 @@ STAGES = (
         ),
     ),
     Stage(
-        "convlstm-seeds",
-        "code/convlstm/seed_stability.py",
+        "cnn-mamba-seeds",
+        "code/cnn_mamba/seed_stability.py",
         "执行 CNN-Mamba 固定协议多随机种子诊断",
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
@@ -117,8 +117,8 @@ STAGES = (
         ),
     ),
     Stage(
-        "convlstm-inner-validation",
-        "code/convlstm/inner_validation.py",
+        "cnn-mamba-inner-validation",
+        "code/cnn_mamba/inner_validation.py",
         "执行 CNN-Mamba 内层时间验证和早停诊断",
         inputs=(
             "data/features.csv",
@@ -136,8 +136,8 @@ STAGES = (
         ),
     ),
     Stage(
-        "convlstm-capacity",
-        "code/convlstm/capacity_sensitivity.py",
+        "cnn-mamba-capacity",
+        "code/cnn_mamba/capacity_sensitivity.py",
         "执行 CNN-Mamba 有限容量与正则化敏感性诊断",
         inputs=(
             "data/features.csv",
