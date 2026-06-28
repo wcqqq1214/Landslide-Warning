@@ -1,4 +1,4 @@
-"""Predeclared ConvLSTM capacity and weight-decay sensitivity analysis."""
+"""Predeclared CNN-Mamba capacity and weight-decay sensitivity analysis."""
 
 from __future__ import annotations
 
@@ -19,8 +19,7 @@ from convlstm import rolling_validation as rolling  # noqa: E402
 from convlstm import seed_stability as stability  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[2]
-FIG_DIR = ROOT / "figures" / "convlstm"
+FIG_DIR = base.FIG_DIR
 OUT_CANDIDATES = FIG_DIR / "capacity_candidates.csv"
 OUT_SELECTION_SUMMARY = FIG_DIR / "capacity_selection_summary.csv"
 OUT_SELECTION_HISTORY = FIG_DIR / "capacity_selection_history.csv"
@@ -56,16 +55,16 @@ CONFIG_BY_ID = {config.config_id: config for config in CONFIGS}
 
 
 def model_parameter_count(hidden_channels, *, input_channels=6, kernel=3):
-    """Return the exact parameter count for the current ConvLSTM and head."""
+    """Return the exact trainable parameter count for the current forecast model."""
     if hidden_channels <= 0 or input_channels <= 0 or kernel <= 0:
         raise ValueError("通道数和卷积核必须为正数")
-    cell_weights = 4 * hidden_channels * (
-        input_channels + hidden_channels
-    ) * kernel * kernel
-    cell_bias = 4 * hidden_channels
-    head_weights = 3 * hidden_channels
-    head_bias = 3
-    return cell_weights + cell_bias + head_weights + head_bias
+    model = base.ForecastModel(
+        in_ch=input_channels,
+        hid_ch=hidden_channels,
+        kernel=kernel,
+        quantiles=base.QUANTILES,
+    )
+    return sum(parameter.numel() for parameter in model.parameters())
 
 
 def candidate_row(config, *, seed, fold, selection):
@@ -420,7 +419,7 @@ def main():
             & selection_summary["selected_config"]
         ].iloc[0]
         print(
-            f"[convlstm-capacity] fold={fold} selected={chosen[fold].config_id} "
+            f"[cnn-mamba-capacity] fold={fold} selected={chosen[fold].config_id} "
             f"validation={selected_row['validation_loss_mean']:.6f}",
             flush=True,
         )
@@ -509,15 +508,15 @@ def main():
     summary_frame.to_csv(OUT_SUMMARY, index=False)
     prediction_frame.to_csv(OUT_PREDICTIONS, index=False)
     comparison_frame.to_csv(OUT_COMPARISON, index=False)
-    print(f"[convlstm-capacity] 候选运行: {OUT_CANDIDATES}")
-    print(f"[convlstm-capacity] 内层选择汇总: {OUT_SELECTION_SUMMARY}")
-    print(f"[convlstm-capacity] 候选训练轨迹: {OUT_SELECTION_HISTORY}")
-    print(f"[convlstm-capacity] 最终运行: {OUT_RUNS}")
-    print(f"[convlstm-capacity] 最终重训轨迹: {OUT_REFIT}")
-    print(f"[convlstm-capacity] 外层指标: {OUT_METRICS}")
-    print(f"[convlstm-capacity] 跨种子汇总: {OUT_SUMMARY}")
-    print(f"[convlstm-capacity] 逐日预测: {OUT_PREDICTIONS}")
-    print(f"[convlstm-capacity] 早停参照配对: {OUT_COMPARISON}")
+    print(f"[cnn-mamba-capacity] 候选运行: {OUT_CANDIDATES}")
+    print(f"[cnn-mamba-capacity] 内层选择汇总: {OUT_SELECTION_SUMMARY}")
+    print(f"[cnn-mamba-capacity] 候选训练轨迹: {OUT_SELECTION_HISTORY}")
+    print(f"[cnn-mamba-capacity] 最终运行: {OUT_RUNS}")
+    print(f"[cnn-mamba-capacity] 最终重训轨迹: {OUT_REFIT}")
+    print(f"[cnn-mamba-capacity] 外层指标: {OUT_METRICS}")
+    print(f"[cnn-mamba-capacity] 跨种子汇总: {OUT_SUMMARY}")
+    print(f"[cnn-mamba-capacity] 逐日预测: {OUT_PREDICTIONS}")
+    print(f"[cnn-mamba-capacity] 早停参照配对: {OUT_COMPARISON}")
 
 
 if __name__ == "__main__":

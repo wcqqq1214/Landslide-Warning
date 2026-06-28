@@ -1,4 +1,4 @@
-"""Predeclared multi-seed diagnostics for the fixed ConvLSTM protocol."""
+"""Predeclared multi-seed diagnostics for the fixed CNN-Mamba protocol."""
 
 from __future__ import annotations
 
@@ -16,11 +16,10 @@ from convlstm import model as base  # noqa: E402
 from convlstm import rolling_validation as rolling  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT_RUNS = ROOT / "figures" / "convlstm" / "seed_stability_runs.csv"
-OUT_METRICS = ROOT / "figures" / "convlstm" / "seed_stability_metrics.csv"
-OUT_SUMMARY = ROOT / "figures" / "convlstm" / "seed_stability_summary.csv"
-OUT_TRAINING = ROOT / "figures" / "convlstm" / "seed_stability_training.csv"
+OUT_RUNS = base.FIG_DIR / "seed_stability_runs.csv"
+OUT_METRICS = base.FIG_DIR / "seed_stability_metrics.csv"
+OUT_SUMMARY = base.FIG_DIR / "seed_stability_summary.csv"
+OUT_TRAINING = base.FIG_DIR / "seed_stability_training.csv"
 
 SEEDS = (0, 1, 2, 3, 4)
 ANALYSIS_METHOD = "fixed_protocol_five_seed_optimization_diagnostic"
@@ -207,7 +206,7 @@ def main():
                 and row["interval_variant"] == "calibrated"
             )
             print(
-                f"[convlstm-seeds] seed={seed} fold={split.fold}: "
+                f"[cnn-mamba-seeds] seed={seed} fold={split.fold}: "
                 f"RMSE={overall['model_rmse']:.3f}/"
                 f"{overall['baseline_rmse']:.3f} mm "
                 f"increment_r={overall['increment_correlation']:.3f}"
@@ -229,10 +228,10 @@ def main():
     metric_frame.to_csv(OUT_METRICS, index=False)
     summary_frame.to_csv(OUT_SUMMARY, index=False)
     training_frame.to_csv(OUT_TRAINING, index=False)
-    print(f"[convlstm-seeds] 运行协议: {OUT_RUNS}")
-    print(f"[convlstm-seeds] 逐种子指标: {OUT_METRICS}")
-    print(f"[convlstm-seeds] 跨种子汇总: {OUT_SUMMARY}")
-    print(f"[convlstm-seeds] 训练诊断: {OUT_TRAINING}")
+    print(f"[cnn-mamba-seeds] 运行协议: {OUT_RUNS}")
+    print(f"[cnn-mamba-seeds] 逐种子指标: {OUT_METRICS}")
+    print(f"[cnn-mamba-seeds] 跨种子汇总: {OUT_SUMMARY}")
+    print(f"[cnn-mamba-seeds] 训练诊断: {OUT_TRAINING}")
 
 
 if __name__ == "__main__":

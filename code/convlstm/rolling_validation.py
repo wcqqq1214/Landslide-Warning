@@ -1,4 +1,4 @@
-"""Expanding-window temporal validation for the existing ConvLSTM model."""
+"""Expanding-window temporal validation for the CNN-Mamba forecast model."""
 
 from __future__ import annotations
 
@@ -17,12 +17,9 @@ if str(CODE_DIR) not in sys.path:
 from convlstm import model as base  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[2]
-OUT_FOLDS = ROOT / "figures" / "convlstm" / "rolling_validation_folds.csv"
-OUT_METRICS = ROOT / "figures" / "convlstm" / "rolling_validation_metrics.csv"
-OUT_PREDICTIONS = (
-    ROOT / "figures" / "convlstm" / "rolling_validation_predictions.csv"
-)
+OUT_FOLDS = base.FIG_DIR / "rolling_validation_folds.csv"
+OUT_METRICS = base.FIG_DIR / "rolling_validation_metrics.csv"
+OUT_PREDICTIONS = base.FIG_DIR / "rolling_validation_predictions.csv"
 
 N_SPLITS = 3
 TEST_WINDOWS = 287
@@ -136,9 +133,12 @@ def split_metadata(split, dates, *, seed=VALIDATION_SEED):
         "calibration_fraction_within_train": base.CAL_FRAC,
         "target_coverage": base.TARGET_COVERAGE,
         "seed": seed,
-        "model": "ConvLSTMForecast",
+        "model": base.MODEL_NAME,
         "hidden_channels": base.HIDDEN,
         "kernel_size": base.KERNEL,
+        "mamba_state_dim": base.MAMBA_STATE_DIM,
+        "mamba_conv": base.MAMBA_CONV,
+        "mamba_expand": base.MAMBA_EXPAND,
         "epochs": base.EPOCHS,
         "learning_rate": base.LR,
         "test_length_basis": "matches_existing_287d_holdout",
@@ -206,16 +206,17 @@ def train_predict_fold(
 
     delta_scale = base.make_delta_scale(y_train_delta[:split.fit_windows])
     y_train_normalized = (y_train_delta / delta_scale).astype(np.float32)
-    x_train_tensor = torch.from_numpy(x_train)
-    y_train_tensor = torch.from_numpy(y_train_normalized)
-    readout_tensor = torch.from_numpy(readout_weights)
+    device = base.require_cuda_device()
+    x_train_tensor = torch.from_numpy(x_train).to(device)
+    y_train_tensor = torch.from_numpy(y_train_normalized).to(device)
+    readout_tensor = torch.from_numpy(readout_weights).to(device)
 
-    model = base.ConvLSTMForecast(
+    model = base.ForecastModel(
         in_ch=x_train_tensor.shape[2],
         hid_ch=hidden_channels,
         kernel=base.KERNEL,
         quantiles=base.QUANTILES,
-    )
+    ).to(device)
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=base.LR,
@@ -256,12 +257,12 @@ def train_predict_fold(
         calibration_normalized = base.readout_grid_at_stations(
             calibration_grid,
             readout_tensor,
-        ).numpy()
-        test_grid = model(torch.from_numpy(x_test))
+        ).cpu().numpy()
+        test_grid = model(torch.from_numpy(x_test).to(device))
         test_normalized = base.readout_grid_at_stations(
             test_grid,
             readout_tensor,
-        ).numpy()
+        ).cpu().numpy()
 
     calibration_last = y_train_last[calibration_slice]
     calibration_actual = y_train_future[calibration_slice]
@@ -491,7 +492,7 @@ def main():
             and row["interval_variant"] == "calibrated"
         )
         print(
-            f"[convlstm-rolling] fold {split.fold}: "
+            f"[cnn-mamba-rolling] fold {split.fold}: "
             f"test={metadata['test_start_date']}..{metadata['test_end_date']} "
             f"RMSE={overall['model_rmse']:.3f}/"
             f"{overall['baseline_rmse']:.3f} mm "
@@ -511,9 +512,9 @@ def main():
     fold_frame.to_csv(OUT_FOLDS, index=False)
     metric_frame.to_csv(OUT_METRICS, index=False)
     prediction_frame.to_csv(OUT_PREDICTIONS, index=False)
-    print(f"[convlstm-rolling] 折计划: {OUT_FOLDS}")
-    print(f"[convlstm-rolling] 逐折指标: {OUT_METRICS}")
-    print(f"[convlstm-rolling] 逐日预测: {OUT_PREDICTIONS}")
+    print(f"[cnn-mamba-rolling] 折计划: {OUT_FOLDS}")
+    print(f"[cnn-mamba-rolling] 逐折指标: {OUT_METRICS}")
+    print(f"[cnn-mamba-rolling] 逐日预测: {OUT_PREDICTIONS}")
 
 
 if __name__ == "__main__":

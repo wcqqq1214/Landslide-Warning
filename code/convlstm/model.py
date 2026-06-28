@@ -1,4 +1,4 @@
-"""ConvLSTM displacement-interval forecast with station-level evaluation."""
+"""CNN-Mamba displacement-interval forecast with station-level evaluation."""
 from pathlib import Path
 import sys
 import matplotlib
@@ -10,6 +10,11 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+try:
+    from mamba_ssm import Mamba
+except ImportError:  # pragma: no cover - exercised only before CUDA deps install.
+    Mamba = None
+
 CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
@@ -19,8 +24,8 @@ from convlstm.grid_interp import GRID_H, GRID_W, load_coords, make_interpolator 
 
 ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
-OUT_PT = ROOT / "models" / "convlstm.pt"
-FIG_DIR = ROOT / "figures" / "convlstm"
+OUT_PT = ROOT / "models" / "cnn_mamba.pt"
+FIG_DIR = ROOT / "figures" / "cnn_mamba"
 OUT_PNG = FIG_DIR / "forecast_interval.png"
 OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
@@ -40,9 +45,13 @@ TARGET_COVERAGE = 0.8
 QUANTILES = [0.1, 0.5, 0.9]
 HIDDEN = 16
 KERNEL = 3
+MAMBA_STATE_DIM = 16
+MAMBA_CONV = 4
+MAMBA_EXPAND = 2
 EPOCHS = 120
 LR = 1e-3
 SEED = 0
+MODEL_NAME = "OfficialCNNMambaForecast"
 BOOTSTRAP_RESAMPLES = 1000
 BOOTSTRAP_BLOCK_LENGTHS = (7, 14, 30)
 BOOTSTRAP_PRIMARY_BLOCK_LENGTH = 14
@@ -77,45 +86,91 @@ torch.manual_seed(SEED)
 np.random.seed(SEED)
 
 
-class ConvLSTMCell(nn.Module):
-    """ConvLSTM cell with 2D-convolution gates."""
-    def __init__(self, in_ch, hid_ch, kernel):
+def require_cuda_device():
+    """Return the CUDA device required by the official mamba-ssm kernels."""
+    if Mamba is None:
+        raise RuntimeError(
+            "Official CNN-Mamba requires mamba-ssm. Install it in WSL/Linux "
+            "with CUDA, for example: "
+            "pip install 'mamba-ssm[causal-conv1d]' --no-build-isolation"
+        )
+    if not torch.cuda.is_available():
+        raise RuntimeError(
+            "Official mamba-ssm requires an NVIDIA CUDA device for this "
+            "experiment. Run it in WSL/Linux with a CUDA-enabled PyTorch build."
+        )
+    return torch.device("cuda")
+
+
+class CNNMambaForecast(nn.Module):
+    """CNN encodes each grid frame, then official mamba-ssm mixes time."""
+
+    def __init__(
+        self,
+        hid_ch,
+        kernel,
+        n_q=None,
+        in_ch=1,
+        quantiles=None,
+        state_dim=MAMBA_STATE_DIM,
+        mamba_conv=MAMBA_CONV,
+        mamba_expand=MAMBA_EXPAND,
+    ):
         super().__init__()
-        pad = kernel // 2
-        self.hid_ch = hid_ch
-        self.conv = nn.Conv2d(in_ch + hid_ch, 4 * hid_ch, kernel, padding=pad)
-
-    def forward(self, x, h, c):
-        z = self.conv(torch.cat([x, h], dim=1))
-        i, f, o, g = torch.chunk(z, 4, dim=1)
-        i, f, o = torch.sigmoid(i), torch.sigmoid(f), torch.sigmoid(o)
-        g = torch.tanh(g)
-        c = f * c + i * g
-        h = o * torch.tanh(c)
-        return h, c
-
-
-class ConvLSTMForecast(nn.Module):
-    """ConvLSTM 编码多通道时序网格 -> 有序 P10/P50/P90 增量图。"""
-    def __init__(self, hid_ch, kernel, n_q=None, in_ch=1, quantiles=None):
-        super().__init__()
+        if Mamba is None:
+            raise RuntimeError(
+                "mamba_ssm.Mamba is not available. Install official "
+                "mamba-ssm before constructing CNNMambaForecast."
+            )
         self.quantiles = list(QUANTILES if quantiles is None else quantiles)
         self.n_q = len(self.quantiles) if n_q is None else n_q
         if self.n_q != 3 or self.quantiles != [0.1, 0.5, 0.9]:
             raise ValueError("当前单调输出头只支持 P10/P50/P90 三个分位数")
-        self.cell = ConvLSTMCell(in_ch, hid_ch, kernel)
+        pad = kernel // 2
+        group_count = next(
+            groups
+            for groups in range(min(4, hid_ch), 0, -1)
+            if hid_ch % groups == 0
+        )
+        self.spatial = nn.Sequential(
+            nn.Conv2d(in_ch, hid_ch, kernel, padding=pad),
+            nn.GroupNorm(group_count, hid_ch),
+            nn.SiLU(),
+            nn.Conv2d(hid_ch, hid_ch, 1),
+            nn.SiLU(),
+        )
+        self.temporal = Mamba(
+            d_model=hid_ch,
+            d_state=state_dim,
+            d_conv=mamba_conv,
+            expand=mamba_expand,
+        )
         self.head = nn.Conv2d(hid_ch, 3, 1)
 
     def forward(self, x):
         if x.ndim == 4:
             x = x.unsqueeze(2)
-        B, T, C, H, W = x.shape
-        h = x.new_zeros(B, self.cell.hid_ch, H, W)
-        c = x.new_zeros(B, self.cell.hid_ch, H, W)
-        for t in range(T):
-            h, c = self.cell(x[:, t], h, c)
-        raw = self.head(h)
+        batch, steps, channels, height, width = x.shape
+        frames = x.reshape(batch * steps, channels, height, width)
+        encoded = self.spatial(frames).reshape(
+            batch,
+            steps,
+            -1,
+            height,
+            width,
+        )
+        tokens = encoded.permute(0, 3, 4, 1, 2).reshape(
+            batch * height * width,
+            steps,
+            -1,
+        )
+        mixed = self.temporal(tokens)[:, -1]
+        latest = mixed.reshape(batch, height, width, -1).permute(0, 3, 1, 2)
+        raw = self.head(latest)
         return ordered_quantiles_from_raw(raw)
+
+
+ForecastModel = CNNMambaForecast
 
 
 def ordered_quantiles_from_raw(raw):
@@ -670,19 +725,20 @@ def main():
 
     delta_scale = make_delta_scale(ytr_delta[:n_fit])
     ytr_norm = (ytr_delta / delta_scale).astype(np.float32)
-    Xtr_t = torch.from_numpy(Xtr)
-    ytr_t = torch.from_numpy(ytr_norm)
-    Xte_t = torch.from_numpy(Xte)
-    readout_t = torch.from_numpy(readout_w)
+    device = require_cuda_device()
+    Xtr_t = torch.from_numpy(Xtr).to(device)
+    ytr_t = torch.from_numpy(ytr_norm).to(device)
+    Xte_t = torch.from_numpy(Xte).to(device)
+    readout_t = torch.from_numpy(readout_w).to(device)
 
     Xfit_t, yfit_t = Xtr_t[:n_fit], ytr_t[:n_fit]
 
-    model = ConvLSTMForecast(
+    model = ForecastModel(
         in_ch=Xtr_t.shape[2],
         hid_ch=HIDDEN,
         kernel=KERNEL,
         quantiles=QUANTILES,
-    )
+    ).to(device)
     opt = torch.optim.Adam(model.parameters(), lr=LR)
 
     for ep in range(EPOCHS):
@@ -694,7 +750,7 @@ def main():
         loss.backward()
         opt.step()
         if (ep + 1) % 20 == 0:
-            print(f"[convlstm] epoch {ep+1}/{EPOCHS} pinball={loss.item():.4f}")
+            print(f"[cnn-mamba] epoch {ep+1}/{EPOCHS} pinball={loss.item():.4f}")
 
     model.eval()
     qi = {q: i for i, q in enumerate(QUANTILES)}
@@ -703,7 +759,7 @@ def main():
     last_cal = ytr_last[n_fit:]
     with torch.no_grad():
         cal_grid = model(Xcal_t)
-        cal_norm = readout_grid_at_stations(cal_grid, readout_t).numpy()
+        cal_norm = readout_grid_at_stations(cal_grid, readout_t).cpu().numpy()
     cal_pred = last_cal[:, None, :] + cal_norm * delta_scale[None, None, :]
     cal_p10, cal_p50, cal_p90 = (
         cal_pred[:, qi[0.1]],
@@ -719,7 +775,7 @@ def main():
 
     with torch.no_grad():
         dgrid = model(Xte_t)
-        dpred_norm = readout_grid_at_stations(dgrid, readout_t).numpy()
+        dpred_norm = readout_grid_at_stations(dgrid, readout_t).cpu().numpy()
 
     pred = last_te[:, None, :] + dpred_norm * delta_scale[None, None, :]
 
@@ -841,11 +897,19 @@ def main():
 
     OUT_PT.parent.mkdir(parents=True, exist_ok=True)
     torch.save({
-        "state_dict": model.state_dict(),
+        "state_dict": {
+            key: value.detach().cpu()
+            for key, value in model.state_dict().items()
+        },
+        "device": str(device),
         "config": {
             "in_ch": int(Xtr_t.shape[2]),
+            "model_name": MODEL_NAME,
             "hidden": HIDDEN,
             "kernel": KERNEL,
+            "mamba_state_dim": MAMBA_STATE_DIM,
+            "mamba_conv": MAMBA_CONV,
+            "mamba_expand": MAMBA_EXPAND,
             "quantiles": QUANTILES,
             "lookback": LOOKBACK,
             "horizon": HORIZON,
@@ -881,7 +945,7 @@ def main():
         ax.set_ylabel("mm")
     axes[-1].set_xlabel("test time step")
     axes[0].legend(loc="upper left")
-    fig.suptitle(f"ConvLSTM forecast intervals ({GRID_H}x{GRID_W}, lookback={LOOKBACK}d, horizon={HORIZON}d)")
+    fig.suptitle(f"CNN-Mamba forecast intervals ({GRID_H}x{GRID_W}, lookback={LOOKBACK}d, horizon={HORIZON}d)")
     plt.tight_layout()
     plt.savefig(OUT_PNG, dpi=150)
     plt.close()
@@ -891,44 +955,44 @@ def main():
     pd.DataFrame(calibration_rows).to_csv(OUT_CALIBRATION_METRICS, index=False)
     pd.DataFrame(bootstrap_rows).to_csv(OUT_BOOTSTRAP_CI, index=False)
 
-    print(f"[convlstm] 模型: {OUT_PT}")
-    print(f"[convlstm] 区间图: {OUT_PNG}")
-    print(f"[convlstm] 测点指标: {OUT_METRICS}")
-    print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
-    print(f"[convlstm] 校准审计: {OUT_CALIBRATION_METRICS}")
-    print(f"[convlstm] 时间块置信区间: {OUT_BOOTSTRAP_CI}")
-    print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
-    print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
-    print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
+    print(f"[cnn-mamba] 模型: {OUT_PT}")
+    print(f"[cnn-mamba] 区间图: {OUT_PNG}")
+    print(f"[cnn-mamba] 测点指标: {OUT_METRICS}")
+    print(f"[cnn-mamba] 分时段指标: {OUT_PERIOD_METRICS}")
+    print(f"[cnn-mamba] 校准审计: {OUT_CALIBRATION_METRICS}")
+    print(f"[cnn-mamba] 时间块置信区间: {OUT_BOOTSTRAP_CI}")
+    print(f"[cnn-mamba] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
+    print(f"[cnn-mamba] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
+    print(f"[cnn-mamba] 输入通道: 位移网格 + {EXOG_COLS}")
     print(
-        "[convlstm] fit/calibration/test 窗口: "
+        "[cnn-mamba] fit/calibration/test 窗口: "
         f"{n_fit}/{n_cal}/{len(test_dates)}"
     )
-    print(f"[convlstm] 测试集 RMSE(P50, 全测点): {metrics['model_rmse']:.3f} mm")
-    print(f"[convlstm] persistence 基线 RMSE: {metrics['baseline_rmse']:.3f} mm")
-    print(f"[convlstm] RMSE skill vs baseline: {metrics['rmse_skill_vs_baseline']:.3f}")
-    print(f"[convlstm] 测试集 MAE(P50, 全测点): {metrics['model_mae']:.3f} mm")
-    print(f"[convlstm] persistence 基线 MAE: {metrics['baseline_mae']:.3f} mm")
-    print(f"[convlstm] 原始区间覆盖率(P10-P90): {raw_metrics['coverage']:.3f}")
+    print(f"[cnn-mamba] 测试集 RMSE(P50, 全测点): {metrics['model_rmse']:.3f} mm")
+    print(f"[cnn-mamba] persistence 基线 RMSE: {metrics['baseline_rmse']:.3f} mm")
+    print(f"[cnn-mamba] RMSE skill vs baseline: {metrics['rmse_skill_vs_baseline']:.3f}")
+    print(f"[cnn-mamba] 测试集 MAE(P50, 全测点): {metrics['model_mae']:.3f} mm")
+    print(f"[cnn-mamba] persistence 基线 MAE: {metrics['baseline_mae']:.3f} mm")
+    print(f"[cnn-mamba] 原始区间覆盖率(P10-P90): {raw_metrics['coverage']:.3f}")
     qhat_text = ", ".join(
         f"{station}={value:.3f}" for station, value in zip(station_names, qhat)
     )
-    print(f"[convlstm] stationwise conformal qhat: {qhat_text} mm")
-    print(f"[convlstm] 校准后区间覆盖率(P10-P90): {metrics['coverage']:.3f}  (目标≈0.80)")
+    print(f"[cnn-mamba] stationwise conformal qhat: {qhat_text} mm")
+    print(f"[cnn-mamba] 校准后区间覆盖率(P10-P90): {metrics['coverage']:.3f}  (目标≈0.80)")
     print(
-        "[convlstm] 平均区间宽度 raw/calibrated: "
+        "[cnn-mamba] 平均区间宽度 raw/calibrated: "
         f"{raw_metrics['mean_width']:.3f}/{metrics['mean_width']:.3f} mm"
     )
     print(
-        "[convlstm] 平均 pinball loss raw/calibrated: "
+        "[cnn-mamba] 平均 pinball loss raw/calibrated: "
         f"{raw_metrics['mean_pinball']:.4f}/{metrics['mean_pinball']:.4f} mm"
     )
     print(
-        "[convlstm] 80% interval score raw/calibrated: "
+        "[cnn-mamba] 80% interval score raw/calibrated: "
         f"{raw_metrics['interval_score_80']:.3f}/"
         f"{metrics['interval_score_80']:.3f} mm"
     )
-    print(f"[convlstm] 分位数交叉: P10>P50 {metrics['p10_gt_p50']}, "
+    print(f"[cnn-mamba] 分位数交叉: P10>P50 {metrics['p10_gt_p50']}, "
           f"P50>P90 {metrics['p50_gt_p90']} / {metrics['total_points']}")
 
 

@@ -1,4 +1,4 @@
-"""Nested temporal validation for ConvLSTM epoch selection."""
+"""Nested temporal validation for CNN-Mamba epoch selection."""
 
 from __future__ import annotations
 
@@ -19,8 +19,7 @@ from convlstm import rolling_validation as rolling  # noqa: E402
 from convlstm import seed_stability as stability  # noqa: E402
 
 
-ROOT = Path(__file__).resolve().parents[2]
-FIG_DIR = ROOT / "figures" / "convlstm"
+FIG_DIR = base.FIG_DIR
 OUT_RUNS = FIG_DIR / "inner_validation_runs.csv"
 OUT_SELECTION = FIG_DIR / "inner_validation_selection_history.csv"
 OUT_REFIT = FIG_DIR / "inner_validation_refit_history.csv"
@@ -182,17 +181,18 @@ def run_epoch_selection(
         y_fit_delta[:inner_split.train_windows]
     )
     y_fit_normalized = (y_fit_delta / delta_scale).astype(np.float32)
-    x_tensor = torch.from_numpy(x_fit)
-    y_tensor = torch.from_numpy(y_fit_normalized)
-    readout_tensor = torch.from_numpy(readout_weights)
+    device = base.require_cuda_device()
+    x_tensor = torch.from_numpy(x_fit).to(device)
+    y_tensor = torch.from_numpy(y_fit_normalized).to(device)
+    readout_tensor = torch.from_numpy(readout_weights).to(device)
     validation_slice = slice(inner_split.train_windows, split.fit_windows)
 
-    model = base.ConvLSTMForecast(
+    model = base.ForecastModel(
         in_ch=x_tensor.shape[2],
         hid_ch=hidden_channels,
         kernel=base.KERNEL,
         quantiles=base.QUANTILES,
-    )
+    ).to(device)
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=base.LR,
@@ -539,7 +539,7 @@ def main():
                 and row["interval_variant"] == "calibrated"
             )
             print(
-                f"[convlstm-inner] seed={seed} fold={split.fold}: "
+                f"[cnn-mamba-inner] seed={seed} fold={split.fold}: "
                 f"selected={selection_result['selected_epoch']}/"
                 f"{selection_result['observed_epochs']} "
                 f"stop={selection_result['stop_reason']} "
@@ -579,13 +579,13 @@ def main():
     summary_frame.to_csv(OUT_SUMMARY, index=False)
     prediction_frame.to_csv(OUT_PREDICTIONS, index=False)
     comparison_frame.to_csv(OUT_COMPARISON, index=False)
-    print(f"[convlstm-inner] 运行协议: {OUT_RUNS}")
-    print(f"[convlstm-inner] 内层选择曲线: {OUT_SELECTION}")
-    print(f"[convlstm-inner] 最终重训曲线: {OUT_REFIT}")
-    print(f"[convlstm-inner] 外层指标: {OUT_METRICS}")
-    print(f"[convlstm-inner] 跨种子汇总: {OUT_SUMMARY}")
-    print(f"[convlstm-inner] 逐日预测: {OUT_PREDICTIONS}")
-    print(f"[convlstm-inner] 固定轮数配对比较: {OUT_COMPARISON}")
+    print(f"[cnn-mamba-inner] 运行协议: {OUT_RUNS}")
+    print(f"[cnn-mamba-inner] 内层选择曲线: {OUT_SELECTION}")
+    print(f"[cnn-mamba-inner] 最终重训曲线: {OUT_REFIT}")
+    print(f"[cnn-mamba-inner] 外层指标: {OUT_METRICS}")
+    print(f"[cnn-mamba-inner] 跨种子汇总: {OUT_SUMMARY}")
+    print(f"[cnn-mamba-inner] 逐日预测: {OUT_PREDICTIONS}")
+    print(f"[cnn-mamba-inner] 固定轮数配对比较: {OUT_COMPARISON}")
 
 
 if __name__ == "__main__":
