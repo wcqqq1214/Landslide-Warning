@@ -2,7 +2,7 @@
 
 基于机器学习方法的水库滑坡位移预测与预警研究代码仓库。当前以三峡库区藕塘滑坡日尺度监测数据为例，完成从特征工程、位移预测、状态分类、SHAP 解释、动态阈值到多指标融合预警的端到端流程。
 
-> 当前代码已跑通完整研究框架；现有结果属于同一数据集上的探索性内部时间验证，不应表述为最终确认性泛化证据。
+> 当前分支已将位移预测阶段切换为官方 CNN-Mamba 实现；位移预测结果需要在 WSL/Linux + NVIDIA CUDA 环境重新生成。
 
 ## 当前状态
 
@@ -24,7 +24,7 @@ uv sync --torch-backend cu128 --no-build-isolation
 uv run python main.py
 ```
 
-完整运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。
+完整运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。当前 CNN-Mamba 阶段依赖官方 `mamba-ssm` CUDA 扩展，macOS 本机不适合跑完整位移预测阶段。
 
 ## 代码结构
 
@@ -39,7 +39,7 @@ uv run python main.py
 ├── data/                    # 原始数据、测点坐标和派生特征
 ├── models/                  # 可再生成的模型文件
 ├── figures/                 # 可再生成的图表、指标和审计表
-└── docs/                    # 研究框架、代码设计、结果报告和限制说明
+└── docs/                    # 研究框架、代码设计和限制说明
 ```
 
 ## 管线阶段
@@ -52,12 +52,11 @@ uv run python main.py
 | --- | --- |
 | `docs/framework.md` | 研究框架、验证规则和报告边界 |
 | `docs/design.md` | 代码架构和模块边界 |
-| `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
 | `figures/README.md` | 每个 PNG/CSV 的用途和保留原则 |
 
 ## 当前结论边界
 
-- 已有旧模型结果仍只作为历史基线记录；当前 CNN-Mamba 分支需要在 WSL/Linux + NVIDIA CUDA 环境重新生成位移预测指标。
+- 旧位移预测产物已从当前 Mamba 分支删除；当前 CNN-Mamba 分支需要在 WSL/Linux + NVIDIA CUDA 环境重新生成位移预测指标。
 - NGBoost 当前识别的是当日动态 V0 状态；留出段没有 orange/red 样本，不能评价高等级预警召回。
 - SHAP 结果描述模型依赖关系，不代表致灾因果关系。
 - V0 和切线角规则已跑通，但切线角参考等速阶段尚未由导师或现场资料确认，不能写成确认性切线角结论。

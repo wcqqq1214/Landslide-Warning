@@ -1,6 +1,6 @@
 # 滑坡位移预测与预警代码设计
 
-> 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以 `results_report.md` 和 `../figures/*/*.csv` 为准。
+> 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以当前分支重新生成的 `../figures/*/*.csv` 为准。
 
 ## 1. 数据与约束
 
@@ -144,7 +144,7 @@ uv run --with pytest pytest -q
 ## 8. 当前已知限制
 
 - CNN-Mamba 分支需要 WSL/Linux + NVIDIA CUDA 环境，当前 macOS 本机只能完成静态和结构自检，不能实际运行官方 `mamba-ssm` CUDA kernel。
-- CNN-Mamba 尚未重新生成完整留出、滚动验证、五种子、早停和容量敏感性结果；旧位移预测结果只能作为历史基线，不得移植为 CNN-Mamba 性能结论。
+- CNN-Mamba 尚未重新生成完整留出、滚动验证、五种子、早停和容量敏感性结果；旧位移预测产物已从当前分支移除，不得移植为 CNN-Mamba 性能结论。
 - 官方 `mamba-ssm` 依赖 CUDA 扩展和 causal convolution 扩展，环境构建失败时应先解决依赖，不应回退到简化 PyTorch 实现并继续称为官方 Mamba。
 - NGBoost 未超过昨日状态持续性基线。
 - 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
