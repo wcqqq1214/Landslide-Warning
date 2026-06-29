@@ -1,0 +1,79 @@
+{
+  "schema_version": 2,
+  "status": "completed",
+  "started_at": "2026-06-29T00:12:58+08:00",
+  "finished_at": "2026-06-29T00:16:51+08:00",
+  "git_commit": "f894f5ea347fddc93a95747b9369c3b310a53b69",
+  "source_sha256": "81ad2457e7f051d233f76b648b091bd1d75e93404e85f6bb96b4198480725958",
+  "python_executable": "/home/wcqqq21/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.12",
+  "total_elapsed_seconds": 228.939,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "cnn-mamba-rolling",
+      "script": "code/cnn_mamba/rolling_validation.py",
+      "status": "completed",
+      "elapsed_seconds": 44.009,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/cnn_mamba/rolling_validation_folds.csv",
+          "size_bytes": 1444,
+          "sha256": "a7435fa7c90f0ebc977e6b18f8d1556ebede9ea80466292cc833db07051a0956"
+        },
+        {
+          "path": "figures/cnn_mamba/rolling_validation_metrics.csv",
+          "size_bytes": 32856,
+          "sha256": "bd40c2ce149f92a4139b66c1140156d7e74efd066f122b70e3fd7d00241ee8c1"
+        },
+        {
+          "path": "figures/cnn_mamba/rolling_validation_predictions.csv",
+          "size_bytes": 994510,
+          "sha256": "92310bb3dc66df42fb4e9989c5090e7c34a60c7074a9e9918ac9ffc7d9f26f8d"
+        }
+      ],
+      "contract_error": null
+    },
+    {
+      "name": "cnn-mamba-seeds",
+      "script": "code/cnn_mamba/seed_stability.py",
+      "status": "completed",
+      "elapsed_seconds": 184.921,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "figures/cnn_mamba/seed_stability_runs.csv",
+          "size_bytes": 8475,
+          "sha256": "d23c839ac72472838aa59f10b850496e2a9c88f1bcf0b744b9d9fea0541ab26f"
+        },
+        {
+          "path": "figures/cnn_mamba/seed_stability_metrics.csv",
+          "size_bytes": 162482,
+          "sha256": "ec6062d0c910d0c9058d7e37da756f4ba3e567d8c8b95937dfd14c61b134ef5b"
+        },
+        {
+          "path": "figures/cnn_mamba/seed_stability_summary.csv",
+          "size_bytes": 65714,
+          "sha256": "538fa90ab5df09d6dcaedc929fae7617da2da0006a5d2006ce807dfe7c08556f"
+        },
+        {
+          "path": "figures/cnn_mamba/seed_stability_training.csv",
+          "size_bytes": 83963,
+          "sha256": "7a5a564a19ce326e331f1920cc68b5392b1fca1af5aaeddb4236644f37db0284"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}

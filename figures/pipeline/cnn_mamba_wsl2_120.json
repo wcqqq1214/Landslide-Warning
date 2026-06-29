@@ -1,0 +1,59 @@
+{
+  "schema_version": 2,
+  "status": "completed",
+  "started_at": "2026-06-29T00:12:05+08:00",
+  "finished_at": "2026-06-29T00:12:39+08:00",
+  "git_commit": "f894f5ea347fddc93a95747b9369c3b310a53b69",
+  "source_sha256": "81ad2457e7f051d233f76b648b091bd1d75e93404e85f6bb96b4198480725958",
+  "python_executable": "/home/wcqqq21/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.12",
+  "total_elapsed_seconds": 33.426,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "cnn-mamba",
+      "script": "code/cnn_mamba/model.py",
+      "status": "completed",
+      "elapsed_seconds": 33.42,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "models/cnn_mamba.pt",
+          "size_bytes": 27166,
+          "sha256": "3c4319cf7f25834fba0bd884b8978d892ebf475505b0ecfb623894ff282214d6"
+        },
+        {
+          "path": "figures/cnn_mamba/forecast_interval.png",
+          "size_bytes": 154155,
+          "sha256": "3cbd5da42765a09e7c6779e87b4620d03a76b6d45b7f24ea380fd5f98a662232"
+        },
+        {
+          "path": "figures/cnn_mamba/forecast_metrics.csv",
+          "size_bytes": 6984,
+          "sha256": "a37a941a0874b7c18817cce1d3154b6b27c0cc567509fc6811ea250fc01aee5e"
+        },
+        {
+          "path": "figures/cnn_mamba/forecast_period_metrics.csv",
+          "size_bytes": 3062,
+          "sha256": "20e3914916b40b7f4a101bc00a803505259c08c5493e5748f7778055e9f338b4"
+        },
+        {
+          "path": "figures/cnn_mamba/forecast_calibration_metrics.csv",
+          "size_bytes": 4725,
+          "sha256": "18c2bd5ff32541ce0dceee5d064f6ceb534380b1fe1b58ad30939bb7d1f7e38d"
+        },
+        {
+          "path": "figures/cnn_mamba/forecast_bootstrap_ci.csv",
+          "size_bytes": 176832,
+          "sha256": "4aaeb1dc0fc61165c7efa8f31f551a3eaa1ecc19bbdad2a1d0a16cebfe234669"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}
