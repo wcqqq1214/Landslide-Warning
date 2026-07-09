@@ -2,6 +2,12 @@
 
 - You may challenge my views — I'm not always right. Maintain a critical mindset: question my instructions and opinions, point out flaws when you see them, and suggest better alternatives.
 
+# Research Tooling
+
+- `academic-research-suite` is available for literature review, manuscript structure, citation checks, revision, and peer-review simulation.
+- Use it as an advisory research-writing tool only; do not let it modify frozen validation splits, metrics, thresholds, model structure, or experimental conclusions.
+- All literature claims must be checked against source papers, versioned data, and reproducible project artifacts before being treated as final.
+
 # Commit Guidelines
 
 - Do NOT add `Co-Authored-By` lines to any commit messages.
