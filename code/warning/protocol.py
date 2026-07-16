@@ -13,6 +13,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from warning.levels import WARNING_COLORS
+
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PROTOCOL_PATH = ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
@@ -49,6 +51,11 @@ def _validate_protocol(protocol: dict[str, Any], path: Path) -> None:
     if not isinstance(protocol["confirmed"], dict):
         raise ProtocolValidationError(
             f"Protocol {path} must contain a confirmed object"
+        )
+    if protocol["confirmed"].get("warning_levels") != list(WARNING_COLORS):
+        colors = ", ".join(WARNING_COLORS)
+        raise ProtocolValidationError(
+            f"Protocol {path} warning_levels must match the shared order: {colors}"
         )
     if not isinstance(protocol["unresolved_items"], list):
         raise ProtocolValidationError(
