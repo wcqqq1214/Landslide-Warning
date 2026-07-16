@@ -91,7 +91,8 @@ STAGES = (
         inputs=("data/features.csv", "data/station_coords.csv"),
         outputs=(
             "models/convlstm.pt",
-            "figures/convlstm/forecast_interval.png",
+            "figures/convlstm/forecast_all_stations.png",
+            "figures/convlstm/forecast_predictions.csv",
             "figures/convlstm/forecast_metrics.csv",
             "figures/convlstm/forecast_period_metrics.csv",
             "figures/convlstm/forecast_calibration_metrics.csv",

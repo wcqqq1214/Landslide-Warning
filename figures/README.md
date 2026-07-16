@@ -6,8 +6,9 @@
 | --- | --- | --- | --- |
 | `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
 | `pipeline/shap_stability_run.json` | 保存修复后 SHAP 稳定性单阶段正式运行的源码指纹、耗时和 9 个产物哈希 | 单阶段工程清单 | 追溯正式结果到提交 `3c06d38`；不替代完整管线清单 |
-| `convlstm/forecast_interval.png` | 展示 8 个测点的一日位移 P10/P50/P90 预测区间 | 最终图 | 位移预测主图 |
-| `convlstm/forecast_metrics.csv` | 保存各测点校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；用 `interval_variant` 区分原始和校准区间，R2/NSE 仅作补充 |
+| `convlstm/forecast_all_stations.png` | 展示 8 个测点的全时间轴位移、fit 诊断、校准段与留出 test/prediction 段的 P10/P50/P90 区间及边界 | 最终图 | 位移预测主图；fit 只作诊断，泛化指标仅来自 test |
+| `convlstm/forecast_predictions.csv` | 保存逐日逐测点的 `split`、实际位移、持久性、原始 P10/P50/P90、校准端点、`qhat` 与端点适用状态 | 逐时刻审计表 | 可从 CSV 复画全测点主图；fit 行刻意没有校准端点，test 校准端点只来自先前 calibration 段 |
+| `convlstm/forecast_metrics.csv` | 保存各测点测试段校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；用 `interval_variant` 区分原始和校准区间，`evaluation_split=test`，R2/NSE 仅作补充 |
 | `convlstm/forecast_period_metrics.csv` | 将 287 日测试段按日期连续分为三个块并保存校准前后同组指标 | 时间稳定性审计表 | 检查总体均值是否掩盖后期性能退化，不代替滚动时间验证 |
 | `convlstm/forecast_calibration_metrics.csv` | 保存拟合/校准/测试日期边界、测点独立 `qhat` 及校准前后覆盖率、宽度、pinball 和 interval score | 校准审计表 | 证明校准期早于测试期并量化宽度-覆盖率代价；不提供时间序列下的严格覆盖保证 |
 | `convlstm/forecast_bootstrap_ci.csv` | 保存总体和各测点在 7/14/30 日连续块下的点估计、95% 百分位区间、配对差值及完整重采样参数 | 不确定性审计表 | 14 日为主分析，7/30 日为敏感性；模型和 `qhat` 固定，不能解释为训练或未来漂移不确定性 |

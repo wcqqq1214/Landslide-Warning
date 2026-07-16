@@ -21,7 +21,8 @@ ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
 OUT_PT = ROOT / "models" / "convlstm.pt"
 FIG_DIR = ROOT / "figures" / "convlstm"
-OUT_PNG = FIG_DIR / "forecast_interval.png"
+OUT_PNG = FIG_DIR / "forecast_all_stations.png"
+OUT_PREDICTIONS = FIG_DIR / "forecast_predictions.csv"
 OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
 OUT_CALIBRATION_METRICS = FIG_DIR / "forecast_calibration_metrics.csv"
@@ -31,7 +32,6 @@ DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
 EXOG_COLS = ["RWL", "RWL_rate", "Rain_cum7", "Rain_cum15", "Rain_cum30"]
 THESIS_WINDOWS = {"MJ1": 2, "MJ9": 7, "MJ3": 2}
-PLOT_STATIONS = ["MJ9", "MJ1", "MJ3"]
 LOOKBACK = max(THESIS_WINDOWS.values())
 HORIZON = 1
 TRAIN_FRAC = 0.8
@@ -277,6 +277,101 @@ def station_metric_rows(
             "interval_variant": interval_variant,
             **metrics,
         })
+    return rows
+
+
+def forecast_prediction_rows(
+    target_dates,
+    split,
+    actual,
+    persistence,
+    p10,
+    p50,
+    p90,
+    station_names,
+    *,
+    calibrated_p10=None,
+    calibrated_p90=None,
+    qhat=None,
+    calibrated_bounds_status,
+):
+    """Build auditable date-by-station predictions for one chronological split.
+
+    ``p10``/``p50``/``p90`` are the unadjusted model quantiles.  Fit rows do
+    not receive calibrated bounds, because a calibration quantity estimated
+    from a later chronological split must not be projected back into the fit
+    diagnostic.  Calibration rows may retain adjusted bounds for calibration
+    diagnostics, while test rows use only the prior calibration split.
+    """
+    if not isinstance(split, str) or not split:
+        raise ValueError("split 必须为非空字符串")
+    if not isinstance(calibrated_bounds_status, str) or not calibrated_bounds_status:
+        raise ValueError("calibrated_bounds_status 必须为非空字符串")
+    if not station_names or len(set(station_names)) != len(station_names):
+        raise ValueError("station_names 必须为非空且不得重复")
+
+    dates = pd.DatetimeIndex(pd.to_datetime(target_dates))
+    if len(dates) == 0 or dates.isna().any():
+        raise ValueError("target_dates 必须为非空且不含无效日期")
+    if dates.has_duplicates or not dates.is_monotonic_increasing:
+        raise ValueError("target_dates 必须严格递增且不得重复")
+
+    expected_shape = (len(dates), len(station_names))
+
+    def as_matrix(values, name):
+        matrix = np.asarray(values, dtype=float)
+        if matrix.shape != expected_shape:
+            raise ValueError(f"{name} 必须为日期 x 测点数组，形状为 {expected_shape}")
+        if not np.isfinite(matrix).all():
+            raise ValueError(f"{name} 不得包含非有限值")
+        return matrix
+
+    actual = as_matrix(actual, "actual")
+    persistence = as_matrix(persistence, "persistence")
+    p10 = as_matrix(p10, "p10")
+    p50 = as_matrix(p50, "p50")
+    p90 = as_matrix(p90, "p90")
+    if np.any(p10 > p50) or np.any(p50 > p90):
+        raise ValueError("原始分位数必须满足 p10 <= p50 <= p90")
+
+    has_calibrated_bounds = calibrated_p10 is not None or calibrated_p90 is not None
+    if has_calibrated_bounds:
+        if calibrated_p10 is None or calibrated_p90 is None:
+            raise ValueError("校准区间端点必须同时提供")
+        calibrated_p10 = as_matrix(calibrated_p10, "calibrated_p10")
+        calibrated_p90 = as_matrix(calibrated_p90, "calibrated_p90")
+        if np.any(calibrated_p10 > p50) or np.any(p50 > calibrated_p90):
+            raise ValueError("校准分位数必须包围 p50")
+    else:
+        calibrated_p10 = np.full(expected_shape, np.nan)
+        calibrated_p90 = np.full(expected_shape, np.nan)
+
+    if qhat is None:
+        qhat_values = np.full(len(station_names), np.nan)
+    else:
+        qhat_values = np.asarray(qhat, dtype=float)
+        if qhat_values.shape != (len(station_names),):
+            raise ValueError("qhat 长度必须与测点数一致")
+        if not np.isfinite(qhat_values).all() or np.any(qhat_values < 0):
+            raise ValueError("qhat 必须为非负有限值")
+
+    rows = []
+    for date_index, date in enumerate(dates):
+        for station_index, station in enumerate(station_names):
+            rows.append({
+                "date": date.date().isoformat(),
+                "station": station,
+                "split": split,
+                "actual": float(actual[date_index, station_index]),
+                "persistence": float(persistence[date_index, station_index]),
+                "p10": float(p10[date_index, station_index]),
+                "p50": float(p50[date_index, station_index]),
+                "p90": float(p90[date_index, station_index]),
+                "calibrated_p10": float(calibrated_p10[date_index, station_index]),
+                "calibrated_p90": float(calibrated_p90[date_index, station_index]),
+                "qhat_mm": float(qhat_values[station_index]),
+                "calibrated_bounds_status": calibrated_bounds_status,
+            })
     return rows
 
 
@@ -698,12 +793,22 @@ def main():
 
     model.eval()
     qi = {q: i for i, q in enumerate(QUANTILES)}
+    yfit_real = ytr_future[:n_fit]
+    last_fit = ytr_last[:n_fit]
     Xcal_t = Xtr_t[n_fit:]
     ycal_real = ytr_future[n_fit:]
     last_cal = ytr_last[n_fit:]
     with torch.no_grad():
+        fit_grid = model(Xfit_t)
+        fit_norm = readout_grid_at_stations(fit_grid, readout_t).numpy()
         cal_grid = model(Xcal_t)
         cal_norm = readout_grid_at_stations(cal_grid, readout_t).numpy()
+    fit_pred = last_fit[:, None, :] + fit_norm * delta_scale[None, None, :]
+    fit_p10, fit_p50, fit_p90 = (
+        fit_pred[:, qi[0.1]],
+        fit_pred[:, qi[0.5]],
+        fit_pred[:, qi[0.9]],
+    )
     cal_pred = last_cal[:, None, :] + cal_norm * delta_scale[None, None, :]
     cal_p10, cal_p50, cal_p90 = (
         cal_pred[:, qi[0.1]],
@@ -779,6 +884,10 @@ def main():
         THESIS_WINDOWS,
         interval_variant="calibrated",
     )
+    for row in calibration_raw_rows + calibration_adjusted_rows:
+        row["evaluation_split"] = "calibration"
+    for row in raw_rows + calibrated_rows:
+        row["evaluation_split"] = "test"
     rows = raw_rows + calibrated_rows
 
     dates = pd.to_datetime(df["Date"])
@@ -799,6 +908,46 @@ def main():
         "target_coverage": TARGET_COVERAGE,
         "method": "stationwise_symmetric_split_conformal",
     }
+    prediction_rows = []
+    prediction_rows.extend(forecast_prediction_rows(
+        fit_dates,
+        "fit",
+        yfit_real,
+        last_fit,
+        fit_p10,
+        fit_p50,
+        fit_p90,
+        station_names,
+        calibrated_bounds_status="not_available_for_fit_diagnostic",
+    ))
+    prediction_rows.extend(forecast_prediction_rows(
+        calibration_dates,
+        "calibration",
+        ycal_real,
+        last_cal,
+        cal_p10,
+        cal_p50,
+        cal_p90,
+        station_names,
+        calibrated_p10=cal_p10_adjusted,
+        calibrated_p90=cal_p90_adjusted,
+        qhat=qhat,
+        calibrated_bounds_status="same_split_calibration_diagnostic",
+    ))
+    prediction_rows.extend(forecast_prediction_rows(
+        test_dates,
+        "test",
+        yte_real,
+        last_te,
+        raw_p10,
+        p50,
+        raw_p90,
+        station_names,
+        calibrated_p10=p10,
+        calibrated_p90=p90,
+        qhat=qhat,
+        calibrated_bounds_status="split_conformal_from_calibration",
+    ))
     calibration_rows = calibration_metric_rows(
         station_names,
         qhat,
@@ -862,6 +1011,8 @@ def main():
             "bootstrap_primary_block_length": BOOTSTRAP_PRIMARY_BLOCK_LENGTH,
             "bootstrap_confidence_level": BOOTSTRAP_CONFIDENCE_LEVEL,
             "bootstrap_seed": BOOTSTRAP_SEED,
+            "full_timeline_prediction_csv": OUT_PREDICTIONS.relative_to(ROOT).as_posix(),
+            "fit_predictions_are_diagnostics_only": True,
         },
         "delta_scale": delta_scale,
         "readout_weights": readout_w,
@@ -869,23 +1020,103 @@ def main():
     }, OUT_PT)
 
     OUT_PNG.parent.mkdir(parents=True, exist_ok=True)
-    fig, axes = plt.subplots(len(PLOT_STATIONS), 1, figsize=(11, 9), sharex=True)
-    for ax, station in zip(axes, PLOT_STATIONS):
-        ch = DISP_COLS.index(f"{station}_disp")
-        ax.plot(yte_real[:, ch], label="actual", color="k", lw=1)
-        ax.plot(last_te[:, ch], label="persistence", color="0.55", lw=1, ls="--")
-        ax.plot(p50[:, ch], label="P50", color="C1", lw=1)
-        ax.fill_between(range(len(p50)), p10[:, ch], p90[:, ch],
-                        alpha=0.25, color="C1", label="calibrated P10-P90")
-        ax.set_title(f"{station} forecast interval")
-        ax.set_ylabel("mm")
-    axes[-1].set_xlabel("test time step")
-    axes[0].legend(loc="upper left")
-    fig.suptitle(f"ConvLSTM forecast intervals ({GRID_H}x{GRID_W}, lookback={LOOKBACK}d, horizon={HORIZON}d)")
-    plt.tight_layout()
+    fig, axes = plt.subplots(
+        len(station_names),
+        1,
+        figsize=(14, 20),
+        sharex=True,
+    )
+    axes = np.atleast_1d(axes)
+    for ch, (ax, station) in enumerate(zip(axes, station_names)):
+        first_axis = ch == 0
+        ax.plot(
+            dates,
+            disp[:, ch],
+            label="observed displacement" if first_axis else None,
+            color="k",
+            lw=0.8,
+        )
+        ax.plot(
+            fit_dates,
+            fit_p50[:, ch],
+            label="fit P50 (diagnostic)" if first_axis else None,
+            color="C0",
+            lw=0.9,
+        )
+        ax.fill_between(
+            fit_dates,
+            fit_p10[:, ch],
+            fit_p90[:, ch],
+            alpha=0.12,
+            color="C0",
+            label="fit raw P10-P90" if first_axis else None,
+        )
+        ax.plot(
+            calibration_dates,
+            cal_p50[:, ch],
+            label="calibration P50 (diagnostic)" if first_axis else None,
+            color="C2",
+            lw=0.9,
+        )
+        ax.fill_between(
+            calibration_dates,
+            cal_p10_adjusted[:, ch],
+            cal_p90_adjusted[:, ch],
+            alpha=0.12,
+            color="C2",
+            label="calibration adjusted P10-P90" if first_axis else None,
+        )
+        ax.plot(
+            test_dates,
+            last_te[:, ch],
+            label="test persistence" if first_axis else None,
+            color="0.55",
+            lw=0.9,
+            ls="--",
+        )
+        ax.plot(
+            test_dates,
+            p50[:, ch],
+            label="test P50" if first_axis else None,
+            color="C3",
+            lw=1.0,
+        )
+        ax.fill_between(
+            test_dates,
+            p10[:, ch],
+            p90[:, ch],
+            alpha=0.2,
+            color="C3",
+            label="test calibrated P10-P90" if first_axis else None,
+        )
+        ax.axvline(
+            calibration_dates.iloc[0],
+            color="0.35",
+            lw=0.8,
+            ls=":",
+            label="fit/calibration boundary" if first_axis else None,
+        )
+        ax.axvline(
+            test_dates.iloc[0],
+            color="0.35",
+            lw=0.8,
+            ls="--",
+            label="calibration/test boundary" if first_axis else None,
+        )
+        ax.set_title(station, loc="left", fontsize=10)
+        ax.set_ylabel("U (mm)")
+        ax.grid(axis="y", alpha=0.2)
+    axes[-1].set_xlabel("date")
+    axes[0].legend(loc="upper left", ncol=2, fontsize=8)
+    fig.suptitle(
+        "ConvLSTM full-timeline displacement forecasts: fit diagnostics and "
+        "held-out test predictions"
+    )
+    fig.tight_layout(rect=(0, 0, 1, 0.975))
     plt.savefig(OUT_PNG, dpi=150)
     plt.close()
 
+    pd.DataFrame(prediction_rows).to_csv(OUT_PREDICTIONS, index=False)
     pd.DataFrame(rows).to_csv(OUT_METRICS, index=False)
     pd.DataFrame(period_rows).to_csv(OUT_PERIOD_METRICS, index=False)
     pd.DataFrame(calibration_rows).to_csv(OUT_CALIBRATION_METRICS, index=False)
@@ -893,6 +1124,7 @@ def main():
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
+    print(f"[convlstm] 全时间轴逐时刻预测: {OUT_PREDICTIONS}")
     print(f"[convlstm] 测点指标: {OUT_METRICS}")
     print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
     print(f"[convlstm] 校准审计: {OUT_CALIBRATION_METRICS}")

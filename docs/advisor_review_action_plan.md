@@ -314,11 +314,11 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 
 任务：
 
-- [ ] 将 `PLOT_STATIONS` 限制移除，展示藕塘全部 8 个测点；
-- [ ] 生成完整时间轴逐测点预测表，至少包含 `split/actual/persistence/P10/P50/P90/calibrated bounds`；
-- [ ] 图中明确标出 fit、calibration 和 test/prediction 边界；
-- [ ] 训练段只展示拟合诊断，测试段单独计算和强调泛化指标；
-- [ ] 每测点报告 PICP/coverage、平均宽度、pinball loss、interval score 和持久性基线；
+- [x] 将 `PLOT_STATIONS` 限制移除，展示藕塘全部 8 个测点；
+- [x] 生成完整时间轴逐测点预测表，至少包含 `split/actual/persistence/P10/P50/P90/calibrated bounds`；
+- [x] 图中明确标出 fit、calibration 和 test/prediction 边界；
+- [x] 训练段只展示拟合诊断，测试段单独计算和强调泛化指标；
+- [x] 每测点报告 PICP/coverage、平均宽度、pinball loss、interval score 和持久性基线；
 - [ ] 仅在拟合/校准阶段检查分位数顺序、P10-P90 覆盖率、近似对称性和标准化残差尾部适配；通过已冻结门槛后生成 `μ_t/σ_t`，未通过则停止论文启发的五级区间映射，不以测试结果调整输出分位数或分布参数。
 
 建议产物：
@@ -330,6 +330,13 @@ figures/convlstm/forecast_metrics.csv
 ```
 
 完成判据：8 个测点均可从 CSV 复画；训练与预测段不会在指标或图例中混淆。
+
+#### 2026-07-16：全测点 ConvLSTM 输出执行记录
+
+- 已移除仅绘制 `MJ9/MJ1/MJ3` 的限制，并通过 `main.py --stage convlstm` 重跑藕塘单阶段。新主图为 `figures/convlstm/forecast_all_stations.png`，按 8 个测点展示全时间轴实际位移、fit 诊断、calibration 诊断和留出 test/prediction 段；两条竖线标出 2019-02-03 的 fit/calibration 边界和 2019-09-18 的 calibration/test 边界。
+- 新增 `figures/convlstm/forecast_predictions.csv`：共 11,400 行（8 测点 × 1,425 个目标日），fit/calibration/test 分别为 2016-08-06--2019-02-02、2019-02-03--2019-09-17、2019-09-18--2020-06-30。每行保存实际位移、持久性基线、原始 `P10/P50/P90`、校准端点、`qhat_mm` 和端点适用状态；fit 行的校准端点刻意为空，避免把后续 calibration 信息回灌为拟合期结果。
+- `forecast_metrics.csv` 现明确 `evaluation_split=test`，保留 8 测点 × 原始/校准两种区间的覆盖率、平均宽度、pinball loss、80% interval score 及持久性基线。此次单次留出测试的整体 P50 RMSE 为 0.318 mm，持久性基线为 0.340 mm；原始/校准 P10--P90 覆盖率为 0.734/0.752。它们只描述当前留出段表现，不能用作训练期拟合性能或五级预警有效性证据。
+- 此次仅输出预测与覆盖审计；尚未冻结区间门禁中的近似对称性、标准化残差尾部及通过阈值，故**未**生成论文启发的 `μ_t/σ_t` 或五级区间状态，也未用测试结果调整任何区间参数。
 
 ### 阶段 3：明确并重做 SHAP 主控因素分析
 
