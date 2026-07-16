@@ -1,0 +1,117 @@
+{
+  "protocol_id": "ootang-five-level-rule-v1",
+  "protocol_version": "1.0-draft",
+  "status": "draft",
+  "case": "ootang",
+  "revision_date": "2026-07-16",
+  "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
+  "source_evidence": [
+    {
+      "source": "docs/advisor_review_action_plan.md",
+      "role": "latest user and mentor decisions"
+    },
+    {
+      "source": "literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx",
+      "role": "five-level indicator framework and source formulas"
+    },
+    {
+      "source": "literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf",
+      "role": "original improved-tangent-angle phase boundaries and stable-stage procedure"
+    }
+  ],
+  "confirmed": {
+    "kinematics": {
+      "velocity_formula": "v_i=(U_i-U_{i-1})/(t_i-t_{i-1})",
+      "delta_v_formula": "delta_v_i=v_i-v_{i-1}",
+      "velocity_unit": "mm/day",
+      "invalid_time_handling": "nonpositive_or_missing_dt_is_invalid"
+    },
+    "warning_levels": [
+      "green",
+      "blue",
+      "yellow",
+      "orange",
+      "red"
+    ],
+    "interval": {
+      "semantic": "observed_per_timepoint_interval_deviation_state_identification",
+      "not_claimed": "strict_horizon_ahead_warning"
+    },
+    "tangent_angle": {
+      "green": "alpha<45_degree",
+      "blue": "alpha_approximately_45_degree",
+      "yellow": "45_degree<alpha<80_degree",
+      "orange": "80_degree<=alpha<85_degree",
+      "red": "alpha>=85_degree"
+    },
+    "v0_framework": {
+      "formula": "V0=max(1.5*V, V+2*sigma)",
+      "V_definition": "average_rate_of_selected_initial_displacement",
+      "legacy_30_day_rate_allowed": false
+    },
+    "delta_v": {
+      "role": "auxiliary_trend_input",
+      "states": [
+        "negative",
+        "near_zero",
+        "positive"
+      ]
+    },
+    "fusion": {
+      "mode": "transparent_non_supervised_rules",
+      "inputs": [
+        "interval",
+        "velocity",
+        "delta_v",
+        "tangent_angle"
+      ],
+      "outputs": [
+        "per_station",
+        "landslide_body"
+      ],
+      "ngboost_is_formal_path": false
+    }
+  },
+  "unresolved_items": [
+    {
+      "id": "stable_segment_selection",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, while the specified thesis does not give an Ootang-reproducible start/end rule for the selected initial displacement.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "v0_blue_tolerance",
+      "reason": "The source writes V approximately equal to V0 but gives no numeric tolerance or boundary ownership.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "rate_orange_expression",
+      "reason": "The specified thesis table writes 5V0<=alpha<10V0 in a rate table; this is dimensionally inconsistent and must not be silently corrected.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "delta_v_near_zero_tolerance",
+      "reason": "The source supports negative/near-zero/positive trend states but supplies no Ootang numeric near-zero tolerance.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "interval_calibration_gate",
+      "reason": "Quantile-order, coverage, symmetry, tail-diagnostic and fallback thresholds must be fixed before a normal-distribution-style five-level interval mapping is used.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "per_station_fusion_function",
+      "reason": "The specified thesis uses supervised multinomial logistic regression; the approved non-supervised replacement still needs a transparent rule table F.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "landslide_body_fusion_function",
+      "reason": "The approved multi-station output requires a traceable F_site and contribution-station rule.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "nonregular_tangent_handling",
+      "reason": "The original tangent-angle paper recommends equal-interval monitoring before angle calculation; the current Ootang data are daily, but a missing/nonregular-data rule is still needed.",
+      "required_before_formal_run": true
+    }
+  ]
+}
