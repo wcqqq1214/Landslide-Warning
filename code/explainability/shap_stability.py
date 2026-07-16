@@ -69,7 +69,9 @@ EXPECTED_GROUP_COUNTS = {
 
 def assign_feature_group(feature):
     """Map one current NGBoost input to a preregistered group."""
-    if feature.startswith(("disp_lag", "disp_rate_lag", "disp_accel_lag")):
+    if feature.startswith(
+        ("disp_lag", "disp_rate_lag", "disp_delta_v_lag", "disp_accel_lag")
+    ):
         return "displacement_kinematics"
     if feature.startswith("station_"):
         return "station_identity"

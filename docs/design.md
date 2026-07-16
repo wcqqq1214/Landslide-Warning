@@ -16,6 +16,8 @@
 monitoring_data.csv
   -> features/build_features.py
        -> data/features.csv
+       -> data/ootang_kinematics_long.csv
+       -> data/ootang_kinematics_summary.csv
        -> figures/tangent_angle/uniform_rates.csv
 
 data/features.csv + data/station_coords.csv
@@ -36,8 +38,9 @@ data/features.csv + monitoring_data.csv
 
 | 模块 | 职责 | 主要输出 |
 | --- | --- | --- |
-| `code/features/build_features.py` | 位移速率/加速度、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`figures/tangent_angle/uniform_rates.csv` |
-| `code/features/tangent_angle.py` | 训练期等速段估计、原始/因果平滑切线角和持续性判级；支持可选人工等速阶段表 | 由 `build_features.py` 调用 |
+| `code/features/build_features.py` | 时间感知的逐点位移速度/`ΔV`、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`data/ootang_kinematics_long.csv`、`data/ootang_kinematics_summary.csv`、`figures/tangent_angle/uniform_rates.csv` |
+| `code/features/kinematics.py` | 统一计算 `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})` 与 `ΔV_i=v_i-v_{i-1}`，并记录暖启动、缺测和异常时间间隔 | 由 `build_features.py`、切线角和解释模块调用 |
+| `code/features/tangent_angle.py` | 使用真实时间间隔估计等速段、原始/因果平滑切线角和持续性判级；支持可选人工等速阶段表 | 由 `build_features.py` 调用 |
 | `code/warning/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
 | `code/warning/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
 | `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
@@ -59,14 +62,16 @@ data/features.csv + monitoring_data.csv
 
 ### 4.1 特征工程
 
-- 位移速率：1 日一阶差分。
-- 位移加速度：位移速率的一阶差分。
-- 库水位速率：1 日一阶差分。
+- 位移速率：`v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，按真实 `Δt` 计算，单位为 mm/d。
+- 速度增量：`ΔV_i=v_i-v_{i-1}`，单位仍为 mm/d；它不是再除以时间的加速度。
+- 库水位速率：按真实 `Δt` 计算，单位为 m/d。
 - 累计降雨窗口：7、15、30 日。
-- 原始切线角：日增量除以 `v_eq` 后取反正切，并按许强等（2009）的严格 `>45`、`>80`、`>85` 阶段边界判定。
-- 工程切线角：3 日尾随线性斜率，不使用未来观测；再应用 5 日内至少 3 次命中的持续性确认。
-- 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口，属于专家阶段划分前的辅助候选，不是原文方法本身。
+- 原始切线角：逐点速度除以 `v_eq` 后取反正切，并按许强等（2009）的严格 `>45`、`>80`、`>85` 阶段边界判定。
+- 工程切线角：3 个观测点的尾随时间线性斜率，不使用未来观测；再应用 5 个观测点内至少 3 次命中的持续性确认。
+- 自动等速段：仅在前 80% 训练期内选择 30 日候选窗口；当前藕塘数据为连续日尺度，因此等同于 30 个观测点。它只是专家阶段划分前的辅助候选，不是原文方法本身。
 - 人工等速阶段：当前仓库不保留默认配置文件。若后续需要固定人工等速阶段，可临时提供同结构 CSV，并将 `status=approved` 的行交给 `tangent_angle.py` 校验；同一测点仅允许一个批准阶段，日期必须位于训练期内。
+
+> 修订边界：`data/features.csv` 已改用 `*_delta_v`，并新增藕塘运动学长表；但下文的动态 V0、NGBoost 和融合描述仍是修订前的历史路径，不能作为本轮五级正式预警结果。其替换必须等待阶段 0 的阈值、蓝色边界和融合协议冻结。
 
 ### 4.2 ConvLSTM
 
@@ -88,7 +93,7 @@ data/features.csv + monitoring_data.csv
 - 主模型：`NGBClassifier` 四分类概率模型。
 - 标签：动态 V0 当日四级状态，不是切线角标签。
 - 一级 `V0` 沿用既有毕业论文摘要中的匀速变形段位移速率统计公式；5/10 倍高等级阈值参考 Chen et al.（2024）式（10）的默认 `vd`。当前实现不包含该文的 GPD/POT、VaR 或 CVaR 估计。
-- 输入：8 测点位移速率/加速度聚合量、库水位、库水位速率和多窗口累计降雨。
+- 输入：8 测点位移速率/`ΔV` 聚合量、库水位、库水位速率和多窗口累计降雨。
 - 当前模型任务属于状态识别；未来 1/3/7 日 onset 标签已实现，但模型验证因独立事件不足而暂停。
 
 ### 4.4 预警融合

@@ -31,6 +31,7 @@ from warning.warning_thresholds import (  # noqa: E402
     monthly_displacement_rate,
     threshold_rows,
 )
+from features.kinematics import compute_point_kinematics  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA_CSV = ROOT / "data" / "monitoring_data.csv"
@@ -91,8 +92,14 @@ def build_lagged_samples(
         )
 
     rainfall = df[ENV_COLS["Rainfall"]].astype(float)
-    rwl_rate = df[ENV_COLS["RWL"]].astype(float).diff()
-    gwt_rate = df[ENV_COLS["GWT"]].astype(float).diff()
+    rwl_rate = compute_point_kinematics(
+        df["Date"],
+        df[ENV_COLS["RWL"]],
+    )["velocity"]
+    gwt_rate = compute_point_kinematics(
+        df["Date"],
+        df[ENV_COLS["GWT"]],
+    )["velocity"]
     rainfall_cumulative = {
         days: rainfall.rolling(days, min_periods=days).sum()
         for days in rain_windows
@@ -105,8 +112,9 @@ def build_lagged_samples(
     for station, disp_col in stations.items():
         disp = df[disp_col].astype(float)
         delta = disp.diff()
-        displacement_rate = disp.diff()
-        displacement_acceleration = displacement_rate.diff()
+        kinematics = compute_point_kinematics(df["Date"], disp)
+        displacement_rate = kinematics["velocity"]
+        displacement_delta_v = kinematics["delta_v"]
         monthly_rate = monthly_displacement_rate(disp, month_window_days)
         warning_levels = classify_monthly_rates(
             monthly_rate,
@@ -118,7 +126,7 @@ def build_lagged_samples(
             for lag in range(1, window + 1):
                 row[f"disp_lag{lag}"] = disp.iloc[t - lag]
                 row[f"disp_rate_lag{lag}"] = displacement_rate.iloc[t - lag]
-                row[f"disp_accel_lag{lag}"] = displacement_acceleration.iloc[t - lag]
+                row[f"disp_delta_v_lag{lag}"] = displacement_delta_v.iloc[t - lag]
                 for name, col in ENV_COLS.items():
                     row[f"{name}_lag{lag}"] = df[col].iloc[t - lag]
                 row[f"RWL_rate_lag{lag}"] = rwl_rate.iloc[t - lag]

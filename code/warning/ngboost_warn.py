@@ -39,8 +39,8 @@ OUT_PROBABILITIES_CSV = FIG_DIR / "warning_probabilities.csv"
 
 V_COLS = [f"{s}_v" for s in
           ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]]
-A_COLS = [f"{s}_a" for s in
-          ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]]
+DELTA_V_COLS = [f"{s}_delta_v" for s in
+                ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]]
 DRIVERS = ["RWL", "RWL_rate", "Rain_cum7", "Rain_cum15", "Rain_cum30"]
 WARNING_STATIONS = {
     "MJ9": "MJ9/mm",
@@ -159,8 +159,8 @@ def main():
     X = pd.DataFrame({
         "v_mean": df[V_COLS].mean(axis=1),
         "v_max": df[V_COLS].max(axis=1),
-        "a_mean": df[A_COLS].mean(axis=1),
-        "a_max": df[A_COLS].max(axis=1),
+        "delta_v_mean": df[DELTA_V_COLS].mean(axis=1),
+        "delta_v_max": df[DELTA_V_COLS].max(axis=1),
     })
     for c in DRIVERS:
         X[c] = df[c]

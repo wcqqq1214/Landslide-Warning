@@ -5,6 +5,8 @@ from numbers import Integral, Real
 import numpy as np
 import pandas as pd
 
+from features.kinematics import compute_point_kinematics
+
 TRAIN_FRAC = 0.8
 CANDIDATE_WINDOW = 30
 SMOOTH_WINDOW = 3
@@ -13,7 +15,15 @@ PERSIST_MIN_HITS = 3
 
 _VALID_STATUSES = frozenset({"candidate", "approved", "rejected"})
 _VALID_SOURCES = frozenset(
-    {"automatic_15d", "automatic_30d", "automatic_60d", "expert_manual"}
+    {
+        "automatic_15d",
+        "automatic_30d",
+        "automatic_60d",
+        "automatic_15obs",
+        "automatic_30obs",
+        "automatic_60obs",
+        "expert_manual",
+    }
 )
 
 
@@ -86,7 +96,7 @@ def _build_manual_ranges_from_stages(stages, dates, stations, train_frac=TRAIN_F
     - Approved stations not present in ``stations`` are rejected.
     """
     stages = _validate_reference_stages(stages)
-    date_index = validate_daily_dates(dates)
+    date_index = validate_time_index(dates)
     train_end_date = _training_end_date(date_index, train_frac)
 
     approved = stages[stages["status"] == "approved"].copy()
@@ -143,7 +153,7 @@ def _check_manual_range_feasibility(
     train_frac=TRAIN_FRAC,
 ):
     """Validate a manual range and return its indices and finite rates."""
-    date_index = validate_daily_dates(dates)
+    date_index = validate_time_index(dates)
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
     if len(date_index) != len(displacement):
         raise ValueError("日期与位移序列长度必须一致")
@@ -166,7 +176,9 @@ def _check_manual_range_feasibility(
 
     start_index = int(date_index.get_loc(start_date))
     end_index = int(date_index.get_loc(end_date))
-    rates = displacement.diff().to_numpy(dtype=float)[start_index + 1:end_index + 1]
+    rates = compute_point_kinematics(date_index, displacement)["velocity"].to_numpy(
+        dtype=float
+    )[start_index + 1:end_index + 1]
 
     if len(rates) < 2:
         raise ValueError(
@@ -186,24 +198,35 @@ def _check_manual_range_feasibility(
     return start_index, end_index, rates
 
 
-def _causal_linear_slopes(displacement, window):
-    """Fit a trailing linear slope without using future observations."""
+def _causal_linear_slopes(dates, displacement, window):
+    """Fit a trailing time-aware linear slope without future observations."""
+    date_index = validate_time_index(dates)
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
+    if len(date_index) != len(displacement):
+        raise ValueError("日期与位移序列长度必须一致")
     if window == 1:
-        return displacement.diff()
+        return compute_point_kinematics(date_index, displacement)["velocity"]
 
-    x = np.arange(window, dtype=float)
+    slopes = pd.Series(np.nan, index=displacement.index, dtype=float)
+    for end_index in range(window - 1, len(displacement)):
+        start_index = end_index - window + 1
+        values = displacement.iloc[start_index:end_index + 1].to_numpy(dtype=float)
+        if not np.isfinite(values).all():
+            continue
+        elapsed_days = (
+            date_index[start_index:end_index + 1] - date_index[start_index]
+        ).total_seconds() / 86_400.0
+        slopes.iloc[end_index] = float(np.polyfit(elapsed_days, values, 1)[0])
+    return slopes
 
-    def linear_slope(values):
-        return float(np.polyfit(x, values, 1)[0])
 
-    return displacement.rolling(window=window, min_periods=window).apply(
-        linear_slope,
-        raw=True,
-    )
-
-
-def tangent_angle_series(displacement, v_eq, smooth_window=SMOOTH_WINDOW):
+def tangent_angle_series(
+    displacement,
+    v_eq,
+    smooth_window=SMOOTH_WINDOW,
+    *,
+    dates=None,
+):
     """Return raw and trailing-smoothed rates and tangent angles."""
     if (
         isinstance(v_eq, (bool, np.bool_))
@@ -220,8 +243,22 @@ def tangent_angle_series(displacement, v_eq, smooth_window=SMOOTH_WINDOW):
         raise ValueError("smooth_window 必须是正整数")
 
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
-    raw_rate = displacement.diff()
-    smooth_rate = _causal_linear_slopes(displacement, smooth_window)
+    if dates is None:
+        date_index = pd.date_range(
+            "1970-01-01",
+            periods=len(displacement),
+            freq="D",
+        )
+    else:
+        date_index = validate_time_index(dates)
+    if len(date_index) != len(displacement):
+        raise ValueError("日期与位移序列长度必须一致")
+    raw_rate = compute_point_kinematics(date_index, displacement)["velocity"]
+    smooth_rate = _causal_linear_slopes(
+        date_index,
+        displacement,
+        smooth_window,
+    )
     finite_raw_rate = raw_rate.where(np.isfinite(raw_rate))
     finite_smooth_rate = smooth_rate.where(np.isfinite(smooth_rate))
 
@@ -255,7 +292,7 @@ def persistent_warning_levels(
     window=PERSIST_WINDOW,
     min_hits=PERSIST_MIN_HITS,
 ):
-    """Apply a full-window persistence rule to daily warning levels."""
+    """Apply a full-observation-window persistence rule to warning levels."""
     if (
         isinstance(window, (bool, np.bool_))
         or not isinstance(window, Integral)
@@ -288,15 +325,26 @@ def persistent_warning_levels(
     return persistent
 
 
-def validate_daily_dates(dates):
-    """Parse dates and require a strictly increasing daily sequence."""
-    index = pd.DatetimeIndex(pd.to_datetime(dates))
+def validate_time_index(dates):
+    """Parse dates and require a strictly increasing, non-duplicate sequence."""
+    index = pd.DatetimeIndex(pd.to_datetime(dates, errors="coerce"))
     if index.hasnans:
         raise ValueError("日期中不能包含无效值")
     if index.has_duplicates:
         raise ValueError("日期不能重复")
     if not index.is_monotonic_increasing:
         raise ValueError("日期必须严格递增")
+    return index
+
+
+def validate_daily_dates(dates):
+    """Validate the legacy daily-only public API.
+
+    New production paths use :func:`validate_time_index`; this function keeps
+    the former daily-cadence contract for external callers that explicitly ask
+    for a daily sequence.
+    """
+    index = validate_time_index(dates)
     if len(index) > 1:
         gaps = index[1:] - index[:-1]
         if not np.all(gaps == pd.Timedelta(days=1)):
@@ -309,14 +357,14 @@ def _rate_statistics(rates):
     median_rate = float(np.median(rates))
     rate_mad = float(np.median(np.abs(rates - median_rate)))
     if len(rates) > 1:
-        mean_abs_accel = float(np.mean(np.abs(np.diff(rates))))
+        mean_abs_delta_v = float(np.mean(np.abs(np.diff(rates))))
     else:
-        mean_abs_accel = 0.0
-    return mean_rate, median_rate, rate_mad, mean_abs_accel
+        mean_abs_delta_v = 0.0
+    return mean_rate, median_rate, rate_mad, mean_abs_delta_v
 
 
 def _result(method, dates, start_index, end_index, rates, source=None):
-    mean_rate, median_rate, rate_mad, mean_abs_accel = _rate_statistics(rates)
+    mean_rate, median_rate, rate_mad, mean_abs_delta_v = _rate_statistics(rates)
     entry = {
         "method": method,
         "source": source,
@@ -326,7 +374,7 @@ def _result(method, dates, start_index, end_index, rates, source=None):
         "v_eq_mm_per_day": mean_rate,
         "median_rate_mm_per_day": median_rate,
         "rate_mad_mm_per_day": rate_mad,
-        "mean_abs_accel_mm_per_day2": mean_abs_accel,
+        "mean_abs_delta_v_mm_per_day": mean_abs_delta_v,
         "n_rate_samples": int(len(rates)),
     }
     return entry
@@ -355,7 +403,7 @@ def build_tangent_frame(
     """
     df = df.rename(columns=lambda column: column.strip())
     date_col = date_col.strip()
-    date_index = validate_daily_dates(df[date_col])
+    date_index = validate_time_index(df[date_col])
 
     extra_manual = {}
     manual_sources = {}
@@ -404,6 +452,7 @@ def build_tangent_frame(
             displacement,
             rate_parameters["v_eq_mm_per_day"],
             smooth_window=smooth_window,
+            dates=date_index,
         )
         raw_levels = classify_tangent_angles(angle_frame["alpha_raw"])
         daily_levels = classify_tangent_angles(angle_frame["alpha_smooth"])
@@ -437,13 +486,15 @@ def estimate_uniform_rate(
     window=CANDIDATE_WINDOW,
     manual_range=None,
 ):
-    """Estimate an equal-speed-stage daily rate manually or from training data."""
-    date_index = validate_daily_dates(dates)
+    """Estimate an equal-speed-stage pointwise rate from training data."""
+    date_index = validate_time_index(dates)
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
     if len(date_index) != len(displacement):
         raise ValueError("日期与位移序列长度必须一致")
 
-    rates = displacement.diff().to_numpy(dtype=float)
+    rates = compute_point_kinematics(date_index, displacement)["velocity"].to_numpy(
+        dtype=float
+    )
 
     if manual_range is not None:
         start_index, end_index, selected_rates = _check_manual_range_feasibility(
@@ -469,13 +520,13 @@ def estimate_uniform_rate(
     for end_index in range(window, n_train):
         start_rate_index = end_index - window + 1
         candidate_rates = rates[start_rate_index:end_index + 1]
-        mean_rate, _, rate_mad, mean_abs_accel = _rate_statistics(candidate_rates)
+        mean_rate, _, rate_mad, mean_abs_delta_v = _rate_statistics(candidate_rates)
         if not np.isfinite(mean_rate) or mean_rate <= 0:
             continue
 
         score = (
             rate_mad / mean_rate,
-            mean_abs_accel / mean_rate,
+            mean_abs_delta_v / mean_rate,
             end_index,
         )
         if best is None or score < best[0]:

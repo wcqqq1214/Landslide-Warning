@@ -22,8 +22,9 @@ from features.tangent_angle import (  # noqa: E402
     _causal_linear_slopes,
     build_tangent_frame,
     estimate_uniform_rate,
-    validate_daily_dates,
+    validate_time_index,
 )
+from features.kinematics import compute_point_kinematics  # noqa: E402
 from warning.warning_fusion import WARNING_STATIONS, fuse_warning_levels  # noqa: E402
 from warning.warning_thresholds import build_warning_frame  # noqa: E402
 
@@ -90,7 +91,7 @@ def _build_candidate_table(dates, displacement, windows=CANDIDATE_WINDOWS):
                 "end_date": None,
                 "v_eq_mm_per_day": None,
                 "rate_mad_mm_per_day": None,
-                "mean_abs_accel_mm_per_day2": None,
+                "mean_abs_delta_v_mm_per_day": None,
                 "n_rate_samples": None,
                 "error": "无法获得正的等速阶段速率",
             })
@@ -99,11 +100,12 @@ def _build_candidate_table(dates, displacement, windows=CANDIDATE_WINDOWS):
 
 def _plot_single_station_review(dates, displacement, station, fig_path):
     """Generate a multi-panel review figure for one station."""
-    dates = validate_daily_dates(dates)
+    dates = validate_time_index(dates)
     displacement = pd.Series(displacement, dtype=float).reset_index(drop=True)
-    rates = displacement.diff()
-    smooth_rates = _causal_linear_slopes(displacement, 3)
-    accel = rates.diff()
+    kinematics = compute_point_kinematics(dates, displacement)
+    rates = kinematics["velocity"]
+    smooth_rates = _causal_linear_slopes(dates, displacement, 3)
+    delta_v = kinematics["delta_v"]
 
     train_end = _train_boundary_index(len(displacement))
     train_boundary_date = dates[train_end - 1]
@@ -126,18 +128,18 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
     ax.set_title("(a) 全时段累计位移曲线", fontsize=10, loc="left")
 
     ax = axes[1]
-    ax.plot(dates, rates, color="silver", linewidth=0.5, alpha=0.7, label="日位移速率 (原始)")
+    ax.plot(dates, rates, color="silver", linewidth=0.5, alpha=0.7, label="逐点位移速率 (原始)")
     smooth_valid = smooth_rates.where(np.isfinite(smooth_rates))
     ax.plot(dates, smooth_valid, color="steelblue", linewidth=0.8,
-            label="3 日因果平滑速率")
+            label="3 观测点因果平滑速率")
     ax.axvline(train_boundary_date, color="gray", linestyle="--", linewidth=0.8)
     ax.set_ylabel("位移速率 (mm/d)")
     ax.legend(fontsize=8, loc="upper left")
-    ax.set_title("(b) 日位移速率与因果平滑速率", fontsize=10, loc="left")
+    ax.set_title("(b) 逐点位移速率与因果平滑速率", fontsize=10, loc="left")
 
     ax = axes[2]
-    ax.plot(dates, accel, color="darkorange", linewidth=0.5, alpha=0.6,
-            label="日加速度 (原始)")
+    ax.plot(dates, delta_v, color="darkorange", linewidth=0.5, alpha=0.6,
+            label="速度增量 ΔV (原始)")
     ax.axhline(0, color="gray", linewidth=0.5, linestyle=":")
     ax.axvline(train_boundary_date, color="gray", linestyle="--", linewidth=0.8)
 
@@ -151,9 +153,9 @@ def _plot_single_station_review(dates, displacement, station, fig_path):
         ax.axvspan(sd, ed, alpha=0.12, color=colors.get(w, "gray"),
                    label=f"{w} 日候选阶段")
 
-    ax.set_ylabel("加速度 (mm/d²)")
+    ax.set_ylabel("速度增量 ΔV (mm/d)")
     ax.legend(fontsize=7, loc="upper left")
-    ax.set_title("(c) 日加速度与候选阶段位置", fontsize=10, loc="left")
+    ax.set_title("(c) 速度增量 ΔV 与候选阶段位置", fontsize=10, loc="left")
 
     ax = axes[3]
     y_positions = {15: 3, 30: 2, 60: 1}

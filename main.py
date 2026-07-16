@@ -31,9 +31,14 @@ STAGES = (
     Stage(
         "features",
         "code/features/build_features.py",
-        "生成统一特征表和切线角参数",
+        "生成统一特征表、时间感知运动学长表和切线角参数",
         inputs=("data/monitoring_data.csv",),
-        outputs=("data/features.csv", "figures/tangent_angle/uniform_rates.csv"),
+        outputs=(
+            "data/features.csv",
+            "data/ootang_kinematics_long.csv",
+            "data/ootang_kinematics_summary.csv",
+            "figures/tangent_angle/uniform_rates.csv",
+        ),
     ),
     Stage(
         "onset",
