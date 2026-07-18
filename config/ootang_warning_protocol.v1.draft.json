@@ -3,7 +3,7 @@
   "protocol_version": "1.0-draft",
   "status": "draft",
   "case": "ootang",
-  "revision_date": "2026-07-16",
+  "revision_date": "2026-07-18",
   "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
   "source_evidence": [
     {
@@ -47,7 +47,38 @@
     "v0_framework": {
       "formula": "V0=max(1.5*V, V+2*sigma)",
       "V_definition": "average_rate_of_selected_initial_displacement",
-      "legacy_30_day_rate_allowed": false
+      "granularity": "per_station",
+      "legacy_30_day_rate_allowed": false,
+      "stable_segment_candidate": {
+        "status": "draft_candidate_not_formal",
+        "input": "per_station_valid_point_velocity_rows",
+        "fit_only": true,
+        "algorithm": "two_cluster_kmeans_initial_low_speed_prefix",
+        "n_clusters": 2,
+        "init": "random",
+        "random_state": 0,
+        "n_init": 20,
+        "low_speed_class": "cluster_with_lower_center",
+        "prefix_rule": "select_only_the_contiguous_low_speed_prefix_from_the_first_valid_velocity",
+        "sigma": {
+          "definition": "sample_standard_deviation_of_selected_point_velocities",
+          "ddof": 1,
+          "status": "draft_implementation_convention"
+        },
+        "failure_policy": "emit_failed_selection_without_skipping_to_a_later_segment",
+        "local_extrema": "boundary_audit_only_until_window_and_conflict_rules_are_frozen",
+        "audit_fields": [
+          "cluster_centers",
+          "first_valid_velocity_date",
+          "segment_start_date",
+          "segment_end_date",
+          "n_selected_velocities",
+          "V",
+          "sigma",
+          "V0",
+          "failure_reason"
+        ]
+      }
     },
     "delta_v": {
       "role": "auxiliary_trend_input",
@@ -69,7 +100,30 @@
         "per_station",
         "landslide_body"
       ],
-      "ngboost_is_formal_path": false
+      "ngboost_is_formal_path": false,
+      "per_station_candidate": {
+        "status": "draft_candidate_not_formal",
+        "required_inputs": [
+          "interval_level",
+          "velocity_level",
+          "delta_v_state",
+          "tangent_angle_level"
+        ],
+        "input_status_policy": "all_four_inputs_must_be_valid; otherwise preserve_warmup_invalid_or_not_applicable",
+        "minimum_support": 2,
+        "ordinal_support_rule": "interval_velocity_and_tangent_angle_support_level_L_when_their_level_is_at_least_L",
+        "positive_delta_v_rule": "positive_delta_v_is_qualitative_escalation_support_at_each_non_green_level",
+        "negative_or_near_zero_delta_v_rule": "not_escalation_support",
+        "level_rule": "emit_the_highest_non_green_level_with_at_least_two_supports",
+        "no_corroboration_rule": "all_ordinal_green_with_nonpositive_delta_v_is_green; any_lone_anomaly_is_uncorroborated_not_green",
+        "audit_fields": [
+          "input_statuses",
+          "candidate_max_level",
+          "support_by_level",
+          "contributing_indicators",
+          "fusion_reason"
+        ]
+      }
     }
   },
   "unresolved_items": [
