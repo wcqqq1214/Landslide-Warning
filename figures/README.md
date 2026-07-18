@@ -5,7 +5,7 @@
 | 文件 | 作用 | 类型 | 论文用途 |
 | --- | --- | --- | --- |
 | `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
-| `pipeline/shap_stability_run.json` | 保存修复后 SHAP 稳定性单阶段正式运行的源码指纹、耗时和 9 个产物哈希 | 单阶段工程清单 | 追溯正式结果到提交 `3c06d38`；不替代完整管线清单 |
+| `pipeline/shap_stability_run.json` | 保存 2026-06-23 历史 SHAP 稳定性单阶段运行的源码指纹、耗时和 9 个产物哈希 | 历史工程清单 | 仅追溯提交 `3c06d38` 的旧运行；不代表当前 `ΔV` 对齐后的产物 |
 | `convlstm/forecast_all_stations.png` | 展示 8 个测点的全时间轴位移、fit 诊断、校准段与留出 test/prediction 段的 P10/P50/P90 区间及边界 | 最终图 | 位移预测主图；fit 只作诊断，泛化指标仅来自 test |
 | `convlstm/forecast_predictions.csv` | 保存逐日逐测点的 `split`、实际位移、持久性、原始 P10/P50/P90、校准端点、`qhat` 与端点适用状态 | 逐时刻审计表 | 可从 CSV 复画全测点主图；fit 行刻意没有校准端点，test 校准端点只来自先前 calibration 段 |
 | `convlstm/forecast_metrics.csv` | 保存各测点测试段校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 最终评估表 | 生成位移预测结果表；用 `interval_variant` 区分原始和校准区间，`evaluation_split=test`，R2/NSE 仅作补充 |
@@ -44,16 +44,19 @@
 | `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |
 | `ngboost/warning_metrics.csv` | 保存 accuracy、F1、Brier、各等级支持数和召回率 | 最终评估表 | 支撑状态识别结果；无支持等级应写“不可评价” |
 | `ngboost/warning_probabilities.csv` | 保存测试段逐日真实等级、预测等级和四级概率 | 逐日审计表 | 供概率校准、误差复核和融合旁证使用 |
-| `shap/shap_reg_summary.png` | 展示位移增量回归的 SHAP 分布 | 最终图 | 解释模型依赖的候选指标 |
-| `shap/shap_cls_summary.png` | 展示动态 V0 当日状态分类的 SHAP 分布 | 最终图 | 解释模型依赖，不作因果结论 |
-| `shap/shap_reg_importance.csv` | 保存回归 mean absolute SHAP 排序 | 支撑表 | 生成变量重要性表和跨折稳定性分析 |
-| `shap/shap_cls_importance.csv` | 保存分类 mean absolute SHAP 排序 | 支撑表 | 生成变量重要性表和跨折稳定性分析 |
-| `shap/shap_model_metrics.csv` | 保存单次时间留出的回归/分类指标和样本信息 | 最终评估表 | 说明当前探索性性能和类别不平衡 |
-| `shap/shap_binary_cv_metrics.csv` | 保存 5 折扩展窗口分类结果及持续性基线 | 交叉验证审计表 | 逐折报告；单类别折不能汇总 AUC |
-| `shap/stability/cross_fold_protocol.csv` | 保存两个任务五折的时间边界、抽样量、参数、目标和主指标 | 协议审计表 | 核对每折仅使用允许的训练历史和固定解释预算 |
+| `shap/shap_provenance.json` | 固定独立解释模型、两个目标、样本时段、背景样本和解释边界 | 溯源清单 | 明确不是 ConvLSTM-SHAP、因果结论或正式五级预警 |
+| `shap/shap_reg_summary.png` | 展示独立 NGBoost 对目标观测位移增量的 SHAP 分布 | 探索性解释图 | 图题写明模型和留出解释样本时段；只解释模型依赖 |
+| `shap/shap_cls_summary.png` | 展示独立 NGBoost 对遗留同日 V0 标签 `warning_level >= 1` 的 SHAP 分布 | 探索性解释图 | 不是正式五级预警或未来 onset 预警；不作因果结论 |
+| `shap/shap_reg_importance.csv` | 保存回归 mean absolute SHAP 排序及模型/目标/样本字段 | 支撑表 | 生成变量重要性表和跨折稳定性分析 |
+| `shap/shap_cls_importance.csv` | 保存遗留分类 mean absolute SHAP 排序及模型/目标/样本字段 | 支撑表 | 必须连同 `target_status` 读取，不得称作正式预警结果 |
+| `shap/shap_model_metrics.csv` | 保存单次时间留出的回归/遗留分类指标、目标和样本信息 | 探索性评估表 | 说明当前探索性性能和类别不平衡，不评价正式预警 |
+| `shap/shap_binary_cv_metrics.csv` | 保存 5 折扩展窗口遗留分类结果及持续性基线 | 交叉验证审计表 | 逐折报告；单类别折不能汇总 AUC，也不表示未来预警能力 |
+| `shap/stability/cross_fold_protocol.csv` | 保存两个任务五折的模型、目标、时间边界、抽样量、参数和主指标 | 协议审计表 | 核对每折仅使用允许的训练历史和固定解释预算 |
 | `shap/stability/cross_fold_feature_importance.csv` | 保存 88 个特征逐任务逐折的绝对/归一化 SHAP、排名和方向相关 | 明细解释表 | 支撑特征排名与方向复算；方向仅为模型依赖 |
-| `shap/stability/cross_fold_feature_stability.csv` | 汇总每个特征的跨折排名、top10 次数和方向一致性 | 稳定性汇总表 | 识别跨折重复依赖，不作因果解释 |
+| `shap/stability/cross_fold_feature_stability.csv` | 汇总每个特征的跨折排名、top10 次数和方向一致性 | 稳定性汇总表 | 识别跨时间折重复依赖，不作因果解释 |
 | `shap/stability/cross_fold_rank_stability.csv` | 保存所有折对的特征级和组级 Spearman 排名相关 | 稳定性审计表 | 描述时间折间排序一致性；折间训练历史重叠，不做独立显著性检验 |
+| `shap/stability/cross_fold_station_feature_importance.csv` | 保存逐任务、逐折、逐测点的特征 SHAP 指标 | 测点分层明细表 | 描述同一模型在不同测点子样本上的依赖，不是留一测点外推验证 |
+| `shap/stability/cross_fold_station_feature_stability.csv` | 汇总逐测点特征的跨时间折排名和方向稳定性 | 测点/时间稳定性表 | `station_*` 为模型标识输入，不得视为地质主控因素 |
 | `shap/stability/cross_fold_group_importance.csv` | 保存五个预设特征组逐任务逐折的归一化 SHAP 份额和排名 | 组级解释表 | 与删组消融联合判断模型依赖，不能单独按份额选特征 |
 | `shap/stability/group_ablation_fold_metrics.csv` | 保存完整模型及五个删组模型的逐折主/辅助指标 | 消融明细表 | 报告全部折，正退化表示删组后主指标变差 |
 | `shap/stability/group_ablation_summary.csv` | 汇总各组退化量的均值、中位数、范围和符号折数 | 消融汇总表 | 判断删组影响方向是否跨折一致，不以均值掩盖单折反转 |
@@ -62,7 +65,7 @@
 | `tangent_angle/uniform_rates.csv` | 保存各测点自动等速候选段、参考速率和稳定性统计 | 参数审计表 | 专家复核 `v_eq`，不能直接当作已验证参数 |
 | `tangent_angle/review/*_stage_review.png` | 8 个测点的累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 供专家结合宏观变形资料独立确定等速阶段，不标注"最佳阶段" |
 | `tangent_angle/review/candidate_stage_comparison.csv` | 8 个测点在 15/30/60 日窗口下的参数来源、速率统计、切线角等级、相对 30 日一致率及融合影响 | 综合审计表 | 供专家核对参数影响，不得按一致率或报警天数自动选优 |
-| `thresholds/v0_thresholds.csv` | 保存 8 个测点共享的动态 V0、5V0、10V0、公式参数和方法来源 | 参数审计表 | 区分毕业论文摘要中的一级 V0 表述与 Chen（2024）高等级倍数来源 |
+| `thresholds/v0_thresholds.csv` | 保存遗留路径使用的 8 个测点动态 V0、5V0、10V0、公式参数和方法来源 | 历史参数审计表 | 仅服务旧 V0/onset/NGBoost/SHAP 标签；不是当前正式五级规则的阈值 |
 | `sensitivity/v0_sensitivity.csv` | 汇总 15/30/60 日窗口与 0.85/0.90/0.95 截断分位数组合的等级、事件和默认一致率 | 敏感性摘要表 | 说明 V0 结论对预设参数的依赖范围，不用于选优 |
 | `sensitivity/v0_parameters.csv` | 保存 9 组配置下每个测点的 V0、5V0、10V0 和估计样本数 | 参数审计表 | 追溯 V0 敏感性结果到测点参数 |
 | `sensitivity/tangent_sensitivity.csv` | 汇总 27 组候选窗口、平滑和持续性规则的最终等级、融合原因与一致率 | 敏感性摘要表 | 区分等速候选窗口与工程平滑规则的影响 |
@@ -70,7 +73,7 @@
 | `warning_onset/onset_events.csv` | 保存连续黄色及以上事件的起止、持续时间和可预测性 | 事件审计表 | 说明独立事件数量 |
 | `warning_onset/onset_targets.csv` | 保存逐日 at-risk 状态及未来 1/3/7 日 onset 标签 | 派生标签表 | 后续未来预警模型的目标表 |
 | `warning_onset/onset_inventory.csv` | 汇总各窗口正负日期和可预测事件数量 | 摘要表 | 判断是否具备可靠建模和置信区间条件 |
-| `warning_fusion/warning_fusion.csv` | 保存 V0、切线角、NGBoost 旁证、最终等级和融合原因 | 最终融合表 | 逐日审计规则是否升级以及为何升级 |
+| `warning_fusion/warning_fusion.csv` | 保存历史 V0、切线角、NGBoost 旁证、最终等级和融合原因 | 历史融合表 | 逐日审计旧规则如何升级；不是本轮正式四指标五级融合输出 |
 
 ## 保留原则
 

@@ -46,8 +46,8 @@ data/features.csv + monitoring_data.csv
 | `code/warning/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
 | `code/warning/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
 | `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/explainability/shap_select.py` | 构造滞后样本、NGBoost 探索性回归/二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/explainability/shap_stability.py` | 按锁定五折协议重训解释模型，汇总特征/组排名、方向稳定性并执行五组删组消融 | `figures/shap/stability/*` |
+| `code/explainability/shap_select.py` | 构造含逐点速度/`ΔV` 的滞后样本；对独立 NGBoost 做探索性回归、遗留同日 V0 二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv`；不是 ConvLSTM-SHAP 或正式预警 |
+| `code/explainability/shap_stability.py` | 按锁定五折协议重训独立解释模型，汇总特征/组排名、方向、测点分层时间稳定性并执行五组删组消融 | `figures/shap/stability/*`；不作因果或留一测点泛化结论 |
 | `code/convlstm/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `model.py` 调用 |
 | `code/convlstm/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
 | `code/convlstm/model.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |

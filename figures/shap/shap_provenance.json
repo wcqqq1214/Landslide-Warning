@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "data_source": "data/monitoring_data.csv",
+  "explained_model": "NGBoost",
+  "model_role": "independent_exploratory_explainer",
+  "analysis_scope": "exploratory independent NGBoost model-dependence analysis; not ConvLSTM explanation, causal inference, or formal five-level warning output",
+  "feature_kinematics_definition": "lagged point velocity (mm/day) and delta_v=velocity_t-velocity_t-1 (mm/day); delta_v is a velocity increment, not acceleration",
+  "single_holdout": {
+    "explained_model": "NGBoost",
+    "model_role": "independent_exploratory_explainer",
+    "analysis_scope": "exploratory independent NGBoost model-dependence analysis; not ConvLSTM explanation, causal inference, or formal five-level warning output",
+    "feature_kinematics_definition": "lagged point velocity (mm/day) and delta_v=velocity_t-velocity_t-1 (mm/day); delta_v is a velocity increment, not acceleration",
+    "split_date": "2019-09-19",
+    "train_start": "2016-08-04",
+    "train_end": "2019-09-18",
+    "test_start": "2019-09-19",
+    "test_end": "2020-06-30",
+    "train_rows": 9128,
+    "test_rows": 2288,
+    "shap_background": {
+      "sample_role": "deterministic_evenly_spaced_training_dates_all_stations",
+      "start": "2016-08-04",
+      "end": "2019-09-18",
+      "date_count": 12,
+      "rows": 96
+    },
+    "shap_explanation": {
+      "sample_role": "deterministic_evenly_spaced_holdout_dates_all_stations",
+      "start": "2019-09-19",
+      "end": "2020-06-30",
+      "date_count": 25,
+      "rows": 200
+    },
+    "legacy_classification_label": {
+      "legacy_label_scheme": "same_day_station_v0_monthly_rate_level_ge_1",
+      "legacy_label_status": "not_formal_five_level_warning",
+      "v0_estimation_method": "thesis_steady_stage_velocity_statistic",
+      "v0_train_fraction": 0.8,
+      "v0_fit_observation_start": "2016-07-02",
+      "v0_fit_observation_end": "2019-09-11",
+      "v0_monthly_rate_start": "2016-07-31",
+      "v0_monthly_rate_end": "2019-09-11",
+      "v0_month_window_days": 30,
+      "v0_accel_percentile": 0.9,
+      "v0_threshold_artifact": "figures/thresholds/v0_thresholds.csv"
+    }
+  },
+  "tasks": {
+    "regression": {
+      "task_id": "target_date_displacement_increment_regression",
+      "target_definition": "target-observation displacement increment U_t - U_(t-1)",
+      "target_unit": "mm per observation interval",
+      "target_status": "exploratory prediction target; not a warning level",
+      "plot_target": "target-date displacement increment",
+      "plot_title_target": "target-date displacement increment"
+    },
+    "classification": {
+      "task_id": "legacy_same_day_station_v0_level_ge_1_classification",
+      "target_definition": "legacy same-day station-specific V0 monthly-rate label: warning_thresholds.warning_level >= 1",
+      "target_unit": "binary label; SHAP explains positive-class probability",
+      "target_status": "legacy exploratory label; not the formal five-level fusion warning",
+      "plot_target": "legacy same-day V0 monthly-rate level >= 1",
+      "plot_title_target": "legacy same-day V0 label >= 1"
+    }
+  },
+  "outputs": {
+    "regression_importance": "figures/shap/shap_reg_importance.csv",
+    "classification_importance": "figures/shap/shap_cls_importance.csv",
+    "metrics": "figures/shap/shap_model_metrics.csv",
+    "walk_forward_classification_metrics": "figures/shap/shap_binary_cv_metrics.csv"
+  }
+}
