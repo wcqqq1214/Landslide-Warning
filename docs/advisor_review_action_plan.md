@@ -288,6 +288,12 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 它严格标为 `diagnostic_only_no_tolerance_decision`、`formal_warning_output=false`：不输出 `negative/near_zero/positive` 状态，不设置 `ΔV≈0` 数值容差，不生成五级或测点预警。测试期预测记录（即使插在 calibration 起止日期之间）、测试期后的运动学值和额外的非参与测点均不会改变该 CSV 或 manifest；这些原始统计仅供之后在 fit/calibration 协议内冻结 `delta_v_near_zero_tolerance` 时复核，不能被解释为论文已给阈值或正式预警结论。
 
+#### 4.2.7 草案审计产物的协议内容指纹（2026-07-18）
+
+`stable_segment_diagnostics.py`、`delta_v_diagnostics.py` 与 `interval_diagnostics.py` 现对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
+
+这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成任何校准门禁通过证据。此前三份 manifest 曾保留已在协议中解除的 `rate_orange_expression`；现已在当前协议内容下重生成，仅更新溯源元数据与 manifest 的未决项快照，未生成新的速度、`ΔV`、区间等级或正式预警结果。
+
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
 本轮选择“逐时刻区间偏离状态识别”，而非在 `t` 时刻对 `t+h` 的严格前瞻预警。对每个有效时刻 `t`，执行顺序为：

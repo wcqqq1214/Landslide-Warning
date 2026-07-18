@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import copy
+import json
 from pathlib import Path
 import sys
+import tempfile
 import unittest
 
 
@@ -15,6 +18,7 @@ if str(CODE_DIR) not in sys.path:
 from warning.protocol import (  # noqa: E402
     ProtocolNotFrozenError,
     load_protocol,
+    protocol_content_sha256,
     require_frozen_protocol,
     unresolved_item_ids,
 )
@@ -85,6 +89,57 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertIn("landslide_body_fusion_function", unresolved)
         with self.assertRaises(ProtocolNotFrozenError):
             require_frozen_protocol()
+
+    def test_protocol_content_fingerprint_changes_when_policy_content_changes(self):
+        protocol = load_protocol()
+        identical_copy = copy.deepcopy(protocol)
+        revised = copy.deepcopy(protocol)
+        revised["unresolved_items"].append(
+            {
+                "id": "example_additional_gate",
+                "reason": "test-only protocol-content change",
+                "required_before_formal_run": True,
+            }
+        )
+
+        fingerprint = protocol_content_sha256(protocol)
+
+        self.assertEqual(fingerprint, protocol_content_sha256(identical_copy))
+        self.assertNotEqual(fingerprint, protocol_content_sha256(revised))
+        self.assertRegex(fingerprint, r"^[0-9a-f]{64}$")
+
+    def test_protocol_content_fingerprint_ignores_json_key_order_and_whitespace(self):
+        def reorder_keys(value):
+            if isinstance(value, dict):
+                return {
+                    key: reorder_keys(value[key])
+                    for key in reversed(tuple(value.keys()))
+                }
+            if isinstance(value, list):
+                return [reorder_keys(item) for item in value]
+            return value
+
+        protocol = load_protocol()
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            compact_path = root / "compact.json"
+            rearranged_path = root / "rearranged.json"
+            compact_path.write_text(
+                json.dumps(protocol, ensure_ascii=False, separators=(",", ":")),
+                encoding="utf-8",
+            )
+            rearranged_path.write_text(
+                json.dumps(reorder_keys(protocol), ensure_ascii=False, indent=4),
+                encoding="utf-8",
+            )
+
+            compact = load_protocol(compact_path)
+            rearranged = load_protocol(rearranged_path)
+
+        self.assertEqual(
+            protocol_content_sha256(compact),
+            protocol_content_sha256(rearranged),
+        )
 
 
 if __name__ == "__main__":

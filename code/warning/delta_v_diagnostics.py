@@ -29,6 +29,7 @@ if str(CODE_DIR) not in sys.path:
 from warning.protocol import (  # noqa: E402
     DEFAULT_PROTOCOL_PATH,
     load_protocol,
+    protocol_content_sha256,
     unresolved_item_ids,
 )
 
@@ -419,6 +420,7 @@ def write_delta_v_diagnostics(
         predictions_path=predictions_path,
     )
     protocol = load_protocol(protocol_path)
+    protocol_sha256 = protocol_content_sha256(protocol)
     summary = _build_summary(inputs)
     prediction_hashes = {
         FIT_SPLIT: _sha256_canonical_csv(
@@ -452,6 +454,7 @@ def write_delta_v_diagnostics(
         "protocol_id": protocol["protocol_id"],
         "protocol_version": protocol["protocol_version"],
         "protocol_status": protocol["status"],
+        "protocol_content_sha256": protocol_sha256,
         "diagnostic_status": DIAGNOSTIC_STATUS,
     }
     for column, value in reversed(tuple(metadata.items())):
@@ -471,6 +474,7 @@ def write_delta_v_diagnostics(
             "id": protocol["protocol_id"],
             "version": protocol["protocol_version"],
             "status": protocol["status"],
+            "content_sha256": protocol_sha256,
             "unresolved_item_ids": list(unresolved_item_ids(protocol)),
         },
         "selection": {

@@ -20,6 +20,7 @@ from warning.interval_diagnostics import (  # noqa: E402
     build_calibration_diagnostics,
     write_calibration_diagnostics,
 )
+from warning.protocol import load_protocol, protocol_content_sha256  # noqa: E402
 
 
 def _prediction_frame(test_actual: float) -> pd.DataFrame:
@@ -82,11 +83,25 @@ class IntervalDiagnosticArtifactTests(unittest.TestCase):
             root = Path(directory)
             predictions_path = root / "predictions.csv"
             out_dir = root / "artifacts"
+            protocol_path = root / "protocol.json"
             _prediction_frame(1.0).to_csv(predictions_path, index=False)
+            protocol = load_protocol()
+            protocol["unresolved_items"].append(
+                {
+                    "id": "test_only_protocol_gate",
+                    "reason": "exercise custom protocol provenance",
+                    "required_before_formal_run": True,
+                }
+            )
+            protocol_path.write_text(
+                json.dumps(protocol, ensure_ascii=False),
+                encoding="utf-8",
+            )
 
             artifacts = write_calibration_diagnostics(
                 predictions_path=predictions_path,
                 output_dir=out_dir,
+                protocol_path=protocol_path,
             )
 
             summary = pd.read_csv(artifacts.summary_path)
@@ -114,6 +129,15 @@ class IntervalDiagnosticArtifactTests(unittest.TestCase):
         self.assertEqual(
             manifest["calibration_input"]["sha256"],
             summary["calibration_input_sha256"].iloc[0],
+        )
+        expected_protocol_sha256 = protocol_content_sha256(protocol)
+        self.assertEqual(
+            set(summary["protocol_content_sha256"]),
+            {expected_protocol_sha256},
+        )
+        self.assertEqual(
+            manifest["protocol"]["content_sha256"],
+            expected_protocol_sha256,
         )
         self.assertNotIn("sha256", manifest["source_predictions"])
         self.assertNotIn("gate_status", manifest)

@@ -12,6 +12,7 @@
 - 五级的唯一顺序为 `green=0`、`blue=1`、`yellow=2`、`orange=3`、`red=4`；它表示总体颜色顺序，不会自动赋予单项指标阈值。
 - 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。
 - 每个指标必须携带可审计状态。`warmup`、`invalid`、`not_applicable` 不能被静默改写为 green，也不能被规则融合忽略。
+- 每份 `figures/warning_draft/` 审计 CSV 与 manifest 都记录协议 ID、版本、状态和 `protocol_content_sha256`。该哈希标识生成时的规范化 JSON 内容，不等同于协议已冻结或任何校准门禁已通过。
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 
 ## 2. 四项指标

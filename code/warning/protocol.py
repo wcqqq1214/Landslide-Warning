@@ -9,6 +9,7 @@ legacy/exploratory and cannot be relabeled as the new formal warning path.
 
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -101,6 +102,32 @@ def load_protocol(path: str | Path = DEFAULT_PROTOCOL_PATH) -> dict[str, Any]:
         )
     _validate_protocol(payload, protocol_path)
     return payload
+
+
+def protocol_content_sha256(protocol: dict[str, Any]) -> str:
+    """Return a canonical content fingerprint for an already loaded protocol.
+
+    The human-readable protocol version may remain unchanged while a draft
+    decision or source reconciliation changes.  Diagnostic artifacts therefore
+    use this semantic JSON fingerprint to record exactly which protocol content
+    governed their generation; whitespace and JSON key order do not affect it.
+    """
+
+    if not isinstance(protocol, dict):
+        raise ProtocolValidationError("Protocol fingerprint requires a JSON object")
+    try:
+        canonical = json.dumps(
+            protocol,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
+    except (TypeError, ValueError) as exc:
+        raise ProtocolValidationError(
+            "Protocol fingerprint requires JSON-serializable finite content"
+        ) from exc
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def require_frozen_protocol(

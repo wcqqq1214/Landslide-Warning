@@ -20,6 +20,7 @@ from warning.delta_v_diagnostics import (  # noqa: E402
     build_delta_v_diagnostics,
     write_delta_v_diagnostics,
 )
+from warning.protocol import load_protocol, protocol_content_sha256  # noqa: E402
 
 
 def _prediction_frame(calibration_date: str, test_date: str) -> pd.DataFrame:
@@ -321,16 +322,30 @@ class DeltaVDiagnosticArtifactTests(unittest.TestCase):
             predictions_path = root / "predictions.csv"
             kinematics_path = root / "kinematics.csv"
             output_dir = root / "artifacts"
+            protocol_path = root / "protocol.json"
             _prediction_frame("2020-01-05", "2020-01-07").to_csv(
                 predictions_path,
                 index=False,
             )
             _kinematics_frame(100.0).to_csv(kinematics_path, index=False)
+            protocol = load_protocol()
+            protocol["unresolved_items"].append(
+                {
+                    "id": "test_only_protocol_gate",
+                    "reason": "exercise custom protocol provenance",
+                    "required_before_formal_run": True,
+                }
+            )
+            protocol_path.write_text(
+                json.dumps(protocol, ensure_ascii=False),
+                encoding="utf-8",
+            )
 
             artifacts = write_delta_v_diagnostics(
                 kinematics_path=kinematics_path,
                 predictions_path=predictions_path,
                 output_dir=output_dir,
+                protocol_path=protocol_path,
             )
             summary = pd.read_csv(artifacts.summary_path)
             manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
@@ -345,6 +360,15 @@ class DeltaVDiagnosticArtifactTests(unittest.TestCase):
         self.assertEqual(set(manifest["selection"]["splits"]), {"fit", "calibration"})
         self.assertIn("fit_prediction_window", manifest["inputs"])
         self.assertIn("calibration_kinematics", manifest["inputs"])
+        expected_protocol_sha256 = protocol_content_sha256(protocol)
+        self.assertEqual(
+            set(summary["protocol_content_sha256"]),
+            {expected_protocol_sha256},
+        )
+        self.assertEqual(
+            manifest["protocol"]["content_sha256"],
+            expected_protocol_sha256,
+        )
         self.assertNotIn("sha256", manifest["source_predictions"])
         self.assertNotIn("sha256", manifest["source_kinematics"])
 

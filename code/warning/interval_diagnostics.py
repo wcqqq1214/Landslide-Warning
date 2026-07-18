@@ -32,6 +32,7 @@ from warning.interval_state import (  # noqa: E402
 from warning.protocol import (  # noqa: E402
     DEFAULT_PROTOCOL_PATH,
     load_protocol,
+    protocol_content_sha256,
     unresolved_item_ids,
 )
 
@@ -130,6 +131,7 @@ def write_calibration_diagnostics(
 
     source_path = Path(predictions_path)
     protocol = load_protocol(protocol_path)
+    protocol_sha256 = protocol_content_sha256(protocol)
     calibration = load_calibration_predictions(source_path)
     summary = summarize_calibration_interval_inputs(calibration)
     calibration_input_sha256 = _sha256_calibration_input(calibration)
@@ -139,6 +141,7 @@ def write_calibration_diagnostics(
         "protocol_id": protocol["protocol_id"],
         "protocol_version": protocol["protocol_version"],
         "protocol_status": protocol["status"],
+        "protocol_content_sha256": protocol_sha256,
         "diagnostic_status": DIAGNOSTIC_STATUS,
         "source_split": CALIBRATION_SPLIT,
         "calibration_input_sha256": calibration_input_sha256,
@@ -160,6 +163,7 @@ def write_calibration_diagnostics(
             "id": protocol["protocol_id"],
             "version": protocol["protocol_version"],
             "status": protocol["status"],
+            "content_sha256": protocol_sha256,
             "unresolved_item_ids": list(unresolved_item_ids(protocol)),
         },
         "selection": {
