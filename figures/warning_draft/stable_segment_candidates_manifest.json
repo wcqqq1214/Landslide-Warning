@@ -1,0 +1,108 @@
+{
+  "artifact_kind": "ootang_fit_stable_segment_candidates",
+  "candidate_status": "draft_candidate_not_formal",
+  "fit_kinematics_input": {
+    "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+    "sha256": "6e6a712eb99f564ac017b1e024b5b6c18ecfa6263cf8a7a1cc2c7c19414bd0ad"
+  },
+  "fit_prediction_input": {
+    "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+    "sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0"
+  },
+  "formal_warning_output": false,
+  "not_evaluated": [
+    "formal_stable_segment_acceptance",
+    "five_level_velocity_mapping",
+    "test_split_threshold_selection"
+  ],
+  "protocol": {
+    "id": "ootang-five-level-rule-v1",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "rate_orange_expression",
+      "delta_v_near_zero_tolerance",
+      "interval_calibration_gate",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.0-draft"
+  },
+  "selection": {
+    "fit_end_dates": {
+      "ATU1": "2019-02-02",
+      "ATU2": "2019-02-02",
+      "ATU3": "2019-02-02",
+      "ATU4": "2019-02-02",
+      "ATU5": "2019-02-02",
+      "MJ1": "2019-02-02",
+      "MJ3": "2019-02-02",
+      "MJ9": "2019-02-02"
+    },
+    "n_stations": 8,
+    "split": "fit"
+  },
+  "source_kinematics": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "velocity",
+      "velocity_status"
+    ],
+    "temporal_scope": "all_station_history_through_fit_cutoff",
+    "time_filter": "station_date<=station_fit_end_date"
+  },
+  "source_predictions": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "split"
+    ],
+    "selected_split": "fit"
+  },
+  "summary": {
+    "columns": [
+      "protocol_id",
+      "protocol_version",
+      "protocol_status",
+      "candidate_status",
+      "source_split",
+      "kinematics_temporal_scope",
+      "fit_prediction_input_sha256",
+      "fit_kinematics_input_sha256",
+      "station",
+      "selection_status",
+      "failure_reason",
+      "fit_end_date",
+      "n_fit_rows",
+      "n_valid_velocities",
+      "first_valid_velocity_date",
+      "first_valid_velocity",
+      "segment_start_date",
+      "segment_end_date",
+      "n_selected_velocities",
+      "cluster_centers",
+      "low_speed_cluster_center",
+      "cluster_center_low",
+      "cluster_center_high",
+      "mean_velocity",
+      "V",
+      "sigma",
+      "v0",
+      "V0",
+      "n_clusters",
+      "init",
+      "random_state",
+      "n_init",
+      "sigma_ddof",
+      "openmp_threads"
+    ],
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/stable_segment_candidates.csv",
+    "sha256": "f0c047d765a9ae80e8f6155676b27b1313f7a663f6293076ecbd22048b43e074"
+  }
+}

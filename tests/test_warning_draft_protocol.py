@@ -27,6 +27,7 @@ from warning.stable_segment import (  # noqa: E402
     DEFAULT_INIT,
     DEFAULT_N_CLUSTERS,
     DEFAULT_N_INIT,
+    DEFAULT_OPENMP_THREAD_LIMIT,
     DEFAULT_RANDOM_STATE,
     DEFAULT_SIGMA_DDOF,
 )
@@ -44,7 +45,12 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertEqual(v0_candidate["init"], DEFAULT_INIT)
         self.assertEqual(v0_candidate["random_state"], DEFAULT_RANDOM_STATE)
         self.assertEqual(v0_candidate["n_init"], DEFAULT_N_INIT)
+        self.assertEqual(
+            v0_candidate["openmp_threads"],
+            DEFAULT_OPENMP_THREAD_LIMIT,
+        )
         self.assertEqual(v0_candidate["sigma"]["ddof"], DEFAULT_SIGMA_DDOF)
+        self.assertIn("first_valid_velocity", v0_candidate["audit_fields"])
         self.assertEqual(
             fusion_candidate["minimum_support"],
             DEFAULT_MINIMUM_SUPPORT,

@@ -20,6 +20,7 @@ from typing import Any
 import numpy as np
 import pandas as pd
 from sklearn.cluster import KMeans
+from threadpoolctl import threadpool_limits
 
 
 REQUIRED_COLUMNS = ("date", "velocity", "velocity_status")
@@ -28,6 +29,7 @@ DEFAULT_INIT = "random"
 DEFAULT_RANDOM_STATE = 0
 DEFAULT_N_INIT = 20
 DEFAULT_SIGMA_DDOF = 1
+DEFAULT_OPENMP_THREAD_LIMIT = 1
 
 
 @dataclass(frozen=True)
@@ -41,6 +43,7 @@ class StableSegmentResult:
     n_fit_rows: int
     n_valid_velocities: int
     first_valid_velocity_date: pd.Timestamp | None
+    first_valid_velocity: float | None
     segment_start_date: pd.Timestamp | None
     segment_end_date: pd.Timestamp | None
     n_selected_velocities: int
@@ -54,6 +57,7 @@ class StableSegmentResult:
     random_state: int
     n_init: int
     sigma_ddof: int
+    openmp_threads: int
 
     def to_record(self) -> dict[str, Any]:
         """Return plain scalar values suitable for an audit CSV row."""
@@ -66,6 +70,7 @@ class StableSegmentResult:
             "n_fit_rows": self.n_fit_rows,
             "n_valid_velocities": self.n_valid_velocities,
             "first_valid_velocity_date": _date_to_iso(self.first_valid_velocity_date),
+            "first_valid_velocity": self.first_valid_velocity,
             "segment_start_date": _date_to_iso(self.segment_start_date),
             "segment_end_date": _date_to_iso(self.segment_end_date),
             "n_selected_velocities": self.n_selected_velocities,
@@ -91,6 +96,7 @@ class StableSegmentResult:
             "random_state": self.random_state,
             "n_init": self.n_init,
             "sigma_ddof": self.sigma_ddof,
+            "openmp_threads": self.openmp_threads,
         }
 
 
@@ -135,6 +141,7 @@ def _build_result(
     n_fit_rows: int,
     n_valid_velocities: int,
     first_valid_velocity_date: pd.Timestamp | None,
+    first_valid_velocity: float | None = None,
     segment_start_date: pd.Timestamp | None = None,
     segment_end_date: pd.Timestamp | None = None,
     n_selected_velocities: int = 0,
@@ -148,6 +155,7 @@ def _build_result(
     random_state: int,
     n_init: int,
     sigma_ddof: int,
+    openmp_threads: int = DEFAULT_OPENMP_THREAD_LIMIT,
 ) -> StableSegmentResult:
     return StableSegmentResult(
         station=station,
@@ -157,6 +165,7 @@ def _build_result(
         n_fit_rows=n_fit_rows,
         n_valid_velocities=n_valid_velocities,
         first_valid_velocity_date=first_valid_velocity_date,
+        first_valid_velocity=first_valid_velocity,
         segment_start_date=segment_start_date,
         segment_end_date=segment_end_date,
         n_selected_velocities=n_selected_velocities,
@@ -170,6 +179,7 @@ def _build_result(
         random_state=random_state,
         n_init=n_init,
         sigma_ddof=sigma_ddof,
+        openmp_threads=openmp_threads,
     )
 
 
@@ -193,6 +203,7 @@ def select_initial_stable_segment(
     random_state = DEFAULT_RANDOM_STATE
     n_init = DEFAULT_N_INIT
     sigma_ddof = DEFAULT_SIGMA_DDOF
+    openmp_threads = DEFAULT_OPENMP_THREAD_LIMIT
     fit_end = _normalise_fit_end_date(fit_end_date)
     frame = _prepare_frame(kinematics)
     if frame["date"].isna().any():
@@ -236,17 +247,24 @@ def select_initial_stable_segment(
         if len(valid_positions)
         else None
     )
+    first_valid_velocity = (
+        float(fit_frame.loc[valid_positions[0], "velocity"])
+        if len(valid_positions)
+        else None
+    )
     base = {
         "station": station,
         "fit_end_date": fit_end,
         "n_fit_rows": len(fit_frame),
         "n_valid_velocities": len(valid_positions),
         "first_valid_velocity_date": first_valid_date,
+        "first_valid_velocity": first_valid_velocity,
         "n_clusters": n_clusters,
         "init": DEFAULT_INIT,
         "random_state": random_state,
         "n_init": n_init,
         "sigma_ddof": sigma_ddof,
+        "openmp_threads": openmp_threads,
     }
     if len(valid_positions) < n_clusters:
         return _build_result(
@@ -264,13 +282,14 @@ def select_initial_stable_segment(
         )
 
     try:
-        model = KMeans(
-            n_clusters=n_clusters,
-            init=DEFAULT_INIT,
-            random_state=random_state,
-            n_init=n_init,
-            algorithm="lloyd",
-        ).fit(valid_values.reshape(-1, 1))
+        with threadpool_limits(limits=openmp_threads, user_api="openmp"):
+            model = KMeans(
+                n_clusters=n_clusters,
+                init=DEFAULT_INIT,
+                random_state=random_state,
+                n_init=n_init,
+                algorithm="lloyd",
+            ).fit(valid_values.reshape(-1, 1))
     except ValueError:
         return _build_result(
             status="failed",
@@ -357,6 +376,7 @@ __all__ = [
     "DEFAULT_N_CLUSTERS",
     "DEFAULT_INIT",
     "DEFAULT_N_INIT",
+    "DEFAULT_OPENMP_THREAD_LIMIT",
     "DEFAULT_RANDOM_STATE",
     "DEFAULT_SIGMA_DDOF",
     "REQUIRED_COLUMNS",

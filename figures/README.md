@@ -13,6 +13,8 @@
 | `convlstm/forecast_calibration_metrics.csv` | 保存拟合/校准/测试日期边界、测点独立 `qhat` 及校准前后覆盖率、宽度、pinball 和 interval score | 校准审计表 | 证明校准期早于测试期并量化宽度-覆盖率代价；不提供时间序列下的严格覆盖保证 |
 | `warning_draft/interval_calibration_diagnostics.csv` | 保存 8 个测点、仅 calibration 段的分位数顺序、覆盖率、中点误差和标准化残差原始摘要，以及协议和 calibration 输入切片哈希 | 区间门禁原始诊断表 | 为后续冻结门禁提供可复核证据；不含通过/失败、颜色或预警等级，不能作为正式预警结果 |
 | `warning_draft/interval_calibration_diagnostics_manifest.json` | 保存诊断产物的协议状态、未评估项目、calibration 选段范围，以及 calibration 输入/输出哈希 | 草案运行清单 | 明确本次产物只作诊断且 `formal_warning_output=false`；哈希不随 held-out test 行变化，不得据此宣称区间五级映射已通过 |
+| `warning_draft/stable_segment_candidates.csv` | 保存 8 个测点、拟合截止日及以前历史的两类聚类初始低速前缀候选、拟合截止日、聚类中心、`V`、`σ`、候选 `V0` 及输入切片哈希 | 自动选段候选审计表 | 供复核项目特有的非监督候选程序；不含速度等级或预警等级，候选 `V0` 不是正式速度阈值 |
+| `warning_draft/stable_segment_candidates_manifest.json` | 保存 fit 截止日期、候选算法状态、未评估项目及 fit 预测/截止日前运动学输入切片哈希 | 草案运行清单 | 明确 `draft_candidate_not_formal` 和 `formal_warning_output=false`；哈希不随 calibration/test 或 post-fit 运动学记录变化 |
 | `convlstm/forecast_bootstrap_ci.csv` | 保存总体和各测点在 7/14/30 日连续块下的点估计、95% 百分位区间、配对差值及完整重采样参数 | 不确定性审计表 | 14 日为主分析，7/30 日为敏感性；模型和 `qhat` 固定，不能解释为训练或未来漂移不确定性 |
 | `convlstm/rolling_validation_folds.csv` | 保存三个扩展窗口折的拟合/校准/测试边界、模型配置、随机种子和逐测点 `qhat` | 验证协议审计表 | 证明每折时间隔离和测试长度来源；明确属于内部探索性验证 |
 | `convlstm/rolling_validation_metrics.csv` | 保存每折总体及 8 测点的原始/校准区间指标、持久性基线和增量偏差 | 滚动评估表 | 必须逐折报告，不以平均值掩盖前两折失败 |
