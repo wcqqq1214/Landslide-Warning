@@ -314,6 +314,12 @@ z_t = (U_t - μ_t) / σ_t
 
 同一模块的 `summarize_calibration_interval_inputs()` 固定只接受 `split=calibration` 行（调用方不能改为 test），按测点输出原始覆盖率、分位数顺序故障、P50 相对区间中点误差和标准化残差摘要；它**不**自行给出 pass/fail，也不选择任何尾部截断值或读取 test 行。覆盖率容差、对称性度量与容差、尾部诊断方法/最小样本数/接受条件仍为 `interval_calibration_gate` 的未冻结项。相应草案配置已记录公式、边界、必需检查和失败处置，但没有填入任何通过阈值，因此该模块不能解除 `status=draft` 或生成正式区间预警结果。
 
+#### 4.3.4 calibration 原始诊断审计产物（2026-07-18）
+
+新增 `code/warning/interval_diagnostics.py`，从 `figures/convlstm/forecast_predictions.csv` 中仅选取 `split=calibration` 的 1,816 条记录，生成 `figures/warning_draft/interval_calibration_diagnostics.csv`（8 个测点的原始摘要）及其 manifest。CSV 同时记录 calibration 输入切片哈希和草案协议版本；manifest 明确标为 `diagnostic_only_no_gate_decision`、`formal_warning_output=false`，并列出尚未评估的校准门禁、五级映射和测试期阈值选择。
+
+该产物只将已经存在的原始诊断固化为可追溯审计表：不填入覆盖率、对称性或尾部的接受阈值，不给出 pass/fail，不输出颜色、`interval_level` 或任何正式预警结论。测试期行不参与汇总，且 calibration 输入切片哈希、摘要 CSV 和 manifest 都不随任意 test 行变化；单元测试对此做了回归保护。因此它不能解除 `interval_calibration_gate` 的冻结门禁，也不能被引用为区间五级映射已通过的证据。
+
 ### 4.4 Vajont 的验证范围（P2，延后）
 
 Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：即使藕塘协议及结果已经完成，仍须获得用户明确允许后才能启动；未获允许时只保留现有审计记录，不开展数据适配、实验或结果生成。获准后再冻结其空间位置、外部驱动、时间切分和可用独立事件资料；缺少这些信息时，只能验证位移运动学和规则的可迁移性，不能声称完成空间 ConvLSTM 的跨滑坡验证。
@@ -380,6 +386,7 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 - [x] 训练段只展示拟合诊断，测试段单独计算和强调泛化指标；
 - [x] 每测点报告 PICP/coverage、平均宽度、pinball loss、interval score 和持久性基线；
 - [x] 新增隔离的区间诊断/状态草案：`code/warning/interval_state.py` 限制全局诊断为 calibration 行，且仅在外部显式门禁全部通过时映射五级；
+- [x] 将 calibration 原始区间诊断固化为带输入/输出哈希的审计表和 manifest；不生成门禁结论、五级颜色或正式预警；
 - [ ] 仅在拟合/校准阶段检查分位数顺序、P10-P90 覆盖率、近似对称性和标准化残差尾部适配；通过已冻结门槛后生成 `μ_t/σ_t`，未通过则停止论文启发的五级区间映射，不以测试结果调整输出分位数或分布参数。
 
 建议产物：
