@@ -261,9 +261,20 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 2. 对 blue--red 的每个候选等级 `L`，区间、速度和切线角只要自身等级 `≥L` 即记为一项支持；`ΔV>0` 作为该等级的定性升级支持，`ΔV<0/≈0` 不支持升级；
 3. 取满足“至少两项支持”的最高 `L` 为测点草案等级，并记录该等级的贡献指标及每级支持集合；
 4. 三个有序指标均为 green 且 `ΔV` 为负或近零时才输出 green。若只有一个异常指标（或只有 `ΔV>0`），输出 `uncorroborated` 而不是把异常静默重标为 green；
-5. `F_site` 尚未定义，故本次代码不对 8 个测点作滑坡体级聚合，也不写任何正式预警 CSV/图。
+5. `F_site` 尚未定义。`site_fusion.py` 只能将已独立计算的测点结果汇总为审计输入，不对 8 个测点赋予滑坡体级等级或颜色，也不写任何正式预警 CSV/图。
 
 该候选的核心作用是把“多因素共同决定”落实为可审计、可单测且不会把单一异常掩盖为正常的接口。它仍依赖未冻结的速度五级边界、`ΔV≈0` 容差、区间校准门禁和滑坡体级规则；因此草案配置持续保持 `status=draft`，`require_frozen_protocol()` 仍会拒绝任何正式运行。
+
+#### 4.2.4.1 滑坡体级输入审计（不等同于 `F_site`，2026-07-18）
+
+新增 `code/warning/site_fusion.py`，仅接收各测点已经产生的 `StationFusionResult`，生成一个固定标记为 `diagnostic_only_unconfigured_site_rule` 的审计汇总。它的边界刻意收紧为：
+
+1. 只有 `status=valid` 且含有测点等级的结果才计入 `valid_station_count`、五级计数、`elevated_station_count` 和 `max_station_level`；
+2. `uncorroborated` 测点单列为 `uncorroborated_stations`，不计为 green，也不因为其候选异常等级而计为 elevated；`warmup`、`invalid` 与 `not_applicable` 同样仅保留状态计数；
+3. 输出中的 `integrated_level` 和 `integrated_color` 永远为 `null`，`formal_warning_output=false`。`max_station_level` 只是“有效测点中的最高等级”，不能被解释为滑坡体预警；
+4. 该审计接口不假定必须恰有 8 个有效测点。未来 `F_site` 才必须冻结缺测、最少有效点、平局、贡献测点和跨点一致性规则。
+
+因此，这项实现为之后的 `F_site` 提供可复核输入，而不以代码默认值替代尚未定义的多测点判据。
 
 #### 4.2.5 四指标数据字典（2026-07-18）
 
@@ -471,6 +482,7 @@ tangent_angle / tangent_level
 - [ ] 仅用拟合/校准阶段冻结 `ΔV<0/≈0/>0` 的“近零”容差及其参与 `F` 的规则，在测试期只执行、不反调；不把它伪装成论文给出的 `τ1...τ4`；
 - [ ] 在区间校准门禁通过后，生成 `interval_indicator / interval_level`，并记录 `μ_t`、`σ_t`、实际 `U_t` 与触发区间；若未通过则显式输出 `invalid/not_applicable`，不强行着色；
 - [x] 新增隔离的测点级草案模块：`code/warning/rule_fusion.py` 按四项输入、两项佐证和显式无效/暖启动规则输出可审计候选，不替换历史 `warning_fusion.py`；
+- [x] 新增不赋值的滑坡体级审计模块：`code/warning/site_fusion.py` 只统计有效测点、最高测点等级和未获佐证测点，`integrated_level/color` 固定为空，不能替代 `F_site`；
 - [ ] 固定四项等级合成为测点最终等级的函数 `F`，并明确平局、冲突、缺失和暖启动规则；
 - [ ] 固定多测点合成为滑坡体级等级的函数 `F_site`，并输出异常测点数和贡献测点；
 - [ ] 输出四项等级、最终等级、颜色、规则版本和逐条触发理由；

@@ -39,6 +39,8 @@ fusion_rule_version, fusion_reason, validity_flag
 
 其中 `station_warning_level` 只能来自已冻结的四指标函数 `F`；滑坡体层还需要独立冻结 `F_site`。当前 `rule_fusion.py` 的“两项佐证”仅为项目特有草案候选，且在任一输入非 `valid` 时保留相应无效状态。它不能解除协议 `draft` 状态，也不能产生监督模型概率、F1、Brier 或混淆矩阵结论。
 
+在 `F_site` 冻结前，[`site_fusion.py`](../code/warning/site_fusion.py) 只提供诊断汇总：仅当测点结果同时满足 `status=valid` 与已有等级时，才统计有效点、异常点、各级数量和有效点中的最高等级；`uncorroborated` 单列，绝不按 green 或 elevated 处理。该汇总固定输出 `integrated_level=null`、`integrated_color=null` 与 `formal_warning_output=false`，所以其中的 `max_station_level` 不是滑坡体级预警，不能写入阶段 5 的正式综合预警表。
+
 ## 4. 未冻结项清单
 
 下列决策必须留在版本化协议中，不能由本字典、历史代码、指定论文的其他案例数值或 test 期结果补写：

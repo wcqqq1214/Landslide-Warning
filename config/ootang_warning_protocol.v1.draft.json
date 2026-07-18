@@ -186,6 +186,25 @@
           "contributing_indicators",
           "fusion_reason"
         ]
+      },
+      "site_audit_candidate": {
+        "status": "diagnostic_only_unconfigured_site_rule",
+        "formal_warning_output": false,
+        "input": "station_to_StationFusionResult",
+        "output_policy": "count_and_report_only; integrated_level_and_color_are_null",
+        "valid_station_definition": "station_result_status_is_valid_and_level_is_not_null",
+        "uncorroborated_policy": "report_separately_and_do_not_count_as_green_or_elevated",
+        "audit_fields": [
+          "total_station_count",
+          "valid_station_count",
+          "elevated_station_count",
+          "level_counts",
+          "station_status_counts",
+          "max_station_level",
+          "max_level_stations",
+          "uncorroborated_stations",
+          "site_fusion_reason"
+        ]
       }
     }
   },
