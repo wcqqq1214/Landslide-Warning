@@ -1,0 +1,52 @@
+# 藕塘四指标数据字典（协议草案）
+
+> 协议：[`ootang-five-level-rule-v1`](../config/ootang_warning_protocol.v1.draft.json)
+>
+> 状态：`draft`；本文件记录已确认的数据契约与未冻结项，**不授权生成正式预警结果**。
+>
+> 方法依据：[行动计划](advisor_review_action_plan.md)、导师指定[论文](../literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx)第五章，以及[改进切线角原始文献](../literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf)。
+
+## 1. 共用约束
+
+- 范围仅为藕塘 8 个测点；Vajont 不参与任何字段定义、阈值选择或结果生成。
+- 五级的唯一顺序为 `green=0`、`blue=1`、`yellow=2`、`orange=3`、`red=4`；它表示总体颜色顺序，不会自动赋予单项指标阈值。
+- 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。
+- 每个指标必须携带可审计状态。`warmup`、`invalid`、`not_applicable` 不能被静默改写为 green，也不能被规则融合忽略。
+- 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
+
+## 2. 四项指标
+
+| 指标与正式字段 | 值的定义及单位 | 时间窗口 / 可用数据 | 缺失与暖启动 | 阈值来源与当前状态 |
+| --- | --- | --- | --- | --- |
+| 区间偏离状态：`interval_level` | 已发布预测的 `P10/P50/P90`（mm）与随后观测到的 `U_t`（mm）。候选映射中 `μ_t=P50_t`、`σ_t=(P90_t-P10_t)/(2×1.28155)`、`z_t=(U_t-μ_t)/σ_t`。 | 全局校准诊断固定只读 `split=calibration`；逐时刻状态识别只在目标 `U_t` 已观测后进行，不能称为 `t+h` 前瞻预警。 | 原始 `warmup/invalid/not_applicable` 优先保留；非有限值或 `P10≤P50≤P90` / `P90>P10` 不成立时为 `invalid`。未通过或未配置全局门禁时为 `not_applicable`。 | 指定论文图 5-1 的正态区域思想；本项目的 P10/P50/P90 换算须同时通过分位数顺序、80% 覆盖率、近似对称性、尾部诊断。`interval_calibration_gate` 未冻结，故不能输出正式五级。 |
+| 逐点速度：`velocity` / `velocity_level` | `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，单位 `mm/day`。`velocity_level` 是未来的五级单项等级，不等同于最终测点等级。 | 当前值使用相邻两次有效观测的实际 `Δt`；每个测点独立。`V0` 的自动稳定段候选只可用该测点 fit 期有效速度。 | 首个速度为 `warmup`；缺失位移、无效日期或非正 `Δt` 产生明确无效状态，不插值。 | 指定论文式（5-3）为 `V0=max(1.5V,V+2σ)`，其中 `V` 是选定初始位移段的平均速率。稳定段、`V≈V0` 的 blue 容差以及速率表中量纲冲突的橙色表达尚未冻结：`stable_segment_selection`、`v0_blue_tolerance`、`rate_orange_expression`。 |
+| 变形速率增量：`delta_v` / `delta_v_state` | `ΔV_i=v_i-v_{i-1}`，是速度增量而非加速度，单位仍为 `mm/day`。状态仅为 `negative`、`near_zero`、`positive`，不是单独虚构的五级阈值。 | 需要连续两个有效速度，涉及 `i-2,i-1,i` 三个观测位置；近零容差只能在预先声明的 fit/calibration 阶段冻结。 | 前两行是 `warmup`；当前速度无效则为 `velocity_invalid`，前一速度无效则为 `previous_velocity_invalid`。 | 指定论文只将 `ΔV` 作为辅助判别，且其正文 `[92]` 无法从该 Word 文件的参考文献表追溯；可采用负/近零/正的过程语义，但 `delta_v_near_zero_tolerance` 与其参与 `F` 的规则未冻结。 |
+| 改进切线角：`tangent_angle` / `tangent_angle_level` | 原始方法将累计位移坐标变换为时间量纲后计算 `α_i=(180/π)arctan((T_i-T_{i-1})/(t_i-t_{i-1}))`；在当前等间隔日数据中，速率比形式为 `α_i=(180/π)arctan(v_i/V0)`，输出单位为 degree。 | 原始文献要求先识别等速变形阶段并计算其平均速率 `V0`。本项目的自动稳定段仅是 fit-only 草案候选；当前遗留的 3 日因果平滑和持续性规则不可自动升格为正式窗口。 | 原始文献建议不等间隔观测先等间隔化。藕塘当前为逐日数据；出现缺测/非等间隔时的重采样、无效标记或其他处置尚未冻结。 | 指定论文表 5-2 和许强等（2009）给出 `α<45°`、`α≈45°`、`45°<α<80°`、`80°≤α<85°`、`α≥85°` 对应五色。`α≈45°` 没有数值容差或边界归属，因此 `tangent_blue_tolerance`、`nonregular_tangent_handling` 以及稳定段选择仍阻止正式五级。 |
+
+## 3. 输出与融合边界
+
+逐测点的未来可复算表至少应含：
+
+```text
+case_id, date, split, station,
+interval_value, interval_level, interval_status,
+velocity, velocity_level, velocity_status,
+delta_v, delta_v_state, delta_v_status,
+tangent_angle, tangent_angle_level, tangent_status,
+station_warning_level, station_warning_color,
+fusion_rule_version, fusion_reason, validity_flag
+```
+
+其中 `station_warning_level` 只能来自已冻结的四指标函数 `F`；滑坡体层还需要独立冻结 `F_site`。当前 `rule_fusion.py` 的“两项佐证”仅为项目特有草案候选，且在任一输入非 `valid` 时保留相应无效状态。它不能解除协议 `draft` 状态，也不能产生监督模型概率、F1、Brier 或混淆矩阵结论。
+
+## 4. 未冻结项清单
+
+下列决策必须留在版本化协议中，不能由本字典、历史代码、指定论文的其他案例数值或 test 期结果补写：
+
+1. 区间校准的数值容差、尾部诊断方法、最小样本数、通过/失败处置；
+2. 每测点稳定段选择和速度五级的 blue/橙色边界；
+3. `ΔV≈0` 容差以及它在测点级 `F` 中的参与方式；
+4. 切线角 `α≈45°` 的 blue 容差与不规则采样处置；
+5. 测点级 `F`、滑坡体级 `F_site`、平局、冲突、缺失和暖启动规则。
+
+在这些项冻结且通过相应校准门禁前，本文件的所有五级映射都只是数据合同和开发接口，不是藕塘的正式预警结果。

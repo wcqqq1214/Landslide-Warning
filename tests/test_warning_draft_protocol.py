@@ -64,6 +64,7 @@ class WarningDraftProtocolTests(unittest.TestCase):
         unresolved = unresolved_item_ids(load_protocol())
 
         self.assertIn("stable_segment_selection", unresolved)
+        self.assertIn("tangent_blue_tolerance", unresolved)
         self.assertIn("per_station_fusion_function", unresolved)
         self.assertIn("landslide_body_fusion_function", unresolved)
         with self.assertRaises(ProtocolNotFrozenError):

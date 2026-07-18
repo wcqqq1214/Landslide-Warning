@@ -166,6 +166,11 @@
       "required_before_formal_run": true
     },
     {
+      "id": "tangent_blue_tolerance",
+      "reason": "The source writes alpha approximately equal to 45 degrees but gives no numeric tolerance or boundary ownership for the blue tangent-angle level.",
+      "required_before_formal_run": true
+    },
+    {
       "id": "rate_orange_expression",
       "reason": "The specified thesis table writes 5V0<=alpha<10V0 in a rate table; this is dimensionally inconsistent and must not be silently corrected.",
       "required_before_formal_run": true
