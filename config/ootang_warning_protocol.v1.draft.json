@@ -77,6 +77,17 @@
       "V_definition": "average_rate_of_selected_initial_displacement",
       "granularity": "per_station",
       "legacy_30_day_rate_allowed": false,
+      "rate_mapping": {
+        "status": "source_confirmed_boundary_not_formal_until_protocol_is_frozen",
+        "green": "V<V0",
+        "blue": "V_approximately_equal_to_V0",
+        "yellow": "V0<V<5V0",
+        "orange": "5V0<=V<10V0",
+        "red": "V>=10V0",
+        "orange_table_notation": "5V0<=alpha<10V0",
+        "source_reconciliation": "The specified thesis Table 5-4 uses alpha in its orange rate cell, but its Figure 5-4 is explicitly a displacement-rate warning plot with a rate ordinate and V0, 5V0, and 10V0 threshold lines. The figure therefore resolves alpha as the table's typographical symbol; this reconciliation does not resolve the blue tolerance or make the draft protocol formal.",
+        "source_locator": "specified_thesis_chapter_5_table_5_4_and_figure_5_4_word_rendered_page_89_printed_page_79"
+      },
       "stable_segment_candidate": {
         "status": "draft_candidate_not_formal",
         "input": "per_station_valid_point_velocity_rows",
@@ -192,11 +203,6 @@
     {
       "id": "tangent_blue_tolerance",
       "reason": "The source writes alpha approximately equal to 45 degrees but gives no numeric tolerance or boundary ownership for the blue tangent-angle level.",
-      "required_before_formal_run": true
-    },
-    {
-      "id": "rate_orange_expression",
-      "reason": "The specified thesis table writes 5V0<=alpha<10V0 in a rate table; this is dimensionally inconsistent and must not be silently corrected.",
       "required_before_formal_run": true
     },
     {
