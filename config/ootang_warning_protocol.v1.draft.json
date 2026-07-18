@@ -117,7 +117,28 @@
         "negative",
         "near_zero",
         "positive"
-      ]
+      ],
+      "diagnostic_candidate": {
+        "status": "diagnostic_only_no_tolerance_decision",
+        "source_splits": [
+          "fit",
+          "calibration"
+        ],
+        "fit_kinematics_scope": "all_station_history_through_fit_cutoff",
+        "calibration_kinematics_scope": "exact_station_calibration_prediction_dates",
+        "near_zero_tolerance": "unconfigured",
+        "audit_fields": [
+          "n_valid_delta_v",
+          "delta_v_min",
+          "delta_v_max",
+          "delta_v_mean",
+          "delta_v_median",
+          "delta_v_std_ddof1",
+          "mean_abs_delta_v",
+          "median_abs_delta_v",
+          "max_abs_delta_v"
+        ]
+      }
     },
     "fusion": {
       "mode": "transparent_non_supervised_rules",

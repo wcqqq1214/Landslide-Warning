@@ -1,0 +1,162 @@
+{
+  "artifact_kind": "ootang_delta_v_fit_calibration_diagnostics",
+  "diagnostic_status": "diagnostic_only_no_tolerance_decision",
+  "formal_warning_output": false,
+  "inputs": {
+    "calibration_kinematics": {
+      "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+      "sha256": "ac42d9b28382d55eb0293fe302f77fcd7ef66536a4efc9f65382ee046c80dee6"
+    },
+    "calibration_prediction_window": {
+      "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+      "sha256": "ecd0b6e7f8756f5f8dae329c4b6d5605929603a6421816434999ed8f3fea409c"
+    },
+    "fit_kinematics": {
+      "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+      "sha256": "d9e888f1f0482bea3e99a1676e963036f43f8c90617aeeb5d4c3b78be5c1daa9"
+    },
+    "fit_prediction_window": {
+      "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+      "sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0"
+    }
+  },
+  "not_evaluated": [
+    "delta_v_near_zero_tolerance",
+    "delta_v_state_mapping",
+    "five_level_delta_v_mapping",
+    "test_split_threshold_selection"
+  ],
+  "protocol": {
+    "id": "ootang-five-level-rule-v1",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "rate_orange_expression",
+      "delta_v_near_zero_tolerance",
+      "interval_calibration_gate",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.0-draft"
+  },
+  "selection": {
+    "splits": {
+      "calibration": {
+        "n_exact_prediction_dates_by_station": {
+          "ATU1": 227,
+          "ATU2": 227,
+          "ATU3": 227,
+          "ATU4": 227,
+          "ATU5": 227,
+          "MJ1": 227,
+          "MJ3": 227,
+          "MJ9": 227
+        },
+        "n_kinematics_rows": 1816,
+        "temporal_scope": "exact_station_calibration_prediction_dates",
+        "windows": {
+          "ATU1": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "ATU2": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "ATU3": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "ATU4": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "ATU5": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "MJ1": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "MJ3": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          },
+          "MJ9": {
+            "end_date": "2019-09-17",
+            "start_date": "2019-02-03"
+          }
+        }
+      },
+      "fit": {
+        "fit_end_dates": {
+          "ATU1": "2019-02-02",
+          "ATU2": "2019-02-02",
+          "ATU3": "2019-02-02",
+          "ATU4": "2019-02-02",
+          "ATU5": "2019-02-02",
+          "MJ1": "2019-02-02",
+          "MJ3": "2019-02-02",
+          "MJ9": "2019-02-02"
+        },
+        "n_kinematics_rows": 7576,
+        "temporal_scope": "all_station_history_through_fit_cutoff"
+      }
+    }
+  },
+  "source_kinematics": {
+    "calibration_time_filter": "station_date_is_exact_calibration_prediction_date",
+    "fit_time_filter": "station_date<=station_fit_end_date",
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "delta_v",
+      "delta_v_status"
+    ]
+  },
+  "source_predictions": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "split"
+    ],
+    "selected_splits": [
+      "fit",
+      "calibration"
+    ]
+  },
+  "summary": {
+    "columns": [
+      "protocol_id",
+      "protocol_version",
+      "protocol_status",
+      "diagnostic_status",
+      "prediction_window_sha256",
+      "kinematics_input_sha256",
+      "source_split",
+      "kinematics_temporal_scope",
+      "station",
+      "n_rows",
+      "n_valid_delta_v",
+      "n_warmup",
+      "n_nonvalid_status",
+      "n_nonfinite_delta_v",
+      "delta_v_min",
+      "delta_v_max",
+      "delta_v_mean",
+      "delta_v_median",
+      "delta_v_std_ddof1",
+      "mean_abs_delta_v",
+      "median_abs_delta_v",
+      "max_abs_delta_v"
+    ],
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/delta_v_fit_calibration_diagnostics.csv",
+    "sha256": "40662c640779c46dd324186a331ba95a8479a87ab404b53b18244e9e0de7a2dd"
+  }
+}

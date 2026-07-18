@@ -271,6 +271,12 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 再次直接核对指定 Word 表 5-2 后，发现其 blue 列写作 `α≈45°`，但没有给出“≈”的数值容差或边界归属。此前草案协议只记录了速度 `V≈V0` 的 `v0_blue_tolerance`，不足以覆盖切线角这一独立五级空缺；现新增 `tangent_blue_tolerance` 作为正式运行门禁，不填入猜测的数值。
 
+#### 4.2.6 `ΔV` 的 fit/calibration 原始诊断审计产物（2026-07-18）
+
+新增 `code/warning/delta_v_diagnostics.py`，将版本化预测表中的 fit 截止日和 calibration **预测行的精确 `(station, date)`** 映射到逐点运动学长表，生成 `figures/warning_draft/delta_v_fit_calibration_diagnostics.csv` 与 manifest。fit 使用每测点截止日及以前的历史，calibration 不按起止日包络扩展取数，避免日期缺口中的 test 行混入；若任一 calibration 预测日期没有对应运动学行则明确失败。当前产物有 16 条“测点 × 数据段”原始摘要（8 个 fit、8 个 calibration），保存有效数、暖启动/非有效状态计数、最小值、最大值、均值、中位数、样本标准差与绝对值摘要，以及所用预测窗口和运动学切片的哈希。
+
+它严格标为 `diagnostic_only_no_tolerance_decision`、`formal_warning_output=false`：不输出 `negative/near_zero/positive` 状态，不设置 `ΔV≈0` 数值容差，不生成五级或测点预警。测试期预测记录（即使插在 calibration 起止日期之间）、测试期后的运动学值和额外的非参与测点均不会改变该 CSV 或 manifest；这些原始统计仅供之后在 fit/calibration 协议内冻结 `delta_v_near_zero_tolerance` 时复核，不能被解释为论文已给阈值或正式预警结论。
+
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
 本轮选择“逐时刻区间偏离状态识别”，而非在 `t` 时刻对 `t+h` 的严格前瞻预警。对每个有效时刻 `t`，执行顺序为：
@@ -339,6 +345,7 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 - [x] R1、R4、R5、R7、R10 的方法方向已确认；R3 已记录为当前实施解释；R6（Vajont）已延期并设置用户授权门禁；
 - [x] D3：区间指标采用逐时刻区间偏离状态识别，不作为严格前瞻预警；
 - [x] 将自动稳定段草案候选固化为 fit-only 审计表和 manifest；候选 `V0` 不作为正式速度阈值；
+- [x] 将 `ΔV` 的 fit/calibration 原始分布固化为审计表；不选择近零容差或状态；
 - [ ] 冻结区间校准门禁的容差、尾部诊断、最小有效样本数、失败处理和 `μ_t/σ_t` 五级映射实现；
 - [x] 建立四指标数据字典：公式、单位、时间窗口、缺失处理、阈值来源；
 - [ ] 固定五级颜色编码和严格边界；

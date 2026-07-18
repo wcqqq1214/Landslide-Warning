@@ -22,6 +22,9 @@ from warning.interval_state import (  # noqa: E402
     CALIBRATION_CHECK_NAMES,
     NORMAL_90_QUANTILE,
 )
+from warning.delta_v_diagnostics import (  # noqa: E402
+    DIAGNOSTIC_STATUS as DELTA_V_DIAGNOSTIC_STATUS,
+)
 from warning.rule_fusion import DEFAULT_MINIMUM_SUPPORT  # noqa: E402
 from warning.stable_segment import (  # noqa: E402
     DEFAULT_INIT,
@@ -38,6 +41,7 @@ class WarningDraftProtocolTests(unittest.TestCase):
         protocol = load_protocol()
         interval_candidate = protocol["confirmed"]["interval"]["candidate"]
         v0_candidate = protocol["confirmed"]["v0_framework"]["stable_segment_candidate"]
+        delta_v_candidate = protocol["confirmed"]["delta_v"]["diagnostic_candidate"]
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
 
         self.assertEqual(v0_candidate["status"], "draft_candidate_not_formal")
@@ -57,6 +61,12 @@ class WarningDraftProtocolTests(unittest.TestCase):
         )
         self.assertEqual(fusion_candidate["status"], "draft_candidate_not_formal")
         self.assertEqual(interval_candidate["status"], "draft_candidate_not_formal")
+        self.assertEqual(delta_v_candidate["status"], DELTA_V_DIAGNOSTIC_STATUS)
+        self.assertEqual(delta_v_candidate["near_zero_tolerance"], "unconfigured")
+        self.assertEqual(
+            delta_v_candidate["calibration_kinematics_scope"],
+            "exact_station_calibration_prediction_dates",
+        )
         self.assertEqual(
             interval_candidate["standard_normal_p90_quantile"],
             NORMAL_90_QUANTILE,
