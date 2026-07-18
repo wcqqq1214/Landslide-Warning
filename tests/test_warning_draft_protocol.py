@@ -18,6 +18,10 @@ from warning.protocol import (  # noqa: E402
     require_frozen_protocol,
     unresolved_item_ids,
 )
+from warning.interval_state import (  # noqa: E402
+    CALIBRATION_CHECK_NAMES,
+    NORMAL_90_QUANTILE,
+)
 from warning.rule_fusion import DEFAULT_MINIMUM_SUPPORT  # noqa: E402
 from warning.stable_segment import (  # noqa: E402
     DEFAULT_INIT,
@@ -31,6 +35,7 @@ from warning.stable_segment import (  # noqa: E402
 class WarningDraftProtocolTests(unittest.TestCase):
     def test_candidate_metadata_matches_the_reproducible_module_defaults(self):
         protocol = load_protocol()
+        interval_candidate = protocol["confirmed"]["interval"]["candidate"]
         v0_candidate = protocol["confirmed"]["v0_framework"]["stable_segment_candidate"]
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
 
@@ -45,6 +50,15 @@ class WarningDraftProtocolTests(unittest.TestCase):
             DEFAULT_MINIMUM_SUPPORT,
         )
         self.assertEqual(fusion_candidate["status"], "draft_candidate_not_formal")
+        self.assertEqual(interval_candidate["status"], "draft_candidate_not_formal")
+        self.assertEqual(
+            interval_candidate["standard_normal_p90_quantile"],
+            NORMAL_90_QUANTILE,
+        )
+        self.assertEqual(
+            tuple(interval_candidate["required_global_checks"]),
+            CALIBRATION_CHECK_NAMES,
+        )
 
     def test_candidate_rules_do_not_remove_the_formal_run_gates(self):
         unresolved = unresolved_item_ids(load_protocol())

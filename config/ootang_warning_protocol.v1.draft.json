@@ -35,7 +35,35 @@
     ],
     "interval": {
       "semantic": "observed_per_timepoint_interval_deviation_state_identification",
-      "not_claimed": "strict_horizon_ahead_warning"
+      "not_claimed": "strict_horizon_ahead_warning",
+      "candidate": {
+        "status": "draft_candidate_not_formal",
+        "input_scope": "split_equals_calibration_for_global_diagnostics; observed_rows_for_state_identification",
+        "mu": "P50",
+        "sigma_formula": "(P90-P10)/(2*1.28155)",
+        "standard_normal_p90_quantile": 1.28155,
+        "mapping": {
+          "green": "U<=mu",
+          "blue": "mu<U<=mu+sigma",
+          "yellow": "mu+sigma<U<=mu+2*sigma",
+          "orange": "mu+2*sigma<U<=mu+3*sigma",
+          "red": "U>mu+3*sigma"
+        },
+        "required_global_checks": [
+          "quantile_order",
+          "coverage",
+          "symmetry",
+          "tail"
+        ],
+        "global_gate_policy": "all_four_checks_must_be_explicitly_passed; no_default_threshold_or_pass_decision",
+        "row_status_policy": "source_warmup_invalid_or_not_applicable_is_preserved; nonfinite_or_crossed_quantiles_are_invalid; otherwise_a_failed_or_unconfigured_global_gate_is_not_applicable",
+        "diagnostic_outputs": [
+          "quantile_order_failures",
+          "coverage_80",
+          "midpoint_error",
+          "standardized_residual_summary"
+        ]
+      }
     },
     "tangent_angle": {
       "green": "alpha<45_degree",
