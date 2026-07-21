@@ -288,9 +288,17 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 它严格标为 `diagnostic_only_no_tolerance_decision`、`formal_warning_output=false`：不输出 `negative/near_zero/positive` 状态，不设置 `ΔV≈0` 数值容差，不生成五级或测点预警。测试期预测记录（即使插在 calibration 起止日期之间）、测试期后的运动学值和额外的非参与测点均不会改变该 CSV 或 manifest；这些原始统计仅供之后在 fit/calibration 协议内冻结 `delta_v_near_zero_tolerance` 时复核，不能被解释为论文已给阈值或正式预警结论。
 
+#### 4.2.6.1 速度/V0 与切线角的 fit/calibration 原始诊断审计（2026-07-21）
+
+新增 `code/warning/velocity_tangent_diagnostics.py`，从现有的每测点 fit-only 自动稳定段候选中读取候选 `V0`，再将版本化预测表中的 fit 截止日和 calibration **预测行的精确 `(station, date)`** 映射到逐点速度长表，生成 `figures/warning_draft/velocity_tangent_fit_calibration_diagnostics.csv` 与 manifest。当前产物有 16 条“测点 × 数据段”原始摘要（8 个 fit、8 个 calibration）；fit 仍只取每测点截止日及以前的历史，calibration 不按起止日期包络扩展，因此 test 行不会混入。
+
+每条摘要只保存原始速度、`v/V0`、`v-V0`、`α=arctan(v/V0)`、`α-45°` 及其绝对偏差的描述统计，并保留有效/暖启动/非有效计数和候选 `V0` 的选择状态。它不输出 `velocity_level`、`tangent_angle_level`、`V≈V0` 或 `α≈45°` 的容差，也不生成融合或正式预警。输入的稳定段候选必须同时满足 `candidate_status=draft_candidate_not_formal`、`source_split=fit`、既定的 fit-only 运动学范围、当前协议的 `protocol_content_sha256`，并逐测点匹配本次 fit 截止日及上游 fit 预测/运动学切片哈希；任何一项不符都会明确拒绝，避免把陈旧、非 fit-only 或受 test 污染的候选 `V0` 静默用于本次审计。
+
+这份产物同样固定为 `diagnostic_only_no_tolerance_decision`、`formal_warning_output=false`。它只为后续在 fit/calibration 内提出并冻结 `v0_blue_tolerance` 与 `tangent_blue_tolerance` 的项目特有规则提供原始证据，不能被解读为论文给出的蓝色容差、速度/切线角五级结果或藕塘正式预警。
+
 #### 4.2.7 草案审计产物的协议内容指纹（2026-07-18）
 
-`stable_segment_diagnostics.py`、`delta_v_diagnostics.py` 与 `interval_diagnostics.py` 现对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
+`stable_segment_diagnostics.py`、`delta_v_diagnostics.py`、`interval_diagnostics.py` 与 `velocity_tangent_diagnostics.py` 现对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
 
 这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。此前三份 manifest 曾保留已在协议中解除的 `rate_orange_expression`；现已在当前协议内容下重生成，仅更新溯源元数据与 manifest 的未决项快照。区间单项状态随后另由 4.3.3 的论文参考产物生成，仍不构成正式预警。
 
@@ -360,6 +368,7 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 - [x] D3：区间指标采用逐时刻区间偏离状态识别，不作为严格前瞻预警；
 - [x] 将自动稳定段草案候选固化为 fit-only 审计表和 manifest；候选 `V0` 不作为正式速度阈值；
 - [x] 将 `ΔV` 的 fit/calibration 原始分布固化为审计表；不选择近零容差或状态；
+- [x] 将候选 `V0` 下的 `v/V0` 与 `α=arctan(v/V0)` 的 fit/calibration 原始分布固化为审计表；不选择速度或切线角的 blue 容差或等级；
 - [x] 直接参考指定论文图 5-1 的 `μ_t/σ_t` 五级区域；将 coverage、对称性和尾部保留为 calibration 质量审计，不设置论文未给出的通过阈值；
 - [x] 建立四指标数据字典：公式、单位、时间窗口、缺失处理、阈值来源；
 - [ ] 固定五级颜色编码和严格边界；

@@ -1,0 +1,178 @@
+{
+  "artifact_kind": "ootang_velocity_tangent_fit_calibration_diagnostics",
+  "diagnostic_status": "diagnostic_only_no_tolerance_decision",
+  "formal_warning_output": false,
+  "protocol": {
+    "id": "ootang-five-level-rule-v1",
+    "version": "1.1-draft",
+    "status": "draft",
+    "content_sha256": "e3d2de7c4f5139a41d4120cc75984bc5393ff7710aa176390cd58f0b7b42a595",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ]
+  },
+  "selection": {
+    "splits": {
+      "fit": {
+        "temporal_scope": "all_station_history_through_fit_cutoff",
+        "fit_end_dates": {
+          "ATU1": "2019-02-02",
+          "ATU2": "2019-02-02",
+          "ATU3": "2019-02-02",
+          "ATU4": "2019-02-02",
+          "ATU5": "2019-02-02",
+          "MJ1": "2019-02-02",
+          "MJ3": "2019-02-02",
+          "MJ9": "2019-02-02"
+        },
+        "n_kinematics_rows": 7576
+      },
+      "calibration": {
+        "temporal_scope": "exact_station_calibration_prediction_dates",
+        "n_exact_prediction_dates_by_station": {
+          "ATU1": 227,
+          "ATU2": 227,
+          "ATU3": 227,
+          "ATU4": 227,
+          "ATU5": 227,
+          "MJ1": 227,
+          "MJ3": 227,
+          "MJ9": 227
+        },
+        "windows": {
+          "ATU1": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "ATU2": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "ATU3": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "ATU4": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "ATU5": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "MJ1": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "MJ3": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          },
+          "MJ9": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17"
+          }
+        },
+        "n_kinematics_rows": 1816
+      }
+    },
+    "candidate_v0_dependency": {
+      "status": "draft_candidate_not_formal",
+      "formula": "tangent_angle_degree=atan(velocity/V0)*180/pi",
+      "does_not_assign": [
+        "velocity_level",
+        "tangent_angle_level",
+        "v0_blue_tolerance",
+        "tangent_blue_tolerance"
+      ]
+    }
+  },
+  "source_predictions": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "split"
+    ],
+    "selected_splits": [
+      "fit",
+      "calibration"
+    ]
+  },
+  "source_kinematics": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "velocity",
+      "velocity_status"
+    ]
+  },
+  "source_stable_segment_candidates": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/stable_segment_candidates.csv",
+    "selected_columns": [
+      "station",
+      "candidate_status",
+      "source_split",
+      "kinematics_temporal_scope",
+      "fit_prediction_input_sha256",
+      "fit_kinematics_input_sha256",
+      "selection_status",
+      "failure_reason",
+      "fit_end_date",
+      "V0",
+      "protocol_content_sha256"
+    ],
+    "protocol_content_sha256": "e3d2de7c4f5139a41d4120cc75984bc5393ff7710aa176390cd58f0b7b42a595",
+    "candidate_status": "draft_candidate_not_formal",
+    "source_split": "fit",
+    "kinematics_temporal_scope": "all_station_history_through_fit_cutoff",
+    "fit_prediction_input_sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0",
+    "fit_kinematics_input_sha256": "6e6a712eb99f564ac017b1e024b5b6c18ecfa6263cf8a7a1cc2c7c19414bd0ad",
+    "fit_end_dates": {
+      "ATU1": "2019-02-02",
+      "ATU2": "2019-02-02",
+      "ATU3": "2019-02-02",
+      "ATU4": "2019-02-02",
+      "ATU5": "2019-02-02",
+      "MJ1": "2019-02-02",
+      "MJ3": "2019-02-02",
+      "MJ9": "2019-02-02"
+    }
+  },
+  "inputs": {
+    "fit_prediction_window": {
+      "sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0",
+      "n_rows": 7288
+    },
+    "calibration_prediction_window": {
+      "sha256": "ecd0b6e7f8756f5f8dae329c4b6d5605929603a6421816434999ed8f3fea409c",
+      "n_rows": 1816
+    },
+    "fit_kinematics": {
+      "sha256": "6e6a712eb99f564ac017b1e024b5b6c18ecfa6263cf8a7a1cc2c7c19414bd0ad",
+      "n_rows": 7576
+    },
+    "calibration_kinematics": {
+      "sha256": "06f000617c4f4e5ac1ba64f51557e6def78b6aa051e9d9dba9d99983a9acd8b0",
+      "n_rows": 1816
+    },
+    "stable_segment_candidates": {
+      "sha256": "2bc5d0f00d0ed4ae4b12979b2b042c9da62159b481162ec313727cd6890932ea",
+      "n_rows": 8
+    }
+  },
+  "outputs": {
+    "summary": {
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/velocity_tangent_fit_calibration_diagnostics.csv",
+      "sha256": "a6a0808117264c73f5316670aceffe09b4cd69075de0002d472aa3786c8695d5",
+      "n_rows": 16
+    }
+  }
+}
