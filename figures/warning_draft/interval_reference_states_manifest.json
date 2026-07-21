@@ -14,7 +14,7 @@
     "semantic": "observed_per_timepoint_interval_deviation_state_identification"
   },
   "protocol": {
-    "content_sha256": "cec9e957cb15246e3a320a67308bdaceadff7945b0dfd962df27cf422fae1ed3",
+    "content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -26,7 +26,7 @@
       "landslide_body_fusion_function",
       "nonregular_tangent_handling"
     ],
-    "version": "1.1-draft"
+    "version": "1.2-draft"
   },
   "selection": {
     "n_rows": 11400,
@@ -94,6 +94,6 @@
     "mapped_row_count": 4112,
     "not_applicable_row_count": 7288,
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_reference_states.csv",
-    "sha256": "5999fdf7a8f04baecdafb02d9547fa0972ba942e653e1084f5c34913ea71746d"
+    "sha256": "13b3c8f524ea1c5bc9511a75854df33e8812ccebe059c656aa59ada9e0190bb2"
   }
 }

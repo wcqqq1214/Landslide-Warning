@@ -4,9 +4,9 @@
   "formal_warning_output": false,
   "protocol": {
     "id": "ootang-five-level-rule-v1",
-    "version": "1.1-draft",
+    "version": "1.2-draft",
     "status": "draft",
-    "content_sha256": "cec9e957cb15246e3a320a67308bdaceadff7945b0dfd962df27cf422fae1ed3",
+    "content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
     "unresolved_item_ids": [
       "stable_segment_selection",
       "v0_blue_tolerance",
@@ -139,7 +139,7 @@
       "V0",
       "protocol_content_sha256"
     ],
-    "protocol_content_sha256": "cec9e957cb15246e3a320a67308bdaceadff7945b0dfd962df27cf422fae1ed3",
+    "protocol_content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
     "candidate_status": "draft_candidate_not_formal",
     "candidate_method": {
       "id": "raw_velocity_kmeans_initial_low_speed_prefix",
@@ -180,14 +180,14 @@
       "n_rows": 1816
     },
     "stable_segment_candidates": {
-      "sha256": "ce76b26381564f92137e69ac16cc4c1ded1bcc99f5c8b254696423f942f82022",
+      "sha256": "5c5fc941ec96a4907555e726e44eff854bea0400f42ab61279d2bccaa77f87f6",
       "n_rows": 8
     }
   },
   "outputs": {
     "summary": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/velocity_tangent_fit_calibration_diagnostics.csv",
-      "sha256": "bc3b8ebacf5fc22a6e38ab512e6e094f2a90e0074ec8682c8317b29a1abf25a8",
+      "sha256": "544dbd73cfe94cb60a3885eedc5cc19418b7d2337e0e42f0221c2d66d0113ec3",
       "n_rows": 16
     }
   }

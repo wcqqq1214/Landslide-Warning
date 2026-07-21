@@ -1,9 +1,9 @@
 {
   "protocol_id": "ootang-five-level-rule-v1",
-  "protocol_version": "1.1-draft",
+  "protocol_version": "1.2-draft",
   "status": "draft",
   "case": "ootang",
-  "revision_date": "2026-07-21",
+  "revision_date": "2026-07-22",
   "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
   "source_evidence": [
     {
@@ -21,6 +21,14 @@
     {
       "source": "literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf",
       "role": "original improved-tangent-angle phase boundaries and stable-stage procedure"
+    },
+    {
+      "source": "https://xbdz.net.cn/article/doi/10.12401/j.nwg.2022034",
+      "role": "Wang_An_2023_curve_convexity_uniform_stage_method_source_boundary_only"
+    },
+    {
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3490710/",
+      "role": "prediction_profile_likelihood_target_functional_uncertainty_methodological_reference_only"
     }
   ],
   "confirmed": {
@@ -89,7 +97,7 @@
         "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
         "intercept_policy": "C_is_an_estimated_intercept_not_a_fixed_observed_s0",
         "basis": "The specified Word thesis displays +s0 but names A, B, C as fitting parameters; the verified related Chen et al. (2024) MVIF source uses +C and maximum-likelihood fitting. The user authorized +C as the reproducible reconciliation.",
-        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_define_an_initial_slope_window_or_V0. The separate MVIF diagnostic records a conservative finite-tf failure gate only."
+        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_itself_define_an_initial_slope_window_or_a_formal_V0. The_strict_finite_tf_diagnostic_remains_a_separate_conservative_baseline, and_the_distinct_target_slope_candidate_below_remains_draft_only."
       },
       "mvif_trend_fit_diagnostic": {
         "status": "diagnostic_only_no_v0_until_initial_slope_rule_is_frozen",
@@ -131,6 +139,80 @@
           "V0",
           "five_level_velocity_mapping",
           "tangent_angle",
+          "formal_warning_output"
+        ]
+      },
+      "mvif_initial_slope_profile_candidate": {
+        "status": "draft_candidate_not_formal",
+        "candidate_method_id": "mvif_trend_earliest_uniform_slope_profile",
+        "candidate_method_role": "user_authorized_project_adaptation_of_Wang_An_on_fitted_MVIF_trend_not_formal_word_v0_implementation",
+        "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+        "word_thesis_v0_input_status": "diagnostic_candidate_with_selection_conditioned_target_identifiability_not_formal_v0_acceptance",
+        "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
+        "input": "per_station_cumulative_displacement_rows_with_displacement_valid",
+        "fit_only": true,
+        "time_origin": "first_fit_displacement_date_numerical_coordinate_only",
+        "objective": "gaussian_residual_least_squares_MVIF_fit_with_selection_conditioned_profile_likelihood_for_the_selected_trend_slope_functional",
+        "daily_sampling_policy": "require_exact_daily_fit_dates_for_the_five_day_L_method; emit_failed_without_resampling_when_non_daily",
+        "baseline_relation": "does_not_modify_or_relax_the_separate_strict_finite_tf_gate; this candidate does_not_assert_a_reliable_finite_tf",
+        "trend_selection": {
+          "source_method": "Wang_An_2023_curve_convexity_L_on_raw_S_t_with_current_nearest_uniform_segment",
+          "source_boundary": "The source's raw_S_t_input_and_current_nearest_selection_are_not_reproduced_as_the_Word_initial_MVIF_slope_rule.",
+          "input": "fitted_MVIF_trend_displacement",
+          "intercept_handling": "local_window_increment_ratio_for_C_invariance",
+          "convexity_ratio": "L=(s(t_mid)-s(t_start))/((s(t_end)-s(t_start))/2)",
+          "window_days": 5,
+          "uniform_l_interval": [0.99, 1.01],
+          "selection_rule": "earliest_contiguous_uniform_window_run_on_fitted_mvif_trend",
+          "project_adaptation": "Apply the Wang-An L interval to the fitted MVIF trend, subtract each local fitted start displacement so C cannot change L, and choose the earliest continuous uniform run rather than the source method's current-nearest raw-curve segment."
+        },
+        "candidate_statistics": {
+          "V": "ordinary_least_squares_slope_of_selected_fitted_MVIF_trend_mm_per_day",
+          "sigma": "sample_standard_deviation_of_selected_fitted_trend_daily_increments_mm_per_day",
+          "sigma_ddof": 1,
+          "candidate_v0": "max(1.5*V,V+2*sigma)",
+          "status": "draft_project_implementation_convention_not_formal_V0"
+        },
+        "target_profile": {
+          "target": "selection_conditioned_ordinary_least_squares_slope_of_the_fixed_selected_fitted_trend_segment",
+          "confidence_level": 0.95,
+          "likelihood_threshold": "RSS_min*exp(chi2_ppf(confidence_level,1)/n_fit_rows)_for_unknown_gaussian_residual_scale",
+          "selection_conditioning": "The earliest uniform segment is selected once from the unconstrained best MVIF trend and held fixed while profiling; its selection uncertainty is not claimed to be included.",
+          "optimizer": "scipy_least_squares_trf_3point_jacobian_x_scale_jac",
+          "max_function_evaluations_per_start": 1000,
+          "max_expansions_per_bound": 12,
+          "bisection_iterations_per_bound": 24,
+          "expansion_factor": 2.0,
+          "bound_requirement": "candidate_statistics_are_emitted_only_if_both_positive_finite_profile_bounds_are_found"
+        },
+        "failure_policy": "emit_explicit_failed_candidate_and_do_not_emit_candidate_V_candidate_sigma_candidate_V0_velocity_level_tangent_angle_fusion_or_warning_output_when_selection_or_two_sided_target_profile_fails",
+        "audit_fields": [
+          "n_multistart_attempts",
+          "n_converged_fits",
+          "objective_cost",
+          "n_convexity_windows",
+          "n_valid_convexity_windows",
+          "n_uniform_windows",
+          "uniform_segment_start_date",
+          "uniform_segment_end_date",
+          "uniform_segment_covers_full_fit",
+          "candidate_v_mm_per_day",
+          "candidate_sigma_mm_per_day",
+          "candidate_v0_mm_per_day",
+          "profile_rss_min",
+          "profile_rss_threshold",
+          "profile_v_lower_mm_per_day",
+          "profile_v_upper_mm_per_day",
+          "failure_reason"
+        ],
+        "not_evaluated": [
+          "formal_initial_stable_slope_rule_acceptance",
+          "formal_v0_adoption",
+          "five_level_velocity_mapping",
+          "v0_blue_tolerance",
+          "tangent_angle",
+          "per_station_fusion",
+          "landslide_body_fusion",
           "formal_warning_output"
         ]
       },
@@ -272,7 +354,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation and, after all current Ootang fits failed with tf_multistart_unstable, explicitly retained the fit-only finite-tf failure gate. Neither source defines an Ootang-reproducible automatic initial-slope evaluation point/window or a rule that promotes a numerically identifiable MVIF fit into V, sigma, or V0. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C reconciliation, retained the separate strict finite-tf baseline, and authorized a draft diagnostic candidate that adapts Wang-An 5-day L selection to the fitted MVIF trend and profiles its fixed selected slope. Neither source makes that combination a specified-Word rule, and the candidate has not been accepted as a formal V, sigma, or V0 procedure; it also conditions its profile on a selected segment. The raw-velocity KMeans candidate remains a comparator only.",
       "required_before_formal_run": true
     },
     {

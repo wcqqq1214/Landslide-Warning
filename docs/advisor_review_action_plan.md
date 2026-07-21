@@ -316,7 +316,27 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 2. 式（5-3）仅规定 `V0=max(1.5V,V+2σ)`，并把 `V` 定义为“选择初始位移”的平均速率；它本身不解决“初始位移”如何选择。因此不能将该公式误读为“MVIF 拟合失败时可直接在原始位移上任意取一段”的授权。
 3. Hu 等（2021）的期刊官方摘要可直接确认：其 VIF-RF 框架以 VIF 描述三阶段蠕变运动学，以随机森林量化库水位、降雨等外部因素响应。该来源支持“运动学趋势与外部因子可在预测框架中协同考虑”的背景，但本轮可直接获取的官方摘要并未给出 MVIF 趋势项**初始稳定斜率**的自动取值规则；其 VIF-RF 也不是本项目已授权的非监督预警融合函数。
 
-故此轮来源核验只增加了“指定 Word 已承认个别案例可能存在 MVIF 匀速率失配”的审计背景，**不**构成放宽有限 `t_f` 门禁、裁剪为加速段、改用原始速度 KMeans，或生成藕塘 `V0` 的依据。当前推荐路径保持不变：在用户已确认的严格门禁下，8 个测点继续以 `failed/tf_multistart_unstable` 留档；只有获得导师或用户对一条可复现备用趋势/选段方法的独立授权后，才可建立新的方法分支并预先冻结其验证方案。
+故此轮来源核验本身只增加了“指定 Word 已承认个别案例可能存在 MVIF 匀速率失配”的审计背景，**不**自行构成放宽有限 `t_f` 门禁、裁剪为加速段、改用原始速度 KMeans，或生成藕塘 `V0` 的依据。旧的八个严格门禁结果继续以 `failed/tf_multistart_unstable` 留档；用户随后独立授权的可复现目标斜率候选分支及其仍为 draft 的验证边界，见 4.2.3.7，不能反向把这里的来源复核写成论文已给出的替代规则。
+
+#### 4.2.3.7 用户授权的 MVIF 目标斜率候选诊断（2026-07-22）
+
+用户随后明确同意采用本计划提出的**独立、仅诊断性**路线。它不回溯修改 4.2.3.4 的严格有限 `t_f` 门禁：旧 `mvif_fit_candidates.*` 仍是“有限破坏时刻是否可辨识”的保守基线，当前八个 `tf_multistart_unstable` 失败也仍然成立。新路线改变的只是另一个问题——不把不稳定的参数 `t_f` 当作“已选定初始趋势斜率”这一目标量可否估计的必要条件；它不会声称 `t_f` 已可靠，也不会把旧失败重标为成功的失稳时间预测。
+
+新增 `code/warning/mvif_initial_slope.py` 与 `code/warning/mvif_initial_slope_diagnostics.py`，使用与 4.2.3.4 相同、已获授权的 `s(t)=A ln((t_f-Bt)/(t_f-t))+C`、相同 fit 截止日和同一确定性多起点拟合，但不要求近似最优解的有限 `t_f` 一致。候选只要求至少存在有限的拟合趋势；全部多起点的收敛数和最优目标值仍写入审计表。fit 截止日后的 calibration/test 行、后续运动学数据和 Vajont 数据均不参与拟合、选段或剖面计算。
+
+选段采用王朋伟、安玉科（2023）[《滑坡匀速变形阶段快速诊断方法研究》](https://xbdz.net.cn/article/doi/10.12401/j.nwg.2022034) 的曲线凹凸判据中可核对的 `5 d` 动态窗口与 `0.99≤L≤1.01` 匀速区间，但必须如实记录以下**项目适配**：原文在原始累计位移 `S–t` 曲线上选择距当前预警时点最近的匀速段；本候选在拟合的 MVIF 趋势上，对每一个局部窗口计算
+
+`L=[s(t_mid)-s(t_start)] / ([s(t_end)-s(t_start)]/2)`，
+
+以消除拟合截距 `C` 对比值的任意影响，并选择**最早的连续匀速窗口串**。只有 fit 日期严格逐日时才执行该 `5 d` 规则；非逐日/缺日输入显式失败而不擅自插值或重采样。它不是王/安原文的逐字复现，也不是指定 Word 已给出的自动初始段规则。
+
+对固定的候选段，`V` 定义为拟合 MVIF 趋势的普通最小二乘斜率（mm/day），与王/安对匀速段线性最小二乘去噪的思想一致；`σ` 暂按该拟合趋势逐日增量的样本标准差（`ddof=1`）计算，`candidate_v0=max(1.5V,V+2σ)` 仅作为草案字段。`σ` 的这个具体取法、MVIF 趋势上的最早段选择及其适用性都属于项目实现约定，不能写成指定 Word 或王/安已经为藕塘给出的正式 `V0`。
+
+为检验真正要使用的目标量而非 `t_f` 参数，新模块对固定选中段的 OLS 趋势斜率做 selection-conditioned 的预测剖面似然：固定候选斜率后重新优化其余 MVIF 形状/截距自由度，按 `RSS_min×exp(χ²_1(0.95)/n)` 给出 95% 两侧剖面界。这个“可对预测目标而非不可辨识参数给出不确定性”的思路参考 Kreutz、Raue、Timmer 的 [prediction profile likelihood 方法](https://pmc.ncbi.nlm.nih.gov/articles/PMC3490710/)；95%、优化器、搜索次数和二分次数均是版本化数值约定，不是预警阈值。段首先由无约束拟合选定并在剖面中固定，故区间**不包含选段本身的不确定性**；只要任一侧界找不到、数值拟合失败或统计量非正/非有限，就不输出 `candidate_V/candidate_sigma/candidate_V0`。
+
+审计产物为 `figures/warning_draft/mvif_initial_slope_candidates.csv` 及 manifest，固定为 `candidate_status=draft_candidate_not_formal`、`formal_warning_output=false`，并记录协议内容指纹、fit 输入切片哈希、选段窗口、剖面 RSS/区间与失败原因。它不接入现有原始速度 KMeans 的切线角诊断，不输出速度等级、切线角等级、融合或正式预警，且**不解除** `stable_segment_selection`、`v0_blue_tolerance`、`tangent_blue_tolerance`、`delta_v_near_zero_tolerance`、`F` 或 `F_site` 的正式运行门禁。下一次决定应是审查该候选在全部八点上的曲线/残差、候选段稳定性和“选段不确定性未计入”的影响；只有明确接受并冻结该项目规则后，才可讨论是否用其替换对照路径或计算正式速度阈值。
+
+当前版本化藕塘 fit 输入已生成 8 条候选记录，均有有限的两侧 95% 目标斜率剖面界；但八个测点的 `L` 都在每一个可用窗口中落入 `[0.99,1.01]`，故每条记录选中的“最早连续匀速段”都是完整的 947 个 fit 趋势点（2016-07-01 至 2019-02-02），而不是一个可与后期分开的短初始段。这说明该平滑 MVIF＋`L` 组合在当前数据上实际退化为**全 fit 趋势斜率**候选；剖面区间只说明这个条件目标量在当前模型下有限，不能证明已自动识别出物理上独立的初始稳定阶段。该现象正是 `stable_segment_selection` 仍保持未冻结的原因；若要拒绝“全段均匀”或设最长段/额外形态门禁，必须先取得来源或导师/用户的明确方法授权，不能由本轮结果事后发明。
 
 #### 4.2.4 测点级四指标融合的草案候选（2026-07-18）
 
@@ -363,9 +383,9 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 #### 4.2.7 草案审计产物的协议内容指纹（2026-07-18）
 
-`stable_segment_diagnostics.py`、`delta_v_diagnostics.py`、`interval_diagnostics.py`、`interval_reference_states.py`、`velocity_tangent_diagnostics.py` 与 `mvif_diagnostics.py` 均对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
+`stable_segment_diagnostics.py`、`delta_v_diagnostics.py`、`interval_diagnostics.py`、`interval_reference_states.py`、`velocity_tangent_diagnostics.py`、`mvif_diagnostics.py` 与 `mvif_initial_slope_diagnostics.py` 均对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
 
-这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。此前三份 manifest 曾保留已在协议中解除的 `rate_orange_expression`；现已在当前协议内容下重生成，MVIF 诊断也首次写入同一指纹，仅更新溯源元数据与 manifest 的未决项快照。区间单项状态随后另由 4.3.3 的论文参考产物生成，仍不构成正式预警。
+这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。此前三份 manifest 曾保留已在协议中解除的 `rate_orange_expression`；本次随 `1.2-draft` 的 MVIF 目标斜率候选一并重生成了既有六类草案审计产物和新增候选 manifest，使七份 manifest 共享当前内容指纹，仅更新溯源元数据与未决项快照。区间单项状态仍不构成正式预警。
 
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 

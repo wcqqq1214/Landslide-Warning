@@ -27,7 +27,7 @@
     "test_split_threshold_selection"
   ],
   "protocol": {
-    "content_sha256": "cec9e957cb15246e3a320a67308bdaceadff7945b0dfd962df27cf422fae1ed3",
+    "content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -39,7 +39,7 @@
       "landslide_body_fusion_function",
       "nonregular_tangent_handling"
     ],
-    "version": "1.1-draft"
+    "version": "1.2-draft"
   },
   "selection": {
     "splits": {
@@ -157,6 +157,6 @@
       "max_abs_delta_v"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/delta_v_fit_calibration_diagnostics.csv",
-    "sha256": "d7ba27ed5a49003c376db01f8c3b046f4b8ab9ae91cd2407ae5c24e9f2687771"
+    "sha256": "ed5367ffee6eee5210335aaaca22d3c2bb06d61d438cb365b8b072c62c11332a"
   }
 }

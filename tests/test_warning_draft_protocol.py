@@ -43,6 +43,13 @@ from warning.mvif import (  # noqa: E402
     INITIAL_TAU_EXCESS,
     MAX_FUNCTION_EVALUATIONS_PER_START,
 )
+from warning.mvif_initial_slope import (  # noqa: E402
+    CONVEXITY_WINDOW_DAYS,
+    PROFILE_CONFIDENCE_LEVEL,
+    SIGMA_DDOF as MVIF_INITIAL_SLOPE_SIGMA_DDOF,
+    UNIFORM_L_LOWER,
+    UNIFORM_L_UPPER,
+)
 
 
 class WarningDraftProtocolTests(unittest.TestCase):
@@ -80,6 +87,9 @@ class WarningDraftProtocolTests(unittest.TestCase):
         v0_candidate = protocol["confirmed"]["v0_framework"]["stable_segment_candidate"]
         mvif_candidate = protocol["confirmed"]["v0_framework"][
             "mvif_trend_fit_diagnostic"
+        ]
+        initial_slope_candidate = protocol["confirmed"]["v0_framework"][
+            "mvif_initial_slope_profile_candidate"
         ]
         delta_v_candidate = protocol["confirmed"]["delta_v"]["diagnostic_candidate"]
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
@@ -151,6 +161,38 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertIn("tf_multistart_unstable", post_result_decision["scope"])
         self.assertIn("does not promote", post_result_decision["next_requirement"])
         self.assertIn("V0", mvif_candidate["not_evaluated"])
+        self.assertEqual(
+            initial_slope_candidate["status"],
+            "draft_candidate_not_formal",
+        )
+        self.assertEqual(
+            initial_slope_candidate["candidate_method_id"],
+            "mvif_trend_earliest_uniform_slope_profile",
+        )
+        self.assertEqual(
+            initial_slope_candidate["trend_selection"]["window_days"],
+            CONVEXITY_WINDOW_DAYS,
+        )
+        self.assertEqual(
+            initial_slope_candidate["trend_selection"]["uniform_l_interval"],
+            [UNIFORM_L_LOWER, UNIFORM_L_UPPER],
+        )
+        self.assertEqual(
+            initial_slope_candidate["trend_selection"]["selection_rule"],
+            "earliest_contiguous_uniform_window_run_on_fitted_mvif_trend",
+        )
+        self.assertEqual(
+            initial_slope_candidate["target_profile"]["confidence_level"],
+            PROFILE_CONFIDENCE_LEVEL,
+        )
+        self.assertEqual(
+            initial_slope_candidate["candidate_statistics"]["sigma_ddof"],
+            MVIF_INITIAL_SLOPE_SIGMA_DDOF,
+        )
+        self.assertIn(
+            "formal_v0_adoption",
+            initial_slope_candidate["not_evaluated"],
+        )
         self.assertEqual(
             fusion_candidate["minimum_support"],
             DEFAULT_MINIMUM_SUPPORT,

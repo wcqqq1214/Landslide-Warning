@@ -16,7 +16,7 @@
     "test_split_threshold_selection"
   ],
   "protocol": {
-    "content_sha256": "cec9e957cb15246e3a320a67308bdaceadff7945b0dfd962df27cf422fae1ed3",
+    "content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -28,7 +28,7 @@
       "landslide_body_fusion_function",
       "nonregular_tangent_handling"
     ],
-    "version": "1.1-draft"
+    "version": "1.2-draft"
   },
   "selection": {
     "candidate_method": {
@@ -113,6 +113,6 @@
       "openmp_threads"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/stable_segment_candidates.csv",
-    "sha256": "a025491acd8d04a7cecfd0e0d048594dd000bb00d094f3d1331c3e3b7ebc4c79"
+    "sha256": "6189d847aed66b2ab2181bb80bdcfae6b33956ff9bd9ad96ff55ad9b3f8b3ed9"
   }
 }
