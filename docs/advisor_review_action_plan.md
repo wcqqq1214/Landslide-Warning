@@ -269,6 +269,21 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 因此，现有 `stable_segment.py` 的原始速度 KMeans 输出及其下游 `velocity_tangent_fit_calibration_diagnostics.*` 都保留为可复现的**对照性草案诊断**，新增方法角色与 Word 输入状态字段以防误读；不再把其候选 `V0` 称作“按指定 Word 已实现”。下一步若要把用户已授权的“自动选段”落实为正式 Word 路径，必须先冻结“如何在每测点的 MVIF 趋势项上自动确定初始稳定斜率”的规则及其失败处置。该规则目前没有被上述来源量化，不能由本项目自行补写。
 
+#### 4.2.3.3 MVIF 原始模型与 Word 内部公式的补充核验（2026-07-21）
+
+指定 Word 的第 3.2.1 存在一个必须显式保留的内部不一致：其式（3-2）图形写为 `s(t)=A ln((t_f-Bt)/(t_f-t))+s0`，紧随其后的文字却把 `A`、`B`、`C` 称为拟合参数。Word 所显示的参考文献仅有 `[1]–[19]`，其中正文用于 VIF 的 `[2]` 是 Tang 等（2019）的三峡库区综述，并不是 MVIF 的模型来源，故不能把该条目写成已恢复的模型引文。
+
+已核到与 Word 第 3 章模型形式一致的同行评议原始论文：[陈铭熙等（2024）《Verhulst 反函数预测模型的改进及滑坡时间概率预测》](https://cjournal.hep.com.cn/1000-2383/CN/PDF/10.3799/dqkx.2023.003)。该文式（6）将固定监测初值 `s0` 替换为待估参数 `C`，给出 `s(t)=A ln((t_f-Bt)/(t_f-t))+C`，并以 `θ={A,B,C,t_f,ε0}` 的极大似然框架拟合模型。它还明确：MVIF 反映的是滑坡的**总体位移趋势**，难以精细描述多期加速的复杂位移模式。该论文因此是强相关的原始模型证据，但由于 Word 的参考文献链接缺失，它只能作为“已核验的来源重建”，不能静默覆盖指定 Word 的 `s0/C` 符号冲突。
+
+这项核验把下一步的边界收紧为四个尚未由来源量化的决策：
+
+1. 对 Word 的 `s0/C` 内部冲突采用何种可复现的公式协调；
+2. 每测点使用哪些 fit 期累计位移、采用何种时间原点和参数约束来进行 MVIF 拟合；
+3. “初始阶段的稳定斜率”到底取拟合曲线的哪一时刻导数，还是取一个早期区间的平均斜率；
+4. 非单调观测、无可行参数、拟合不足或多期阶跃时的拒绝/失败处置。
+
+在这四项进入版本化草案前，不能用 MVIF 曲线导出藕塘 `V`、`σ` 或 `V0`，也不能把解析求导本身误写成论文已经给出的自动选段规则。当前原始速度 KMeans 对照产物继续保持非正式、不可作为 Word 路径替代。
+
 #### 4.2.4 测点级四指标融合的草案候选（2026-07-18）
 
 指定 Word 的第五章以监督式多项逻辑回归融合区间、速率和切线角；用户已允许本轮改为非监督透明规则。因此，`code/warning/rule_fusion.py` 只实现下列**项目特有的草案候选 `F`**，不声称复现原论文，也不生成正式预警：
@@ -308,7 +323,7 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 新增 `code/warning/velocity_tangent_diagnostics.py`，从现有的每测点 fit-only 自动稳定段候选中读取候选 `V0`，再将版本化预测表中的 fit 截止日和 calibration **预测行的精确 `(station, date)`** 映射到逐点速度长表，生成 `figures/warning_draft/velocity_tangent_fit_calibration_diagnostics.csv` 与 manifest。当前产物有 16 条“测点 × 数据段”原始摘要（8 个 fit、8 个 calibration）；fit 仍只取每测点截止日及以前的历史，calibration 不按起止日期包络扩展，因此 test 行不会混入。
 
-每条摘要只保存原始速度、`v/V0`、`v-V0`、`α=arctan(v/V0)`、`α-45°` 及其绝对偏差的描述统计，并保留有效/暖启动/非有效计数和候选 `V0` 的选择状态。它不输出 `velocity_level`、`tangent_angle_level`、`V≈V0` 或 `α≈45°` 的容差，也不生成融合或正式预警。输入的稳定段候选必须同时满足 `candidate_status=draft_candidate_not_formal`、`source_split=fit`、既定的 fit-only 运动学范围、当前协议的 `protocol_content_sha256`，并逐测点匹配本次 fit 截止日及上游 fit 预测/运动学切片哈希；任何一项不符都会明确拒绝，避免把陈旧、非 fit-only 或受 test 污染的候选 `V0` 静默用于本次审计。
+每条摘要只保存原始速度、`v/V0`、`v-V0`、`α=arctan(v/V0)`、`α-45°` 及其绝对偏差的描述统计，并保留有效/暖启动/非有效计数和候选 `V0` 的选择状态。它不输出 `velocity_level`、`tangent_angle_level`、`V≈V0` 或 `α≈45°` 的容差，也不生成融合或正式预警。输入的稳定段候选必须同时满足 `candidate_status=draft_candidate_not_formal`、`source_split=fit`、既定的 fit-only 运动学范围、当前协议的 `protocol_content_sha256`，并逐测点匹配本次 fit 截止日及上游 fit 预测/运动学切片哈希；此外四项来源对齐字段必须逐项等于当前协议的“原始速度 KMeans 对照、非 Word-MVIF 实现”身份。任何一项不符都会明确拒绝，避免把陈旧、非 fit-only、受 test 污染或伪装为 Word 路径的候选 `V0` 静默用于本次审计。
 
 这份产物同样固定为 `diagnostic_only_no_tolerance_decision`、`formal_warning_output=false`。它只为后续在 fit/calibration 内提出并冻结 `v0_blue_tolerance` 与 `tangent_blue_tolerance` 的项目特有规则提供原始证据，不能被解读为论文给出的蓝色容差、速度/切线角五级结果或藕塘正式预警。
 

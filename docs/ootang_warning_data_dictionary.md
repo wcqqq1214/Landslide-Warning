@@ -15,7 +15,7 @@
 - 每份 `figures/warning_draft/` 审计 CSV 与 manifest 都记录协议 ID、版本、状态和 `protocol_content_sha256`。该哈希标识生成时的规范化 JSON 内容，不等同于协议已冻结或已产生正式预警结果。
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 - 用户于 2026-07-21 确认：指定 Word 论文优先于藕塘毕业论文；后者的 `30` 日、四级 `V0` 路径只可复核历史产物，不能替代本字典的逐点日速度、指定 Word 式（5-3）或五级规则。
-- 指定 Word 对阶跃型滑坡的 `V0` 输入是 MVIF 趋势项位移的初始稳定斜率。现有原始逐点速度 KMeans 产物仅标为 `project_specific_comparator_not_specified_word_v0_implementation`；它可供对照审计，不能被写作已实现的 Word `V0` 路径。
+- 指定 Word 对阶跃型滑坡的 `V0` 输入是 MVIF 趋势项位移的初始稳定斜率。其第 3 章的 `s0/C` 符号存在内部不一致，且原始模型文献只给出 MVIF 拟合框架、未规定该斜率的自动取值时刻或窗口；现有原始逐点速度 KMeans 产物仅标为 `project_specific_comparator_not_specified_word_v0_implementation`，可供对照审计，不能被写作已实现的 Word `V0` 路径。
 
 ## 2. 四项指标
 
