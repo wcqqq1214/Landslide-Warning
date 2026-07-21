@@ -291,6 +291,8 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 审计产物为 `figures/warning_draft/mvif_fit_candidates.csv` 及其 manifest，均固定为 `candidate_status=diagnostic_only_no_v0` 和 `formal_warning_output=false`，记录协议内容哈希、fit 输入切片哈希、每测点截止日和失败原因。它解决的是“不能凭不可辨识的 `t_f` 虚构下游量”的失败处置；仍未解决“初始稳定斜率具体取哪一时刻/窗口”的自动选段规则，因此 `stable_segment_selection`、`v0_blue_tolerance` 与融合相关门禁继续有效。
 
+在审阅这 8 个 `tf_multistart_unstable` 结果后，用户再次确认维持上述严格有限 `t_f` 门禁。该确认的含义是：不能为了让藕塘产出 `V0` 而事后增加人为破坏时刻 horizon、放宽多起点/秩/`t_f` 一致性条件，或把原始速度 KMeans 对照提升为指定 Word 的 MVIF 路径。下一步只能是在取得可追溯来源或导师定义后，冻结每测点 MVIF 趋势项“初始稳定斜率”的自动取值规则；在此之前，当前失败仍只作为失败审计，不生成 `V`、`σ`、`V0`、速度/切线角等级、测点融合或滑坡体正式预警。
+
 #### 4.2.4 测点级四指标融合的草案候选（2026-07-18）
 
 指定 Word 的第五章以监督式多项逻辑回归融合区间、速率和切线角；用户已允许本轮改为非监督透明规则。因此，`code/warning/rule_fusion.py` 只实现下列**项目特有的草案候选 `F`**，不声称复现原论文，也不生成正式预警：

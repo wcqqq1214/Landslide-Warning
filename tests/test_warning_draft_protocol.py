@@ -141,6 +141,15 @@ class WarningDraftProtocolTests(unittest.TestCase):
             mvif_candidate["finite_tf_gate"]
             ["requires_successful_finite_optimizer_output_for_all_deterministic_starts"]
         )
+        post_result_decision = mvif_candidate["post_result_decision"]
+        self.assertEqual(post_result_decision["status"], "user_confirmed_hold")
+        self.assertEqual(post_result_decision["decision_date"], "2026-07-21")
+        self.assertEqual(
+            post_result_decision["decision"],
+            "maintain_strict_finite_tf_gate_after_all_current_ootang_fits_failed",
+        )
+        self.assertIn("tf_multistart_unstable", post_result_decision["scope"])
+        self.assertIn("does not promote", post_result_decision["next_requirement"])
         self.assertIn("V0", mvif_candidate["not_evaluated"])
         self.assertEqual(
             fusion_candidate["minimum_support"],

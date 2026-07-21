@@ -117,6 +117,13 @@
           "tf_agreement_tolerance": "sqrt(float64_machine_epsilon)_on_log_tf_excess_duration"
         },
         "failure_policy": "emit_explicit_failed_fit_and_do_not_calculate_V_sigma_V0_velocity_level_tangent_angle_or_warning_output",
+        "post_result_decision": {
+          "status": "user_confirmed_hold",
+          "decision_date": "2026-07-21",
+          "decision": "maintain_strict_finite_tf_gate_after_all_current_ootang_fits_failed",
+          "scope": "All current Ootang tf_multistart_unstable failures remain failed; they do not authorize a post-hoc failure horizon, relaxed multistart/rank/tf-agreement criterion, or downstream V, sigma, V0, velocity/tangent-angle/warning output.",
+          "next_requirement": "Before a formal specified-Word V0 implementation, freeze a source- or mentor-defined automatic initial-stable-slope rule; this decision does not promote the raw-velocity KMeans comparator to that role."
+        },
         "not_evaluated": [
           "automatic_initial_stable_slope_selection",
           "V",
@@ -265,7 +272,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation and a fit-only finite-tf failure gate, but neither source defines an Ootang-reproducible automatic initial-slope evaluation point/window or a rule that promotes a numerically identifiable MVIF fit into V, sigma, or V0. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation and, after all current Ootang fits failed with tf_multistart_unstable, explicitly retained the fit-only finite-tf failure gate. Neither source defines an Ootang-reproducible automatic initial-slope evaluation point/window or a rule that promotes a numerically identifiable MVIF fit into V, sigma, or V0. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
       "required_before_formal_run": true
     },
     {
