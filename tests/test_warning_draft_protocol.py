@@ -77,6 +77,22 @@ class WarningDraftProtocolTests(unittest.TestCase):
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
 
         self.assertEqual(v0_candidate["status"], "draft_candidate_not_formal")
+        self.assertEqual(
+            v0_candidate["candidate_method_id"],
+            "raw_velocity_kmeans_initial_low_speed_prefix",
+        )
+        self.assertEqual(
+            v0_candidate["candidate_method_role"],
+            "project_specific_comparator_not_specified_word_v0_implementation",
+        )
+        self.assertEqual(
+            v0_candidate["word_thesis_v0_input"],
+            "MVIF_trend_displacement_initial_stable_slope",
+        )
+        self.assertEqual(
+            v0_candidate["word_thesis_v0_input_status"],
+            "not_implemented_by_this_candidate",
+        )
         self.assertEqual(v0_candidate["n_clusters"], DEFAULT_N_CLUSTERS)
         self.assertEqual(v0_candidate["init"], DEFAULT_INIT)
         self.assertEqual(v0_candidate["random_state"], DEFAULT_RANDOM_STATE)

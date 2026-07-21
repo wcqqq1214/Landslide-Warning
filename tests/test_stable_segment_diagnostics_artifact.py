@@ -216,11 +216,36 @@ class StableSegmentDiagnosticArtifactTests(unittest.TestCase):
             set(summary["kinematics_temporal_scope"]),
             {"all_station_history_through_fit_cutoff"},
         )
+        self.assertEqual(
+            set(summary["candidate_method_id"]),
+            {"raw_velocity_kmeans_initial_low_speed_prefix"},
+        )
+        self.assertEqual(
+            set(summary["candidate_method_role"]),
+            {"project_specific_comparator_not_specified_word_v0_implementation"},
+        )
+        self.assertEqual(
+            set(summary["word_thesis_v0_input"]),
+            {"MVIF_trend_displacement_initial_stable_slope"},
+        )
+        self.assertEqual(
+            set(summary["word_thesis_v0_input_status"]),
+            {"not_implemented_by_this_candidate"},
+        )
         self.assertNotIn("velocity_level", summary.columns)
         self.assertNotIn("warning_level", summary.columns)
         self.assertFalse(manifest["formal_warning_output"])
         self.assertEqual(manifest["selection"]["split"], "fit")
         self.assertEqual(manifest["selection"]["n_stations"], 1)
+        self.assertEqual(
+            manifest["selection"]["candidate_method"],
+            {
+                "id": "raw_velocity_kmeans_initial_low_speed_prefix",
+                "role": "project_specific_comparator_not_specified_word_v0_implementation",
+                "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+                "word_thesis_v0_input_status": "not_implemented_by_this_candidate",
+            },
+        )
         self.assertIn("fit_kinematics_input", manifest)
         self.assertIn("fit_prediction_input", manifest)
         expected_protocol_sha256 = protocol_content_sha256(protocol)

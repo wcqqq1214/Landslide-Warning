@@ -1,9 +1,10 @@
 """Write fit-only automatic stable-segment candidates without formal warning levels.
 
-The documented two-cluster, initial-low-speed-prefix algorithm is a draft
-candidate for selecting each station's V0 baseline.  This runner materializes
-its fit-only evidence and provenance, but never turns a candidate V0 into a
-velocity level, an interval decision, or a formal warning output.
+The raw-velocity two-cluster, initial-low-speed-prefix algorithm is a
+project-specific comparator.  It is not the specified Word thesis's MVIF-trend
+initial-stable-slope V0 implementation.  This runner materializes the
+comparator's fit-only evidence and provenance, but never turns its candidate
+V0 into a velocity level, an interval decision, or a formal warning output.
 """
 
 from __future__ import annotations
@@ -217,6 +218,33 @@ def _candidate_records(inputs: _FitSelectionInputs) -> pd.DataFrame:
     )
 
 
+def _candidate_method_metadata(protocol: dict) -> dict[str, str]:
+    """Read the source-alignment boundary that must accompany every candidate."""
+
+    candidate = protocol["confirmed"]["v0_framework"]["stable_segment_candidate"]
+    if candidate.get("status") != CANDIDATE_STATUS:
+        raise ValueError(
+            "draft protocol stable-segment candidate status must be "
+            f"{CANDIDATE_STATUS}"
+        )
+    required_fields = (
+        "candidate_method_id",
+        "candidate_method_role",
+        "word_thesis_v0_input",
+        "word_thesis_v0_input_status",
+    )
+    metadata: dict[str, str] = {}
+    for field in required_fields:
+        value = candidate.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(
+                "draft protocol stable-segment candidate is missing source "
+                f"alignment field: {field}"
+            )
+        metadata[field] = value
+    return metadata
+
+
 def build_fit_stable_segment_candidates(
     *,
     kinematics_path: str | Path,
@@ -247,6 +275,7 @@ def write_fit_stable_segment_candidates(
     )
     protocol = load_protocol(protocol_path)
     protocol_sha256 = protocol_content_sha256(protocol)
+    candidate_method = _candidate_method_metadata(protocol)
     summary = _candidate_records(inputs)
     fit_prediction_sha256 = _sha256_canonical_csv(
         inputs.fit_prediction_rows,
@@ -266,6 +295,7 @@ def write_fit_stable_segment_candidates(
         "protocol_status": protocol["status"],
         "protocol_content_sha256": protocol_sha256,
         "candidate_status": CANDIDATE_STATUS,
+        **candidate_method,
         "source_split": FIT_SPLIT,
         "kinematics_temporal_scope": KINEMATICS_TEMPORAL_SCOPE,
         "fit_prediction_input_sha256": fit_prediction_sha256,
@@ -293,6 +323,14 @@ def write_fit_stable_segment_candidates(
         },
         "selection": {
             "split": FIT_SPLIT,
+            "candidate_method": {
+                "id": candidate_method["candidate_method_id"],
+                "role": candidate_method["candidate_method_role"],
+                "word_thesis_v0_input": candidate_method["word_thesis_v0_input"],
+                "word_thesis_v0_input_status": candidate_method[
+                    "word_thesis_v0_input_status"
+                ],
+            },
             "n_stations": int(len(inputs.fit_boundaries)),
             "fit_end_dates": {
                 row.station: row.fit_end_date.strftime("%Y-%m-%d")

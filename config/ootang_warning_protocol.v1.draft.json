@@ -96,6 +96,10 @@
       },
       "stable_segment_candidate": {
         "status": "draft_candidate_not_formal",
+        "candidate_method_id": "raw_velocity_kmeans_initial_low_speed_prefix",
+        "candidate_method_role": "project_specific_comparator_not_specified_word_v0_implementation",
+        "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+        "word_thesis_v0_input_status": "not_implemented_by_this_candidate",
         "input": "per_station_valid_point_velocity_rows",
         "fit_only": true,
         "algorithm": "two_cluster_kmeans_initial_low_speed_prefix",
@@ -217,7 +221,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, while the specified thesis does not give an Ootang-reproducible start/end rule for the selected initial displacement.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides, but neither source gives an Ootang-reproducible automatic start/end rule. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
       "required_before_formal_run": true
     },
     {

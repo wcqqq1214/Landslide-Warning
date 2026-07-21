@@ -2,10 +2,11 @@
 
 The thesis supplies relative five-level boundaries around ``V0`` and the
 improved-tangent-angle boundaries around 45/80/85 degrees, but it does not
-quantify the two blue ``approximately equal`` bands.  This module therefore
-records only fit/calibration evidence for a later, explicit calibration
-decision.  It never assigns velocity/tangent levels, blue tolerances, a fused
-warning level, or a formal warning output.
+quantify the two blue ``approximately equal`` bands.  The current raw-velocity
+KMeans V0 input is explicitly marked as a non-Word-thesis comparator.  This
+module therefore records only fit/calibration evidence for a later, explicit
+calibration decision.  It never assigns velocity/tangent levels, blue
+tolerances, a fused warning level, or a formal warning output.
 """
 
 from __future__ import annotations
@@ -52,9 +53,16 @@ FIT_KINEMATICS_SCOPE = "all_station_history_through_fit_cutoff"
 CALIBRATION_KINEMATICS_SCOPE = "exact_station_calibration_prediction_dates"
 _PREDICTION_COLUMNS = ("date", "station", "split")
 _KINEMATICS_COLUMNS = ("date", "station", "velocity", "velocity_status")
+_CANDIDATE_SOURCE_ALIGNMENT_FIELDS = (
+    "candidate_method_id",
+    "candidate_method_role",
+    "word_thesis_v0_input",
+    "word_thesis_v0_input_status",
+)
 _CANDIDATE_COLUMNS = (
     "station",
     "candidate_status",
+    *_CANDIDATE_SOURCE_ALIGNMENT_FIELDS,
     "source_split",
     "kinematics_temporal_scope",
     "fit_prediction_input_sha256",
@@ -328,6 +336,10 @@ def _load_stable_segment_candidates(
         )
     required_provenance_fields = (
         "candidate_status",
+        "candidate_method_id",
+        "candidate_method_role",
+        "word_thesis_v0_input",
+        "word_thesis_v0_input_status",
         "source_split",
         "kinematics_temporal_scope",
         "fit_prediction_input_sha256",
@@ -360,6 +372,7 @@ def _validate_stable_segment_candidate_provenance(
     windows: pd.DataFrame,
     fit_prediction_input_sha256: str,
     fit_kinematics_input_sha256: str,
+    expected_source_alignment: dict[str, str],
 ) -> None:
     """Reject candidates that do not originate from this exact fit slice."""
 
@@ -367,6 +380,19 @@ def _validate_stable_segment_candidate_provenance(
         raise ValueError(
             "stable-segment candidate status must be draft_candidate_not_formal"
         )
+    for field in _CANDIDATE_SOURCE_ALIGNMENT_FIELDS:
+        if candidates[field].nunique(dropna=False) != 1:
+            raise ValueError(
+                "stable-segment candidate source-alignment provenance must be "
+                f"consistent across stations: {field}"
+            )
+        if not candidates[field].eq(
+            expected_source_alignment[field]
+        ).fillna(False).all():
+            raise ValueError(
+                "stable-segment candidate source-alignment provenance does not "
+                "match the diagnostic protocol"
+            )
     if not candidates["source_split"].eq(FIT_SPLIT).fillna(False).all():
         raise ValueError("stable-segment candidate source_split must be fit")
     if not candidates["kinematics_temporal_scope"].eq(
@@ -399,6 +425,7 @@ def _load_inputs(
     kinematics_path: str | Path,
     predictions_path: str | Path,
     stable_segment_candidates_path: str | Path,
+    expected_source_alignment: dict[str, str],
 ) -> _VelocityTangentInputs:
     fit_rows, calibration_rows, windows = _load_prediction_windows(predictions_path)
     fit_kinematics, calibration_kinematics = _select_kinematics_windows(
@@ -425,6 +452,7 @@ def _load_inputs(
         windows=windows,
         fit_prediction_input_sha256=fit_prediction_input_sha256,
         fit_kinematics_input_sha256=fit_kinematics_input_sha256,
+        expected_source_alignment=expected_source_alignment,
     )
     return _VelocityTangentInputs(
         fit_prediction_rows=fit_rows,
@@ -438,6 +466,34 @@ def _load_inputs(
     )
 
 
+def _expected_candidate_source_alignment(protocol: dict) -> dict[str, str]:
+    """Read the active protocol's identity for its draft V0 candidate."""
+
+    try:
+        candidate = protocol["confirmed"]["v0_framework"][
+            "stable_segment_candidate"
+        ]
+    except KeyError as exc:
+        raise ValueError(
+            "diagnostic protocol is missing stable-segment source-alignment metadata"
+        ) from exc
+    if not isinstance(candidate, dict):
+        raise ValueError(
+            "diagnostic protocol stable-segment source-alignment metadata is invalid"
+        )
+
+    alignment: dict[str, str] = {}
+    for field in _CANDIDATE_SOURCE_ALIGNMENT_FIELDS:
+        value = candidate.get(field)
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError(
+                "diagnostic protocol is missing stable-segment source-alignment "
+                f"field: {field}"
+            )
+        alignment[field] = value.strip()
+    return alignment
+
+
 def _load_protocol_checked_inputs(
     *,
     kinematics_path: str | Path,
@@ -447,12 +503,14 @@ def _load_protocol_checked_inputs(
 ) -> tuple[_VelocityTangentInputs, dict, str]:
     """Load inputs only after proving their V0 candidate matches this protocol."""
 
+    protocol = load_protocol(protocol_path)
+    expected_source_alignment = _expected_candidate_source_alignment(protocol)
     inputs = _load_inputs(
         kinematics_path=kinematics_path,
         predictions_path=predictions_path,
         stable_segment_candidates_path=stable_segment_candidates_path,
+        expected_source_alignment=expected_source_alignment,
     )
-    protocol = load_protocol(protocol_path)
     protocol_sha256 = protocol_content_sha256(protocol)
     candidate_protocol_hashes = set(
         inputs.stable_segment_candidates["protocol_content_sha256"]
@@ -518,6 +576,12 @@ def _summary_rows(
             "kinematics_temporal_scope": temporal_scope,
             "station": station,
             "candidate_status": str(candidate["candidate_status"]),
+            "candidate_method_id": str(candidate["candidate_method_id"]),
+            "candidate_method_role": str(candidate["candidate_method_role"]),
+            "word_thesis_v0_input": str(candidate["word_thesis_v0_input"]),
+            "word_thesis_v0_input_status": str(
+                candidate["word_thesis_v0_input_status"]
+            ),
             "stable_segment_candidate_protocol_content_sha256": str(
                 candidate["protocol_content_sha256"]
             ),
@@ -660,6 +724,18 @@ def write_velocity_tangent_diagnostics(
         columns=_CANDIDATE_COLUMNS,
         sort_columns=("station",),
     )
+    candidate_method = {
+        "id": str(inputs.stable_segment_candidates["candidate_method_id"].iloc[0]),
+        "role": str(
+            inputs.stable_segment_candidates["candidate_method_role"].iloc[0]
+        ),
+        "word_thesis_v0_input": str(
+            inputs.stable_segment_candidates["word_thesis_v0_input"].iloc[0]
+        ),
+        "word_thesis_v0_input_status": str(
+            inputs.stable_segment_candidates["word_thesis_v0_input_status"].iloc[0]
+        ),
+    }
 
     summary = summary.copy()
     summary.insert(
@@ -733,6 +809,7 @@ def write_velocity_tangent_diagnostics(
             },
             "candidate_v0_dependency": {
                 "status": "draft_candidate_not_formal",
+                "candidate_method": candidate_method,
                 "formula": "tangent_angle_degree=atan(velocity/V0)*180/pi",
                 "does_not_assign": [
                     "velocity_level",
@@ -756,6 +833,7 @@ def write_velocity_tangent_diagnostics(
             "selected_columns": list(_CANDIDATE_COLUMNS),
             "protocol_content_sha256": protocol_sha256,
             "candidate_status": DRAFT_CANDIDATE_STATUS,
+            "candidate_method": candidate_method,
             "source_split": FIT_SPLIT,
             "kinematics_temporal_scope": FIT_KINEMATICS_SCOPE,
             "fit_prediction_input_sha256": inputs.fit_prediction_input_sha256,

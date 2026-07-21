@@ -27,7 +27,7 @@
     "test_split_threshold_selection"
   ],
   "protocol": {
-    "content_sha256": "cc1add2e86a8c84419483a503838190d934f5fcce22044758e300c63f699a0f9",
+    "content_sha256": "c46a4de28d29deb0c9410ccf91bb1d1958338b14d745939982873b1fbb53f6a3",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -157,6 +157,6 @@
       "max_abs_delta_v"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/delta_v_fit_calibration_diagnostics.csv",
-    "sha256": "26c846da089241d85cf729a5a8243589f42f5ca1c7cbb9b4eb181698ef952527"
+    "sha256": "a6da88e2d6864562124ede08d255e1f0bc71da035007a2215ea87228eaa426ae"
   }
 }

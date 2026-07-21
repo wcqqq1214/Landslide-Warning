@@ -16,7 +16,7 @@
     "test_split_threshold_selection"
   ],
   "protocol": {
-    "content_sha256": "cc1add2e86a8c84419483a503838190d934f5fcce22044758e300c63f699a0f9",
+    "content_sha256": "c46a4de28d29deb0c9410ccf91bb1d1958338b14d745939982873b1fbb53f6a3",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -31,6 +31,12 @@
     "version": "1.1-draft"
   },
   "selection": {
+    "candidate_method": {
+      "id": "raw_velocity_kmeans_initial_low_speed_prefix",
+      "role": "project_specific_comparator_not_specified_word_v0_implementation",
+      "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+      "word_thesis_v0_input_status": "not_implemented_by_this_candidate"
+    },
     "fit_end_dates": {
       "ATU1": "2019-02-02",
       "ATU2": "2019-02-02",
@@ -71,6 +77,10 @@
       "protocol_status",
       "protocol_content_sha256",
       "candidate_status",
+      "candidate_method_id",
+      "candidate_method_role",
+      "word_thesis_v0_input",
+      "word_thesis_v0_input_status",
       "source_split",
       "kinematics_temporal_scope",
       "fit_prediction_input_sha256",
@@ -103,6 +113,6 @@
       "openmp_threads"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/stable_segment_candidates.csv",
-    "sha256": "68d9554948428ee964f5c1c6e8942795ef92de9aab4c5eb4c65291f325b9b623"
+    "sha256": "29f87236761789300f39c531182945117ccbd266098a8e53711db4edd9ce2d52"
   }
 }

@@ -1,11 +1,12 @@
-"""Fit-only, auditable automatic candidates for per-station V0 baselines.
+"""Fit-only, auditable raw-velocity comparator candidates for per-station V0.
 
-The literature requires an initial stable displacement stage but does not give
-an Ootang-reproducible automatic start/end rule.  This module implements only
-the documented *draft candidate*: two-cluster K-means on a station's fit-period
-point velocities, followed by the contiguous low-speed prefix beginning at the
-first valid velocity.  It deliberately returns an explicit failure instead of
-skipping forward to a more favorable later segment.
+The specified Word thesis instead describes an MVIF-trend initial-stable-slope
+input, but does not give an Ootang-reproducible automatic start/end rule. This
+module deliberately implements only a project-specific *comparator*: two-
+cluster K-means on a station's fit-period point velocities, followed by the
+contiguous low-speed prefix beginning at the first valid velocity. It returns
+an explicit failure instead of skipping forward to a more favorable later
+segment.
 
 This is not a formal warning runner.  The versioned protocol remains ``draft``
 until the remaining thresholds and fusion decisions are frozen.
@@ -189,7 +190,7 @@ def select_initial_stable_segment(
     station: str,
     fit_end_date,
 ) -> StableSegmentResult:
-    """Select a per-station V0 candidate without accessing post-fit rows.
+    """Select a raw-velocity comparator V0 candidate without post-fit rows.
 
     A returned ``status='failed'`` is an auditable data/selection outcome, not
     an exception to be bypassed.  Input-shape and policy errors raise

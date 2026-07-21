@@ -83,6 +83,10 @@ def _write_candidate_frame(
     row: dict[str, object] = {
         "station": station,
         "candidate_status": "draft_candidate_not_formal",
+        "candidate_method_id": "raw_velocity_kmeans_initial_low_speed_prefix",
+        "candidate_method_role": "project_specific_comparator_not_specified_word_v0_implementation",
+        "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+        "word_thesis_v0_input_status": "not_implemented_by_this_candidate",
         "source_split": "fit",
         "kinematics_temporal_scope": "all_station_history_through_fit_cutoff",
         "fit_prediction_input_sha256": _canonical_csv_sha256(
@@ -172,6 +176,10 @@ class VelocityTangentDiagnosticContractTests(unittest.TestCase):
         self.assertNotIn("tangent_angle_level", summary.columns)
         self.assertNotIn("v0_blue_tolerance", summary.columns)
         self.assertNotIn("tangent_blue_tolerance", summary.columns)
+        self.assertEqual(
+            set(summary["candidate_method_role"]),
+            {"project_specific_comparator_not_specified_word_v0_implementation"},
+        )
 
     def test_written_artifacts_ignore_test_rows_and_remain_nonformal(self):
         """A test-period change must not alter calibration evidence or provenance."""
@@ -324,6 +332,50 @@ class VelocityTangentDiagnosticContractTests(unittest.TestCase):
             with self.assertRaisesRegex(
                 ValueError,
                 "stable-segment candidate fit input provenance does not match",
+            ):
+                build_velocity_tangent_diagnostics(
+                    kinematics_path=kinematics_path,
+                    predictions_path=predictions_path,
+                    stable_segment_candidates_path=candidates_path,
+                )
+
+    def test_builder_rejects_candidate_with_tampered_source_alignment(self):
+        """A comparator must never be relabelled as the Word-thesis V0 path."""
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            predictions_path = root / "predictions.csv"
+            kinematics_path = root / "kinematics.csv"
+            candidates_path = root / "candidates.csv"
+            pd.DataFrame(
+                {
+                    "date": ["2020-01-02", "2020-01-03"],
+                    "station": ["A", "A"],
+                    "split": ["fit", "calibration"],
+                }
+            ).to_csv(predictions_path, index=False)
+            pd.DataFrame(
+                {
+                    "date": ["2020-01-01", "2020-01-02", "2020-01-03"],
+                    "station": ["A", "A", "A"],
+                    "velocity": [float("nan"), 1.0, 2.0],
+                    "velocity_status": ["warmup", "valid", "valid"],
+                }
+            ).to_csv(kinematics_path, index=False)
+            _write_candidate_frame(
+                path=candidates_path,
+                predictions_path=predictions_path,
+                kinematics_path=kinematics_path,
+                v0=1.0,
+                overrides={
+                    "candidate_method_role": "specified_word_v0_implementation",
+                    "word_thesis_v0_input_status": "implemented_by_this_candidate",
+                },
+            )
+
+            with self.assertRaisesRegex(
+                ValueError,
+                "source-alignment provenance does not match the diagnostic protocol",
             ):
                 build_velocity_tangent_diagnostics(
                     kinematics_path=kinematics_path,
