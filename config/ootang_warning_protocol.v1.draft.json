@@ -15,6 +15,10 @@
       "role": "five-level indicator framework and source formulas"
     },
     {
+      "source": "literature/韦承谦_基于机器学习方法的水库滑坡位移预测及预警研究——以藕塘滑坡为例.pdf",
+      "role": "historical_ootang_v0_reproduction_reference_only_not_a_formal_source"
+    },
+    {
       "source": "literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf",
       "role": "original improved-tangent-angle phase boundaries and stable-stage procedure"
     }
@@ -74,6 +78,11 @@
       "V_definition": "average_rate_of_selected_initial_displacement",
       "granularity": "per_station",
       "legacy_30_day_rate_allowed": false,
+      "source_priority": {
+        "primary": "specified_word_thesis_chapter_5_equation_5_3",
+        "ootang_graduation_thesis": "reference_only_historical_reproduction_not_a_formal_source",
+        "conflict_resolution": "specified_word_thesis_precedes_ootang_graduation_thesis"
+      },
       "rate_mapping": {
         "status": "source_confirmed_boundary_not_formal_until_protocol_is_frozen",
         "green": "V<V0",

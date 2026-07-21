@@ -41,6 +41,34 @@ from warning.stable_segment import (  # noqa: E402
 
 
 class WarningDraftProtocolTests(unittest.TestCase):
+    def test_v0_source_priority_keeps_ootang_thesis_reference_only(self):
+        protocol = load_protocol()
+        sources = {
+            item["source"]: item["role"] for item in protocol["source_evidence"]
+        }
+        v0_framework = protocol["confirmed"]["v0_framework"]
+
+        ootang_thesis = (
+            "literature/韦承谦_基于机器学习方法的水库滑坡位移预测及预警研究——"
+            "以藕塘滑坡为例.pdf"
+        )
+        self.assertEqual(
+            sources[ootang_thesis],
+            "historical_ootang_v0_reproduction_reference_only_not_a_formal_source",
+        )
+        self.assertEqual(
+            v0_framework["source_priority"]["primary"],
+            "specified_word_thesis_chapter_5_equation_5_3",
+        )
+        self.assertEqual(
+            v0_framework["source_priority"]["ootang_graduation_thesis"],
+            "reference_only_historical_reproduction_not_a_formal_source",
+        )
+        self.assertEqual(
+            v0_framework["source_priority"]["conflict_resolution"],
+            "specified_word_thesis_precedes_ootang_graduation_thesis",
+        )
+
     def test_candidate_metadata_matches_the_reproducible_module_defaults(self):
         protocol = load_protocol()
         interval_candidate = protocol["confirmed"]["interval"]["candidate"]
