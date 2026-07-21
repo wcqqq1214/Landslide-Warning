@@ -14,7 +14,7 @@
     "semantic": "observed_per_timepoint_interval_deviation_state_identification"
   },
   "protocol": {
-    "content_sha256": "43fef55264b8216f70ca6159c412520a03f1b270eb013b18ceaf77ff70f1638e",
+    "content_sha256": "a9e1489b52d8e108ed5223002a3fc026db1d764fd72ffe87ec81d5a6024d599d",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -94,6 +94,6 @@
     "mapped_row_count": 4112,
     "not_applicable_row_count": 7288,
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_reference_states.csv",
-    "sha256": "2d7e50f62770e800c4858c3797e90f1cc6d5101190b2ba6398e67dca5532edf1"
+    "sha256": "6f611500f33244dd72e8173b28a3243003f44891068f3104a47dd7ab9ee80961"
   }
 }

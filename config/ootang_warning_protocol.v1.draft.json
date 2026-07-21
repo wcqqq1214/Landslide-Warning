@@ -83,6 +83,14 @@
         "ootang_graduation_thesis": "reference_only_historical_reproduction_not_a_formal_source",
         "conflict_resolution": "specified_word_thesis_precedes_ootang_graduation_thesis"
       },
+      "mvif_formula_reconciliation": {
+        "status": "user_authorized_implementation_convention_not_formal_warning_rule",
+        "decision_date": "2026-07-21",
+        "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
+        "intercept_policy": "C_is_an_estimated_intercept_not_a_fixed_observed_s0",
+        "basis": "The specified Word thesis displays +s0 but names A, B, C as fitting parameters; the verified related Chen et al. (2024) MVIF source uses +C and maximum-likelihood fitting. The user authorized +C as the reproducible reconciliation.",
+        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_define_fit_rows_time_origin_parameter_constraints_initial_slope_window_or_failure_handling."
+      },
       "rate_mapping": {
         "status": "source_confirmed_boundary_not_formal_until_protocol_is_frozen",
         "green": "V<V0",
@@ -221,7 +229,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The thesis's displayed MVIF equation uses s0 while its prose names A, B, C as fitting parameters; the verified related Chen et al. (2024) source uses C and maximum-likelihood fitting, but neither source defines an Ootang-reproducible automatic slope evaluation point/window, fit scope, or failure handling. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation, but neither source defines an Ootang-reproducible automatic slope evaluation point/window, fit scope, parameter constraints, or failure handling. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
       "required_before_formal_run": true
     },
     {

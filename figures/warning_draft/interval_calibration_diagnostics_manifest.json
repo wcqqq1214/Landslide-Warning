@@ -11,7 +11,7 @@
     "strict_horizon_ahead_warning_performance"
   ],
   "protocol": {
-    "content_sha256": "43fef55264b8216f70ca6159c412520a03f1b270eb013b18ceaf77ff70f1638e",
+    "content_sha256": "a9e1489b52d8e108ed5223002a3fc026db1d764fd72ffe87ec81d5a6024d599d",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -73,6 +73,6 @@
       "max_abs_z"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics.csv",
-    "sha256": "dc1474243b2bb3eaf4d4951b39e43dd6c61d5c6da964dcab6a7cfedbf70fb69d"
+    "sha256": "909ede3f42d487264f677b59b63d55a26b80093438436a41adc107857e026aa1"
   }
 }
