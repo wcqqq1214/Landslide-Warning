@@ -118,7 +118,7 @@ class IntervalDiagnosticArtifactTests(unittest.TestCase):
         self.assertIn("calibration_input_sha256", summary.columns)
         self.assertEqual(
             set(summary["diagnostic_status"]),
-            {"diagnostic_only_no_gate_decision"},
+            {"diagnostic_only_reference_mapping_quality"},
         )
         self.assertNotIn("interval_level", summary.columns)
         self.assertNotIn("interval_color", summary.columns)
@@ -141,6 +141,13 @@ class IntervalDiagnosticArtifactTests(unittest.TestCase):
         )
         self.assertNotIn("sha256", manifest["source_predictions"])
         self.assertNotIn("gate_status", manifest)
+        self.assertEqual(
+            manifest["not_evaluated"],
+            [
+                "calibration_quality_pass_fail_thresholds",
+                "strict_horizon_ahead_warning_performance",
+            ],
+        )
 
 
 if __name__ == "__main__":

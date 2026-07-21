@@ -4,15 +4,14 @@
     "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
     "sha256": "79110dd72527875eaa671a04581c29b34ab871fb204a4ac9d204269d3204b198"
   },
-  "diagnostic_status": "diagnostic_only_no_gate_decision",
+  "diagnostic_status": "diagnostic_only_reference_mapping_quality",
   "formal_warning_output": false,
   "not_evaluated": [
-    "interval_calibration_gate",
-    "five_level_interval_mapping",
-    "test_split_threshold_selection"
+    "calibration_quality_pass_fail_thresholds",
+    "strict_horizon_ahead_warning_performance"
   ],
   "protocol": {
-    "content_sha256": "d28a2075eb3e3f0cd129dca82ec2b3783b410b56f84d6dda27e1586ccd8b3e1d",
+    "content_sha256": "e3d2de7c4f5139a41d4120cc75984bc5393ff7710aa176390cd58f0b7b42a595",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -20,12 +19,11 @@
       "v0_blue_tolerance",
       "tangent_blue_tolerance",
       "delta_v_near_zero_tolerance",
-      "interval_calibration_gate",
       "per_station_fusion_function",
       "landslide_body_fusion_function",
       "nonregular_tangent_handling"
     ],
-    "version": "1.0-draft"
+    "version": "1.1-draft"
   },
   "selection": {
     "n_rows": 1816,
@@ -75,6 +73,6 @@
       "max_abs_z"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics.csv",
-    "sha256": "1d910d7f7e331d4b291c2e5b03ee800d3c2c6e522c8f92a028e50ff875b47a3c"
+    "sha256": "ad7e52ca2aa30fef3128c2ed602a154b1696ba2f258f7d4739254925831fd6e3"
   }
 }

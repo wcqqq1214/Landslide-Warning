@@ -12,14 +12,14 @@
 - 五级的唯一顺序为 `green=0`、`blue=1`、`yellow=2`、`orange=3`、`red=4`；它表示总体颜色顺序，不会自动赋予单项指标阈值。
 - 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。
 - 每个指标必须携带可审计状态。`warmup`、`invalid`、`not_applicable` 不能被静默改写为 green，也不能被规则融合忽略。
-- 每份 `figures/warning_draft/` 审计 CSV 与 manifest 都记录协议 ID、版本、状态和 `protocol_content_sha256`。该哈希标识生成时的规范化 JSON 内容，不等同于协议已冻结或任何校准门禁已通过。
+- 每份 `figures/warning_draft/` 审计 CSV 与 manifest 都记录协议 ID、版本、状态和 `protocol_content_sha256`。该哈希标识生成时的规范化 JSON 内容，不等同于协议已冻结或已产生正式预警结果。
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 
 ## 2. 四项指标
 
 | 指标与正式字段 | 值的定义及单位 | 时间窗口 / 可用数据 | 缺失与暖启动 | 阈值来源与当前状态 |
 | --- | --- | --- | --- | --- |
-| 区间偏离状态：`interval_level` | 已发布预测的 `P10/P50/P90`（mm）与随后观测到的 `U_t`（mm）。候选映射中 `μ_t=P50_t`、`σ_t=(P90_t-P10_t)/(2×1.28155)`、`z_t=(U_t-μ_t)/σ_t`。 | 全局校准诊断固定只读 `split=calibration`；逐时刻状态识别只在目标 `U_t` 已观测后进行，不能称为 `t+h` 前瞻预警。 | 原始 `warmup/invalid/not_applicable` 优先保留；非有限值或 `P10≤P50≤P90` / `P90>P10` 不成立时为 `invalid`。未通过或未配置全局门禁时为 `not_applicable`。 | 指定论文图 5-1 只给出五级正态区域思想；`P10/P50/P90→μ/σ` 是本项目草案近似。须逐项评估分位数顺序、经验覆盖率相对名义 80% 的偏差、近似对称性和尾部诊断；其容差、方法、最小样本数与通过处置均未冻结，故不能输出正式五级。 |
+| 区间偏离状态：`interval_level` | 已发布预测的 `P10/P50/P90`（mm）与随后观测到的 `U_t`（mm）。采用 `μ_t=P50_t`、`σ_t=(P90_t-P10_t)/(2×1.28155)`、`z_t=(U_t-μ_t)/σ_t` 的项目特有正态近似。 | calibration 质量诊断固定只读 `split=calibration`；逐时刻状态识别只在目标 `U_t` 已观测后进行。fit 行是拟合诊断，固定为 `not_applicable`；calibration/test 的已发布预测可映射，不能称为 `t+h` 前瞻预警。 | 底层接口只在调用者显式提供 `warmup/invalid/not_applicable` 时保留该输入状态；当前 `forecast_predictions.csv` 没有区间上游状态字段，故审计产物仅按 split 派生 fit=`not_applicable`，且非有限值或 `P10≤P50≤P90` / `P90>P10` 不成立时为 `invalid`。有效的已发布预测直接输出五级，并写入 `interval_mapping_basis=specified_thesis_figure_5_1_normal_regions`。 | 指定论文图 5-1 给出 `μ`、`μ+σ`、`μ+2σ`、`μ+3σ` 的五级相对区域；其本身不提供 `P10/P50/P90→μ/σ` 公式。覆盖率、对称性和尾部诊断保留为审计，不虚构通过阈值，也不阻止该论文参考映射；整个协议仍为 draft，不能输出正式综合预警。 |
 | 逐点速度：`velocity` / `velocity_level` | `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，单位 `mm/day`。`velocity_level` 是未来的五级单项等级，不等同于最终测点等级。 | 当前值使用相邻两次有效观测的实际 `Δt`；每个测点独立。`V0` 的自动稳定段候选只可用该测点 fit 期有效速度。 | 首个速度为 `warmup`；缺失位移、无效日期或非正 `Δt` 产生明确无效状态，不插值。 | 指定论文式（5-3）为 `V0=max(1.5V,V+2σ)`，其中 `V` 是选定初始位移段的平均速率。表 5-4 的橙色列符号已由同章图 5-4（速率纵轴、`V0/5V0/10V0` 阈值线）核对为 `5V0≤V<10V0`；稳定段与 `V≈V0` 的 blue 容差仍未冻结：`stable_segment_selection`、`v0_blue_tolerance`。 |
 | 变形速率增量：`delta_v` / `delta_v_state` | `ΔV_i=v_i-v_{i-1}`，是速度增量而非加速度，单位仍为 `mm/day`。状态仅为 `negative`、`near_zero`、`positive`，不是单独虚构的五级阈值。 | 需要连续两个有效速度，涉及 `i-2,i-1,i` 三个观测位置；近零容差只能在预先声明的 fit/calibration 阶段冻结。`figures/warning_draft/delta_v_fit_calibration_diagnostics.csv` 只固化原始摘要：fit 取截止日前历史，calibration 只取精确预测日期，不按起止日期包络扩展。 | 前两行是 `warmup`；当前速度无效则为 `velocity_invalid`，前一速度无效则为 `previous_velocity_invalid`。 | 指定论文只将 `ΔV` 作为辅助判别，且其正文 `[92]` 无法从该 Word 文件的参考文献表追溯；可采用负/近零/正的过程语义，但 `delta_v_near_zero_tolerance` 与其参与 `F` 的规则未冻结。 |
 | 改进切线角：`tangent_angle` / `tangent_angle_level` | 原始方法将累计位移坐标变换为时间量纲后计算 `α_i=(180/π)arctan((T_i-T_{i-1})/(t_i-t_{i-1}))`；在当前等间隔日数据中，速率比形式为 `α_i=(180/π)arctan(v_i/V0)`，输出单位为 degree。 | 原始文献要求先识别等速变形阶段并计算其平均速率 `V0`。本项目的自动稳定段仅是 fit-only 草案候选；当前遗留的 3 日因果平滑和持续性规则不可自动升格为正式窗口。 | 原始文献建议不等间隔观测先等间隔化。藕塘当前为逐日数据；出现缺测/非等间隔时的重采样、无效标记或其他处置尚未冻结。 | 指定论文表 5-2 和许强等（2009）给出 `α<45°`、`α≈45°`、`45°<α<80°`、`80°≤α<85°`、`α≥85°` 对应五色。`α≈45°` 没有数值容差或边界归属，因此 `tangent_blue_tolerance`、`nonregular_tangent_handling` 以及稳定段选择仍阻止正式五级。 |
@@ -30,7 +30,8 @@
 
 ```text
 case_id, date, split, station,
-interval_value, interval_level, interval_status,
+interval_level, interval_status, interval_color, interval_mapping_basis,
+interval_mu, interval_sigma, interval_z, interval_reason,
 velocity, velocity_level, velocity_status,
 delta_v, delta_v_state, delta_v_status,
 tangent_angle, tangent_angle_level, tangent_status,
@@ -46,10 +47,9 @@ fusion_rule_version, fusion_reason, validity_flag
 
 下列决策必须留在版本化协议中，不能由本字典、历史代码、指定论文的其他案例数值或 test 期结果补写：
 
-1. 区间校准的数值容差、尾部诊断方法、最小样本数、通过/失败处置；
-2. 每测点稳定段选择和速度五级的 blue/橙色边界；
-3. `ΔV≈0` 容差以及它在测点级 `F` 中的参与方式；
-4. 切线角 `α≈45°` 的 blue 容差与不规则采样处置；
-5. 测点级 `F`、滑坡体级 `F_site`、平局、冲突、缺失和暖启动规则。
+1. 每测点稳定段选择和速度五级的 blue/橙色边界；
+2. `ΔV≈0` 容差以及它在测点级 `F` 中的参与方式；
+3. 切线角 `α≈45°` 的 blue 容差与不规则采样处置；
+4. 测点级 `F`、滑坡体级 `F_site`、平局、冲突、缺失和暖启动规则。
 
-在这些项冻结且通过相应校准门禁前，本文件的所有五级映射都只是数据合同和开发接口，不是藕塘的正式预警结果。
+论文参考的区间单项状态已可复算，但在其余项冻结并完成四指标与滑坡体融合前，任何单项颜色仍不是藕塘的正式预警结果。

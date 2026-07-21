@@ -1,9 +1,9 @@
 {
   "protocol_id": "ootang-five-level-rule-v1",
-  "protocol_version": "1.0-draft",
+  "protocol_version": "1.1-draft",
   "status": "draft",
   "case": "ootang",
-  "revision_date": "2026-07-18",
+  "revision_date": "2026-07-21",
   "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
   "source_evidence": [
     {
@@ -37,10 +37,13 @@
       "semantic": "observed_per_timepoint_interval_deviation_state_identification",
       "not_claimed": "strict_horizon_ahead_warning",
       "candidate": {
-        "status": "draft_candidate_not_formal",
-        "input_scope": "split_equals_calibration_for_global_diagnostics; observed_rows_for_state_identification",
+        "status": "source_referenced_mapping_not_formal",
+        "input_scope": "split_equals_calibration_for_quality_diagnostics; observed_rows_for_state_identification",
+        "mapping_basis": "specified_thesis_figure_5_1_normal_regions",
+        "source_locator": "specified_thesis_chapter_5_section_5_2_1_figure_5_1_word_rendered_page_85_printed_page_75",
         "mu": "P50",
         "sigma_formula": "(P90-P10)/(2*1.28155)",
+        "mu_sigma_estimation_scope": "project_specific_normal_approximation_from_existing_P10_P50_P90_not_a_thesis_formula",
         "standard_normal_p90_quantile": 1.28155,
         "mapping": {
           "green": "U<=mu",
@@ -49,14 +52,8 @@
           "orange": "mu+2*sigma<U<=mu+3*sigma",
           "red": "U>mu+3*sigma"
         },
-        "required_global_checks": [
-          "quantile_order",
-          "coverage",
-          "symmetry",
-          "tail"
-        ],
-        "global_gate_policy": "all_four_checks_must_be_explicitly_passed; no_default_threshold_or_pass_decision",
-        "row_status_policy": "source_warmup_invalid_or_not_applicable_is_preserved; nonfinite_or_crossed_quantiles_are_invalid; otherwise_a_failed_or_unconfigured_global_gate_is_not_applicable",
+        "diagnostic_policy": "calibration_diagnostics_are_audit_only_and_do_not_block_mapping",
+        "row_status_policy": "the_reusable_classifier_preserves_a_caller_supplied_warmup_invalid_or_not_applicable_status; forecast_predictions_csv_has_no_interval_source_status_so_the_artifact_derives_fit_not_applicable_and_numeric_invalid; otherwise_direct_thesis_figure_5_1_mapping",
         "diagnostic_outputs": [
           "quantile_order_failures",
           "coverage_80",
@@ -227,11 +224,6 @@
     {
       "id": "delta_v_near_zero_tolerance",
       "reason": "The source supports negative/near-zero/positive trend states but supplies no Ootang numeric near-zero tolerance.",
-      "required_before_formal_run": true
-    },
-    {
-      "id": "interval_calibration_gate",
-      "reason": "Quantile-order, coverage, symmetry, tail-diagnostic and fallback thresholds must be fixed before a normal-distribution-style five-level interval mapping is used.",
       "required_before_formal_run": true
     },
     {

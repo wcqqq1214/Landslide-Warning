@@ -23,8 +23,8 @@ from warning.protocol import (  # noqa: E402
     unresolved_item_ids,
 )
 from warning.interval_state import (  # noqa: E402
-    CALIBRATION_CHECK_NAMES,
     NORMAL_90_QUANTILE,
+    THESIS_FIGURE_5_1_MAPPING_ID,
 )
 from warning.delta_v_diagnostics import (  # noqa: E402
     DIAGNOSTIC_STATUS as DELTA_V_DIAGNOSTIC_STATUS,
@@ -64,7 +64,10 @@ class WarningDraftProtocolTests(unittest.TestCase):
             DEFAULT_MINIMUM_SUPPORT,
         )
         self.assertEqual(fusion_candidate["status"], "draft_candidate_not_formal")
-        self.assertEqual(interval_candidate["status"], "draft_candidate_not_formal")
+        self.assertEqual(
+            interval_candidate["status"],
+            "source_referenced_mapping_not_formal",
+        )
         self.assertEqual(delta_v_candidate["status"], DELTA_V_DIAGNOSTIC_STATUS)
         self.assertEqual(delta_v_candidate["near_zero_tolerance"], "unconfigured")
         self.assertEqual(
@@ -76,8 +79,12 @@ class WarningDraftProtocolTests(unittest.TestCase):
             NORMAL_90_QUANTILE,
         )
         self.assertEqual(
-            tuple(interval_candidate["required_global_checks"]),
-            CALIBRATION_CHECK_NAMES,
+            interval_candidate["mapping_basis"],
+            THESIS_FIGURE_5_1_MAPPING_ID,
+        )
+        self.assertEqual(
+            interval_candidate["diagnostic_policy"],
+            "calibration_diagnostics_are_audit_only_and_do_not_block_mapping",
         )
 
     def test_candidate_rules_do_not_remove_the_formal_run_gates(self):
@@ -87,6 +94,7 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertIn("tangent_blue_tolerance", unresolved)
         self.assertIn("per_station_fusion_function", unresolved)
         self.assertIn("landslide_body_fusion_function", unresolved)
+        self.assertNotIn("interval_calibration_gate", unresolved)
         with self.assertRaises(ProtocolNotFrozenError):
             require_frozen_protocol()
 

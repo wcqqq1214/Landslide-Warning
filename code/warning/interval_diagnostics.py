@@ -42,7 +42,7 @@ DEFAULT_PREDICTIONS_PATH = ROOT / "figures" / "convlstm" / "forecast_predictions
 DEFAULT_OUTPUT_DIR = ROOT / "figures" / "warning_draft"
 SUMMARY_FILENAME = "interval_calibration_diagnostics.csv"
 MANIFEST_FILENAME = "interval_calibration_diagnostics_manifest.json"
-DIAGNOSTIC_STATUS = "diagnostic_only_no_gate_decision"
+DIAGNOSTIC_STATUS = "diagnostic_only_reference_mapping_quality"
 _PREDICTION_COLUMNS = ("split", "station", *REQUIRED_INTERVAL_COLUMNS)
 
 
@@ -186,9 +186,8 @@ def write_calibration_diagnostics(
             "columns": list(summary.columns),
         },
         "not_evaluated": [
-            "interval_calibration_gate",
-            "five_level_interval_mapping",
-            "test_split_threshold_selection",
+            "calibration_quality_pass_fail_thresholds",
+            "strict_horizon_ahead_warning_performance",
         ],
     }
     manifest_path.write_text(
