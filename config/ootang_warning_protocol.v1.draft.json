@@ -89,7 +89,43 @@
         "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
         "intercept_policy": "C_is_an_estimated_intercept_not_a_fixed_observed_s0",
         "basis": "The specified Word thesis displays +s0 but names A, B, C as fitting parameters; the verified related Chen et al. (2024) MVIF source uses +C and maximum-likelihood fitting. The user authorized +C as the reproducible reconciliation.",
-        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_define_fit_rows_time_origin_parameter_constraints_initial_slope_window_or_failure_handling."
+        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_define_an_initial_slope_window_or_V0. The separate MVIF diagnostic records a conservative finite-tf failure gate only."
+      },
+      "mvif_trend_fit_diagnostic": {
+        "status": "diagnostic_only_no_v0_until_initial_slope_rule_is_frozen",
+        "candidate_method_id": "mvif_trend_finite_tf_identifiability_gate",
+        "candidate_method_role": "word_formula_numerical_identifiability_diagnostic_not_v0_implementation",
+        "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+        "word_thesis_v0_input_status": "finite_tf_identifiability_screen_only_initial_slope_not_implemented",
+        "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
+        "input": "per_station_cumulative_displacement_rows_with_displacement_valid",
+        "fit_only": true,
+        "time_origin": "first_fit_displacement_date_numerical_coordinate_only",
+        "objective": "gaussian_residual_least_squares_numerical_counterpart_to_the_verified_MVIF_likelihood_framework",
+        "domain_parameterization": "tf_strictly_after_last_fit_observation_without_a_user_invented_maximum_failure_horizon; B_is_reparameterized_only_to_keep_the_logarithm_domain_valid",
+        "deterministic_multistart": {
+          "normalized_tf_excess_duration_starts": [0.25, 4.0],
+          "domain_gap_factor_starts": [0.25, 1.0, 4.0],
+          "optimizer": "scipy_least_squares_trf_3point_jacobian_x_scale_jac",
+          "max_function_evaluations_per_start": 5000
+        },
+        "finite_tf_gate": {
+          "requires_finite_physical_parameters": true,
+          "requires_successful_finite_optimizer_output_for_all_deterministic_starts": true,
+          "requires_full_column_rank_jacobian_for_all_near_objective_starts": true,
+          "near_objective_cost_tolerance": "sqrt(float64_machine_epsilon)",
+          "tf_agreement_tolerance": "sqrt(float64_machine_epsilon)_on_log_tf_excess_duration"
+        },
+        "failure_policy": "emit_explicit_failed_fit_and_do_not_calculate_V_sigma_V0_velocity_level_tangent_angle_or_warning_output",
+        "not_evaluated": [
+          "automatic_initial_stable_slope_selection",
+          "V",
+          "sigma",
+          "V0",
+          "five_level_velocity_mapping",
+          "tangent_angle",
+          "formal_warning_output"
+        ]
       },
       "rate_mapping": {
         "status": "source_confirmed_boundary_not_formal_until_protocol_is_frozen",
@@ -229,7 +265,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation, but neither source defines an Ootang-reproducible automatic slope evaluation point/window, fit scope, parameter constraints, or failure handling. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C MVIF formula reconciliation and a fit-only finite-tf failure gate, but neither source defines an Ootang-reproducible automatic initial-slope evaluation point/window or a rule that promotes a numerically identifiable MVIF fit into V, sigma, or V0. The current raw-velocity KMeans candidate is therefore a comparator only, not the specified-Word V0 implementation.",
       "required_before_formal_run": true
     },
     {

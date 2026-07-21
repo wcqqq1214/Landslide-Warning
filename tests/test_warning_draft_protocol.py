@@ -38,6 +38,11 @@ from warning.stable_segment import (  # noqa: E402
     DEFAULT_RANDOM_STATE,
     DEFAULT_SIGMA_DDOF,
 )
+from warning.mvif import (  # noqa: E402
+    INITIAL_GAP_FACTORS,
+    INITIAL_TAU_EXCESS,
+    MAX_FUNCTION_EVALUATIONS_PER_START,
+)
 
 
 class WarningDraftProtocolTests(unittest.TestCase):
@@ -73,6 +78,9 @@ class WarningDraftProtocolTests(unittest.TestCase):
         protocol = load_protocol()
         interval_candidate = protocol["confirmed"]["interval"]["candidate"]
         v0_candidate = protocol["confirmed"]["v0_framework"]["stable_segment_candidate"]
+        mvif_candidate = protocol["confirmed"]["v0_framework"][
+            "mvif_trend_fit_diagnostic"
+        ]
         delta_v_candidate = protocol["confirmed"]["delta_v"]["diagnostic_candidate"]
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
 
@@ -103,6 +111,37 @@ class WarningDraftProtocolTests(unittest.TestCase):
         )
         self.assertEqual(v0_candidate["sigma"]["ddof"], DEFAULT_SIGMA_DDOF)
         self.assertIn("first_valid_velocity", v0_candidate["audit_fields"])
+        self.assertEqual(
+            mvif_candidate["status"],
+            "diagnostic_only_no_v0_until_initial_slope_rule_is_frozen",
+        )
+        self.assertEqual(
+            mvif_candidate["candidate_method_id"],
+            "mvif_trend_finite_tf_identifiability_gate",
+        )
+        self.assertEqual(
+            mvif_candidate["candidate_method_role"],
+            "word_formula_numerical_identifiability_diagnostic_not_v0_implementation",
+        )
+        self.assertEqual(
+            mvif_candidate["deterministic_multistart"]
+            ["normalized_tf_excess_duration_starts"],
+            list(INITIAL_TAU_EXCESS),
+        )
+        self.assertEqual(
+            mvif_candidate["deterministic_multistart"]["domain_gap_factor_starts"],
+            list(INITIAL_GAP_FACTORS),
+        )
+        self.assertEqual(
+            mvif_candidate["deterministic_multistart"]
+            ["max_function_evaluations_per_start"],
+            MAX_FUNCTION_EVALUATIONS_PER_START,
+        )
+        self.assertTrue(
+            mvif_candidate["finite_tf_gate"]
+            ["requires_successful_finite_optimizer_output_for_all_deterministic_starts"]
+        )
+        self.assertIn("V0", mvif_candidate["not_evaluated"])
         self.assertEqual(
             fusion_candidate["minimum_support"],
             DEFAULT_MINIMUM_SUPPORT,

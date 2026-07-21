@@ -6,7 +6,7 @@
     "id": "ootang-five-level-rule-v1",
     "version": "1.1-draft",
     "status": "draft",
-    "content_sha256": "a9e1489b52d8e108ed5223002a3fc026db1d764fd72ffe87ec81d5a6024d599d",
+    "content_sha256": "770c6b30bcb3e69a748cc74577d52f466e06dba30578e00992f648b546e57861",
     "unresolved_item_ids": [
       "stable_segment_selection",
       "v0_blue_tolerance",
@@ -139,7 +139,7 @@
       "V0",
       "protocol_content_sha256"
     ],
-    "protocol_content_sha256": "a9e1489b52d8e108ed5223002a3fc026db1d764fd72ffe87ec81d5a6024d599d",
+    "protocol_content_sha256": "770c6b30bcb3e69a748cc74577d52f466e06dba30578e00992f648b546e57861",
     "candidate_status": "draft_candidate_not_formal",
     "candidate_method": {
       "id": "raw_velocity_kmeans_initial_low_speed_prefix",
@@ -180,14 +180,14 @@
       "n_rows": 1816
     },
     "stable_segment_candidates": {
-      "sha256": "caf3b2333393f43800572c77ca4e1925ab4428cc2f5b4a01c8955e842858f89e",
+      "sha256": "ed88840a1ad41100962f21eab98aa49814972951deb964f2c0e9954e6ca94ca7",
       "n_rows": 8
     }
   },
   "outputs": {
     "summary": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/velocity_tangent_fit_calibration_diagnostics.csv",
-      "sha256": "3624cb2a3138f2e3ee00b08613e437d681fbf57c968d2d654856b378c8288db6",
+      "sha256": "9097ad4d3969c43b44a46cf752a83e01a6a7a6c9dbebdf091ceef7ad23ce6b8c",
       "n_rows": 16
     }
   }

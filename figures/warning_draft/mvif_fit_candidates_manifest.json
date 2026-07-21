@@ -1,9 +1,9 @@
 {
-  "artifact_kind": "ootang_fit_stable_segment_candidates",
-  "candidate_status": "draft_candidate_not_formal",
+  "artifact_kind": "ootang_fit_mvif_finite_tf_diagnostics",
+  "candidate_status": "diagnostic_only_no_v0",
   "fit_kinematics_input": {
     "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
-    "sha256": "6e6a712eb99f564ac017b1e024b5b6c18ecfa6263cf8a7a1cc2c7c19414bd0ad"
+    "sha256": "583b276e15c492d24b00a3db8693d76817741ec0b59fb6dbe2fef763d72160f1"
   },
   "fit_prediction_input": {
     "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
@@ -11,9 +11,13 @@
   },
   "formal_warning_output": false,
   "not_evaluated": [
-    "formal_stable_segment_acceptance",
+    "automatic_initial_stable_slope_selection",
+    "V",
+    "sigma",
+    "V0",
     "five_level_velocity_mapping",
-    "test_split_threshold_selection"
+    "tangent_angle",
+    "formal_warning_output"
   ],
   "protocol": {
     "content_sha256": "770c6b30bcb3e69a748cc74577d52f466e06dba30578e00992f648b546e57861",
@@ -32,10 +36,16 @@
   },
   "selection": {
     "candidate_method": {
-      "id": "raw_velocity_kmeans_initial_low_speed_prefix",
-      "role": "project_specific_comparator_not_specified_word_v0_implementation",
+      "domain_parameterization": "tf_strictly_after_last_fit_observation_without_a_user_invented_maximum_failure_horizon; B_is_reparameterized_only_to_keep_the_logarithm_domain_valid",
+      "failure_policy": "emit_explicit_failed_fit_and_do_not_calculate_V_sigma_V0_velocity_level_tangent_angle_or_warning_output",
+      "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
+      "id": "mvif_trend_finite_tf_identifiability_gate",
+      "input": "per_station_cumulative_displacement_rows_with_displacement_valid",
+      "objective": "gaussian_residual_least_squares_numerical_counterpart_to_the_verified_MVIF_likelihood_framework",
+      "role": "word_formula_numerical_identifiability_diagnostic_not_v0_implementation",
+      "time_origin": "first_fit_displacement_date_numerical_coordinate_only",
       "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
-      "word_thesis_v0_input_status": "not_implemented_by_this_candidate"
+      "word_thesis_v0_input_status": "finite_tf_identifiability_screen_only_initial_slope_not_implemented"
     },
     "fit_end_dates": {
       "ATU1": "2019-02-02",
@@ -55,8 +65,8 @@
     "selected_columns": [
       "date",
       "station",
-      "velocity",
-      "velocity_status"
+      "displacement",
+      "displacement_valid"
     ],
     "temporal_scope": "all_station_history_through_fit_cutoff",
     "time_filter": "station_date<=station_fit_end_date"
@@ -81,38 +91,32 @@
       "candidate_method_role",
       "word_thesis_v0_input",
       "word_thesis_v0_input_status",
+      "mvif_formula",
       "source_split",
       "kinematics_temporal_scope",
       "fit_prediction_input_sha256",
       "fit_kinematics_input_sha256",
       "station",
-      "selection_status",
+      "fit_status",
       "failure_reason",
+      "fit_start_date",
       "fit_end_date",
       "n_fit_rows",
-      "n_valid_velocities",
-      "first_valid_velocity_date",
-      "first_valid_velocity",
-      "segment_start_date",
-      "segment_end_date",
-      "n_selected_velocities",
-      "cluster_centers",
-      "low_speed_cluster_center",
-      "cluster_center_low",
-      "cluster_center_high",
-      "mean_velocity",
-      "V",
-      "sigma",
-      "v0",
-      "V0",
-      "n_clusters",
-      "init",
-      "random_state",
-      "n_init",
-      "sigma_ddof",
-      "openmp_threads"
+      "time_span_days",
+      "n_multistart_attempts",
+      "n_converged_fits",
+      "n_near_optimal_fits",
+      "jacobian_rank",
+      "n_fit_parameters",
+      "objective_cost",
+      "tf_log_excess_duration_min",
+      "tf_log_excess_duration_max",
+      "A",
+      "B",
+      "C",
+      "tf_elapsed_days"
     ],
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/stable_segment_candidates.csv",
-    "sha256": "c51416de0ebeb9d7693e7ced00f025010183100c86e5fa0e10887959ac42d450"
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/mvif_fit_candidates.csv",
+    "sha256": "e1be01a9954b84dea2fdb01c826c7e50f720737805a3b6116422d8aa5f997526"
   }
 }
