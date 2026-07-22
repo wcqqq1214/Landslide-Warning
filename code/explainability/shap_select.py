@@ -40,6 +40,11 @@ from warning.warning_thresholds import (  # noqa: E402
     monthly_displacement_rate,
     threshold_rows,
 )
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 from features.kinematics import compute_point_kinematics  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -77,6 +82,7 @@ OUT_METRICS_CSV = FIG_DIR / "shap_model_metrics.csv"
 OUT_CV_METRICS_CSV = FIG_DIR / "shap_binary_cv_metrics.csv"
 OUT_PROVENANCE_JSON = FIG_DIR / "shap_provenance.json"
 OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
+OUT_LEGACY_MANIFEST = FIG_DIR / "legacy_warning_manifest.json"
 SHAP_BACKGROUND_DATE_COUNT = 12
 SHAP_EXPLANATION_DATE_COUNT = 25
 SEED = 0
@@ -650,14 +656,21 @@ def main():
 
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     OUT_THRESHOLDS_CSV.parent.mkdir(parents=True, exist_ok=True)
-    reg_importance.to_csv(OUT_REG_CSV, index=False)
-    cls_importance.to_csv(OUT_CLS_CSV, index=False)
-    pd.DataFrame([metrics]).to_csv(OUT_METRICS_CSV, index=False)
+    attach_legacy_warning_metadata(reg_importance).to_csv(OUT_REG_CSV, index=False)
+    attach_legacy_warning_metadata(cls_importance).to_csv(OUT_CLS_CSV, index=False)
+    attach_legacy_warning_metadata(pd.DataFrame([metrics])).to_csv(
+        OUT_METRICS_CSV,
+        index=False,
+    )
     pd.DataFrame(threshold_rows(thresholds)).to_csv(OUT_THRESHOLDS_CSV, index=False)
     cv_metrics = evaluate_binary_walk_forward(df)
-    cv_metrics.to_csv(OUT_CV_METRICS_CSV, index=False)
+    attach_legacy_warning_metadata(cv_metrics).to_csv(
+        OUT_CV_METRICS_CSV,
+        index=False,
+    )
     provenance = {
         "schema_version": 1,
+        **legacy_warning_metadata(),
         "data_source": str(DATA_CSV.relative_to(ROOT)),
         "explained_model": EXPLAINED_MODEL,
         "model_role": MODEL_ROLE,
@@ -707,6 +720,20 @@ def main():
         sample,
         OUT_CLS_PNG,
         summary_title("classification", explanation_dates, len(sample)),
+    )
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="explainability.shap_select",
+        artifacts=(
+            OUT_REG_PNG.relative_to(ROOT),
+            OUT_CLS_PNG.relative_to(ROOT),
+            OUT_REG_CSV.relative_to(ROOT),
+            OUT_CLS_CSV.relative_to(ROOT),
+            OUT_METRICS_CSV.relative_to(ROOT),
+            OUT_CV_METRICS_CSV.relative_to(ROOT),
+            OUT_PROVENANCE_JSON.relative_to(ROOT),
+            OUT_THRESHOLDS_CSV.relative_to(ROOT),
+        ),
     )
 
     print(f"[shap] 模型: 独立 NGBoost 解释模型（非 ConvLSTM）；样本窗口: {WINDOW} 天")

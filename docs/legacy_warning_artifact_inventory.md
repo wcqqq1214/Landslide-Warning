@@ -1,0 +1,35 @@
+# 历史预警路径与正式入口隔离清单
+
+> 状态：执行边界清单，不新增任何阈值、`V0`、融合函数或预警结果。
+>
+> 依据：[导师行动计划](advisor_review_action_plan.md)、[藕塘四指标数据字典](ootang_warning_data_dictionary.md)与[`ootang-five-level-rule-v1`草案协议](../config/ootang_warning_protocol.v1.draft.json)。
+
+## 1. 当前入口
+
+`main.py` 是研究管线和历史/探索性复核入口，不是正式预警入口。其运行清单固定写入：
+
+```text
+warning_pipeline_scope=research_and_legacy_exploratory_only
+formal_warning_output=false
+```
+
+并对历史预警相关阶段写入 `warning_artifact_scope=legacy_exploratory`。因此，`main.py` 的成功运行只说明相应研究或历史复核脚本完成，不能说明本轮四指标五级正式预警已经生成。
+
+正式路径的唯一代码接缝为[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)中的 `run_formal_warning(protocol_path=...)`。它先调用 `require_frozen_protocol()`：协议仍为 `draft` 或仍含未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`，因为尚无经过审查的四指标时间线执行器；入口不接受任意 callable，故不能把下表的旧融合塞入“正式”路径。
+
+## 2. 历史与草案产物的允许用途
+
+| 路径 / 产物 | 实际方法与当前标识 | 允许用途 | 明确禁止的用途 |
+| --- | --- | --- | --- |
+| [`warning_thresholds.py`](../code/warning/warning_thresholds.py) / `figures/thresholds/v0_thresholds.csv` | 30 日位移增量、四级 `V0` 路径。新导出的阈值行带 `warning_path=legacy_exploratory`、`formal_warning_output=false`、`warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`。 | 复核历史 onset、NGBoost、SHAP 与敏感性产物。 | 替代指定 Word 的逐点日速度、MVIF 初始稳定斜率输入、式（5-3）或五级速度规则。 |
+| [`warning_fusion.py`](../code/warning/warning_fusion.py) / `figures/warning_fusion/warning_fusion.csv` | 旧 `V0` 主判、切线角只升级、NGBoost 仅作旁证的主副融合。新生成 CSV 同样带上述三个非正式字段，并在同目录写出 `legacy_warning_manifest.json`。 | 逐日审计旧规则为何给出某一等级。 | 作为四指标 `F`、滑坡体 `F_site` 或本轮正式综合预警。 |
+| `onset_analysis.py`、`ngboost_warn.py`、`shap_select.py`、`shap_stability.py`、`sensitivity_analysis.py`、`tangent_stage_review.py` | `main.py` 中均标为 `legacy_exploratory`，并各自在输出目录写出 `legacy_warning_manifest.json`。新生成的表格还附加同一组非正式字段；模型、PNG 等非表格产物由 sidecar 绑定，`models/ngboost.pkl` 另在其同目录写出 sidecar。 | 研究诊断、历史可复核性和局限性说明。 | 将模型概率、F1、事件盘点、敏感性一致率或候选阶段升级为本轮正式风险结论。 |
+| [`rule_fusion.py`](../code/warning/rule_fusion.py)、[`site_fusion.py`](../code/warning/site_fusion.py)与`figures/warning_draft/*` | 四指标/多测点草案和输入审计；各自产物已显式为 `draft` 或 `formal_warning_output=false`。 | 为冻结 `F`、`F_site`、容差与缺失规则准备可复算证据。 | 因为存在候选实现就生成正式五级预警。 |
+
+已存档的历史 CSV 可能早于新增字段和 sidecar；它们仍按本表和原始输出路径解释为历史快照。重新运行相应历史脚本后，新 CSV/sidecar 会写入上述标识；这不改变其中的历史数值或使其成为正式结果。
+
+## 3. 对本轮开发的约束
+
+1. 未冻结的 `stable_segment_selection`、三个蓝/近零容差、`F`、`F_site` 与不规则切线角处理继续由协议门禁拦截；本清单不补写任何数值。
+2. 指定 Word 论文优先于藕塘毕业论文。旧 30 日、四级、主副指标路径只保留为历史可复核材料。
+3. Vajont 未列入任何入口、输入或产物；其启动仍须用户明确授权。

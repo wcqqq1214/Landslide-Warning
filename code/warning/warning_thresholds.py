@@ -1,6 +1,8 @@
-"""Station-specific V0 warning thresholds from monthly displacement rates."""
+"""Retained legacy 30-day V0 thresholds for historical/exploratory artifacts."""
 import numpy as np
 import pandas as pd
+
+from warning.legacy_warning import legacy_warning_metadata
 
 TRAIN_FRAC = 0.8
 MONTH_WINDOW_DAYS = 30
@@ -136,6 +138,6 @@ def build_warning_frame(
 
 def threshold_rows(thresholds):
     return [
-        {"station": station, **values}
+        {**values, "station": station, **legacy_warning_metadata()}
         for station, values in thresholds.items()
     ]

@@ -1,4 +1,4 @@
-"""Fuse dynamic V0 and persistent tangent-angle warning evidence."""
+"""Reproduce the retained legacy V0-primary fusion for audit only."""
 
 from pathlib import Path
 import sys
@@ -10,6 +10,10 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from warning.warning_thresholds import build_warning_frame  # noqa: E402
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 FEATURE_CSV = ROOT / "data" / "features.csv"
@@ -17,6 +21,7 @@ RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 NGBOOST_PROBABILITIES_CSV = ROOT / "figures" / "ngboost" / "warning_probabilities.csv"
 FIG_DIR = ROOT / "figures" / "warning_fusion"
 OUT_CSV = FIG_DIR / "warning_fusion.csv"
+OUT_LEGACY_MANIFEST = FIG_DIR / "legacy_warning_manifest.json"
 
 STATION_ORDER = ("MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5")
 KEY_STATIONS = STATION_ORDER
@@ -87,7 +92,7 @@ def build_fusion_frame(
     warning_stations=WARNING_STATIONS,
     probabilities=None,
 ):
-    """Align feature, V0, tangent-angle, and optional NGBoost evidence."""
+    """Build a visibly non-formal legacy V0/tangent-angle fusion artifact."""
     features = features.rename(columns=lambda column: column.strip()).copy()
     features["Date"] = pd.to_datetime(features["Date"])
     warning_frame, thresholds = build_warning_frame(raw, warning_stations)
@@ -123,7 +128,7 @@ def build_fusion_frame(
 
     if (out["final_level"] < out["v0_level"]).any():
         raise RuntimeError("融合结果不能降低 V0 预警等级")
-    return out, thresholds
+    return attach_legacy_warning_metadata(out), thresholds
 
 
 def main():
@@ -140,6 +145,11 @@ def main():
     )
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     result.to_csv(OUT_CSV, index=False)
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="warning.warning_fusion",
+        artifacts=(OUT_CSV.relative_to(ROOT),),
+    )
 
     print(f"[fusion] 输出: {OUT_CSV}")
     print("[fusion] 最终等级分布:")

@@ -26,6 +26,10 @@ from warning.warning_thresholds import (  # noqa: E402
     build_warning_frame,
     threshold_rows,
 )
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
@@ -36,6 +40,8 @@ OUT_PNG = FIG_DIR / "confusion_matrix.png"
 OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
 OUT_METRICS_CSV = FIG_DIR / "warning_metrics.csv"
 OUT_PROBABILITIES_CSV = FIG_DIR / "warning_probabilities.csv"
+OUT_LEGACY_MANIFEST = FIG_DIR / "legacy_warning_manifest.json"
+OUT_MODEL_LEGACY_MANIFEST = OUT_PKL.with_name("ngboost_legacy_warning_manifest.json")
 
 V_COLS = [f"{s}_v" for s in
           ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]]
@@ -183,12 +189,17 @@ def main():
     with open(OUT_PKL, "wb") as f:
         pickle.dump(model, f)
     pd.DataFrame(threshold_rows(thresholds)).to_csv(OUT_THRESHOLDS_CSV, index=False)
-    pd.DataFrame([metrics]).to_csv(OUT_METRICS_CSV, index=False)
-    probability_frame(
-        df["Date"].iloc[split:],
-        yte,
-        proba,
-        level_names=LEVEL_NAMES[:proba.shape[1]],
+    attach_legacy_warning_metadata(pd.DataFrame([metrics])).to_csv(
+        OUT_METRICS_CSV,
+        index=False,
+    )
+    attach_legacy_warning_metadata(
+        probability_frame(
+            df["Date"].iloc[split:],
+            yte,
+            proba,
+            level_names=LEVEL_NAMES[:proba.shape[1]],
+        )
     ).to_csv(OUT_PROBABILITIES_CSV, index=False)
 
     present = sorted(set(np.concatenate([yte, pred])))
@@ -211,6 +222,22 @@ def main():
     plt.tight_layout()
     plt.savefig(OUT_PNG, dpi=150)
     plt.close()
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="warning.ngboost_warn",
+        artifacts=(
+            OUT_PKL.relative_to(ROOT),
+            OUT_PNG.relative_to(ROOT),
+            OUT_THRESHOLDS_CSV.relative_to(ROOT),
+            OUT_METRICS_CSV.relative_to(ROOT),
+            OUT_PROBABILITIES_CSV.relative_to(ROOT),
+        ),
+    )
+    write_legacy_warning_manifest(
+        OUT_MODEL_LEGACY_MANIFEST,
+        producer="warning.ngboost_warn",
+        artifacts=(OUT_PKL.relative_to(ROOT),),
+    )
 
     print(f"[ngboost] 模型输出: {OUT_PKL}")
     print(f"[ngboost] 混淆矩阵图: {OUT_PNG}")

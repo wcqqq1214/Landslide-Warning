@@ -27,6 +27,10 @@ from features.tangent_angle import (  # noqa: E402
 from features.kinematics import compute_point_kinematics  # noqa: E402
 from warning.warning_fusion import WARNING_STATIONS, fuse_warning_levels  # noqa: E402
 from warning.warning_thresholds import build_warning_frame  # noqa: E402
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 
 # Use a CJK-capable font for Chinese labels. Fall back to default sans if unavailable.
 _CJK_CANDIDATES = ["Heiti TC", "STHeiti", "Lantinghei SC",
@@ -43,6 +47,7 @@ ROOT = Path(__file__).resolve().parents[2]
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
 FIG_DIR = ROOT / "figures" / "tangent_angle" / "review"
 OUT_CSV = FIG_DIR / "candidate_stage_comparison.csv"
+OUT_LEGACY_MANIFEST = FIG_DIR / "legacy_warning_manifest.json"
 
 CANDIDATE_WINDOWS = (15, 30, 60)
 KEY_STATION_COLS = dict(WARNING_STATIONS)
@@ -310,7 +315,19 @@ def main():
 
     FIG_DIR.mkdir(parents=True, exist_ok=True)
     comparison = build_candidate_comparison_csv(raw)
-    comparison.to_csv(OUT_CSV, index=False)
+    attach_legacy_warning_metadata(comparison).to_csv(OUT_CSV, index=False)
+    review_figures = tuple(
+        FIG_DIR / f"{station}_stage_review.png"
+        for station in KEY_STATION_COLS
+    )
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="features.tangent_stage_review",
+        artifacts=(
+            *(path.relative_to(ROOT) for path in review_figures),
+            OUT_CSV.relative_to(ROOT),
+        ),
+    )
     print(f"[review] 候选阶段对比表: {OUT_CSV}")
 
     print("\n[review] 测点候选阶段 v_eq 对比:")

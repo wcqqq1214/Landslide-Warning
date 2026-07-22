@@ -383,6 +383,14 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。`mvif_initial_slope_diagnostics.py` 及其 `1.2-draft` CSV/manifest 现是明确的历史记录，当前协议会拒绝再写出它；其余旧 `1.2-draft` 产物也不能被静默当作 `1.3-draft` 产物使用。新的 Bai--Perron artifact 独立记录 `1.3-draft` 内容指纹；若后续确需使用其他诊断作为同一版本的输入，必须先按该模块的既有边界重新生成并核对指纹。区间单项状态仍不构成正式预警。
 
+#### 4.2.8 历史预警路径与正式入口隔离（2026-07-22）
+
+为防止“研究管线可以运行”被误读为“本轮正式预警已经生成”，新增[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)作为未来正式执行器的唯一代码接缝。`run_formal_warning()` 先调用 `require_frozen_protocol()`；当前 `1.3-draft` 协议仍有未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`：模块尚未注册实际四指标时间线，且入口不接受任意 callable，不能把旧 V0/融合函数注入为“正式”执行器。
+
+历史 `main.py` 保持可复核，但其运行清单固定为 `warning_pipeline_scope=research_and_legacy_exploratory_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`。`warning_fusion.py`、旧 `threshold_rows()` 及上述可单独运行脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。这只澄清产物身份，不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
+
+完整的模块—产物—用途—禁止用途映射见[`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。旧快照若早于这些字段，仍按该清单解释为历史材料；重新运行旧脚本才会写入新标识。Vajont 不进入本次隔离工作，也不因此获得启动授权。
+
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
 本轮选择“逐时刻区间偏离状态识别”，而非在 `t` 时刻对 `t+h` 的严格前瞻预警。对每个有效时刻 `t`，执行顺序为：

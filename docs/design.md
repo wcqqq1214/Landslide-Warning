@@ -3,6 +3,8 @@
 > 本文档描述当前代码实现和模块边界。研究问题、终点和评价规范以 `framework.md` 为准；结果数值以 `results_report.md` 和 `../figures/*/*.csv` 为准。
 >
 > **状态更新（2026-07-16）**：此处描述的是导师修改前的实现边界。当前正式方法以 `advisor_review_action_plan.md` 和导师指定论文为准；本文件中的四级 V0、加速度、V0 主判和 NGBoost 路径均为旧实现，不得用作本轮协议或结果表述。
+>
+> **入口隔离（2026-07-22）**：`main.py` 是研究与历史/探索性复核入口，运行清单固定为 `formal_warning_output=false`。未来正式执行器只能经 `code/warning/formal_warning.py::run_formal_warning()`，并在任何读写前通过冻结协议门禁；当前草案协议因此不能生成正式预警。历史产物的完整映射见 `legacy_warning_artifact_inventory.md`。
 
 ## 1. 数据与约束
 
@@ -32,8 +34,12 @@ monitoring_data.csv
   -> features/tangent_stage_review.py -> figures/tangent_angle/review
 
 data/features.csv + monitoring_data.csv
-  -> warning/ngboost_warn.py -> models/ngboost.pkl + figures/ngboost
-  -> warning/warning_fusion.py -> figures/warning_fusion/warning_fusion.csv
+  -> warning/ngboost_warn.py -> models/ngboost.pkl + figures/ngboost (历史/探索)
+  -> warning/warning_fusion.py -> figures/warning_fusion/warning_fusion.csv (历史/探索)
+
+future frozen protocol + formal four-indicator executor
+  -> warning/formal_warning.py::run_formal_warning(...)
+  -> formal warning artifacts (当前未实现，draft 协议会先拒绝)
 ```
 
 ## 3. 模块职责
@@ -43,7 +49,7 @@ data/features.csv + monitoring_data.csv
 | `code/features/build_features.py` | 时间感知的逐点位移速度/`ΔV`、库水位变化率、多窗口降雨和切线角特征 | `data/features.csv`、`data/ootang_kinematics_long.csv`、`data/ootang_kinematics_summary.csv`、`figures/tangent_angle/uniform_rates.csv` |
 | `code/features/kinematics.py` | 统一计算 `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})` 与 `ΔV_i=v_i-v_{i-1}`，并记录暖启动、缺测和异常时间间隔 | 由 `build_features.py`、切线角和解释模块调用 |
 | `code/features/tangent_angle.py` | 使用真实时间间隔估计等速段、原始/因果平滑切线角和持续性判级；支持可选人工等速阶段表 | 由 `build_features.py` 调用 |
-| `code/warning/warning_thresholds.py` | 测点专属 V0、30 日位移速率和四级标签 | 由 SHAP、NGBoost 和融合模块调用 |
+| `code/warning/warning_thresholds.py` | 历史 30 日 V0、位移增量和四级标签；导出行显式为非正式 | 由旧 SHAP、NGBoost 和融合模块调用 |
 | `code/warning/warning_events.py` | 连续事件提取、未来 onset 标签和固定阈值事件评价 | 由 onset 分析及后续模型调用 |
 | `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/explainability/shap_select.py` | 构造含逐点速度/`ΔV` 的滞后样本；对独立 NGBoost 做探索性回归、遗留同日 V0 二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv`；不是 ConvLSTM-SHAP 或正式预警 |
@@ -55,8 +61,9 @@ data/features.csv + monitoring_data.csv
 | `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
 | `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
 | `code/convlstm/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
-| `code/warning/ngboost_warn.py` | 使用动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv` |
-| `code/warning/warning_fusion.py` | V0 主判、8 测点切线角升级复核、NGBoost 概率旁证 | `figures/warning_fusion/warning_fusion.csv` |
+| `code/warning/ngboost_warn.py` | 使用历史动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv`；历史/探索性 |
+| `code/warning/warning_fusion.py` | 历史 V0 主判、8 测点切线角升级复核、NGBoost 旁证；CSV 显式标为非正式 | `figures/warning_fusion/warning_fusion.csv`；历史/探索性 |
+| `code/warning/formal_warning.py` | 在冻结协议检查后才调用未来正式四指标执行器 | 当前只有门禁，无正式时间线或结果输出 |
 | `code/warning/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
 | `code/features/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
 

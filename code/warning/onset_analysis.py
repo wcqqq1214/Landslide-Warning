@@ -10,6 +10,10 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from warning.ngboost_warn import WARNING_STATIONS  # noqa: E402
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 from warning.warning_events import build_onset_targets, extract_warning_events  # noqa: E402
 from warning.warning_thresholds import build_warning_frame, threshold_rows  # noqa: E402
 
@@ -20,6 +24,7 @@ OUT_EVENTS_CSV = OUT_DIR / "onset_events.csv"
 OUT_TARGETS_CSV = OUT_DIR / "onset_targets.csv"
 OUT_INVENTORY_CSV = OUT_DIR / "onset_inventory.csv"
 OUT_THRESHOLDS_CSV = ROOT / "figures" / "thresholds" / "v0_thresholds.csv"
+OUT_LEGACY_MANIFEST = OUT_DIR / "legacy_warning_manifest.json"
 
 HORIZONS = (1, 3, 7)
 MIN_WARNING_LEVEL = 1
@@ -84,12 +89,25 @@ def main():
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     OUT_THRESHOLDS_CSV.parent.mkdir(parents=True, exist_ok=True)
-    events.to_csv(OUT_EVENTS_CSV, index=False)
-    targets.to_csv(OUT_TARGETS_CSV, index=False)
-    inventory.to_csv(OUT_INVENTORY_CSV, index=False)
+    attach_legacy_warning_metadata(events).to_csv(OUT_EVENTS_CSV, index=False)
+    attach_legacy_warning_metadata(targets).to_csv(OUT_TARGETS_CSV, index=False)
+    attach_legacy_warning_metadata(inventory).to_csv(
+        OUT_INVENTORY_CSV,
+        index=False,
+    )
     pd.DataFrame(threshold_rows(thresholds)).to_csv(
         OUT_THRESHOLDS_CSV,
         index=False,
+    )
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="warning.onset_analysis",
+        artifacts=(
+            OUT_EVENTS_CSV.relative_to(ROOT),
+            OUT_TARGETS_CSV.relative_to(ROOT),
+            OUT_INVENTORY_CSV.relative_to(ROOT),
+            OUT_THRESHOLDS_CSV.relative_to(ROOT),
+        ),
     )
 
     print(f"[onset] 事件清单: {OUT_EVENTS_CSV}")

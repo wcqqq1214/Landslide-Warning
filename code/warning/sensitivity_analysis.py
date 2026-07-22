@@ -15,6 +15,10 @@ from features.tangent_angle import build_tangent_frame, uniform_rate_rows  # noq
 from warning.warning_events import extract_warning_events  # noqa: E402
 from warning.warning_fusion import KEY_STATIONS, WARNING_STATIONS, fuse_warning_levels  # noqa: E402
 from warning.warning_thresholds import build_warning_frame, threshold_rows  # noqa: E402
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 RAW_CSV = ROOT / "data" / "monitoring_data.csv"
@@ -23,6 +27,7 @@ OUT_V0_SUMMARY = OUT_DIR / "v0_sensitivity.csv"
 OUT_V0_PARAMETERS = OUT_DIR / "v0_parameters.csv"
 OUT_TANGENT_SUMMARY = OUT_DIR / "tangent_sensitivity.csv"
 OUT_TANGENT_PARAMETERS = OUT_DIR / "tangent_parameters.csv"
+OUT_LEGACY_MANIFEST = OUT_DIR / "legacy_warning_manifest.json"
 
 V0_MONTH_WINDOWS = (15, 30, 60)
 V0_ACCEL_PERCENTILES = (0.85, 0.90, 0.95)
@@ -283,10 +288,32 @@ def main():
     )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    v0_summary.to_csv(OUT_V0_SUMMARY, index=False)
-    v0_parameters.to_csv(OUT_V0_PARAMETERS, index=False)
-    tangent_summary.to_csv(OUT_TANGENT_SUMMARY, index=False)
-    tangent_parameters.to_csv(OUT_TANGENT_PARAMETERS, index=False)
+    attach_legacy_warning_metadata(v0_summary).to_csv(
+        OUT_V0_SUMMARY,
+        index=False,
+    )
+    attach_legacy_warning_metadata(v0_parameters).to_csv(
+        OUT_V0_PARAMETERS,
+        index=False,
+    )
+    attach_legacy_warning_metadata(tangent_summary).to_csv(
+        OUT_TANGENT_SUMMARY,
+        index=False,
+    )
+    attach_legacy_warning_metadata(tangent_parameters).to_csv(
+        OUT_TANGENT_PARAMETERS,
+        index=False,
+    )
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="warning.sensitivity_analysis",
+        artifacts=(
+            OUT_V0_SUMMARY.relative_to(ROOT),
+            OUT_V0_PARAMETERS.relative_to(ROOT),
+            OUT_TANGENT_SUMMARY.relative_to(ROOT),
+            OUT_TANGENT_PARAMETERS.relative_to(ROOT),
+        ),
+    )
 
     print(f"[sensitivity] V0 组合: {len(v0_summary)} -> {OUT_V0_SUMMARY}")
     print(

@@ -39,6 +39,10 @@ from explainability.shap_select import (  # noqa: E402
     walk_forward_date_ranges,
 )
 from warning.warning_thresholds import compute_station_thresholds  # noqa: E402
+from warning.legacy_warning import (  # noqa: E402
+    attach_legacy_warning_metadata,
+    write_legacy_warning_manifest,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 OUT_DIR = ROOT / "figures" / "shap" / "stability"
@@ -53,6 +57,7 @@ OUT_ABLATION_FOLDS = OUT_DIR / "group_ablation_fold_metrics.csv"
 OUT_ABLATION_SUMMARY = OUT_DIR / "group_ablation_summary.csv"
 OUT_GROUP_PLOT = OUT_DIR / "shap_group_stability.png"
 OUT_ABLATION_PLOT = OUT_DIR / "group_ablation.png"
+OUT_LEGACY_MANIFEST = OUT_DIR / "legacy_warning_manifest.json"
 
 N_SPLITS = 5
 N_ESTIMATORS = 300
@@ -653,17 +658,58 @@ def main():
     ablation_summary = attach_task_provenance(ablation_summary)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    protocol.to_csv(OUT_PROTOCOL, index=False)
-    feature_importance.to_csv(OUT_FEATURE_IMPORTANCE, index=False)
-    feature_stability.to_csv(OUT_FEATURE_STABILITY, index=False)
-    rank_stability.to_csv(OUT_RANK_STABILITY, index=False)
-    station_feature_importance.to_csv(OUT_STATION_FEATURE_IMPORTANCE, index=False)
-    station_feature_stability.to_csv(OUT_STATION_FEATURE_STABILITY, index=False)
-    group_importance.to_csv(OUT_GROUP_IMPORTANCE, index=False)
-    ablation_folds.to_csv(OUT_ABLATION_FOLDS, index=False)
-    ablation_summary.to_csv(OUT_ABLATION_SUMMARY, index=False)
+    attach_legacy_warning_metadata(protocol).to_csv(OUT_PROTOCOL, index=False)
+    attach_legacy_warning_metadata(feature_importance).to_csv(
+        OUT_FEATURE_IMPORTANCE,
+        index=False,
+    )
+    attach_legacy_warning_metadata(feature_stability).to_csv(
+        OUT_FEATURE_STABILITY,
+        index=False,
+    )
+    attach_legacy_warning_metadata(rank_stability).to_csv(
+        OUT_RANK_STABILITY,
+        index=False,
+    )
+    attach_legacy_warning_metadata(station_feature_importance).to_csv(
+        OUT_STATION_FEATURE_IMPORTANCE,
+        index=False,
+    )
+    attach_legacy_warning_metadata(station_feature_stability).to_csv(
+        OUT_STATION_FEATURE_STABILITY,
+        index=False,
+    )
+    attach_legacy_warning_metadata(group_importance).to_csv(
+        OUT_GROUP_IMPORTANCE,
+        index=False,
+    )
+    attach_legacy_warning_metadata(ablation_folds).to_csv(
+        OUT_ABLATION_FOLDS,
+        index=False,
+    )
+    attach_legacy_warning_metadata(ablation_summary).to_csv(
+        OUT_ABLATION_SUMMARY,
+        index=False,
+    )
     plot_group_stability(group_importance, OUT_GROUP_PLOT)
     plot_ablation(ablation_folds, OUT_ABLATION_PLOT)
+    write_legacy_warning_manifest(
+        OUT_LEGACY_MANIFEST,
+        producer="explainability.shap_stability",
+        artifacts=(
+            OUT_PROTOCOL.relative_to(ROOT),
+            OUT_FEATURE_IMPORTANCE.relative_to(ROOT),
+            OUT_FEATURE_STABILITY.relative_to(ROOT),
+            OUT_RANK_STABILITY.relative_to(ROOT),
+            OUT_STATION_FEATURE_IMPORTANCE.relative_to(ROOT),
+            OUT_STATION_FEATURE_STABILITY.relative_to(ROOT),
+            OUT_GROUP_IMPORTANCE.relative_to(ROOT),
+            OUT_ABLATION_FOLDS.relative_to(ROOT),
+            OUT_ABLATION_SUMMARY.relative_to(ROOT),
+            OUT_GROUP_PLOT.relative_to(ROOT),
+            OUT_ABLATION_PLOT.relative_to(ROOT),
+        ),
+    )
 
     print("[shap-stability] primary ablation summary:")
     print(ablation_summary.to_string(index=False))

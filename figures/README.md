@@ -65,7 +65,7 @@
 | `tangent_angle/uniform_rates.csv` | 保存各测点自动等速候选段、参考速率和稳定性统计 | 参数审计表 | 专家复核 `v_eq`，不能直接当作已验证参数 |
 | `tangent_angle/review/*_stage_review.png` | 8 个测点的累计位移、速率、加速度和 15/30/60 日候选阶段复核图 | 专家复核图 | 供专家结合宏观变形资料独立确定等速阶段，不标注"最佳阶段" |
 | `tangent_angle/review/candidate_stage_comparison.csv` | 8 个测点在 15/30/60 日窗口下的参数来源、速率统计、切线角等级、相对 30 日一致率及融合影响 | 综合审计表 | 供专家核对参数影响，不得按一致率或报警天数自动选优 |
-| `thresholds/v0_thresholds.csv` | 保存遗留路径使用的 8 个测点动态 V0、5V0、10V0、公式参数和方法来源 | 历史参数审计表 | 仅服务旧 V0/onset/NGBoost/SHAP 标签；不是当前正式五级规则的阈值 |
+| `thresholds/v0_thresholds.csv` | 保存遗留路径使用的 8 个测点动态 V0、5V0、10V0、公式参数和方法来源 | 历史参数审计表 | 新导出行写入 `warning_path=legacy_exploratory` 与 `formal_warning_output=false`；仅服务旧 V0/onset/NGBoost/SHAP 标签，不是当前正式五级规则的阈值 |
 | `sensitivity/v0_sensitivity.csv` | 汇总 15/30/60 日窗口与 0.85/0.90/0.95 截断分位数组合的等级、事件和默认一致率 | 敏感性摘要表 | 说明 V0 结论对预设参数的依赖范围，不用于选优 |
 | `sensitivity/v0_parameters.csv` | 保存 9 组配置下每个测点的 V0、5V0、10V0 和估计样本数 | 参数审计表 | 追溯 V0 敏感性结果到测点参数 |
 | `sensitivity/tangent_sensitivity.csv` | 汇总 27 组候选窗口、平滑和持续性规则的最终等级、融合原因与一致率 | 敏感性摘要表 | 区分等速候选窗口与工程平滑规则的影响 |
@@ -73,7 +73,7 @@
 | `warning_onset/onset_events.csv` | 保存连续黄色及以上事件的起止、持续时间和可预测性 | 事件审计表 | 说明独立事件数量 |
 | `warning_onset/onset_targets.csv` | 保存逐日 at-risk 状态及未来 1/3/7 日 onset 标签 | 派生标签表 | 后续未来预警模型的目标表 |
 | `warning_onset/onset_inventory.csv` | 汇总各窗口正负日期和可预测事件数量 | 摘要表 | 判断是否具备可靠建模和置信区间条件 |
-| `warning_fusion/warning_fusion.csv` | 保存历史 V0、切线角、NGBoost 旁证、最终等级和融合原因 | 历史融合表 | 逐日审计旧规则如何升级；不是本轮正式四指标五级融合输出 |
+| `warning_fusion/warning_fusion.csv` | 保存历史 V0、切线角、NGBoost 旁证、最终等级和融合原因 | 历史融合表 | 新生成 CSV 写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和方法 ID；逐日审计旧规则如何升级，不是本轮正式四指标五级融合输出 |
 
 ## 保留原则
 
@@ -81,3 +81,4 @@
 - 三个阶段原先各自保存的 `v0_thresholds.csv` 内容完全相同，现合并为 `thresholds/v0_thresholds.csv`。
 - 其余 CSV 承担不同任务，不是重复文件。需要清理空间时可以整体删除并按 README 的运行顺序重建，但不要只删除某一张支撑表后继续引用旧结果。
 - 如果未来 SHAP、NGBoost 和 onset 使用不同的 V0 参数，必须按分析范围分别命名输出，不能继续覆盖公共阈值表。
+- 历史脚本的 figures 输出目录会同时写入 `legacy_warning_manifest.json`，使 PNG 等非表格产物也可追溯为非正式；`models/ngboost.pkl` 配套同目录的 `ngboost_legacy_warning_manifest.json`。已存档 CSV 若早于上述字段或 sidecar，仍作为历史快照保留，其身份以 [`docs/legacy_warning_artifact_inventory.md`](../docs/legacy_warning_artifact_inventory.md) 为准。

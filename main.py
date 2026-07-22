@@ -16,6 +16,8 @@ from typing import Callable, Sequence
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_MANIFEST = ROOT / "figures" / "pipeline" / "latest_run.json"
+WARNING_PIPELINE_SCOPE = "research_and_legacy_exploratory_only"
+FORMAL_WARNING_ENTRY = "code/warning/formal_warning.py"
 
 
 @dataclass(frozen=True)
@@ -25,6 +27,8 @@ class Stage:
     description: str
     inputs: tuple[str, ...] = ()
     outputs: tuple[str, ...] = ()
+    warning_artifact_scope: str = "research_support"
+    formal_warning_output: bool = False
 
 
 STAGES = (
@@ -43,7 +47,7 @@ STAGES = (
     Stage(
         "onset",
         "code/warning/onset_analysis.py",
-        "生成未来 onset 标签和事件盘点",
+        "生成遗留 V0 标签的未来 onset 盘点（历史/探索）",
         inputs=("data/monitoring_data.csv",),
         outputs=(
             "figures/warning_onset/onset_events.csv",
@@ -51,11 +55,12 @@ STAGES = (
             "figures/warning_onset/onset_inventory.csv",
             "figures/thresholds/v0_thresholds.csv",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "shap",
         "code/explainability/shap_select.py",
-        "训练解释模型并输出 SHAP 分析",
+        "训练遗留 V0 标签解释模型并输出 SHAP 分析（历史/探索）",
         inputs=("data/monitoring_data.csv",),
         outputs=(
             "figures/shap/shap_reg_summary.png",
@@ -67,11 +72,12 @@ STAGES = (
             "figures/shap/shap_provenance.json",
             "figures/thresholds/v0_thresholds.csv",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "shap-stability",
         "code/explainability/shap_stability.py",
-        "执行跨折 SHAP 稳定性和预注册特征组消融",
+        "执行遗留标签的跨折 SHAP 稳定性和特征组消融（历史/探索）",
         inputs=("data/monitoring_data.csv", "docs/shap_stability_protocol.md"),
         outputs=(
             "figures/shap/stability/cross_fold_protocol.csv",
@@ -86,6 +92,7 @@ STAGES = (
             "figures/shap/stability/shap_group_stability.png",
             "figures/shap/stability/group_ablation.png",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "convlstm",
@@ -169,7 +176,7 @@ STAGES = (
     Stage(
         "ngboost",
         "code/warning/ngboost_warn.py",
-        "训练 NGBoost 预警概率模型",
+        "训练遗留 V0 当日状态 NGBoost（历史/探索）",
         inputs=("data/features.csv", "data/monitoring_data.csv"),
         outputs=(
             "models/ngboost.pkl",
@@ -178,22 +185,24 @@ STAGES = (
             "figures/ngboost/warning_probabilities.csv",
             "figures/thresholds/v0_thresholds.csv",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "fusion",
         "code/warning/warning_fusion.py",
-        "融合 V0、切线角和概率旁证",
+        "复核旧 30 日 V0 主副融合（历史/探索）",
         inputs=(
             "data/features.csv",
             "data/monitoring_data.csv",
             "figures/ngboost/warning_probabilities.csv",
         ),
         outputs=("figures/warning_fusion/warning_fusion.csv",),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "sensitivity",
         "code/warning/sensitivity_analysis.py",
-        "执行预设参数敏感性分析",
+        "执行遗留 V0/切线角参数敏感性分析（历史/探索）",
         inputs=("data/monitoring_data.csv",),
         outputs=(
             "figures/sensitivity/v0_sensitivity.csv",
@@ -201,11 +210,12 @@ STAGES = (
             "figures/sensitivity/tangent_sensitivity.csv",
             "figures/sensitivity/tangent_parameters.csv",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
         "tangent-review",
         "code/features/tangent_stage_review.py",
-        "生成等速阶段专家复核材料",
+        "生成遗留融合影响的等速阶段专家复核材料（历史/探索）",
         inputs=("data/monitoring_data.csv",),
         outputs=(
             "figures/tangent_angle/review/MJ9_stage_review.png",
@@ -218,6 +228,7 @@ STAGES = (
             "figures/tangent_angle/review/ATU5_stage_review.png",
             "figures/tangent_angle/review/candidate_stage_comparison.csv",
         ),
+        warning_artifact_scope="legacy_exploratory",
     ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
@@ -314,6 +325,9 @@ def run_pipeline(
     manifest = {
         "schema_version": 2,
         "status": "running",
+        "warning_pipeline_scope": WARNING_PIPELINE_SCOPE,
+        "formal_warning_output": False,
+        "formal_warning_entry": FORMAL_WARNING_ENTRY,
         "started_at": timestamp(),
         "finished_at": None,
         "git_commit": current_git_commit(),
@@ -343,6 +357,8 @@ def run_pipeline(
         stage_result = {
             "name": stage.name,
             "script": stage.script,
+            "warning_artifact_scope": stage.warning_artifact_scope,
+            "formal_warning_output": stage.formal_warning_output,
             "status": "running",
             "elapsed_seconds": None,
             "returncode": None,
@@ -506,7 +522,10 @@ def main(
     args = build_parser().parse_args(argv)
     if args.list:
         for stage in STAGES:
-            print(f"{stage.name:16s} {stage.description}")
+            print(
+                f"{stage.name:24s} [{stage.warning_artifact_scope}] "
+                f"{stage.description}"
+            )
         return 0
 
     stages = select_stages(args.stage, args.skip)
