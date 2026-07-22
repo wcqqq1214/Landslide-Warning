@@ -108,7 +108,7 @@ class _StagedComponent:
 
 
 @dataclass(frozen=True)
-class _FileReplacement:
+class FileReplacement:
     """One staged file that will atomically replace its live counterpart."""
 
     source: Path
@@ -518,7 +518,7 @@ def _retarget_staged_component_manifests(
         )
 
 
-def _promote_staged_files(replacements: tuple[_FileReplacement, ...]) -> None:
+def promote_staged_files(replacements: tuple[FileReplacement, ...]) -> None:
     """Atomically replace each live file and roll back catchable errors.
 
     This protects the live snapshot from ordinary writer or filesystem errors.
@@ -534,7 +534,7 @@ def _promote_staged_files(replacements: tuple[_FileReplacement, ...]) -> None:
             dir=replacements[0].target.parent.parent,
         )
     )
-    completed: list[tuple[_FileReplacement, Path | None]] = []
+    completed: list[tuple[FileReplacement, Path | None]] = []
     try:
         for index, replacement in enumerate(replacements):
             replacement.target.parent.mkdir(parents=True, exist_ok=True)
@@ -678,17 +678,17 @@ def write_draft_warning_evidence_bundle(
             + "\n",
             encoding="utf-8",
         )
-        _promote_staged_files(
+        promote_staged_files(
             tuple(
-                _FileReplacement(component.output_path, component.target_output_path)
+                FileReplacement(component.output_path, component.target_output_path)
                 for component in staged_components
             )
             + tuple(
-                _FileReplacement(component.manifest_path, component.target_manifest_path)
+                FileReplacement(component.manifest_path, component.target_manifest_path)
                 for component in staged_components
             )
             + (
-                _FileReplacement(
+                FileReplacement(
                     staged_bundle_manifest_path,
                     target_dir / BUNDLE_MANIFEST_FILENAME,
                 ),
@@ -744,7 +744,9 @@ __all__ = [
     "DraftEvidenceBundleArtifacts",
     "DraftEvidenceBundleIntegrityError",
     "DraftEvidenceBundleProtocolError",
+    "FileReplacement",
     "RETIRED_ARTIFACTS_EXCLUDED",
     "OOTANG_STATIONS",
+    "promote_staged_files",
     "write_draft_warning_evidence_bundle",
 ]

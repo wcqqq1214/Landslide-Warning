@@ -389,9 +389,15 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 为防止“研究管线可以运行”被误读为“本轮正式预警已经生成”，新增[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)作为未来正式执行器的唯一代码接缝。`run_formal_warning()` 先调用 `require_frozen_protocol()`；当前 `1.3-draft` 协议仍有未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`：模块尚未注册实际四指标时间线，且入口不接受任意 callable，不能把旧 V0/融合函数注入为“正式”执行器。
 
-历史 `main.py` 保持可复核，但其运行清单固定为 `warning_pipeline_scope=research_and_legacy_exploratory_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`。`warning_fusion.py`、旧 `threshold_rows()` 及上述可单独运行脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。这只澄清产物身份，不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
+`main.py` 保持可复核，运行清单固定为 `warning_pipeline_scope=research_legacy_and_operational_draft_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`，而新的 `ootang-operational` 阶段单列为 `operational_draft`。`warning_fusion.py`、旧 `threshold_rows()` 及上述历史脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。新增阶段也不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
 
 完整的模块—产物—用途—禁止用途映射见[`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。旧快照若早于这些字段，仍按该清单解释为历史材料；重新运行旧脚本才会写入新标识。Vajont 不进入本次隔离工作，也不因此获得启动授权。
+
+#### 4.2.9 藕塘实施版运行（2026-07-23）
+
+用户依据导师“先跑通藕塘、后续再按意见改动”的要求，授权采用可替换的实施版路线。新增 [`config/ootang_operational_run.v1.draft.json`](../config/ootang_operational_run.v1.draft.json) 与 [`code/warning/operational_run.py`](../code/warning/operational_run.py)：它先重建同一基础草案协议的七份证据，再从 fit-only 原始速度 KMeans 对照候选中读取 `V`、`σ`、`V0`。`V0±σ`、`5V0/10V0`、切线角蓝带与 `80°/85°`、`ΔV` 的 `1.4826×MAD`/中心及测点、滑坡体支撑数量都以 JSON 中的可执行范围表或数值字段驱动；配置会锁定基础协议 `1.3-draft` 的内容指纹和完整七项未决项。输出仅限 calibration/test 的逐点与逐日表、参数表和总 manifest。
+
+这些选择是为了让藕塘链路可整体重跑、可供导师直接审阅，并不解除基础 `1.3-draft` 协议中的 `stable_segment_selection`、blue 容差、`ΔV`、`F`、`F_site` 和不规则采样门禁。所有新 CSV 和 manifest 固定为 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`，且先在暂存目录完成、仅在成功后提升；可捕获的提升失败会恢复旧快照。KMeans 仍只被写作项目特有运行基线，不可称为指定 Word 的 MVIF `V0` 实现。完整公式、替换方式和限制见 [`ootang_operational_run.md`](ootang_operational_run.md)。
 
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 

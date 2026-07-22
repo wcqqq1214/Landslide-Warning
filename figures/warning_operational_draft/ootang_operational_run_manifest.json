@@ -1,0 +1,96 @@
+{
+  "artifact_kind": "ootang_operational_four_indicator_run",
+  "artifact_status": "operational_draft_not_formal",
+  "base_draft_protocol": {
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "id": "ootang-five-level-rule-v1",
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/config/ootang_warning_protocol.v1.draft.json",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.3-draft"
+  },
+  "case": "ootang",
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "formal_warning_output": false,
+  "not_claimed": [
+    "formal_warning_output",
+    "specified_word_thesis_MVIF_V0_implementation",
+    "supervised_warning_classifier_performance",
+    "Vajont_external_case",
+    "test_period_parameter_selection"
+  ],
+  "ootang_stations": [
+    "ATU1",
+    "ATU2",
+    "ATU3",
+    "ATU4",
+    "ATU5",
+    "MJ1",
+    "MJ3",
+    "MJ9"
+  ],
+  "operational_profile": {
+    "content_sha256": "62509ae0bd7f9d4f017f45c682e79042a09a8f6b956cb25d93cf28861ea3a1d0",
+    "id": "ootang-operational-four-indicator-v1",
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/config/ootang_operational_run.v1.draft.json",
+    "status": "operational_draft",
+    "version": "1.0-draft"
+  },
+  "outputs": {
+    "site_timeline": {
+      "n_rows": 514,
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft/ootang_operational_site_timeline.csv",
+      "sha256": "2cbaf3047e46ed4543fec3c107b5ea334091f3f8c509d34d85f2ae8b449e3578"
+    },
+    "station_timeline": {
+      "n_rows": 4112,
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft/ootang_operational_station_timeline.csv",
+      "sha256": "c2e76515c802f89d514e82a51b74879339e24054fddc5edd25f9d2f527850111"
+    },
+    "thresholds": {
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft/ootang_operational_thresholds.csv",
+      "sha256": "cdeccd03a00e66545d56ef42feb3baae568ce3d046a5e700c36722f97edf1ae4"
+    }
+  },
+  "parameter_fit_splits": [
+    "fit"
+  ],
+  "result_splits": [
+    "calibration",
+    "test"
+  ],
+  "result_status_counts": {
+    "site_fusion": {
+      "insufficient_valid_station_results": 341,
+      "uncorroborated": 67,
+      "valid": 106
+    },
+    "station_fusion": {
+      "uncorroborated": 1656,
+      "valid": 2456
+    }
+  },
+  "source_inputs": {
+    "draft_evidence_manifest": {
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/ootang_draft_warning_evidence_manifest.json",
+      "sha256": "3a5c4c97a8d01d61dbacb2d1b92e8aecac096dbf3032ea6201836181f73414fb"
+    },
+    "kinematics": {
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+      "sha256": "a9a8292c300885159db7dca7cf25f001516f64f06c8e99b8973921635110e52f"
+    },
+    "predictions": {
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+      "sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459"
+    }
+  },
+  "vajont_used": false
+}

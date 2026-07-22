@@ -128,13 +128,23 @@ def _nonvalid_result(
     )
 
 
-def fuse_station_indicators(
+def _require_minimum_support(value: int) -> int:
+    if isinstance(value, bool) or not isinstance(value, Integral):
+        raise ValueError("minimum_support must be an integer from 1 to 4")
+    minimum_support = int(value)
+    if not 1 <= minimum_support <= len(ALL_INDICATORS):
+        raise ValueError("minimum_support must be an integer from 1 to 4")
+    return minimum_support
+
+
+def _fuse_station_indicators(
     *,
     interval_level: int | WarningLevel | None,
     velocity_level: int | WarningLevel | None,
     delta_v_state: str | None,
     tangent_angle_level: int | WarningLevel | None,
     input_statuses: Mapping[str, str] | None = None,
+    minimum_support: int,
 ) -> StationFusionResult:
     """Fuse one station's four indicators with explicit missing-data handling.
 
@@ -177,7 +187,7 @@ def fuse_station_indicators(
     corroborated = [
         (level, supporters)
         for level, supporters in support_by_level
-        if len(supporters) >= DEFAULT_MINIMUM_SUPPORT
+        if len(supporters) >= minimum_support
     ]
     candidate_max = max(levels.values())
     if corroborated:
@@ -213,6 +223,52 @@ def fuse_station_indicators(
     )
 
 
+def fuse_station_indicators(
+    *,
+    interval_level: int | WarningLevel | None,
+    velocity_level: int | WarningLevel | None,
+    delta_v_state: str | None,
+    tangent_angle_level: int | WarningLevel | None,
+    input_statuses: Mapping[str, str] | None = None,
+) -> StationFusionResult:
+    """Fuse inputs with the frozen draft candidate's two-support default."""
+
+    return _fuse_station_indicators(
+        interval_level=interval_level,
+        velocity_level=velocity_level,
+        delta_v_state=delta_v_state,
+        tangent_angle_level=tangent_angle_level,
+        input_statuses=input_statuses,
+        minimum_support=DEFAULT_MINIMUM_SUPPORT,
+    )
+
+
+def fuse_station_indicators_with_minimum_support(
+    *,
+    interval_level: int | WarningLevel | None,
+    velocity_level: int | WarningLevel | None,
+    delta_v_state: str | None,
+    tangent_angle_level: int | WarningLevel | None,
+    input_statuses: Mapping[str, str] | None = None,
+    minimum_support: int,
+) -> StationFusionResult:
+    """Apply the same transparent rule with a profile-declared support count.
+
+    The operational Ootang profile uses this explicit variant so a future
+    supervisor-approved support count is a versioned input, while the original
+    draft candidate above retains its fixed public default.
+    """
+
+    return _fuse_station_indicators(
+        interval_level=interval_level,
+        velocity_level=velocity_level,
+        delta_v_state=delta_v_state,
+        tangent_angle_level=tangent_angle_level,
+        input_statuses=input_statuses,
+        minimum_support=_require_minimum_support(minimum_support),
+    )
+
+
 __all__ = [
     "ALL_INDICATORS",
     "DELTA_V_STATES",
@@ -221,4 +277,5 @@ __all__ = [
     "ORDINAL_INDICATORS",
     "StationFusionResult",
     "fuse_station_indicators",
+    "fuse_station_indicators_with_minimum_support",
 ]

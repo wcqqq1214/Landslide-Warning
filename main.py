@@ -16,7 +16,7 @@ from typing import Callable, Sequence
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_MANIFEST = ROOT / "figures" / "pipeline" / "latest_run.json"
-WARNING_PIPELINE_SCOPE = "research_and_legacy_exploratory_only"
+WARNING_PIPELINE_SCOPE = "research_legacy_and_operational_draft_only"
 FORMAL_WARNING_ENTRY = "code/warning/formal_warning.py"
 
 
@@ -172,6 +172,24 @@ STAGES = (
             "figures/convlstm/capacity_selected_predictions.csv",
             "figures/convlstm/capacity_selected_comparison.csv",
         ),
+    ),
+    Stage(
+        "ootang-operational",
+        "code/warning/operational_run.py",
+        "运行藕塘四指标实施版并输出非正式逐点/滑坡体时间线",
+        inputs=(
+            "data/ootang_kinematics_long.csv",
+            "figures/convlstm/forecast_predictions.csv",
+            "config/ootang_warning_protocol.v1.draft.json",
+            "config/ootang_operational_run.v1.draft.json",
+        ),
+        outputs=(
+            "figures/warning_operational_draft/ootang_operational_thresholds.csv",
+            "figures/warning_operational_draft/ootang_operational_station_timeline.csv",
+            "figures/warning_operational_draft/ootang_operational_site_timeline.csv",
+            "figures/warning_operational_draft/ootang_operational_run_manifest.json",
+        ),
+        warning_artifact_scope="operational_draft",
     ),
     Stage(
         "ngboost",
