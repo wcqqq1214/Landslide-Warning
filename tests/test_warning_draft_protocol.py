@@ -43,12 +43,11 @@ from warning.mvif import (  # noqa: E402
     INITIAL_TAU_EXCESS,
     MAX_FUNCTION_EVALUATIONS_PER_START,
 )
-from warning.mvif_initial_slope import (  # noqa: E402
-    CONVEXITY_WINDOW_DAYS,
-    PROFILE_CONFIDENCE_LEVEL,
-    SIGMA_DDOF as MVIF_INITIAL_SLOPE_SIGMA_DDOF,
-    UNIFORM_L_LOWER,
-    UNIFORM_L_UPPER,
+from warning.bai_perron_initial_slope import (  # noqa: E402
+    MAX_SEGMENTS,
+    MIN_SEGMENT_OBSERVATIONS,
+    REGRESSION_PARAMETERS_PER_SEGMENT,
+    SEGMENT_COUNT_SELECTION,
 )
 
 
@@ -88,8 +87,11 @@ class WarningDraftProtocolTests(unittest.TestCase):
         mvif_candidate = protocol["confirmed"]["v0_framework"][
             "mvif_trend_fit_diagnostic"
         ]
-        initial_slope_candidate = protocol["confirmed"]["v0_framework"][
+        retired_initial_slope_candidate = protocol["confirmed"]["v0_framework"][
             "mvif_initial_slope_profile_candidate"
+        ]
+        bai_perron_candidate = protocol["confirmed"]["v0_framework"][
+            "bai_perron_mvif_initial_slope_candidate"
         ]
         delta_v_candidate = protocol["confirmed"]["delta_v"]["diagnostic_candidate"]
         fusion_candidate = protocol["confirmed"]["fusion"]["per_station_candidate"]
@@ -162,36 +164,48 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertIn("does not promote", post_result_decision["next_requirement"])
         self.assertIn("V0", mvif_candidate["not_evaluated"])
         self.assertEqual(
-            initial_slope_candidate["status"],
-            "draft_candidate_not_formal",
+            retired_initial_slope_candidate["status"],
+            "retired_superseded_by_bai_perron_draft",
         )
         self.assertEqual(
-            initial_slope_candidate["candidate_method_id"],
+            retired_initial_slope_candidate["candidate_method_id"],
             "mvif_trend_earliest_uniform_slope_profile",
         )
         self.assertEqual(
-            initial_slope_candidate["trend_selection"]["window_days"],
-            CONVEXITY_WINDOW_DAYS,
+            bai_perron_candidate["status"],
+            "draft_candidate_not_formal",
         )
         self.assertEqual(
-            initial_slope_candidate["trend_selection"]["uniform_l_interval"],
-            [UNIFORM_L_LOWER, UNIFORM_L_UPPER],
+            bai_perron_candidate["candidate_method_id"],
+            "strict_mvif_bai_perron_initial_slope",
         )
         self.assertEqual(
-            initial_slope_candidate["trend_selection"]["selection_rule"],
-            "earliest_contiguous_uniform_window_run_on_fitted_mvif_trend",
+            bai_perron_candidate["strict_mvif_precondition"],
+            "strict_accepted_finite_tf_MVIF_fit_required_before_segmentation",
         )
         self.assertEqual(
-            initial_slope_candidate["target_profile"]["confidence_level"],
-            PROFILE_CONFIDENCE_LEVEL,
+            bai_perron_candidate["segmentation"]["minimum_segment_observations"],
+            MIN_SEGMENT_OBSERVATIONS,
         )
         self.assertEqual(
-            initial_slope_candidate["candidate_statistics"]["sigma_ddof"],
-            MVIF_INITIAL_SLOPE_SIGMA_DDOF,
+            bai_perron_candidate["segmentation"]["max_segments"],
+            MAX_SEGMENTS,
         )
+        self.assertEqual(
+            bai_perron_candidate["segmentation"]["segment_count_selection"],
+            SEGMENT_COUNT_SELECTION,
+        )
+        self.assertEqual(
+            bai_perron_candidate["segmentation"]["regression_parameters_per_segment"],
+            REGRESSION_PARAMETERS_PER_SEGMENT,
+        )
+        self.assertEqual(
+            bai_perron_candidate["segmentation"]["selection_rule"],
+            "bic_selected_bai_perron_piecewise_ols_first_accelerating_segment",
+        )
+        self.assertIn("sigma_convention", bai_perron_candidate["not_evaluated"])
         self.assertIn(
-            "formal_v0_adoption",
-            initial_slope_candidate["not_evaluated"],
+            "formal_v0_adoption", bai_perron_candidate["not_evaluated"]
         )
         self.assertEqual(
             fusion_candidate["minimum_support"],

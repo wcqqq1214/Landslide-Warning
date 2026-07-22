@@ -17,7 +17,7 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from warning import mvif  # noqa: E402
-from warning.mvif import fit_mvif_trend  # noqa: E402
+from warning.mvif import evaluate_fitted_mvif_trend, fit_mvif_trend  # noqa: E402
 
 
 def _mvif_frame(
@@ -68,6 +68,16 @@ class MvifTrendFitTests(unittest.TestCase):
         self.assertEqual(result.n_converged_fits, 6)
         self.assertNotIn("V0", result.to_record())
         self.assertNotIn("velocity_level", result.to_record())
+
+        evaluated = evaluate_fitted_mvif_trend(result, frame["date"])
+        np.testing.assert_allclose(
+            evaluated,
+            frame["displacement"].to_numpy(dtype=float),
+            rtol=0.0,
+            atol=1e-6,
+        )
+        with self.assertRaisesRegex(ValueError, "inside the fit period"):
+            evaluate_fitted_mvif_trend(result, pd.to_datetime(["2030-01-01"]))
 
     def test_fails_instead_of_fabricating_a_failure_time_for_linear_data(self):
         elapsed_days = np.arange(0.0, 101.0)

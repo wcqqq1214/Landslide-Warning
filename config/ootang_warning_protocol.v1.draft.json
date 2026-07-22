@@ -1,6 +1,6 @@
 {
   "protocol_id": "ootang-five-level-rule-v1",
-  "protocol_version": "1.2-draft",
+  "protocol_version": "1.3-draft",
   "status": "draft",
   "case": "ootang",
   "revision_date": "2026-07-22",
@@ -24,11 +24,23 @@
     },
     {
       "source": "https://xbdz.net.cn/article/doi/10.12401/j.nwg.2022034",
-      "role": "Wang_An_2023_curve_convexity_uniform_stage_method_source_boundary_only"
+      "role": "Wang_An_2023_retired_historical_candidate_source_boundary_not_active"
     },
     {
       "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3490710/",
-      "role": "prediction_profile_likelihood_target_functional_uncertainty_methodological_reference_only"
+      "role": "retired_historical_profile_candidate_uncertainty_reference_not_active"
+    },
+    {
+      "source": "https://onlinelibrary.wiley.com/doi/10.1002/jae.659",
+      "role": "Bai_Perron_multiple_structural_change_computation_and_information_criteria_methodological_basis_for_draft_selection"
+    },
+    {
+      "source": "https://link.springer.com/article/10.1007/s12665-015-5022-2",
+      "role": "Wu_et_al_2016_step_like_landslide_deformation_state_domain_compatibility_reference_not_a_daily_V0_rule"
+    },
+    {
+      "source": "https://www.sciencedirect.com/science/article/pii/S0013795212001961",
+      "role": "Intrieri_et_al_2012_site_specific_expert_review_boundary_reference"
     }
   ],
   "confirmed": {
@@ -97,7 +109,7 @@
         "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
         "intercept_policy": "C_is_an_estimated_intercept_not_a_fixed_observed_s0",
         "basis": "The specified Word thesis displays +s0 but names A, B, C as fitting parameters; the verified related Chen et al. (2024) MVIF source uses +C and maximum-likelihood fitting. The user authorized +C as the reproducible reconciliation.",
-        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_itself_define_an_initial_slope_window_or_a_formal_V0. The_strict_finite_tf_diagnostic_remains_a_separate_conservative_baseline, and_the_distinct_target_slope_candidate_below_remains_draft_only."
+        "scope": "Resolves_only_the_s0_C_symbol_conflict; it_does_not_itself_define_an_initial_slope_window_or_a_formal_V0. The_strict_finite_tf_diagnostic_remains_a_separate_conservative_baseline, and_the_distinct_Bai_Perron_target_slope_candidate_below_remains_draft_only."
       },
       "mvif_trend_fit_diagnostic": {
         "status": "diagnostic_only_no_v0_until_initial_slope_rule_is_frozen",
@@ -143,69 +155,66 @@
         ]
       },
       "mvif_initial_slope_profile_candidate": {
-        "status": "draft_candidate_not_formal",
+        "status": "retired_superseded_by_bai_perron_draft",
+        "retired_date": "2026-07-22",
         "candidate_method_id": "mvif_trend_earliest_uniform_slope_profile",
-        "candidate_method_role": "user_authorized_project_adaptation_of_Wang_An_on_fitted_MVIF_trend_not_formal_word_v0_implementation",
+        "candidate_method_role": "retired_user_authorized_Wang_An_L_profile_adaptation_not_an_active_Word_V0_implementation",
+        "retirement_reason": "The 2023 regional curve-convexity rule was not the specified Word thesis's MVIF automatic-selection method, its exact daily operational convention was not source-aligned for this project, and its current Ootang output selected the whole fit history rather than a physically separated initial stage.",
+        "historical_artifacts": [
+          "figures/warning_draft/mvif_initial_slope_candidates.csv",
+          "figures/warning_draft/mvif_initial_slope_candidates_manifest.json"
+        ],
+        "active_execution_policy": "The historical module and artifacts remain reproducibility records only. The current protocol must reject new materialization and use bai_perron_mvif_initial_slope_candidate instead."
+      },
+      "bai_perron_mvif_initial_slope_candidate": {
+        "status": "draft_candidate_not_formal",
+        "candidate_method_id": "strict_mvif_bai_perron_initial_slope",
+        "candidate_method_role": "project_adaptation_for_automatic_MVIF_initial_stable_slope_candidate_not_formal_Word_V0_implementation",
         "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
-        "word_thesis_v0_input_status": "diagnostic_candidate_with_selection_conditioned_target_identifiability_not_formal_v0_acceptance",
+        "word_thesis_v0_input_status": "strict_MVIF_gated_draft_V_candidate_only_no_sigma_or_V0",
         "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
-        "input": "per_station_cumulative_displacement_rows_with_displacement_valid",
+        "input": "per_station_cumulative_displacement_rows_with_displacement_valid_then_strictly_accepted_fitted_MVIF_trend_displacement",
         "fit_only": true,
         "time_origin": "first_fit_displacement_date_numerical_coordinate_only",
-        "objective": "gaussian_residual_least_squares_MVIF_fit_with_selection_conditioned_profile_likelihood_for_the_selected_trend_slope_functional",
-        "daily_sampling_policy": "require_exact_daily_fit_dates_for_the_five_day_L_method; emit_failed_without_resampling_when_non_daily",
-        "baseline_relation": "does_not_modify_or_relax_the_separate_strict_finite_tf_gate; this candidate does_not_assert_a_reliable_finite_tf",
-        "trend_selection": {
-          "source_method": "Wang_An_2023_curve_convexity_L_on_raw_S_t_with_current_nearest_uniform_segment",
-          "source_boundary": "The source's raw_S_t_input_and_current_nearest_selection_are_not_reproduced_as_the_Word_initial_MVIF_slope_rule.",
-          "input": "fitted_MVIF_trend_displacement",
-          "intercept_handling": "local_window_increment_ratio_for_C_invariance",
-          "convexity_ratio": "L=(s(t_mid)-s(t_start))/((s(t_end)-s(t_start))/2)",
-          "window_days": 5,
-          "uniform_l_interval": [0.99, 1.01],
-          "selection_rule": "earliest_contiguous_uniform_window_run_on_fitted_mvif_trend",
-          "project_adaptation": "Apply the Wang-An L interval to the fitted MVIF trend, subtract each local fitted start displacement so C cannot change L, and choose the earliest continuous uniform run rather than the source method's current-nearest raw-curve segment."
+        "objective": "BIC_selected_multiple_structural_change_piecewise_OLS_on_the_strictly_accepted_MVIF_trend_to_audit_a_candidate_initial_slope",
+        "strict_mvif_precondition": "strict_accepted_finite_tf_MVIF_fit_required_before_segmentation",
+        "segmentation": {
+          "algorithm": "Bai_Perron_multiple_structural_change_piecewise_unconstrained_OLS",
+          "input": "strictly_accepted_fitted_MVIF_trend_displacement",
+          "minimum_segment_observations": 30,
+          "max_segments": 6,
+          "segment_count_selection": "bic",
+          "regression_parameters_per_segment": 2,
+          "bic_formula": "n*ln(max(RSS/n,eps*max(1,var(trend_displacement))))+2*K*ln(n)",
+          "continuity_constraint": "none",
+          "selection_rule": "bic_selected_bai_perron_piecewise_ols_first_accelerating_segment",
+          "first_segment_acceptance": "require_positive_initial_slope_and_immediately_following_slope_greater_than_initial_slope",
+          "source_boundary": "Bai-Perron supplies the structural-change computation and model-selection basis; the specified Word thesis does not prescribe this automatic selection rule, so it remains a project draft adaptation."
         },
         "candidate_statistics": {
-          "V": "ordinary_least_squares_slope_of_selected_fitted_MVIF_trend_mm_per_day",
-          "sigma": "sample_standard_deviation_of_selected_fitted_trend_daily_increments_mm_per_day",
-          "sigma_ddof": 1,
-          "candidate_v0": "max(1.5*V,V+2*sigma)",
-          "status": "draft_project_implementation_convention_not_formal_V0"
+          "V": "ordinary_least_squares_slope_of_selected_initial_MVIF_trend_segment_mm_per_day",
+          "sigma": "not_evaluated_until_a_source_or_mentor_approved_operational_convention_is_frozen",
+          "candidate_v0": "not_emitted_until_sigma_convention_and_formal_segment_rule_are_frozen"
         },
-        "target_profile": {
-          "target": "selection_conditioned_ordinary_least_squares_slope_of_the_fixed_selected_fitted_trend_segment",
-          "confidence_level": 0.95,
-          "likelihood_threshold": "RSS_min*exp(chi2_ppf(confidence_level,1)/n_fit_rows)_for_unknown_gaussian_residual_scale",
-          "selection_conditioning": "The earliest uniform segment is selected once from the unconstrained best MVIF trend and held fixed while profiling; its selection uncertainty is not claimed to be included.",
-          "optimizer": "scipy_least_squares_trf_3point_jacobian_x_scale_jac",
-          "max_function_evaluations_per_start": 1000,
-          "max_expansions_per_bound": 12,
-          "bisection_iterations_per_bound": 24,
-          "expansion_factor": 2.0,
-          "bound_requirement": "candidate_statistics_are_emitted_only_if_both_positive_finite_profile_bounds_are_found"
-        },
-        "failure_policy": "emit_explicit_failed_candidate_and_do_not_emit_candidate_V_candidate_sigma_candidate_V0_velocity_level_tangent_angle_fusion_or_warning_output_when_selection_or_two_sided_target_profile_fails",
+        "failure_policy": "emit_explicit_failed_candidate_and_do_not_emit_V_sigma_V0_velocity_level_tangent_angle_fusion_or_warning_output_when_strict_MVIF_fitting_or_Bai_Perron_initial_segment_acceptance_fails",
         "audit_fields": [
-          "n_multistart_attempts",
-          "n_converged_fits",
-          "objective_cost",
-          "n_convexity_windows",
-          "n_valid_convexity_windows",
-          "n_uniform_windows",
-          "uniform_segment_start_date",
-          "uniform_segment_end_date",
-          "uniform_segment_covers_full_fit",
+          "mvif_fit_status",
+          "mvif_fit_failure_reason",
+          "mvif_trend_evaluation_failure_reason",
+          "selected_segment_count",
+          "selected_bic",
+          "one_segment_bic",
+          "initial_segment_start_date",
+          "initial_segment_end_date",
+          "initial_segment_n_observations",
+          "first_break_date",
+          "following_segment_v_mm_per_day",
           "candidate_v_mm_per_day",
-          "candidate_sigma_mm_per_day",
-          "candidate_v0_mm_per_day",
-          "profile_rss_min",
-          "profile_rss_threshold",
-          "profile_v_lower_mm_per_day",
-          "profile_v_upper_mm_per_day",
           "failure_reason"
         ],
         "not_evaluated": [
+          "break_uncertainty",
+          "sigma_convention",
           "formal_initial_stable_slope_rule_acceptance",
           "formal_v0_adoption",
           "five_level_velocity_mapping",
@@ -354,7 +363,7 @@
   "unresolved_items": [
     {
       "id": "stable_segment_selection",
-      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has authorized the +C reconciliation, retained the separate strict finite-tf baseline, and authorized a draft diagnostic candidate that adapts Wang-An 5-day L selection to the fitted MVIF trend and profiles its fixed selected slope. Neither source makes that combination a specified-Word rule, and the candidate has not been accepted as a formal V, sigma, or V0 procedure; it also conditions its profile on a selected segment. The raw-velocity KMeans candidate remains a comparator only.",
+      "reason": "The cited tangent-angle paper requires an identified stable stage, and the specified thesis uses the initial stable slope of MVIF trend displacement for step-type landslides. The user has retained the strict finite-tf baseline and authorized a draft Bai-Perron segmented-regression candidate on a strictly accepted MVIF trend. Bai-Perron is a well-established structural-change computation basis, but neither it nor the specified Word thesis makes the current BIC, minimum-segment, first-acceleration, break-uncertainty, or sigma choices a formal Ootang V, sigma, or V0 rule. The retired Wang-An 5-day-L route remains historical only; raw-velocity KMeans remains a comparator only.",
       "required_before_formal_run": true
     },
     {

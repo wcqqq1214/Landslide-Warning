@@ -1,11 +1,12 @@
-"""Historical writer for the retired Wang--An MVIF candidate.
+"""Write strict-MVIF-gated Bai--Perron initial-slope draft diagnostics.
 
-This runner is intentionally separate from the strict finite-``t_f`` audit and
-from the raw-velocity KMeans comparator.  The current protocol rejects a new
-materialization so stale Wang--An-derived ``V0`` values cannot be mistaken for
-the active method.  The pure helper remains available only to reproduce the
-historical record, and it never turns it into a velocity/tangent/fusion warning
-result.
+The designated Word thesis supplies the MVIF trend-displacement input to its
+``V0`` framework but not an automatic initial-stable-segment algorithm.  This
+runner therefore materializes a fit-only project adaptation: a strict accepted
+MVIF curve is segmented with the Bai--Perron dynamic-programming/BIC route,
+and only an initial segment followed immediately by a higher slope yields a
+draft ``V`` candidate.  ``sigma``, ``V0``, warning levels, fusion, test data,
+and Vajont are deliberately outside this artifact.
 """
 
 from __future__ import annotations
@@ -25,6 +26,26 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
+from warning.bai_perron_initial_slope import (  # noqa: E402
+    BIC_FORMULA,
+    BaiPerronInitialSlopeResult,
+    CONTINUITY_CONSTRAINT,
+    FIT_STATUS_FAILED,
+    FIRST_SEGMENT_ACCEPTANCE,
+    MAX_SEGMENTS,
+    MIN_SEGMENT_OBSERVATIONS,
+    REGRESSION_PARAMETERS_PER_SEGMENT,
+    SEGMENTATION_ALGORITHM,
+    SEGMENT_COUNT_SELECTION,
+    SELECTION_RULE,
+    select_bai_perron_initial_stable_slope,
+)
+from warning.mvif import (  # noqa: E402
+    FIT_STATUS_CANDIDATE as MVIF_FIT_STATUS_CANDIDATE,
+    MvifFitResult,
+    evaluate_fitted_mvif_trend,
+    fit_mvif_trend,
+)
 from warning.mvif_diagnostics import (  # noqa: E402
     DEFAULT_KINEMATICS_PATH,
     DEFAULT_OUTPUT_DIR,
@@ -37,18 +58,6 @@ from warning.mvif_diagnostics import (  # noqa: E402
     _load_fit_selection_inputs,
     _sha256_canonical_csv,
 )
-from warning.mvif_initial_slope import (  # noqa: E402
-    CONVEXITY_WINDOW_DAYS,
-    PROFILE_BISECTION_ITERATIONS,
-    PROFILE_CONFIDENCE_LEVEL,
-    PROFILE_EXPANSION_FACTOR,
-    PROFILE_MAX_EXPANSIONS,
-    PROFILE_MAX_FUNCTION_EVALUATIONS,
-    SIGMA_DDOF,
-    UNIFORM_L_LOWER,
-    UNIFORM_L_UPPER,
-    select_mvif_initial_stable_slope,
-)
 from warning.protocol import (  # noqa: E402
     DEFAULT_PROTOCOL_PATH,
     load_protocol,
@@ -57,14 +66,14 @@ from warning.protocol import (  # noqa: E402
 )
 
 
-SUMMARY_FILENAME = "mvif_initial_slope_candidates.csv"
-MANIFEST_FILENAME = "mvif_initial_slope_candidates_manifest.json"
+SUMMARY_FILENAME = "bai_perron_mvif_initial_slope_candidates.csv"
+MANIFEST_FILENAME = "bai_perron_mvif_initial_slope_candidates_manifest.json"
 CANDIDATE_STATUS = "draft_candidate_not_formal"
 
 
 @dataclass(frozen=True)
-class MvifInitialSlopeCandidateArtifacts:
-    """Paths and station count for one non-formal candidate run."""
+class BaiPerronInitialSlopeCandidateArtifacts:
+    """Paths and station count for one non-formal Bai--Perron run."""
 
     summary_path: Path
     manifest_path: Path
@@ -79,6 +88,27 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _strict_precondition_failure(
+    *,
+    station: str,
+    fit_result: MvifFitResult,
+    failure_reason: str,
+) -> BaiPerronInitialSlopeResult:
+    return BaiPerronInitialSlopeResult(
+        station=station,
+        status=FIT_STATUS_FAILED,
+        failure_reason=failure_reason,
+        fit_start_date=fit_result.fit_start_date,
+        fit_end_date=fit_result.fit_end_date,
+        n_fit_rows=fit_result.n_fit_rows,
+        min_segment_observations=MIN_SEGMENT_OBSERVATIONS,
+        max_segments_considered=min(
+            MAX_SEGMENTS,
+            fit_result.n_fit_rows // MIN_SEGMENT_OBSERVATIONS,
+        ),
+    )
+
+
 def _candidate_records(inputs: _FitSelectionInputs) -> pd.DataFrame:
     records = []
     for boundary in inputs.fit_boundaries.itertuples(index=False):
@@ -86,33 +116,70 @@ def _candidate_records(inputs: _FitSelectionInputs) -> pd.DataFrame:
             inputs.fit_kinematics["station"].eq(boundary.station),
             ["date", "displacement", "displacement_valid"],
         ]
-        result = select_mvif_initial_stable_slope(
+        fit_result = fit_mvif_trend(
             station_kinematics,
             station=boundary.station,
             fit_end_date=boundary.fit_end_date,
         )
-        records.append(result.to_record())
-    return (
-        pd.DataFrame(records)
-        .sort_values("station", kind="stable")
-        .reset_index(drop=True)
+        trend_evaluation_failure_reason: str | None = None
+        if fit_result.status != MVIF_FIT_STATUS_CANDIDATE:
+            selection = _strict_precondition_failure(
+                station=boundary.station,
+                fit_result=fit_result,
+                failure_reason="strict_mvif_fit_failed",
+            )
+        else:
+            try:
+                fitted_trend = evaluate_fitted_mvif_trend(
+                    fit_result,
+                    station_kinematics["date"],
+                )
+                selection = select_bai_perron_initial_stable_slope(
+                    pd.DataFrame(
+                        {
+                            "date": station_kinematics["date"].to_numpy(),
+                            "trend_displacement": fitted_trend,
+                        }
+                    ),
+                    station=boundary.station,
+                    fit_end_date=boundary.fit_end_date,
+                )
+            except (FloatingPointError, ValueError) as exc:
+                trend_evaluation_failure_reason = str(exc)
+                selection = _strict_precondition_failure(
+                    station=boundary.station,
+                    fit_result=fit_result,
+                    failure_reason="strict_mvif_trend_evaluation_failed",
+                )
+        record = selection.to_record()
+        record.update(
+            {
+                "mvif_fit_status": fit_result.status,
+                "mvif_fit_failure_reason": fit_result.failure_reason,
+                "mvif_trend_evaluation_failure_reason": (
+                    trend_evaluation_failure_reason
+                    if fit_result.status == MVIF_FIT_STATUS_CANDIDATE
+                    else None
+                ),
+                "mvif_fit_objective_cost": fit_result.objective_cost,
+                "mvif_fit_tf_elapsed_days": fit_result.tf_elapsed_days,
+            }
+        )
+        records.append(record)
+    return pd.DataFrame(records).sort_values("station", kind="stable").reset_index(
+        drop=True
     )
 
 
 def _candidate_method_metadata(protocol: dict) -> dict[str, Any]:
-    """Read and validate the explicit project-adaptation boundary."""
+    """Read and validate the source/project-adaptation boundary."""
 
     candidate = protocol["confirmed"]["v0_framework"][
-        "mvif_initial_slope_profile_candidate"
+        "bai_perron_mvif_initial_slope_candidate"
     ]
-    if candidate.get("status") == "retired_superseded_by_bai_perron_draft":
-        raise ValueError(
-            "The Wang-An MVIF initial-slope candidate is retired; use "
-            "bai_perron_initial_slope_diagnostics instead."
-        )
     if candidate.get("status") != CANDIDATE_STATUS:
         raise ValueError(
-            "draft protocol MVIF initial-slope candidate status must be "
+            "draft protocol Bai-Perron initial-slope candidate status must be "
             f"{CANDIDATE_STATUS}"
         )
     required_fields = (
@@ -124,7 +191,7 @@ def _candidate_method_metadata(protocol: dict) -> dict[str, Any]:
         "input",
         "time_origin",
         "objective",
-        "daily_sampling_policy",
+        "strict_mvif_precondition",
         "failure_policy",
     )
     metadata: dict[str, Any] = {}
@@ -132,82 +199,72 @@ def _candidate_method_metadata(protocol: dict) -> dict[str, Any]:
         value = candidate.get(field)
         if not isinstance(value, str) or not value.strip():
             raise ValueError(
-                "draft protocol MVIF initial-slope candidate is missing source "
-                f"alignment field: {field}"
+                "draft protocol Bai-Perron initial-slope candidate is missing "
+                f"source alignment field: {field}"
             )
         metadata[field] = value
     if candidate.get("fit_only") is not True:
-        raise ValueError("draft protocol MVIF initial-slope candidate must be fit-only")
+        raise ValueError("draft protocol Bai-Perron candidate must remain fit-only")
+    if (
+        candidate["strict_mvif_precondition"]
+        != "strict_accepted_finite_tf_MVIF_fit_required_before_segmentation"
+    ):
+        raise ValueError("draft protocol Bai-Perron strict MVIF precondition drifted")
 
-    selection = candidate.get("trend_selection")
-    if not isinstance(selection, dict):
-        raise ValueError("draft protocol MVIF initial-slope trend_selection is missing")
-    selection_rule = selection.get("selection_rule")
-    if not isinstance(selection_rule, str) or not selection_rule:
-        raise ValueError("draft protocol MVIF initial-slope selection_rule is missing")
-    metadata["selection_rule"] = selection_rule
-    _validate_runtime_policy(candidate)
+    segmentation = candidate.get("segmentation")
+    if not isinstance(segmentation, dict):
+        raise ValueError("draft protocol Bai-Perron segmentation is missing")
+    expected_segmentation = {
+        "algorithm": SEGMENTATION_ALGORITHM,
+        "input": "strictly_accepted_fitted_MVIF_trend_displacement",
+        "minimum_segment_observations": MIN_SEGMENT_OBSERVATIONS,
+        "max_segments": MAX_SEGMENTS,
+        "segment_count_selection": SEGMENT_COUNT_SELECTION,
+        "regression_parameters_per_segment": REGRESSION_PARAMETERS_PER_SEGMENT,
+        "bic_formula": BIC_FORMULA,
+        "continuity_constraint": CONTINUITY_CONSTRAINT,
+        "selection_rule": SELECTION_RULE,
+        "first_segment_acceptance": FIRST_SEGMENT_ACCEPTANCE,
+    }
+    for field, expected in expected_segmentation.items():
+        if segmentation.get(field) != expected:
+            raise ValueError(
+                f"draft protocol Bai-Perron segmentation.{field} does not match "
+                "the runtime setting"
+            )
+    metadata["segmentation"] = segmentation
+
+    statistics = candidate.get("candidate_statistics")
+    expected_statistics = {
+        "V": "ordinary_least_squares_slope_of_selected_initial_MVIF_trend_segment_mm_per_day",
+        "sigma": "not_evaluated_until_a_source_or_mentor_approved_operational_convention_is_frozen",
+        "candidate_v0": "not_emitted_until_sigma_convention_and_formal_segment_rule_are_frozen",
+    }
+    if not isinstance(statistics, dict):
+        raise ValueError("draft protocol Bai-Perron candidate_statistics is missing")
+    for field, expected in expected_statistics.items():
+        if statistics.get(field) != expected:
+            raise ValueError(
+                f"draft protocol Bai-Perron candidate_statistics.{field} does not "
+                "match the runtime boundary"
+            )
+    metadata["candidate_statistics"] = statistics
+
     not_evaluated = candidate.get("not_evaluated")
     if not isinstance(not_evaluated, list) or not all(
         isinstance(value, str) and value for value in not_evaluated
     ):
-        raise ValueError(
-            "draft protocol MVIF initial-slope not_evaluated must be strings"
-        )
+        raise ValueError("draft protocol Bai-Perron not_evaluated must be strings")
     metadata["not_evaluated"] = not_evaluated
     return metadata
 
 
-def _validate_runtime_policy(candidate: dict) -> None:
-    """Reject artifacts whose stated numerical candidate differs from code."""
-
-    selection = candidate.get("trend_selection")
-    if not isinstance(selection, dict):
-        raise ValueError("draft protocol MVIF initial-slope trend_selection is missing")
-    expected_selection = {
-        "window_days": CONVEXITY_WINDOW_DAYS,
-        "uniform_l_interval": [UNIFORM_L_LOWER, UNIFORM_L_UPPER],
-        "selection_rule": "earliest_contiguous_uniform_window_run_on_fitted_mvif_trend",
-        "intercept_handling": "local_window_increment_ratio_for_C_invariance",
-    }
-    for field, expected in expected_selection.items():
-        if selection.get(field) != expected:
-            raise ValueError(
-                f"draft protocol MVIF initial-slope trend_selection.{field} "
-                "does not match the runtime setting"
-            )
-
-    profile = candidate.get("target_profile")
-    if not isinstance(profile, dict):
-        raise ValueError("draft protocol MVIF initial-slope target_profile is missing")
-    expected_profile = {
-        "confidence_level": PROFILE_CONFIDENCE_LEVEL,
-        "optimizer": "scipy_least_squares_trf_3point_jacobian_x_scale_jac",
-        "max_function_evaluations_per_start": PROFILE_MAX_FUNCTION_EVALUATIONS,
-        "max_expansions_per_bound": PROFILE_MAX_EXPANSIONS,
-        "bisection_iterations_per_bound": PROFILE_BISECTION_ITERATIONS,
-        "expansion_factor": PROFILE_EXPANSION_FACTOR,
-    }
-    for field, expected in expected_profile.items():
-        if profile.get(field) != expected:
-            raise ValueError(
-                f"draft protocol MVIF initial-slope target_profile.{field} "
-                "does not match the runtime setting"
-            )
-    sigma = candidate.get("candidate_statistics")
-    if not isinstance(sigma, dict) or sigma.get("sigma_ddof") != SIGMA_DDOF:
-        raise ValueError(
-            "draft protocol MVIF initial-slope candidate_statistics.sigma_ddof "
-            "does not match the runtime setting"
-        )
-
-
-def build_fit_mvif_initial_slope_candidates(
+def build_fit_bai_perron_initial_slope_candidates(
     *,
     kinematics_path: str | Path,
     predictions_path: str | Path,
 ) -> pd.DataFrame:
-    """Return fit-only trend-slope candidates with no formal warning fields."""
+    """Return strict-MVIF-gated, fit-only Bai--Perron candidate records."""
 
     return _candidate_records(
         _load_fit_selection_inputs(
@@ -217,14 +274,14 @@ def build_fit_mvif_initial_slope_candidates(
     )
 
 
-def write_fit_mvif_initial_slope_candidates(
+def write_fit_bai_perron_initial_slope_candidates(
     *,
     kinematics_path: str | Path = DEFAULT_KINEMATICS_PATH,
     predictions_path: str | Path = DEFAULT_PREDICTIONS_PATH,
     output_dir: str | Path = DEFAULT_OUTPUT_DIR,
     protocol_path: str | Path = DEFAULT_PROTOCOL_PATH,
-) -> MvifInitialSlopeCandidateArtifacts:
-    """Write a profile-audited candidate table and a non-formal manifest."""
+) -> BaiPerronInitialSlopeCandidateArtifacts:
+    """Write a non-formal candidate table and its complete provenance manifest."""
 
     inputs = _load_fit_selection_inputs(
         kinematics_path=kinematics_path,
@@ -259,7 +316,7 @@ def write_fit_mvif_initial_slope_candidates(
             "word_thesis_v0_input_status"
         ],
         "mvif_formula": candidate_method["formula"],
-        "selection_rule": candidate_method["selection_rule"],
+        "selection_rule": candidate_method["segmentation"]["selection_rule"],
         "source_split": FIT_SPLIT,
         "kinematics_temporal_scope": KINEMATICS_TEMPORAL_SCOPE,
         "fit_prediction_input_sha256": fit_prediction_sha256,
@@ -275,7 +332,7 @@ def write_fit_mvif_initial_slope_candidates(
     summary.to_csv(summary_path, index=False)
 
     manifest = {
-        "artifact_kind": "ootang_fit_mvif_initial_slope_candidates",
+        "artifact_kind": "ootang_fit_bai_perron_mvif_initial_slope_candidates",
         "candidate_status": CANDIDATE_STATUS,
         "formal_warning_output": False,
         "protocol": {
@@ -298,13 +355,19 @@ def write_fit_mvif_initial_slope_candidates(
                 "input": candidate_method["input"],
                 "time_origin": candidate_method["time_origin"],
                 "objective": candidate_method["objective"],
-                "daily_sampling_policy": candidate_method["daily_sampling_policy"],
-                "selection_rule": candidate_method["selection_rule"],
+                "strict_mvif_precondition": candidate_method[
+                    "strict_mvif_precondition"
+                ],
+                "selection_rule": candidate_method["segmentation"][
+                    "selection_rule"
+                ],
+                "segmentation": candidate_method["segmentation"],
+                "candidate_statistics": candidate_method["candidate_statistics"],
                 "failure_policy": candidate_method["failure_policy"],
             },
             "source_boundary": {
-                "source_uniform_method": "Wang_An_2023_raw_S_t_current_nearest_uniform_segment",
-                "project_adaptation": "fitted_MVIF_trend_earliest_uniform_segment_with_selection_conditioned_target_profile",
+                "specified_word_thesis": "uses_MVIF_trend_initial_stable_slope_but_does_not_specify_an_automatic_segment_selection_algorithm",
+                "bai_perron": "project_adaptation_for_automatic_fit_only_candidate_selection_not_a_source_prescribed_V0_or_warning_rule",
             },
             "n_stations": int(len(inputs.fit_boundaries)),
             "fit_end_dates": {
@@ -316,12 +379,14 @@ def write_fit_mvif_initial_slope_candidates(
             "path": str(Path(predictions_path)),
             "selected_columns": list(_FIT_PREDICTION_COLUMNS),
             "selected_split": FIT_SPLIT,
+            "test_split_used": False,
         },
         "source_kinematics": {
             "path": str(Path(kinematics_path)),
             "selected_columns": list(_KINEMATICS_COLUMNS),
             "time_filter": "station_date<=station_fit_end_date",
             "temporal_scope": KINEMATICS_TEMPORAL_SCOPE,
+            "vajont_used": False,
         },
         "fit_prediction_input": {
             "sha256": fit_prediction_sha256,
@@ -342,7 +407,7 @@ def write_fit_mvif_initial_slope_candidates(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
-    return MvifInitialSlopeCandidateArtifacts(
+    return BaiPerronInitialSlopeCandidateArtifacts(
         summary_path=summary_path,
         manifest_path=manifest_path,
         n_stations=len(inputs.fit_boundaries),
@@ -352,8 +417,8 @@ def write_fit_mvif_initial_slope_candidates(
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description=(
-            "Historical retired Wang-An MVIF candidate writer; the current protocol "
-            "rejects new materialization."
+            "Write strict-MVIF-gated Bai-Perron initial-slope candidates without "
+            "V0 or warnings."
         )
     )
     parser.add_argument("--kinematics", type=Path, default=DEFAULT_KINEMATICS_PATH)
@@ -365,14 +430,14 @@ def _build_parser() -> argparse.ArgumentParser:
 
 def main() -> None:
     args = _build_parser().parse_args()
-    artifacts = write_fit_mvif_initial_slope_candidates(
+    artifacts = write_fit_bai_perron_initial_slope_candidates(
         kinematics_path=args.kinematics,
         predictions_path=args.predictions,
         output_dir=args.output_dir,
         protocol_path=args.protocol,
     )
     print(
-        "wrote fit-only MVIF initial-slope candidates "
+        "wrote strict-MVIF-gated Bai-Perron initial-slope candidates "
         f"({artifacts.n_stations} stations): {artifacts.summary_path}"
     )
 
@@ -382,6 +447,7 @@ if __name__ == "__main__":
 
 
 __all__ = [
+    "BaiPerronInitialSlopeCandidateArtifacts",
     "CANDIDATE_STATUS",
     "DEFAULT_KINEMATICS_PATH",
     "DEFAULT_OUTPUT_DIR",
@@ -389,8 +455,7 @@ __all__ = [
     "FIT_SPLIT",
     "KINEMATICS_TEMPORAL_SCOPE",
     "MANIFEST_FILENAME",
-    "MvifInitialSlopeCandidateArtifacts",
     "SUMMARY_FILENAME",
-    "build_fit_mvif_initial_slope_candidates",
-    "write_fit_mvif_initial_slope_candidates",
+    "build_fit_bai_perron_initial_slope_candidates",
+    "write_fit_bai_perron_initial_slope_candidates",
 ]

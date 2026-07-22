@@ -1,4 +1,4 @@
-"""Fit-only MVIF initial-stable-slope candidates without warning output.
+"""Historical MVIF initial-slope candidate used for reproduction only.
 
 The designated Word thesis describes ``V0`` from the initial stable slope of
 an MVIF trend-displacement curve, but it does not prescribe an automatic
@@ -13,9 +13,11 @@ project adaptation:
   finite ``t_f`` parameter.
 
 It deliberately remains separate from :mod:`warning.mvif`: the earlier strict
-finite-``t_f`` diagnostic keeps its historical gate unchanged.  This module
-never emits a velocity level, tangent-angle level, fusion result, or formal
-warning output.
+finite-``t_f`` diagnostic keeps its historical gate unchanged.  The current
+protocol retired this Wang--An adaptation in favour of the strict-MVIF-gated
+Bai--Perron draft route.  This module remains only to reproduce its historical
+audit and never emits a velocity level, tangent-angle level, fusion result, or
+formal warning output.
 """
 
 from __future__ import annotations

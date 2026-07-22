@@ -306,7 +306,7 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 1. 王朋伟、安玉科（2023）[《滑坡匀速变形阶段快速诊断方法研究》](https://xbdz.net.cn/article/doi/10.12401/j.nwg.2022034)在原始累计位移 `S–t` 曲线上，以曲线凸凹特性定义 `L=K1/K2`，将 `0.99≤L≤1.01` 作为匀速阶段，在其公路滑坡案例中采用 `5 d` 动态判断窗口；随后取**距当前预警时点最近**的匀速段，并对该段作线性最小二乘去噪以得到速率。论文还给出跨预警时段的速率可靠性规则。它确实是一个可复现的自动匀速段方法，但 `5 d`、`L` 容差、原始曲线输入和“最近段”输出均是该方法的一部分，不能被拆开后静默移植。
 2. [《基于 Verhulst 反函数模型的滑坡初始预测时间选取》](https://rockmech.whrsm.ac.cn/EN/volumn/volumn_1159.shtml)（2008）给出的是原始 VIF 的**拟合起始时间**选择：候选曲线须可在相邻点计算、累计位移曲线形态与监测曲线相似，并使相对位移离散度最小。它解决的是 `t0`/拟合起点，而不是切线角所需的匀速段或其平均速率。
 
-这两篇来源均不能将当前草案升级为指定 Word 的 `V0` 实现：王/安方法选择的是原始 `S–t` 的当前最近段，不是 MVIF 趋势项的**初始**稳定斜率；若把它重写为“先拟合 MVIF、再在其趋势项上选初始段”，该组合规则及其窗口/容差便是新的项目方法，而非任一论文已给规则。更关键的是，当前 8 个藕塘测点均未通过有限 `t_f` 可辨识性门禁，尚不存在可供该组合规则处理的已接受 MVIF 趋势项。因此本轮只记录来源证据，不把王/安（2023）的参数、原始数据路径或可靠性颜色写入协议，也不以它生成 `V0`。若未来要采用它，必须先由用户或导师明确授权把它作为不同于指定 Word 路径的补充方法，并单独冻结其对藕塘的适用范围与验证方案。
+这两篇来源均不能将当前草案升级为指定 Word 的 `V0` 实现：王/安方法选择的是原始 `S–t` 的当前最近段，不是 MVIF 趋势项的**初始**稳定斜率；若把它重写为“先拟合 MVIF、再在其趋势项上选初始段”，该组合规则及其窗口/容差便是新的项目方法，而非任一论文已给规则。更关键的是，当前 8 个藕塘测点均未通过有限 `t_f` 可辨识性门禁，尚不存在可供该组合规则处理的已接受 MVIF 趋势项。因此王/安（2023）现在只在协议中保留为**已退役历史路线的来源边界**，不以其参数、原始数据路径或可靠性颜色生成新的 `V0`；若未来要重新采用它，必须由用户或导师明确授权为独立补充方法，并单独冻结其对藕塘的适用范围与验证方案。
 
 #### 4.2.3.6 指定 Word 的 MVIF 例外表述与 VIF-RF 来源复核（2026-07-22）
 
@@ -316,27 +316,23 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 2. 式（5-3）仅规定 `V0=max(1.5V,V+2σ)`，并把 `V` 定义为“选择初始位移”的平均速率；它本身不解决“初始位移”如何选择。因此不能将该公式误读为“MVIF 拟合失败时可直接在原始位移上任意取一段”的授权。
 3. Hu 等（2021）的期刊官方摘要可直接确认：其 VIF-RF 框架以 VIF 描述三阶段蠕变运动学，以随机森林量化库水位、降雨等外部因素响应。该来源支持“运动学趋势与外部因子可在预测框架中协同考虑”的背景，但本轮可直接获取的官方摘要并未给出 MVIF 趋势项**初始稳定斜率**的自动取值规则；其 VIF-RF 也不是本项目已授权的非监督预警融合函数。
 
-故此轮来源核验本身只增加了“指定 Word 已承认个别案例可能存在 MVIF 匀速率失配”的审计背景，**不**自行构成放宽有限 `t_f` 门禁、裁剪为加速段、改用原始速度 KMeans，或生成藕塘 `V0` 的依据。旧的八个严格门禁结果继续以 `failed/tf_multistart_unstable` 留档；用户随后独立授权的可复现目标斜率候选分支及其仍为 draft 的验证边界，见 4.2.3.7，不能反向把这里的来源复核写成论文已给出的替代规则。
+故此轮来源核验本身只增加了“指定 Word 已承认个别案例可能存在 MVIF 匀速率失配”的审计背景，**不**自行构成放宽有限 `t_f` 门禁、裁剪为加速段、改用原始速度 KMeans，或生成藕塘 `V0` 的依据。旧的八个严格门禁结果继续以 `failed/tf_multistart_unstable` 留档；当前用户授权的可复现候选及其仍为 draft 的验证边界，见 4.2.3.8，不能反向把这里的来源复核写成论文已给出的替代规则。
 
-#### 4.2.3.7 用户授权的 MVIF 目标斜率候选诊断（2026-07-22）
+#### 4.2.3.7 已退役的王/安 `L` 目标斜率候选（历史记录，2026-07-22）
 
-用户随后明确同意采用本计划提出的**独立、仅诊断性**路线。它不回溯修改 4.2.3.4 的严格有限 `t_f` 门禁：旧 `mvif_fit_candidates.*` 仍是“有限破坏时刻是否可辨识”的保守基线，当前八个 `tf_multistart_unstable` 失败也仍然成立。新路线改变的只是另一个问题——不把不稳定的参数 `t_f` 当作“已选定初始趋势斜率”这一目标量可否估计的必要条件；它不会声称 `t_f` 已可靠，也不会把旧失败重标为成功的失稳时间预测。
+此前的 `code/warning/mvif_initial_slope.py` 与 `mvif_initial_slope_diagnostics.py` 将王朋伟、安玉科（2023）的原始 `S–t` 曲线凹凸判据改写为“拟合 MVIF 趋势上的最早连续 `5 d`、`0.99≤L≤1.01` 窗口”，并在固定段上给出剖面斜率、`σ` 与草案 `V0`。该组合既不是指定 Word 给出的自动选段方法，也不是王/安原文的输入与最近段选择。更重要的是，当前八点全部把完整 947 个 fit 点识别为同一段，不能支持“已找到物理上独立的初始稳定段”的说法。
 
-新增 `code/warning/mvif_initial_slope.py` 与 `code/warning/mvif_initial_slope_diagnostics.py`，使用与 4.2.3.4 相同、已获授权的 `s(t)=A ln((t_f-Bt)/(t_f-t))+C`、相同 fit 截止日和同一确定性多起点拟合，但不要求近似最优解的有限 `t_f` 一致。候选只要求至少存在有限的拟合趋势；全部多起点的收敛数和最优目标值仍写入审计表。fit 截止日后的 calibration/test 行、后续运动学数据和 Vajont 数据均不参与拟合、选段或剖面计算。
+因此该路线于 2026-07-22 退出当前协议：历史 CSV、manifest 与纯计算模块保留，用于复现和审计当时的全段退化现象；现行协议的写出入口会明确拒绝该路线，不能再产生新的活动产物或为任何速度/切线角诊断提供 `V0`。这不是删除历史结果，也不是将其失败改写为新方法的证据。
 
-选段采用王朋伟、安玉科（2023）[《滑坡匀速变形阶段快速诊断方法研究》](https://xbdz.net.cn/article/doi/10.12401/j.nwg.2022034) 的曲线凹凸判据中可核对的 `5 d` 动态窗口与 `0.99≤L≤1.01` 匀速区间，但必须如实记录以下**项目适配**：原文在原始累计位移 `S–t` 曲线上选择距当前预警时点最近的匀速段；本候选在拟合的 MVIF 趋势上，对每一个局部窗口计算
+#### 4.2.3.8 严格 MVIF 门禁下的 Bai--Perron 初始斜率草案（2026-07-22）
 
-`L=[s(t_mid)-s(t_start)] / ([s(t_end)-s(t_start)]/2)`，
+用户同意以更透明、可复现的结构突变草案替代王/安改写路线。新增 `code/warning/bai_perron_initial_slope.py` 与 `code/warning/bai_perron_initial_slope_diagnostics.py`：先使用现有严格有限 `t_f` MVIF 多起点门禁；**只有**该门禁通过时，才在同一站点、同一 fit 截止日内评估 MVIF 趋势项。这样不会放宽、绕过或重标 4.2.3.4 的 `tf_multistart_unstable` 失败，也不会对失败的趋势做外推。
 
-以消除拟合截距 `C` 对比值的任意影响，并选择**最早的连续匀速窗口串**。只有 fit 日期严格逐日时才执行该 `5 d` 规则；非逐日/缺日输入显式失败而不擅自插值或重采样。它不是王/安原文的逐字复现，也不是指定 Word 已给出的自动初始段规则。
+已核对 [Bai 与 Perron（2003）](https://onlinelibrary.wiley.com/doi/10.1002/jae.659) 的多结构突变线性模型与动态规划/信息准则计算基础；[Wu 等（2016）](https://link.springer.com/article/10.1007/s12665-015-5022-2) 仅为阶跃型库岸滑坡变形状态识别的领域相容性旁证。二者均**不**给出指定 Word 的藕塘 `V0` 自动选段规则，因此以下设置严格标为项目草案：对严格接受的 MVIF 趋势做不连续约束的分段 OLS，最少每段 30 个观测，至多 6 段；用 `n ln(max(RSS/n, ε·max(1,var(y))))+2K ln(n)` 选择段数。首段仅在至少存在一个断点、首段斜率为正、且紧随的第二段斜率更大时才输出 `candidate_v_mm_per_day`；整段单模型、首个断点不增速、首段非正、数据不足或任一严格 MVIF 失败均显式失败，而非回退到原始位移或旧 `L` 规则。
 
-对固定的候选段，`V` 定义为拟合 MVIF 趋势的普通最小二乘斜率（mm/day），与王/安对匀速段线性最小二乘去噪的思想一致；`σ` 暂按该拟合趋势逐日增量的样本标准差（`ddof=1`）计算，`candidate_v0=max(1.5V,V+2σ)` 仅作为草案字段。`σ` 的这个具体取法、MVIF 趋势上的最早段选择及其适用性都属于项目实现约定，不能写成指定 Word 或王/安已经为藕塘给出的正式 `V0`。
+本阶段**不**计算 `σ` 或 `V0`：指定 Word 的式（5-3）保留为来源公式，但未给出可直接冻结的 `σ` 操作定义；结构断点置信区间也尚未在草案中估计。故新审计表从字段层面不含 `candidate_v0`、速度等级、切线角等级、融合或预警结果。`σ` 约定、断点不确定性、首段接受的正式有效性及五级边界继续保留在 `stable_segment_selection` 等门禁中，由后续来源/导师审查和预先声明的验证协议决定。
 
-为检验真正要使用的目标量而非 `t_f` 参数，新模块对固定选中段的 OLS 趋势斜率做 selection-conditioned 的预测剖面似然：固定候选斜率后重新优化其余 MVIF 形状/截距自由度，按 `RSS_min×exp(χ²_1(0.95)/n)` 给出 95% 两侧剖面界。这个“可对预测目标而非不可辨识参数给出不确定性”的思路参考 Kreutz、Raue、Timmer 的 [prediction profile likelihood 方法](https://pmc.ncbi.nlm.nih.gov/articles/PMC3490710/)；95%、优化器、搜索次数和二分次数均是版本化数值约定，不是预警阈值。段首先由无约束拟合选定并在剖面中固定，故区间**不包含选段本身的不确定性**；只要任一侧界找不到、数值拟合失败或统计量非正/非有限，就不输出 `candidate_V/candidate_sigma/candidate_V0`。
-
-审计产物为 `figures/warning_draft/mvif_initial_slope_candidates.csv` 及 manifest，固定为 `candidate_status=draft_candidate_not_formal`、`formal_warning_output=false`，并记录协议内容指纹、fit 输入切片哈希、选段窗口、剖面 RSS/区间与失败原因。它不接入现有原始速度 KMeans 的切线角诊断，不输出速度等级、切线角等级、融合或正式预警，且**不解除** `stable_segment_selection`、`v0_blue_tolerance`、`tangent_blue_tolerance`、`delta_v_near_zero_tolerance`、`F` 或 `F_site` 的正式运行门禁。下一次决定应是审查该候选在全部八点上的曲线/残差、候选段稳定性和“选段不确定性未计入”的影响；只有明确接受并冻结该项目规则后，才可讨论是否用其替换对照路径或计算正式速度阈值。
-
-当前版本化藕塘 fit 输入已生成 8 条候选记录，均有有限的两侧 95% 目标斜率剖面界；但八个测点的 `L` 都在每一个可用窗口中落入 `[0.99,1.01]`，故每条记录选中的“最早连续匀速段”都是完整的 947 个 fit 趋势点（2016-07-01 至 2019-02-02），而不是一个可与后期分开的短初始段。这说明该平滑 MVIF＋`L` 组合在当前数据上实际退化为**全 fit 趋势斜率**候选；剖面区间只说明这个条件目标量在当前模型下有限，不能证明已自动识别出物理上独立的初始稳定阶段。该现象正是 `stable_segment_selection` 仍保持未冻结的原因；若要拒绝“全段均匀”或设最长段/额外形态门禁，必须先取得来源或导师/用户的明确方法授权，不能由本轮结果事后发明。
+产物为 `figures/warning_draft/bai_perron_mvif_initial_slope_candidates.csv` 及 manifest，固定 `candidate_status=draft_candidate_not_formal`、`formal_warning_output=false`，记录协议内容指纹、fit 输入切片哈希、严格 MVIF 状态、BIC 选段摘要和失败原因。它明确 `test_split_used=false`、`vajont_used=false`。当前藕塘版本的 8 个测点全部在严格 MVIF 前置门禁处以 `failed/strict_mvif_fit_failed` 停止，底层原因均为既有 `tf_multistart_unstable`；因此当前没有任何站点获得 `V` 候选，更没有 `V0` 或正式预警结论。
 
 #### 4.2.4 测点级四指标融合的草案候选（2026-07-18）
 
@@ -383,9 +379,9 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 #### 4.2.7 草案审计产物的协议内容指纹（2026-07-18）
 
-`stable_segment_diagnostics.py`、`delta_v_diagnostics.py`、`interval_diagnostics.py`、`interval_reference_states.py`、`velocity_tangent_diagnostics.py`、`mvif_diagnostics.py` 与 `mvif_initial_slope_diagnostics.py` 均对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
+`stable_segment_diagnostics.py`、`delta_v_diagnostics.py`、`interval_diagnostics.py`、`interval_reference_states.py`、`velocity_tangent_diagnostics.py`、`mvif_diagnostics.py` 与新增 `bai_perron_initial_slope_diagnostics.py` 均对已加载的协议 JSON 按 UTF-8、排序键和紧凑分隔符计算 `protocol_content_sha256`。每份新写出的草案 CSV 均写入该字段，manifest 的 `protocol.content_sha256` 也保存同一值；因此即使人工可读的 `protocol_version` 暂未变化，只要未决项、来源说明或草案约定发生语义变化，审计产物都可被识别为基于不同协议内容生成。空白和 JSON 键排列不会改变该指纹。
 
-这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。此前三份 manifest 曾保留已在协议中解除的 `rate_orange_expression`；本次随 `1.2-draft` 的 MVIF 目标斜率候选一并重生成了既有六类草案审计产物和新增候选 manifest，使七份 manifest 共享当前内容指纹，仅更新溯源元数据与未决项快照。区间单项状态仍不构成正式预警。
+这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。`mvif_initial_slope_diagnostics.py` 及其 `1.2-draft` CSV/manifest 现是明确的历史记录，当前协议会拒绝再写出它；其余旧 `1.2-draft` 产物也不能被静默当作 `1.3-draft` 产物使用。新的 Bai--Perron artifact 独立记录 `1.3-draft` 内容指纹；若后续确需使用其他诊断作为同一版本的输入，必须先按该模块的既有边界重新生成并核对指纹。区间单项状态仍不构成正式预警。
 
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
@@ -451,7 +447,7 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 
 - [x] R1、R4、R5、R7、R10 的方法方向已确认；R3 已记录为当前实施解释；R6（Vajont）已延期并设置用户授权门禁；
 - [x] D3：区间指标采用逐时刻区间偏离状态识别，不作为严格前瞻预警；
-- [x] 将自动稳定段草案候选固化为 fit-only 审计表和 manifest；候选 `V0` 不作为正式速度阈值；
+- [x] 退役王/安 `L` 改写候选并保留其历史审计；以严格 MVIF 门禁下的 Bai--Perron 分段回归固化新的 fit-only `V` 候选审计表和 manifest，不计算 `σ/V0`；
 - [x] 将 `ΔV` 的 fit/calibration 原始分布固化为审计表；不选择近零容差或状态；
 - [x] 将候选 `V0` 下的 `v/V0` 与 `α=arctan(v/V0)` 的 fit/calibration 原始分布固化为审计表；不选择速度或切线角的 blue 容差或等级；
 - [x] 直接参考指定论文图 5-1 的 `μ_t/σ_t` 五级区域；将 coverage、对称性和尾部保留为 calibration 质量审计，不设置论文未给出的通过阈值；

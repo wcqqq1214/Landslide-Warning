@@ -556,6 +556,58 @@ def fit_mvif_trend(
     )
 
 
+def evaluate_fitted_mvif_trend(
+    result: MvifFitResult,
+    dates,
+) -> np.ndarray:
+    """Evaluate a *strictly accepted* MVIF fit on dates inside its fit period.
+
+    This is a narrow read-only bridge for diagnostics that need the source
+    trend itself after :func:`fit_mvif_trend` has passed every finite-``t_f``
+    gate.  It deliberately refuses failed fits and dates outside the selected
+    fit history, so callers cannot reinterpret a rejected fit as a trend or
+    extrapolate it into a warning result.
+    """
+
+    if result.status != FIT_STATUS_CANDIDATE:
+        raise ValueError("MVIF trend evaluation requires a strictly accepted fit")
+    parameters = (result.a, result.b, result.c, result.tf_elapsed_days)
+    if any(value is None or not math.isfinite(float(value)) for value in parameters):
+        raise ValueError("accepted MVIF fit has nonfinite physical parameters")
+    if result.fit_start_date is None or result.time_span_days is None:
+        raise ValueError("accepted MVIF fit is missing its fit time range")
+
+    parsed_dates = pd.to_datetime(dates, errors="coerce")
+    if getattr(parsed_dates, "isna")().any():
+        raise ValueError("MVIF trend evaluation dates must be valid timestamps")
+    date_index = pd.DatetimeIndex(parsed_dates)
+    if date_index.tz is not None:
+        date_index = date_index.tz_localize(None)
+    elapsed_days = (
+        (date_index - pd.Timestamp(result.fit_start_date)).total_seconds()
+        / 86_400.0
+    ).to_numpy(dtype=float)
+    time_span_days = float(result.time_span_days)
+    tolerance = math.sqrt(np.finfo(float).eps) * max(1.0, time_span_days)
+    if (
+        not np.isfinite(elapsed_days).all()
+        or (elapsed_days < -tolerance).any()
+        or (elapsed_days > time_span_days + tolerance).any()
+    ):
+        raise ValueError("MVIF trend evaluation dates must remain inside the fit period")
+
+    a, b, c, tf_elapsed_days = (float(value) for value in parameters)
+    numerator = tf_elapsed_days - b * elapsed_days
+    denominator = tf_elapsed_days - elapsed_days
+    if (numerator <= 0.0).any() or (denominator <= 0.0).any():
+        raise ValueError("accepted MVIF parameters are outside the logarithm domain")
+    with np.errstate(divide="raise", invalid="raise", over="raise"):
+        values = a * np.log(numerator / denominator) + c
+    if not np.isfinite(values).all():
+        raise ValueError("accepted MVIF trend evaluation is nonfinite")
+    return np.asarray(values, dtype=float)
+
+
 __all__ = [
     "FIT_STATUS_CANDIDATE",
     "FIT_STATUS_FAILED",
@@ -566,5 +618,6 @@ __all__ = [
     "N_FIT_PARAMETERS",
     "NUMERICAL_RELATIVE_TOLERANCE",
     "REQUIRED_COLUMNS",
+    "evaluate_fitted_mvif_trend",
     "fit_mvif_trend",
 ]
