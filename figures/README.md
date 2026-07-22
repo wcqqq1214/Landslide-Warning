@@ -13,6 +13,7 @@
 | `convlstm/forecast_calibration_metrics.csv` | 保存拟合/校准/测试日期边界、测点独立 `qhat` 及校准前后覆盖率、宽度、pinball 和 interval score | 校准审计表 | 证明校准期早于测试期并量化宽度-覆盖率代价；不提供时间序列下的严格覆盖保证 |
 | `warning_draft/interval_calibration_diagnostics.csv` | 保存 8 个测点、仅 calibration 段的分位数顺序、覆盖率、中点误差和标准化残差原始摘要，以及协议和 calibration 输入切片哈希 | 区间门禁原始诊断表 | 为后续冻结门禁提供可复核证据；不含通过/失败、颜色或预警等级，不能作为正式预警结果 |
 | `warning_draft/interval_calibration_diagnostics_manifest.json` | 保存诊断产物的协议状态、未评估项目、calibration 选段范围，以及 calibration 输入/输出哈希 | 草案运行清单 | 明确本次产物只作诊断且 `formal_warning_output=false`；哈希不随 held-out test 行变化，不得据此宣称区间五级映射已通过 |
+| `warning_draft/ootang_draft_warning_evidence_manifest.json` | 保存当前七份有效藕塘草案诊断的固定执行顺序、每份组件的协议内容指纹/未决项、输出与 sidecar SHA-256 及排除的退役产物 | 草案证据总清单 | 证明同一版 `draft` 协议下的证据集可整体重建；其 `formal_warning_output=false`，不含 `V0`、速度/切线角等级、融合、正式时间线或 Vajont |
 | `warning_draft/stable_segment_candidates.csv` | 保存 8 个测点、拟合截止日及以前历史的两类聚类原始速度初始低速前缀候选、拟合截止日、聚类中心、`V`、`σ`、候选 `V0`、Word 输入状态及输入切片哈希 | 对照性自动选段审计表 | 供复核项目特有的非监督对照程序；其 `candidate_method_role` 明确它不是指定 Word 的 MVIF 初始稳定斜率实现，不含速度等级或预警等级 |
 | `warning_draft/stable_segment_candidates_manifest.json` | 保存 fit 截止日期、候选算法状态、Word 输入状态、未评估项目及 fit 预测/截止日前运动学输入切片哈希 | 草案运行清单 | 明确 `draft_candidate_not_formal`、`formal_warning_output=false` 与非 Word-`V0` 对照角色；哈希不随 calibration/test 或 post-fit 运动学记录变化 |
 | `warning_draft/delta_v_fit_calibration_diagnostics.csv` | 保存 8 个测点在 fit 截止日前历史与 calibration 精确预测日期中的 `ΔV` 有效数、原始分布摘要和输入切片哈希 | `ΔV` 原始诊断表 | 为后续冻结 `ΔV≈0` 容差提供可复核证据；不含 `delta_v_state`、近零容差或预警等级 |

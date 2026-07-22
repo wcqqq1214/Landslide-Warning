@@ -383,6 +383,8 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 这项指纹只解决“产物对应哪一版协议内容”的可追溯性，**不**把 `draft` 改为 `frozen`，不替任何未决项赋值，也不构成正式预警有效性证据。`mvif_initial_slope_diagnostics.py` 及其 `1.2-draft` CSV/manifest 现是明确的历史记录，当前协议会拒绝再写出它；其余旧 `1.2-draft` 产物也不能被静默当作 `1.3-draft` 产物使用。新的 Bai--Perron artifact 独立记录 `1.3-draft` 内容指纹；若后续确需使用其他诊断作为同一版本的输入，必须先按该模块的既有边界重新生成并核对指纹。区间单项状态仍不构成正式预警。
 
+为避免手动重跑时混入旧内容指纹，新增 [`code/warning/draft_evidence.py`](../code/warning/draft_evidence.py) 的 `write_draft_warning_evidence_bundle()`：它只在协议 `case=ootang` 且 `status=draft` 时按固定顺序重建七份**当前有效**草案产物（区间逐时刻状态、区间 calibration 审计、原始速度 KMeans 对照、`ΔV` 审计、速度/切线角审计、严格 MVIF 审计和严格 MVIF 门禁下的 Bai--Perron 审计），再写出 `figures/warning_draft/ootang_draft_warning_evidence_manifest.json`。组件先写入临时目录；只有总清单逐份核验协议 ID/版本/状态/内容哈希、未决项、来源路径、输出 SHA-256 与 `formal_warning_output=false` 后，才逐文件原子替换正式草案快照；若生成、核验或提升时出现 Python 可捕获的错误，会恢复原快照。该机制不宣称进程被强制终止或断电时的 bundle 级目录事务。它明确排除已退役的 `mvif_initial_slope_candidates.*`，不调用 `formal_warning.py`、不将原始速度 KMeans 草案候选写作或用于指定 Word 的正式 `V0`，也不计算单项等级/融合/时间线，更不接收或使用 Vajont。
+
 #### 4.2.8 历史预警路径与正式入口隔离（2026-07-22）
 
 为防止“研究管线可以运行”被误读为“本轮正式预警已经生成”，新增[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)作为未来正式执行器的唯一代码接缝。`run_formal_warning()` 先调用 `require_frozen_protocol()`；当前 `1.3-draft` 协议仍有未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`：模块尚未注册实际四指标时间线，且入口不接受任意 callable，不能把旧 V0/融合函数注入为“正式”执行器。
@@ -460,6 +462,7 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 - [x] 将候选 `V0` 下的 `v/V0` 与 `α=arctan(v/V0)` 的 fit/calibration 原始分布固化为审计表；不选择速度或切线角的 blue 容差或等级；
 - [x] 直接参考指定论文图 5-1 的 `μ_t/σ_t` 五级区域；将 coverage、对称性和尾部保留为 calibration 质量审计，不设置论文未给出的通过阈值；
 - [x] 建立四指标数据字典：公式、单位、时间窗口、缺失处理、阈值来源；
+- [x] 建立仅含藕塘的草案证据 bundle：统一重建当前七份诊断、核验相同协议内容指纹和非正式标识，并保留已退役 MVIF profile 候选在 bundle 外；
 - [ ] 固定五级颜色编码和严格边界；
 - [ ] 仅用拟合/校准阶段标定并固定速度边界、`ΔV≈0` 的容差及其参与 `F` 的过程规则，记录推导与边界归属；除非先批准项目特有方案，不新增 `ΔV` 的 `τ1...τ4`；
 - [ ] 固定四项等级到测点最终等级的函数 `F`、滑坡体级函数 `F_site`、平局规则、缺失/暖启动处理；

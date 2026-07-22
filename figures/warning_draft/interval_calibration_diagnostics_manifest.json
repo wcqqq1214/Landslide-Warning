@@ -11,7 +11,7 @@
     "strict_horizon_ahead_warning_performance"
   ],
   "protocol": {
-    "content_sha256": "4d9c94ac7d57f5e7e28beaabb70e81d58b9b352dbe9f157b36a67c71a640d83e",
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
     "id": "ootang-five-level-rule-v1",
     "status": "draft",
     "unresolved_item_ids": [
@@ -23,7 +23,7 @@
       "landslide_body_fusion_function",
       "nonregular_tangent_handling"
     ],
-    "version": "1.2-draft"
+    "version": "1.3-draft"
   },
   "selection": {
     "n_rows": 1816,
@@ -73,6 +73,6 @@
       "max_abs_z"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics.csv",
-    "sha256": "b69b8ad8880e080d8397029fd67af500dbe98346985bbc1a6055be66b8e0c2dc"
+    "sha256": "1e7a818c38ed7d2dc095731f203cdd417f9af74e4a8c32f6a36d2f5aaf1e654d"
   }
 }

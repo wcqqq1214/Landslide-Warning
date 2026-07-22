@@ -25,6 +25,7 @@ formal_warning_output=false
 | [`warning_fusion.py`](../code/warning/warning_fusion.py) / `figures/warning_fusion/warning_fusion.csv` | 旧 `V0` 主判、切线角只升级、NGBoost 仅作旁证的主副融合。新生成 CSV 同样带上述三个非正式字段，并在同目录写出 `legacy_warning_manifest.json`。 | 逐日审计旧规则为何给出某一等级。 | 作为四指标 `F`、滑坡体 `F_site` 或本轮正式综合预警。 |
 | `onset_analysis.py`、`ngboost_warn.py`、`shap_select.py`、`shap_stability.py`、`sensitivity_analysis.py`、`tangent_stage_review.py` | `main.py` 中均标为 `legacy_exploratory`，并各自在输出目录写出 `legacy_warning_manifest.json`。新生成的表格还附加同一组非正式字段；模型、PNG 等非表格产物由 sidecar 绑定，`models/ngboost.pkl` 另在其同目录写出 sidecar。 | 研究诊断、历史可复核性和局限性说明。 | 将模型概率、F1、事件盘点、敏感性一致率或候选阶段升级为本轮正式风险结论。 |
 | [`rule_fusion.py`](../code/warning/rule_fusion.py)、[`site_fusion.py`](../code/warning/site_fusion.py)与`figures/warning_draft/*` | 四指标/多测点草案和输入审计；各自产物已显式为 `draft` 或 `formal_warning_output=false`。 | 为冻结 `F`、`F_site`、容差与缺失规则准备可复算证据。 | 因为存在候选实现就生成正式五级预警。 |
+| [`draft_evidence.py`](../code/warning/draft_evidence.py) / `figures/warning_draft/ootang_draft_warning_evidence_manifest.json` | 只重建当前七份有效的藕塘草案诊断，并逐份核验相同 draft 协议内容指纹、未决项、输出哈希和 `formal_warning_output=false`；已退役的 MVIF profile 候选不在 bundle 内。 | 在冻结规则前复现并审查同一版草案证据集。 | 将 bundle 误称为正式运行、把原始速度 KMeans 对照或 Bai--Perron 草案升级为 Word `V0` 实现、生成任何融合/时间线或启动 Vajont。 |
 
 已存档的历史 CSV 可能早于新增字段和 sidecar；它们仍按本表和原始输出路径解释为历史快照。重新运行相应历史脚本后，新 CSV/sidecar 会写入上述标识；这不改变其中的历史数值或使其成为正式结果。
 

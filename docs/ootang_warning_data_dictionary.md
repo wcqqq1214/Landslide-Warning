@@ -13,6 +13,7 @@
 - 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。
 - 每个指标必须携带可审计状态。`warmup`、`invalid`、`not_applicable` 不能被静默改写为 green，也不能被规则融合忽略。
 - 每份 `figures/warning_draft/` 审计 CSV 与 manifest 都记录协议 ID、版本、状态和 `protocol_content_sha256`。该哈希标识生成时的规范化 JSON 内容，不等同于协议已冻结或已产生正式预警结果。
+- [`code/warning/draft_evidence.py`](../code/warning/draft_evidence.py) 的 `write_draft_warning_evidence_bundle()` 是当前七份有效藕塘草案诊断的统一重建入口：它只接受 `case=ootang`、`status=draft` 的协议，核验每份组件的协议内容指纹、未决项、来源路径、输出 SHA-256 和 `formal_warning_output=false`，并写入 `figures/warning_draft/ootang_draft_warning_evidence_manifest.json`。它在临时目录完成组件生成和核验、成功后才逐文件原子替换相应快照；若出现 Python 可捕获的写入、核验或提升错误，会恢复旧快照，但不宣称进程被强制终止或断电时的 bundle 级目录事务。排除已退役的 MVIF profile 候选，不调用正式执行器，不将原始速度 KMeans 草案候选写作或用于指定 Word 的正式 `V0`，也不计算单项等级、融合或时间线，更不使用 Vajont。
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 - 正式执行器未来只能通过 [`formal_warning.py`](../code/warning/formal_warning.py) 的 `run_formal_warning()` 进入；它先调用 `require_frozen_protocol()`，且在正式四指标执行器尚未实现前会明确拒绝，而不会接受旧融合函数。当前 `main.py` 运行清单和历史预警阶段均固定标为非正式；旧融合、阈值及可单独运行的历史脚本的新表格携带 `warning_path=legacy_exploratory` 与 `formal_warning_output=false`，输出目录另有 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则配套同目录的 `ngboost_legacy_warning_manifest.json`。完整映射见 [`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。
 - 用户于 2026-07-21 确认：指定 Word 论文优先于藕塘毕业论文；后者的 `30` 日、四级 `V0` 路径只可复核历史产物，不能替代本字典的逐点日速度、指定 Word 式（5-3）或五级规则。
