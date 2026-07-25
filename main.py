@@ -8,11 +8,10 @@ import json
 import subprocess
 import sys
 import time
+from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Callable, Sequence
-
 
 ROOT = Path(__file__).resolve().parent
 DEFAULT_MANIFEST = ROOT / "figures" / "pipeline" / "latest_run.json"
@@ -188,6 +187,24 @@ STAGES = (
             "figures/warning_operational_draft/ootang_operational_station_timeline.csv",
             "figures/warning_operational_draft/ootang_operational_site_timeline.csv",
             "figures/warning_operational_draft/ootang_operational_run_manifest.json",
+        ),
+        warning_artifact_scope="operational_draft",
+    ),
+    Stage(
+        "ootang-operational-v2",
+        "code/warning/operational_run_v2.py",
+        "运行藕塘 v2 空间证据族实施版并输出非正式逐点/滑坡体时间线",
+        inputs=(
+            "data/ootang_kinematics_long.csv",
+            "figures/convlstm/forecast_predictions.csv",
+            "config/ootang_warning_protocol.v1.draft.json",
+            "config/ootang_operational_run.v2.draft.json",
+        ),
+        outputs=(
+            "figures/warning_operational_draft_v2/ootang_operational_thresholds.csv",
+            "figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv",
+            "figures/warning_operational_draft_v2/ootang_operational_site_timeline.csv",
+            "figures/warning_operational_draft_v2/ootang_operational_run_manifest.json",
         ),
         warning_artifact_scope="operational_draft",
     ),

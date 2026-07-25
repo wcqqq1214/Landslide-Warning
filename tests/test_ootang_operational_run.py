@@ -4,28 +4,28 @@ from __future__ import annotations
 
 import importlib.util
 import json
-from pathlib import Path
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import pandas as pd
-
 
 ROOT = Path(__file__).resolve().parents[1]
 CODE_DIR = ROOT / "code"
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from warning.operational_run import (  # noqa: E402
+from warning import draft_evidence
+from warning.operational_run import (
+    DEFAULT_OUTPUT_DIR,
     OOTANG_STATIONS,
     OperationalRunProfileError,
     _classify_velocity,
     _site_record,
     write_ootang_operational_run,
 )
-from warning import draft_evidence  # noqa: E402
 
 
 class OotangOperationalRunTests(unittest.TestCase):
@@ -49,6 +49,26 @@ class OotangOperationalRunTests(unittest.TestCase):
         self.assertFalse(stage.formal_warning_output)
         self.assertIn(
             "figures/warning_operational_draft/ootang_operational_run_manifest.json",
+            stage.outputs,
+        )
+
+    def test_pipeline_registers_versioned_v2_spatial_operational_stage(self):
+        pipeline_spec = importlib.util.spec_from_file_location(
+            "ootang_operational_v2_pipeline",
+            ROOT / "main.py",
+        )
+        if pipeline_spec is None or pipeline_spec.loader is None:
+            self.fail("cannot load main.py")
+        pipeline = importlib.util.module_from_spec(pipeline_spec)
+        sys.modules[pipeline_spec.name] = pipeline
+        pipeline_spec.loader.exec_module(pipeline)
+
+        stage = pipeline.STAGE_BY_NAME["ootang-operational-v2"]
+        self.assertEqual(stage.script, "code/warning/operational_run_v2.py")
+        self.assertEqual(stage.warning_artifact_scope, "operational_draft")
+        self.assertFalse(stage.formal_warning_output)
+        self.assertIn(
+            "figures/warning_operational_draft_v2/ootang_operational_run_manifest.json",
             stage.outputs,
         )
 
@@ -88,6 +108,61 @@ class OotangOperationalRunTests(unittest.TestCase):
             )
             self.assertTrue(frame["formal_warning_output"].eq(False).all())
             self.assertTrue(frame["vajont_used"].eq(False).all())
+
+    def test_writes_a_versioned_v2_spatial_timeline_without_changing_v0_status(self):
+        profile_path = ROOT / "config" / "ootang_operational_run.v2.draft.json"
+        with tempfile.TemporaryDirectory() as directory:
+            output_dir = Path(directory)
+            artifacts = write_ootang_operational_run(
+                profile_path=profile_path,
+                output_dir=output_dir,
+                evidence_dir=output_dir / "evidence",
+            )
+            manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
+            station_rows = pd.read_csv(artifacts.station_timeline_path)
+            site_rows = pd.read_csv(artifacts.site_timeline_path)
+
+        self.assertEqual(
+            manifest["operational_profile"]["id"],
+            "ootang-operational-spatial-v2",
+        )
+        self.assertFalse(manifest["formal_warning_output"])
+        self.assertFalse(manifest["vajont_used"])
+        self.assertTrue(
+            station_rows["velocity_baseline_source"].eq(
+                "raw_velocity_kmeans_comparator"
+            ).all()
+        )
+        self.assertTrue(station_rows["station_assessment_status"].eq("valid").all())
+        self.assertIn("kinematic_level", station_rows.columns)
+        self.assertIn("station_confirmation_status", station_rows.columns)
+        self.assertTrue(site_rows["minimum_assessable_station_count"].eq(3).all())
+        self.assertTrue(site_rows["assessable_block_count"].eq(3).all())
+        self.assertTrue(
+            site_rows["cross_block_confirmation_minimum_color"].eq("yellow").all()
+        )
+        self.assertFalse(
+            site_rows["site_fusion_status"].eq(
+                "insufficient_assessable_coverage"
+            ).any()
+        )
+        spatial_source = manifest["source_inputs"]["spatial_block_topology"]
+        self.assertEqual(spatial_source["doi"], "10.1029/2025JH000592")
+        self.assertEqual(spatial_source["pdf_page"], 7)
+        self.assertEqual(spatial_source["figure"], "Figure 4(a, d)")
+        self.assertEqual(
+            spatial_source["sha256"],
+            "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
+        )
+
+    def test_v2_profile_cannot_overwrite_the_preserved_v1_output_directory(self):
+        profile_path = ROOT / "config" / "ootang_operational_run.v2.draft.json"
+
+        with self.assertRaisesRegex(OperationalRunProfileError, "preserved v1"):
+            write_ootang_operational_run(
+                profile_path=profile_path,
+                output_dir=DEFAULT_OUTPUT_DIR,
+            )
 
     def test_test_period_prediction_change_does_not_change_fit_thresholds(self):
         source_predictions = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
@@ -237,12 +312,11 @@ class OotangOperationalRunTests(unittest.TestCase):
                 draft_evidence.os,
                 "replace",
                 side_effect=fail_once_during_operational_promotion,
-            ):
-                with self.assertRaisesRegex(OSError, "simulated operational promotion"):
-                    write_ootang_operational_run(
-                        output_dir=output_dir,
-                        evidence_dir=root / "evidence",
-                    )
+            ), self.assertRaisesRegex(OSError, "simulated operational promotion"):
+                write_ootang_operational_run(
+                    output_dir=output_dir,
+                    evidence_dir=root / "evidence",
+                )
 
             self.assertGreaterEqual(promotion_writes, 2)
             self.assertEqual(
