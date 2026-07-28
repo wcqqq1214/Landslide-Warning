@@ -1,0 +1,184 @@
+{
+  "schema_version": "ootang_data_lineage_audit_v1",
+  "audit_implementation": {
+    "audit_code_path": "code/convlstm/data_lineage_audit.py",
+    "audit_code_sha256": "e013c8b7afdc12f6c15ba4f66e6f751000f1f3bb155f59670011bf95705b53aa"
+  },
+  "audit_scope": "ootang_only",
+  "formal_warning_output": false,
+  "vajont_used": false,
+  "test_rows_audited_for_data_provenance": true,
+  "model_selection_usage": {
+    "status": "protocol_statement_not_verified_by_this_audit",
+    "declared_test_rows_used_for_model_selection": 0
+  },
+  "published_source": {
+    "article_id": 28171343,
+    "article_doi": "10.6084/m9.figshare.28171343.v1",
+    "file_id": 54029702,
+    "file_name": "monitoring data.xlsx",
+    "expected_md5": "372d1608f46d7fcdb9805568d1c0782a"
+  },
+  "source_pair": {
+    "csv_path": "data/monitoring_data.csv",
+    "xlsx_path": "data/monitoring_data.xlsx",
+    "csv_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "xlsx_sha256": "a28a6a09ea660132eafe9508848dcb2958ba892f425489f63c81a7c31b2e4a3d",
+    "xlsx_md5": "372d1608f46d7fcdb9805568d1c0782a",
+    "figshare_expected_md5": "372d1608f46d7fcdb9805568d1c0782a",
+    "xlsx_matches_figshare_release": true,
+    "csv_shape": [
+      1461,
+      17
+    ],
+    "xlsx_shape": [
+      1461,
+      17
+    ],
+    "columns_equal": true,
+    "dates_equal": true,
+    "max_absolute_numeric_difference": 1.1368683772161603e-13,
+    "numeric_tolerance": 1e-12,
+    "numeric_values_equal_within_tolerance": true,
+    "xlsx_structure": {
+      "sheet_count": 1,
+      "hidden_sheet_count": 0,
+      "formula_cell_count": 0,
+      "uses_1904_date_epoch": false
+    }
+  },
+  "downstream_input_hashes": {
+    "features_path": "data/features.csv",
+    "features_sha256": "366188ba1f55fd56b6606f5333e34566fca26c4771dd9745eebfabfcbd4286d1",
+    "predictions_path": "figures/convlstm/forecast_predictions.csv",
+    "predictions_sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459"
+  },
+  "monitoring_frame": {
+    "rows": 1461,
+    "columns": 17,
+    "start_date": "2016-07-01",
+    "end_date": "2020-06-30",
+    "missing_required_columns": [],
+    "missing_value_count": 0,
+    "duplicate_date_count": 0,
+    "dates_monotonic_increasing": true,
+    "daily_cadence": true
+  },
+  "prediction_alignment": {
+    "feature_path": "data/features.csv",
+    "prediction_path": "figures/convlstm/forecast_predictions.csv",
+    "prediction_rows": 11400,
+    "expected_prediction_rows": 11400,
+    "stations": [
+      "ATU1",
+      "ATU2",
+      "ATU3",
+      "ATU4",
+      "ATU5",
+      "MJ1",
+      "MJ3",
+      "MJ9"
+    ],
+    "expected_stations": [
+      "ATU1",
+      "ATU2",
+      "ATU3",
+      "ATU4",
+      "ATU5",
+      "MJ1",
+      "MJ3",
+      "MJ9"
+    ],
+    "station_set_matches": true,
+    "prediction_values_finite": true,
+    "non_finite_actual_values": 0,
+    "non_finite_persistence_values": 0,
+    "duplicate_date_station_rows": 0,
+    "missing_expected_date_station_split_keys": 0,
+    "unexpected_date_station_split_keys": 0,
+    "frozen_split_schedule_passed": true,
+    "max_abs_actual_alignment_error": 0.0,
+    "max_abs_persistence_alignment_error": 0.0,
+    "alignment_passed": true
+  },
+  "numeric_fingerprint": {
+    "status": "strong",
+    "structure": "natural_month_piecewise_cubic",
+    "target_columns": [
+      "MJ9/mm",
+      "MJ1/mm",
+      "MJ3/mm",
+      "ATU4/mm",
+      "ATU5/mm",
+      "ATU3/mm",
+      "ATU2/mm",
+      "ATU1/mm",
+      "GWT/m"
+    ],
+    "negative_control_columns": [
+      "Rainfall/mm",
+      "RWL/m",
+      "aveT/℃",
+      "minT/℃",
+      "maxT/℃"
+    ],
+    "months": 48,
+    "all_split_boundary_months_share_cubic_segment": true,
+    "cross_boundary_predictability_role": "algebraic_dependence_diagnostic_not_forecast_evaluation"
+  },
+  "lineage_status": {
+    "released_series_role": "materialized_daily_modeling_series",
+    "exact_generation_algorithm": "unresolved",
+    "original_observation_anchors": "not_available_in_audited_release",
+    "future_information_usage": "unknown",
+    "independent_raw_daily_gnss_claim": "not_supported"
+  },
+  "data_gate": {
+    "status": "blocked",
+    "blocks": [
+      "confirmatory_daily_forecast_claims",
+      "new_neural_ablation_as_bias_explanation",
+      "formal_v0_and_derivative_thresholds",
+      "formal_four_indicator_fusion",
+      "formal_warning_output"
+    ],
+    "does_not_block": [
+      "read_only_lineage_audit",
+      "engineering_checks_on_materialized_series",
+      "operational_draft_not_formal"
+    ],
+    "required_to_reopen": [
+      "original_observation_dates_and_values",
+      "documented_daily_series_generation_method",
+      "evidence_whether_monthly_processing_used_future_anchors",
+      "documented_qc_reference_epoch_and_station_mapping"
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv",
+      "size_bytes": 117469,
+      "sha256": "ac89970e18d686fbcc78acf2f9596945244ebf02c507d47fc7aed8c7971a41af"
+    },
+    {
+      "path": "figures/data_lineage/ootang_column_fingerprint_summary.csv",
+      "size_bytes": 2425,
+      "sha256": "de34ea7b20591faf7727cdbed60a62dc0b929904ade08826310bb52c732e57d6"
+    },
+    {
+      "path": "figures/data_lineage/ootang_split_boundary_audit.csv",
+      "size_bytes": 2964,
+      "sha256": "9460f6d25fda7a1503674c45b744ddeb50ae317002956732ee3661c60cf1149b"
+    },
+    {
+      "path": "figures/data_lineage/ootang_split_cross_boundary_predictability.csv",
+      "size_bytes": 6943,
+      "sha256": "0b4213d46bf50a01986f36f9076a2d97e6ada1d343e5ebe90088ce7ec74f5cea"
+    },
+    {
+      "path": "figures/data_lineage/ootang_prediction_alignment_summary.csv",
+      "size_bytes": 263,
+      "sha256": "b741f2302d350f96c2cbdfd06207fe21b5005568b82aa181ed3d2d8cd92284e6"
+    }
+  ]
+}

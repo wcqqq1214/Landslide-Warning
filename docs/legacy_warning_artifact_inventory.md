@@ -3,6 +3,8 @@
 > 状态：执行边界清单，不新增任何阈值、`V0`、融合函数或预警结果。
 >
 > 依据：[导师行动计划](advisor_review_action_plan.md)、[藕塘四指标数据字典](ootang_warning_data_dictionary.md)与[`ootang-five-level-rule-v1`草案协议](../config/ootang_warning_protocol.v1.draft.json)。
+>
+> 数据血缘更新（2026-07-28）：下列所有路径都以发布物化日序列为输入，`data_gate=blocked`。即使其仓库内时间切分和 manifest 完整，也不能升级为独立原始逐日 GNSS 的确认性结果。
 
 ## 1. 当前入口
 

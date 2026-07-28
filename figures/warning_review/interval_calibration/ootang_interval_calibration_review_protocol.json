@@ -1,0 +1,107 @@
+{
+  "artifact_kind": "ootang_interval_calibration_expert_review_protocol",
+  "artifact_status": "calibration_only_expert_review_not_formal",
+  "review_date": "2026-07-26",
+  "source_file": "figures/convlstm/forecast_predictions.csv",
+  "source_file_sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459",
+  "calibration_slice_sha256": "5cd1323ea4bc3403a4f678387d4d89e5ab67551daf4072c7ec4b173239c1518f",
+  "decision_input": {
+    "split": "calibration",
+    "start": "2019-02-03",
+    "end": "2019-09-17",
+    "days": 227,
+    "stations": [
+      "MJ9",
+      "MJ1",
+      "MJ3",
+      "ATU4",
+      "ATU5",
+      "ATU3",
+      "ATU2",
+      "ATU1"
+    ],
+    "rows": 1816
+  },
+  "test_isolation": {
+    "test_rows_used_for_fit": 0,
+    "test_rows_used_for_method_selection": 0,
+    "test_metrics_used_for_method_selection": 0,
+    "note": "The source CSV already contains materialized test rows from an earlier pipeline run, so a historically pristine blind test cannot be claimed. This review filters calibration before fitting or evaluating candidates."
+  },
+  "normal_mapping": {
+    "mu": "P50",
+    "sigma": "(P90-P10)/(2*1.28155)",
+    "status": "project_specific_approximation_not_word_formula"
+  },
+  "temporal_cv": {
+    "type": "four-fold expanding-origin_contiguous_future_blocks",
+    "initial_fit_days": 91,
+    "validation_days_per_fold": 34,
+    "validation_days_total": 136,
+    "validation_rows_total": 1088,
+    "folds": [
+      {
+        "fold": 1,
+        "fit_start": "2019-02-03",
+        "fit_end": "2019-05-04",
+        "fit_days": 91,
+        "validation_start": "2019-05-05",
+        "validation_end": "2019-06-07",
+        "validation_days": 34
+      },
+      {
+        "fold": 2,
+        "fit_start": "2019-02-03",
+        "fit_end": "2019-06-07",
+        "fit_days": 125,
+        "validation_start": "2019-06-08",
+        "validation_end": "2019-07-11",
+        "validation_days": 34
+      },
+      {
+        "fold": 3,
+        "fit_start": "2019-02-03",
+        "fit_end": "2019-07-11",
+        "fit_days": 159,
+        "validation_start": "2019-07-12",
+        "validation_end": "2019-08-14",
+        "validation_days": 34
+      },
+      {
+        "fold": 4,
+        "fit_start": "2019-02-03",
+        "fit_end": "2019-08-14",
+        "fit_days": 193,
+        "validation_start": "2019-08-15",
+        "validation_end": "2019-09-17",
+        "validation_days": 34
+      }
+    ]
+  },
+  "candidate_methods": {
+    "raw": "published raw P10/P50/P90, reference only",
+    "station_symmetric_conformal": "per-station qhat=max(Q_higher_level(max(P10-y,y-P90)),0); level=ceil((n+1)*0.8)/n; P50 unchanged",
+    "location_scale_common": "z=(y-P50)/sigma; m_g=median(z); b_g=Q_higher_0.8(abs(z-m_g))/1.28155; P50*=P50+m_g*sigma; P10*=P50*-b_g*(P50-P10); P90*=P50*+b_g*(P90-P50)",
+    "global_robust_location_scale": "location_scale_common with one global group",
+    "block_robust_location_scale": "location_scale_common with O1/O2/O3 groups",
+    "station_robust_location_only": "location_scale_common per station with b_g fixed at 1",
+    "station_robust_location_scale": "location_scale_common with one group per station"
+  },
+  "metrics": {
+    "coverage_80": "mean(P10* <= actual <= P90*)",
+    "width": "mean(P90*-P10*)",
+    "interval_score": "width + 2/0.2*(P10*-actual) if below + 2/0.2*(actual-P90*) if above",
+    "pinball": "standard quantile loss at 0.1, 0.5 and 0.9",
+    "p50_bias": "mean(actual-P50*)",
+    "p50_mae": "mean(abs(actual-P50*))",
+    "reporting": "coverage, sharpness/proper scores, center bias and station/fold heterogeneity are assessed jointly; no single aggregate winner is used"
+  },
+  "expert_decision": {
+    "selected_method": null,
+    "decision": "no_fixed_calibration_candidate_promoted",
+    "current_conformal_role": "coverage_sensitivity_only_not_mu_sigma_calibration",
+    "next_method_direction": "predeclare station-specific time-varying center and upper-tail calibration, then evaluate only with calibration temporal blocks"
+  },
+  "formal_warning_output": false,
+  "vajont_used": false
+}

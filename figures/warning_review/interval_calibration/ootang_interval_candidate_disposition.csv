@@ -1,0 +1,7 @@
+artifact_status,formal_warning_output,vajont_used,decision_input_split,method,disposition,reason
+calibration_only_expert_review_not_formal,False,False,calibration,raw,reference_only_not_calibrated,Baseline only; ATU stations are over-wide while O1 is under-covered and positively centered.
+calibration_only_expert_review_not_formal,False,False,calibration,station_symmetric_conformal,coverage_sensitivity_only_not_promoted,"Raises O1 interval coverage but leaves P50 unchanged, so it cannot resolve the five-state center bias; aggregate over-coverage remains."
+calibration_only_expert_review_not_formal,False,False,calibration,global_robust_location_scale,rejected_for_spatial_masking,Pooled parameters are dominated by the five over-wide ATU stations and do not consistently correct the priority O1 stations.
+calibration_only_expert_review_not_formal,False,False,calibration,block_robust_location_scale,rejected_for_within_o1_heterogeneity,MJ1 changes bias direction while MJ3 stays positive and MJ9 weakens; a fixed shared O1 correction severely over-corrects MJ1.
+calibration_only_expert_review_not_formal,False,False,calibration,station_robust_location_only,rejected_for_temporal_instability,Corrects MJ3 center but over-corrects time-varying MJ1 and does not resolve the ATU scale problem.
+calibration_only_expert_review_not_formal,False,False,calibration,station_robust_location_scale,rejected_for_temporal_undercoverage,Produces sharper intervals but validation coverage collapses in several stations/folds; lower interval score alone is insufficient.

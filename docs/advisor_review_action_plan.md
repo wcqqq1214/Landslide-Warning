@@ -2,7 +2,7 @@
 
 > 整理日期：2026-07-16
 >
-> 来源：`review.md` 及导师指定的参考论文、Vajont 数据
+> 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
 > 状态：执行工作稿；当前主线为藕塘滑坡重算，Vajont 降为后续补充案例
 >
@@ -18,6 +18,8 @@
 4. 其他论文、旧项目文档和既有代码仅可用于背景说明、旧产物溯源或提出待验证问题，**不能**单独确定本轮的公式、阈值、颜色映射、稳定段或融合规则。其中[`韦承谦_基于机器学习方法的水库滑坡位移预测及预警研究——以藕塘滑坡为例.pdf`](../literature/韦承谦_基于机器学习方法的水库滑坡位移预测及预警研究——以藕塘滑坡为例.pdf)只属于此类参考资料；用户已于 2026-07-21 对 `V0` 再次确认：它与指定 Word 论文冲突时，**指定 Word 论文优先**。
 
 若前两级依据未给出可复现的量化规则，必须在本计划中标为“执行前冻结”并取得项目决策；不得以第 4 级资料补写数值或把旧实现包装成指定论文的结论。
+
+数据事实不由上述方法优先级覆盖。若版本化输入自身的来源、时间生成链或独立性不能确认，必须先设置数据闸门；不能因为公式已由指定 Word 确认，就把对已处理序列的计算升级为原始监测或正式预警证据。
 
 ### 0.1 `V0` 来源冲突裁决（2026-07-21）
 
@@ -65,6 +67,7 @@
 | 已确认 | 区间指标采用**逐时刻区间偏离状态识别**：以预测时已发布的 `U_t` 分布和随后观测到的 `U_t` 进行分级 | 输出名称使用“区间偏离状态预警/状态识别”；不把它表述为对 `t+h` 的严格前瞻预警或报告提前量 |
 | 已确认（粒度） | `V0` 按监测点独立计算；稳定段采用自动选段方向 | 指定论文表 5-5 分别列出 8 个监测点的 `V0`，不得将 8 点汇成一个共同基线；自动选段的可审计候选路径见 4.2.3 |
 | 已确认（来源裁决） | 指定 Word 论文优先于藕塘毕业论文的 `V0` 路径 | 使用逐点日速度、指定 Word 式（5-3）和五级框架；藕塘论文仅用于复核遗留 `30` 日、四级产物的来源，不得反向覆盖当前协议 |
+| 数据门禁（阻断） | 当前输入是 Figshare 发布物化日建模序列；自然月分段三次指纹强，原始锚点、生成算法、未来信息使用和 MJ/ATU 映射未解决 | 暂停正式日预测、正式 `V0`/导数阈值、正式四指标融合及新的机理性神经消融；先恢复原始处理链并按折生成日值 |
 | 执行前冻结 | 速度五级边界（包括 `V0` 与 blue 的精确边界）、`ΔV` 的负/近零/正趋势状态及“近零”容差、缺失/暖启动、测点融合 `F`、滑坡体融合 `F_site` | 写入版本化配置；除已由文献明确的过程符号外，所有容差和规则只能由拟合/校准阶段确定，测试期只执行 |
 | 已确认的区间路径 | 直接参考指定论文图 5-1 的 `μ+kσ` 五级相对区域；`P10/P50/P90→μ/σ` 保留为项目特有正态近似 | 分位数顺序、覆盖率、近似对称性和标准化残差尾部仅输出 calibration 审计，不设论文未给出的通过阈值；单项结果仍不等同于正式综合预警 |
 
@@ -395,23 +398,62 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 #### 4.2.9 藕塘实施版运行（2026-07-23）
 
-用户依据导师“先跑通藕塘、后续再按意见改动”的要求，授权采用可替换的实施版路线。新增 [`config/ootang_operational_run.v1.draft.json`](../config/ootang_operational_run.v1.draft.json) 与 [`code/warning/operational_run.py`](../code/warning/operational_run.py)：它先重建同一基础草案协议的七份证据，再从 fit-only 原始速度 KMeans 对照候选中读取 `V`、`σ`、`V0`。`V0±σ`、`5V0/10V0`、切线角蓝带与 `80°/85°`、`ΔV` 的 `1.4826×MAD`/中心及测点、滑坡体支撑数量都以 JSON 中的可执行范围表或数值字段驱动；配置会锁定基础协议 `1.3-draft` 的内容指纹和完整七项未决项。输出仅限 calibration/test 的逐点与逐日表、参数表和总 manifest。
+用户依据导师“先跑通藕塘、后续再按意见改动”的要求，授权采用可替换的实施版路线。新增 [`config/ootang_operational_run.v1.draft.json`](../config/ootang_operational_run.v1.draft.json) 与 [`code/warning/operational_run.py`](../code/warning/operational_run.py)：它先重建同一基础草案协议的七份证据，再从 fit-only 发布序列相邻差分速度 KMeans 对照候选中读取 `V`、`σ`、`V0`。旧文档中的“原始速度”只表示未作项目内平滑，不表示原始 GNSS 测量速度。`V0±σ`、`5V0/10V0`、切线角蓝带与 `80°/85°`、`ΔV` 的 `1.4826×MAD`/中心及测点、滑坡体支撑数量都以 JSON 中的可执行范围表或数值字段驱动；配置会锁定基础协议 `1.3-draft` 的内容指纹和完整七项未决项。输出仅限 calibration/test 的逐点与逐日表、参数表和总 manifest。
 
 这些选择是为了让藕塘链路可整体重跑、可供导师直接审阅，并不解除基础 `1.3-draft` 协议中的 `stable_segment_selection`、blue 容差、`ΔV`、`F`、`F_site` 和不规则采样门禁。所有新 CSV 和 manifest 固定为 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`，且先在暂存目录完成、仅在成功后提升；可捕获的提升失败会恢复旧快照。KMeans 仍只被写作项目特有运行基线，不可称为指定 Word 的 MVIF `V0` 实现。完整公式、替换方式和限制见 [`ootang_operational_run.md`](ootang_operational_run.md)。
 
 #### 4.2.10 藕塘 v2 空间证据族实施版（2026-07-26）
 
-对 v1 逐时刻审查发现：全部 8 点、4 项原始输入在 514 个结果日均为有效，`341` 个 `insufficient_valid_station_results` 实际来自“测点两项佐证”后再要求 `6` 个有效融合结果的双层规则，而非传感器缺失；速度与切线角在全部 `4112` 个测点—时刻的等级完全一致，不能作为两份独立证据。为保留 v1 对照且不篡改既有结果，新增 [`config/ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json)、[`code/warning/operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py) 与独立目录 `figures/warning_operational_draft_v2/`。
+对 v1 逐时刻审查发现：全部 8 点、4 项输入值在 514 个结果日均为有效，`341` 个 `insufficient_valid_station_results` 实际来自“测点两项佐证”后再要求 `6` 个有效融合结果的双层规则，而非传感器缺失；速度与切线角在全部 `4112` 个测点—时刻的等级完全一致，不能作为两份独立证据。为保留 v1 对照且不篡改既有结果，新增 [`config/ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json)、[`code/warning/operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py) 与独立目录 `figures/warning_operational_draft_v2/`。
 
 v2 保留同一 fit-only KMeans comparator、区间映射和 `ΔV` 容差，故不声称解决 MVIF 稳定段或 Word 论文 `V0`；它只将速度/切线角压缩为一个运动学证据族，测点候选取区间与运动学等级的最大值，`ΔV=positive` 仅标记加速性，不单独升级颜色。单一证据族异常保留为可评估候选而非缺失。滑坡体按 Wang 等（2025，DOI `10.1029/2025JH000592`）PDF 第 7 页图 4(a,d) 与 5.2 节的藕塘空间拓扑固定 O1=`MJ9/MJ1/MJ3`、O2=`ATU4/ATU5/ATU3`、O3=`ATU2/ATU1`；配置和 v2 manifest 会核验该本地 PDF 的 SHA-256。该来源只支持拓扑，不支持本项目的支撑数、颜色或正式预警结论。全体 green 需至少 3 个可评估测点并覆盖三个分区；blue 仅在它是当日最高候选时可见；黄色及以上需至少 2 个候选测点跨至少 2 个分区。若 yellow--red 最高候选未获相应跨区支撑，则输出 `candidate_not_site_confirmed`，不得因其他分区存在 blue 候选而降为 blue。
 
 该运行仍为非监督、项目特有、可替换的 `operational_draft_not_formal`，不复现指定 Word 的多项 Logistic 回归，也不冻结 `F`、`F_site`、`V0`、蓝带容差或 test 期性能。Vajont 不参与本次实现、参数选择或结果生成。
 
+#### 4.2.11 初始稳定段专家审查（2026-07-26）
+
+对 8 个测点的发布物化日序列相邻差分速度 KMeans 候选、严格 MVIF 诊断和 fit 期曲线完成逐点复算，结论见 [`ootang_stable_segment_expert_review.md`](ootang_stable_segment_expert_review.md)。当前 KMeans 候选 8/8 均把持续升速过程或阶跃上升边缘纳入所谓稳定段，故全部标记为 `rejected_for_formal_v0`；严格 MVIF 8/8 仍为 `tf_multistart_unstable`，正式状态为 `no_stable_baseline_identified`，正式 `V`、`σ`、`V0` 均为 `NA`。这不证明地质上不存在稳定阶段，只说明当前物化序列、方法和门禁不能识别出可接受基线。现有 KMeans 数值继续只作 `operational_draft_not_formal` comparator，不解除 `stable_segment_selection` 或任何速度/切线角门禁。
+
+审查产物位于 `figures/warning_review/stable_segment/`，均固定为 `formal_warning_output=false`、`vajont_used=false`。在取得测量方向、仪器改正、同期宏观巡查记录或经用户另行批准的替代趋势方法前，不通过放宽 MVIF 门禁或人工挑段强制生成 `V0`。
+
+#### 4.2.12 区间校准专家审查（2026-07-26）
+
+按“仓库代码层面 test 不参与选方法”的约束，仅使用 calibration 的 2019-02-03--2019-09-17、227 个物化日历行 × 8 点，在 4 个 expanding-origin 日历后置块上比较 raw、当前逐点对称 conformal、全局/分区/逐点稳健 location-scale 及逐点 location-only，完整结果见 [`ootang_interval_calibration_expert_review.md`](ootang_interval_calibration_expert_review.md) 和 `figures/warning_review/interval_calibration/`。
+
+审查确认：当前 operational 五级状态实际仍使用原始 P10/P50/P90；已有 conformal 端点没有进入颜色映射。calibration 中 ATU1--ATU5 原始覆盖率均为 1.0，而 MJ1/MJ3/MJ9 分别为 0.705/0.568/0.599；MJ3 的 227 天实测全部高于 P50，MJ1 偏差又在期内由正转负。总体覆盖率会掩盖这种空间异质性，O1 三点也不是可完全交换的同一残差总体。
+
+六种固定候选没有一种同时改善逐点覆盖、中心偏差、proper score 和时间稳定性，故本轮冻结为 `no_fixed_calibration_candidate_promoted`。当前逐点对称 conformal 只保留为 P10--P90 覆盖敏感性对照，不作为五级 `μ/σ` 的完整校准；global/block/station 固定 location-scale 均不进入运行规则。下一方法方向是先诊断概率模型的测点特异与时变偏差，再预先定义逐点时变中心和单独上尾校准，只在 calibration 连续时间块中选择。该结论不改现有颜色、阈值或 test 结果。
+
+当前 test 行早已在既有产物中物化并被历史审查查看，因此不能再声称是从未看过的纯盲测；本次审查仍保证仓库代码没有用 test 行或 test 指标选择候选。真正独立终检还需要来源清楚的原始时间戳和值，并在每个时间折内部重新生成日序列；仅增加同类物化序列的未来时段或外部表不能自动解除血缘问题。全部新增产物继续固定为 `formal_warning_output=false`、`vajont_used=false`，Vajont 授权门禁不变。
+
+#### 4.2.13 藕塘数据血缘专家审查（2026-07-28）
+
+新增[`ootang_data_lineage_expert_review.md`](ootang_data_lineage_expert_review.md)、[`data_lineage_audit.py`](../code/convlstm/data_lineage_audit.py)和 `figures/data_lineage/`。审计确认仓库 `monitoring_data.xlsx` 与 Wang 等（2025）Figshare 文件 MD5 完全一致，CSV 与工作簿日期、列和数值等价；所以自然月结构不是仓库转换造成。
+
+8 条位移和 GWT 在全部 48 个自然月内均通过三次指纹，5 个降雨/库水位/温度负对照均为 0/48；目标列的月内四阶差分没有超限，断点只位于跨月窗口。首个模型目标、fit→calibration、calibration→test 三个边界分别把同月三次段切成 `5/26`、`2/26`、`17/13` 行。跨边界三次恢复只标为 `algebraic_dependence_diagnostic_not_forecast_evaluation`，不据此断言具体插值算法或已经证实未来泄漏。
+
+2026-07-28 的人工外部发布包复核在当时取得的 11 个 notebook 中未发现生成该月内结构的代码，只看到读取未公开本机工作簿；该扫描未纳入本仓库自动审计产物，不能写成仓库内可复算证明。原始 GNSS/GWT 锚点、日值聚合/QC/插值、未来锚点使用、MJ/ATU→GPS/FJ 映射以及 2016-07-01--08-05 来源均未提供。当前状态冻结为：
+
+```text
+released_series_role = materialized_daily_modeling_series
+numeric_fingerprint = strong_natural_month_piecewise_cubic
+mapping_to_GPS_FJ = unresolved
+exact_generation_algorithm = unresolved
+original_observation_anchors = not_available_in_audited_release
+future_information_usage = unknown
+independent_raw_daily_gnss_claim = not_supported
+data_gate = blocked
+formal_warning_output = false
+vajont_used = false
+```
+
+该门禁阻断确认性日预测、新的神经消融机理解释、正式 `V0`/速度/`ΔV`/切线角阈值、正式四指标融合和正式预警；不阻断只读血缘审计、对物化序列的工程检查和明确标为 `operational_draft_not_formal` 的链路演示。原计划的 fit-only 单变量神经消融不再执行，直到原始锚点及生成方法恢复，并遵循“先切分原始锚点、再在各折内部生成日序列”。
+
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
 本轮选择“逐时刻区间偏离状态识别”，而非在 `t` 时刻对 `t+h` 的严格前瞻预警。对每个有效时刻 `t`，执行顺序为：
 
-1. 仅用预测发布时刻以前的历史信息，对目标位移 `U_t` 产生 P10/P50/P90；
+1. 仓库代码只读取预测发布时刻以前的表格行，对目标位移 `U_t` 产生 P10/P50/P90；这不证明上游日值生成没有使用未来锚点；
 2. 在 `U_t` 实际被观测到后，判断其落在预测分布的哪个区域；
 3. 输出该时刻的 `interval_level` 和触发依据，作为“区间偏离状态预警/状态识别”。
 
@@ -469,6 +511,8 @@ Vajont 不阻塞藕塘开发和重算。该阶段设为**用户授权门禁**：
 
 目标：先定义，再产生新结果。
 
+- [x] 完成可复算的 Figshare 来源、CSV/XLSX 一致性、自然月三次指纹和模型边界审计，并记录未纳入仓库产物的公开代码包人工复核；将 `data_gate` 冻结为 `blocked`；
+- [ ] 取得原始 GNSS/GWT 锚点、日值聚合/QC/插值链、参考基准及 MJ/ATU 映射；先切分原始锚点，再在每折内部生成日序列并通过血缘门禁；
 - [x] R1、R4、R5、R7、R10 的方法方向已确认；R3 已记录为当前实施解释；R6（Vajont）已延期并设置用户授权门禁；
 - [x] D3：区间指标采用逐时刻区间偏离状态识别，不作为严格前瞻预警；
 - [x] 退役王/安 `L` 改写候选并保留其历史审计；以严格 MVIF 门禁下的 Bai--Perron 分段回归固化新的 fit-only `V` 候选审计表和 manifest，不计算 `σ/V0`；
@@ -544,6 +588,8 @@ figures/warning_draft/interval_reference_states_manifest.json
 
 完成判据：8 个测点均可从 CSV 复画；训练与预测段不会在指标或图例中混淆。
 
+数据血缘补充：上述完成判据只证明发布物化序列上的工程输出完整。当前 RMSE、coverage 和 interval score 不构成独立原始逐日 GNSS 的确认性性能，正式预测仍受 4.2.13 的 `data_gate=blocked` 约束。
+
 #### 2026-07-16：全测点 ConvLSTM 输出执行记录
 
 - 已移除仅绘制 `MJ9/MJ1/MJ3` 的限制，并通过 `main.py --stage convlstm` 重跑藕塘单阶段。新主图为 `figures/convlstm/forecast_all_stations.png`，按 8 个测点展示全时间轴实际位移、fit 诊断、calibration 诊断和留出 test/prediction 段；两条竖线标出 2019-02-03 的 fit/calibration 边界和 2019-09-18 的 calibration/test 边界。
@@ -573,7 +619,7 @@ figures/warning_draft/interval_reference_states_manifest.json
 #### 2026-07-18：SHAP 解释对象、`ΔV` 特征与稳定性重算记录
 
 - 当前 SHAP 解释对象固定为独立 NGBoost，而非 ConvLSTM。回归目标为目标观测位置的 `U_t-U_(t-1)`（mm/观测间隔）；分类目标固定为遗留同日测点 V0 月位移量标签 `warning_level >= 1`，并在所有图、CSV 和 `figures/shap/shap_provenance.json` 中标为非正式五级预警、非因果、非前瞻预警。
-- 为使遗留分类标签可复算，`shap_provenance.json`、分类重要性表和指标表记录 V0 的方法、月窗口、截断分位、拟合日期与阈值表路径。当前单次留出标签的 V0 使用原始数据前 80%（2016-07-02 至 2019-09-11）拟合；独立 NGBoost 的特征训练期随后延至 2019-09-18，二者均早于留出期，因而不泄漏测试期，但这仍是遗留标签口径而非正式五级规则。
+- 为使遗留分类标签可复算，`shap_provenance.json`、分类重要性表和指标表记录 V0 的方法、月窗口、截断分位、拟合日期与阈值表路径。当前单次留出标签的 V0 使用发布建模表前 80%（2016-07-02 至 2019-09-11）拟合；独立 NGBoost 的特征训练期随后延至 2019-09-18，二者在仓库代码层面均早于留出期，但这不能证明上游日值生成独立，且仍是遗留标签口径而非正式五级规则。
 - 单次 SHAP 不再使用训练集尾部 200 行（其行序会偏向最后一个测点），改为留出期 25 个均匀日期 × 全部 8 个测点（200 行）；背景为训练期 12 个均匀日期 × 全部测点（96 行）。这改变的是解释抽样的审计质量，不改变 NGBoost 参数、时间切分、阈值或五级预警规则。
 - `disp_accel_lag*` 已从当前解释代码、协议和产物替换为时间感知 `disp_delta_v_lag*`，其中 `ΔV_i=v_i-v_{i-1}` 是速度增量（mm/day），不是再除以时间的加速度。全局重要性表各 88 行，当前产物中不存在旧 `disp_accel` 名称。
 - 五折重算使用原有 5 个扩展时间折、88 个输入、12/24 个背景/解释日期及五组删组集合，生成 11 项稳定性产物。其中新增 `cross_fold_station_feature_importance.csv`（7,040 行）和 `cross_fold_station_feature_stability.csv`（1,408 行），覆盖 2 个任务 × 5 折 × 8 测点 × 88 特征。测点分层复用同一全测点模型和解释样本，**不是**留一测点空间泛化验证；`station_*` 不作为地质主控因素候选。
@@ -708,12 +754,16 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - 日期严格递增，重复日期和非正 `Δt` 直接报错；
 - 每个案例、测点记录有效起止日期和缺失率；
 - 位移、速度、`ΔV` 单位写入列名或数据字典；
+- 取得原始观测时间戳和值、日值聚合/QC/异常与插值方法、参考基准、点位映射及 2016-07-01--08-05 来源；
+- 先按时间切分原始锚点，再在每个 fit/calibration 折内部生成日序列；禁止先用完整月份生成曲线再切分；
+- 数据血缘未通过时，发布表只称“物化日建模序列”，不得称为 1461 个独立原始逐日 GNSS 观测；
 - 后续启用 Vajont 时，再将其速度与工作簿代表性行逐点核对；
 - 原始工作簿不覆盖，派生数据可再生成。
 
 ### 6.2 科研门禁
 
 - 阈值、标准化、特征选择和超参数仅由拟合/校准阶段确定；
+- 仓库代码层面的历史行隔离与源数据生成层面的未来信息隔离分别报告；前者通过不能替代后者；
 - 区间状态识别的预测必须在目标 `U_t` 被观测前发布；观测后的分级不得表述为 `h` 天前瞻预警或提前量；
 - 对有效已发布预测直接按论文图 5-1 的 `μ_t/σ_t` 区域输出单项状态；P10/P50/P90 的正态近似、覆盖率、对称性和尾部诊断均应保留为可追溯质量审计，不得由 test 数据反向调整；
 - 同日多个测点不可跨训练/测试集合；
@@ -743,16 +793,17 @@ site_fusion_rule_version, contributing_stations, integration_reason
 
 ### 可以立即开始
 
-1. 将已确认的 R1/R4/R5/R7/R10 及 R3 的当前实施解释写入配置模板和方法说明，不把独立 SHAP 路径表述为导师已确认的 ConvLSTM 直接解释架构；
-2. 建立藕塘重算清单和旧产物快照，核对 8 个测点的输入日期、缺测、单位和当前切分；
-3. 开发逐点速度/`ΔV` 特征、全测点预测输出、独立 SHAP 说明和规则融合框架；
-4. 建立只包含藕塘的可复现运行清单，列明每个受影响旧产物的替换关系。
+1. 向数据作者或导师索取原始 GNSS/GWT 锚点、日值处理链、参考基准和 MJ/ATU 点位映射；
+2. 设计 raw-anchor-first 重建：先切分锚点，再在各折内部完成聚合/插值和所有派生量；
+3. 保留对物化序列的只读工程检查与 `operational_draft_not_formal` 演示，不改颜色、阈值或 test 结果；
+4. 将数据血缘限制同步到方法、结果、限制和图表说明。
 
 ### 正式结果前必须冻结
 
-1. 使用拟合/校准数据确定速度边界、`ΔV` 的“近零”容差及过程规则、以及规则融合表；
-2. 冻结四指标到测点、再到滑坡体的规则函数与缺失/暖启动处理；
-3. 生成正式多测点综合预警，并同步藕塘方法、结果和限制文档。
+1. 先解除数据血缘门禁，并证明每折日值生成未使用边界后的锚点；
+2. 再使用各折允许的拟合/校准数据确定速度边界、`ΔV` 的“近零”容差及过程规则；
+3. 冻结四指标到测点、再到滑坡体的规则函数与缺失/暖启动处理；
+4. 生成正式多测点综合预警，并同步藕塘方法、结果和限制文档。
 
 ### 延后到藕塘重算完成后
 
@@ -767,6 +818,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - 只改 `Vt` 一处公式后保留旧结果；
 - 把现有 NGBoost-SHAP 图写成 ConvLSTM-SHAP；
 - 为追求更高覆盖率而根据测试集结果调整分位数，或后续用 Vajont 结果反调藕塘方案；
+- 在原始数据血缘未恢复时运行新的神经输入消融并解释 MJ3/MJ9 的地质偏差成因；
 - 将规则融合的内部一致性或分类准确率写成独立监督预警有效性。
 
 ## 8. 最终完成定义
@@ -774,6 +826,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 本轮藕塘优先修改只有同时满足以下条件才算完成：
 
 - [ ] R1-R5、R7-R10 均有对应代码/数据/图表/正文证据；R3 的实施解释与原意见边界已写清；R6 已记录为带用户授权门禁的 P2 后续项；
+- [ ] 原始观测锚点、日值生成链和 MJ/ATU 点位映射可追溯；先切分锚点再按折生成日序列，`data_gate=passed`；
 - [ ] 逐点速度和 `ΔV` 定义适用于日尺度与非等间隔数据；
 - [ ] ConvLSTM 展示所有测点、训练段和预测段；
 - [x] SHAP 的被解释模型与目标写清楚；
@@ -786,3 +839,5 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [ ] Vajont 未被用于选择或调整藕塘阈值、模型和结论，且不阻塞本轮完成；未获得用户明确允许时没有启动其数据适配、实验或结果生成；
 - [ ] 方法、结果、限制、代码和运行清单全部同步；
 - [ ] 结论强度不超过当前内部/外部证据实际支持的范围。
+
+在 `data_gate=blocked` 期间，本计划允许继续完成工程审计与非正式运行演示，但“本轮正式藕塘重算与预警”不得标记完成。

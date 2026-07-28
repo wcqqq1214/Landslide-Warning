@@ -1,6 +1,6 @@
 # 项目工作进度
 
-> 更新日期：2026-06-23。本文件记录工程与研究实现进度；研究协议以 `framework.md` 为准，结果数值以 `results_report.md` 和版本化 CSV 为准。
+> 更新日期：2026-07-28。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以 `results_report.md` 和版本化 CSV 为准。
 
 ## 当前阶段
 
@@ -8,23 +8,34 @@
 | --- | --- | --- |
 | 十三阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 13/13 阶段成功、65 个产物哈希通过 |
 | 代码目录按研究流程分组 | 已完成 | `code/features/`、`code/warning/`、`code/explainability/`、`code/convlstm/`；入口路径已在 `main.py`、`README.md` 和 `docs/design.md` 同步 |
-| ConvLSTM 独立时间校准 | 已完成 | `figures/convlstm/forecast_calibration_metrics.csv` |
+| ConvLSTM 日历后置校准 | 已完成（仓库代码层面） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
 | ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
 | ConvLSTM 内层时间验证与早停 | 已完成 | 预注册提交 `3c9a616`；7 张 `inner_validation_*.csv` |
 | ConvLSTM 有限容量/正则化敏感性 | 已完成，停止继续扩搜 | 预注册提交 `d13292e`；9 张 `capacity_*.csv` |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
-| NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个可预测独立事件，不满足稳定调参与外层评价条件 |
+| 藕塘数据血缘 | 已审查，门禁阻断 | `docs/ootang_data_lineage_expert_review.md`、`figures/data_lineage/`；原始锚点/生成算法/MJ-ATU 映射未解决 |
+| 新神经消融与正式日预测 | 暂停 | 自然月分段三次结构跨三个模型边界，先恢复原始处理链并按折生成日值 |
+| NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 
 ## 当前滚动验证协议
 
 1. 保持现有 ConvLSTM 结构、7 日输入和 1 日预测步长，不更换模型。
 2. 使用 3 个扩展窗口折，每折测试 287 个连续日，测试段互不重叠。
-3. 每折训练段末 20% 作为独立时间校准期；标准化、增量尺度和测点 `qhat` 只使用该折允许的历史数据。
+3. 每折训练段末 20% 作为日历上后置的 calibration 期；标准化、增量尺度和测点 `qhat` 只使用该折允许的表格历史行。
 4. 每折报告总体和逐测点误差、持久性基线、区间覆盖率、宽度、pinball loss 和 interval score，不只报告跨折均值。
-5. 当前数据和留出时段已参与多轮分析，滚动结果仅作探索性内部时间验证，不作为外部确认性证据。
+5. 当前物化序列和留出时段已参与多轮分析，且上游生成独立性未知；滚动结果仅作探索性内部时间验证，不作为外部确认性证据。
+
+## 2026-07-28 数据血缘审查记录
+
+- 仓库 `monitoring_data.xlsx` 与 Wang 等（2025）Figshare 文件 MD5 完全一致；CSV 与工作簿 1461×17 的日期、列和数值等价。
+- 8 条位移和 GWT 在 48/48 个自然月内呈三次指纹，5 个环境负对照为 0/48；月内第四差分无断点，断点集中在自然月边界。
+- 首个模型目标、fit→calibration、calibration→test 三个边界均切穿同一月内三次段；跨边界恢复只作为代数依赖诊断，不写成预测性能或已证实未来泄漏。
+- Figshare 的 11 个公开 notebook 没有生成该结构的代码，也没有公开原始 GNSS/GWT 锚点、日值处理链或 MJ/ATU 映射。
+- 当前 `data_gate=blocked`、`formal_warning_output=false`、`vajont_used=false`；计划中的 fit-only 神经单变量消融暂停。
+- 下一步优先向数据作者或导师索取原始锚点、聚合/QC/插值方法、参考基准和点位映射；取得后先切分锚点，再按折生成日序列。
 
 ## 本轮完成门槛
 

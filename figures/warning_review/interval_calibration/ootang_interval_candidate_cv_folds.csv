@@ -1,0 +1,5 @@
+artifact_status,formal_warning_output,vajont_used,decision_input_split,fold,fit_start,fit_end,fit_days,validation_start,validation_end,validation_days,validation_rows
+calibration_only_expert_review_not_formal,False,False,calibration,1,2019-02-03,2019-05-04,91,2019-05-05,2019-06-07,34,272
+calibration_only_expert_review_not_formal,False,False,calibration,2,2019-02-03,2019-06-07,125,2019-06-08,2019-07-11,34,272
+calibration_only_expert_review_not_formal,False,False,calibration,3,2019-02-03,2019-07-11,159,2019-07-12,2019-08-14,34,272
+calibration_only_expert_review_not_formal,False,False,calibration,4,2019-02-03,2019-08-14,193,2019-08-15,2019-09-17,34,272

@@ -5,6 +5,8 @@
 > 保留对照配置：[ootang_operational_run.v1.draft.json](../config/ootang_operational_run.v1.draft.json)
 >
 > 状态：`operational_draft`；用于先完整跑通藕塘案例并便于导师后续替换规则，**不是正式预警结果**。
+>
+> 数据血缘更新（2026-07-28）：输入是 Figshare 发布物化日建模序列，原始锚点和生成算法未恢复，`data_gate=blocked`。本运行只能演示代码链路；其颜色、速度、`ΔV`、切线角和区间均不能升级为原始逐日 GNSS 上的正式证据。
 
 ## 1. 目的与边界
 
@@ -12,7 +14,7 @@
 
 - 基础协议仍是 [`ootang-five-level-rule-v1`](../config/ootang_warning_protocol.v1.draft.json) 的 `1.3-draft`；实施版配置锁定其内容 SHA-256 和七项未决项，任一漂移都会拒绝运行；
 - 每份 CSV 和 manifest 均写入 `formal_warning_output=false`、`artifact_status=operational_draft_not_formal` 与 `vajont_used=false`；
-- 不调用 [`formal_warning.py`](../code/warning/formal_warning.py)，不把原始速度 KMeans 候选称为指定 Word 论文的 MVIF `V0` 实现；
+- 不调用 [`formal_warning.py`](../code/warning/formal_warning.py)，不把发布序列相邻差分速度 KMeans 候选称为指定 Word 论文的 MVIF `V0` 实现；
 - 参数只由 `split=fit` 的候选稳定段和运动学记录产生；calibration/test 仅执行，不反向选择参数。
 
 因此，它是一份“可跑、可审计、可替换”的实施版，不是对阈值有效性、预警提前量或泛化性能的结论。
@@ -21,7 +23,7 @@
 
 1. 先重建七份藕塘草案证据，核对基础协议指纹、输入来源和非正式标识；
 2. 区间指标直接使用指定 Word 图 5-1 的 `μ+kσ` 五级区域；本项目近似为 `μ=P50`、`σ=(P90-P10)/(2×1.28155)`，且只在观测到同日位移后作状态识别；
-3. 严格 MVIF 仍是指定 Word 路径的诊断基线。当前 8 点均为 `tf_multistart_unstable`，所以实施版显式改用 fit-only 的“原始速度 KMeans 初始低速前缀”作为**项目特有运行基线**；
+3. 严格 MVIF 仍是指定 Word 路径的诊断基线。当前 8 点均为 `tf_multistart_unstable`，所以实施版显式改用 fit-only 的“发布序列相邻差分速度 KMeans 初始低速前缀”作为**项目特有运行基线**；这里不表示原始 GNSS 测量速度；
 4. 对每个测点候选段的 `V`、`σ`、`V0=max(1.5V,V+2σ)`，把 `V0±σ` 定义为运行版的 blue 区间：
 
    ```text

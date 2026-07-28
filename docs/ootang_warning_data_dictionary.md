@@ -8,6 +8,7 @@
 
 ## 1. 共用约束
 
+- 所有累计位移、速度、`ΔV`、切线角和区间状态当前都基于 Figshare 发布的物化日建模序列；原始观测锚点、日值生成算法、未来信息使用状态以及 MJ/ATU→GPS/FJ 映射均未解决，`data_gate=blocked`。fit/calibration 只能支持内部草案参数审计，不能在该门禁解除前冻结为正式参数。详见[`数据血缘专家审查`](ootang_data_lineage_expert_review.md)。
 - 范围仅为藕塘 8 个测点；Vajont 不参与任何字段定义、阈值选择或结果生成。
 - 五级的唯一顺序为 `green=0`、`blue=1`、`yellow=2`、`orange=3`、`red=4`；它表示总体颜色顺序，不会自动赋予单项指标阈值。
 - 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。
@@ -18,17 +19,17 @@
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 - 正式执行器未来只能通过 [`formal_warning.py`](../code/warning/formal_warning.py) 的 `run_formal_warning()` 进入；它先调用 `require_frozen_protocol()`，且在正式四指标执行器尚未实现前会明确拒绝，而不会接受旧融合函数。当前 `main.py` 运行清单和历史预警阶段均固定标为非正式；旧融合、阈值及可单独运行的历史脚本的新表格携带 `warning_path=legacy_exploratory` 与 `formal_warning_output=false`，输出目录另有 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则配套同目录的 `ngboost_legacy_warning_manifest.json`。完整映射见 [`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。
 - 用户于 2026-07-21 确认：指定 Word 论文优先于藕塘毕业论文；后者的 `30` 日、四级 `V0` 路径只可复核历史产物，不能替代本字典的逐点日速度、指定 Word 式（5-3）或五级规则。
-- 指定 Word 对阶跃型滑坡的 `V0` 输入是 MVIF 趋势项位移的初始稳定斜率。用户已授权以 `s(t)=A ln((t_f-Bt)/(t_f-t))+C` 协调其第 3 章的 `s0/C` 符号不一致，其中 `C` 为待估截距；原始模型文献仍未规定该斜率的自动取值时刻或窗口。现有原始逐点速度 KMeans 产物仅标为 `project_specific_comparator_not_specified_word_v0_implementation`，可供对照审计，不能被写作已实现的 Word `V0` 路径。
+- 指定 Word 对阶跃型滑坡的 `V0` 输入是 MVIF 趋势项位移的初始稳定斜率。用户已授权以 `s(t)=A ln((t_f-Bt)/(t_f-t))+C` 协调其第 3 章的 `s0/C` 符号不一致，其中 `C` 为待估截距；原始模型文献仍未规定该斜率的自动取值时刻或窗口。现有“发布序列未作项目内平滑的相邻差分速度”KMeans 产物仅标为 `project_specific_comparator_not_specified_word_v0_implementation`，可供对照审计，不能被写作已实现的 Word `V0` 路径；这里过去使用的“原始速度”不表示原始 GNSS 测量速度。
 - 用户已确认：MVIF 的有限 `t_f` 若在 fit 期多起点拟合中不可辨识，必须明确 `failed`，不能人为给 horizon 或由其生成正式 `V`、`σ`、`V0`、速度/切线角等级或预警。`mvif_fit_candidates.*` 只审计这条严格基线；当前藕塘 8 个 fit 记录均因 `tf_multistart_unstable` 失败，故它们不含任何下游阈值量。用户在审阅该结果后确认：这些失败不授权事后放宽多起点、Jacobian 秩或 `t_f` 一致性条件，也不将原始速度 KMeans 对照升级为指定 Word 路径。此前王/安（2023）`5 d`、`L` 匀速段改写路线及 `mvif_initial_slope_candidates.*` 已退役为历史记录，当前协议拒绝继续写出它。新的 `bai_perron_mvif_initial_slope_candidates.*` 只有在严格 MVIF 已接受时，才对该拟合趋势做 Bai--Perron 分段 OLS/BIC 审计；仅当首段为正且紧随段增速时才输出 `candidate_v_mm_per_day`。整段、非增速首断点、数据不足或严格 MVIF 失败均不产生候选。该路线不计算 `σ` 或 `V0`，不输出速度/切线角等级或预警，且未估计断点不确定性；这些均继续受 `stable_segment_selection` 等未冻结项约束。
 
 ## 2. 四项指标
 
 | 指标与正式字段 | 值的定义及单位 | 时间窗口 / 可用数据 | 缺失与暖启动 | 阈值来源与当前状态 |
 | --- | --- | --- | --- | --- |
-| 区间偏离状态：`interval_level` | 已发布预测的 `P10/P50/P90`（mm）与随后观测到的 `U_t`（mm）。采用 `μ_t=P50_t`、`σ_t=(P90_t-P10_t)/(2×1.28155)`、`z_t=(U_t-μ_t)/σ_t` 的项目特有正态近似。 | calibration 质量诊断固定只读 `split=calibration`；逐时刻状态识别只在目标 `U_t` 已观测后进行。fit 行是拟合诊断，固定为 `not_applicable`；calibration/test 的已发布预测可映射，不能称为 `t+h` 前瞻预警。 | 底层接口只在调用者显式提供 `warmup/invalid/not_applicable` 时保留该输入状态；当前 `forecast_predictions.csv` 没有区间上游状态字段，故审计产物仅按 split 派生 fit=`not_applicable`，且非有限值或 `P10≤P50≤P90` / `P90>P10` 不成立时为 `invalid`。有效的已发布预测直接输出五级，并写入 `interval_mapping_basis=specified_thesis_figure_5_1_normal_regions`。 | 指定论文图 5-1 给出 `μ`、`μ+σ`、`μ+2σ`、`μ+3σ` 的五级相对区域；其本身不提供 `P10/P50/P90→μ/σ` 公式。覆盖率、对称性和尾部诊断保留为审计，不虚构通过阈值，也不阻止该论文参考映射；整个协议仍为 draft，不能输出正式综合预警。 |
-| 逐点速度：`velocity` / `velocity_level` | `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，单位 `mm/day`。`velocity_level` 是未来的五级单项等级，不等同于最终测点等级。 | 当前值使用相邻两次有效观测的实际 `Δt`；每个测点独立。Word 路径要求先从 MVIF 趋势项位移自动/人工确定初始稳定斜率。当前有两条隔离审计路线：fit 期有效原始速度 KMeans `V0` 仍只是对照；新的 MVIF 候选先要求严格有限 `t_f` 拟合通过，再在其趋势上以 Bai--Perron 分段 OLS/BIC 识别首个正斜率、后续增速段，只输出 `candidate_v_mm_per_day`。它不接入 `velocity_tangent_fit_calibration_diagnostics.csv`，避免与原始速度对照混淆。 | 首个速度为 `warmup`；缺失位移、无效日期或非正 `Δt` 产生明确无效状态，不插值。Bai--Perron 草案不需要逐日重采样；严格 MVIF 拟合失败、无结构断点或首断点不增速时均明确失败。 | 指定论文式（5-3）为 `V0=max(1.5V,V+2σ)`，其中 `V` 是选定初始位移段的平均速率。表 5-4 的橙色列符号已由同章图 5-4（速率纵轴、`V0/5V0/10V0` 阈值线）核对为 `5V0≤V<10V0`；Bai--Perron 首段规则、断点不确定性、`σ` 的操作定义与 `V≈V0` 的 blue 容差仍未冻结：`stable_segment_selection`、`v0_blue_tolerance`。两个审计表都不输出速度等级或容差。 |
-| 变形速率增量：`delta_v` / `delta_v_state` | `ΔV_i=v_i-v_{i-1}`，是速度增量而非加速度，单位仍为 `mm/day`。状态仅为 `negative`、`near_zero`、`positive`，不是单独虚构的五级阈值。 | 需要连续两个有效速度，涉及 `i-2,i-1,i` 三个观测位置；近零容差只能在预先声明的 fit/calibration 阶段冻结。`figures/warning_draft/delta_v_fit_calibration_diagnostics.csv` 只固化原始摘要：fit 取截止日前历史，calibration 只取精确预测日期，不按起止日期包络扩展。 | 前两行是 `warmup`；当前速度无效则为 `velocity_invalid`，前一速度无效则为 `previous_velocity_invalid`。 | 指定论文只将 `ΔV` 称为辅助判别，正文 `[92]` 无法从该 Word 文件的参考文献表追溯；其融合公式的解释还只列区间、切线角和速率三类输出，未能恢复 `ΔV` 的精确特征角色。可采用负/近零/正的过程语义，但 `delta_v_near_zero_tolerance` 与其参与 `F` 的规则未冻结。 |
-| 改进切线角：`tangent_angle` / `tangent_angle_level` | 原始方法将累计位移坐标变换为时间量纲后计算 `α_i=(180/π)arctan((T_i-T_{i-1})/(t_i-t_{i-1}))`；在当前等间隔日数据中，速率比形式为 `α_i=(180/π)arctan(v_i/V0)`，输出单位为 degree。 | 原始文献要求先识别等速变形阶段并计算其平均速率 `V0`。本项目的自动稳定段仅是 fit-only 草案候选；当前遗留的 3 日因果平滑和持续性规则不可自动升格为正式窗口。`velocity_tangent_fit_calibration_diagnostics.csv` 只保存该原始角度及其相对 45° 的描述统计。 | 原始文献建议不等间隔观测先等间隔化。藕塘当前为逐日数据；出现缺测/非等间隔时的重采样、无效标记或其他处置尚未冻结。 | 指定论文表 5-2 和许强等（2009）给出 `α<45°`、`α≈45°`、`45°<α<80°`、`80°≤α<85°`、`α≥85°` 对应五色。`α≈45°` 没有数值容差或边界归属，因此 `tangent_blue_tolerance`、`nonregular_tangent_handling` 以及稳定段选择仍阻止正式五级；该诊断表不输出切线角等级或容差。 |
+| 区间偏离状态：`interval_level` | 已发布预测的 `P10/P50/P90`（mm）与随后物化到表中的 `U_t`（mm）。采用 `μ_t=P50_t`、`σ_t=(P90_t-P10_t)/(2×1.28155)`、`z_t=(U_t-μ_t)/σ_t` 的项目特有正态近似。它表示模型与物化目标值之间的观测后偏离，不是原始 GNSS 测量不确定性。 | calibration 质量诊断固定只读 `split=calibration`；逐时刻状态识别只在目标 `U_t` 已可见后进行。fit 行是拟合诊断，固定为 `not_applicable`；calibration/test 的已发布预测可映射，不能称为 `t+h` 确认性前瞻预警。 | 底层接口只在调用者显式提供 `warmup/invalid/not_applicable` 时保留该输入状态；当前 `forecast_predictions.csv` 没有区间上游状态字段，故审计产物仅按 split 派生 fit=`not_applicable`，且非有限值或 `P10≤P50≤P90` / `P90>P10` 不成立时为 `invalid`。有效的已发布预测直接输出五级，并写入 `interval_mapping_basis=specified_thesis_figure_5_1_normal_regions`。 | 指定论文图 5-1 给出 `μ`、`μ+σ`、`μ+2σ`、`μ+3σ` 的五级相对区域；其本身不提供 `P10/P50/P90→μ/σ` 公式。覆盖率、对称性和尾部诊断保留为审计，不虚构通过阈值，也不阻止该论文参考映射；整个协议仍为 draft，不能输出正式综合预警。 |
+| 逐点速度：`velocity` / `velocity_level` | `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，单位 `mm/day`。当前值是物化序列导数，可能携带自然月多项式结构；`velocity_level` 是未来的五级单项等级，不等同于最终测点等级。 | 当前值使用相邻两个有效物化日历值的实际 `Δt`；每个测点独立。Word 路径要求先从 MVIF 趋势项位移自动/人工确定初始稳定斜率。当前有两条隔离审计路线：fit 期发布序列相邻差分速度 KMeans `V0` 仍只是对照；新的 MVIF 候选先要求严格有限 `t_f` 拟合通过，再在其趋势上以 Bai--Perron 分段 OLS/BIC 识别首个正斜率、后续增速段，只输出 `candidate_v_mm_per_day`。它不接入 `velocity_tangent_fit_calibration_diagnostics.csv`，避免与 KMeans 对照混淆。 | 首个速度为 `warmup`；缺失位移、无效日期或非正 `Δt` 产生明确无效状态，不插值。Bai--Perron 草案不需要逐日重采样；严格 MVIF 拟合失败、无结构断点或首断点不增速时均明确失败。 | 指定论文式（5-3）为 `V0=max(1.5V,V+2σ)`，其中 `V` 是选定初始位移段的平均速率。表 5-4 的橙色列符号已由同章图 5-4（速率纵轴、`V0/5V0/10V0` 阈值线）核对为 `5V0≤V<10V0`；Bai--Perron 首段规则、断点不确定性、`σ` 的操作定义与 `V≈V0` 的 blue 容差仍未冻结：`stable_segment_selection`、`v0_blue_tolerance`。两个审计表都不输出速度等级或容差。 |
+| 变形速率增量：`delta_v` / `delta_v_state` | `ΔV_i=v_i-v_{i-1}`，是速度增量而非加速度，单位仍为 `mm/day`。它是物化序列的二阶差分性质派生量，状态仅为 `negative`、`near_zero`、`positive`，不是单独虚构的五级阈值。 | 需要连续两个有效速度，涉及 `i-2,i-1,i` 三个物化日历值；近零容差只能在预先声明的 fit/calibration 阶段审计。`figures/warning_draft/delta_v_fit_calibration_diagnostics.csv` 只固化数值摘要：fit 取截止日前历史，calibration 只取精确预测日期，不按起止日期包络扩展。 | 前两行是 `warmup`；当前速度无效则为 `velocity_invalid`，前一速度无效则为 `previous_velocity_invalid`。 | 指定论文只将 `ΔV` 称为辅助判别，正文 `[92]` 无法从该 Word 文件的参考文献表追溯；其融合公式的解释还只列区间、切线角和速率三类输出，未能恢复 `ΔV` 的精确特征角色。可采用负/近零/正的过程语义，但 `delta_v_near_zero_tolerance` 与其参与 `F` 的规则未冻结；数据门禁通过前也不冻结为正式量。 |
+| 改进切线角：`tangent_angle` / `tangent_angle_level` | 原始方法将累计位移坐标变换为时间量纲后计算 `α_i=(180/π)arctan((T_i-T_{i-1})/(t_i-t_{i-1}))`；在当前发布表的等间隔日历网格中，速率比形式为 `α_i=(180/π)arctan(v_i/V0)`，输出单位为 degree。它仍是物化序列导数的变换。 | 原始文献要求先识别等速变形阶段并计算其平均速率 `V0`。本项目的自动稳定段仅是 fit-only 草案候选；当前遗留的 3 日因果平滑和持续性规则不可自动升格为正式窗口。`velocity_tangent_fit_calibration_diagnostics.csv` 只保存该原始角度及其相对 45° 的描述统计。 | 原始文献建议不等间隔观测先等间隔化。藕塘发布表为逐日日历网格，但不能据此推断原始采样频率；出现原始缺测/非等间隔时的重采样、无效标记或其他处置尚未恢复。 | 指定论文表 5-2 和许强等（2009）给出 `α<45°`、`α≈45°`、`45°<α<80°`、`80°≤α<85°`、`α≥85°` 对应五色。`α≈45°` 没有数值容差或边界归属，因此 `tangent_blue_tolerance`、`nonregular_tangent_handling`、稳定段选择和数据血缘仍阻止正式五级；该诊断表不输出切线角等级或容差。 |
 
 ## 3. 输出与融合边界
 
@@ -55,9 +56,10 @@ v2 实施版的 `station_assessment_status=valid` 只表示四项输入可评估
 
 下列决策必须留在版本化协议中，不能由本字典、历史代码、指定论文的其他案例数值或 test 期结果补写：
 
-1. 每测点 Bai--Perron 初始段候选的正式接受（包括断点不确定性、最少段长/首段增速判断及 `σ` 的约定）和速度五级的 blue/橙色边界；
-2. `ΔV≈0` 容差以及它在测点级 `F` 中的参与方式；
-3. 切线角 `α≈45°` 的 blue 容差与不规则采样处置；
-4. 测点级 `F`、滑坡体级 `F_site`、平局、冲突、缺失和暖启动规则。
+1. 原始观测锚点、日值生成算法、未来锚点使用状态以及 MJ/ATU 与 GPS/FJ/坐标映射；
+2. 每测点 Bai--Perron 初始段候选的正式接受（包括断点不确定性、最少段长/首段增速判断及 `σ` 的约定）和速度五级的 blue/橙色边界；
+3. `ΔV≈0` 容差以及它在测点级 `F` 中的参与方式；
+4. 切线角 `α≈45°` 的 blue 容差与不规则采样处置；
+5. 测点级 `F`、滑坡体级 `F_site`、平局、冲突、缺失和暖启动规则。
 
 论文参考的区间单项状态已可复算，但在其余项冻结并完成四指标与滑坡体融合前，任何单项颜色仍不是藕塘的正式预警结果。

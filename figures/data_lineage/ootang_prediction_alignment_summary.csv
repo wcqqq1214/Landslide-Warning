@@ -1,0 +1,4 @@
+split,start_date,end_date,n_dates,n_stations,n_rows,max_abs_actual_alignment_error,max_abs_persistence_alignment_error
+fit,2016-08-06,2019-02-02,911,8,7288,0.0,0.0
+calibration,2019-02-03,2019-09-17,227,8,1816,0.0,0.0
+test,2019-09-18,2020-06-30,287,8,2296,0.0,0.0

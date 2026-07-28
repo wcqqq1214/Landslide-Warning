@@ -1,0 +1,179 @@
+{
+  "artifact_kind": "ootang_interval_calibration_expert_review",
+  "artifact_status": "calibration_only_expert_review_not_formal",
+  "review_date": "2026-07-26",
+  "source_commit": "c74a8a3",
+  "scope": {
+    "case": "ootang",
+    "stations": [
+      "MJ9",
+      "MJ1",
+      "MJ3",
+      "ATU4",
+      "ATU5",
+      "ATU3",
+      "ATU2",
+      "ATU1"
+    ],
+    "blocks": {
+      "O1": [
+        "MJ9",
+        "MJ1",
+        "MJ3"
+      ],
+      "O2": [
+        "ATU4",
+        "ATU5",
+        "ATU3"
+      ],
+      "O3": [
+        "ATU2",
+        "ATU1"
+      ]
+    },
+    "decision_split": "calibration",
+    "start": "2019-02-03",
+    "end": "2019-09-17",
+    "days": 227,
+    "rows": 1816
+  },
+  "input_integrity": {
+    "calibration_slice_sha256": "5cd1323ea4bc3403a4f678387d4d89e5ab67551daf4072c7ec4b173239c1518f",
+    "duplicate_date_station_rows": 0,
+    "nonfinite_rows": 0,
+    "quantile_crossing_rows": 0
+  },
+  "test_isolation": {
+    "test_rows_used_for_fit": 0,
+    "test_rows_used_for_method_selection": 0,
+    "test_metrics_used_for_method_selection": 0,
+    "pristine_blind_test_claimed": false,
+    "reason": "Earlier versioned artifacts already materialized and reviewed test summaries; this review nevertheless excludes test from all candidate fitting and selection."
+  },
+  "temporal_validation": {
+    "method": "four_fold_expanding_origin_contiguous_future_blocks",
+    "initial_fit_days": 91,
+    "fold_validation_days": 34,
+    "validation_days_total": 136,
+    "validation_station_rows": 1088,
+    "candidate_oof_rows": 6528,
+    "random_split_used": false
+  },
+  "expert_decision": {
+    "selected_fixed_calibration_method": null,
+    "decision": "no_fixed_calibration_candidate_promoted",
+    "current_station_conformal_role": "coverage_sensitivity_only_not_mu_sigma_calibration",
+    "next_direction": "predeclared_station_specific_time_varying_center_and_upper_tail_calibration_after_model_bias_diagnosis"
+  },
+  "validation": {
+    "determinism": "deterministic",
+    "two_successive_rerun_artifact_bundle_sha256": "6ce9c80858841e08281fb45db6b32eadf2b25b10a4ea1e0fab4381b801c081cf",
+    "rerun_verdict": "REPRODUCIBLE",
+    "independent_recalculation": "core baseline and four-fold candidate metrics matched an independent read-only implementation to reported rounding",
+    "fallacy_scan": "11/11 checked",
+    "overall_confidence_for_formal_promotion": "RED_FLAG"
+  },
+  "method_references": [
+    {
+      "title": "Probabilistic forecasts, calibration and sharpness",
+      "doi": "10.1111/j.1467-9868.2007.00587.x",
+      "role": "calibration_and_sharpness_evaluation_principle"
+    },
+    {
+      "title": "Strictly Proper Scoring Rules, Prediction, and Estimation",
+      "doi": "10.1198/016214506000001437",
+      "role": "interval_and_quantile_scoring"
+    },
+    {
+      "title": "Conformalized Quantile Regression",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2019/hash/5103c3584b063c431bd1268e9b5e76fb-Abstract.html",
+      "role": "conformal_quantile_interval_method_context"
+    },
+    {
+      "title": "Adaptive Conformal Inference Under Distribution Shift",
+      "url": "https://proceedings.neurips.cc/paper/2021/hash/0d441de75945e5acbc865406fc9a2559-Abstract.html",
+      "role": "future_time_varying_calibration_direction_only"
+    }
+  ],
+  "source_files": {
+    "figures/convlstm/forecast_predictions.csv": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459",
+    "docs/advisor_review_action_plan.md": "9ca6d1531d292835ff2ba1304899d042b4f9ddc4b893054d275b2ed7df21282a",
+    "literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx": "a16b75e64c45278eb28a1379caed67e66ecc08acf597832e13aae9325c3aa13a",
+    "code/convlstm/model.py": "c496a5569414f824283070708b9688d84a7fc251d64ed175ce4924055c12f568",
+    "code/warning/interval_state.py": "3695f62c4f34ad3af9425f3b486dfbcbf4fbe236d79ac2f6b619dbda61c3f501",
+    "code/warning/operational_run.py": "3bc9ad24b51d09254abeb5a3747860c823debf0beffb7900857a42a564806805",
+    "docs/ootang_v2_expert_review.md": "22d3ccf51e7a2535edd42790da46f63816fc2218c07e0a3e87910eb290b02b35"
+  },
+  "outputs": {
+    "docs/ootang_interval_calibration_expert_review.md": {
+      "sha256": "8bce2d7118d8bf1916dbe736f00db3313f9b63168f5ae960e15eee6fe8b9a197",
+      "size_bytes": 21776
+    },
+    "figures/warning_review/interval_calibration/MJ1_interval_calibration_evidence.png": {
+      "sha256": "d1f85898eb535d343cd344188e02b83826f13988db7f85abbe845bcfd56197fe",
+      "size_bytes": 341379
+    },
+    "figures/warning_review/interval_calibration/MJ3_interval_calibration_evidence.png": {
+      "sha256": "03df45fb2e928643e5e1a3360faf15dfb2a66d46dcdcd90aac62ea050e666115",
+      "size_bytes": 333774
+    },
+    "figures/warning_review/interval_calibration/MJ9_interval_calibration_evidence.png": {
+      "sha256": "6f17f7964361693aa22a75b931756575543e75b3b525f5d3d1d64754ac3a4e93",
+      "size_bytes": 359612
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_calibration_baseline.csv": {
+      "sha256": "c7b8b1d6e70c5f4c3d0e04ecff3b21ccf6a2d118eac14b02960b36b740e53d5e",
+      "size_bytes": 3701
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_calibration_monthly.csv": {
+      "sha256": "315f7d1cc9b2954ad28050c9ed08f7848deee3dc9acccb8e91d64339b238e7f6",
+      "size_bytes": 10155
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_calibration_overview.png": {
+      "sha256": "adae2a5e35f9846e4c0a19928c9b072394d002af7e82ff2da97715fcb13af085",
+      "size_bytes": 473941
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_calibration_review_protocol.json": {
+      "sha256": "c319801ba4ddea5124e116d9773eedcfe40bfe806ed1f802df83a34b36a4765d",
+      "size_bytes": 4079
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_calibration_temporal_segments.csv": {
+      "sha256": "833bde07408f32aee7276b2b6f2a7c83f6bc336d06b9de38db87eef2b69feb59",
+      "size_bytes": 4003
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_cv_fold_metrics.csv": {
+      "sha256": "a8c97b9ccff762819bb50bc86ba9a34d22958fa17ea11a1fa8c46552b7b2634c",
+      "size_bytes": 74977
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_cv_folds.csv": {
+      "sha256": "539c5785f2422211b9876ae0ad5378e7f0d3871f1ceab13bd0150e784c8d9ef0",
+      "size_bytes": 658
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_cv_summary.csv": {
+      "sha256": "b4e5b4bedb49ac3b1cc5c42a8ab3e5cb1566af6c60867ab3fd9912b5b1cae7e3",
+      "size_bytes": 4619
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_disposition.csv": {
+      "sha256": "8d5868f36da3634e8eb8e735fd3363fd59610341c4a26550c6641b237cb33dd6",
+      "size_bytes": 1559
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_oof_predictions.csv": {
+      "sha256": "bb85e6b416b9d21e3177bc3e06c77f80bc4c96acd0f26c423b9183e060902935",
+      "size_bytes": 1474091
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_parameters.csv": {
+      "sha256": "689303367d98793dd06ac90a0eb83674a9c3f33bcd533f661ea980f7a5eb6445",
+      "size_bytes": 15045
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_candidate_station_metrics.csv": {
+      "sha256": "8aea1efb8dc0e671fe66040172141ee145ae9b801ce9a247e7ba1e0ba12aae9a",
+      "size_bytes": 15362
+    },
+    "figures/warning_review/interval_calibration/ootang_interval_residual_correlations.csv": {
+      "sha256": "ff5fde09ebf34d33113b0567e720a610f1c4c3639b0d6d1dfae1b199553cab78",
+      "size_bytes": 4502
+    }
+  },
+  "formal_warning_output": false,
+  "vajont_used": false
+}
