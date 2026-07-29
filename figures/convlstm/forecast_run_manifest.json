@@ -1,0 +1,130 @@
+{
+  "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+  "artifact_status": "prototype_internal_not_confirmatory",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "vajont_used": false,
+  "source_recovery_status": "unavailable_by_project_constraint",
+  "prototype_run_gate": "allowed",
+  "confirmatory_evidence_gate": "blocked",
+  "released_series_role": "materialized_daily_modeling_series",
+  "source_inputs": {
+    "features": {
+      "path": "data/features.csv",
+      "sha256": "366188ba1f55fd56b6606f5333e34566fca26c4771dd9745eebfabfcbd4286d1"
+    },
+    "station_geometry": {
+      "path": "data/station_coords.csv",
+      "sha256": "17dac7c5985891f27905e7056b45626a0d6f4dbf34f336534c17bb76ecd32f09",
+      "station_count": 8,
+      "horizontal_columns": [
+        "x_m",
+        "y_m"
+      ],
+      "horizontal_unit": "m",
+      "elevation_column": "elev_m",
+      "elevation_unit": "m",
+      "elevation_min_m": 190.0,
+      "elevation_max_m": 515.0
+    }
+  },
+  "spatial_representation": {
+    "horizontal_grid": {
+      "method": "inverse_distance_weighting",
+      "distance_dimensions": [
+        "x_m",
+        "y_m"
+      ],
+      "idw_power": 2.0,
+      "grid_shape": [
+        4,
+        7
+      ]
+    },
+    "elevation": {
+      "usage": "static_model_input_channel",
+      "method": "station_zscore_then_horizontal_idw",
+      "normalization_scope": "all_eight_static_station_metadata",
+      "mean_m": 368.125,
+      "std_m": 100.68321297515291,
+      "grid_min_z": -1.6672271490097046,
+      "grid_max_z": 1.3961787223815918,
+      "used_in_distance_metric": false
+    }
+  },
+  "model": {
+    "name": "ConvLSTMForecast",
+    "input_schema": "displacement_elevation_exog_v1",
+    "input_channel_count": 7,
+    "input_channels": [
+      "displacement_idw_grid",
+      "elevation_static_idw_grid",
+      "RWL",
+      "RWL_rate",
+      "Rain_cum7",
+      "Rain_cum15",
+      "Rain_cum30"
+    ],
+    "lookback_days": 7,
+    "horizon_days": 1,
+    "quantiles": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "hidden_channels": 16,
+    "kernel_size": 3,
+    "epochs": 120,
+    "seed": 0
+  },
+  "split_metadata": {
+    "fit_start_date": "2016-08-06",
+    "fit_end_date": "2019-02-02",
+    "fit_windows": 911,
+    "calibration_start_date": "2019-02-03",
+    "calibration_end_date": "2019-09-17",
+    "calibration_windows": 227,
+    "test_start_date": "2019-09-18",
+    "test_end_date": "2020-06-30",
+    "test_windows": 287,
+    "target_coverage": 0.8,
+    "method": "stationwise_symmetric_split_conformal"
+  },
+  "outputs": {
+    "models/convlstm.pt": {
+      "sha256": "282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858",
+      "size_bytes": 59303
+    },
+    "figures/convlstm/forecast_all_stations.png": {
+      "sha256": "ee67c24fd0a2fa692e848e9bdda8000fb05dba52da376a147f52c3bb75525cb2",
+      "size_bytes": 306927
+    },
+    "figures/convlstm/forecast_predictions.csv": {
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "size_bytes": 1769683
+    },
+    "figures/convlstm/forecast_metrics.csv": {
+      "sha256": "7948540cecd2ce773e13613cd8a53005fc253d490035532a3ba62c573375a80e",
+      "size_bytes": 7163
+    },
+    "figures/convlstm/forecast_period_metrics.csv": {
+      "sha256": "8caec583f7ac59983effb474bc29fbba31ad1012b63c464a4e48b93d1e57fd24",
+      "size_bytes": 3075
+    },
+    "figures/convlstm/forecast_calibration_metrics.csv": {
+      "sha256": "82ace597795320d0d17340bf2d46b309c6a6626834035bec5bdfe86885c67c4e",
+      "size_bytes": 4807
+    },
+    "figures/convlstm/forecast_bootstrap_ci.csv": {
+      "sha256": "a54084212bf40e9c713b679ccbf0e34c81c19804aa376b5bb61f18dc5ada8745",
+      "size_bytes": 179981
+    }
+  },
+  "not_claimed": [
+    "independent_raw_daily_gnss",
+    "confirmatory_out_of-sample_forecast",
+    "formal_warning_output",
+    "causal_effect_of_elevation",
+    "Vajont_external_validation"
+  ]
+}

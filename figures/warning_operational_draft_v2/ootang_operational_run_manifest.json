@@ -49,12 +49,12 @@
     "site_timeline": {
       "n_rows": 514,
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft_v2/ootang_operational_site_timeline.csv",
-      "sha256": "6e3519f8fa80da0cdeacf74ecc5dd43bc1153fa1d09ece3b39704828c411ab34"
+      "sha256": "069e47bbedbb70d39df46738e6b28521bace7c106faa9e4d7632475469a8cb56"
     },
     "station_timeline": {
       "n_rows": 4112,
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv",
-      "sha256": "1a9aae1ee0ead1855ed5c0cc83bdc54b945006511bd164218ea7f2ed3377eaa4"
+      "sha256": "174958b0565a6b566b373e9358b10b9cecb5d6994dff3115ce033171fec4e455"
     },
     "thresholds": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft_v2/ootang_operational_thresholds.csv",
@@ -70,8 +70,8 @@
   ],
   "result_status_counts": {
     "site_fusion": {
-      "candidate_not_site_confirmed": 393,
-      "valid": 121
+      "candidate_not_site_confirmed": 400,
+      "valid": 114
     },
     "station_fusion": {
       "valid": 4112
@@ -80,7 +80,19 @@
   "source_inputs": {
     "draft_evidence_manifest": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/ootang_draft_warning_evidence_manifest.json",
-      "sha256": "3a5c4c97a8d01d61dbacb2d1b92e8aecac096dbf3032ea6201836181f73414fb"
+      "sha256": "65c1acd8c29be7d11b6b1ecb75243cb0782f190f2ae02c6c0c4e789131a7f526"
+    },
+    "forecast_run_manifest": {
+      "confirmatory_evidence_gate": "blocked",
+      "declared_prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "elevation_method": "station_zscore_then_horizontal_idw",
+      "elevation_usage": "static_model_input_channel",
+      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_run_manifest.json",
+      "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "prediction_sha256_matches": true,
+      "prototype_run_gate": "allowed",
+      "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
     },
     "kinematics": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
@@ -88,7 +100,7 @@
     },
     "predictions": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
-      "sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459"
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
     },
     "spatial_block_topology": {
       "citation": "Wang, J., Zhu, H.-H., Zhang, W., Tan, D.-Y., & Pasuto, A. (2025). Enhancing Landslide Displacement Prediction Using a Spatio-Temporal Deep Learning Model With Interpretable Features. Journal of Geophysical Research: Machine Learning and Computation, 2, e2025JH000592.",

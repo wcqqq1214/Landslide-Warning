@@ -2,7 +2,7 @@
   "artifact_kind": "ootang_interval_calibration_diagnostics",
   "calibration_input": {
     "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
-    "sha256": "79110dd72527875eaa671a04581c29b34ab871fb204a4ac9d204269d3204b198"
+    "sha256": "e2e3c6fd032b95d0d698b6c2c630950f4e44143c8b57c070dcf22558388afec9"
   },
   "diagnostic_status": "diagnostic_only_reference_mapping_quality",
   "formal_warning_output": false,
@@ -73,6 +73,6 @@
       "max_abs_z"
     ],
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics.csv",
-    "sha256": "1e7a818c38ed7d2dc095731f203cdd417f9af74e4a8c32f6a36d2f5aaf1e654d"
+    "sha256": "d256ec1b0c318717e1c207249ce60a37ae5e9d885059b90dca1588e56e001558"
   }
 }

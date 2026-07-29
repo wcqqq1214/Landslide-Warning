@@ -851,7 +851,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [x] `4112` 个测点—时刻的四项输入均可评估，`514` 个滑坡体时刻无重复或静默缺行；
 - [x] 所有结果固定为原型/非正式，`formal_warning_output=false`、`vajont_used=false`；
 - [x] 初跑结果诚实报告：总体 RMSE `0.338 mm`、持久性 `0.340 mm`、RMSE skill `0.007`；加入高程未显示明显性能优势，未据 test 结果继续调参；
-- [ ] 完成当前代码审查、全量相关测试、文档同步和提交后，标记本阶段交付完成。
+- [x] 已完成代码审查、Git 跟踪的全部 141 项测试、文档同步与代码提交，并基于提交 `a01f061` 重跑最小链和核对产物哈希。
 
 ## 9. 最终论文完成定义
 

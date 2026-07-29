@@ -64,7 +64,7 @@ monitoring_data.csv
   → O1/O2/O3 滑坡体空间汇总
 ```
 
-三阶段均通过输入/输出契约检查，总耗时约 `40.6 s`。完整阶段、源码指纹和产物哈希见[`latest_run.json`](../figures/pipeline/latest_run.json)。
+三阶段均通过输入/输出契约检查，基于提交 `a01f061` 的最终复跑总耗时约 `40.7 s`。完整阶段、源码指纹和产物哈希见[`latest_run.json`](../figures/pipeline/latest_run.json)。
 
 ## 4. 预测结果
 

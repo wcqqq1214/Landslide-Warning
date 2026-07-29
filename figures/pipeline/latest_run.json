@@ -4,27 +4,121 @@
   "warning_pipeline_scope": "research_legacy_and_operational_draft_only",
   "formal_warning_output": false,
   "formal_warning_entry": "code/warning/formal_warning.py",
-  "started_at": "2026-07-26T04:59:35+08:00",
-  "finished_at": "2026-07-26T04:59:46+08:00",
-  "git_commit": "5bc3bb084ba829e6ee6a74d422842a69884507b5",
-  "source_sha256": "c323fcbc4a0eab895718a83f19c28fd6e372133c746fe55de9a34154de399408",
+  "started_at": "2026-07-30T02:54:48+08:00",
+  "finished_at": "2026-07-30T02:55:29+08:00",
+  "git_commit": "a01f0615f1d5c21b366ea90cd41913571b9b00e4",
+  "source_sha256": "07f569db7df3cf0ab06c15ba4bc2d14514a971e72cc409050e4cd3d068b577f2",
   "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 11.77,
+  "total_elapsed_seconds": 40.709,
   "failed_stage": null,
   "stages": [
+    {
+      "name": "features",
+      "script": "code/features/build_features.py",
+      "warning_artifact_scope": "research_support",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 2.677,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/monitoring_data.csv"
+      ],
+      "outputs": [
+        {
+          "path": "data/features.csv",
+          "size_bytes": 1424208,
+          "sha256": "366188ba1f55fd56b6606f5333e34566fca26c4771dd9745eebfabfcbd4286d1"
+        },
+        {
+          "path": "data/ootang_kinematics_long.csv",
+          "size_bytes": 1222756,
+          "sha256": "a9a8292c300885159db7dca7cf25f001516f64f06c8e99b8973921635110e52f"
+        },
+        {
+          "path": "data/ootang_kinematics_summary.csv",
+          "size_bytes": 827,
+          "sha256": "79f5a542e73ae276e112688b4085a31f7ac17903f60d40fd019508f01cf6164b"
+        },
+        {
+          "path": "figures/tangent_angle/uniform_rates.csv",
+          "size_bytes": 1267,
+          "sha256": "7e7aef2891b5fd2dd65973ed56a7f93cc414c3d46e36093ba3034546407a5d69"
+        }
+      ],
+      "contract_error": null
+    },
+    {
+      "name": "convlstm",
+      "script": "code/convlstm/model.py",
+      "warning_artifact_scope": "research_support",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 27.333,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv"
+      ],
+      "outputs": [
+        {
+          "path": "models/convlstm.pt",
+          "size_bytes": 59303,
+          "sha256": "282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858"
+        },
+        {
+          "path": "figures/convlstm/forecast_all_stations.png",
+          "size_bytes": 306927,
+          "sha256": "ee67c24fd0a2fa692e848e9bdda8000fb05dba52da376a147f52c3bb75525cb2"
+        },
+        {
+          "path": "figures/convlstm/forecast_predictions.csv",
+          "size_bytes": 1769683,
+          "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+        },
+        {
+          "path": "figures/convlstm/forecast_metrics.csv",
+          "size_bytes": 7163,
+          "sha256": "7948540cecd2ce773e13613cd8a53005fc253d490035532a3ba62c573375a80e"
+        },
+        {
+          "path": "figures/convlstm/forecast_period_metrics.csv",
+          "size_bytes": 3075,
+          "sha256": "8caec583f7ac59983effb474bc29fbba31ad1012b63c464a4e48b93d1e57fd24"
+        },
+        {
+          "path": "figures/convlstm/forecast_calibration_metrics.csv",
+          "size_bytes": 4807,
+          "sha256": "82ace597795320d0d17340bf2d46b309c6a6626834035bec5bdfe86885c67c4e"
+        },
+        {
+          "path": "figures/convlstm/forecast_bootstrap_ci.csv",
+          "size_bytes": 179981,
+          "sha256": "a54084212bf40e9c713b679ccbf0e34c81c19804aa376b5bb61f18dc5ada8745"
+        },
+        {
+          "path": "figures/convlstm/forecast_run_manifest.json",
+          "size_bytes": 3919,
+          "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+        }
+      ],
+      "contract_error": null
+    },
     {
       "name": "ootang-operational-v2",
       "script": "code/warning/operational_run_v2.py",
       "warning_artifact_scope": "operational_draft",
       "formal_warning_output": false,
       "status": "completed",
-      "elapsed_seconds": 11.76,
+      "elapsed_seconds": 10.671,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
         "data/ootang_kinematics_long.csv",
         "figures/convlstm/forecast_predictions.csv",
+        "figures/convlstm/forecast_run_manifest.json",
         "config/ootang_warning_protocol.v1.draft.json",
         "config/ootang_operational_run.v2.draft.json"
       ],
@@ -36,18 +130,18 @@
         },
         {
           "path": "figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv",
-          "size_bytes": 4901886,
-          "sha256": "1a9aae1ee0ead1855ed5c0cc83bdc54b945006511bd164218ea7f2ed3377eaa4"
+          "size_bytes": 4903667,
+          "sha256": "174958b0565a6b566b373e9358b10b9cecb5d6994dff3115ce033171fec4e455"
         },
         {
           "path": "figures/warning_operational_draft_v2/ootang_operational_site_timeline.csv",
-          "size_bytes": 219855,
-          "sha256": "6e3519f8fa80da0cdeacf74ecc5dd43bc1153fa1d09ece3b39704828c411ab34"
+          "size_bytes": 222472,
+          "sha256": "069e47bbedbb70d39df46738e6b28521bace7c106faa9e4d7632475469a8cb56"
         },
         {
           "path": "figures/warning_operational_draft_v2/ootang_operational_run_manifest.json",
-          "size_bytes": 4287,
-          "sha256": "d1b9411d37fd5b460302747714a39f5027cbaa548ad906e5d45a43c601b56c31"
+          "size_bytes": 5023,
+          "sha256": "3074628e4309402aa2f30b9bae0405604cc698579ffb70c6baae0b278520db03"
         }
       ],
       "contract_error": null

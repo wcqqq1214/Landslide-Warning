@@ -7,20 +7,20 @@
       "artifact_kind": "ootang_interval_reference_states",
       "formal_warning_output": false,
       "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_reference_states_manifest.json",
-      "manifest_sha256": "93300db0bcb42e2a407ce8009093805455ba62f74c450d7dc4e4e9fe3a8c3fdc",
+      "manifest_sha256": "34a3bcabf38584c5663cceb9e90880f12b88ad807c2e79c6845323c79ebcb670",
       "name": "interval_reference_states",
       "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_reference_states.csv",
-      "output_sha256": "3b3ea516a5ad52666cd14350dbb1eecbe945634246a7622573c6875631a8804d",
+      "output_sha256": "986ac974a68d94e6de29c4ddd941d99dd7b5eca5487b0b09b85ea02a187bc253",
       "status": "source_referenced_observed_interval_state_not_formal"
     },
     {
       "artifact_kind": "ootang_interval_calibration_diagnostics",
       "formal_warning_output": false,
       "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics_manifest.json",
-      "manifest_sha256": "de31e0054719b4ca570e532ff8129955fcfdfc4465d646aaeac10e4367283663",
+      "manifest_sha256": "c6d9b70e6eebabaaac875d9c06810ab840e5b5167627805904e535a2f807d391",
       "name": "interval_calibration_diagnostics",
       "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_calibration_diagnostics.csv",
-      "output_sha256": "1e7a818c38ed7d2dc095731f203cdd417f9af74e4a8c32f6a36d2f5aaf1e654d",
+      "output_sha256": "d256ec1b0c318717e1c207249ce60a37ae5e9d885059b90dca1588e56e001558",
       "status": "diagnostic_only_reference_mapping_quality"
     },
     {
@@ -118,7 +118,7 @@
     },
     "predictions": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
-      "sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459"
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
     }
   },
   "vajont_used": false

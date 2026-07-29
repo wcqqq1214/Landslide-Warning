@@ -63,7 +63,7 @@
       "p50",
       "p90"
     ],
-    "sha256": "820dda5fcce58762722d2655273501e020ede672f2cbd6ff7132c05fab5e1a84"
+    "sha256": "6b9e401fa1447059f481307890ab4c2d9c66d6071a458c81d0ee0d7db034dfb9"
   },
   "states": {
     "columns": [
@@ -94,6 +94,6 @@
     "mapped_row_count": 4112,
     "not_applicable_row_count": 7288,
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft/interval_reference_states.csv",
-    "sha256": "3b3ea516a5ad52666cd14350dbb1eecbe945634246a7622573c6875631a8804d"
+    "sha256": "986ac974a68d94e6de29c4ddd941d99dd7b5eca5487b0b09b85ea02a187bc253"
   }
 }

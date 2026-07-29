@@ -2,11 +2,24 @@
   "schema_version": "ootang_data_lineage_audit_v1",
   "audit_implementation": {
     "audit_code_path": "code/convlstm/data_lineage_audit.py",
-    "audit_code_sha256": "e013c8b7afdc12f6c15ba4f66e6f751000f1f3bb155f59670011bf95705b53aa"
+    "audit_code_sha256": "46e0edeea2635799ada5686b8aa0af015f1723ddd6be8f6bb8c80101c7353f78"
   },
   "audit_scope": "ootang_only",
   "formal_warning_output": false,
   "vajont_used": false,
+  "source_recovery_status": "unavailable_by_project_constraint",
+  "prototype_run_gate": {
+    "status": "allowed",
+    "scope": "elevation_aware_internal_engineering_run_on_released_materialized_series",
+    "required_labels": [
+      "prototype_internal_not_confirmatory",
+      "operational_draft_not_formal"
+    ]
+  },
+  "confirmatory_evidence_gate": {
+    "status": "blocked",
+    "reason": "original_observation_anchors_and_daily_generation_chain_are_unavailable"
+  },
   "test_rows_audited_for_data_provenance": true,
   "model_selection_usage": {
     "status": "protocol_statement_not_verified_by_this_audit",
@@ -51,7 +64,7 @@
     "features_path": "data/features.csv",
     "features_sha256": "366188ba1f55fd56b6606f5333e34566fca26c4771dd9745eebfabfcbd4286d1",
     "predictions_path": "figures/convlstm/forecast_predictions.csv",
-    "predictions_sha256": "2f82e0cd764d91d9415295e8356b6d8d3cee7183df7cfe70831a0e8c4a3ff459"
+    "predictions_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
   },
   "monitoring_frame": {
     "rows": 1461,
@@ -135,6 +148,7 @@
   },
   "data_gate": {
     "status": "blocked",
+    "scope": "confirmatory_evidence_and_formal_warning_only",
     "blocks": [
       "confirmatory_daily_forecast_claims",
       "new_neural_ablation_as_bias_explanation",
