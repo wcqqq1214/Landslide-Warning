@@ -58,6 +58,7 @@ uv run python main.py \
 | `docs/framework.md` | 研究框架、验证规则和报告边界 |
 | `docs/design.md` | 代码架构和模块边界 |
 | `docs/ootang_elevation_prototype_run.md` | 2026-07-30 高程感知初跑方法、结果、完整性与边界 |
+| `docs/ootang_elevation_warning_expert_review.md` | 高程可信性、400 个未确认状态、典型日和空间规则专家审查 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
 | `docs/ootang_data_lineage_expert_review.md` | 藕塘发布日序列来源、数值指纹与数据闸门 |
 | `figures/README.md` | 每个 PNG/CSV 的用途和保留原则 |
@@ -66,6 +67,8 @@ uv run python main.py \
 
 - 当前高程感知单次初跑在最后 287 日物化留出段的总体 RMSE 为 `0.338 mm`，持久性基线为 `0.340 mm`，RMSE skill 仅 `0.007`；属于流程跑通，不构成明显性能优势。
 - 与加入高程前的同一单种子快照相比，高程版本总体 RMSE 从约 `0.318 mm` 增至 `0.338 mm`。本轮不根据已查看的 test 结果调节高程尺度、网络或阈值。
+- 高程增加的是静态地形先验和结构可解释性，不自动增加预测证据等级；指定 Word 的物理引导来自稳定性计算和半经验物理位移，不是静态高程或 ConvLSTM。
+- 当前 400 个未空间确认日全部数据完整，均因 yellow+ 证据只位于 O1；v2 的 514 日 site 输出没有 green，且有效点门禁尚未覆盖非绿色分支，下一步先修复空间规则而不调整模型。
 - NGBoost 当前识别的是当日动态 V0 状态；留出段没有 orange/red 样本，不能评价高等级预警召回。
 - SHAP 解释的是独立 NGBoost，不是 ConvLSTM；其遗留同日 V0 分类标签也不是本轮正式五级预警输出。
 - SHAP 结果描述模型依赖关系，不代表致灾因果关系或预警提前量。

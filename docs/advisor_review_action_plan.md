@@ -810,13 +810,21 @@ site_fusion_rule_version, contributing_stations, integration_reason
 
 ## 7. 推荐的近期行动
 
-### 可以立即开始
+### 已完成的初跑动作
 
 1. 运行 `features → convlstm → ootang-operational-v2` 最小链路，以 `station_coords.csv::elev_m` 作为静态高程通道；
 2. 核对 8 点预测、四指标、空间分区和滑坡体时间线，无静默缺行，并保存输入/配置/输出哈希；
 3. 报告相对持久性基线和旧无高程快照的真实差异，不用已查看的 test 结果调整高程尺度、阈值或网络；
 4. 将 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked` 同步到方法、结果、限制和图表说明；
-5. 初跑完成后再决定继续审查藕塘，还是为最终论文选择并审计新数据集。
+5. 完成高程可信性、400 个未空间确认状态和典型状态日的专家审查，见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
+
+### 审查后可以立即处理
+
+1. 修复 v2 的全局有效测点覆盖门禁：`minimum_assessable_station_count=3` 必须先于 blue/yellow/orange/red 返回执行，并增加“仅 2 个有效跨区 yellow 点”的反例测试；
+2. 保留 v2 快照，单独形成 v3 空间规则草案；滑坡体级同时输出跨区确认等级和局部最高候选；
+3. 在 v3 中重新冻结 green/blue 语义，使 green 可以代表覆盖完整的正常状态，同时不把单区 yellow–red 静默并入 green 或降为 blue；
+4. 规则修改只解决覆盖和输出语义，不调整高程、ConvLSTM、V0、区间边界或 test 结果；
+5. 完成上述工程修复后，再决定继续使用藕塘作为原型，还是为最终论文选择并审计新数据集。
 
 ### 正式结果前必须冻结
 
@@ -852,6 +860,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [x] 所有结果固定为原型/非正式，`formal_warning_output=false`、`vajont_used=false`；
 - [x] 初跑结果诚实报告：总体 RMSE `0.338 mm`、持久性 `0.340 mm`、RMSE skill `0.007`；加入高程未显示明显性能优势，未据 test 结果继续调参；
 - [x] 已完成代码审查、Git 跟踪的全部 141 项测试、文档同步与代码提交，并基于提交 `a01f061` 重跑最小链和核对产物哈希。
+- [x] 已复核 400 个未空间确认日和典型状态日：全部数据完整、候选只位于 O1，且 yellow–red 严重度由区间状态主导；高程只记为地形先验，不升级为已验证的物理约束。
 
 ## 9. 最终论文完成定义
 

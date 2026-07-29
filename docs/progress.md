@@ -13,6 +13,9 @@
 | ConvLSTM 日历后置校准 | 已完成（当前单次初跑） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口/种子/早停/容量诊断 | 历史 6 通道版本已完成；当前 7 通道版本未复跑 | 原有 `rolling_*`、`seed_*`、`inner_validation_*`、`capacity_*` 仅作加入高程前的历史对照 |
+| 高程与空间预警专家审查 | 已完成 | `docs/ootang_elevation_warning_expert_review.md`；400 日成因、典型日、指定 Word 方法边界及高程可信性已核对 |
+| v2 空间融合覆盖门禁 | 待修复（P0） | 当前数据未触发；`minimum_assessable_station_count=3` 尚未门禁 blue/yellow/orange/red 分支 |
+| 滑坡体 green/blue 语义 | 待形成 v3 草案（P0） | v2 的 514 日 green=0；需保留局部最高候选并重新冻结跨区 blue 与正常状态 |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
 | 新神经调参/机理消融与正式日预测 | 暂停 | 高程通道是导师要求的工程输入，不以 test 结果优化；自然月分段三次结构仍限制确认性解释 |
@@ -48,6 +51,16 @@
 - v2 输出包含 `4112` 个测点—时刻和 `514` 个滑坡体时刻；四项输入均无缺失。`114` 个时刻满足当前项目特有空间确认，`400` 个保留为 `candidate_not_site_confirmed`，不得并入 green。
 - 所有当前产物继续标记为原型/非正式，Vajont 未读取、未运行。
 
+## 2026-07-30 高程与空间预警专家审查
+
+- 审查报告见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
+- 高程作为静态地形先验可提高输入结构的物理合理性，但指定 Word 的“物理引导”实际来自 GeoStudio 稳定性系数和半经验物理位移，并使用 GCN/T-GCN/ST-GCN；当前高程 ConvLSTM 是项目改造，不是该方法的复现。
+- 在相同 `11400` 个预测键、观测和 persistence 下，高程版相对无高程单种子快照的 test RMSE/MAE 分别增加 `0.0196/0.0158 mm`；14 日配对块重采样的差值区间均高于 0。由于 test 已查看且只有单种子，该结果只是否定当前已显示提升，不构成确认性消融。
+- 400 个未空间确认日全部为 8/8 测点和 3/3 分区有效，并非缺失：`189` 日不足 2 个 yellow+ 点，`211` 日已经达到至少 2 点但仍全部位于 O1。
+- 对应 `755` 条 O1 yellow+ 测点记录的候选等级全部由区间指标决定；当前 orange/red 不能解释为速度或切线角达到同级。
+- v2 的 514 日 site 输出没有 green，说明“任一 blue 即 site blue、8 点全 green 才 site green”不适合把绿色作为常态。下一步先修复全局有效点门禁，再单独形成保留局部最高候选的 v3 green/blue 空间草案。
+- 本轮没有调整阈值、模型或 test，也没有读取或启动 Vajont。
+
 ## 2026-07-28 数据血缘审查记录
 
 - 仓库 `monitoring_data.xlsx` 与 Wang 等（2025）Figshare 文件 MD5 完全一致；CSV 与工作簿 1461×17 的日期、列和数值等价。
@@ -56,7 +69,7 @@
 - Figshare 的 11 个公开 notebook 没有生成该结构的代码，也没有公开原始 GNSS/GWT 锚点、日值处理链或 MJ/ATU 映射。
 - 原始数据恢复现已确认不作为当前可执行路线；历史事实仍保留。
 - 当前 `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`、`formal_warning_output=false`、`vajont_used=false`；计划中的机理性神经消融仍暂停。
-- 下一步先审查本次初跑的典型状态日和结果可解释性，再等待最终论文数据集选择；若换数据集，重新建立数据契约和确认性验证协议。
+- 典型状态日和结果可解释性审查已经完成；下一步先修复 v2 全局有效点门禁并形成不覆盖 v2 的 v3 green/blue 草案，再等待最终论文数据集选择。若换数据集，重新建立数据契约和确认性验证协议。
 
 ## 本轮完成门槛
 
