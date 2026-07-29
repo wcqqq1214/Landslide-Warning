@@ -244,6 +244,21 @@ class ConvLSTMDataLineageTests(unittest.TestCase):
         self.assertNotIn("repository_state", first)
         self.assertIn("audit_implementation", first)
 
+    def test_manifest_separates_prototype_and_confirmatory_gates(self):
+        with tempfile.TemporaryDirectory() as directory:
+            manifest = lineage.run_audit(output_dir=Path(directory))
+
+        self.assertEqual(
+            manifest["source_recovery_status"],
+            "unavailable_by_project_constraint",
+        )
+        self.assertEqual(manifest["prototype_run_gate"]["status"], "allowed")
+        self.assertEqual(
+            manifest["confirmatory_evidence_gate"]["status"],
+            "blocked",
+        )
+        self.assertFalse(manifest["formal_warning_output"])
+
 
 if __name__ == "__main__":
     unittest.main()

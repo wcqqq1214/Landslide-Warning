@@ -262,8 +262,14 @@ tangent_angle_role = transformed_derivative_of_materialized_series
 
 ### 8.1 当前阻断
 
+2026-07-30 用户确认原始 GNSS 无法取得，且导师要求先以现有公开序列和高程完成藕塘案例。因此历史总门禁不改写为 `passed`，而是明确拆分作用域：
+
 ```text
-data_gate = blocked
+source_recovery_status = unavailable_by_project_constraint
+prototype_run_gate = allowed
+confirmatory_evidence_gate = blocked
+data_gate = blocked  # 兼容字段，仅指确认性证据与正式预警
+formal_warning_output = false
 ```
 
 阻断：
@@ -282,7 +288,7 @@ data_gate = blocked
 - 获取原始材料、建立 raw-anchor-first 重算管线；
 - 修改文档，收窄过度表述。
 
-### 8.2 解除闸门所需最小材料
+### 8.2 解除确认性证据闸门所需最小材料
 
 至少取得：
 
@@ -334,7 +340,7 @@ uv run --with pytest pytest -q tests/test_convlstm_data_lineage.py
 - [`跨边界代数依赖诊断`](../figures/data_lineage/ootang_split_cross_boundary_predictability.csv)
 - [`预测日期对齐摘要`](../figures/data_lineage/ootang_prediction_alignment_summary.csv)
 
-最终代码连续重跑两次，6 个产物的 SHA-256 逐项完全一致；manifest 固定审计代码和输入哈希，不写入 HEAD、时间戳或工作树状态。最终 manifest SHA-256 为 `df9606673fe2cba096369f384524ab24328f64d007131bb0b8db87ca9736e378`。
+代码连续重跑时产物保持确定性；manifest 固定审计代码和输入哈希，不写入 HEAD、时间戳或工作树状态。2026-07-28 的原始审查快照哈希已由后续分层门禁字段更新，当前值以仓库文件和运行清单为准。
 
 全部固定为：
 
@@ -348,10 +354,10 @@ model_selection_usage_status = protocol_statement_not_verified_by_this_audit
 
 ## 10. 下一步
 
-当前不运行计划中的 fit-only 神经网络单变量消融。下一步按以下顺序执行：
+当前不运行计划中的机理性神经消融，也不再把继续索取原始 GNSS 作为藕塘初跑的前置任务。下一步按以下顺序执行：
 
-1. 将本数据闸门同步到行动计划、数据字典、结果与限制文档；
-2. 向数据作者或导师索取第 8.2 节的最小原始材料；
-3. 若取得原始锚点，先实现 raw-anchor-first 的按折重建与泄漏检查，再重跑稳定段、`V0`、ConvLSTM 和区间校准；
-4. 若无法取得，按第 8.3 节收窄论文问题和结论，当前 operational 结果只保留为演示；
+1. 使用 `station_coords.csv` 的 `x_m/y_m/elev_m` 完成高程感知最小链路，所有产物标为原型/非正式；
+2. 审查逐测点、四指标和滑坡体时间线是否完整，报告相对持久性基线的实际表现，不按 test 结果调节高程尺度、阈值或网络；
+3. 若论文最终仍使用藕塘，只能按第 8.3 节收窄主张；若改用来源可追溯的新数据集，则为新案例重新建立数据契约、切分和确认性验证；
+4. 第 8.2 节继续保留为“若未来意外取得原始材料时”的升级条件，不作为当前待办；
 5. Vajont 继续等待用户明确授权，不作为绕过藕塘数据闸门的替代数据。

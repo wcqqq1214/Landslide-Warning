@@ -8,7 +8,8 @@
 
 ## 1. 共用约束
 
-- 所有累计位移、速度、`ΔV`、切线角和区间状态当前都基于 Figshare 发布的物化日建模序列；原始观测锚点、日值生成算法、未来信息使用状态以及 MJ/ATU→GPS/FJ 映射均未解决，`data_gate=blocked`。fit/calibration 只能支持内部草案参数审计，不能在该门禁解除前冻结为正式参数。详见[`数据血缘专家审查`](ootang_data_lineage_expert_review.md)。
+- 所有累计位移、速度、`ΔV`、切线角和区间状态当前都基于 Figshare 发布的物化日建模序列；原始观测锚点、日值生成算法、未来信息使用状态以及 MJ/ATU→GPS/FJ 映射均未解决。2026-07-30 起采用分层门禁：`prototype_run_gate=allowed` 允许内部初跑，`confirmatory_evidence_gate=blocked` 禁止把 fit/calibration 草案升级为正式参数或预警。详见[`数据血缘专家审查`](ootang_data_lineage_expert_review.md)。
+- 空间输入来自 `data/station_coords.csv`：`station/disp_col` 必须覆盖 8 点且一一对应，`x_m/y_m/elev_m` 单位均为米并须为有限值。当前 `elev_m` 在 8 点间标准化后，经 `x_m/y_m` 水平 IDW 形成静态高程通道；它不改变逐点四指标公式，也不作为第三个距离维度。
 - 范围仅为藕塘 8 个测点；Vajont 不参与任何字段定义、阈值选择或结果生成。
 - 五级的唯一顺序为 `green=0`、`blue=1`、`yellow=2`、`orange=3`、`red=4`；它表示总体颜色顺序，不会自动赋予单项指标阈值。
 - 所有估计器、容差和融合规则只能在预先声明的 fit/calibration 数据上冻结；test 期只执行，不能反向选择规则。

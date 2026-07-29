@@ -6,7 +6,7 @@
 >
 > 状态：`operational_draft`；用于先完整跑通藕塘案例并便于导师后续替换规则，**不是正式预警结果**。
 >
-> 数据血缘更新（2026-07-28）：输入是 Figshare 发布物化日建模序列，原始锚点和生成算法未恢复，`data_gate=blocked`。本运行只能演示代码链路；其颜色、速度、`ΔV`、切线角和区间均不能升级为原始逐日 GNSS 上的正式证据。
+> 执行决策（2026-07-30）：原始 GNSS 确认无法取得。`prototype_run_gate=allowed`，允许导师要求的高程感知工程初跑；`confirmatory_evidence_gate=blocked`，其颜色、速度、`ΔV`、切线角和区间仍不能升级为独立原始 GNSS 上的确认性证据。
 
 ## 1. 目的与边界
 
@@ -16,6 +16,7 @@
 - 每份 CSV 和 manifest 均写入 `formal_warning_output=false`、`artifact_status=operational_draft_not_formal` 与 `vajont_used=false`；
 - 不调用 [`formal_warning.py`](../code/warning/formal_warning.py)，不把发布序列相邻差分速度 KMeans 候选称为指定 Word 论文的 MVIF `V0` 实现；
 - 参数只由 `split=fit` 的候选稳定段和运动学记录产生；calibration/test 仅执行，不反向选择参数。
+- ConvLSTM 必须提供 [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json)，证明 `station_coords.csv::elev_m` 已作为静态高程通道进入预测，并使预测 CSV 哈希可与本运行互相核对。
 
 因此，它是一份“可跑、可审计、可替换”的实施版，不是对阈值有效性、预警提前量或泛化性能的结论。
 
@@ -63,7 +64,10 @@ uv run python code/warning/operational_run.py
 上面的命令保留并重跑 v1，并只写入 `figures/warning_operational_draft/`。当前 v2 入口为：
 
 ```bash
-uv run python main.py --stage ootang-operational-v2
+uv run python main.py \
+  --stage features \
+  --stage convlstm \
+  --stage ootang-operational-v2
 ```
 
 也可以直接运行：
@@ -74,7 +78,7 @@ uv run python code/warning/operational_run_v2.py
 
 两版都会先刷新唯一的 `figures/warning_draft/` 输入证据集，再在临时目录写出并核验实施版文件，最后逐文件提升到各自目录。v1 提升到 `figures/warning_operational_draft/`，v2 提升到 `figures/warning_operational_draft_v2/`；通用运行器会拒绝把 v2 写入 v1 目录，反之亦然。
 
-v2 还要求本地存在 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf) 且 SHA-256 与配置一致；缺失或指纹不符会明确拒绝运行，不会从别的论文、网络副本或 Vajont 数据静默替代。
+v2 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf) 且 SHA-256 与配置一致；缺失或指纹不符会明确拒绝运行，不会从别的论文、网络副本或 Vajont 数据静默替代。
 
 每个版本目录中都有以下同名文件：
 
@@ -85,7 +89,16 @@ v2 还要求本地存在 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20
 
 v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`acceleration_status` 与 `station_confirmation_status`；滑坡体表新增 `assessable_station_count`、`assessable_blocks`、`coverage_complete`、`cross_block_confirmation_minimum_level/color`、`site_candidate_level/color`、`candidate_blocks` 与 `contributing_blocks`。v2 中旧列 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**；为兼容旧读者而保留的 `final_level/final_color` 等同于 `candidate_level/candidate_color`，不是测点已确认结果，更不是滑坡体级或正式预警结果。
 
-这些文件均可从 manifest 中的路径与 SHA-256 复核。v2 manifest 还记录 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
+这些文件均可从 manifest 中的路径与 SHA-256 复核。v2 manifest 还记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
+
+### 4.1 2026-07-30 初跑快照
+
+- `station_coords.csv` 中 8 个 `station/disp_col` 一一对应，`x_m/y_m/elev_m` 均为有限米制数值；
+- 高程范围为 `190–515 m`，在 8 个固定测点间 z-score 后按水平 IDW 生成静态网格，不进入三维距离；
+- 当前 ConvLSTM 共 7 个通道，fit/calibration/test 窗口为 `911/227/287`；
+- 物化 test 段 RMSE 为 `0.338 mm`，持久性为 `0.340 mm`，校准后 P10–P90 覆盖率为 `0.770`；
+- v2 生成 `4112` 条测点记录和 `514` 条滑坡体记录，四项输入无缺失；`114` 条为当前规则下的 `valid`，`400` 条保留为 `candidate_not_site_confirmed`；
+- 本快照只证明链路完整。高程版本较此前无高程单种子快照的 RMSE 更高，因此不宣称加入高程改善预测，也不据 test 结果继续调参。
 
 ## 5. 解读限制
 
@@ -95,5 +108,6 @@ v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`k
 - v2 的 `candidate_not_site_confirmed`、`insufficient_assessable_coverage` 与 v1 的 `uncorroborated`、`insufficient_valid_station_results` 均不能静默并入 green；
 - Wang 等（2025）仅为藕塘 8 个测点的 O1/O2/O3 空间拓扑提供来源；`3` 个可评估点、跨区支撑数、blue/yellow 的处理和任何颜色均是本项目可替换的非监督运行约定；
 - 不输出监督分类性能、概率、F1、Brier、混淆矩阵或严格前瞻预警提前量；Vajont 不参与本运行。
+- 既有滚动、五种子、早停和容量产物来自加入高程前的 6 通道版本；当前 7 通道初跑不能借用那些文件声称已完成同范围稳定性验证。
 
 导师若只要求改动当前已支持的范围表、blue 容差、`ΔV` 中心/近零容差或最少支撑数，应先复制并提升本配置版本，再重跑此命令。若要求更换稳定段证据来源、切线角公式或融合语义，则必须新增并审查相应实现，不能仅改描述字符串；基础 `1.3-draft` 协议的未决项与正式门禁仍需单独审查。

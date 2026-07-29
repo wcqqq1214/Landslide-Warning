@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import importlib.util
 import json
 import sys
@@ -21,6 +22,7 @@ from warning import draft_evidence
 from warning.operational_run import (
     DEFAULT_OUTPUT_DIR,
     OOTANG_STATIONS,
+    OperationalRunInputError,
     OperationalRunProfileError,
     _classify_velocity,
     _site_record,
@@ -88,6 +90,12 @@ class OotangOperationalRunTests(unittest.TestCase):
         self.assertFalse(manifest["formal_warning_output"])
         self.assertFalse(manifest["vajont_used"])
         self.assertEqual(manifest["ootang_stations"], list(OOTANG_STATIONS))
+        forecast_source = manifest["source_inputs"]["forecast_run_manifest"]
+        self.assertTrue(forecast_source["prediction_sha256_matches"])
+        self.assertEqual(
+            forecast_source["elevation_usage"],
+            "static_model_input_channel",
+        )
         self.assertEqual(manifest["parameter_fit_splits"], ["fit"])
         self.assertEqual(manifest["result_splits"], ["calibration", "test"])
         self.assertEqual(set(station_rows["station"]), set(OOTANG_STATIONS))
@@ -166,14 +174,28 @@ class OotangOperationalRunTests(unittest.TestCase):
 
     def test_test_period_prediction_change_does_not_change_fit_thresholds(self):
         source_predictions = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
+        source_manifest = (
+            ROOT / "figures" / "convlstm" / "forecast_run_manifest.json"
+        )
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             first_output = root / "first"
             altered_predictions = root / "altered_predictions.csv"
+            altered_manifest = root / "altered_forecast_manifest.json"
             predictions = pd.read_csv(source_predictions)
             test_index = predictions.index[predictions["split"].eq("test")][0]
             predictions.loc[test_index, "actual"] += 10_000.0
             predictions.to_csv(altered_predictions, index=False)
+            manifest = json.loads(source_manifest.read_text(encoding="utf-8"))
+            manifest["outputs"][
+                "figures/convlstm/forecast_predictions.csv"
+            ]["sha256"] = hashlib.sha256(
+                altered_predictions.read_bytes()
+            ).hexdigest()
+            altered_manifest.write_text(
+                json.dumps(manifest),
+                encoding="utf-8",
+            )
 
             first = write_ootang_operational_run(
                 output_dir=first_output,
@@ -181,6 +203,7 @@ class OotangOperationalRunTests(unittest.TestCase):
             )
             altered = write_ootang_operational_run(
                 predictions_path=altered_predictions,
+                forecast_manifest_path=altered_manifest,
                 output_dir=root / "altered",
                 evidence_dir=root / "altered_evidence",
             )
@@ -189,6 +212,43 @@ class OotangOperationalRunTests(unittest.TestCase):
                 first.thresholds_path.read_bytes(),
                 altered.thresholds_path.read_bytes(),
             )
+
+    def test_rejects_prediction_that_does_not_match_forecast_manifest(self):
+        source_predictions = (
+            ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            altered_predictions = root / "altered_predictions.csv"
+            predictions = pd.read_csv(source_predictions)
+            predictions.loc[0, "actual"] += 1.0
+            predictions.to_csv(altered_predictions, index=False)
+
+            with self.assertRaisesRegex(
+                OperationalRunInputError,
+                "does not match",
+            ):
+                write_ootang_operational_run(
+                    predictions_path=altered_predictions,
+                    output_dir=root / "output",
+                    evidence_dir=root / "evidence",
+                )
+
+    def test_rejects_non_object_forecast_manifest(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            invalid_manifest = root / "forecast_manifest.json"
+            invalid_manifest.write_text("[]\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(
+                OperationalRunInputError,
+                "must be a JSON object",
+            ):
+                write_ootang_operational_run(
+                    forecast_manifest_path=invalid_manifest,
+                    output_dir=root / "output",
+                    evidence_dir=root / "evidence",
+                )
 
     def test_rejects_a_profile_that_claims_formal_warning_output(self):
         profile_path = ROOT / "config" / "ootang_operational_run.v1.draft.json"

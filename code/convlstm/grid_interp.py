@@ -12,14 +12,42 @@ IDW_EPS = 1e-6
 
 
 def load_coords(disp_cols=None):
-    """Read station coordinates and optionally align them to displacement columns."""
-    df = pd.read_csv(COORD_CSV)
-    if disp_cols is not None:
-        order = {c: i for i, c in enumerate(disp_cols)}
-        df = df.sort_values("disp_col", key=lambda s: s.map(order)).reset_index(drop=True)
-    names = df["station"].tolist()
-    xy = df[["x_m", "y_m"]].values.astype(np.float64)
+    """Read horizontal station coordinates aligned to displacement columns."""
+    names, xy, _ = load_station_geometry(disp_cols)
     return names, xy
+
+
+def load_station_geometry(disp_cols=None):
+    """Read and validate horizontal coordinates plus station elevation."""
+    df = pd.read_csv(COORD_CSV)
+    required = {"station", "disp_col", "x_m", "y_m", "elev_m"}
+    missing = required - set(df.columns)
+    if missing:
+        raise ValueError(f"测点坐标缺少字段: {sorted(missing)}")
+    if df["station"].duplicated().any() or df["disp_col"].duplicated().any():
+        raise ValueError("测点坐标中的 station 和 disp_col 必须一一对应")
+    if disp_cols is not None:
+        requested = list(disp_cols)
+        if len(requested) != len(set(requested)):
+            raise ValueError("位移列顺序不得包含重复项")
+        missing_displacements = set(requested) - set(df["disp_col"])
+        if missing_displacements:
+            raise ValueError(
+                f"测点坐标缺少位移列: {sorted(missing_displacements)}"
+            )
+        order = {c: i for i, c in enumerate(requested)}
+        df = (
+            df.loc[df["disp_col"].isin(requested)]
+            .sort_values("disp_col", key=lambda s: s.map(order))
+            .reset_index(drop=True)
+        )
+    names = df["station"].tolist()
+    geometry = df[["x_m", "y_m", "elev_m"]].to_numpy(dtype=np.float64)
+    if not np.isfinite(geometry).all():
+        raise ValueError("测点平面坐标与高程必须是有限数值")
+    xy = geometry[:, :2]
+    elevation = geometry[:, 2]
+    return names, xy, elevation
 
 
 def build_grid(xy, h=GRID_H, w=GRID_W, pad_frac=0.05):

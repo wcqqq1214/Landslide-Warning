@@ -55,7 +55,12 @@ CONFIGS = (
 CONFIG_BY_ID = {config.config_id: config for config in CONFIGS}
 
 
-def model_parameter_count(hidden_channels, *, input_channels=6, kernel=3):
+def model_parameter_count(
+    hidden_channels,
+    *,
+    input_channels=base.MODEL_INPUT_CHANNELS,
+    kernel=3,
+):
     """Return the exact parameter count for the current ConvLSTM and head."""
     if hidden_channels <= 0 or input_channels <= 0 or kernel <= 0:
         raise ValueError("通道数和卷积核必须为正数")
@@ -364,14 +369,25 @@ def main():
         raise RuntimeError("特征日期必须严格递增且不得重复")
     if not REFERENCE_RUNS.is_file() or not REFERENCE_METRICS.is_file():
         raise RuntimeError("缺少内层早停参照输出，无法执行预设配对")
+    reference_runs = pd.read_csv(REFERENCE_RUNS)
+    reference_metrics = pd.read_csv(REFERENCE_METRICS)
+    rolling.require_current_model_input_provenance(
+        reference_runs,
+        artifact_name=str(REFERENCE_RUNS),
+    )
+    rolling.require_current_model_input_provenance(
+        reference_metrics,
+        artifact_name=str(REFERENCE_METRICS),
+    )
 
     disp = df[base.DISP_COLS].values.astype(np.float64)
-    station_names, xy = base.load_coords(base.DISP_COLS)
+    station_names, xy, elevation_m = base.load_station_geometry(base.DISP_COLS)
     interp, (grid_x, grid_y) = base.make_interpolator(
         xy,
         base.GRID_H,
         base.GRID_W,
     )
+    elevation_grid = base.make_elevation_grid(elevation_m, interp)
     readout_weights = base.station_readout_weights(grid_x, grid_y, xy)
     splits = rolling.expanding_window_splits(len(df))
 
@@ -389,6 +405,7 @@ def main():
                     readout_weights,
                     split,
                     nested,
+                    elevation_grid=elevation_grid,
                     seed=seed,
                     hidden_channels=config.hidden_channels,
                     weight_decay=config.weight_decay,
@@ -410,7 +427,6 @@ def main():
 
     candidate_frame = pd.DataFrame(candidate_rows)
     history_frame = pd.DataFrame(history_rows)
-    reference_runs = pd.read_csv(REFERENCE_RUNS)
     validate_reference_candidate(candidate_frame, reference_runs)
     selection_summary = aggregate_candidates(candidate_frame)
     chosen = selected_configs(selection_summary)
@@ -442,6 +458,7 @@ def main():
                 interp,
                 readout_weights,
                 split,
+                elevation_grid=elevation_grid,
                 seed=seed,
                 epochs=selection["selected_epoch"],
                 hidden_channels=config.hidden_channels,
@@ -480,7 +497,6 @@ def main():
     metric_frame = pd.DataFrame(metric_rows)
     summary_frame = stability.aggregate_seed_metrics(metric_frame)
     prediction_frame = pd.DataFrame(prediction_rows)
-    reference_metrics = pd.read_csv(REFERENCE_METRICS)
     comparison_frame = build_reference_comparison(
         metric_frame,
         reference_metrics,

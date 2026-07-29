@@ -7,13 +7,15 @@
 > **入口隔离（2026-07-22）**：`main.py` 是研究与历史/探索性复核入口，运行清单固定为 `formal_warning_output=false`。未来正式执行器只能经 `code/warning/formal_warning.py::run_formal_warning()`，并在任何读写前通过冻结协议门禁；当前草案协议因此不能生成正式预警。历史产物的完整映射见 `legacy_warning_artifact_inventory.md`。
 >
 > **数据血缘门禁（2026-07-28）**：当前输入是 Figshare 发布的物化日建模序列，不是已验证的独立原始逐日 GNSS。8 条位移和 GWT 具有强自然月分段三次指纹，原始锚点、日值生成算法及未来信息使用状态未恢复，故 `data_gate=blocked`；下述模型评价只属于物化序列内部工程/探索性结果。
+>
+> **高程感知初跑（2026-07-30）**：原始 GNSS 已确认无法取得，本阶段将上述总门禁拆为 `prototype_run_gate=allowed` 和 `confirmatory_evidence_gate=blocked`。`station_coords.csv::elev_m` 现已作为静态模型通道进入 ConvLSTM；这只授权藕塘内部工程初跑，不解除确认性证据或正式预警门禁。
 
 ## 1. 数据与约束
 
 - 发布物化建模序列：`data/monitoring_data.csv`，1461 个连续日历行，2016-07-01 至 2020-06-30；原始 GNSS 时间戳、观测锚点和日值生成方法尚未提供。
 - 位移测点：MJ9、MJ1、MJ3、ATU1、ATU2、ATU3、ATU4、ATU5。
 - 环境变量：Rainfall、GWT、RWL、aveT、minT、maxT、DP、RH。
-- 坐标数据：`data/station_coords.csv`，用于将 8 个测点 IDW 插值为规则网格；MJ/ATU 与 GPS/FJ 的正式映射及坐标血缘尚未恢复，空间几何暂按工程输入使用。
+- 空间数据：`data/station_coords.csv` 的 `x_m/y_m` 用于 8 点水平 IDW，`elev_m` 先在 8 点间做 z-score，再用同一水平权重生成静态高程网格通道。高程不直接并入三维欧氏距离，避免在没有坡面距离标定时任意改变尺度；MJ/ATU 与 GPS/FJ 的正式映射及坐标血缘仍未恢复。
 - 项目代码生成的时间特征只使用当前及历史表格行；上游日序列生成是否使用未来锚点未知。阈值、标准化参数和自动等速段仍只能由训练期估计。
 
 ## 2. 当前架构
@@ -56,9 +58,9 @@ future frozen protocol + formal four-indicator executor
 | `code/warning/onset_analysis.py` | 生成 1/3/7 日未来标签、事件清单和样本充分性盘点 | `figures/warning_onset/*`、`figures/thresholds/v0_thresholds.csv` |
 | `code/explainability/shap_select.py` | 构造含逐点速度/`ΔV` 的滞后样本；对独立 NGBoost 做探索性回归、遗留同日 V0 二分类、SHAP 和时间扩展窗口评价 | `figures/shap/*`、`figures/thresholds/v0_thresholds.csv`；不是 ConvLSTM-SHAP 或正式预警 |
 | `code/explainability/shap_stability.py` | 按锁定五折协议重训独立解释模型，汇总特征/组排名、方向、测点分层时间稳定性并执行五组删组消融 | `figures/shap/stability/*`；不作因果或留一测点泛化结论 |
-| `code/convlstm/grid_interp.py` | 读取测点坐标并建立 IDW 规则网格插值器 | 由 `model.py` 调用 |
+| `code/convlstm/grid_interp.py` | 校验 `station/disp_col/x_m/y_m/elev_m` 一一对应并建立水平 IDW 规则网格 | 由全部 ConvLSTM 路径调用 |
 | `code/convlstm/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
-| `code/convlstm/model.py` | 8 测点空间网格 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、`figures/convlstm/*` |
+| `code/convlstm/model.py` | 8 测点位移网格、静态高程网格和 5 个时变环境通道的 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、预测 CSV/图、`figures/convlstm/forecast_run_manifest.json` |
 | `code/convlstm/rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
 | `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
 | `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
@@ -88,6 +90,8 @@ future frozen protocol + formal four-indicator executor
 ### 4.2 ConvLSTM
 
 - 8 测点通过 IDW 插值到 `4 x 7` 规则网格，代码结构上属于二维卷积循环网络；物理空间解释仍受坐标血缘与点位别名映射未解决的限制。
+- 静态地形通道：`elev_m` 在 8 个固定测点间标准化，随后按 `x_m/y_m` 的水平 IDW 权重映射到同一 `4 x 7` 网格。它不使用 test 目标，不参与 IDW 距离计算，也不据此声称高程具有因果效应。
+- 当前 7 个输入通道依次为：位移网格、静态高程网格、`RWL`、`RWL_rate`、`Rain_cum7`、`Rain_cum15`、`Rain_cum30`。
 - 当前输入窗口：7 日。
 - 当前预测步长：1 日。
 - 输出：有序 P10/P50/P90 位移增量，再还原为累计位移。
@@ -99,6 +103,8 @@ future frozen protocol + formal four-indicator executor
 - 多种子诊断：预设种子 0-4，保持滚动折和全部参数不变，保存每轮训练 loss/梯度、逐种子指标和跨种子汇总；不得选择最佳种子或据测试折调整 epoch。
 - 内层 epoch 选择：原拟合期按日期切为 80% 内层训练和 20% 内层验证，最多 300 轮并按预注册早停规则选 epoch；同一种子在完整拟合期重训后，原校准段只估计 `qhat`，外层测试段只评价。固定 120 轮结果保留为配对参照。
 - 有限容量/正则化诊断：只比较隐藏通道 `8/16` 和 Adam 权重衰减 `0/1e-4` 的四个组合；每折以五种子内层最小验证 loss 均值排名，外层测试不参与配置选择，当前早停版本保留为配对参照。
+
+> 版本边界：现有 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 和 `capacity_*` 文件是在加入高程前的 6 通道版本上生成。相关代码已统一接入高程，但这些历史产物尚未重跑，不能被当作当前 7 通道模型的稳定性证据。
 
 ### 4.3 旧 NGBoost 路径（不作为本轮正式预警）
 
@@ -176,9 +182,9 @@ uv run --with pytest pytest -q
 
 ## 9. 下一阶段实现顺序
 
-1. 恢复原始 GNSS/GWT 时间戳和值、日值聚合/QC/插值链、参考基准和 MJ/ATU 点位映射。
-2. 先切分原始锚点，再在每个时间折内部重建日序列并复查未来信息隔离。
-3. 数据门禁通过后，重跑稳定段、`V0`、ConvLSTM、区间校准和运动学指标。
-4. 停止在当前已查看物化序列折上扩大 ConvLSTM 超参数搜索或做机理性神经消融。
+1. 完成本轮高程感知最小链路的代码、产物、哈希和文档验收，只保留原型/非正式主张。
+2. 审查逐点四指标、空间确认失败和典型触发日，不根据已查看的 test 结果扩大模型搜索。
+3. 决定最终论文是否继续使用藕塘；若更换数据集，先建立可追溯的数据契约、时间切分和坐标映射。
+4. 仅在可追溯数据上，先切分原始观测，再在每个时间折内部生成派生序列并复查未来信息隔离。
 5. 获得包含更多互不相连标签事件的新监测时段，事件数量足够后再评价分类与提前量。
 6. 根据原始累计位移曲线和宏观变形资料复核等速阶段，确认后再固定切线角参数。

@@ -59,6 +59,9 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_PROFILE_PATH = ROOT / "config" / "ootang_operational_run.v1.draft.json"
 DEFAULT_KINEMATICS_PATH = ROOT / "data" / "ootang_kinematics_long.csv"
 DEFAULT_PREDICTIONS_PATH = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
+DEFAULT_FORECAST_MANIFEST_PATH = (
+    ROOT / "figures" / "convlstm" / "forecast_run_manifest.json"
+)
 DEFAULT_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft"
 DEFAULT_V2_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v2"
 DEFAULT_EVIDENCE_DIR = ROOT / "figures" / "warning_draft"
@@ -1615,11 +1618,138 @@ def _write_csv(frame: pd.DataFrame, path: Path) -> None:
     frame.to_csv(path, index=False, lineterminator="\n")
 
 
+def _forecast_manifest_source_record(
+    manifest_path: Path,
+    predictions_path: Path,
+) -> dict[str, Any]:
+    """Audit the elevation-aware forecast manifest used by the draft run."""
+
+    if not manifest_path.is_file():
+        raise OperationalRunInputError(
+            f"Missing elevation-aware forecast manifest: {manifest_path}"
+        )
+    if not predictions_path.is_file():
+        raise OperationalRunInputError(
+            f"Missing forecast predictions: {predictions_path}"
+        )
+    try:
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise OperationalRunInputError(
+            f"Invalid elevation-aware forecast manifest: {manifest_path}"
+        ) from exc
+    if not isinstance(manifest, dict):
+        raise OperationalRunInputError(
+            "Elevation-aware forecast manifest must be a JSON object."
+        )
+    if manifest.get("schema_version") != "ootang_elevation_aware_convlstm_run_v1":
+        raise OperationalRunInputError(
+            "Forecast manifest schema is not the elevation-aware Ootang v1 schema."
+        )
+    if manifest.get("artifact_status") != "prototype_internal_not_confirmatory":
+        raise OperationalRunInputError(
+            "Forecast manifest must remain a non-confirmatory prototype."
+        )
+    if manifest.get("formal_warning_output") is not False:
+        raise OperationalRunInputError(
+            "Forecast manifest must retain formal_warning_output=false."
+        )
+    if manifest.get("vajont_used") is not False:
+        raise OperationalRunInputError(
+            "Forecast manifest must retain vajont_used=false."
+        )
+    if manifest.get("prototype_run_gate") != "allowed":
+        raise OperationalRunInputError(
+            "Forecast manifest must retain prototype_run_gate=allowed."
+        )
+    if manifest.get("confirmatory_evidence_gate") != "blocked":
+        raise OperationalRunInputError(
+            "Forecast manifest must retain confirmatory_evidence_gate=blocked."
+        )
+    spatial_representation = manifest.get("spatial_representation")
+    if not isinstance(spatial_representation, dict):
+        raise OperationalRunInputError(
+            "Forecast manifest spatial_representation must be an object."
+        )
+    elevation = spatial_representation.get("elevation")
+    if not isinstance(elevation, dict):
+        raise OperationalRunInputError(
+            "Forecast manifest elevation representation must be an object."
+        )
+    if elevation.get("usage") != "static_model_input_channel":
+        raise OperationalRunInputError(
+            "Forecast manifest does not document the required elevation channel."
+        )
+    expected_channels = [
+        "displacement_idw_grid",
+        "elevation_static_idw_grid",
+        "RWL",
+        "RWL_rate",
+        "Rain_cum7",
+        "Rain_cum15",
+        "Rain_cum30",
+    ]
+    model = manifest.get("model")
+    if not isinstance(model, dict):
+        raise OperationalRunInputError(
+            "Forecast manifest model must be an object."
+        )
+    if (
+        model.get("input_schema") != "displacement_elevation_exog_v1"
+        or model.get("input_channel_count") != len(expected_channels)
+        or model.get("input_channels") != expected_channels
+    ):
+        raise OperationalRunInputError(
+            "Forecast manifest does not match the required seven-channel "
+            "elevation-aware model input."
+        )
+    outputs = manifest.get("outputs")
+    if not isinstance(outputs, dict):
+        raise OperationalRunInputError(
+            "Forecast manifest outputs must be an object."
+        )
+    declared_prediction = outputs.get(
+        "figures/convlstm/forecast_predictions.csv",
+        {},
+    )
+    if not isinstance(declared_prediction, dict):
+        raise OperationalRunInputError(
+            "Forecast prediction output record must be an object."
+        )
+    try:
+        actual_prediction_sha = _sha256_file(predictions_path)
+        manifest_sha = _sha256_file(manifest_path)
+    except OSError as exc:
+        raise OperationalRunInputError(
+            "Unable to hash the forecast manifest or predictions."
+        ) from exc
+    declared_prediction_sha = declared_prediction.get("sha256")
+    if declared_prediction_sha != actual_prediction_sha:
+        raise OperationalRunInputError(
+            "Prediction CSV does not match the elevation-aware forecast manifest."
+        )
+    return {
+        "path": str(manifest_path),
+        "sha256": manifest_sha,
+        "schema_version": manifest.get("schema_version"),
+        "prototype_run_gate": manifest.get("prototype_run_gate"),
+        "confirmatory_evidence_gate": manifest.get(
+            "confirmatory_evidence_gate"
+        ),
+        "elevation_usage": elevation["usage"],
+        "elevation_method": elevation.get("method"),
+        "prediction_sha256": actual_prediction_sha,
+        "declared_prediction_sha256": declared_prediction_sha,
+        "prediction_sha256_matches": True,
+    }
+
+
 def _manifest(
     *,
     loaded: _LoadedProfile,
     kinematics_path: Path,
     predictions_path: Path,
+    forecast_manifest_source: dict[str, Any],
     evidence_manifest_path: Path,
     station_path: Path,
     site_path: Path,
@@ -1666,6 +1796,7 @@ def _manifest(
                 "path": str(predictions_path),
                 "sha256": _sha256_file(predictions_path),
             },
+            "forecast_run_manifest": forecast_manifest_source,
             "draft_evidence_manifest": {
                 "path": str(evidence_manifest_path),
                 "sha256": _sha256_file(evidence_manifest_path),
@@ -1715,6 +1846,7 @@ def write_ootang_operational_run(
     profile_path: str | Path = DEFAULT_PROFILE_PATH,
     kinematics_path: str | Path = DEFAULT_KINEMATICS_PATH,
     predictions_path: str | Path = DEFAULT_PREDICTIONS_PATH,
+    forecast_manifest_path: str | Path = DEFAULT_FORECAST_MANIFEST_PATH,
     output_dir: str | Path | None = None,
     evidence_dir: str | Path | None = None,
 ) -> OperationalRunArtifacts:
@@ -1728,6 +1860,11 @@ def write_ootang_operational_run(
     loaded = _load_operational_profile(profile_path)
     kinematics_file = Path(kinematics_path).resolve()
     predictions_file = Path(predictions_path).resolve()
+    forecast_manifest_file = Path(forecast_manifest_path).resolve()
+    forecast_manifest_source = _forecast_manifest_source_record(
+        forecast_manifest_file,
+        predictions_file,
+    )
     target_dir = _resolve_operational_output_dir(loaded, output_dir)
     evidence_target = (
         Path(evidence_dir).resolve()
@@ -1791,6 +1928,7 @@ def write_ootang_operational_run(
                     loaded=loaded,
                     kinematics_path=kinematics_file,
                     predictions_path=predictions_file,
+                    forecast_manifest_source=forecast_manifest_source,
                     evidence_manifest_path=evidence.manifest_path,
                     station_path=station_path,
                     site_path=site_path,

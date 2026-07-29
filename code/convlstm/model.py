@@ -1,4 +1,6 @@
 """ConvLSTM displacement-interval forecast with station-level evaluation."""
+import hashlib
+import json
 from pathlib import Path
 import sys
 import matplotlib
@@ -15,7 +17,13 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from convlstm.block_bootstrap import moving_block_indices, percentile_interval  # noqa: E402
-from convlstm.grid_interp import GRID_H, GRID_W, load_coords, make_interpolator  # noqa: E402
+from convlstm.grid_interp import (  # noqa: E402
+    COORD_CSV,
+    GRID_H,
+    GRID_W,
+    load_station_geometry,
+    make_interpolator,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 FEAT_CSV = ROOT / "data" / "features.csv"
@@ -27,10 +35,14 @@ OUT_METRICS = FIG_DIR / "forecast_metrics.csv"
 OUT_PERIOD_METRICS = FIG_DIR / "forecast_period_metrics.csv"
 OUT_CALIBRATION_METRICS = FIG_DIR / "forecast_calibration_metrics.csv"
 OUT_BOOTSTRAP_CI = FIG_DIR / "forecast_bootstrap_ci.csv"
+OUT_MANIFEST = FIG_DIR / "forecast_run_manifest.json"
 
 DISP_COLS = ["MJ9_disp", "MJ1_disp", "MJ3_disp",
              "ATU1_disp", "ATU2_disp", "ATU3_disp", "ATU4_disp", "ATU5_disp"]
 EXOG_COLS = ["RWL", "RWL_rate", "Rain_cum7", "Rain_cum15", "Rain_cum30"]
+STATIC_SPATIAL_COLS = ["elev_m"]
+MODEL_INPUT_CHANNELS = 1 + len(STATIC_SPATIAL_COLS) + len(EXOG_COLS)
+MODEL_INPUT_SCHEMA = "displacement_elevation_exog_v1"
 THESIS_WINDOWS = {"MJ1": 2, "MJ9": 7, "MJ3": 2}
 LOOKBACK = max(THESIS_WINDOWS.values())
 HORIZON = 1
@@ -75,6 +87,15 @@ CALIBRATION_COMPARISON_BOOTSTRAP_METRICS = (
 
 torch.manual_seed(SEED)
 np.random.seed(SEED)
+
+
+def file_sha256(path):
+    """Return the SHA-256 of a local input or output artifact."""
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 class ConvLSTMCell(nn.Module):
@@ -711,12 +732,50 @@ def bootstrap_ci_rows(
     return rows
 
 
-def make_model_inputs(df, disp, stats_stop, interp):
-    """Build input channels from displacement grids and broadcast exogenous drivers."""
+def make_elevation_grid(elevation_m, interp):
+    """Standardize station elevation and map it to the horizontal IDW grid."""
+    elevation = np.asarray(elevation_m, dtype=np.float64)
+    if elevation.ndim != 1 or elevation.size == 0:
+        raise ValueError("测点高程必须是一维非空数组")
+    if not np.isfinite(elevation).all():
+        raise ValueError("测点高程必须是有限数值")
+    scale = float(elevation.std())
+    if scale <= 0:
+        raise ValueError("测点高程必须具有非零空间变化")
+    normalized = (elevation - float(elevation.mean())) / scale
+    grid = np.asarray(interp(normalized), dtype=np.float32)
+    if grid.ndim != 2 or not np.isfinite(grid).all():
+        raise ValueError("高程 IDW 网格必须是二维有限数组")
+    return grid
+
+
+def make_model_inputs(
+    df,
+    disp,
+    stats_stop,
+    interp,
+    *,
+    elevation_grid,
+):
+    """Build displacement, static elevation and exogenous input channels."""
     disp_mu = disp[:stats_stop].mean(0)
     disp_sigma = np.maximum(disp[:stats_stop].std(0), 1.0)
     disp_norm = (disp - disp_mu) / disp_sigma
     disp_grid = interp(disp_norm).astype(np.float32)[:, None, :, :]
+
+    elevation_grid = np.asarray(elevation_grid, dtype=np.float32)
+    expected_grid_shape = (GRID_H, GRID_W)
+    if elevation_grid.shape != expected_grid_shape:
+        raise ValueError(
+            "高程网格形状必须为 "
+            f"{expected_grid_shape}，实际为 {elevation_grid.shape}"
+        )
+    if not np.isfinite(elevation_grid).all():
+        raise ValueError("高程网格必须是有限数值")
+    elevation_channel = np.broadcast_to(
+        elevation_grid[None, None, :, :],
+        (len(df), 1, GRID_H, GRID_W),
+    )
 
     exog = df[EXOG_COLS].values.astype(np.float64)
     exog_mu = exog[:stats_stop].mean(0)
@@ -726,7 +785,10 @@ def make_model_inputs(df, disp, stats_stop, interp):
         exog_norm[:, :, None, None],
         (len(df), len(EXOG_COLS), GRID_H, GRID_W),
     )
-    inputs = np.concatenate([disp_grid, exog_grid], axis=1).astype(np.float32)
+    inputs = np.concatenate(
+        [disp_grid, elevation_channel, exog_grid],
+        axis=1,
+    ).astype(np.float32)
     return inputs, disp_sigma
 
 
@@ -734,8 +796,9 @@ def main():
     df = pd.read_csv(FEAT_CSV)
     disp = df[DISP_COLS].values.astype(np.float64)
 
-    names, xy = load_coords(DISP_COLS)
+    names, xy, elevation_m = load_station_geometry(DISP_COLS)
     interp, (gx, gy) = make_interpolator(xy, GRID_H, GRID_W)
+    elevation_grid = make_elevation_grid(elevation_m, interp)
 
     split = int(len(disp) * TRAIN_FRAC)
     n_train_windows = split - LOOKBACK - HORIZON + 1
@@ -746,7 +809,13 @@ def main():
     if n_cal == 0:
         raise RuntimeError("独立区间校准要求至少一个校准窗口")
     fit_stats_stop = n_fit + LOOKBACK + HORIZON - 1
-    inputs, _ = make_model_inputs(df, disp, fit_stats_stop, interp)
+    inputs, _ = make_model_inputs(
+        df,
+        disp,
+        fit_stats_stop,
+        interp,
+        elevation_grid=elevation_grid,
+    )
     readout_w = station_readout_weights(gx, gy, xy)
 
     Xtr, _, _ = make_windows(inputs[:split], LOOKBACK, HORIZON)
@@ -999,6 +1068,10 @@ def main():
             "lookback": LOOKBACK,
             "horizon": HORIZON,
             "exog_cols": EXOG_COLS,
+            "static_spatial_cols": STATIC_SPATIAL_COLS,
+            "elevation_method": "station_zscore_then_horizontal_idw_static_channel",
+            "elevation_mean_m": float(elevation_m.mean()),
+            "elevation_std_m": float(elevation_m.std()),
             "grid_h": GRID_H,
             "grid_w": GRID_W,
             "train_fraction": TRAIN_FRAC,
@@ -1016,6 +1089,7 @@ def main():
         },
         "delta_scale": delta_scale,
         "readout_weights": readout_w,
+        "elevation_grid": elevation_grid,
         "calibration_q": qhat,
     }, OUT_PT)
 
@@ -1121,6 +1195,96 @@ def main():
     pd.DataFrame(period_rows).to_csv(OUT_PERIOD_METRICS, index=False)
     pd.DataFrame(calibration_rows).to_csv(OUT_CALIBRATION_METRICS, index=False)
     pd.DataFrame(bootstrap_rows).to_csv(OUT_BOOTSTRAP_CI, index=False)
+    manifest = {
+        "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+        "artifact_status": "prototype_internal_not_confirmatory",
+        "case": "ootang",
+        "formal_warning_output": False,
+        "vajont_used": False,
+        "source_recovery_status": "unavailable_by_project_constraint",
+        "prototype_run_gate": "allowed",
+        "confirmatory_evidence_gate": "blocked",
+        "released_series_role": "materialized_daily_modeling_series",
+        "source_inputs": {
+            "features": {
+                "path": str(FEAT_CSV.relative_to(ROOT)),
+                "sha256": file_sha256(FEAT_CSV),
+            },
+            "station_geometry": {
+                "path": str(COORD_CSV.relative_to(ROOT)),
+                "sha256": file_sha256(COORD_CSV),
+                "station_count": len(names),
+                "horizontal_columns": ["x_m", "y_m"],
+                "horizontal_unit": "m",
+                "elevation_column": "elev_m",
+                "elevation_unit": "m",
+                "elevation_min_m": float(elevation_m.min()),
+                "elevation_max_m": float(elevation_m.max()),
+            },
+        },
+        "spatial_representation": {
+            "horizontal_grid": {
+                "method": "inverse_distance_weighting",
+                "distance_dimensions": ["x_m", "y_m"],
+                "idw_power": 2.0,
+                "grid_shape": [GRID_H, GRID_W],
+            },
+            "elevation": {
+                "usage": "static_model_input_channel",
+                "method": "station_zscore_then_horizontal_idw",
+                "normalization_scope": "all_eight_static_station_metadata",
+                "mean_m": float(elevation_m.mean()),
+                "std_m": float(elevation_m.std()),
+                "grid_min_z": float(elevation_grid.min()),
+                "grid_max_z": float(elevation_grid.max()),
+                "used_in_distance_metric": False,
+            },
+        },
+        "model": {
+            "name": "ConvLSTMForecast",
+            "input_schema": MODEL_INPUT_SCHEMA,
+            "input_channel_count": int(Xtr_t.shape[2]),
+            "input_channels": [
+                "displacement_idw_grid",
+                "elevation_static_idw_grid",
+                *EXOG_COLS,
+            ],
+            "lookback_days": LOOKBACK,
+            "horizon_days": HORIZON,
+            "quantiles": QUANTILES,
+            "hidden_channels": HIDDEN,
+            "kernel_size": KERNEL,
+            "epochs": EPOCHS,
+            "seed": SEED,
+        },
+        "split_metadata": split_metadata,
+        "outputs": {
+            str(path.relative_to(ROOT)): {
+                "sha256": file_sha256(path),
+                "size_bytes": path.stat().st_size,
+            }
+            for path in (
+                OUT_PT,
+                OUT_PNG,
+                OUT_PREDICTIONS,
+                OUT_METRICS,
+                OUT_PERIOD_METRICS,
+                OUT_CALIBRATION_METRICS,
+                OUT_BOOTSTRAP_CI,
+            )
+        },
+        "not_claimed": [
+            "independent_raw_daily_gnss",
+            "confirmatory_out_of-sample_forecast",
+            "formal_warning_output",
+            "causal_effect_of_elevation",
+            "Vajont_external_validation",
+        ],
+    }
+    OUT_MANIFEST.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
 
     print(f"[convlstm] 模型: {OUT_PT}")
     print(f"[convlstm] 区间图: {OUT_PNG}")
@@ -1129,9 +1293,13 @@ def main():
     print(f"[convlstm] 分时段指标: {OUT_PERIOD_METRICS}")
     print(f"[convlstm] 校准审计: {OUT_CALIBRATION_METRICS}")
     print(f"[convlstm] 时间块置信区间: {OUT_BOOTSTRAP_CI}")
+    print(f"[convlstm] 高程感知运行清单: {OUT_MANIFEST}")
     print(f"[convlstm] 网格: {GRID_H}x{GRID_W}  测点数: {len(names)}")
     print(f"[convlstm] 论文窗口: {THESIS_WINDOWS}; 当前统一输入窗口: {LOOKBACK} 天")
-    print(f"[convlstm] 输入通道: 位移网格 + {EXOG_COLS}")
+    print(
+        "[convlstm] 输入通道: 位移网格 + 标准化静态高程网格 + "
+        f"{EXOG_COLS}"
+    )
     print(
         "[convlstm] fit/calibration/test 窗口: "
         f"{n_fit}/{n_cal}/{len(test_dates)}"

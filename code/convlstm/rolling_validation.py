@@ -29,6 +29,11 @@ TEST_WINDOWS = 287
 MIN_FIT_WINDOWS = 365
 VALIDATION_SEED = base.SEED
 VALIDATION_METHOD = "expanding_window_nonoverlapping_fixed_287d_test"
+MODEL_INPUT_PROVENANCE_COLUMNS = (
+    "model_input_schema",
+    "model_input_channels",
+    "station_geometry_sha256",
+)
 
 
 @dataclass(frozen=True)
@@ -40,6 +45,32 @@ class RollingSplit:
     test_windows: int
     split_index: int
     test_stop_index: int
+
+
+def current_model_input_provenance():
+    """Return identifiers that prevent mixing incompatible model artifacts."""
+    return {
+        "model_input_schema": base.MODEL_INPUT_SCHEMA,
+        "model_input_channels": base.MODEL_INPUT_CHANNELS,
+        "station_geometry_sha256": base.file_sha256(base.COORD_CSV),
+    }
+
+
+def require_current_model_input_provenance(frame, *, artifact_name):
+    """Reject reference tables produced by another input representation."""
+    missing = set(MODEL_INPUT_PROVENANCE_COLUMNS) - set(frame.columns)
+    if missing:
+        raise RuntimeError(
+            f"{artifact_name} 缺少模型输入溯源字段: {sorted(missing)}"
+        )
+    expected = current_model_input_provenance()
+    for column, expected_value in expected.items():
+        observed = set(frame[column].dropna().unique())
+        if observed != {expected_value}:
+            raise RuntimeError(
+                f"{artifact_name} 的 {column} 与当前模型输入不一致: "
+                f"{sorted(observed, key=str)} != {expected_value}"
+            )
 
 
 def expanding_window_splits(
@@ -144,6 +175,7 @@ def split_metadata(split, dates, *, seed=VALIDATION_SEED):
         "test_length_basis": "matches_existing_287d_holdout",
         "test_length_selected_from_results": False,
         "confirmatory_external_validation": False,
+        **current_model_input_provenance(),
     }
 
 
@@ -154,6 +186,7 @@ def train_predict_fold(
     readout_weights,
     split,
     *,
+    elevation_grid,
     seed,
     epochs=base.EPOCHS,
     hidden_channels=base.HIDDEN,
@@ -174,7 +207,13 @@ def train_predict_fold(
     np.random.seed(seed)
 
     fit_stats_stop = split.fit_windows + base.LOOKBACK + base.HORIZON - 1
-    inputs, _ = base.make_model_inputs(df, disp, fit_stats_stop, interp)
+    inputs, _ = base.make_model_inputs(
+        df,
+        disp,
+        fit_stats_stop,
+        interp,
+        elevation_grid=elevation_grid,
+    )
     x_train, _, _ = base.make_windows(
         inputs[:split.split_index],
         base.LOOKBACK,
@@ -329,6 +368,13 @@ def increment_diagnostics(actual, predicted, persistence):
 def metric_rows(result, station_names, metadata):
     """Return overall and station-level raw/calibrated metrics for one fold."""
     rows = []
+    provenance = {
+        column: metadata[column]
+        for column in MODEL_INPUT_PROVENANCE_COLUMNS
+        if column in metadata
+    }
+    if provenance and len(provenance) != len(MODEL_INPUT_PROVENANCE_COLUMNS):
+        raise RuntimeError("滚动指标的模型输入溯源字段不完整")
     scopes = [("overall", None), *zip(station_names, range(len(station_names)))]
     for interval_variant, lower_key, upper_key in (
         ("raw", "raw_p10", "raw_p90"),
@@ -351,6 +397,7 @@ def metric_rows(result, station_names, metadata):
             increment_metrics = increment_diagnostics(actual, p50, persistence)
             rows.append({
                 "fold": metadata["fold"],
+                **provenance,
                 "scope": scope,
                 "interval_variant": interval_variant,
                 "test_start_date": metadata["test_start_date"],
@@ -443,12 +490,13 @@ def main():
     if dates.has_duplicates or not dates.is_monotonic_increasing:
         raise RuntimeError("特征日期必须严格递增且不得重复")
     disp = df[base.DISP_COLS].values.astype(np.float64)
-    station_names, xy = base.load_coords(base.DISP_COLS)
+    station_names, xy, elevation_m = base.load_station_geometry(base.DISP_COLS)
     interp, (grid_x, grid_y) = base.make_interpolator(
         xy,
         base.GRID_H,
         base.GRID_W,
     )
+    elevation_grid = base.make_elevation_grid(elevation_m, interp)
     readout_weights = base.station_readout_weights(grid_x, grid_y, xy)
     splits = expanding_window_splits(len(df))
 
@@ -463,6 +511,7 @@ def main():
             interp,
             readout_weights,
             split,
+            elevation_grid=elevation_grid,
             seed=VALIDATION_SEED,
         )
         metadata.update({

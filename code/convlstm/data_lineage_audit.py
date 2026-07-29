@@ -769,6 +769,25 @@ def run_audit(
         "audit_scope": "ootang_only",
         "formal_warning_output": False,
         "vajont_used": False,
+        "source_recovery_status": "unavailable_by_project_constraint",
+        "prototype_run_gate": {
+            "status": "allowed",
+            "scope": (
+                "elevation_aware_internal_engineering_run_on_released_"
+                "materialized_series"
+            ),
+            "required_labels": [
+                "prototype_internal_not_confirmatory",
+                "operational_draft_not_formal",
+            ],
+        },
+        "confirmatory_evidence_gate": {
+            "status": "blocked",
+            "reason": (
+                "original_observation_anchors_and_daily_generation_chain_"
+                "are_unavailable"
+            ),
+        },
         "test_rows_audited_for_data_provenance": True,
         "model_selection_usage": {
             "status": "protocol_statement_not_verified_by_this_audit",
@@ -814,6 +833,7 @@ def run_audit(
         },
         "data_gate": {
             "status": "blocked",
+            "scope": "confirmatory_evidence_and_formal_warning_only",
             "blocks": [
                 "confirmatory_daily_forecast_claims",
                 "new_neural_ablation_as_bias_explanation",
@@ -875,7 +895,9 @@ def main() -> None:
     print(
         "[data-lineage] "
         f"fingerprint={manifest['numeric_fingerprint']['status']} "
-        f"gate={manifest['data_gate']['status']} "
+        f"prototype_gate={manifest['prototype_run_gate']['status']} "
+        "confirmatory_gate="
+        f"{manifest['confirmatory_evidence_gate']['status']} "
         f"output={args.output_dir}"
     )
 

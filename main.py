@@ -106,6 +106,7 @@ STAGES = (
             "figures/convlstm/forecast_period_metrics.csv",
             "figures/convlstm/forecast_calibration_metrics.csv",
             "figures/convlstm/forecast_bootstrap_ci.csv",
+            "figures/convlstm/forecast_run_manifest.json",
         ),
     ),
     Stage(
@@ -179,6 +180,7 @@ STAGES = (
         inputs=(
             "data/ootang_kinematics_long.csv",
             "figures/convlstm/forecast_predictions.csv",
+            "figures/convlstm/forecast_run_manifest.json",
             "config/ootang_warning_protocol.v1.draft.json",
             "config/ootang_operational_run.v1.draft.json",
         ),
@@ -197,6 +199,7 @@ STAGES = (
         inputs=(
             "data/ootang_kinematics_long.csv",
             "figures/convlstm/forecast_predictions.csv",
+            "figures/convlstm/forecast_run_manifest.json",
             "config/ootang_warning_protocol.v1.draft.json",
             "config/ootang_operational_run.v2.draft.json",
         ),

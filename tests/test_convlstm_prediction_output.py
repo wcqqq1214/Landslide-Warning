@@ -14,6 +14,7 @@ if str(CODE) not in sys.path:
     sys.path.insert(0, str(CODE))
 
 from convlstm import model as convlstm  # noqa: E402
+from convlstm import rolling_validation as rolling  # noqa: E402
 
 
 class ForecastPredictionOutputTests(unittest.TestCase):
@@ -91,6 +92,110 @@ class ForecastPredictionOutputTests(unittest.TestCase):
 
         frame = pd.DataFrame(rows)
         self.assertTrue(frame[["calibrated_p10", "calibrated_p90", "qhat_mm"]].isna().all().all())
+
+    def test_station_geometry_aligns_finite_elevation_to_displacements(self):
+        names, xy, elevation = convlstm.load_station_geometry(
+            convlstm.DISP_COLS
+        )
+
+        self.assertEqual(
+            names,
+            ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"],
+        )
+        np.testing.assert_allclose(
+            elevation,
+            [190.0, 335.0, 425.0, 515.0, 410.0, 310.0, 285.0, 475.0],
+        )
+        self.assertEqual(xy.shape, (8, 2))
+        self.assertTrue(np.isfinite(xy).all())
+        self.assertTrue(np.isfinite(elevation).all())
+
+    def test_model_inputs_include_static_elevation_channel(self):
+        frame = pd.DataFrame(
+            {
+                column: [1.0, 2.0, 3.0]
+                for column in convlstm.EXOG_COLS
+            }
+        )
+        displacement = np.array(
+            [
+                [1.0, 10.0],
+                [2.0, 20.0],
+                [3.0, 30.0],
+            ]
+        )
+
+        def interpolate(values):
+            means = values.mean(axis=1)[:, None, None]
+            return np.broadcast_to(
+                means,
+                (len(values), convlstm.GRID_H, convlstm.GRID_W),
+            )
+
+        elevation_grid = np.arange(
+            convlstm.GRID_H * convlstm.GRID_W,
+            dtype=np.float32,
+        ).reshape(convlstm.GRID_H, convlstm.GRID_W)
+        inputs, _ = convlstm.make_model_inputs(
+            frame,
+            displacement,
+            2,
+            interpolate,
+            elevation_grid=elevation_grid,
+        )
+
+        self.assertEqual(
+            inputs.shape,
+            (
+                len(frame),
+                convlstm.MODEL_INPUT_CHANNELS,
+                convlstm.GRID_H,
+                convlstm.GRID_W,
+            ),
+        )
+        np.testing.assert_allclose(
+            inputs[:, 1],
+            np.broadcast_to(elevation_grid, inputs[:, 1].shape),
+        )
+
+    def test_elevation_grid_changes_when_station_elevation_changes(self):
+        _, xy, elevation = convlstm.load_station_geometry(
+            convlstm.DISP_COLS
+        )
+        interpolate, _ = convlstm.make_interpolator(
+            xy,
+            convlstm.GRID_H,
+            convlstm.GRID_W,
+        )
+
+        baseline = convlstm.make_elevation_grid(elevation, interpolate)
+        changed_elevation = elevation.copy()
+        changed_elevation[0] += 100.0
+        changed = convlstm.make_elevation_grid(
+            changed_elevation,
+            interpolate,
+        )
+
+        self.assertEqual(
+            baseline.shape,
+            (convlstm.GRID_H, convlstm.GRID_W),
+        )
+        self.assertFalse(np.allclose(baseline, changed))
+
+    def test_diagnostic_reference_rejects_legacy_input_schema(self):
+        legacy = pd.DataFrame(
+            {
+                "model_input_schema": ["displacement_exog_v0"],
+                "model_input_channels": [6],
+                "station_geometry_sha256": ["legacy"],
+            }
+        )
+
+        with self.assertRaisesRegex(RuntimeError, "与当前模型输入不一致"):
+            rolling.require_current_model_input_provenance(
+                legacy,
+                artifact_name="legacy.csv",
+            )
 
 
 if __name__ == "__main__":

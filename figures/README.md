@@ -2,11 +2,13 @@
 
 本目录保存可由 `code/` 下各分组脚本重建的结果快照。PNG 是展示图，CSV 是支撑图表、复核数值和追踪逐日结果的审计表；它们都不是原始监测数据，也不应手工修改。当前大部分模型产物以 Figshare 发布物化日序列为输入，不是独立原始 GNSS 上的确认性结果。
 
+> `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 与 `capacity_*` 当前仍是加入高程前的 6 输入通道历史快照。新的 7 输入通道代码已用输入架构、通道数和坐标哈希阻断静默混用，但尚未重跑这些高成本诊断；不得将旧文件当作当前高程模型的稳定性证据。
+
 | 文件 | 作用 | 类型 | 论文用途 |
 | --- | --- | --- | --- |
 | `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
 | `pipeline/shap_stability_run.json` | 保存 2026-06-23 历史 SHAP 稳定性单阶段运行的源码指纹、耗时和 9 个产物哈希 | 历史工程清单 | 仅追溯提交 `3c06d38` 的旧运行；不代表当前 `ΔV` 对齐后的产物 |
-| `data_lineage/ootang_data_lineage_manifest.json` | 固定 Figshare 来源、XLSX/CSV 哈希与一致性、代码/输入指纹、预测键集、自然月结构状态和数据闸门 | 数据血缘总清单 | 当前 `data_gate=blocked`、`formal_warning_output=false`；不推断具体生成算法或已证实未来泄漏 |
+| `data_lineage/ootang_data_lineage_manifest.json` | 固定 Figshare 来源、XLSX/CSV 哈希与一致性、代码/输入指纹、预测键集、自然月结构状态和数据闸门 | 数据血缘总清单 | `prototype_run_gate=allowed`，但 `confirmatory_evidence_gate=blocked`、`formal_warning_output=false`；不推断具体生成算法或已证实未来泄漏 |
 | `data_lineage/ootang_monthly_polynomial_fingerprint.csv` | 保存 9 个目标列和 5 个负对照逐自然月四阶差分、三次残差和二次误差 | 数据结构审计表 | 支撑“发布序列具有强自然月分段三次指纹”，不是插值算法识别 |
 | `data_lineage/ootang_column_fingerprint_summary.csv` | 汇总各列 48 个月通过数、月内/跨月四阶差分窗口和断点日 | 数据结构摘要 | 区分目标列与环境负对照，不能作为预警阈值 |
 | `data_lineage/ootang_split_boundary_audit.csv` | 检查三个模型边界是否切穿同一月内三次段 | 时间边界审计表 | 证明发布序列在边界两侧存在同月代数结构；上游生成独立性与未来信息使用仍未知 |
@@ -17,6 +19,7 @@
 | `convlstm/forecast_metrics.csv` | 保存各测点测试段校准前后的 RMSE、MAE、R2/NSE、持久性基线、pinball loss、覆盖率、宽度和 80% interval score | 探索性内部评估表 | 仅衡量模型相对于发布物化序列的误差；用 `interval_variant` 区分未校准和校准区间，R2/NSE 仅作补充 |
 | `convlstm/forecast_period_metrics.csv` | 将 287 日测试段按日期连续分为三个块并保存校准前后同组指标 | 时间稳定性审计表 | 检查总体均值是否掩盖后期性能退化，不代替滚动时间验证 |
 | `convlstm/forecast_calibration_metrics.csv` | 保存拟合/校准/测试日期边界、测点独立 `qhat` 及校准前后覆盖率、宽度、pinball 和 interval score | 校准审计表 | 证明仓库代码采用日历先后切分并量化宽度-覆盖率代价；不证明上游生成独立，也不提供严格覆盖保证 |
+| `convlstm/forecast_run_manifest.json` | 记录高程感知初跑的数据/坐标哈希、`elev_m` 标准化与 IDW 方法、7 个输入通道、切分和全部输出哈希 | 原型运行清单 | `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`；证明高程实际进入模型，不证明其带来因果作用或确认性增益 |
 | `warning_draft/interval_calibration_diagnostics.csv` | 保存 8 个测点、仅 calibration 段的分位数顺序、覆盖率、中点误差和标准化残差原始摘要，以及协议和 calibration 输入切片哈希 | 区间门禁原始诊断表 | 为后续冻结门禁提供可复核证据；不含通过/失败、颜色或预警等级，不能作为正式预警结果 |
 | `warning_draft/interval_calibration_diagnostics_manifest.json` | 保存诊断产物的协议状态、未评估项目、calibration 选段范围，以及 calibration 输入/输出哈希 | 草案运行清单 | 明确本次产物只作诊断且 `formal_warning_output=false`；哈希不随 held-out test 行变化，不得据此宣称区间五级映射已通过 |
 | `warning_draft/ootang_draft_warning_evidence_manifest.json` | 保存当前七份有效藕塘草案诊断的固定执行顺序、每份组件的协议内容指纹/未决项、输出与 sidecar SHA-256 及排除的退役产物 | 草案证据总清单 | 证明同一版 `draft` 协议下的证据集可整体重建；其 `formal_warning_output=false`，不含 `V0`、速度/切线角等级、融合、正式时间线或 Vajont |

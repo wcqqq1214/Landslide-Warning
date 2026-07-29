@@ -144,6 +144,7 @@ def run_epoch_selection(
     split,
     inner_split,
     *,
+    elevation_grid,
     seed,
     hidden_channels=base.HIDDEN,
     weight_decay=0.0,
@@ -162,7 +163,13 @@ def run_epoch_selection(
         inner_split.train_windows + base.LOOKBACK + base.HORIZON - 1
     )
     fit_stop = split.fit_windows + base.LOOKBACK + base.HORIZON - 1
-    inputs, _ = base.make_model_inputs(df, disp, stats_stop, interp)
+    inputs, _ = base.make_model_inputs(
+        df,
+        disp,
+        stats_stop,
+        interp,
+        elevation_grid=elevation_grid,
+    )
     x_fit = base.make_windows(
         inputs[:fit_stop],
         base.LOOKBACK,
@@ -464,14 +471,20 @@ def main():
         raise RuntimeError("特征日期必须严格递增且不得重复")
     if not FIXED_METRICS.is_file():
         raise RuntimeError("缺少固定 120 轮多种子指标，无法执行预设配对比较")
+    fixed_frame = pd.read_csv(FIXED_METRICS)
+    rolling.require_current_model_input_provenance(
+        fixed_frame,
+        artifact_name=str(FIXED_METRICS),
+    )
 
     disp = df[base.DISP_COLS].values.astype(np.float64)
-    station_names, xy = base.load_coords(base.DISP_COLS)
+    station_names, xy, elevation_m = base.load_station_geometry(base.DISP_COLS)
     interp, (grid_x, grid_y) = base.make_interpolator(
         xy,
         base.GRID_H,
         base.GRID_W,
     )
+    elevation_grid = base.make_elevation_grid(elevation_m, interp)
     readout_weights = base.station_readout_weights(grid_x, grid_y, xy)
     splits = rolling.expanding_window_splits(len(df))
 
@@ -492,6 +505,7 @@ def main():
                 readout_weights,
                 split,
                 inner_split,
+                elevation_grid=elevation_grid,
                 seed=seed,
             )
             result = rolling.train_predict_fold(
@@ -500,6 +514,7 @@ def main():
                 interp,
                 readout_weights,
                 split,
+                elevation_grid=elevation_grid,
                 seed=seed,
                 epochs=selection_result["selected_epoch"],
             )
@@ -554,7 +569,6 @@ def main():
     metric_frame = pd.DataFrame(metric_rows)
     summary_frame = stability.aggregate_seed_metrics(metric_frame)
     prediction_frame = pd.DataFrame(prediction_rows)
-    fixed_frame = pd.read_csv(FIXED_METRICS)
     comparison_frame = build_fixed_comparison(
         metric_frame,
         fixed_frame,

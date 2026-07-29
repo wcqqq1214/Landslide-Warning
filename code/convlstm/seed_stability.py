@@ -87,8 +87,17 @@ def aggregate_seed_metrics(metrics, *, seeds=SEEDS):
         observed_seeds = tuple(sorted(group["seed"].unique()))
         if observed_seeds != tuple(seeds):
             raise RuntimeError("多种子汇总缺少预设种子或包含额外种子")
+        provenance_columns = set(rolling.MODEL_INPUT_PROVENANCE_COLUMNS)
+        present_provenance = provenance_columns & set(group.columns)
+        if present_provenance and present_provenance != provenance_columns:
+            raise RuntimeError("多种子指标的模型输入溯源字段不完整")
         row = {
             **dict(zip(group_columns, keys)),
+            **{
+                column: group[column].iloc[0]
+                for column in rolling.MODEL_INPUT_PROVENANCE_COLUMNS
+                if column in group.columns
+            },
             "test_start_date": group["test_start_date"].iloc[0],
             "test_end_date": group["test_end_date"].iloc[0],
             "n_dates": int(group["n_dates"].iloc[0]),
@@ -171,12 +180,13 @@ def main():
     if dates.has_duplicates or not dates.is_monotonic_increasing:
         raise RuntimeError("特征日期必须严格递增且不得重复")
     disp = df[base.DISP_COLS].values.astype(np.float64)
-    station_names, xy = base.load_coords(base.DISP_COLS)
+    station_names, xy, elevation_m = base.load_station_geometry(base.DISP_COLS)
     interp, (grid_x, grid_y) = base.make_interpolator(
         xy,
         base.GRID_H,
         base.GRID_W,
     )
+    elevation_grid = base.make_elevation_grid(elevation_m, interp)
     readout_weights = base.station_readout_weights(grid_x, grid_y, xy)
     splits = rolling.expanding_window_splits(len(df))
 
@@ -192,6 +202,7 @@ def main():
                 interp,
                 readout_weights,
                 split,
+                elevation_grid=elevation_grid,
                 seed=seed,
             )
             run_rows.append(run_row(metadata, result, station_names))

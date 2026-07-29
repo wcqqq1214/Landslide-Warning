@@ -1,22 +1,21 @@
 # 项目工作进度
 
-> 更新日期：2026-07-28。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以 `results_report.md` 和版本化 CSV 为准。
+> 更新日期：2026-07-30。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。
 
 ## 当前阶段
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
-| 十三阶段统一管线 | 已完成 | `figures/pipeline/latest_run.json` 中 13/13 阶段成功、65 个产物哈希通过 |
+| 历史十三阶段统一管线 | 已完成（加入高程前的历史快照） | 旧运行记录中的 13/13 阶段与产物哈希；不代表当前高程感知模型已重跑全部历史诊断 |
+| 藕塘高程感知最小链路 | 已完成初跑 | `features → convlstm → ootang-operational-v2` 三阶段成功，见 `figures/pipeline/latest_run.json` |
 | 代码目录按研究流程分组 | 已完成 | `code/features/`、`code/warning/`、`code/explainability/`、`code/convlstm/`；入口路径已在 `main.py`、`README.md` 和 `docs/design.md` 同步 |
-| ConvLSTM 日历后置校准 | 已完成（仓库代码层面） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
+| ConvLSTM 高程静态通道 | 已完成初跑 | `elev_m` 标准化后经水平 IDW 形成静态网格；`figures/convlstm/forecast_run_manifest.json` 记录坐标哈希和处理方法 |
+| ConvLSTM 日历后置校准 | 已完成（当前单次初跑） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
-| ConvLSTM 扩展窗口滚动验证 | 已完成 | `rolling_validation_folds.csv`、`rolling_validation_metrics.csv`、`rolling_validation_predictions.csv` |
-| ConvLSTM 五种子稳定性诊断 | 已完成 | `seed_stability_runs.csv`、`seed_stability_metrics.csv`、`seed_stability_summary.csv`、`seed_stability_training.csv` |
-| ConvLSTM 内层时间验证与早停 | 已完成 | 预注册提交 `3c9a616`；7 张 `inner_validation_*.csv` |
-| ConvLSTM 有限容量/正则化敏感性 | 已完成，停止继续扩搜 | 预注册提交 `d13292e`；9 张 `capacity_*.csv` |
+| ConvLSTM 扩展窗口/种子/早停/容量诊断 | 历史 6 通道版本已完成；当前 7 通道版本未复跑 | 原有 `rolling_*`、`seed_*`、`inner_validation_*`、`capacity_*` 仅作加入高程前的历史对照 |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
-| 藕塘数据血缘 | 已审查，门禁阻断 | `docs/ootang_data_lineage_expert_review.md`、`figures/data_lineage/`；原始锚点/生成算法/MJ-ATU 映射未解决 |
-| 新神经消融与正式日预测 | 暂停 | 自然月分段三次结构跨三个模型边界，先恢复原始处理链并按折生成日值 |
+| 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
+| 新神经调参/机理消融与正式日预测 | 暂停 | 高程通道是导师要求的工程输入，不以 test 结果优化；自然月分段三次结构仍限制确认性解释 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 
@@ -28,14 +27,36 @@
 4. 每折报告总体和逐测点误差、持久性基线、区间覆盖率、宽度、pinball loss 和 interval score，不只报告跨折均值。
 5. 当前物化序列和留出时段已参与多轮分析，且上游生成独立性未知；滚动结果仅作探索性内部时间验证，不作为外部确认性证据。
 
+> 本节记录加入高程前的历史验证协议。2026-07-30 的 7 通道高程感知版本只完成最小链路初跑，尚未重跑本节全部折、种子和容量诊断。
+
+## 2026-07-30 高程感知初跑记录
+
+- 用户确认原始 GNSS 无法取得，导师要求先使用现有公开藕塘序列和 `data/station_coords.csv` 的高程完成案例跑通；藕塘不一定用于最终论文。
+- 不删除原有来源审查，而是拆分为：
+
+  ```text
+  source_recovery_status = unavailable_by_project_constraint
+  prototype_run_gate = allowed
+  confirmatory_evidence_gate = blocked
+  formal_warning_output = false
+  ```
+
+- 修复了此前 `elev_m` 未进入 ConvLSTM 的实现落差。当前采用“8 点高程 z-score → 按 `x_m/y_m` 水平 IDW → 静态高程通道”，不把高程直接并入三维距离；输入由 6 通道变为 7 通道。
+- 最小链路三阶段全部通过，耗时约 `40.6 s`。预测表包含 fit `7288`、calibration `1816`、test `2296` 条测点记录，主键无重复。
+- 最后 287 日物化 test 段总体 RMSE 为 `0.338 mm`，持久性为 `0.340 mm`，RMSE skill 为 `0.007`；校准后 P10–P90 覆盖率为 `0.770`。流程已通，但没有明显优于简单基线。
+- 与提交前的无高程单种子快照相比，总体 RMSE 约由 `0.318 mm` 增至 `0.338 mm`，平均逐点 RMSE skill 由约 `0.082` 降至 `0.019`。这是事后描述，不用于反向调节模型或高程尺度。
+- v2 输出包含 `4112` 个测点—时刻和 `514` 个滑坡体时刻；四项输入均无缺失。`114` 个时刻满足当前项目特有空间确认，`400` 个保留为 `candidate_not_site_confirmed`，不得并入 green。
+- 所有当前产物继续标记为原型/非正式，Vajont 未读取、未运行。
+
 ## 2026-07-28 数据血缘审查记录
 
 - 仓库 `monitoring_data.xlsx` 与 Wang 等（2025）Figshare 文件 MD5 完全一致；CSV 与工作簿 1461×17 的日期、列和数值等价。
 - 8 条位移和 GWT 在 48/48 个自然月内呈三次指纹，5 个环境负对照为 0/48；月内第四差分无断点，断点集中在自然月边界。
 - 首个模型目标、fit→calibration、calibration→test 三个边界均切穿同一月内三次段；跨边界恢复只作为代数依赖诊断，不写成预测性能或已证实未来泄漏。
 - Figshare 的 11 个公开 notebook 没有生成该结构的代码，也没有公开原始 GNSS/GWT 锚点、日值处理链或 MJ/ATU 映射。
-- 当前 `data_gate=blocked`、`formal_warning_output=false`、`vajont_used=false`；计划中的 fit-only 神经单变量消融暂停。
-- 下一步优先向数据作者或导师索取原始锚点、聚合/QC/插值方法、参考基准和点位映射；取得后先切分锚点，再按折生成日序列。
+- 原始数据恢复现已确认不作为当前可执行路线；历史事实仍保留。
+- 当前 `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`、`formal_warning_output=false`、`vajont_used=false`；计划中的机理性神经消融仍暂停。
+- 下一步先审查本次初跑的典型状态日和结果可解释性，再等待最终论文数据集选择；若换数据集，重新建立数据契约和确认性验证协议。
 
 ## 本轮完成门槛
 
