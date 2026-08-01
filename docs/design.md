@@ -78,10 +78,13 @@ future frozen protocol + formal four-indicator executor
 | `code/warning/warning_fusion.py` | 历史 V0 主判、8 测点切线角升级复核、NGBoost 旁证；CSV 显式标为非正式 | `figures/warning_fusion/warning_fusion.csv`；历史/探索性 |
 | `code/warning/formal_warning.py` | 在冻结协议检查后才调用未来正式四指标执行器 | 当前只有门禁，无正式时间线或结果输出 |
 | `code/warning/operational_run.py` | 校验基础草案、fit-only 参数、预测/拓扑指纹，构建非正式逐点与滑坡体时间线，并隔离 v1/v2/v3 目录 | `figures/warning_operational_draft{,_v2,_v3}/*`；均非正式 |
-| `code/warning/operational_v2_fusion.py` | 将速度/切线角合并为一个运动学证据族，保留局部候选并执行 v2 空间规则 | v2 测点/滑坡体审计记录；不是正式 `F/F_site` |
+| `code/warning/operational_v2_fusion.py` | 将速度/切线角合并为一个运动学证据族；以五色严重度、`ΔV` 三态趋势和一致性组成可审计复合信号，并执行 v2 空间规则 | v2/v3 测点与滑坡体审计记录；`ΔV` 不作独立五级投票，也不是正式 `F/F_site` |
 | `code/warning/operational_v3_fusion.py` | 在全局 3 点/3 区覆盖后，分轴输出 `site_confirmed_level` 与 `local_max_candidate_level`，并记录局部 blue 关注 | `figures/warning_operational_draft_v3/*`；项目特有非监督草案 |
 | `code/warning/spatial_blocks.py` | 为 v2/v3 提供中性的空间分区成员校验，禁止测点跨区重复 | 空间融合共用契约；不规定颜色、阈值或支撑数 |
 | `code/warning/operational_v3_typical_days.py` | 校验 v3 核心 provenance，按冻结语义选择代表日并绘制逐点证据、双轴和空间支撑 | `ootang_v3_typical_days.{svg,pdf,png}` 及 manifest；观测后非正式规则审计 |
+| `code/warning/operational_v3_full_timeline.py` | 校验 v3 核心 provenance，绘制 514 日 × 8 点候选等级及滑坡体整体确认/局部最高双轴 | `ootang_v3_full_warning_timeline.{svg,pdf,png}` 及 manifest；400 个 NC 不是缺测，仍属观测后非正式审计 |
+| `code/warning/operational_v3_station_diagnostic.py` | 以 4×2 小多图对齐 8 点累计位移、四指标状态和最终候选等级 | `ootang_v3_all_station_combined_diagnostic.{svg,pdf,png}` 及 manifest；覆盖 514 日，仍属观测后非正式审计 |
+| `code/warning/operational_v3_figure_support.py` | 为三类 v3 图件提供公开的输入快照、provenance、空间布局、哈希和确定性导出工具 | 图件 manifest 中的 `shared_figure_support` 指纹；不定义阈值或融合语义 |
 | `code/warning/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
 | `code/features/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
 

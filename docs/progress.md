@@ -17,6 +17,8 @@
 | 高程与空间预警专家审查 | 已完成 | `docs/ootang_elevation_warning_expert_review.md`；400 日成因、典型日、指定 Word 方法边界及高程可信性已核对 |
 | v2 空间融合覆盖门禁 | 已修复 | `minimum_assessable_station_count=3` 先于全部颜色执行；2 个跨区 yellow 点反例及 v2 兼容语义均有测试 |
 | 滑坡体 green/blue 语义 | v3 草案已实现并复算 | 双轴输出整体确认等级与局部最高候选；green `8`、blue `48`，局部 blue 关注 `8` 日 |
+| 全时刻预警状态展示 | 已完成（非正式、观测后） | 514 日 × 8 点候选色带及 `site-confirmed/local maximum` 双轴；400 个 NC 明确不是缺测 |
+| 位移—四指标—最终等级联合图 | 已完成（非正式、观测后） | 4×2 小多图覆盖 8 点 × 514 日，逐点对齐累计位移和五条状态带 |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
 | 新神经调参/机理消融与正式日预测 | 暂停 | 高程通道是导师要求的工程输入，不以 test 结果优化；自然月分段三次结构仍限制确认性解释 |
@@ -39,8 +41,10 @@
 - 新增独立 `ootang-operational-spatial-v3` 配置、融合模块、运行入口和 `figures/warning_operational_draft_v3/`，没有覆盖 v1/v2。
 - v3 将 `site_confirmed_level` 与 `local_max_candidate_level` 分轴。所有 site 颜色先要求至少 3 点并覆盖 O1/O2/O3；blue 也要求至少 2 点跨 2 区；未确认 yellow–red 不降级；孤立/单区 blue 记为 site green + `localized_blue_attention`。
 - 514 日仍有 `valid=114`、`candidate_not_site_confirmed=400`；整体确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 400 日不发布整体颜色；局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`。
-- v3 的 4112 条测点时间线和 8 条阈值表除 profile ID/version 外与 v2 逐单元格一致；这次只改空间决策，不改高程、ConvLSTM、V0、区间、速度、切线角、`ΔV`、切分或 test 结果。
+- v2/v3 的 4112 条测点时间线新增 `trend_component`、`transition_status`、`evidence_consistency_status` 和 `composite_warning_signal`：`ΔV` 三态现在改变完整信号和理由，但不改变五色候选，也不作为速度/切线角之外的独立投票。候选色和 514 日滑坡体统计保持不变。
 - 已将六个冻结语义的代表日诊断纳入同一 v3 阶段，输出可编辑 SVG、PDF、300 dpi PNG 与 provenance manifest；图中未确认 site 显式为 `NC`，并逐日列出确认支撑、局部最高测点和 O1/O2/O3。
+- 已加入 514 日完整时间线图：上半图覆盖 8 点全部候选状态，下半图并列整体确认与局部最高；400 个未确认日以灰色 NC 表示且明确为“非缺测”。
+- 已加入 8 点联合诊断图：每点显示累计位移，以及 interval、velocity、`ΔV` 三态、tangent angle 和 final candidate；三类 v3 图件共用带源码指纹的公开 provenance/导出支持层。
 - 所有 v3 产物继续标记 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`。
 
 ## 2026-07-30 高程感知初跑记录

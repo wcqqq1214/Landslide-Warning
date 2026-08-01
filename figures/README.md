@@ -22,15 +22,19 @@
 | `convlstm/forecast_run_manifest.json` | 记录高程感知初跑的数据/坐标哈希、`elev_m` 标准化与 IDW 方法、7 个输入通道、切分和全部输出哈希 | 原型运行清单 | `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`；证明高程实际进入模型，不证明其带来因果作用或确认性增益 |
 | `warning_draft/interval_calibration_diagnostics.csv` | 保存 8 个测点、仅 calibration 段的分位数顺序、覆盖率、中点误差和标准化残差原始摘要，以及协议和 calibration 输入切片哈希 | 区间门禁原始诊断表 | 为后续冻结门禁提供可复核证据；不含通过/失败、颜色或预警等级，不能作为正式预警结果 |
 | `warning_draft/interval_calibration_diagnostics_manifest.json` | 保存诊断产物的协议状态、未评估项目、calibration 选段范围，以及 calibration 输入/输出哈希 | 草案运行清单 | 明确本次产物只作诊断且 `formal_warning_output=false`；哈希不随 held-out test 行变化，不得据此宣称区间五级映射已通过 |
-| `warning_draft/ootang_draft_warning_evidence_manifest.json` | 保存当前七份有效藕塘草案诊断的固定执行顺序、每份组件的协议内容指纹/未决项、输出与 sidecar SHA-256 及排除的退役产物 | 草案证据总清单 | 证明同一版 `draft` 协议下的证据集可整体重建；其 `formal_warning_output=false`，不含 `V0`、速度/切线角等级、融合、正式时间线或 Vajont |
+| `warning_draft/ootang_draft_warning_evidence_manifest.json` | 保存当前七份有效藕塘草案诊断的固定执行顺序、每份组件的协议内容指纹/未决项、输出与 sidecar SHA-256 及排除的退役产物 | 草案证据总清单 | 证明同一版 `draft` 协议下的证据集可整体重建；其 `formal_warning_output=false`，只含项目比较器的候选 `V0`，不含指定 Word/正式 `V0`、速度/切线角等级、融合、正式时间线或 Vajont |
 | `warning_operational_draft/ootang_operational_run_manifest.json` | 保存 v1 导师复核实施版的基础草案协议、可替换运行配置、输入/输出哈希、fit-only 参数来源及状态计数 | v1 非正式实施版总清单 | 证明四指标链路可完整重跑；固定为 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`，不能作为正式预警或 Word-MVIF `V0` 结论 |
 | `warning_operational_draft/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存 v1 的 8 点运行版基线/容差、calibration/test 四指标逐点结果和逐日多点汇总 | v1 非正式实施版审计表 | `uncorroborated`/`insufficient_valid_station_results` 不能并入 green，参数只来自 fit，不能用 test 期反调 |
 | `warning_operational_draft_v2/ootang_operational_run_manifest.json` | 保存 v2 测点证据族、O1/O2/O3 来源、空间规则和结果计数 | v2 非正式空间草案清单 | 速度/切线角只算一个运动学证据族；未确认 yellow--red 不降级，不能解释为正式 `F_site` |
-| `warning_operational_draft_v2/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存 v2 逐点候选、加速状态、空间覆盖与跨区确认 | v2 非正式审计表 | 全局最少 3 点门禁已修复；现有 8/8 完整数据快照不变，不得覆盖为 v3 |
+| `warning_operational_draft_v2/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存 v2 逐点候选、`ΔV` 三态趋势/一致性复合信号、空间覆盖与跨区确认 | v2 非正式审计表 | 全局最少 3 点门禁已修复；`ΔV` 改变完整信号但不凭符号改变五色严重度，不得覆盖为 v3 |
 | `warning_operational_draft_v3/ootang_operational_run_manifest.json` | 保存 v3 双轴契约、实现源码指纹、输入/输出哈希及整体/局部颜色计数 | v3 非正式空间草案清单 | 固定 `formal_warning_output=false`、`vajont_used=false`；green 仍是项目规则状态，不是现场安全结论 |
 | `warning_operational_draft_v3/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存与 v2 相同的逐点指标/阈值，以及 `site_confirmed_*`、`local_max_candidate_*`、`local_attention_status` 双轴空间结果 | v3 非正式审计表 | 8 个 green 日仍保留局部 blue 关注；400 个未确认高候选不得并入 green，且 v3 不覆盖 v2 |
 | `warning_operational_draft_v3/ootang_v3_typical_days.{svg,pdf,png}` | 六个冻结语义代表日的逐点 interval/kinematic/`ΔV`、整体/局部双轴和 O1/O2/O3 支撑诊断 | v3 非正式规则解释图 | SVG 保留可编辑文字；未确认 site 显式为 `NC`；属于观测后示例，不是性能、提前量或正式预警图 |
 | `warning_operational_draft_v3/ootang_v3_typical_days_manifest.json` | 保存代表日规则配置、核心清单/CSV/渲染器指纹、所绘子集指纹及三个导出文件哈希 | v3 图件 provenance 清单 | 固定 `formal_warning_output=false`、`vajont_used=false`；核心实现指纹过期时拒绝绘图 |
+| `warning_operational_draft_v3/ootang_v3_full_warning_timeline.{svg,pdf,png}` | 展示 514 日 × 8 测点候选五级状态及滑坡体 `site-confirmed/local maximum` 双轴 | v3 非正式全时序图 | 400 个 `NC` 明确表示未获空间确认而非缺测；属于观测后状态审计，不证明提前量或现场安全 |
+| `warning_operational_draft_v3/ootang_v3_full_warning_timeline_manifest.json` | 保存全日期/测点覆盖、400 个 NC 语义、核心输入/渲染器指纹和三个导出文件哈希 | v3 图件 provenance 清单 | 固定 514 日、4,112 条测点记录、`formal_warning_output=false` 和 `vajont_used=false` |
+| `warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.{svg,pdf,png}` | 4×2 小多图对齐 8 点累计位移与 interval、velocity、`ΔV`、tangent、final 五条状态带 | v3 非正式联合诊断图 | 覆盖 514 日 × 8 点；`ΔV` 使用三态而非虚构五级；属于观测后审计，不证明提前量 |
+| `warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic_manifest.json` | 保存联合图字段映射、完整键空间、状态计数、配置/输入/渲染器/共享支持层及导出哈希 | v3 图件 provenance 清单 | 固定 `formal_warning_output=false`、`vajont_used=false`，核心 manifest 或实现过期时拒绝绘图 |
 | `warning_draft/stable_segment_candidates.csv` | 保存 8 个测点、拟合截止日及以前历史的两类聚类原始速度初始低速前缀候选、拟合截止日、聚类中心、`V`、`σ`、候选 `V0`、Word 输入状态及输入切片哈希 | 对照性自动选段审计表 | 供复核项目特有的非监督对照程序；其 `candidate_method_role` 明确它不是指定 Word 的 MVIF 初始稳定斜率实现，不含速度等级或预警等级 |
 | `warning_draft/stable_segment_candidates_manifest.json` | 保存 fit 截止日期、候选算法状态、Word 输入状态、未评估项目及 fit 预测/截止日前运动学输入切片哈希 | 草案运行清单 | 明确 `draft_candidate_not_formal`、`formal_warning_output=false` 与非 Word-`V0` 对照角色；哈希不随 calibration/test 或 post-fit 运动学记录变化 |
 | `warning_draft/delta_v_fit_calibration_diagnostics.csv` | 保存 8 个测点在 fit 截止日前历史与 calibration 精确预测日期中的 `ΔV` 有效数、原始分布摘要和输入切片哈希 | `ΔV` 原始诊断表 | 为后续冻结 `ΔV≈0` 容差提供可复核证据；不含 `delta_v_state`、近零容差或预警等级 |
@@ -59,9 +63,9 @@
 | `convlstm/capacity_selected_summary.csv` | 保存所选配置跨种子均值、样本标准差、范围和 skill 方向 | 稳定性汇总表 | 不用最佳种子掩盖失败运行 |
 | `convlstm/capacity_selected_predictions.csv` | 保存所选配置 15 次外层测试逐日逐测点预测 | 逐日审计表 | 复算指标与诊断响应，不参与配置排名 |
 | `convlstm/capacity_selected_comparison.csv` | 将所选配置与当前早停参照按种子、折、测点一一配对 | 容量/正则化诊断表 | 同时报告改善与退化，不按外层结果扩展搜索 |
-| `ngboost/confusion_matrix.png` | 展示动态 V0 当日四级状态的混淆矩阵 | 最终图 | 状态识别结果图；测试段无橙/红样本 |
-| `ngboost/warning_metrics.csv` | 保存 accuracy、F1、Brier、各等级支持数和召回率 | 最终评估表 | 支撑状态识别结果；无支持等级应写“不可评价” |
-| `ngboost/warning_probabilities.csv` | 保存测试段逐日真实等级、预测等级和四级概率 | 逐日审计表 | 供概率校准、误差复核和融合旁证使用 |
+| `ngboost/confusion_matrix.png` | 展示遗留动态 V0 当日四级状态的混淆矩阵 | 历史/探索性图 | 测试段无橙/红样本；不进入当前四指标融合 |
+| `ngboost/warning_metrics.csv` | 保存遗留任务的 accuracy、F1、Brier、各等级支持数和召回率 | 历史/探索性评估表 | 无支持等级应写“不可评价”；不能当作当前五级规则性能 |
+| `ngboost/warning_probabilities.csv` | 保存遗留测试段逐日真实等级、预测等级和四级概率 | 历史/探索性逐日表 | 仅供旧任务校准与误差复核；当前 v3 不读取这些概率，也不将其作为融合旁证 |
 | `shap/shap_provenance.json` | 固定独立解释模型、两个目标、样本时段、背景样本和解释边界 | 溯源清单 | 明确不是 ConvLSTM-SHAP、因果结论或正式五级预警 |
 | `shap/shap_reg_summary.png` | 展示独立 NGBoost 对目标观测位移增量的 SHAP 分布 | 探索性解释图 | 图题写明模型和留出解释样本时段；只解释模型依赖 |
 | `shap/shap_cls_summary.png` | 展示独立 NGBoost 对遗留同日 V0 标签 `warning_level >= 1` 的 SHAP 分布 | 探索性解释图 | 不是正式五级预警或未来 onset 预警；不作因果结论 |

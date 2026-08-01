@@ -18,9 +18,12 @@
 | --- | --- | --- | --- |
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；fit/calibration/test 按日期分离 | 属于物化日序列内部的单次原型结果 | [`forecast_predictions.csv`](../figures/convlstm/forecast_predictions.csv)、[`forecast_metrics.csv`](../figures/convlstm/forecast_metrics.csv) |
+| 模型解释分工 | 用户批准原型由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost+SHAP 负责候选模型依赖；遗留标签仅作探索性事件归因 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合；尚无导师验收记录 | [`shap_provenance.json`](../figures/shap/shap_provenance.json)、[`shap_stability_protocol.md`](shap_stability_protocol.md) |
 | 四指标逐点判断 | 区间、速度、`ΔV`、改进切线角进入全部 4,112 条测点—时刻记录 | 当前 V0 是项目特有比较器，不是指定 Word 的严格 MVIF V0 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v3/ootang_operational_thresholds.csv) |
 | 多测点空间融合 | v3 分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v3/ootang_operational_site_timeline.csv)、[`v3 配置`](../config/ootang_operational_run.v3.draft.json) |
 | 代表日审计 | 冻结 6 个语义代表日，显示逐点指标、双轴等级和跨区支撑 | 属于观测后规则说明，不用于评价提前量或预警性能 | [`代表日诊断图`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg)、[`图件清单`](../figures/warning_operational_draft_v3/ootang_v3_typical_days_manifest.json) |
+| 全时刻等级展示 | 覆盖 514 日 × 8 点候选等级，并同时显示滑坡体整体确认与局部最高双轴 | 400 个 `NC` 是空间佐证不足而非缺测；属于观测后状态审计 | [`完整时间线`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg)、[`图件清单`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline_manifest.json) |
+| 位移—指标—等级联合展示 | 4×2 小多图逐点对齐 514 日累计位移、区间/速度/`ΔV`/切线角和最终候选等级 | `ΔV` 仍为三态；属于观测后联合诊断，不证明提前量 | [`联合诊断图`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg)、[`图件清单`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic_manifest.json) |
 
 ## 3. 数据条件与证据门禁
 
@@ -55,6 +58,8 @@ formal_warning_output = false
 
 模型保持 7 日输入、1 日预测、P10/P50/P90 三分位数和固定种子 0。fit 为 2016-08-06 至 2019-02-02，calibration 为 2019-02-03 至 2019-09-17，test 为 2019-09-18 至 2020-06-30。当前高程版本只完成单次最小链路；既有滚动验证、五种子、早停和容量敏感性属于加入高程前的 6 通道历史诊断，不能直接写成当前 7 通道模型的复验结果。
 
+R3 的原型模型分工已由用户确认，并沿用其毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离式角色先例。当前项目对应为：ConvLSTM 单独输出 P10/P50/P90 并评价覆盖；独立 NGBoost+SHAP 分析候选模型依赖，遗留二分类标签只作探索性事件归因。这不是 ConvLSTM-SHAP，不能称为已确定物理主控因素；当前 NGBoost 的回归目标和遗留二分类 V0 目标也不是正式五级融合。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。该解释可用于先跑通藕塘，但尚无导师验收记录。
+
 ### 4.2 四指标测点规则
 
 每个测点、每个可评估时刻均读取以下四项信息：
@@ -64,7 +69,7 @@ formal_warning_output = false
 3. 变形速率增量 `ΔV_i=v_i-v_{i-1}` 的负、近零、正状态；
 4. 基于速度比较器的改进切线角。
 
-速度与切线角属于同一运动学证据族，不能当作两个独立投票。`ΔV>0` 只作为加速限定信息，不单独把颜色机械提升一级。逐点输出同时保留四项状态、贡献指标、融合理由和不可评估原因。
+速度与切线角属于同一运动学证据族，不能当作两个独立投票。测点完整信号写为“候选五色严重度 + `ΔV` 三态趋势 + 运动学一致性”：`ΔV` 的负/近零/正会改变 `trend_component`、`evidence_consistency_status`、`composite_warning_signal` 和融合理由，但不凭符号机械升降颜色。逐点输出同时保留四项状态、贡献指标、融合理由和不可评估原因。
 
 ### 4.3 滑坡体 v3 双轴空间规则
 
@@ -167,3 +172,5 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 | v3 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v3/ootang_operational_run_manifest.json) |
 | 完整最小链路运行记录 | [`latest_run.json`](../figures/pipeline/latest_run.json) |
 | 六个代表日规则图 | [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg) |
+| 514 日完整预警状态图 | [`ootang_v3_full_warning_timeline.svg`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg) |
+| 8 点位移—四指标—最终等级联合图 | [`ootang_v3_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg) |

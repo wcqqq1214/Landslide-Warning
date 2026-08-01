@@ -107,11 +107,17 @@ v2/v3 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025
 - `ootang_operational_site_timeline.csv`：每日的有效点数量、各级计数、贡献点、未获佐证点与滑坡体实施版状态；
 - `ootang_operational_run_manifest.json`：基础协议/实施版配置/输入/输出哈希、结果状态计数和明确的非正式边界。
 
-v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`acceleration_status` 与 `station_confirmation_status`；v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
+v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`station_confirmation_status`，以及 `trend_component`、`transition_status`、`evidence_consistency_status`、`composite_warning_signal`。后三类字段把 `ΔV` 的负/近零/正状态实质保留在完整信号和理由中，但不让它凭符号改变五色严重度，也不把速度与切线角重复计票；`acceleration_status` 仅作为向后兼容字段。v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
 
 这些文件均可从 manifest 中的路径与 SHA-256 复核。v2/v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
 
 v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg)、PDF、300 dpi PNG 和独立图件 manifest。六个代表日不是按视觉效果手选，而是按冻结语义规则取最早满足日：未确认 yellow、单区 blue 关注、O1 严重候选簇未确认、site yellow/local red、确认 orange 和确认 red。图件清单锁定规则配置、精确日期、所绘子集、渲染器和三个导出文件的 SHA-256；它明确属于观测后规则解释，不用于评价误报率、召回率或提前量。
+
+同一入口还生成 [`ootang_v3_full_warning_timeline.svg`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg)、PDF、300 dpi PNG 和独立 manifest。上半图覆盖 514 日 × 8 点的测点候选五级状态；下半图同时显示滑坡体整体确认等级与局部最高候选。400 个整体未确认日统一画为灰色 `NC`，并在图题和 manifest 中固定为“空间佐证不足而非缺测”。该图使用目标日观测到达后的状态，因此仍不是严格前瞻预警或提前量证据。
+
+为满足“累计位移、四指标和最终等级同图展示”，入口还生成 [`ootang_v3_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg)、PDF、300 dpi PNG 和独立 manifest。4×2 小多图逐点对齐 514 日累计位移，以及 interval、velocity、`ΔV` 三态、tangent angle 和 final candidate 五条色带；`ΔV` 不被伪装为五级。三类图件共用公开的输入/provenance/导出支持层，并在各自 manifest 中记录其源码指纹。
+
+核心时间线与三类图件分别以独立 bundle 原子提升，v3 入口按顺序生成四个 bundle；它们不是一次覆盖整个目录的单一事务。若后续图件失败，统一管线会将该阶段标为失败，较早 bundle 可能已更新；每个图件 manifest 都锁定核心 CSV/manifest 哈希，因而旧图件不能通过新核心快照的 provenance 校验，也不能被当作一次完整成功运行发布。
 
 ### 5.1 2026-08-01 v3 快照
 
@@ -122,8 +128,10 @@ v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_ty
 - v2 生成 `4112` 条测点记录和 `514` 条滑坡体记录，四项输入无缺失；`114` 条为当前规则下的 `valid`，`400` 条保留为 `candidate_not_site_confirmed`；
 - v3 的状态数仍为 `valid=114`、`candidate_not_site_confirmed=400`；确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 `400` 日不发布整体颜色；
 - 局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`；其中 8 个单区 blue 日转为 site green，并明确标记 `localized_blue_attention`；
-- v3 测点时间线和阈值表除 profile ID/version 外与 v2 逐单元格一致；v2 四份产物哈希未变化；
+- v2/v3 测点表均新增 `ΔV` 三态趋势、一致性和复合信号字段；五色候选与滑坡体统计保持不变，两个版本的测点值除 profile ID/version 外一致；
 - 六日诊断图完整显示逐点区间、运动学、`ΔV`、整体确认/局部最高双轴及 O1/O2/O3 支撑，未确认 site 使用 `NC`，不会被画成 green；
+- 514 日完整图显示全部 4,112 条测点状态及整体/局部双轴；400 个 `NC` 明确不是缺测；
+- 8 点联合图在同一日期轴上展示累计位移、四指标状态与最终候选等级，补齐 R9 的联合展示要求；
 - 本快照只证明链路完整。高程版本较此前无高程单种子快照的 RMSE 更高，因此不宣称加入高程改善预测，也不据 test 结果继续调参。
 
 ## 6. 解读限制
