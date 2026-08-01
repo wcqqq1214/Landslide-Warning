@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | 历史十三阶段统一管线 | 已完成（加入高程前的历史快照） | 旧运行记录中的 13/13 阶段与产物哈希；不代表当前高程感知模型已重跑全部历史诊断 |
 | 藕塘高程感知最小链路 | 已完成初跑；v3 已独立复算 | v2 三阶段运行清单保留；v3 产物见 `figures/warning_operational_draft_v3/` |
+| 藕塘阶段性结果包 | 已完成 | `docs/ootang_stage_results_package.md` 统一汇总可写/不可写结论、证据门禁和后续数据决策 |
 | 代码目录按研究流程分组 | 已完成 | `code/features/`、`code/warning/`、`code/explainability/`、`code/convlstm/`；入口路径已在 `main.py`、`README.md` 和 `docs/design.md` 同步 |
 | ConvLSTM 高程静态通道 | 已完成初跑 | `elev_m` 标准化后经水平 IDW 形成静态网格；`figures/convlstm/forecast_run_manifest.json` 记录坐标哈希和处理方法 |
 | ConvLSTM 日历后置校准 | 已完成（当前单次初跑） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |

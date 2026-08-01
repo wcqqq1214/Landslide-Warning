@@ -60,6 +60,7 @@ uv run python main.py \
 | `docs/design.md` | 代码架构和模块边界 |
 | `docs/ootang_elevation_prototype_run.md` | 2026-07-30 高程感知初跑方法、结果、完整性与边界 |
 | `docs/ootang_elevation_warning_expert_review.md` | 高程可信性、400 个未确认状态、典型日和空间规则专家审查 |
+| `docs/ootang_stage_results_package.md` | 藕塘原型的统一阶段结论、可写/不可写边界与后续数据决策入口 |
 | `docs/ootang_operational_run.md` | v1/v2/v3 规则、双轴字段、独立产物目录与非正式边界 |
 | `figures/warning_operational_draft_v3/ootang_v3_typical_days.svg` | v3 六个代表日的逐点证据、双轴等级与空间支撑诊断图 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
