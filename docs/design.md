@@ -9,6 +9,8 @@
 > **数据血缘门禁（2026-07-28）**：当前输入是 Figshare 发布的物化日建模序列，不是已验证的独立原始逐日 GNSS。8 条位移和 GWT 具有强自然月分段三次指纹，原始锚点、日值生成算法及未来信息使用状态未恢复，故 `data_gate=blocked`；下述模型评价只属于物化序列内部工程/探索性结果。
 >
 > **高程感知初跑（2026-07-30）**：原始 GNSS 已确认无法取得，本阶段将上述总门禁拆为 `prototype_run_gate=allowed` 和 `confirmatory_evidence_gate=blocked`。`station_coords.csv::elev_m` 现已作为静态模型通道进入 ConvLSTM；这只授权藕塘内部工程初跑，不解除确认性证据或正式预警门禁。
+>
+> **v3 空间草案（2026-08-01）**：v2 全局最少有效点门禁已修复，并新增独立双轴 v3。它只替换 site 空间决策，复用 v2 的模型、阈值、逐点证据族与数据切分；v1/v2/v3 产物目录互不覆盖，正式门禁不变。
 
 ## 1. 数据与约束
 
@@ -30,6 +32,12 @@ monitoring_data.csv
 
 data/features.csv + data/station_coords.csv
   -> convlstm/model.py -> models/convlstm.pt + figures/convlstm
+
+forecast_predictions.csv + ootang_kinematics_long.csv
+  -> warning/operational_run.py
+       -> warning_operational_draft/    (v1 历史对照)
+       -> warning_operational_draft_v2/ (证据族/空间快照)
+       -> warning_operational_draft_v3/ (整体确认/局部候选双轴)
 
 monitoring_data.csv
   -> explainability/shap_select.py -> figures/shap
@@ -69,6 +77,11 @@ future frozen protocol + formal four-indicator executor
 | `code/warning/ngboost_warn.py` | 使用历史动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv`；历史/探索性 |
 | `code/warning/warning_fusion.py` | 历史 V0 主判、8 测点切线角升级复核、NGBoost 旁证；CSV 显式标为非正式 | `figures/warning_fusion/warning_fusion.csv`；历史/探索性 |
 | `code/warning/formal_warning.py` | 在冻结协议检查后才调用未来正式四指标执行器 | 当前只有门禁，无正式时间线或结果输出 |
+| `code/warning/operational_run.py` | 校验基础草案、fit-only 参数、预测/拓扑指纹，构建非正式逐点与滑坡体时间线，并隔离 v1/v2/v3 目录 | `figures/warning_operational_draft{,_v2,_v3}/*`；均非正式 |
+| `code/warning/operational_v2_fusion.py` | 将速度/切线角合并为一个运动学证据族，保留局部候选并执行 v2 空间规则 | v2 测点/滑坡体审计记录；不是正式 `F/F_site` |
+| `code/warning/operational_v3_fusion.py` | 在全局 3 点/3 区覆盖后，分轴输出 `site_confirmed_level` 与 `local_max_candidate_level`，并记录局部 blue 关注 | `figures/warning_operational_draft_v3/*`；项目特有非监督草案 |
+| `code/warning/spatial_blocks.py` | 为 v2/v3 提供中性的空间分区成员校验，禁止测点跨区重复 | 空间融合共用契约；不规定颜色、阈值或支撑数 |
+| `code/warning/operational_v3_typical_days.py` | 校验 v3 核心 provenance，按冻结语义选择代表日并绘制逐点证据、双轴和空间支撑 | `ootang_v3_typical_days.{svg,pdf,png}` 及 manifest；观测后非正式规则审计 |
 | `code/warning/sensitivity_analysis.py` | 重算预先规定的 V0 与切线角参数组合并比较等级、事件和融合原因 | `figures/sensitivity/*` |
 | `code/features/tangent_stage_review.py` | 为 8 个位移测点生成候选阶段复核图，并比较参数、切线角等级和融合影响 | `figures/tangent_angle/review/*` |
 
@@ -177,14 +190,12 @@ uv run --with pytest pytest -q
 - 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
 - 自动等速段尚未由导师或现场资料确认；15/30/60 日候选窗口会为部分测点选出显著不同的参考速率，并大幅改变融合结果。复核图和 CSV 参数表已生成（`figures/tangent_angle/review/`），等待独立确定等速阶段。
-- 当前融合结果尚无完整事件级提前量和误报评价。
+- v3 已提供整体确认等级、局部最高候选和局部 blue 关注，但仍无独立事件真值、完整提前量或误报评价。
 - 尚无外部时间或跨滑坡验证。
 
 ## 9. 下一阶段实现顺序
 
-1. 完成本轮高程感知最小链路的代码、产物、哈希和文档验收，只保留原型/非正式主张。
-2. 审查逐点四指标、空间确认失败和典型触发日，不根据已查看的 test 结果扩大模型搜索。
-3. 决定最终论文是否继续使用藕塘；若更换数据集，先建立可追溯的数据契约、时间切分和坐标映射。
-4. 仅在可追溯数据上，先切分原始观测，再在每个时间折内部生成派生序列并复查未来信息隔离。
-5. 获得包含更多互不相连标签事件的新监测时段，事件数量足够后再评价分类与提前量。
-6. 根据原始累计位移曲线和宏观变形资料复核等速阶段，确认后再固定切线角参数。
+1. 决定最终论文是否继续使用藕塘；若更换数据集，先建立可追溯的数据契约、时间切分和坐标映射。
+2. 仅在可追溯数据上，先切分原始观测，再在每个时间折内部生成派生序列并复查未来信息隔离。
+3. 获得包含更多互不相连标签事件的新监测时段，事件数量足够后再评价分类与提前量。
+4. 根据原始累计位移曲线和宏观变形资料复核等速阶段，确认后再固定切线角参数。

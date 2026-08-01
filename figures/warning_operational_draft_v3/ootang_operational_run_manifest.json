@@ -1,0 +1,159 @@
+{
+  "artifact_kind": "ootang_operational_four_indicator_run",
+  "artifact_status": "operational_draft_not_formal",
+  "base_draft_protocol": {
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "id": "ootang-five-level-rule-v1",
+    "path": "config/ootang_warning_protocol.v1.draft.json",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.3-draft"
+  },
+  "case": "ootang",
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "formal_warning_output": false,
+  "implementation_sources": {
+    "runner": {
+      "path": "code/warning/operational_run.py",
+      "sha256": "d4ba0cd09651c47c50131b55534430b2c126ab9afa33b983dd0f74d0354f6787"
+    },
+    "site_fusion": {
+      "path": "code/warning/operational_v3_fusion.py",
+      "sha256": "cf05ee09e1890ff1e308527a94060f8c5ff8d3ad439ce30c96da48c16cf5338d"
+    },
+    "spatial_blocks": {
+      "path": "code/warning/spatial_blocks.py",
+      "sha256": "02ef533970816f746932190530ca97ec36c3a6ee032ddc1acb1f679154305b1b"
+    },
+    "station_fusion": {
+      "path": "code/warning/operational_v2_fusion.py",
+      "sha256": "cfdb066f0ef98f00edf20e9942f55dc3830e56722877eaa91503ce0fa194fa48"
+    }
+  },
+  "not_claimed": [
+    "formal_warning_output",
+    "specified_word_thesis_MVIF_V0_implementation",
+    "specified_word_thesis_multinomial_logistic_fusion",
+    "supervised_warning_classifier_performance",
+    "Vajont_external_case",
+    "test_period_parameter_selection"
+  ],
+  "ootang_stations": [
+    "ATU1",
+    "ATU2",
+    "ATU3",
+    "ATU4",
+    "ATU5",
+    "MJ1",
+    "MJ3",
+    "MJ9"
+  ],
+  "operational_profile": {
+    "content_sha256": "a5e7b9c12b13463b235875b7100ea24a06064713b51ec300b9547923b5f063cc",
+    "id": "ootang-operational-spatial-v3",
+    "path": "config/ootang_operational_run.v3.draft.json",
+    "status": "operational_draft",
+    "version": "3.0-draft"
+  },
+  "outputs": {
+    "site_timeline": {
+      "n_rows": 514,
+      "path": "figures/warning_operational_draft_v3/ootang_operational_site_timeline.csv",
+      "sha256": "b12d437dc0a229da77446833e070b4747461dcff49b65cedbd2b1aff5703cc0a"
+    },
+    "station_timeline": {
+      "n_rows": 4112,
+      "path": "figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv",
+      "sha256": "f9e00053a324145da1ae20f9335d39a9242bce634695d6448c546b0e15eb1b93"
+    },
+    "thresholds": {
+      "path": "figures/warning_operational_draft_v3/ootang_operational_thresholds.csv",
+      "sha256": "4a2ff51ad5eaaf72e6b9f67774816687981739b891fe6f44f2d099d967193ef6"
+    }
+  },
+  "parameter_fit_splits": [
+    "fit"
+  ],
+  "result_splits": [
+    "calibration",
+    "test"
+  ],
+  "result_status_counts": {
+    "local_attention_status": {
+      "localized_blue_attention": 8,
+      "none": 506
+    },
+    "local_max_candidate_color": {
+      "blue": 56,
+      "orange": 111,
+      "red": 151,
+      "yellow": 196
+    },
+    "site_confirmed_color": {
+      "blue": 48,
+      "green": 8,
+      "not_site_confirmed": 400,
+      "orange": 9,
+      "red": 18,
+      "yellow": 31
+    },
+    "site_fusion": {
+      "candidate_not_site_confirmed": 400,
+      "valid": 114
+    },
+    "station_fusion": {
+      "valid": 4112
+    }
+  },
+  "site_output_contract": {
+    "local_axis": "local_max_candidate_level",
+    "localized_blue_policy": "site_green_with_localized_blue_attention",
+    "site_axis": "site_confirmed_level",
+    "version": "v3_dual_axis_1"
+  },
+  "source_inputs": {
+    "draft_evidence_manifest": {
+      "path": "figures/warning_draft/ootang_draft_warning_evidence_manifest.json",
+      "sha256": "65c1acd8c29be7d11b6b1ecb75243cb0782f190f2ae02c6c0c4e789131a7f526"
+    },
+    "forecast_run_manifest": {
+      "confirmatory_evidence_gate": "blocked",
+      "declared_prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "elevation_method": "station_zscore_then_horizontal_idw",
+      "elevation_usage": "static_model_input_channel",
+      "path": "figures/convlstm/forecast_run_manifest.json",
+      "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "prediction_sha256_matches": true,
+      "prototype_run_gate": "allowed",
+      "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "a9a8292c300885159db7dca7cf25f001516f64f06c8e99b8973921635110e52f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/forecast_predictions.csv",
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+    },
+    "spatial_block_topology": {
+      "citation": "Wang, J., Zhu, H.-H., Zhang, W., Tan, D.-Y., & Pasuto, A. (2025). Enhancing Landslide Displacement Prediction Using a Spatio-Temporal Deep Learning Model With Interpretable Features. Journal of Geophysical Research: Machine Learning and Computation, 2, e2025JH000592.",
+      "doi": "10.1029/2025JH000592",
+      "figure": "Figure 4(a, d)",
+      "path": "literature/Journal of Geophysical Research  Machine Learning and Computation - 2025 - Wang - Enhancing Landslide Displacement.pdf",
+      "pdf_page": 7,
+      "scope": "This source supports only the Ootang GNSS spatial-block topology O1/O2/O3. It does not prescribe this project's site-warning support counts, color fusion, or formal warning thresholds.",
+      "section": "5.2 Adjacency Matrix Construction",
+      "sha256": "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df"
+    }
+  },
+  "vajont_used": false
+}

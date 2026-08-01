@@ -1,8 +1,8 @@
 # 藕塘实施版运行说明（导师复核用）
 
-> 当前运行配置：[ootang_operational_run.v2.draft.json](../config/ootang_operational_run.v2.draft.json)
+> 当前运行配置：[ootang_operational_run.v3.draft.json](../config/ootang_operational_run.v3.draft.json)
 >
-> 保留对照配置：[ootang_operational_run.v1.draft.json](../config/ootang_operational_run.v1.draft.json)
+> 保留对照配置：[v2](../config/ootang_operational_run.v2.draft.json)、[v1](../config/ootang_operational_run.v1.draft.json)
 >
 > 状态：`operational_draft`；用于先完整跑通藕塘案例并便于导师后续替换规则，**不是正式预警结果**。
 >
@@ -42,7 +42,7 @@
 
 第 4、6、7、8 步都是项目特有运行约定，故以 JSON 的可执行范围表、`ΔV` 中心/容差和测点数参数表示；例如改 blue 带、`5V0/10V0`、`80°/85°` 或最少支撑数时，必须复制并提升配置版本再重跑，不需要改输入、预测或审计链路。
 
-## 3. v2 空间证据族运行（当前）
+## 3. v2 空间证据族运行（保留快照）
 
 v2 不改动 v1 目录、KMeans 对照基线、速度/切线角范围表或任何 fit-only 参数；它只替换此前审查明确存在语义问题的融合与滑坡体汇总方式。
 
@@ -55,30 +55,50 @@ v2 不改动 v1 目录、KMeans 对照基线、速度/切线角范围表或任�
 
 这是一套项目特有、非监督、可替换的 v2 规则，不是指定 Word 的多项 Logistic 回归复现，也不解除正式协议中的任何未决项。
 
-## 4. 运行与产物
+2026-08-01 修复了 v2 的一个未触发缺陷：`minimum_assessable_station_count=3` 现在先于任何颜色返回执行。修复只作用于不足 3 个有效点的情形；v2 原有的“全分区覆盖只约束 green”语义不变。当前 514 天均为 8/8 点有效，因此 v2 四份已提交产物的 SHA-256 在修复前后完全不变。
+
+## 4. v3 双轴空间运行（当前）
+
+v3 复用 v2 的逐点四指标、V0 对照基线、阈值、测点证据族和 O1/O2/O3 拓扑，只替换滑坡体空间决策。它同时回答两个不同问题：
+
+- `site_confirmed_level`：当前证据能否跨测点、跨分区支持滑坡体整体等级；
+- `local_max_candidate_level`：当天任一可评估测点的局部最高候选等级。
+
+规则顺序固定为：
+
+1. 任何滑坡体颜色都先要求至少 3 个可评估测点，且 O1/O2/O3 均有覆盖；不足时输出 `insufficient_assessable_coverage`，但仍保留局部候选；
+2. 从 red 向 yellow 查找最高的“至少 2 点、至少 2 区”支撑等级；
+3. 若存在 yellow--red 局部候选但没有获得上述确认，输出 `candidate_not_site_confirmed`，不得降为 blue 或并入 green；
+4. 只有局部最高不超过 blue 时才判断 blue：至少 2 个 blue 点且跨至少 2 区才输出 site blue；
+5. 其余覆盖完整日输出 site green；若仍有孤立或单区 blue，则另记 `localized_blue_attention`；
+6. 所有分支都保留局部最高候选的等级、测点和分区。
+
+这仍是项目特有的透明非监督草案。green 现在可表达“覆盖完整但没有跨区 blue+，且不存在未确认 yellow+ 候选”，并不等于经现场验证的安全状态。
+
+## 5. 运行与产物
 
 ```bash
 uv run python code/warning/operational_run.py
 ```
 
-上面的命令保留并重跑 v1，并只写入 `figures/warning_operational_draft/`。当前 v2 入口为：
+上面的命令保留并重跑 v1，并只写入 `figures/warning_operational_draft/`。当前 v3 入口为：
 
 ```bash
 uv run python main.py \
   --stage features \
   --stage convlstm \
-  --stage ootang-operational-v2
+  --stage ootang-operational-v3
 ```
 
 也可以直接运行：
 
 ```bash
-uv run python code/warning/operational_run_v2.py
+uv run python code/warning/operational_run_v3.py
 ```
 
-两版都会先刷新唯一的 `figures/warning_draft/` 输入证据集，再在临时目录写出并核验实施版文件，最后逐文件提升到各自目录。v1 提升到 `figures/warning_operational_draft/`，v2 提升到 `figures/warning_operational_draft_v2/`；通用运行器会拒绝把 v2 写入 v1 目录，反之亦然。
+v2 仍可用 `uv run python code/warning/operational_run_v2.py` 单独重建。三个版本都会先刷新唯一的 `figures/warning_draft/` 输入证据集，再在临时目录写出并核验实施版文件，最后逐文件提升到各自目录：v1、v2、v3 分别拥有 `warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`。通用运行器会拒绝任一版本写入另一个版本的保留目录。
 
-v2 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf) 且 SHA-256 与配置一致；缺失或指纹不符会明确拒绝运行，不会从别的论文、网络副本或 Vajont 数据静默替代。
+v2/v3 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf) 且 SHA-256 与配置一致；缺失或指纹不符会明确拒绝运行，不会从别的论文、网络副本或 Vajont 数据静默替代。
 
 每个版本目录中都有以下同名文件：
 
@@ -87,25 +107,31 @@ v2 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025) �
 - `ootang_operational_site_timeline.csv`：每日的有效点数量、各级计数、贡献点、未获佐证点与滑坡体实施版状态；
 - `ootang_operational_run_manifest.json`：基础协议/实施版配置/输入/输出哈希、结果状态计数和明确的非正式边界。
 
-v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`acceleration_status` 与 `station_confirmation_status`；滑坡体表新增 `assessable_station_count`、`assessable_blocks`、`coverage_complete`、`cross_block_confirmation_minimum_level/color`、`site_candidate_level/color`、`candidate_blocks` 与 `contributing_blocks`。v2 中旧列 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**；为兼容旧读者而保留的 `final_level/final_color` 等同于 `candidate_level/candidate_color`，不是测点已确认结果，更不是滑坡体级或正式预警结果。
+v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`acceleration_status` 与 `station_confirmation_status`；v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
 
-这些文件均可从 manifest 中的路径与 SHA-256 复核。v2 manifest 还记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
+这些文件均可从 manifest 中的路径与 SHA-256 复核。v2/v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
 
-### 4.1 2026-07-30 初跑快照
+v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg)、PDF、300 dpi PNG 和独立图件 manifest。六个代表日不是按视觉效果手选，而是按冻结语义规则取最早满足日：未确认 yellow、单区 blue 关注、O1 严重候选簇未确认、site yellow/local red、确认 orange 和确认 red。图件清单锁定规则配置、精确日期、所绘子集、渲染器和三个导出文件的 SHA-256；它明确属于观测后规则解释，不用于评价误报率、召回率或提前量。
+
+### 5.1 2026-08-01 v3 快照
 
 - `station_coords.csv` 中 8 个 `station/disp_col` 一一对应，`x_m/y_m/elev_m` 均为有限米制数值；
 - 高程范围为 `190–515 m`，在 8 个固定测点间 z-score 后按水平 IDW 生成静态网格，不进入三维距离；
 - 当前 ConvLSTM 共 7 个通道，fit/calibration/test 窗口为 `911/227/287`；
 - 物化 test 段 RMSE 为 `0.338 mm`，持久性为 `0.340 mm`，校准后 P10–P90 覆盖率为 `0.770`；
 - v2 生成 `4112` 条测点记录和 `514` 条滑坡体记录，四项输入无缺失；`114` 条为当前规则下的 `valid`，`400` 条保留为 `candidate_not_site_confirmed`；
+- v3 的状态数仍为 `valid=114`、`candidate_not_site_confirmed=400`；确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 `400` 日不发布整体颜色；
+- 局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`；其中 8 个单区 blue 日转为 site green，并明确标记 `localized_blue_attention`；
+- v3 测点时间线和阈值表除 profile ID/version 外与 v2 逐单元格一致；v2 四份产物哈希未变化；
+- 六日诊断图完整显示逐点区间、运动学、`ΔV`、整体确认/局部最高双轴及 O1/O2/O3 支撑，未确认 site 使用 `NC`，不会被画成 green；
 - 本快照只证明链路完整。高程版本较此前无高程单种子快照的 RMSE 更高，因此不宣称加入高程改善预测，也不据 test 结果继续调参。
 
-## 5. 解读限制
+## 6. 解读限制
 
 - `operational_draft` 的色彩仅表示当前实施版规则的输出，不能在论文中称为“正式预警等级”；
 - 严格 MVIF 失败这一事实没有被删除或放宽；KMeans 候选仍不是指定 Word 的 MVIF 初始稳定斜率；
 - v1 中速度与切线角被重复计票的结果只能用于历史对照；v2 将它们合并为一个证据族，仍不能把两个输出解释成独立观测证据；
-- v2 的 `candidate_not_site_confirmed`、`insufficient_assessable_coverage` 与 v1 的 `uncorroborated`、`insufficient_valid_station_results` 均不能静默并入 green；
+- v2/v3 的 `candidate_not_site_confirmed`、`insufficient_assessable_coverage` 与 v1 的 `uncorroborated`、`insufficient_valid_station_results` 均不能静默并入 green；v3 只有局部最高不超过 blue 时才允许 site green；
 - Wang 等（2025）仅为藕塘 8 个测点的 O1/O2/O3 空间拓扑提供来源；`3` 个可评估点、跨区支撑数、blue/yellow 的处理和任何颜色均是本项目可替换的非监督运行约定；
 - 不输出监督分类性能、概率、F1、Brier、混淆矩阵或严格前瞻预警提前量；Vajont 不参与本运行。
 - 既有滚动、五种子、早停和容量产物来自加入高程前的 6 通道版本；当前 7 通道初跑不能借用那些文件声称已完成同范围稳定性验证。

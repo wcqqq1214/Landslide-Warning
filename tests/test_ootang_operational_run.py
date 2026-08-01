@@ -21,6 +21,8 @@ if str(CODE_DIR) not in sys.path:
 from warning import draft_evidence
 from warning.operational_run import (
     DEFAULT_OUTPUT_DIR,
+    DEFAULT_V2_OUTPUT_DIR,
+    DEFAULT_V3_OUTPUT_DIR,
     OOTANG_STATIONS,
     OperationalRunInputError,
     OperationalRunProfileError,
@@ -71,6 +73,45 @@ class OotangOperationalRunTests(unittest.TestCase):
         self.assertFalse(stage.formal_warning_output)
         self.assertIn(
             "figures/warning_operational_draft_v2/ootang_operational_run_manifest.json",
+            stage.outputs,
+        )
+
+    def test_pipeline_registers_versioned_v3_dual_axis_operational_stage(self):
+        pipeline_spec = importlib.util.spec_from_file_location(
+            "ootang_operational_v3_pipeline",
+            ROOT / "main.py",
+        )
+        if pipeline_spec is None or pipeline_spec.loader is None:
+            self.fail("cannot load main.py")
+        pipeline = importlib.util.module_from_spec(pipeline_spec)
+        sys.modules[pipeline_spec.name] = pipeline
+        pipeline_spec.loader.exec_module(pipeline)
+
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-operational-v3"]
+        self.assertEqual(
+            names.index("ootang-operational-v3"),
+            names.index("ootang-operational-v2") + 1,
+        )
+        self.assertEqual(stage.script, "code/warning/operational_run_v3.py")
+        self.assertEqual(stage.warning_artifact_scope, "operational_draft")
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(len(stage.inputs), 6)
+        self.assertEqual(len(stage.outputs), 8)
+        self.assertIn(
+            "config/ootang_operational_v3_typical_days.v1.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_operational_run_manifest.json",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_typical_days.svg",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_typical_days_manifest.json",
             stage.outputs,
         )
 
@@ -163,6 +204,123 @@ class OotangOperationalRunTests(unittest.TestCase):
             "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
         )
 
+    def test_writes_a_versioned_v3_dual_axis_timeline(self):
+        profile_path = ROOT / "config" / "ootang_operational_run.v3.draft.json"
+        with tempfile.TemporaryDirectory() as directory:
+            output_dir = Path(directory)
+            artifacts = write_ootang_operational_run(
+                profile_path=profile_path,
+                output_dir=output_dir,
+                evidence_dir=output_dir / "evidence",
+            )
+            manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
+            station_rows = pd.read_csv(artifacts.station_timeline_path)
+            site_rows = pd.read_csv(artifacts.site_timeline_path)
+            threshold_rows = pd.read_csv(artifacts.thresholds_path)
+
+        v2_dir = ROOT / "figures" / "warning_operational_draft_v2"
+        v2_station_rows = pd.read_csv(
+            v2_dir / "ootang_operational_station_timeline.csv"
+        )
+        v2_threshold_rows = pd.read_csv(
+            v2_dir / "ootang_operational_thresholds.csv"
+        )
+
+        self.assertEqual(
+            manifest["operational_profile"]["id"],
+            "ootang-operational-spatial-v3",
+        )
+        self.assertFalse(manifest["formal_warning_output"])
+        self.assertFalse(manifest["vajont_used"])
+        self.assertEqual(
+            manifest["site_output_contract"]["version"],
+            "v3_dual_axis_1",
+        )
+        self.assertEqual(
+            set(manifest["implementation_sources"]),
+            {"runner", "station_fusion", "site_fusion", "spatial_blocks"},
+        )
+        for source in manifest["implementation_sources"].values():
+            self.assertFalse(Path(source["path"]).is_absolute())
+            source_path = ROOT / source["path"]
+            self.assertEqual(
+                hashlib.sha256(source_path.read_bytes()).hexdigest(),
+                source["sha256"],
+            )
+        self.assertEqual(
+            site_rows["site_fusion_status"].value_counts().to_dict(),
+            {"candidate_not_site_confirmed": 400, "valid": 114},
+        )
+        self.assertEqual(
+            site_rows["site_confirmed_color"].value_counts().to_dict(),
+            {"blue": 48, "yellow": 31, "red": 18, "orange": 9, "green": 8},
+        )
+        self.assertEqual(
+            site_rows["local_max_candidate_color"].value_counts().to_dict(),
+            {"yellow": 196, "red": 151, "orange": 111, "blue": 56},
+        )
+        self.assertEqual(
+            site_rows["local_attention_status"].value_counts().to_dict(),
+            {"none": 506, "localized_blue_attention": 8},
+        )
+        self.assertTrue(site_rows["coverage_complete"].all())
+        pd.testing.assert_series_equal(
+            site_rows["site_level"],
+            site_rows["site_confirmed_level"],
+            check_names=False,
+        )
+        pd.testing.assert_series_equal(
+            site_rows["site_candidate_level"],
+            site_rows["local_max_candidate_level"],
+            check_names=False,
+        )
+        profile_columns = {
+            "operational_profile_id",
+            "operational_profile_version",
+        }
+        station_contract_columns = [
+            column
+            for column in v2_station_rows.columns
+            if column not in profile_columns
+        ]
+        threshold_contract_columns = [
+            column
+            for column in v2_threshold_rows.columns
+            if column not in profile_columns
+        ]
+        pd.testing.assert_frame_equal(
+            station_rows[station_contract_columns],
+            v2_station_rows[station_contract_columns],
+            check_dtype=False,
+        )
+        pd.testing.assert_frame_equal(
+            threshold_rows[threshold_contract_columns],
+            v2_threshold_rows[threshold_contract_columns],
+            check_dtype=False,
+        )
+
+    def test_tracked_v3_implementation_fingerprints_match_sources(self):
+        manifest_path = (
+            ROOT
+            / "figures"
+            / "warning_operational_draft_v3"
+            / "ootang_operational_run_manifest.json"
+        )
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(
+            set(manifest["implementation_sources"]),
+            {"runner", "station_fusion", "site_fusion", "spatial_blocks"},
+        )
+        for source in manifest["implementation_sources"].values():
+            self.assertFalse(Path(source["path"]).is_absolute())
+            source_path = ROOT / source["path"]
+            self.assertEqual(
+                hashlib.sha256(source_path.read_bytes()).hexdigest(),
+                source["sha256"],
+                source_path,
+            )
+
     def test_v2_profile_cannot_overwrite_the_preserved_v1_output_directory(self):
         profile_path = ROOT / "config" / "ootang_operational_run.v2.draft.json"
 
@@ -171,6 +329,45 @@ class OotangOperationalRunTests(unittest.TestCase):
                 profile_path=profile_path,
                 output_dir=DEFAULT_OUTPUT_DIR,
             )
+
+    def test_v3_and_v2_profiles_cannot_overwrite_each_others_directories(self):
+        v2_profile = ROOT / "config" / "ootang_operational_run.v2.draft.json"
+        v3_profile = ROOT / "config" / "ootang_operational_run.v3.draft.json"
+
+        with self.assertRaisesRegex(OperationalRunProfileError, "preserved v2"):
+            write_ootang_operational_run(
+                profile_path=v3_profile,
+                output_dir=DEFAULT_V2_OUTPUT_DIR,
+            )
+        with self.assertRaisesRegex(OperationalRunProfileError, "preserved v3"):
+            write_ootang_operational_run(
+                profile_path=v2_profile,
+                output_dir=DEFAULT_V3_OUTPUT_DIR,
+            )
+
+    def test_v3_profile_freezes_global_coverage_and_cross_block_support(self):
+        source = ROOT / "config" / "ootang_operational_run.v3.draft.json"
+        cases = (
+            ("minimum_assessable_station_count", 4, "exactly 3"),
+            ("minimum_supporting_stations", 1, "exactly 2"),
+            ("minimum_supporting_blocks", 1, "exactly 2"),
+        )
+        for field, value, message in cases:
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                profile = json.loads(source.read_text(encoding="utf-8"))
+                profile["site_fusion"][field] = value
+                profile_path = root / "drifted_v3.json"
+                profile_path.write_text(json.dumps(profile), encoding="utf-8")
+
+                with self.assertRaisesRegex(
+                    OperationalRunProfileError,
+                    message,
+                ):
+                    write_ootang_operational_run(
+                        profile_path=profile_path,
+                        output_dir=root / "output",
+                    )
 
     def test_test_period_prediction_change_does_not_change_fit_thresholds(self):
         source_predictions = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"

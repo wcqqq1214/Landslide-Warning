@@ -21,6 +21,7 @@ from numbers import Integral
 from typing import Any
 
 from warning.levels import WARNING_LEVELS, WarningLevel
+from warning.spatial_blocks import normalise_spatial_blocks
 
 INPUT_STATUSES = ("valid", "warmup", "invalid", "not_applicable")
 DELTA_V_STATES = ("negative", "near_zero", "positive")
@@ -196,32 +197,6 @@ def fuse_station_evidence_families(
     )
 
 
-def _validated_blocks(
-    blocks: Mapping[str, tuple[str, ...] | list[str]],
-) -> tuple[tuple[str, tuple[str, ...]], ...]:
-    if not isinstance(blocks, Mapping) or not blocks:
-        raise ValueError("blocks must be a non-empty mapping")
-    records: list[tuple[str, tuple[str, ...]]] = []
-    seen_stations: set[str] = set()
-    for name, stations in blocks.items():
-        if not isinstance(name, str) or not name.strip():
-            raise ValueError("block identifiers must be non-blank strings")
-        if not isinstance(stations, (tuple, list)) or not stations:
-            raise ValueError(f"block {name!r} must contain at least one station")
-        normalized = tuple(str(station).strip() for station in stations)
-        if any(not station for station in normalized):
-            raise ValueError(f"block {name!r} contains a blank station")
-        duplicate = sorted(set(normalized).intersection(seen_stations))
-        if duplicate:
-            raise ValueError(
-                "each station must belong to exactly one spatial block; duplicate: "
-                + ", ".join(duplicate)
-            )
-        seen_stations.update(normalized)
-        records.append((name, normalized))
-    return tuple(records)
-
-
 @dataclass(frozen=True)
 class SpatialSiteFusionResult:
     """A site-level result that keeps coverage and confirmation separate."""
@@ -317,7 +292,7 @@ def fuse_site_spatial_blocks(
         raise TypeError("station_results must be a mapping of station identifiers")
     if not station_results:
         raise ValueError("station_results must contain at least one station")
-    block_records = _validated_blocks(blocks)
+    block_records = normalise_spatial_blocks(blocks)
     block_names = tuple(name for name, _ in block_records)
     station_to_block = {
         station: name for name, stations in block_records for station in stations
@@ -392,6 +367,27 @@ def fuse_site_spatial_blocks(
         for name in block_names
         if any(station_to_block[station] == name for station in candidate_stations)
     )
+
+    # The minimum assessable-station gate is global.  It must be satisfied
+    # before any colour (including blue--red) can be issued.  Spatial-block
+    # completeness remains the v2 green-only requirement declared by the
+    # ``require_all_blocks_for_green`` profile field.
+    if len(assessable) < int(minimum_assessable_station_count):
+        return SpatialSiteFusionResult(
+            status="insufficient_assessable_coverage",
+            level=None,
+            candidate_level=candidate_level,
+            total_station_count=len(records),
+            assessable_station_count=len(assessable),
+            assessable_blocks=assessable_blocks,
+            coverage_complete=False,
+            contributing_stations=(),
+            contributing_blocks=(),
+            candidate_stations=candidate_stations,
+            candidate_blocks=candidate_blocks,
+            level_counts=level_counts,
+            reason="assessable_station_count_below_minimum",
+        )
 
     confirmed_level: WarningLevel | None = None
     confirmed_stations: tuple[str, ...] = ()

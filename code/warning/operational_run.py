@@ -46,6 +46,10 @@ from warning.operational_v2_fusion import (
     fuse_site_spatial_blocks,
     fuse_station_evidence_families,
 )
+from warning.operational_v3_fusion import (
+    SpatialSiteFusionV3Result,
+    fuse_site_spatial_blocks_v3,
+)
 from warning.protocol import (
     load_protocol,
     protocol_content_sha256,
@@ -64,6 +68,7 @@ DEFAULT_FORECAST_MANIFEST_PATH = (
 )
 DEFAULT_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft"
 DEFAULT_V2_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v2"
+DEFAULT_V3_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v3"
 DEFAULT_EVIDENCE_DIR = ROOT / "figures" / "warning_draft"
 STATION_TIMELINE_FILENAME = "ootang_operational_station_timeline.csv"
 SITE_TIMELINE_FILENAME = "ootang_operational_site_timeline.csv"
@@ -80,6 +85,8 @@ _V2_STATION_FUSION = "warning.operational_v2_fusion.fuse_station_evidence_famili
 _V1_SITE_FUSION = "highest_non_green_at_or_above_level_with_configured_station_support"
 _V2_SITE_FUSION = "warning.operational_v2_fusion.fuse_site_spatial_blocks"
 _V2_PROFILE_ID = "ootang-operational-spatial-v2"
+_V3_SITE_FUSION = "warning.operational_v3_fusion.fuse_site_spatial_blocks_v3"
+_V3_PROFILE_ID = "ootang-operational-spatial-v3"
 _REQUIRED_PREDICTION_COLUMNS = (
     "date",
     "station",
@@ -152,6 +159,16 @@ def _sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1_048_576), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def _manifest_path(path: Path, *, repository_relative: bool) -> str:
+    resolved = path.resolve()
+    if repository_relative:
+        try:
+            return resolved.relative_to(ROOT).as_posix()
+        except ValueError:
+            pass
+    return str(resolved)
 
 
 def _canonical_json_sha256(payload: dict[str, Any]) -> str:
@@ -325,10 +342,10 @@ def _require_v1_fusion_profile(
         )
 
 
-def _require_v2_spatial_blocks(value: Any) -> None:
+def _require_spatial_blocks(value: Any) -> None:
     if not isinstance(value, dict) or tuple(value) != ("O1", "O2", "O3"):
         raise OperationalRunProfileError(
-            "v2 site fusion must declare ordered spatial blocks O1, O2, O3."
+            "Spatial site fusion must declare ordered blocks O1, O2, O3."
         )
     expected = {
         "O1": ("MJ9", "MJ1", "MJ3"),
@@ -338,21 +355,21 @@ def _require_v2_spatial_blocks(value: Any) -> None:
     for name, stations in expected.items():
         if tuple(value.get(name, ())) != stations:
             raise OperationalRunProfileError(
-                f"v2 site fusion block {name} must match the reviewed Ootang layout."
+                f"Spatial site fusion block {name} must match the reviewed Ootang layout."
             )
 
 
-def _resolve_v2_spatial_block_source(
+def _resolve_spatial_block_source(
     site_fusion: dict[str, Any],
     *,
     profile_path: Path,
 ) -> Path:
-    """Verify the exact paper copy used for the v2 Ootang block topology."""
+    """Verify the exact paper copy used for the Ootang block topology."""
 
     source = site_fusion.get("spatial_blocks_source")
     if not isinstance(source, dict):
         raise OperationalRunProfileError(
-            "v2 site fusion must record a spatial-block source object."
+            "Spatial site fusion must record a spatial-block source object."
         )
     required_strings = (
         "citation",
@@ -366,39 +383,38 @@ def _resolve_v2_spatial_block_source(
     for name in required_strings:
         if not isinstance(source.get(name), str) or not source[name].strip():
             raise OperationalRunProfileError(
-                f"v2 spatial-block source must provide non-blank {name}."
+                f"Spatial-block source must provide non-blank {name}."
             )
     if source["doi"] != "10.1029/2025JH000592":
         raise OperationalRunProfileError(
-            "v2 spatial-block source must identify Wang et al. (2025) by DOI."
+            "Spatial-block source must identify Wang et al. (2025) by DOI."
         )
     if source.get("pdf_page") != 7 or source["figure"] != "Figure 4(a, d)":
         raise OperationalRunProfileError(
-            "v2 spatial-block source must locate the topology at PDF page 7, Figure 4(a, d)."
+            "Spatial-block source must locate the topology at PDF page 7, Figure 4(a, d)."
         )
     source_path = (profile_path.parent / source["source_file"]).resolve()
     if not source_path.is_file():
         raise OperationalRunProfileError(
-            "v2 spatial-block source file does not exist: " + str(source_path)
+            "Spatial-block source file does not exist: " + str(source_path)
         )
     if _sha256_file(source_path) != source["source_file_sha256"]:
         raise OperationalRunProfileError(
-            "v2 spatial-block source file fingerprint does not match the profile."
+            "Spatial-block source file fingerprint does not match the profile."
         )
     return source_path
 
 
-def _require_v2_fusion_profile(
+def _require_evidence_family_station_fusion(
     station_fusion: dict[str, Any],
-    site_fusion: dict[str, Any],
 ) -> None:
     if station_fusion.get("implementation") != _V2_STATION_FUSION:
         raise OperationalRunProfileError(
-            "Operational profile must name the v2 evidence-family station fusion."
+            "Operational profile must name the evidence-family station fusion."
         )
     if station_fusion.get("required_input_policy") != "all_four_inputs_must_be_valid":
         raise OperationalRunProfileError(
-            "v2 station fusion must preserve the all-input validity policy."
+            "Evidence-family station fusion must preserve the all-input validity policy."
         )
     kinematic = station_fusion.get("kinematic_family")
     if not isinstance(kinematic, dict) or kinematic != {
@@ -407,26 +423,36 @@ def _require_v2_fusion_profile(
         "independence_policy": "not_independent_not_two_votes",
     }:
         raise OperationalRunProfileError(
-            "v2 station fusion must define velocity/tangent as one kinematic family."
+            "Evidence-family station fusion must define velocity/tangent as one "
+            "kinematic family."
         )
     if station_fusion.get("positive_delta_v_role") != (
         "acceleration_qualifier_only_no_ordinal_color_escalation"
     ):
         raise OperationalRunProfileError(
-            "v2 station fusion must keep positive delta-V as a qualifier only."
+            "Evidence-family station fusion must keep positive delta-V as a "
+            "qualifier only."
         )
     if station_fusion.get("single_family_elevation_policy") != (
         "visible_assessable_candidate_not_missing"
     ):
         raise OperationalRunProfileError(
-            "v2 station fusion must retain single-family candidates visibly."
+            "Evidence-family station fusion must retain single-family candidates "
+            "visibly."
         )
+
+
+def _require_v2_fusion_profile(
+    station_fusion: dict[str, Any],
+    site_fusion: dict[str, Any],
+) -> None:
+    _require_evidence_family_station_fusion(station_fusion)
 
     if site_fusion.get("implementation") != _V2_SITE_FUSION:
         raise OperationalRunProfileError(
             "Operational profile must name the v2 spatial site fusion."
         )
-    _require_v2_spatial_blocks(site_fusion.get("spatial_blocks"))
+    _require_spatial_blocks(site_fusion.get("spatial_blocks"))
     if site_fusion.get("cross_block_confirmation_minimum_level") != "yellow":
         raise OperationalRunProfileError(
             "v2 spatial confirmation must begin at yellow, not blue."
@@ -470,6 +496,77 @@ def _require_v2_fusion_profile(
     ):
         raise OperationalRunProfileError(
             "v2 site fusion must retain unconfirmed candidates visibly."
+        )
+
+
+def _require_v3_fusion_profile(
+    station_fusion: dict[str, Any],
+    site_fusion: dict[str, Any],
+) -> None:
+    _require_evidence_family_station_fusion(station_fusion)
+    if site_fusion.get("implementation") != _V3_SITE_FUSION:
+        raise OperationalRunProfileError(
+            "Operational profile must name the v3 dual-axis spatial site fusion."
+        )
+    _require_spatial_blocks(site_fusion.get("spatial_blocks"))
+    minimum_assessable = _require_integer_in_range(
+        site_fusion.get("minimum_assessable_station_count"),
+        name="site_fusion.minimum_assessable_station_count",
+        minimum=1,
+        maximum=len(OOTANG_STATIONS),
+    )
+    if minimum_assessable != 3:
+        raise OperationalRunProfileError(
+            "v3 global coverage requires exactly 3 assessable stations."
+        )
+    if site_fusion.get("require_all_blocks_for_any_site_level") is not True:
+        raise OperationalRunProfileError(
+            "v3 requires every spatial block before any site colour can be issued."
+        )
+    minimum_supporting_stations = _require_integer_in_range(
+        site_fusion.get("minimum_supporting_stations"),
+        name="site_fusion.minimum_supporting_stations",
+        minimum=1,
+        maximum=minimum_assessable,
+    )
+    minimum_supporting_blocks = _require_integer_in_range(
+        site_fusion.get("minimum_supporting_blocks"),
+        name="site_fusion.minimum_supporting_blocks",
+        minimum=1,
+        maximum=3,
+    )
+    if minimum_supporting_stations != 2 or minimum_supporting_blocks != 2:
+        raise OperationalRunProfileError(
+            "v3 spatial confirmation requires exactly 2 stations and exactly 2 blocks."
+        )
+    if site_fusion.get("higher_confirmation_minimum_level") != "yellow":
+        raise OperationalRunProfileError(
+            "v3 higher-level spatial confirmation must begin at yellow."
+        )
+    if site_fusion.get("blue_site_policy") != (
+        "two_station_two_block_or_green_with_localized_blue_attention"
+    ):
+        raise OperationalRunProfileError(
+            "v3 blue policy must separate site blue from localized blue attention."
+        )
+    if site_fusion.get("higher_unconfirmed_candidate_policy") != (
+        "visible_candidate_not_site_confirmed_not_downgraded"
+    ):
+        raise OperationalRunProfileError(
+            "v3 must retain unconfirmed yellow-red candidates without downgrading."
+        )
+    if site_fusion.get("candidate_not_confirmed_policy") != (
+        "visible_candidate_not_site_confirmed"
+    ):
+        raise OperationalRunProfileError(
+            "v3 site fusion must retain unconfirmed candidates visibly."
+        )
+    if site_fusion.get("dual_axis_output") != {
+        "site_axis": "site_confirmed_level",
+        "local_axis": "local_max_candidate_level",
+    }:
+        raise OperationalRunProfileError(
+            "v3 site fusion must declare its site-confirmed and local-candidate axes."
         )
 
 
@@ -627,8 +724,20 @@ def _require_profile_fields(profile: dict[str, Any]) -> None:
         )
     if station_fusion.get("implementation") == _V1_STATION_FUSION:
         _require_v1_fusion_profile(station_fusion, site_fusion)
-    elif station_fusion.get("implementation") == _V2_STATION_FUSION:
+    elif (
+        station_fusion.get("implementation") == _V2_STATION_FUSION
+        and site_fusion.get("implementation") == _V2_SITE_FUSION
+    ):
         _require_v2_fusion_profile(station_fusion, site_fusion)
+    elif (
+        station_fusion.get("implementation") == _V2_STATION_FUSION
+        and site_fusion.get("implementation") == _V3_SITE_FUSION
+    ):
+        _require_v3_fusion_profile(station_fusion, site_fusion)
+    elif station_fusion.get("implementation") == _V2_STATION_FUSION:
+        raise OperationalRunProfileError(
+            "Operational profile must name a supported site-fusion implementation."
+        )
     else:
         raise OperationalRunProfileError(
             "Operational profile must name a supported station-fusion implementation."
@@ -645,12 +754,19 @@ def _load_operational_profile(path: str | Path) -> _LoadedProfile:
     profile_path = Path(path).resolve()
     profile = _read_json_object(profile_path, name="Operational profile")
     _require_profile_fields(profile)
-    if profile["station_fusion"]["implementation"] == _V2_STATION_FUSION:
-        if profile["profile_id"] != _V2_PROFILE_ID:
+    site_implementation = profile["site_fusion"]["implementation"]
+    if site_implementation in {_V2_SITE_FUSION, _V3_SITE_FUSION}:
+        expected_profile_id = (
+            _V2_PROFILE_ID
+            if site_implementation == _V2_SITE_FUSION
+            else _V3_PROFILE_ID
+        )
+        if profile["profile_id"] != expected_profile_id:
             raise OperationalRunProfileError(
-                "The v2 evidence-family implementation requires its separately versioned profile id."
+                "The spatial site-fusion implementation requires its separately "
+                "versioned profile id."
             )
-        _resolve_v2_spatial_block_source(
+        _resolve_spatial_block_source(
             profile["site_fusion"],
             profile_path=profile_path,
         )
@@ -696,8 +812,11 @@ def _load_operational_profile(path: str | Path) -> _LoadedProfile:
 def _default_output_dir_for_profile(loaded: _LoadedProfile) -> Path:
     """Return the version-owned output directory for a supported profile."""
 
-    if loaded.profile["station_fusion"]["implementation"] == _V2_STATION_FUSION:
+    site_implementation = loaded.profile["site_fusion"]["implementation"]
+    if site_implementation == _V2_SITE_FUSION:
         return DEFAULT_V2_OUTPUT_DIR
+    if site_implementation == _V3_SITE_FUSION:
+        return DEFAULT_V3_OUTPUT_DIR
     return DEFAULT_OUTPUT_DIR
 
 
@@ -705,31 +824,44 @@ def _resolve_operational_output_dir(
     loaded: _LoadedProfile,
     output_dir: str | Path | None,
 ) -> Path:
-    """Select a safe output destination without allowing v1/v2 overwrites."""
+    """Select a safe output destination without cross-version overwrites."""
 
     expected = _default_output_dir_for_profile(loaded).resolve()
     target = expected if output_dir is None else Path(output_dir).resolve()
-    v1_output = DEFAULT_OUTPUT_DIR.resolve()
-    v2_output = DEFAULT_V2_OUTPUT_DIR.resolve()
-    is_v2 = loaded.profile["station_fusion"]["implementation"] == _V2_STATION_FUSION
-    if is_v2 and target == v1_output:
+    reserved = {
+        "v1": DEFAULT_OUTPUT_DIR.resolve(),
+        "v2": DEFAULT_V2_OUTPUT_DIR.resolve(),
+        "v3": DEFAULT_V3_OUTPUT_DIR.resolve(),
+    }
+    generation = next(
+        name for name, directory in reserved.items() if directory == expected
+    )
+    conflicting = next(
+        (
+            name
+            for name, directory in reserved.items()
+            if directory == target and directory != expected
+        ),
+        None,
+    )
+    if conflicting is not None:
         raise OperationalRunProfileError(
-            "The v2 profile must not write into the preserved v1 operational directory."
-        )
-    if not is_v2 and target == v2_output:
-        raise OperationalRunProfileError(
-            "The v1 profile must not write into the v2 spatial operational directory."
+            f"The {generation} profile must not write into the preserved "
+            f"{conflicting} operational directory."
         )
     return target
 
 
-def _v2_spatial_block_source_manifest(
+def _spatial_block_source_manifest(
     loaded: _LoadedProfile,
 ) -> dict[str, Any] | None:
-    if loaded.profile["station_fusion"]["implementation"] != _V2_STATION_FUSION:
+    if loaded.profile["site_fusion"]["implementation"] not in {
+        _V2_SITE_FUSION,
+        _V3_SITE_FUSION,
+    }:
         return None
     source = loaded.profile["site_fusion"]["spatial_blocks_source"]
-    source_path = _resolve_v2_spatial_block_source(
+    source_path = _resolve_spatial_block_source(
         loaded.profile["site_fusion"],
         profile_path=loaded.profile_path,
     )
@@ -1389,27 +1521,37 @@ def _warning_level_or_none(value: object) -> WarningLevel | None:
     try:
         return WarningLevel(int(value))
     except (TypeError, ValueError) as exc:
-        raise OperationalRunInputError("v2 station timeline has an invalid warning level.") from exc
+        raise OperationalRunInputError(
+            "Evidence-family station timeline has an invalid warning level."
+        ) from exc
 
 
 def _parse_serialized_input_statuses(value: object) -> tuple[tuple[str, str], ...]:
     if not isinstance(value, str) or not value:
-        raise OperationalRunInputError("v2 station timeline lacks input-status audit data.")
+        raise OperationalRunInputError(
+            "Evidence-family station timeline lacks input-status audit data."
+        )
     records: list[tuple[str, str]] = []
     for entry in value.split(";"):
         name, separator, status = entry.partition(":")
         if not separator or not name or not status:
-            raise OperationalRunInputError("v2 station timeline has invalid input-status data.")
+            raise OperationalRunInputError(
+                "Evidence-family station timeline has invalid input-status data."
+            )
         records.append((name, status))
     return tuple(records)
 
 
-def _v2_station_results(rows: pd.DataFrame) -> dict[str, StationEvidenceResult]:
+def _station_evidence_results(
+    rows: pd.DataFrame,
+) -> dict[str, StationEvidenceResult]:
     results: dict[str, StationEvidenceResult] = {}
     for row in rows.itertuples(index=False):
         station = str(row.station)
         if station in results:
-            raise OperationalRunInputError("v2 site date has duplicated station results.")
+            raise OperationalRunInputError(
+                "Spatial site date has duplicated station results."
+            )
         status = str(row.station_assessment_status)
         candidate = _warning_level_or_none(row.candidate_level)
         kinematic = _warning_level_or_none(row.kinematic_level)
@@ -1438,6 +1580,48 @@ def _v2_station_results(rows: pd.DataFrame) -> dict[str, StationEvidenceResult]:
     return results
 
 
+def _enrich_spatial_site_record(
+    record: dict[str, Any],
+    *,
+    date: pd.Timestamp,
+    rows: pd.DataFrame,
+) -> dict[str, Any]:
+    """Attach the common audit fields emitted by spatial site fusion."""
+
+    assessable = rows.loc[rows["station_assessment_status"].eq("valid")].copy()
+    nonassessable = rows.loc[
+        ~rows["station_assessment_status"].eq("valid"), "station"
+    ]
+    single_family = assessable.loc[
+        assessable["candidate_level"]
+        .fillna(0)
+        .astype(int)
+        .gt(int(WarningLevel.GREEN))
+        & assessable["evidence_family_count"].eq(1),
+        "station",
+    ]
+    enriched = dict(record)
+    enriched.update(
+        {
+            "date": date.strftime("%Y-%m-%d"),
+            "split": str(rows["split"].iloc[0]),
+            "formal_warning_output": False,
+            "nonassessable_stations": _join_stations(nonassessable),
+            "single_family_candidate_stations": _join_stations(single_family),
+            **{
+                f"station_count_at_or_above_{level.color}": int(
+                    (
+                        assessable["candidate_level"].fillna(-1).astype(int)
+                        >= int(level)
+                    ).sum()
+                )
+                for level in WARNING_LEVELS
+            },
+        }
+    )
+    return enriched
+
+
 def _site_record_v2(
     date: pd.Timestamp,
     rows: pd.DataFrame,
@@ -1445,7 +1629,7 @@ def _site_record_v2(
     profile: dict[str, Any],
 ) -> dict[str, Any]:
     site_config = profile["site_fusion"]
-    station_results = _v2_station_results(rows)
+    station_results = _station_evidence_results(rows)
     result: SpatialSiteFusionResult = fuse_site_spatial_blocks(
         station_results,
         blocks=site_config["spatial_blocks"],
@@ -1474,34 +1658,45 @@ def _site_record_v2(
             str(site_config["cross_block_confirmation_minimum_level"]).upper()
         ],
     )
-    assessable = rows.loc[rows["station_assessment_status"].eq("valid")].copy()
-    nonassessable = rows.loc[
-        ~rows["station_assessment_status"].eq("valid"), "station"
+    return _enrich_spatial_site_record(record, date=date, rows=rows)
+
+
+def _site_record_v3(
+    date: pd.Timestamp,
+    rows: pd.DataFrame,
+    *,
+    profile: dict[str, Any],
+) -> dict[str, Any]:
+    site_config = profile["site_fusion"]
+    station_results = _station_evidence_results(rows)
+    higher_minimum = WarningLevel[
+        str(site_config["higher_confirmation_minimum_level"]).upper()
     ]
-    single_family = assessable.loc[
-        assessable["candidate_level"].fillna(0).astype(int).gt(int(WarningLevel.GREEN))
-        & assessable["evidence_family_count"].eq(1),
-        "station",
-    ]
-    record.update(
-        {
-            "date": date.strftime("%Y-%m-%d"),
-            "split": str(rows["split"].iloc[0]),
-            "formal_warning_output": False,
-            "nonassessable_stations": _join_stations(nonassessable),
-            "single_family_candidate_stations": _join_stations(single_family),
-            **{
-                f"station_count_at_or_above_{level.color}": int(
-                    (
-                        assessable["candidate_level"].fillna(-1).astype(int)
-                        >= int(level)
-                    ).sum()
-                )
-                for level in WARNING_LEVELS
-            },
-        }
+    result: SpatialSiteFusionV3Result = fuse_site_spatial_blocks_v3(
+        station_results,
+        blocks=site_config["spatial_blocks"],
+        minimum_assessable_station_count=int(
+            site_config["minimum_assessable_station_count"]
+        ),
+        require_all_blocks_for_any_site_level=bool(
+            site_config["require_all_blocks_for_any_site_level"]
+        ),
+        minimum_supporting_stations=int(site_config["minimum_supporting_stations"]),
+        minimum_supporting_blocks=int(site_config["minimum_supporting_blocks"]),
+        higher_confirmation_minimum_level=higher_minimum,
     )
-    return record
+    record = result.to_record(
+        minimum_assessable_station_count=int(
+            site_config["minimum_assessable_station_count"]
+        ),
+        require_all_blocks_for_any_site_level=bool(
+            site_config["require_all_blocks_for_any_site_level"]
+        ),
+        minimum_supporting_stations=int(site_config["minimum_supporting_stations"]),
+        minimum_supporting_blocks=int(site_config["minimum_supporting_blocks"]),
+        higher_confirmation_minimum_level=higher_minimum,
+    )
+    return _enrich_spatial_site_record(record, date=date, rows=rows)
 
 
 def _site_record(
@@ -1523,6 +1718,8 @@ def _site_record(
         )
     if profile["site_fusion"]["implementation"] == _V2_SITE_FUSION:
         return _site_record_v2(date, rows, profile=profile)
+    if profile["site_fusion"]["implementation"] == _V3_SITE_FUSION:
+        return _site_record_v3(date, rows, profile=profile)
     valid = rows.loc[rows["fusion_status"].eq("valid")].copy()
     uncorroborated = rows.loc[rows["fusion_status"].eq("uncorroborated"), "station"]
     nonvalid = rows.loc[
@@ -1761,7 +1958,30 @@ def _manifest(
     site_timeline: pd.DataFrame,
 ) -> dict[str, Any]:
     base_protocol_hash = protocol_content_sha256(loaded.base_protocol)
-    spatial_block_source = _v2_spatial_block_source_manifest(loaded)
+    spatial_block_source = _spatial_block_source_manifest(loaded)
+    is_v3 = loaded.profile["site_fusion"]["implementation"] == _V3_SITE_FUSION
+    forecast_source = dict(forecast_manifest_source)
+    if is_v3 and isinstance(forecast_source.get("path"), str):
+        forecast_source["path"] = _manifest_path(
+            Path(forecast_source["path"]),
+            repository_relative=True,
+        )
+    if is_v3 and spatial_block_source is not None:
+        spatial_block_source = dict(spatial_block_source)
+        spatial_block_source["path"] = _manifest_path(
+            Path(spatial_block_source["path"]),
+            repository_relative=True,
+        )
+    v3_implementation_sources = (
+        {
+            "runner": Path(__file__).resolve(),
+            "station_fusion": ROOT / "code" / "warning" / "operational_v2_fusion.py",
+            "site_fusion": ROOT / "code" / "warning" / "operational_v3_fusion.py",
+            "spatial_blocks": ROOT / "code" / "warning" / "spatial_blocks.py",
+        }
+        if is_v3
+        else {}
+    )
     return {
         "artifact_kind": ARTIFACT_KIND,
         "artifact_status": ARTIFACT_STATUS,
@@ -1774,31 +1994,70 @@ def _manifest(
             "id": loaded.profile["profile_id"],
             "version": loaded.profile["profile_version"],
             "status": loaded.profile["status"],
-            "path": str(loaded.profile_path),
+            "path": _manifest_path(
+                loaded.profile_path,
+                repository_relative=is_v3,
+            ),
             "content_sha256": _canonical_json_sha256(loaded.profile),
         },
         "base_draft_protocol": {
             "id": loaded.base_protocol["protocol_id"],
             "version": loaded.base_protocol["protocol_version"],
             "status": loaded.base_protocol["status"],
-            "path": str(loaded.base_protocol_path),
+            "path": _manifest_path(
+                loaded.base_protocol_path,
+                repository_relative=is_v3,
+            ),
             "content_sha256": base_protocol_hash,
             "unresolved_item_ids": list(unresolved_item_ids(loaded.base_protocol)),
         },
+        **(
+            {
+                "site_output_contract": {
+                    "version": "v3_dual_axis_1",
+                    "site_axis": "site_confirmed_level",
+                    "local_axis": "local_max_candidate_level",
+                    "localized_blue_policy": (
+                        "site_green_with_localized_blue_attention"
+                    ),
+                },
+                "implementation_sources": {
+                    name: {
+                        "path": _manifest_path(
+                            path,
+                            repository_relative=True,
+                        ),
+                        "sha256": _sha256_file(path),
+                    }
+                    for name, path in v3_implementation_sources.items()
+                },
+            }
+            if is_v3
+            else {}
+        ),
         "parameter_fit_splits": list(loaded.profile["parameter_fit_splits"]),
         "result_splits": list(loaded.profile["result_splits"]),
         "source_inputs": {
             "kinematics": {
-                "path": str(kinematics_path),
+                "path": _manifest_path(
+                    kinematics_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(kinematics_path),
             },
             "predictions": {
-                "path": str(predictions_path),
+                "path": _manifest_path(
+                    predictions_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(predictions_path),
             },
-            "forecast_run_manifest": forecast_manifest_source,
+            "forecast_run_manifest": forecast_source,
             "draft_evidence_manifest": {
-                "path": str(evidence_manifest_path),
+                "path": _manifest_path(
+                    evidence_manifest_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(evidence_manifest_path),
             },
             **(
@@ -1809,17 +2068,26 @@ def _manifest(
         },
         "outputs": {
             "station_timeline": {
-                "path": str(station_path),
+                "path": _manifest_path(
+                    station_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(station_hash_path),
                 "n_rows": len(station_timeline),
             },
             "site_timeline": {
-                "path": str(site_path),
+                "path": _manifest_path(
+                    site_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(site_hash_path),
                 "n_rows": len(site_timeline),
             },
             "thresholds": {
-                "path": str(thresholds_path),
+                "path": _manifest_path(
+                    thresholds_path,
+                    repository_relative=is_v3,
+                ),
                 "sha256": _sha256_file(thresholds_hash_path),
             },
         },
@@ -1836,6 +2104,36 @@ def _manifest(
                     dropna=False
                 ).items()
             },
+            **(
+                {
+                    "site_confirmed_color": {
+                        str(status): int(count)
+                        for status, count in site_timeline[
+                            "site_confirmed_color"
+                        ]
+                        .fillna("not_site_confirmed")
+                        .value_counts(dropna=False)
+                        .items()
+                    },
+                    "local_max_candidate_color": {
+                        str(status): int(count)
+                        for status, count in site_timeline[
+                            "local_max_candidate_color"
+                        ]
+                        .fillna("no_assessable_candidate")
+                        .value_counts(dropna=False)
+                        .items()
+                    },
+                    "local_attention_status": {
+                        str(status): int(count)
+                        for status, count in site_timeline[
+                            "local_attention_status"
+                        ].value_counts(dropna=False).items()
+                    },
+                }
+                if is_v3
+                else {}
+            ),
         },
         "not_claimed": list(loaded.profile["not_claimed"]),
     }
@@ -2006,6 +2304,7 @@ __all__ = [
     "DEFAULT_PREDICTIONS_PATH",
     "DEFAULT_PROFILE_PATH",
     "DEFAULT_V2_OUTPUT_DIR",
+    "DEFAULT_V3_OUTPUT_DIR",
     "MANIFEST_FILENAME",
     "OOTANG_STATIONS",
     "SITE_TIMELINE_FILENAME",

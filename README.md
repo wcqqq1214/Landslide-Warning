@@ -2,13 +2,14 @@
 
 基于机器学习方法的水库滑坡位移预测与预警研究代码仓库。当前以三峡库区藕塘滑坡日尺度监测数据为例，完成从特征工程、位移预测、状态分类、SHAP 解释、动态阈值到多指标融合预警的端到端流程。
 
-> 2026-07-30 已按导师要求完成藕塘高程感知初跑。原始 GNSS 确认无法取得，因此门禁拆分为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：允许用 Figshare 发布物化日序列和 `station_coords.csv` 完成内部工程案例，但不将其表述为独立原始 GNSS 上的确认性预测或正式预警。
+> 2026-08-01 已按导师要求完成藕塘高程感知初跑及 v3 双轴空间规则。原始 GNSS 确认无法取得，因此门禁拆分为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：允许用 Figshare 发布物化日序列和 `station_coords.csv` 完成内部工程案例，但不将其表述为独立原始 GNSS 上的确认性预测或正式预警。
 
 ## 当前状态
 
 | 模块 | 当前状态 |
 | --- | --- |
-| 藕塘最小初跑管线 | `features → convlstm → ootang-operational-v2` 已在同一运行清单中通过 |
+| 藕塘最小初跑管线 | `features → convlstm → ootang-operational-v3`；v3 仅替换滑坡体空间规则，v2 快照保留 |
+| v3 规则诊断图 | 六个冻结语义代表日自动生成逐点证据、整体/局部双轴和 O1/O2/O3 支撑；属于观测后非正式审计 |
 | 高程感知 ConvLSTM | `elev_m` 经测点标准化和水平 IDW 后作为静态输入通道；当前共 7 个输入通道 |
 | 既有 ConvLSTM 诊断 | 滚动验证、五种子、早停和容量敏感性产物来自加入高程前的 6 通道版本，暂作为历史诊断，不代表当前模型已完成同范围复验 |
 | NGBoost 状态分类 | 当前为动态 V0 当日状态识别，不是未来 onset 预警 |
@@ -26,7 +27,7 @@ uv sync
 uv run python main.py \
   --stage features \
   --stage convlstm \
-  --stage ootang-operational-v2
+  --stage ootang-operational-v3
 ```
 
 该最小链路不会启动 Vajont，也不会运行遗留 NGBoost/旧融合阶段。运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。
@@ -59,6 +60,8 @@ uv run python main.py \
 | `docs/design.md` | 代码架构和模块边界 |
 | `docs/ootang_elevation_prototype_run.md` | 2026-07-30 高程感知初跑方法、结果、完整性与边界 |
 | `docs/ootang_elevation_warning_expert_review.md` | 高程可信性、400 个未确认状态、典型日和空间规则专家审查 |
+| `docs/ootang_operational_run.md` | v1/v2/v3 规则、双轴字段、独立产物目录与非正式边界 |
+| `figures/warning_operational_draft_v3/ootang_v3_typical_days.svg` | v3 六个代表日的逐点证据、双轴等级与空间支撑诊断图 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
 | `docs/ootang_data_lineage_expert_review.md` | 藕塘发布日序列来源、数值指纹与数据闸门 |
 | `figures/README.md` | 每个 PNG/CSV 的用途和保留原则 |
@@ -68,7 +71,7 @@ uv run python main.py \
 - 当前高程感知单次初跑在最后 287 日物化留出段的总体 RMSE 为 `0.338 mm`，持久性基线为 `0.340 mm`，RMSE skill 仅 `0.007`；属于流程跑通，不构成明显性能优势。
 - 与加入高程前的同一单种子快照相比，高程版本总体 RMSE 从约 `0.318 mm` 增至 `0.338 mm`。本轮不根据已查看的 test 结果调节高程尺度、网络或阈值。
 - 高程增加的是静态地形先验和结构可解释性，不自动增加预测证据等级；指定 Word 的物理引导来自稳定性计算和半经验物理位移，不是静态高程或 ConvLSTM。
-- 当前 400 个未空间确认日全部数据完整，均因 yellow+ 证据只位于 O1；v2 的 514 日 site 输出没有 green，且有效点门禁尚未覆盖非绿色分支，下一步先修复空间规则而不调整模型。
+- 当前 400 个未空间确认日全部数据完整，均因 yellow+ 证据只位于 O1；v2 的全局最少有效点门禁缺陷已修复，v3 又把整体确认色与局部最高候选分轴。514 日中整体 green/blue/yellow/orange/red 为 `8/48/31/9/18`，另有 400 日不发布整体颜色；8 个 green 日仍保留 `localized_blue_attention`。
 - NGBoost 当前识别的是当日动态 V0 状态；留出段没有 orange/red 样本，不能评价高等级预警召回。
 - SHAP 解释的是独立 NGBoost，不是 ConvLSTM；其遗留同日 V0 分类标签也不是本轮正式五级预警输出。
 - SHAP 结果描述模型依赖关系，不代表致灾因果关系或预警提前量。

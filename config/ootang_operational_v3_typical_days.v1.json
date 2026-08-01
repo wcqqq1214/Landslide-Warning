@@ -1,0 +1,100 @@
+{
+  "figure_id": "ootang-operational-v3-typical-days",
+  "figure_version": "1.0-draft",
+  "status": "operational_draft",
+  "case": "ootang",
+  "artifact_role": "post_observation_rule_audit_not_performance_evaluation",
+  "formal_warning_output": false,
+  "vajont_used": false,
+  "selection_method": "earliest_date_per_frozen_semantic_rule",
+  "representative_day_rules": [
+    {
+      "rule_id": "unconfirmed_yellow",
+      "label": "unconfirmed yellow",
+      "expected": {
+        "date": "2019-02-03",
+        "split": "calibration",
+        "site_fusion_status": "candidate_not_site_confirmed",
+        "site_confirmed_color": null,
+        "local_max_candidate_color": "yellow",
+        "local_attention_status": "none"
+      }
+    },
+    {
+      "rule_id": "localized_blue_attention",
+      "label": "localized blue",
+      "expected": {
+        "date": "2019-06-30",
+        "split": "calibration",
+        "site_fusion_status": "valid",
+        "site_confirmed_color": "green",
+        "local_max_candidate_color": "blue",
+        "local_attention_status": "localized_blue_attention"
+      }
+    },
+    {
+      "rule_id": "unconfirmed_red",
+      "label": "O1 red cluster",
+      "expected": {
+        "date": "2020-03-06",
+        "split": "test",
+        "site_fusion_status": "candidate_not_site_confirmed",
+        "site_confirmed_color": null,
+        "local_max_candidate_color": "red",
+        "local_attention_status": "none"
+      }
+    },
+    {
+      "rule_id": "confirmed_yellow_local_red",
+      "label": "site yellow / local red",
+      "expected": {
+        "date": "2020-03-09",
+        "split": "test",
+        "site_fusion_status": "valid",
+        "site_confirmed_color": "yellow",
+        "local_max_candidate_color": "red",
+        "local_attention_status": "none"
+      }
+    },
+    {
+      "rule_id": "confirmed_orange",
+      "label": "confirmed orange",
+      "expected": {
+        "date": "2020-06-04",
+        "split": "test",
+        "site_fusion_status": "valid",
+        "site_confirmed_color": "orange",
+        "local_max_candidate_color": "orange",
+        "local_attention_status": "none"
+      }
+    },
+    {
+      "rule_id": "confirmed_red",
+      "label": "confirmed red",
+      "expected": {
+        "date": "2020-06-13",
+        "split": "test",
+        "site_fusion_status": "valid",
+        "site_confirmed_color": "red",
+        "local_max_candidate_color": "red",
+        "local_attention_status": "none"
+      }
+    }
+  ],
+  "figure_contract": {
+    "core_conclusion": "The v3 spatial rule preserves high local candidates while assigning a site-confirmed level only when the configured cross-block support is present.",
+    "archetype": "quantitative_grid",
+    "target_output": "double_column_internal_manuscript_diagnostic",
+    "backend": "python_matplotlib_agg",
+    "final_width_mm": 183,
+    "final_height_mm": 135,
+    "panel_map": {
+      "a": "station_by_day interval evidence",
+      "b": "station_by_day kinematic evidence",
+      "c": "station_by_day delta_v state",
+      "d": "site-confirmed and local-maximum axes",
+      "e": "supporting stations and O1/O2/O3 blocks"
+    },
+    "reviewer_risk": "Selected days are post-observation rule illustrations, not event-independent performance, lead-time, calibration, or formal warning evidence."
+  }
+}

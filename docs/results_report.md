@@ -3,6 +3,8 @@
 > 原始结果快照日期：2026-06-23。2026-07-18 已按当前 `ΔV` 定义重算第 4–5 节的独立 NGBoost SHAP 产物；其余章节仍是原探索性快照。当前后 20% 留出段已用于多轮模型检查，所有结果均属于探索性内部时间验证，不作为最终确认性测试结果。更重要的是，全部结果都相对于 Figshare 发布的物化日建模序列计算；该序列具有强自然月分段三次指纹，原始锚点和生成算法缺失，因此不构成独立原始逐日 GNSS 的确认性预测。ConvLSTM 已计算条件性时间块 95% 置信区间，预警分类与事件指标尚未计算相应区间。
 >
 > **2026-07-30 初跑补充**：导师要求使用 `station_coords.csv` 的高程先跑通藕塘，当前已将 `elev_m` 作为静态网格通道接入 ConvLSTM。最新单次原型的 test RMSE/持久性 RMSE 为 `0.338/0.340 mm`，校准后 P10–P90 覆盖率为 `0.770`；v2 输出 `4112` 个测点—时刻和 `514` 个滑坡体时刻。它仅证明流程完整，且性能较此前无高程单种子快照下降；本文件后续旧数值仍按历史快照理解，当前值以 `figures/convlstm/forecast_run_manifest.json`、CSV 和 `figures/pipeline/latest_run.json` 为准。
+>
+> **2026-08-01 空间规则补充**：v2 全局最少有效点门禁已修复，另生成不覆盖 v2 的双轴 v3 非正式草案。514 日的整体确认色为 green/blue/yellow/orange/red=`8/48/31/9/18`，400 日不发布整体色；局部最高候选仍完整保留，其中 8 个单区 blue 日记为 site green + `localized_blue_attention`。六个冻结语义代表日的逐点证据、双轴与空间支撑已生成可复算图件；它是观测后规则审计。本步骤没有改动模型、V0、区间、运动学阈值或 test，不能解释为正式预警性能提升。
 
 当前 ConvLSTM、NGBoost 和 SHAP permutation explainer 均使用固定随机种子；ConvLSTM 另按预先锁定的种子 0-4 完成优化稳定性和内层时间验证诊断。当前 SHAP 的模型、目标、留出解释样本和边界见 `figures/shap/shap_provenance.json` 与 `figures/shap/stability/cross_fold_protocol.csv`；`figures/pipeline/shap_stability_run.json` 仅是 2026-06-23 的历史运行清单。固定种子用于保证工程复现，多种子分布用于描述初始化敏感性，两者均不增加外部证据强度。
 

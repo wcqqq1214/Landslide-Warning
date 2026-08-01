@@ -60,7 +60,7 @@ formal_warning_output = false
 vajont_used = false
 ```
 
-`prototype_run_gate=allowed` 只授权 `features → convlstm → ootang-operational-v2` 的藕塘内部初跑、逐点状态和非监督空间融合；`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
+`prototype_run_gate=allowed` 只授权 `features → convlstm → ootang-operational-v2/v3` 的藕塘内部初跑、逐点状态和非监督空间融合；`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
 
 ### 决策状态（2026-07-16）
 
@@ -406,7 +406,7 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 为防止“研究管线可以运行”被误读为“本轮正式预警已经生成”，新增[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)作为未来正式执行器的唯一代码接缝。`run_formal_warning()` 先调用 `require_frozen_protocol()`；当前 `1.3-draft` 协议仍有未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`：模块尚未注册实际四指标时间线，且入口不接受任意 callable，不能把旧 V0/融合函数注入为“正式”执行器。
 
-`main.py` 保持可复核，运行清单固定为 `warning_pipeline_scope=research_legacy_and_operational_draft_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`，而新的 `ootang-operational` 阶段单列为 `operational_draft`。`warning_fusion.py`、旧 `threshold_rows()` 及上述历史脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。新增阶段也不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
+`main.py` 保持可复核，运行清单固定为 `warning_pipeline_scope=research_legacy_and_operational_draft_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`，而 `ootang-operational`、`ootang-operational-v2`、`ootang-operational-v3` 分别作为独立 `operational_draft` 阶段。`warning_fusion.py`、旧 `threshold_rows()` 及上述历史脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。新增阶段也不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
 
 完整的模块—产物—用途—禁止用途映射见[`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。旧快照若早于这些字段，仍按该清单解释为历史材料；重新运行旧脚本才会写入新标识。Vajont 不进入本次隔离工作，也不因此获得启动授权。
 
@@ -465,6 +465,16 @@ vajont_used = false
 ```
 
 确认性证据门禁阻断确认性日预测、新的神经消融机理解释、正式 `V0`/速度/`ΔV`/切线角阈值、正式四指标融合和正式预警；原型门禁允许对物化序列的工程检查、使用 `elev_m` 的 ConvLSTM 初跑和明确标为 `operational_draft_not_formal` 的链路演示。原计划的机理性神经消融不执行；只有未来意外取得原始材料或更换为可追溯数据集时，才另建确认性协议。
+
+#### 4.2.14 藕塘 v3 双轴空间草案（2026-08-01）
+
+按专家审查建议，先修复 v2 的全局最少有效点门禁：少于 3 个可评估测点时，blue/yellow/orange/red 也不能返回；同时以兼容测试保留 v2“全分区覆盖只约束 green”的历史语义。当前 514 日均为 8/8 点有效，因此 v2 四份已提交产物 SHA-256 未改变。
+
+新增 [`config/ootang_operational_run.v3.draft.json`](../config/ootang_operational_run.v3.draft.json)、[`code/warning/operational_v3_fusion.py`](../code/warning/operational_v3_fusion.py)、独立运行入口和 `figures/warning_operational_draft_v3/`。v3 复用 v2 的高程感知预测、fit-only 参数、区间/速度/切线角/`ΔV`、测点证据族与 O1/O2/O3，只替换滑坡体空间决策：所有 site 颜色先要求至少 3 点并覆盖三个分区；blue 也要求至少 2 点跨 2 区；未确认 yellow--red 保留 `candidate_not_site_confirmed`；孤立/单区 blue 输出 site green 并另记 `localized_blue_attention`；同时输出 `site_confirmed_level` 与 `local_max_candidate_level`。
+
+v3 的 514 日状态仍为 `valid=114`、`candidate_not_site_confirmed=400`；整体确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 400 日不发布整体色；局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`。测点时间线和阈值表除 profile ID/version 外与 v2 逐单元格一致。本步骤没有调整模型、test、V0 或任何阈值，也没有读取或启动 Vajont；全部输出仍为 `operational_draft_not_formal`。
+
+为完成规则理由审查，新增冻结图件配置和可复算的典型日图。程序按六类语义规则选取最早满足日，并冻结当前日期/状态预期；图中并排显示 8 点的 interval、kinematic、`ΔV`，以及 `site_confirmed`/`local_max` 双轴、确认支撑和 O1/O2/O3。SVG/PDF/PNG 与独立 manifest 只有在核心运行清单、CSV 和实现源码指纹匹配后才原子提升；图件固定标为观测后规则示例，不能替代全时序统计或前瞻验证。
 
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
@@ -818,13 +828,13 @@ site_fusion_rule_version, contributing_stations, integration_reason
 4. 将 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked` 同步到方法、结果、限制和图表说明；
 5. 完成高程可信性、400 个未空间确认状态和典型状态日的专家审查，见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
 
-### 审查后可以立即处理
+### 审查后已处理
 
-1. 修复 v2 的全局有效测点覆盖门禁：`minimum_assessable_station_count=3` 必须先于 blue/yellow/orange/red 返回执行，并增加“仅 2 个有效跨区 yellow 点”的反例测试；
-2. 保留 v2 快照，单独形成 v3 空间规则草案；滑坡体级同时输出跨区确认等级和局部最高候选；
-3. 在 v3 中重新冻结 green/blue 语义，使 green 可以代表覆盖完整的正常状态，同时不把单区 yellow–red 静默并入 green 或降为 blue；
-4. 规则修改只解决覆盖和输出语义，不调整高程、ConvLSTM、V0、区间边界或 test 结果；
-5. 完成上述工程修复后，再决定继续使用藕塘作为原型，还是为最终论文选择并审计新数据集。
+1. [x] 修复 v2 的全局有效测点覆盖门禁，并加入“仅 2 个有效跨区 yellow 点”反例测试；
+2. [x] 保留 v2 快照，单独形成 v3 空间规则草案，同时输出跨区确认等级和局部最高候选；
+3. [x] 在 v3 中冻结当前 green/blue 原型语义，不把单区 yellow–red 静默并入 green 或降为 blue；
+4. [x] 规则修改只涉及覆盖和输出语义；测点指标和阈值表与 v2 的非 profile 字段逐单元格一致；
+5. [ ] 决定继续使用藕塘作为原型，还是为最终论文选择并审计新数据集。
 
 ### 正式结果前必须冻结
 
@@ -861,6 +871,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [x] 初跑结果诚实报告：总体 RMSE `0.338 mm`、持久性 `0.340 mm`、RMSE skill `0.007`；加入高程未显示明显性能优势，未据 test 结果继续调参；
 - [x] 已完成代码审查、Git 跟踪的全部 141 项测试、文档同步与代码提交，并基于提交 `a01f061` 重跑最小链和核对产物哈希。
 - [x] 已复核 400 个未空间确认日和典型状态日：全部数据完整、候选只位于 O1，且 yellow–red 严重度由区间状态主导；高程只记为地形先验，不升级为已验证的物理约束。
+- [x] 已修复 v2 全局最少有效点门禁，并生成不覆盖 v2 的 v3 双轴空间产物；v3 全部保持非正式且没有启动 Vajont。
 
 ## 9. 最终论文完成定义
 

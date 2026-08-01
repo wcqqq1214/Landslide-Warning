@@ -1,21 +1,21 @@
 # 项目工作进度
 
-> 更新日期：2026-07-30。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。
+> 更新日期：2026-08-01。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。
 
 ## 当前阶段
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
 | 历史十三阶段统一管线 | 已完成（加入高程前的历史快照） | 旧运行记录中的 13/13 阶段与产物哈希；不代表当前高程感知模型已重跑全部历史诊断 |
-| 藕塘高程感知最小链路 | 已完成初跑 | `features → convlstm → ootang-operational-v2` 三阶段成功，见 `figures/pipeline/latest_run.json` |
+| 藕塘高程感知最小链路 | 已完成初跑；v3 已独立复算 | v2 三阶段运行清单保留；v3 产物见 `figures/warning_operational_draft_v3/` |
 | 代码目录按研究流程分组 | 已完成 | `code/features/`、`code/warning/`、`code/explainability/`、`code/convlstm/`；入口路径已在 `main.py`、`README.md` 和 `docs/design.md` 同步 |
 | ConvLSTM 高程静态通道 | 已完成初跑 | `elev_m` 标准化后经水平 IDW 形成静态网格；`figures/convlstm/forecast_run_manifest.json` 记录坐标哈希和处理方法 |
 | ConvLSTM 日历后置校准 | 已完成（当前单次初跑） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 扩展窗口/种子/早停/容量诊断 | 历史 6 通道版本已完成；当前 7 通道版本未复跑 | 原有 `rolling_*`、`seed_*`、`inner_validation_*`、`capacity_*` 仅作加入高程前的历史对照 |
 | 高程与空间预警专家审查 | 已完成 | `docs/ootang_elevation_warning_expert_review.md`；400 日成因、典型日、指定 Word 方法边界及高程可信性已核对 |
-| v2 空间融合覆盖门禁 | 待修复（P0） | 当前数据未触发；`minimum_assessable_station_count=3` 尚未门禁 blue/yellow/orange/red 分支 |
-| 滑坡体 green/blue 语义 | 待形成 v3 草案（P0） | v2 的 514 日 green=0；需保留局部最高候选并重新冻结跨区 blue 与正常状态 |
+| v2 空间融合覆盖门禁 | 已修复 | `minimum_assessable_station_count=3` 先于全部颜色执行；2 个跨区 yellow 点反例及 v2 兼容语义均有测试 |
+| 滑坡体 green/blue 语义 | v3 草案已实现并复算 | 双轴输出整体确认等级与局部最高候选；green `8`、blue `48`，局部 blue 关注 `8` 日 |
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
 | 新神经调参/机理消融与正式日预测 | 暂停 | 高程通道是导师要求的工程输入，不以 test 结果优化；自然月分段三次结构仍限制确认性解释 |
@@ -31,6 +31,16 @@
 5. 当前物化序列和留出时段已参与多轮分析，且上游生成独立性未知；滚动结果仅作探索性内部时间验证，不作为外部确认性证据。
 
 > 本节记录加入高程前的历史验证协议。2026-07-30 的 7 通道高程感知版本只完成最小链路初跑，尚未重跑本节全部折、种子和容量诊断。
+
+## 2026-08-01 v3 空间规则实施记录
+
+- 修复 v2 的 P0 覆盖门禁：少于 3 个可评估测点时，任何 site 颜色都不能返回；v2 的“全分区仅约束 green”历史语义保持不变，当前 v2 四份产物 SHA-256 未改变。
+- 新增独立 `ootang-operational-spatial-v3` 配置、融合模块、运行入口和 `figures/warning_operational_draft_v3/`，没有覆盖 v1/v2。
+- v3 将 `site_confirmed_level` 与 `local_max_candidate_level` 分轴。所有 site 颜色先要求至少 3 点并覆盖 O1/O2/O3；blue 也要求至少 2 点跨 2 区；未确认 yellow–red 不降级；孤立/单区 blue 记为 site green + `localized_blue_attention`。
+- 514 日仍有 `valid=114`、`candidate_not_site_confirmed=400`；整体确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 400 日不发布整体颜色；局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`。
+- v3 的 4112 条测点时间线和 8 条阈值表除 profile ID/version 外与 v2 逐单元格一致；这次只改空间决策，不改高程、ConvLSTM、V0、区间、速度、切线角、`ΔV`、切分或 test 结果。
+- 已将六个冻结语义的代表日诊断纳入同一 v3 阶段，输出可编辑 SVG、PDF、300 dpi PNG 与 provenance manifest；图中未确认 site 显式为 `NC`，并逐日列出确认支撑、局部最高测点和 O1/O2/O3。
+- 所有 v3 产物继续标记 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`。
 
 ## 2026-07-30 高程感知初跑记录
 
@@ -58,7 +68,7 @@
 - 在相同 `11400` 个预测键、观测和 persistence 下，高程版相对无高程单种子快照的 test RMSE/MAE 分别增加 `0.0196/0.0158 mm`；14 日配对块重采样的差值区间均高于 0。由于 test 已查看且只有单种子，该结果只是否定当前已显示提升，不构成确认性消融。
 - 400 个未空间确认日全部为 8/8 测点和 3/3 分区有效，并非缺失：`189` 日不足 2 个 yellow+ 点，`211` 日已经达到至少 2 点但仍全部位于 O1。
 - 对应 `755` 条 O1 yellow+ 测点记录的候选等级全部由区间指标决定；当前 orange/red 不能解释为速度或切线角达到同级。
-- v2 的 514 日 site 输出没有 green，说明“任一 blue 即 site blue、8 点全 green 才 site green”不适合把绿色作为常态。下一步先修复全局有效点门禁，再单独形成保留局部最高候选的 v3 green/blue 空间草案。
+- v2 的 514 日 site 输出没有 green，说明“任一 blue 即 site blue、8 点全 green 才 site green”不适合把绿色作为常态；该审查建议已于 2026-08-01 通过全局门禁修复和独立 v3 双轴草案落实。
 - 本轮没有调整阈值、模型或 test，也没有读取或启动 Vajont。
 
 ## 2026-07-28 数据血缘审查记录
@@ -69,7 +79,7 @@
 - Figshare 的 11 个公开 notebook 没有生成该结构的代码，也没有公开原始 GNSS/GWT 锚点、日值处理链或 MJ/ATU 映射。
 - 原始数据恢复现已确认不作为当前可执行路线；历史事实仍保留。
 - 当前 `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`、`formal_warning_output=false`、`vajont_used=false`；计划中的机理性神经消融仍暂停。
-- 典型状态日和结果可解释性审查已经完成；下一步先修复 v2 全局有效点门禁并形成不覆盖 v2 的 v3 green/blue 草案，再等待最终论文数据集选择。若换数据集，重新建立数据契约和确认性验证协议。
+- 典型状态日和结果可解释性审查已经完成；v2 门禁与不覆盖 v2 的 v3 green/blue 双轴草案也已完成。下一步等待最终论文数据集选择；若换数据集，重新建立数据契约和确认性验证协议。
 
 ## 本轮完成门槛
 

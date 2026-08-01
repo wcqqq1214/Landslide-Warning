@@ -1,0 +1,289 @@
+{
+  "profile_id": "ootang-operational-spatial-v3",
+  "profile_version": "3.0-draft",
+  "status": "operational_draft",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "run_scope": "mentor_requested_ootang_dual_axis_spatial_review_not_a_formal_warning_result",
+  "authorization_context": {
+    "date": "2026-08-01",
+    "decision": "Preserve v2 and run a separately versioned Ootang v3 operational draft that separates whole-body confirmation from the highest local candidate and applies the global coverage gate before every site colour.",
+    "boundary": "This profile changes only the site-level spatial decision rule. It does not change the elevation-aware ConvLSTM, forecast split, interval thresholds, velocity comparator, tangent-angle mapping, delta-V rule, or station evidence-family fusion. It does not start or use Vajont."
+  },
+  "base_draft_protocol": {
+    "path": "ootang_warning_protocol.v1.draft.json",
+    "expected_protocol_id": "ootang-five-level-rule-v1",
+    "expected_protocol_version": "1.3-draft",
+    "expected_case": "ootang",
+    "expected_status": "draft",
+    "expected_protocol_content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "expected_unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ]
+  },
+  "ootang_stations": [
+    "ATU1",
+    "ATU2",
+    "ATU3",
+    "ATU4",
+    "ATU5",
+    "MJ1",
+    "MJ3",
+    "MJ9"
+  ],
+  "parameter_fit_splits": [
+    "fit"
+  ],
+  "result_splits": [
+    "calibration",
+    "test"
+  ],
+  "velocity_baseline": {
+    "source": "raw_velocity_kmeans_comparator",
+    "candidate_status": "draft_candidate_not_formal",
+    "candidate_method_id": "raw_velocity_kmeans_initial_low_speed_prefix",
+    "candidate_method_role": "project_specific_comparator_not_specified_word_v0_implementation",
+    "selection_status": "selected",
+    "source_boundary": "The specified Word thesis requires an MVIF-trend initial stable slope. Current strict MVIF fits fail, so this remains an explicitly project-specific operational comparator only.",
+    "blue_band": {
+      "method": "configured_comparator_v0_plus_scaled_sigma",
+      "lower": {
+        "kind": "v0_plus_sigma",
+        "sigma_multiplier": -1
+      },
+      "upper": {
+        "kind": "v0_plus_sigma",
+        "sigma_multiplier": 1
+      }
+    },
+    "mapping": [
+      {
+        "label": "green",
+        "upper": {
+          "kind": "blue_lower"
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "blue",
+        "lower": {
+          "kind": "blue_lower"
+        },
+        "lower_inclusive": true,
+        "upper": {
+          "kind": "blue_upper"
+        },
+        "upper_inclusive": true
+      },
+      {
+        "label": "yellow",
+        "lower": {
+          "kind": "blue_upper"
+        },
+        "lower_inclusive": false,
+        "upper": {
+          "kind": "v0_multiple",
+          "multiple": 5
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "orange",
+        "lower": {
+          "kind": "v0_multiple",
+          "multiple": 5
+        },
+        "lower_inclusive": true,
+        "upper": {
+          "kind": "v0_multiple",
+          "multiple": 10
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "red",
+        "lower": {
+          "kind": "v0_multiple",
+          "multiple": 10
+        },
+        "lower_inclusive": true
+      }
+    ]
+  },
+  "delta_v": {
+    "source": "selected_stable_segment_fit_rows_only",
+    "tolerance": {
+      "method": "1.4826_times_median_absolute_deviation_about_segment_delta_v_median",
+      "scale": 1.4826,
+      "state_center": 0,
+      "minimum_absolute_tolerance": 1e-12
+    },
+    "mapping": [
+      {
+        "label": "negative",
+        "upper": {
+          "kind": "state_center_minus_tau"
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "near_zero",
+        "lower": {
+          "kind": "state_center_minus_tau"
+        },
+        "lower_inclusive": true,
+        "upper": {
+          "kind": "state_center_plus_tau"
+        },
+        "upper_inclusive": true
+      },
+      {
+        "label": "positive",
+        "lower": {
+          "kind": "state_center_plus_tau"
+        },
+        "lower_inclusive": false
+      }
+    ]
+  },
+  "tangent_angle": {
+    "formula": {
+      "kind": "atan_velocity_over_v0_degrees"
+    },
+    "blue_band": {
+      "lower": {
+        "kind": "angle_from_velocity_blue_lower"
+      },
+      "upper": {
+        "kind": "angle_from_velocity_blue_upper"
+      }
+    },
+    "mapping": [
+      {
+        "label": "green",
+        "upper": {
+          "kind": "blue_lower"
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "blue",
+        "lower": {
+          "kind": "blue_lower"
+        },
+        "lower_inclusive": true,
+        "upper": {
+          "kind": "blue_upper"
+        },
+        "upper_inclusive": true
+      },
+      {
+        "label": "yellow",
+        "lower": {
+          "kind": "blue_upper"
+        },
+        "lower_inclusive": false,
+        "upper": {
+          "kind": "absolute_degrees",
+          "value": 80
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "orange",
+        "lower": {
+          "kind": "absolute_degrees",
+          "value": 80
+        },
+        "lower_inclusive": true,
+        "upper": {
+          "kind": "absolute_degrees",
+          "value": 85
+        },
+        "upper_inclusive": false
+      },
+      {
+        "label": "red",
+        "lower": {
+          "kind": "absolute_degrees",
+          "value": 85
+        },
+        "lower_inclusive": true
+      }
+    ],
+    "nonregular_handling": {
+      "action": "not_applicable",
+      "required_time_status": "valid",
+      "required_dt_days": 1
+    }
+  },
+  "station_fusion": {
+    "implementation": "warning.operational_v2_fusion.fuse_station_evidence_families",
+    "required_input_policy": "all_four_inputs_must_be_valid",
+    "kinematic_family": {
+      "members": [
+        "velocity",
+        "tangent_angle"
+      ],
+      "combine": "max_level_one_evidence_family",
+      "independence_policy": "not_independent_not_two_votes"
+    },
+    "positive_delta_v_role": "acceleration_qualifier_only_no_ordinal_color_escalation",
+    "single_family_elevation_policy": "visible_assessable_candidate_not_missing"
+  },
+  "site_fusion": {
+    "implementation": "warning.operational_v3_fusion.fuse_site_spatial_blocks_v3",
+    "spatial_blocks": {
+      "O1": [
+        "MJ9",
+        "MJ1",
+        "MJ3"
+      ],
+      "O2": [
+        "ATU4",
+        "ATU5",
+        "ATU3"
+      ],
+      "O3": [
+        "ATU2",
+        "ATU1"
+      ]
+    },
+    "spatial_blocks_source": {
+      "citation": "Wang, J., Zhu, H.-H., Zhang, W., Tan, D.-Y., & Pasuto, A. (2025). Enhancing Landslide Displacement Prediction Using a Spatio-Temporal Deep Learning Model With Interpretable Features. Journal of Geophysical Research: Machine Learning and Computation, 2, e2025JH000592.",
+      "doi": "10.1029/2025JH000592",
+      "source_file": "../literature/Journal of Geophysical Research  Machine Learning and Computation - 2025 - Wang - Enhancing Landslide Displacement.pdf",
+      "source_file_sha256": "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
+      "pdf_page": 7,
+      "figure": "Figure 4(a, d)",
+      "section": "5.2 Adjacency Matrix Construction",
+      "scope": "This source supports only the Ootang GNSS spatial-block topology O1/O2/O3. It does not prescribe this project's site-warning support counts, color fusion, or formal warning thresholds."
+    },
+    "minimum_assessable_station_count": 3,
+    "require_all_blocks_for_any_site_level": true,
+    "minimum_supporting_stations": 2,
+    "minimum_supporting_blocks": 2,
+    "higher_confirmation_minimum_level": "yellow",
+    "blue_site_policy": "two_station_two_block_or_green_with_localized_blue_attention",
+    "higher_unconfirmed_candidate_policy": "visible_candidate_not_site_confirmed_not_downgraded",
+    "candidate_not_confirmed_policy": "visible_candidate_not_site_confirmed",
+    "dual_axis_output": {
+      "site_axis": "site_confirmed_level",
+      "local_axis": "local_max_candidate_level"
+    }
+  },
+  "not_claimed": [
+    "formal_warning_output",
+    "specified_word_thesis_MVIF_V0_implementation",
+    "specified_word_thesis_multinomial_logistic_fusion",
+    "supervised_warning_classifier_performance",
+    "Vajont_external_case",
+    "test_period_parameter_selection"
+  ]
+}

@@ -91,6 +91,46 @@ class OperationalV2StationFusionTests(unittest.TestCase):
 
 
 class OperationalV2SpatialSiteFusionTests(unittest.TestCase):
+    def test_non_green_site_result_requires_minimum_assessable_station_coverage(self):
+        results = {
+            "MJ9": _station(interval=WarningLevel.YELLOW),
+            "ATU4": _station(interval=WarningLevel.YELLOW),
+        }
+
+        result = fuse_site_spatial_blocks(
+            results,
+            blocks=BLOCKS,
+            minimum_assessable_station_count=3,
+            require_all_blocks_for_green=True,
+            minimum_supporting_stations=2,
+            minimum_supporting_blocks=2,
+        )
+
+        self.assertEqual(result.status, "insufficient_assessable_coverage")
+        self.assertIsNone(result.level)
+        self.assertEqual(result.candidate_level, WarningLevel.YELLOW)
+        self.assertEqual(result.assessable_station_count, 2)
+
+    def test_v2_keeps_all_block_coverage_as_a_green_only_requirement(self):
+        results = {
+            "MJ9": _station(interval=WarningLevel.YELLOW),
+            "MJ1": _station(),
+            "ATU4": _station(interval=WarningLevel.YELLOW),
+        }
+
+        result = fuse_site_spatial_blocks(
+            results,
+            blocks=BLOCKS,
+            minimum_assessable_station_count=3,
+            require_all_blocks_for_green=True,
+            minimum_supporting_stations=2,
+            minimum_supporting_blocks=2,
+        )
+
+        self.assertEqual(result.status, "valid")
+        self.assertEqual(result.level, WarningLevel.YELLOW)
+        self.assertFalse(result.coverage_complete)
+
     def test_same_block_red_candidates_do_not_confirm_a_whole_body_red_alert(self):
         results = {
             "MJ9": _station(interval=WarningLevel.RED, delta_v="positive"),
