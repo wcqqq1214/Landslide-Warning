@@ -70,6 +70,92 @@ class OperationalV2StationFusionTests(unittest.TestCase):
             "interval_only_accelerating",
         )
 
+    def test_three_state_delta_v_changes_signal_but_never_candidate_color(self):
+        results = {
+            state: _station(
+                interval=WarningLevel.YELLOW,
+                velocity=WarningLevel.BLUE,
+                tangent=WarningLevel.YELLOW,
+                delta_v=state,
+            )
+            for state in ("negative", "near_zero", "positive")
+        }
+
+        self.assertEqual(
+            {result.candidate_level for result in results.values()},
+            {WarningLevel.YELLOW},
+        )
+        self.assertEqual(
+            {result.kinematic_level for result in results.values()},
+            {WarningLevel.YELLOW},
+        )
+        self.assertEqual(
+            {state: result.trend_component for state, result in results.items()},
+            {
+                "negative": "delta_v_negative",
+                "near_zero": "delta_v_near_zero",
+                "positive": "delta_v_positive",
+            },
+        )
+        self.assertEqual(
+            {state: result.transition_status for state, result in results.items()},
+            {
+                "negative": "velocity_decreasing",
+                "near_zero": "velocity_near_steady",
+                "positive": "velocity_increasing",
+            },
+        )
+        self.assertEqual(
+            {
+                state: result.evidence_consistency_status
+                for state, result in results.items()
+            },
+            {
+                "negative": "countertrend_to_elevated_kinematic",
+                "near_zero": "neutral_with_elevated_kinematic",
+                "positive": "corroborates_elevated_kinematic",
+            },
+        )
+        self.assertEqual(
+            len({result.composite_signal for result in results.values()}),
+            3,
+        )
+        self.assertEqual(len({result.reason for result in results.values()}), 3)
+        self.assertEqual(
+            results["positive"].composite_signal,
+            "candidate_yellow__interval_yellow__velocity_blue__"
+            "tangent_yellow__kinematic_yellow__delta_v_positive__"
+            "corroborates_elevated_kinematic",
+        )
+        self.assertEqual(
+            results["positive"].reason,
+            "interval_and_kinematic_elevated;delta_v=positive;"
+            "transition=velocity_increasing;"
+            "consistency=corroborates_elevated_kinematic",
+        )
+
+    def test_delta_v_consistency_is_descriptive_when_kinematics_are_green(self):
+        results = {
+            state: _station(delta_v=state)
+            for state in ("negative", "near_zero", "positive")
+        }
+
+        self.assertEqual(
+            {
+                state: result.evidence_consistency_status
+                for state, result in results.items()
+            },
+            {
+                "negative": "negative_trend_with_green_kinematic",
+                "near_zero": "consistent_green_and_near_steady_kinematic",
+                "positive": "positive_trend_without_elevated_kinematic",
+            },
+        )
+        for state, result in results.items():
+            self.assertEqual(result.candidate_level, WarningLevel.GREEN)
+            self.assertIn(f"delta_v_{state}", result.composite_signal)
+            self.assertIn(f"delta_v={state}", result.reason)
+
     def test_single_family_anomaly_remains_a_visible_assessable_candidate(self):
         result = _station(interval=WarningLevel.RED)
 

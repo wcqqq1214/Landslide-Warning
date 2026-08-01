@@ -1,0 +1,212 @@
+{
+  "artifact_kind": "ootang_operational_v3_all_station_combined_diagnostic",
+  "artifact_role": "observed_after_forecast_all_station_combined_diagnostic",
+  "artifact_status": "operational_draft_not_formal",
+  "case": "ootang",
+  "display_layout": {
+    "station_blocks": {
+      "ATU1": "O3",
+      "ATU2": "O3",
+      "ATU3": "O2",
+      "ATU4": "O2",
+      "ATU5": "O2",
+      "MJ1": "O1",
+      "MJ3": "O1",
+      "MJ9": "O1"
+    },
+    "station_grid": "four_rows_by_two_columns",
+    "station_order": [
+      "MJ9",
+      "MJ1",
+      "MJ3",
+      "ATU4",
+      "ATU5",
+      "ATU3",
+      "ATU2",
+      "ATU1"
+    ],
+    "strip_labels": [
+      "I",
+      "V",
+      "ΔV",
+      "T",
+      "F"
+    ],
+    "strip_order": [
+      "interval_level",
+      "velocity_level",
+      "delta_v_trend",
+      "tangent_angle_level",
+      "final_candidate_level"
+    ]
+  },
+  "field_mappings": {
+    "cumulative_displacement": "actual",
+    "delta_v_trend": "delta_v_state",
+    "final_candidate_level": "candidate_level",
+    "interval_level": "interval_level",
+    "tangent_angle_level": "tangent_angle_level",
+    "velocity_level": "velocity_level"
+  },
+  "figure_spec": {
+    "figure_contract": {
+      "archetype": "four_by_two_station_small_multiples_with_categorical_strips",
+      "backend": "python_matplotlib_agg",
+      "core_conclusion": "For every Ootang station and every v3 result date, cumulative displacement and the four indicator states remain visually aligned with the final candidate state.",
+      "final_height_mm": 230,
+      "final_width_mm": 183,
+      "reviewer_risk": "The categorical states use the target-date observation after forecast issuance; this diagnostic does not establish warning lead time, event-independent performance, or formal warning validity.",
+      "station_layout": "four_rows_by_two_columns",
+      "strip_order": [
+        "interval_level",
+        "velocity_level",
+        "delta_v_trend",
+        "tangent_angle_level",
+        "final_candidate_level"
+      ],
+      "target_output": "full_page_internal_manuscript_diagnostic"
+    },
+    "id": "ootang-operational-v3-station-combined-diagnostic",
+    "path": "config/ootang_operational_v3_station_diagnostic.v1.json",
+    "sha256": "98773340f69598e80b97f2e413eb1984cdff8b65d2362de81a33a742b55b2146",
+    "version": "1.0-draft"
+  },
+  "formal_warning_output": false,
+  "implementation_sources": {
+    "renderer": {
+      "path": "code/warning/operational_v3_station_diagnostic.py",
+      "sha256": "89b25345b12880075295baa8087861f57a002a142435e6127d0c951be4e2eae3"
+    },
+    "shared_figure_support": {
+      "path": "code/warning/operational_v3_figure_support.py",
+      "sha256": "e7a562400dc795d193d7c65d695e2da4bbfaa9cfa3a007b93228566dc5abab44"
+    }
+  },
+  "not_claimed": [
+    "formal_warning_output",
+    "warning_lead_time",
+    "event_independent_warning_performance",
+    "causal_driver_attribution",
+    "Vajont_external_case"
+  ],
+  "observation_timing": {
+    "meaning": "Each categorical state is assigned after the target-date observation is available; no warning lead time is claimed.",
+    "status": "observed_after_forecast"
+  },
+  "operational_profile": {
+    "content_sha256": "c75288960d506e2b6df126663993e1cafa221ba005770016e3918245be8d8b07",
+    "id": "ootang-operational-spatial-v3",
+    "path": "config/ootang_operational_run.v3.draft.json",
+    "version": "3.0-draft"
+  },
+  "outputs": {
+    "pdf": {
+      "n_bytes": 58071,
+      "path": "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.pdf",
+      "sha256": "abbe0fd69b6f29b4209ba4e41dabb258bfdbe8fd317745a5e84b1430d2b14857"
+    },
+    "png": {
+      "n_bytes": 236851,
+      "path": "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.png",
+      "sha256": "522e189938f617b1fb5e83980eba39410ce90d8a2d83e97113b66deab932b9d0"
+    },
+    "svg": {
+      "n_bytes": 67258,
+      "path": "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg",
+      "sha256": "b91601bfd69b83d6319166ab7fe168395a024bf1e5d65281e52d0ca80e6e7e48"
+    }
+  },
+  "plot_data_sha256": "03afa9ff80162fce094753351352af72c01b3f405941d38140d01c4dd68a640d",
+  "rendering": {
+    "backend": "agg",
+    "height_mm": 230,
+    "matplotlib_version": "3.10.9",
+    "palette": {
+      "delta_v_states": {
+        "near_zero": "#D7D7D7",
+        "negative": "#6B8FB3",
+        "positive": "#C96A62"
+      },
+      "warning_levels": {
+        "blue": "#4C78A8",
+        "green": "#6FA86B",
+        "orange": "#DF8C3F",
+        "red": "#C44E52",
+        "yellow": "#E8C95A"
+      }
+    },
+    "png_dpi": 300,
+    "python_version": "3.10.20",
+    "svg_text_editable": true,
+    "width_mm": 183
+  },
+  "schema_version": "ootang_operational_v3_station_combined_figure_v1",
+  "source_inputs": {
+    "core_run_manifest": {
+      "path": "figures/warning_operational_draft_v3/ootang_operational_run_manifest.json",
+      "sha256": "8d1206f1e37dd0921b152ab941897957e2a7bbb241631941e8ff73825a82cf27"
+    },
+    "site_timeline": {
+      "core_manifest_match": true,
+      "displayed": false,
+      "path": "figures/warning_operational_draft_v3/ootang_operational_site_timeline.csv",
+      "role": "core_run_provenance_validation_only",
+      "sha256": "b12d437dc0a229da77446833e070b4747461dcff49b65cedbd2b1aff5703cc0a"
+    },
+    "station_timeline": {
+      "core_manifest_match": true,
+      "displayed": true,
+      "n_rows": 4112,
+      "path": "figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv",
+      "sha256": "27e5a809b960e4a5070531ba4cce0fbf78c22926826ef6464390f3e944270bcf"
+    }
+  },
+  "state_counts": {
+    "candidate_level": {
+      "blue": 1893,
+      "green": 1122,
+      "orange": 276,
+      "red": 350,
+      "yellow": 471
+    },
+    "delta_v_state": {
+      "near_zero": 2732,
+      "negative": 540,
+      "positive": 840
+    },
+    "interval_level": {
+      "blue": 1890,
+      "green": 1125,
+      "orange": 276,
+      "red": 350,
+      "yellow": 471
+    },
+    "tangent_angle_level": {
+      "blue": 595,
+      "green": 3441,
+      "orange": 0,
+      "red": 0,
+      "yellow": 76
+    },
+    "velocity_level": {
+      "blue": 595,
+      "green": 3441,
+      "orange": 0,
+      "red": 0,
+      "yellow": 76
+    }
+  },
+  "timeline_coverage": {
+    "complete_station_date_grid": true,
+    "date_count": 514,
+    "end_date": "2020-06-30",
+    "splits": [
+      "calibration",
+      "test"
+    ],
+    "start_date": "2019-02-03",
+    "station_count": 8,
+    "station_row_count": 4112
+  },
+  "vajont_used": false
+}

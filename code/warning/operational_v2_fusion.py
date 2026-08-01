@@ -4,8 +4,8 @@ The implementation is intentionally separate from the original two-support
 draft rule.  It is an auditable operational alternative for the Ootang case:
 
 * velocity and tangent angle are one kinematic evidence family, not two votes;
-* interval deviation, kinematic intensity, and acceleration are reported as
-  distinct dimensions;
+* interval deviation, kinematic intensity, and the signed delta-V trend are
+  reported as distinct dimensions;
 * a high single-station candidate remains visible instead of becoming missing;
 * whole-body confirmation requires spatial support across predeclared blocks.
 
@@ -26,6 +26,16 @@ from warning.spatial_blocks import normalise_spatial_blocks
 INPUT_STATUSES = ("valid", "warmup", "invalid", "not_applicable")
 DELTA_V_STATES = ("negative", "near_zero", "positive")
 _NONVALID_STATUS_PRECEDENCE = ("invalid", "not_applicable", "warmup")
+_TREND_COMPONENT_BY_DELTA_V = {
+    "negative": "delta_v_negative",
+    "near_zero": "delta_v_near_zero",
+    "positive": "delta_v_positive",
+}
+_TRANSITION_STATUS_BY_DELTA_V = {
+    "negative": "velocity_decreasing",
+    "near_zero": "velocity_near_steady",
+    "positive": "velocity_increasing",
+}
 
 
 def _normalise_level(value: int | WarningLevel | None, *, name: str) -> WarningLevel:
@@ -76,6 +86,10 @@ class StationEvidenceResult:
     kinematic_level: WarningLevel | None
     evidence_families: tuple[str, ...]
     acceleration_status: str | None
+    trend_component: str | None
+    transition_status: str | None
+    evidence_consistency_status: str | None
+    composite_signal: str | None
     confirmation_status: str
     reason: str
     input_statuses: tuple[tuple[str, str], ...]
@@ -123,8 +137,30 @@ class StationEvidenceResult:
             "evidence_families": ";".join(self.evidence_families),
             "evidence_family_count": self.evidence_family_count,
             "acceleration_status": self.acceleration_status,
+            "trend_component": self.trend_component,
+            "transition_status": self.transition_status,
+            "evidence_consistency_status": self.evidence_consistency_status,
+            "composite_warning_signal": self.composite_signal,
             "station_confirmation_status": self.confirmation_status,
         }
+
+
+def _trend_consistency(
+    *, delta_v_state: str, kinematic_level: WarningLevel
+) -> str:
+    """Describe, without ordinal voting, how Δv relates to kinematic level."""
+
+    if kinematic_level > WarningLevel.GREEN:
+        return {
+            "negative": "countertrend_to_elevated_kinematic",
+            "near_zero": "neutral_with_elevated_kinematic",
+            "positive": "corroborates_elevated_kinematic",
+        }[delta_v_state]
+    return {
+        "negative": "negative_trend_with_green_kinematic",
+        "near_zero": "consistent_green_and_near_steady_kinematic",
+        "positive": "positive_trend_without_elevated_kinematic",
+    }[delta_v_state]
 
 
 def fuse_station_evidence_families(
@@ -137,9 +173,11 @@ def fuse_station_evidence_families(
 ) -> StationEvidenceResult:
     """Fuse interval and one kinematic family without double-counting.
 
-    ``delta_v`` supplies an acceleration qualifier only.  It never changes the
-    ordinal candidate color, which is the maximum of interval deviation and
-    kinematic intensity.
+    ``delta_v`` supplies a signed velocity-increment qualifier only.  It never
+    changes the ordinal candidate color, which is the maximum of interval
+    deviation and kinematic intensity.  Its three states remain visible as a
+    stateless velocity-transition component and as descriptive consistency
+    with the kinematic family; neither field is an additional vote.
     """
 
     values = {
@@ -158,6 +196,10 @@ def fuse_station_evidence_families(
                 kinematic_level=None,
                 evidence_families=(),
                 acceleration_status=None,
+                trend_component=None,
+                transition_status=None,
+                evidence_consistency_status=None,
+                composite_signal=None,
                 confirmation_status=f"{nonvalid}_input",
                 reason=f"{nonvalid}_input",
                 input_statuses=statuses,
@@ -175,6 +217,12 @@ def fuse_station_evidence_families(
         if level > WarningLevel.GREEN
     )
     acceleration = "accelerating" if delta_state == "positive" else "not_accelerating"
+    trend_component = _TREND_COMPONENT_BY_DELTA_V[delta_state]
+    transition_status = _TRANSITION_STATUS_BY_DELTA_V[delta_state]
+    consistency = _trend_consistency(
+        delta_v_state=delta_state,
+        kinematic_level=kinematic,
+    )
 
     if candidate == WarningLevel.GREEN:
         confirmation = f"all_evidence_green_{acceleration}"
@@ -185,14 +233,34 @@ def fuse_station_evidence_families(
     else:
         confirmation = f"kinematic_only_{acceleration}"
 
+    composite_signal = "__".join(
+        (
+            f"candidate_{candidate.color}",
+            f"interval_{interval.color}",
+            f"velocity_{velocity.color}",
+            f"tangent_{tangent.color}",
+            f"kinematic_{kinematic.color}",
+            f"delta_v_{delta_state}",
+            consistency,
+        )
+    )
+    reason = (
+        f"{confirmation};delta_v={delta_state};"
+        f"transition={transition_status};consistency={consistency}"
+    )
+
     return StationEvidenceResult(
         status="valid",
         candidate_level=candidate,
         kinematic_level=kinematic,
         evidence_families=families,
         acceleration_status=acceleration,
+        trend_component=trend_component,
+        transition_status=transition_status,
+        evidence_consistency_status=consistency,
+        composite_signal=composite_signal,
         confirmation_status=confirmation,
-        reason=confirmation,
+        reason=reason,
         input_statuses=statuses,
     )
 

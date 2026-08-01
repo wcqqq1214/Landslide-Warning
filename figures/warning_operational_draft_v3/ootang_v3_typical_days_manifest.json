@@ -23,14 +23,18 @@
     "id": "ootang-operational-v3-typical-days",
     "path": "config/ootang_operational_v3_typical_days.v1.json",
     "selection_method": "earliest_date_per_frozen_semantic_rule",
-    "sha256": "8ebc888f657b18f3d1d3ec3c65aafed3124ddc23506ac187a49cb7c4b6324030",
+    "sha256": "cdc16fd1c147513ab0ad0dc05e0170f0e224bf802e01ca58604243ea80dc84e6",
     "version": "1.0-draft"
   },
   "formal_warning_output": false,
   "implementation_sources": {
     "renderer": {
       "path": "code/warning/operational_v3_typical_days.py",
-      "sha256": "ca0960751a94b09afb81f651baa9822b45c92c258df0678321657d01bba4d910"
+      "sha256": "b481a226f70286910770dad2bb048ba20f41a826a52a93f9e5af146e32bec232"
+    },
+    "shared_figure_support": {
+      "path": "code/warning/operational_v3_figure_support.py",
+      "sha256": "e7a562400dc795d193d7c65d695e2da4bbfaa9cfa3a007b93228566dc5abab44"
     }
   },
   "not_claimed": [
@@ -41,7 +45,7 @@
     "Vajont_external_case"
   ],
   "operational_profile": {
-    "content_sha256": "a5e7b9c12b13463b235875b7100ea24a06064713b51ec300b9547923b5f063cc",
+    "content_sha256": "c75288960d506e2b6df126663993e1cafa221ba005770016e3918245be8d8b07",
     "id": "ootang-operational-spatial-v3",
     "path": "config/ootang_operational_run.v3.draft.json",
     "version": "3.0-draft"
@@ -184,7 +188,7 @@
   "source_inputs": {
     "core_run_manifest": {
       "path": "figures/warning_operational_draft_v3/ootang_operational_run_manifest.json",
-      "sha256": "371aa5e60207e63f2f9deae43b06c5532cc1c41a7d7616dabc32c3319d96d6d1"
+      "sha256": "8d1206f1e37dd0921b152ab941897957e2a7bbb241631941e8ff73825a82cf27"
     },
     "site_timeline": {
       "core_manifest_match": true,
@@ -196,7 +200,7 @@
       "core_manifest_match": true,
       "n_rows": 4112,
       "path": "figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv",
-      "sha256": "f9e00053a324145da1ae20f9335d39a9242bce634695d6448c546b0e15eb1b93"
+      "sha256": "27e5a809b960e4a5070531ba4cce0fbf78c22926826ef6464390f3e944270bcf"
     }
   },
   "vajont_used": false

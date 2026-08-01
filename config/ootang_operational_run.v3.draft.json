@@ -235,6 +235,7 @@
       "independence_policy": "not_independent_not_two_votes"
     },
     "positive_delta_v_role": "acceleration_qualifier_only_no_ordinal_color_escalation",
+    "delta_v_trend_role": "three_state_transition_and_consistency_no_ordinal_color_change",
     "single_family_elevation_policy": "visible_assessable_candidate_not_missing"
   },
   "site_fusion": {

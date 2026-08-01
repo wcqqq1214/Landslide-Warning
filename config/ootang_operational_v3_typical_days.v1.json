@@ -96,5 +96,31 @@
       "e": "supporting stations and O1/O2/O3 blocks"
     },
     "reviewer_risk": "Selected days are post-observation rule illustrations, not event-independent performance, lead-time, calibration, or formal warning evidence."
+  },
+  "full_timeline_contract": {
+    "artifact_role": "observed_after_forecast_full_timeline_rule_audit",
+    "timing_semantics": "target_observation_available_before_state_assignment",
+    "station_axis": "candidate_level",
+    "site_axis": "site_confirmed_level",
+    "local_axis": "local_max_candidate_level",
+    "site_not_confirmed_status": "candidate_not_site_confirmed",
+    "site_not_confirmed_semantics": "candidate_not_site_confirmed_not_missing",
+    "expected_date_count": 514,
+    "expected_station_count": 8,
+    "expected_station_row_count": 4112,
+    "expected_site_not_confirmed_count": 400,
+    "figure_contract": {
+      "core_conclusion": "All station states and both site/local axes are displayed for every v3 result date; an absent site-confirmed level denotes failed spatial corroboration, not a missing observation.",
+      "archetype": "full_timeline_heatmap",
+      "target_output": "double_column_internal_manuscript_diagnostic",
+      "backend": "python_matplotlib_agg",
+      "final_width_mm": 183,
+      "final_height_mm": 118,
+      "panel_map": {
+        "a": "eight-station five-level candidate state for all dates",
+        "b": "site-confirmed and local-maximum axes for all dates"
+      },
+      "reviewer_risk": "The full timeline is observed-after-forecast and cannot establish warning lead time, event-independent performance, or site safety on not-confirmed dates."
+    }
   }
 }

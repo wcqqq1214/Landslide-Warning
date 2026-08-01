@@ -1,0 +1,53 @@
+{
+  "figure_id": "ootang-operational-v3-station-combined-diagnostic",
+  "figure_version": "1.0-draft",
+  "status": "operational_draft",
+  "case": "ootang",
+  "artifact_role": "observed_after_forecast_all_station_combined_diagnostic",
+  "formal_warning_output": false,
+  "vajont_used": false,
+  "timing_semantics": "target_observation_available_before_state_assignment",
+  "expected_date_count": 514,
+  "expected_station_count": 8,
+  "expected_station_row_count": 4112,
+  "expected_start_date": "2019-02-03",
+  "expected_end_date": "2020-06-30",
+  "expected_splits": [
+    "calibration",
+    "test"
+  ],
+  "field_mappings": {
+    "cumulative_displacement": "actual",
+    "interval_level": "interval_level",
+    "velocity_level": "velocity_level",
+    "delta_v_trend": "delta_v_state",
+    "tangent_angle_level": "tangent_angle_level",
+    "final_candidate_level": "candidate_level"
+  },
+  "warning_level_range": [
+    0,
+    4
+  ],
+  "delta_v_states": [
+    "negative",
+    "near_zero",
+    "positive"
+  ],
+  "figure_contract": {
+    "core_conclusion": "For every Ootang station and every v3 result date, cumulative displacement and the four indicator states remain visually aligned with the final candidate state.",
+    "archetype": "four_by_two_station_small_multiples_with_categorical_strips",
+    "target_output": "full_page_internal_manuscript_diagnostic",
+    "backend": "python_matplotlib_agg",
+    "final_width_mm": 183,
+    "final_height_mm": 230,
+    "station_layout": "four_rows_by_two_columns",
+    "strip_order": [
+      "interval_level",
+      "velocity_level",
+      "delta_v_trend",
+      "tangent_angle_level",
+      "final_candidate_level"
+    ],
+    "reviewer_risk": "The categorical states use the target-date observation after forecast issuance; this diagnostic does not establish warning lead time, event-independent performance, or formal warning validity."
+  }
+}

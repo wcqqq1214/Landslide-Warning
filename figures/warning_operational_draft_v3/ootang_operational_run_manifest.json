@@ -23,7 +23,7 @@
   "implementation_sources": {
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "d4ba0cd09651c47c50131b55534430b2c126ab9afa33b983dd0f74d0354f6787"
+      "sha256": "dc22f44d874a24136ce3b875e2cee08db6fb7c107f3026c0a0e1633a28d9ed77"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -35,7 +35,7 @@
     },
     "station_fusion": {
       "path": "code/warning/operational_v2_fusion.py",
-      "sha256": "cfdb066f0ef98f00edf20e9942f55dc3830e56722877eaa91503ce0fa194fa48"
+      "sha256": "b32d79d13af44253d665844a6696cb3337edd59c3c5e2636a3995a6427f41897"
     }
   },
   "not_claimed": [
@@ -57,7 +57,7 @@
     "MJ9"
   ],
   "operational_profile": {
-    "content_sha256": "a5e7b9c12b13463b235875b7100ea24a06064713b51ec300b9547923b5f063cc",
+    "content_sha256": "c75288960d506e2b6df126663993e1cafa221ba005770016e3918245be8d8b07",
     "id": "ootang-operational-spatial-v3",
     "path": "config/ootang_operational_run.v3.draft.json",
     "status": "operational_draft",
@@ -72,7 +72,7 @@
     "station_timeline": {
       "n_rows": 4112,
       "path": "figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv",
-      "sha256": "f9e00053a324145da1ae20f9335d39a9242bce634695d6448c546b0e15eb1b93"
+      "sha256": "27e5a809b960e4a5070531ba4cce0fbf78c22926826ef6464390f3e944270bcf"
     },
     "thresholds": {
       "path": "figures/warning_operational_draft_v3/ootang_operational_thresholds.csv",

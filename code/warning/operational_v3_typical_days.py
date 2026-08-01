@@ -6,8 +6,6 @@ It is not an event-independent performance, lead-time, or formal-warning result.
 
 from __future__ import annotations
 
-import hashlib
-import io
 import json
 import sys
 import tempfile
@@ -24,6 +22,7 @@ import pandas as pd
 from matplotlib.colors import BoundaryNorm, ListedColormap
 from matplotlib.patches import Patch
 
+from warning import operational_v3_figure_support as figure_support
 from warning.draft_evidence import FileReplacement, promote_staged_files
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -35,21 +34,11 @@ DEFAULT_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v3"
 
 FIGURE_STEM = "ootang_v3_typical_days"
 MANIFEST_FILENAME = f"{FIGURE_STEM}_manifest.json"
-ARTIFACT_STATUS = "operational_draft_not_formal"
-EXPECTED_PROFILE_ID = "ootang-operational-spatial-v3"
-EXPECTED_PROFILE_VERSION = "3.0-draft"
+ARTIFACT_STATUS = figure_support.ARTIFACT_STATUS
 
 FIGURE_RC_PARAMS = {
-    "font.family": "sans-serif",
-    "font.sans-serif": ["Arial", "DejaVu Sans", "Liberation Sans"],
-    "svg.fonttype": "none",
-    "pdf.fonttype": 42,
+    **figure_support.BASE_FIGURE_RC_PARAMS,
     "svg.hashsalt": "ootang-operational-v3-typical-days-v1",
-    "font.size": 6,
-    "axes.linewidth": 0.7,
-    "axes.spines.right": False,
-    "axes.spines.top": False,
-    "legend.frameon": False,
 }
 
 REPRESENTATIVE_DAY_RULE_IDS = (
@@ -61,26 +50,10 @@ REPRESENTATIVE_DAY_RULE_IDS = (
     "confirmed_red",
 )
 
-LEVEL_COLORS = {
-    "green": "#6FA86B",
-    "blue": "#4C78A8",
-    "yellow": "#E8C95A",
-    "orange": "#DF8C3F",
-    "red": "#C44E52",
-}
-LEVEL_ABBREVIATIONS = {
-    "green": "G",
-    "blue": "B",
-    "yellow": "Y",
-    "orange": "O",
-    "red": "R",
-}
-DELTA_V_COLORS = {
-    "negative": "#6B8FB3",
-    "near_zero": "#D7D7D7",
-    "positive": "#C96A62",
-}
-DELTA_V_SYMBOLS = {"negative": "−", "near_zero": "0", "positive": "+"}
+LEVEL_COLORS = figure_support.LEVEL_COLORS
+LEVEL_ABBREVIATIONS = figure_support.LEVEL_ABBREVIATIONS
+DELTA_V_COLORS = figure_support.DELTA_V_COLORS
+DELTA_V_SYMBOLS = figure_support.DELTA_V_SYMBOLS
 
 SITE_REQUIRED_COLUMNS = {
     "date",
@@ -127,65 +100,6 @@ class TypicalDayFigureArtifacts:
     manifest_path: Path
 
 
-def _sha256_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1_048_576), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _sha256_bytes(payload: bytes) -> str:
-    return hashlib.sha256(payload).hexdigest()
-
-
-def _manifest_path(path: Path) -> str:
-    resolved = path.resolve()
-    try:
-        return resolved.relative_to(ROOT).as_posix()
-    except ValueError:
-        return str(resolved)
-
-
-def _canonical_json_sha256(value: Any) -> str:
-    payload = json.dumps(
-        value,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-        allow_nan=False,
-    ).encode("utf-8")
-    return hashlib.sha256(payload).hexdigest()
-
-
-def _read_json_snapshot(path: Path, *, label: str) -> tuple[dict[str, Any], bytes]:
-    try:
-        payload = path.read_bytes()
-        value = json.loads(payload.decode("utf-8"))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise TypicalDayFigureInputError(f"Cannot read {label}: {path}") from exc
-    if not isinstance(value, dict):
-        raise TypicalDayFigureInputError(f"{label} must contain a JSON object.")
-    return value, payload
-
-
-def _read_csv_snapshot(path: Path, *, label: str) -> tuple[pd.DataFrame, bytes]:
-    try:
-        payload = path.read_bytes()
-        frame = pd.read_csv(io.BytesIO(payload), dtype={"date": str})
-    except (OSError, pd.errors.ParserError, UnicodeDecodeError) as exc:
-        raise TypicalDayFigureInputError(f"Cannot read {label}: {path}") from exc
-    return frame, payload
-
-
-def _require_columns(frame: pd.DataFrame, required: set[str], *, label: str) -> None:
-    missing = sorted(required.difference(frame.columns))
-    if missing:
-        raise TypicalDayFigureInputError(
-            f"{label} is missing required columns: {', '.join(missing)}"
-        )
-
-
 def _rule_mask(rows: pd.DataFrame, rule_id: str) -> pd.Series:
     if rule_id == "unconfirmed_yellow":
         return rows["site_fusion_status"].eq(
@@ -227,7 +141,12 @@ def select_representative_days(
         "station_count_orange",
         "station_count_red",
     }
-    _require_columns(site_rows, needed, label="site timeline")
+    figure_support.require_columns(
+        site_rows,
+        needed,
+        label="site timeline",
+        error_type=TypicalDayFigureInputError,
+    )
     ordered = site_rows.copy()
     ordered["date"] = ordered["date"].astype(str)
     ordered = ordered.sort_values("date", kind="stable")
@@ -296,89 +215,6 @@ def _validate_frozen_expectations(
                     f"Representative day {rule['rule_id']} drifted at {field}: "
                     f"expected {expected.get(field)!r}, observed {row[field]!r}."
                 )
-
-
-def _validate_run_provenance(
-    *,
-    manifest: dict[str, Any],
-    station_sha256: str,
-    site_sha256: str,
-    profile: dict[str, Any],
-) -> None:
-    if manifest.get("formal_warning_output") is not False:
-        raise TypicalDayFigureInputError("Core run must remain non-formal.")
-    if manifest.get("vajont_used") is not False:
-        raise TypicalDayFigureInputError("Core run unexpectedly used Vajont.")
-    operational_profile = manifest.get("operational_profile")
-    if not isinstance(operational_profile, dict):
-        raise TypicalDayFigureInputError("Core run lacks an operational profile.")
-    profile_sha = _canonical_json_sha256(profile)
-    if (
-        operational_profile.get("id") != EXPECTED_PROFILE_ID
-        or operational_profile.get("version") != EXPECTED_PROFILE_VERSION
-        or operational_profile.get("content_sha256") != profile_sha
-    ):
-        raise TypicalDayFigureInputError(
-            "Core run does not match the frozen Ootang v3 profile."
-        )
-
-    outputs = manifest.get("outputs")
-    if not isinstance(outputs, dict):
-        raise TypicalDayFigureInputError("Core run lacks output provenance.")
-    for key, source_sha256 in (
-        ("station_timeline", station_sha256),
-        ("site_timeline", site_sha256),
-    ):
-        record = outputs.get(key)
-        if not isinstance(record, dict) or record.get("sha256") != source_sha256:
-            raise TypicalDayFigureInputError(
-                f"{key} does not match the core run manifest."
-            )
-
-    sources = manifest.get("implementation_sources")
-    if not isinstance(sources, dict) or not sources:
-        raise TypicalDayFigureInputError(
-            "Core run lacks implementation-source fingerprints."
-        )
-    for name, source in sources.items():
-        if not isinstance(source, dict) or not isinstance(source.get("path"), str):
-            raise TypicalDayFigureInputError(
-                f"Invalid implementation-source record: {name}."
-            )
-        source_path = Path(source["path"])
-        if not source_path.is_absolute():
-            source_path = ROOT / source_path
-        if not source_path.is_file() or source.get("sha256") != _sha256_file(
-            source_path
-        ):
-            raise TypicalDayFigureInputError(
-                f"Core run implementation fingerprint is stale: {name}."
-            )
-
-
-def _station_layout(profile: dict[str, Any]) -> tuple[list[str], dict[str, str]]:
-    site_fusion = profile.get("site_fusion")
-    if not isinstance(site_fusion, dict):
-        raise TypicalDayFigureInputError("Profile lacks site_fusion.")
-    blocks = site_fusion.get("spatial_blocks")
-    if not isinstance(blocks, dict) or tuple(blocks) != ("O1", "O2", "O3"):
-        raise TypicalDayFigureInputError(
-            "Profile must declare ordered O1/O2/O3 spatial blocks."
-        )
-    stations: list[str] = []
-    station_blocks: dict[str, str] = {}
-    for block, members in blocks.items():
-        if not isinstance(members, list):
-            raise TypicalDayFigureInputError(f"Spatial block {block} is invalid.")
-        for station in members:
-            name = str(station)
-            stations.append(name)
-            station_blocks[name] = str(block)
-    if len(stations) != len(set(stations)) or len(stations) != 8:
-        raise TypicalDayFigureInputError(
-            "Typical-day figure requires eight unique Ootang stations."
-        )
-    return stations, station_blocks
 
 
 def _selected_station_rows(
@@ -799,44 +635,6 @@ def _render_figure(
     return fig
 
 
-def _save_figure(fig: plt.Figure, directory: Path) -> tuple[Path, Path, Path]:
-    svg_path = directory / f"{FIGURE_STEM}.svg"
-    pdf_path = directory / f"{FIGURE_STEM}.pdf"
-    png_path = directory / f"{FIGURE_STEM}.png"
-    fig.savefig(
-        svg_path,
-        format="svg",
-        metadata={"Date": None, "Creator": "Landslide-Warning"},
-    )
-    svg_text = svg_path.read_text(encoding="utf-8")
-    svg_path.write_text(
-        "\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n",
-        encoding="utf-8",
-    )
-    fig.savefig(
-        pdf_path,
-        format="pdf",
-        metadata={
-            "CreationDate": None,
-            "ModDate": None,
-            "Creator": "Landslide-Warning",
-        },
-    )
-    fig.savefig(
-        png_path,
-        format="png",
-        dpi=300,
-        metadata={"Software": "Landslide-Warning"},
-    )
-    if not svg_path.read_bytes().lstrip().startswith(b"<?xml"):
-        raise TypicalDayFigureInputError("SVG export is invalid.")
-    if not pdf_path.read_bytes().startswith(b"%PDF-"):
-        raise TypicalDayFigureInputError("PDF export is invalid.")
-    if not png_path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n"):
-        raise TypicalDayFigureInputError("PNG export is invalid.")
-    return svg_path, pdf_path, png_path
-
-
 def _plotted_subset_sha256(
     station_rows: pd.DataFrame,
     selected: pd.DataFrame,
@@ -852,7 +650,7 @@ def _plotted_subset_sha256(
             orient="records"
         )
     )
-    return _canonical_json_sha256(
+    return figure_support.canonical_json_sha256(
         {"station_records": station_records, "site_records": site_records}
     )
 
@@ -875,6 +673,7 @@ def _figure_manifest(
     station_row_count: int,
     site_row_count: int,
     renderer_sha256: str,
+    shared_support_sha256: str,
     output_targets: tuple[Path, Path, Path],
     output_sources: tuple[Path, Path, Path],
 ) -> dict[str, Any]:
@@ -903,8 +702,8 @@ def _figure_manifest(
         )
     output_records = {
         path.suffix.lstrip("."): {
-            "path": _manifest_path(path),
-            "sha256": _sha256_file(source),
+            "path": figure_support.manifest_path(path),
+            "sha256": figure_support.sha256_file(source),
             "n_bytes": source.stat().st_size,
         }
         for path, source in zip(output_targets, output_sources)
@@ -920,36 +719,42 @@ def _figure_manifest(
         "operational_profile": {
             "id": profile["profile_id"],
             "version": profile["profile_version"],
-            "path": _manifest_path(profile_path),
-            "content_sha256": _canonical_json_sha256(profile),
+            "path": figure_support.manifest_path(profile_path),
+            "content_sha256": figure_support.canonical_json_sha256(profile),
         },
         "figure_spec": {
             "id": figure_spec["figure_id"],
             "version": figure_spec["figure_version"],
-            "path": _manifest_path(figure_spec_path),
+            "path": figure_support.manifest_path(figure_spec_path),
             "sha256": figure_spec_sha256,
             "selection_method": figure_spec["selection_method"],
             "figure_contract": figure_spec["figure_contract"],
         },
         "implementation_sources": {
             "renderer": {
-                "path": _manifest_path(Path(__file__).resolve()),
+                "path": figure_support.manifest_path(Path(__file__).resolve()),
                 "sha256": renderer_sha256,
-            }
+            },
+            "shared_figure_support": {
+                "path": figure_support.manifest_path(
+                    Path(figure_support.__file__).resolve()
+                ),
+                "sha256": shared_support_sha256,
+            },
         },
         "source_inputs": {
             "core_run_manifest": {
-                "path": _manifest_path(run_manifest_path),
+                "path": figure_support.manifest_path(run_manifest_path),
                 "sha256": run_manifest_sha256,
             },
             "station_timeline": {
-                "path": _manifest_path(station_path),
+                "path": figure_support.manifest_path(station_path),
                 "sha256": station_sha256,
                 "n_rows": station_row_count,
                 "core_manifest_match": True,
             },
             "site_timeline": {
-                "path": _manifest_path(site_path),
+                "path": figure_support.manifest_path(site_path),
                 "sha256": site_sha256,
                 "n_rows": site_row_count,
                 "core_manifest_match": True,
@@ -1002,27 +807,33 @@ def write_ootang_v3_typical_day_figure(
     spec_path = Path(figure_spec_path).resolve()
     target_dir = Path(output_dir).resolve()
 
-    profile, _profile_payload = _read_json_snapshot(
+    profile, _profile_payload = figure_support.read_json_snapshot(
         operational_profile_path,
         label="operational profile",
+        error_type=TypicalDayFigureInputError,
     )
-    figure_spec, figure_spec_payload = _read_json_snapshot(
+    figure_spec, figure_spec_payload = figure_support.read_json_snapshot(
         spec_path,
         label="figure specification",
+        error_type=TypicalDayFigureInputError,
     )
-    core_manifest, core_manifest_payload = _read_json_snapshot(
+    core_manifest, core_manifest_payload = figure_support.read_json_snapshot(
         core_manifest_path,
         label="core run manifest",
+        error_type=TypicalDayFigureInputError,
     )
-    station_rows, station_payload = _read_csv_snapshot(
+    station_rows, station_payload = figure_support.read_csv_snapshot(
         station_path,
         label="station timeline",
+        error_type=TypicalDayFigureInputError,
     )
-    site_rows, site_payload = _read_csv_snapshot(
+    site_rows, site_payload = figure_support.read_csv_snapshot(
         site_path,
         label="site timeline",
+        error_type=TypicalDayFigureInputError,
     )
     renderer_payload = Path(__file__).resolve().read_bytes()
+    shared_support_payload = Path(figure_support.__file__).resolve().read_bytes()
     if (
         figure_spec.get("formal_warning_output") is not False
         or figure_spec.get("vajont_used") is not False
@@ -1036,14 +847,25 @@ def write_ootang_v3_typical_day_figure(
         raise TypicalDayFigureInputError(
             "Figure specification lacks representative-day rules."
         )
-    _validate_run_provenance(
+    figure_support.validate_run_provenance(
         manifest=core_manifest,
-        station_sha256=_sha256_bytes(station_payload),
-        site_sha256=_sha256_bytes(site_payload),
+        station_sha256=figure_support.sha256_bytes(station_payload),
+        site_sha256=figure_support.sha256_bytes(site_payload),
         profile=profile,
+        error_type=TypicalDayFigureInputError,
     )
-    _require_columns(station_rows, STATION_REQUIRED_COLUMNS, label="station timeline")
-    _require_columns(site_rows, SITE_REQUIRED_COLUMNS, label="site timeline")
+    figure_support.require_columns(
+        station_rows,
+        STATION_REQUIRED_COLUMNS,
+        label="station timeline",
+        error_type=TypicalDayFigureInputError,
+    )
+    figure_support.require_columns(
+        site_rows,
+        SITE_REQUIRED_COLUMNS,
+        label="site timeline",
+        error_type=TypicalDayFigureInputError,
+    )
     if site_rows["formal_warning_output"].astype(bool).any():
         raise TypicalDayFigureInputError("Site rows unexpectedly claim formal output.")
     if site_rows["vajont_used"].astype(bool).any():
@@ -1051,7 +873,10 @@ def write_ootang_v3_typical_day_figure(
 
     selected = select_representative_days(site_rows, rules)
     _validate_frozen_expectations(selected, rules)
-    stations, station_blocks = _station_layout(profile)
+    stations, station_blocks = figure_support.station_layout(
+        profile,
+        error_type=TypicalDayFigureInputError,
+    )
     station_subset = _selected_station_rows(
         station_rows,
         selected["date"].astype(str).tolist(),
@@ -1086,7 +911,12 @@ def write_ootang_v3_typical_day_figure(
                     plt.close(figure_number)
                 raise
             try:
-                staged_outputs = _save_figure(figure, staging_dir)
+                staged_outputs = figure_support.export_figure_bundle(
+                    figure,
+                    staging_dir,
+                    figure_stem=FIGURE_STEM,
+                    error_type=TypicalDayFigureInputError,
+                )
             finally:
                 plt.close(figure)
         staged_manifest = staging_dir / MANIFEST_FILENAME
@@ -1102,13 +932,20 @@ def write_ootang_v3_typical_day_figure(
                     figure_spec=figure_spec,
                     selected=selected,
                     station_subset=station_subset,
-                    figure_spec_sha256=_sha256_bytes(figure_spec_payload),
-                    run_manifest_sha256=_sha256_bytes(core_manifest_payload),
-                    station_sha256=_sha256_bytes(station_payload),
-                    site_sha256=_sha256_bytes(site_payload),
+                    figure_spec_sha256=figure_support.sha256_bytes(
+                        figure_spec_payload
+                    ),
+                    run_manifest_sha256=figure_support.sha256_bytes(
+                        core_manifest_payload
+                    ),
+                    station_sha256=figure_support.sha256_bytes(station_payload),
+                    site_sha256=figure_support.sha256_bytes(site_payload),
                     station_row_count=len(station_rows),
                     site_row_count=len(site_rows),
-                    renderer_sha256=_sha256_bytes(renderer_payload),
+                    renderer_sha256=figure_support.sha256_bytes(renderer_payload),
+                    shared_support_sha256=figure_support.sha256_bytes(
+                        shared_support_payload
+                    ),
                     output_targets=targets,
                     output_sources=staged_outputs,
                 ),

@@ -39,7 +39,7 @@
     "MJ9"
   ],
   "operational_profile": {
-    "content_sha256": "a4f3fb7bc986b04d68cf73d2c2d42a420b2ca060ab0538f3918a4d8639042e08",
+    "content_sha256": "05301f7cab833ccd3d87dada2d9aa1747efe0916bd634c99ed92c8826d2b65b8",
     "id": "ootang-operational-spatial-v2",
     "path": "/Users/wcqqq1214/Project/Landslide-Warning/config/ootang_operational_run.v2.draft.json",
     "status": "operational_draft",
@@ -54,7 +54,7 @@
     "station_timeline": {
       "n_rows": 4112,
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv",
-      "sha256": "174958b0565a6b566b373e9358b10b9cecb5d6994dff3115ce033171fec4e455"
+      "sha256": "8a0e57e8de3a4807189117dc3ee9b2f2726cf656201661581fa5674ded437554"
     },
     "thresholds": {
       "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_operational_draft_v2/ootang_operational_thresholds.csv",

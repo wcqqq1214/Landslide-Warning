@@ -96,10 +96,14 @@ class OotangOperationalRunTests(unittest.TestCase):
         self.assertEqual(stage.script, "code/warning/operational_run_v3.py")
         self.assertEqual(stage.warning_artifact_scope, "operational_draft")
         self.assertFalse(stage.formal_warning_output)
-        self.assertEqual(len(stage.inputs), 6)
-        self.assertEqual(len(stage.outputs), 8)
+        self.assertEqual(len(stage.inputs), 7)
+        self.assertEqual(len(stage.outputs), 16)
         self.assertIn(
             "config/ootang_operational_v3_typical_days.v1.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "config/ootang_operational_v3_station_diagnostic.v1.json",
             stage.inputs,
         )
         self.assertIn(
@@ -112,6 +116,22 @@ class OotangOperationalRunTests(unittest.TestCase):
         )
         self.assertIn(
             "figures/warning_operational_draft_v3/ootang_v3_typical_days_manifest.json",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline_manifest.json",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg",
+            stage.outputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic_manifest.json",
             stage.outputs,
         )
 
@@ -185,6 +205,21 @@ class OotangOperationalRunTests(unittest.TestCase):
         self.assertTrue(station_rows["station_assessment_status"].eq("valid").all())
         self.assertIn("kinematic_level", station_rows.columns)
         self.assertIn("station_confirmation_status", station_rows.columns)
+        self.assertIn("trend_component", station_rows.columns)
+        self.assertIn("transition_status", station_rows.columns)
+        self.assertIn("evidence_consistency_status", station_rows.columns)
+        self.assertIn("composite_warning_signal", station_rows.columns)
+        self.assertEqual(
+            set(station_rows["trend_component"]),
+            {"delta_v_negative", "delta_v_near_zero", "delta_v_positive"},
+        )
+        self.assertTrue(
+            station_rows.apply(
+                lambda row: f"delta_v_{row['delta_v_state']}"
+                in row["composite_warning_signal"],
+                axis=1,
+            ).all()
+        )
         self.assertTrue(site_rows["minimum_assessable_station_count"].eq(3).all())
         self.assertTrue(site_rows["assessable_block_count"].eq(3).all())
         self.assertTrue(

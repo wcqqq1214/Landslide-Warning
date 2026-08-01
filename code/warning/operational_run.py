@@ -433,6 +433,14 @@ def _require_evidence_family_station_fusion(
             "Evidence-family station fusion must keep positive delta-V as a "
             "qualifier only."
         )
+    if station_fusion.get("delta_v_trend_role") != (
+        "three_state_transition_and_consistency_no_ordinal_color_change"
+    ):
+        raise OperationalRunProfileError(
+            "Evidence-family station fusion must retain negative, near-zero, "
+            "and positive delta-V as a transition/consistency component without "
+            "changing ordinal colour."
+        )
     if station_fusion.get("single_family_elevation_policy") != (
         "visible_assessable_candidate_not_missing"
     ):
@@ -1565,6 +1573,22 @@ def _station_evidence_results(
             if pd.isna(row.acceleration_status)
             else str(row.acceleration_status)
         )
+        trend_component = (
+            None if pd.isna(row.trend_component) else str(row.trend_component)
+        )
+        transition_status = (
+            None if pd.isna(row.transition_status) else str(row.transition_status)
+        )
+        evidence_consistency = (
+            None
+            if pd.isna(row.evidence_consistency_status)
+            else str(row.evidence_consistency_status)
+        )
+        composite_signal = (
+            None
+            if pd.isna(row.composite_warning_signal)
+            else str(row.composite_warning_signal)
+        )
         confirmation = str(row.station_confirmation_status)
         reason = str(row.fusion_reason)
         results[station] = StationEvidenceResult(
@@ -1573,6 +1597,10 @@ def _station_evidence_results(
             kinematic_level=kinematic,
             evidence_families=families,
             acceleration_status=acceleration,
+            trend_component=trend_component,
+            transition_status=transition_status,
+            evidence_consistency_status=evidence_consistency,
+            composite_signal=composite_signal,
             confirmation_status=confirmation,
             reason=reason,
             input_statuses=_parse_serialized_input_statuses(row.input_statuses),
