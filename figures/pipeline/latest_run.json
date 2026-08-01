@@ -4,13 +4,13 @@
   "warning_pipeline_scope": "research_legacy_and_operational_draft_only",
   "formal_warning_output": false,
   "formal_warning_entry": "code/warning/formal_warning.py",
-  "started_at": "2026-07-30T02:54:48+08:00",
-  "finished_at": "2026-07-30T02:55:29+08:00",
-  "git_commit": "a01f0615f1d5c21b366ea90cd41913571b9b00e4",
-  "source_sha256": "07f569db7df3cf0ab06c15ba4bc2d14514a971e72cc409050e4cd3d068b577f2",
+  "started_at": "2026-08-01T22:27:39+08:00",
+  "finished_at": "2026-08-01T22:28:21+08:00",
+  "git_commit": "6d96df7e4528d0e93a02c05e7c79a5ac85785f34",
+  "source_sha256": "487059bb7b7eec73a1a424cf701804436b0057ef4531d156a54065b0ab7dc00d",
   "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
   "python_version": "3.10.20",
-  "total_elapsed_seconds": 40.709,
+  "total_elapsed_seconds": 42.394,
   "failed_stage": null,
   "stages": [
     {
@@ -19,7 +19,7 @@
       "warning_artifact_scope": "research_support",
       "formal_warning_output": false,
       "status": "completed",
-      "elapsed_seconds": 2.677,
+      "elapsed_seconds": 2.644,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -55,7 +55,7 @@
       "warning_artifact_scope": "research_support",
       "formal_warning_output": false,
       "status": "completed",
-      "elapsed_seconds": 27.333,
+      "elapsed_seconds": 28.36,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -107,12 +107,12 @@
       "contract_error": null
     },
     {
-      "name": "ootang-operational-v2",
-      "script": "code/warning/operational_run_v2.py",
+      "name": "ootang-operational-v3",
+      "script": "code/warning/operational_run_v3.py",
       "warning_artifact_scope": "operational_draft",
       "formal_warning_output": false,
       "status": "completed",
-      "elapsed_seconds": 10.671,
+      "elapsed_seconds": 11.369,
       "returncode": 0,
       "contract_status": "passed",
       "inputs": [
@@ -120,28 +120,49 @@
         "figures/convlstm/forecast_predictions.csv",
         "figures/convlstm/forecast_run_manifest.json",
         "config/ootang_warning_protocol.v1.draft.json",
-        "config/ootang_operational_run.v2.draft.json"
+        "config/ootang_operational_run.v3.draft.json",
+        "config/ootang_operational_v3_typical_days.v1.json"
       ],
       "outputs": [
         {
-          "path": "figures/warning_operational_draft_v2/ootang_operational_thresholds.csv",
+          "path": "figures/warning_operational_draft_v3/ootang_operational_thresholds.csv",
           "size_bytes": 5062,
-          "sha256": "6d1383d52d34ebd59a2b6ebfcbd3f2c07f21aa70aaf3a3084e0481acd8420f36"
+          "sha256": "4a2ff51ad5eaaf72e6b9f67774816687981739b891fe6f44f2d099d967193ef6"
         },
         {
-          "path": "figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv",
+          "path": "figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv",
           "size_bytes": 4903667,
-          "sha256": "174958b0565a6b566b373e9358b10b9cecb5d6994dff3115ce033171fec4e455"
+          "sha256": "f9e00053a324145da1ae20f9335d39a9242bce634695d6448c546b0e15eb1b93"
         },
         {
-          "path": "figures/warning_operational_draft_v2/ootang_operational_site_timeline.csv",
-          "size_bytes": 222472,
-          "sha256": "069e47bbedbb70d39df46738e6b28521bace7c106faa9e4d7632475469a8cb56"
+          "path": "figures/warning_operational_draft_v3/ootang_operational_site_timeline.csv",
+          "size_bytes": 240206,
+          "sha256": "b12d437dc0a229da77446833e070b4747461dcff49b65cedbd2b1aff5703cc0a"
         },
         {
-          "path": "figures/warning_operational_draft_v2/ootang_operational_run_manifest.json",
-          "size_bytes": 5023,
-          "sha256": "3074628e4309402aa2f30b9bae0405604cc698579ffb70c6baae0b278520db03"
+          "path": "figures/warning_operational_draft_v3/ootang_operational_run_manifest.json",
+          "size_bytes": 5879,
+          "sha256": "371aa5e60207e63f2f9deae43b06c5532cc1c41a7d7616dabc32c3319d96d6d1"
+        },
+        {
+          "path": "figures/warning_operational_draft_v3/ootang_v3_typical_days.svg",
+          "size_bytes": 88394,
+          "sha256": "356c689af2f27309cdd3535d73654a3f8ca0bfc9b63c2d6a7311b16962bb54c9"
+        },
+        {
+          "path": "figures/warning_operational_draft_v3/ootang_v3_typical_days.pdf",
+          "size_bytes": 52482,
+          "sha256": "f0090895071a065765993eb238ed7c4f122499ee134774bab4b361614205b9af"
+        },
+        {
+          "path": "figures/warning_operational_draft_v3/ootang_v3_typical_days.png",
+          "size_bytes": 207954,
+          "sha256": "3508a092ba7c2be2c20e7ad1453d4668c4229c411084558c9b3832ff9b1a4d37"
+        },
+        {
+          "path": "figures/warning_operational_draft_v3/ootang_v3_typical_days_manifest.json",
+          "size_bytes": 7589,
+          "sha256": "a15d7a57cb460b24460a442e92f06eec3315a2bd02570de358b4774adb4187ab"
         }
       ],
       "contract_error": null
