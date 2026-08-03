@@ -17,6 +17,10 @@ ROOT = Path(__file__).resolve().parent
 DEFAULT_MANIFEST = ROOT / "figures" / "pipeline" / "latest_run.json"
 WARNING_PIPELINE_SCOPE = "research_legacy_and_operational_draft_only"
 FORMAL_WARNING_ENTRY = "code/warning/formal_warning.py"
+CONVLSTM_PROTOCOL_FILE = "config/ootang_convlstm_elevation_diagnostics.v1.json"
+CONVLSTM_DIAGNOSTIC_ROOT = json.loads(
+    (ROOT / CONVLSTM_PROTOCOL_FILE).read_text(encoding="utf-8")
+)["output_contract"]["run_root"]
 
 
 @dataclass(frozen=True)
@@ -28,6 +32,7 @@ class Stage:
     outputs: tuple[str, ...] = ()
     warning_artifact_scope: str = "research_support"
     formal_warning_output: bool = False
+    enabled_by_default: bool = True
 
 
 STAGES = (
@@ -113,23 +118,38 @@ STAGES = (
         "convlstm-rolling",
         "code/convlstm/rolling_validation.py",
         "执行 ConvLSTM 扩展窗口滚动时间验证",
-        inputs=("data/features.csv", "data/station_coords.csv"),
+        inputs=(
+            "data/features.csv",
+            "data/station_coords.csv",
+            CONVLSTM_PROTOCOL_FILE,
+        ),
         outputs=(
-            "figures/convlstm/rolling_validation_folds.csv",
-            "figures/convlstm/rolling_validation_metrics.csv",
-            "figures/convlstm/rolling_validation_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_folds.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_metrics.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/manifest.json",
         ),
     ),
     Stage(
         "convlstm-seeds",
         "code/convlstm/seed_stability.py",
         "执行 ConvLSTM 固定协议多随机种子诊断",
-        inputs=("data/features.csv", "data/station_coords.csv"),
+        inputs=(
+            "data/features.csv",
+            "data/station_coords.csv",
+            CONVLSTM_PROTOCOL_FILE,
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_folds.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_metrics.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/rolling_validation_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/rolling_seed0/manifest.json",
+        ),
         outputs=(
-            "figures/convlstm/seed_stability_runs.csv",
-            "figures/convlstm/seed_stability_metrics.csv",
-            "figures/convlstm/seed_stability_summary.csv",
-            "figures/convlstm/seed_stability_training.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_runs.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_metrics.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_summary.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_training.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/manifest.json",
         ),
     ),
     Stage(
@@ -139,17 +159,19 @@ STAGES = (
         inputs=(
             "data/features.csv",
             "data/station_coords.csv",
-            "figures/convlstm/seed_stability_metrics.csv",
+            CONVLSTM_PROTOCOL_FILE,
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_metrics.csv",
         ),
         outputs=(
-            "figures/convlstm/inner_validation_runs.csv",
-            "figures/convlstm/inner_validation_selection_history.csv",
-            "figures/convlstm/inner_validation_refit_history.csv",
-            "figures/convlstm/inner_validation_metrics.csv",
-            "figures/convlstm/inner_validation_summary.csv",
-            "figures/convlstm/inner_validation_predictions.csv",
-            "figures/convlstm/inner_validation_comparison.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_runs.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_selection_history.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_refit_history.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_metrics.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_summary.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_comparison.csv",
         ),
+        enabled_by_default=False,
     ),
     Stage(
         "convlstm-capacity",
@@ -158,20 +180,22 @@ STAGES = (
         inputs=(
             "data/features.csv",
             "data/station_coords.csv",
-            "figures/convlstm/inner_validation_runs.csv",
-            "figures/convlstm/inner_validation_metrics.csv",
+            CONVLSTM_PROTOCOL_FILE,
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_runs.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/inner_validation_v1/inner_validation_metrics.csv",
         ),
         outputs=(
-            "figures/convlstm/capacity_candidates.csv",
-            "figures/convlstm/capacity_selection_summary.csv",
-            "figures/convlstm/capacity_selection_history.csv",
-            "figures/convlstm/capacity_selected_runs.csv",
-            "figures/convlstm/capacity_selected_refit_history.csv",
-            "figures/convlstm/capacity_selected_metrics.csv",
-            "figures/convlstm/capacity_selected_summary.csv",
-            "figures/convlstm/capacity_selected_predictions.csv",
-            "figures/convlstm/capacity_selected_comparison.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_candidates.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selection_summary.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selection_history.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_runs.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_refit_history.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_metrics.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_summary.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/capacity_sensitivity_v1/capacity_selected_comparison.csv",
         ),
+        enabled_by_default=False,
     ),
     Stage(
         "ootang-operational",
@@ -368,7 +392,11 @@ def select_stages(
     skipped: Sequence[str] | None = None,
 ) -> list[Stage]:
     """Return requested stages in the canonical workflow order."""
-    selected_names = set(selected or STAGE_BY_NAME)
+    selected_names = (
+        {stage.name for stage in STAGES if stage.enabled_by_default}
+        if selected is None
+        else set(selected)
+    )
     skipped_names = set(skipped or ())
     return [
         stage
@@ -593,8 +621,12 @@ def main(
     args = build_parser().parse_args(argv)
     if args.list:
         for stage in STAGES:
+            selection_scope = (
+                "default" if stage.enabled_by_default else "explicit-only"
+            )
             print(
-                f"{stage.name:24s} [{stage.warning_artifact_scope}] "
+                f"{stage.name:24s} [{stage.warning_artifact_scope}; "
+                f"{selection_scope}] "
                 f"{stage.description}"
             )
         return 0

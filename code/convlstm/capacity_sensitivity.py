@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
 import numpy as np
 import pandas as pd
@@ -13,14 +13,14 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from convlstm import inner_validation as inner  # noqa: E402
-from convlstm import model as base  # noqa: E402
-from convlstm import rolling_validation as rolling  # noqa: E402
-from convlstm import seed_stability as stability  # noqa: E402
-
+from convlstm import elevation_diagnostic_protocol as protocol
+from convlstm import inner_validation as inner
+from convlstm import model as base
+from convlstm import rolling_validation as rolling
+from convlstm import seed_stability as stability
 
 ROOT = Path(__file__).resolve().parents[2]
-FIG_DIR = ROOT / "figures" / "convlstm"
+FIG_DIR = protocol.CAPACITY_DIR
 OUT_CANDIDATES = FIG_DIR / "capacity_candidates.csv"
 OUT_SELECTION_SUMMARY = FIG_DIR / "capacity_selection_summary.csv"
 OUT_SELECTION_HISTORY = FIG_DIR / "capacity_selection_history.csv"
@@ -363,6 +363,7 @@ def validate_output_frames(
 
 
 def main():
+    protocol.require_next_stage_enabled("capacity_sensitivity_rerun_now")
     df = pd.read_csv(base.FEAT_CSV)
     dates = pd.DatetimeIndex(pd.to_datetime(df["Date"]))
     if dates.has_duplicates or not dates.is_monotonic_increasing:

@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
 import numpy as np
 import pandas as pd
@@ -14,15 +14,15 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from convlstm import model as base  # noqa: E402
-
+from convlstm import elevation_diagnostic_protocol as protocol
+from convlstm import model as base
 
 ROOT = Path(__file__).resolve().parents[2]
-OUT_FOLDS = ROOT / "figures" / "convlstm" / "rolling_validation_folds.csv"
-OUT_METRICS = ROOT / "figures" / "convlstm" / "rolling_validation_metrics.csv"
-OUT_PREDICTIONS = (
-    ROOT / "figures" / "convlstm" / "rolling_validation_predictions.csv"
-)
+OUT_DIR = protocol.ROLLING_DIR
+OUT_FOLDS = OUT_DIR / "rolling_validation_folds.csv"
+OUT_METRICS = OUT_DIR / "rolling_validation_metrics.csv"
+OUT_PREDICTIONS = OUT_DIR / "rolling_validation_predictions.csv"
+OUT_MANIFEST = OUT_DIR / protocol.MANIFEST_NAME
 
 N_SPLITS = 3
 TEST_WINDOWS = 287
@@ -34,6 +34,26 @@ MODEL_INPUT_PROVENANCE_COLUMNS = (
     "model_input_channels",
     "station_geometry_sha256",
 )
+
+
+def validate_runtime_protocol_constants():
+    """Reject code-level drift from the immutable fixed120_v1 protocol."""
+    expected = (
+        3,
+        287,
+        365,
+        0,
+        "expanding_window_nonoverlapping_fixed_287d_test",
+    )
+    observed = (
+        N_SPLITS,
+        TEST_WINDOWS,
+        MIN_FIT_WINDOWS,
+        VALIDATION_SEED,
+        VALIDATION_METHOD,
+    )
+    if observed != expected:
+        raise RuntimeError("滚动验证常量已偏离 fixed120_v1 冻结设置")
 
 
 @dataclass(frozen=True)
@@ -381,7 +401,7 @@ def metric_rows(result, station_names, metadata):
         ("calibrated", "calibrated_p10", "calibrated_p90"),
     ):
         for scope, station_index in scopes:
-            def select(values):
+            def select(values, station_index=station_index):
                 return values if station_index is None else values[:, station_index]
 
             metrics = base.compute_forecast_metrics(
@@ -414,13 +434,17 @@ def metric_rows(result, station_names, metadata):
     return rows
 
 
-def prediction_rows(result, station_names, test_dates, fold):
+def prediction_rows(result, station_names, test_dates, fold, *, provenance=None):
     """Return long-form predictions so every reported metric remains auditable."""
+    provenance = current_model_input_provenance() if provenance is None else provenance
+    if set(provenance) != set(MODEL_INPUT_PROVENANCE_COLUMNS):
+        raise RuntimeError("滚动预测的模型输入溯源字段不完整")
     rows = []
     for date_index, date in enumerate(pd.DatetimeIndex(test_dates)):
         for station_index, station in enumerate(station_names):
             rows.append({
                 "fold": fold,
+                **provenance,
                 "date": date.date().isoformat(),
                 "station": station,
                 "actual": result["actual"][date_index, station_index],
@@ -482,9 +506,27 @@ def validate_output_frames(folds, metrics, predictions, station_names):
         and (predictions["p50"] <= predictions["calibrated_p90"]).all()
     ):
         raise RuntimeError("滚动预测分位数顺序异常")
+    for frame, name in (
+        (folds, "rolling folds"),
+        (metrics, "rolling metrics"),
+        (predictions, "rolling predictions"),
+    ):
+        require_current_model_input_provenance(frame, artifact_name=name)
+
+
+def validate_frozen_fold_boundaries(folds):
+    """Ensure materialized date boundaries exactly match the frozen protocol."""
+    expected = pd.DataFrame(
+        protocol.FROZEN_PROTOCOL["outer_validation"]["folds"]
+    )
+    columns = list(expected.columns)
+    observed = folds[columns].reset_index(drop=True).astype(str)
+    if not observed.equals(expected.astype(str)):
+        raise RuntimeError("实际滚动折日期边界与冻结协议不一致")
 
 
 def main():
+    validate_runtime_protocol_constants()
     df = pd.read_csv(base.FEAT_CSV)
     dates = pd.DatetimeIndex(pd.to_datetime(df["Date"]))
     if dates.has_duplicates or not dates.is_monotonic_increasing:
@@ -556,13 +598,40 @@ def main():
         prediction_frame,
         station_names,
     )
-    OUT_FOLDS.parent.mkdir(parents=True, exist_ok=True)
-    fold_frame.to_csv(OUT_FOLDS, index=False)
-    metric_frame.to_csv(OUT_METRICS, index=False)
-    prediction_frame.to_csv(OUT_PREDICTIONS, index=False)
+    validate_frozen_fold_boundaries(fold_frame)
+    protocol.write_stage_bundle(
+        OUT_DIR,
+        {
+            OUT_FOLDS.name: fold_frame,
+            OUT_METRICS.name: metric_frame,
+            OUT_PREDICTIONS.name: prediction_frame,
+        },
+        stage="convlstm-rolling",
+        stage_parameters={
+            "seed": VALIDATION_SEED,
+            "validation_method": VALIDATION_METHOD,
+            "fold_count": N_SPLITS,
+            "test_windows_per_fold": TEST_WINDOWS,
+            "minimum_fit_windows": MIN_FIT_WINDOWS,
+            "epochs": base.EPOCHS,
+            "hidden_channels": base.HIDDEN,
+            "kernel_size": base.KERNEL,
+            "lookback_days": base.LOOKBACK,
+            "horizon_days": base.HORIZON,
+            "learning_rate": base.LR,
+            "test_used_for_selection": False,
+        },
+        source_paths=(
+            Path(__file__),
+            Path(base.__file__),
+            Path(protocol.__file__),
+            ROOT / "code" / "convlstm" / "grid_interp.py",
+        ),
+    )
     print(f"[convlstm-rolling] 折计划: {OUT_FOLDS}")
     print(f"[convlstm-rolling] 逐折指标: {OUT_METRICS}")
     print(f"[convlstm-rolling] 逐日预测: {OUT_PREDICTIONS}")
+    print(f"[convlstm-rolling] 运行清单: {OUT_MANIFEST}")
 
 
 if __name__ == "__main__":

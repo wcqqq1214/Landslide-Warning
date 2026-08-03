@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
-import sys
 
 import numpy as np
 import pandas as pd
@@ -14,13 +14,13 @@ CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
-from convlstm import model as base  # noqa: E402
-from convlstm import rolling_validation as rolling  # noqa: E402
-from convlstm import seed_stability as stability  # noqa: E402
-
+from convlstm import elevation_diagnostic_protocol as protocol
+from convlstm import model as base
+from convlstm import rolling_validation as rolling
+from convlstm import seed_stability as stability
 
 ROOT = Path(__file__).resolve().parents[2]
-FIG_DIR = ROOT / "figures" / "convlstm"
+FIG_DIR = protocol.INNER_DIR
 OUT_RUNS = FIG_DIR / "inner_validation_runs.csv"
 OUT_SELECTION = FIG_DIR / "inner_validation_selection_history.csv"
 OUT_REFIT = FIG_DIR / "inner_validation_refit_history.csv"
@@ -28,7 +28,8 @@ OUT_METRICS = FIG_DIR / "inner_validation_metrics.csv"
 OUT_SUMMARY = FIG_DIR / "inner_validation_summary.csv"
 OUT_PREDICTIONS = FIG_DIR / "inner_validation_predictions.csv"
 OUT_COMPARISON = FIG_DIR / "inner_validation_comparison.csv"
-FIXED_METRICS = FIG_DIR / "seed_stability_metrics.csv"
+FIXED_METRICS = stability.OUT_METRICS
+FIXED_MANIFEST = stability.OUT_MANIFEST
 
 INNER_VALIDATION_FRACTION = 0.2
 MAX_EPOCHS = 300
@@ -465,12 +466,18 @@ def validate_output_frames(
 
 
 def main():
+    protocol.require_next_stage_enabled("inner_validation_rerun_now")
     df = pd.read_csv(base.FEAT_CSV)
     dates = pd.DatetimeIndex(pd.to_datetime(df["Date"]))
     if dates.has_duplicates or not dates.is_monotonic_increasing:
         raise RuntimeError("特征日期必须严格递增且不得重复")
     if not FIXED_METRICS.is_file():
         raise RuntimeError("缺少固定 120 轮多种子指标，无法执行预设配对比较")
+    protocol.validate_stage_manifest(
+        FIXED_MANIFEST,
+        expected_stage="convlstm-seeds",
+        required_outputs=(FIXED_METRICS.name,),
+    )
     fixed_frame = pd.read_csv(FIXED_METRICS)
     rolling.require_current_model_input_provenance(
         fixed_frame,

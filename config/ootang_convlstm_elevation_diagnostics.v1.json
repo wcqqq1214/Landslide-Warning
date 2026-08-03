@@ -1,0 +1,115 @@
+{
+  "schema_version": "ootang_convlstm_elevation_diagnostics_protocol_v1",
+  "protocol_id": "ootang-convlstm-elevation-fixed120-v1",
+  "protocol_version": "1.0",
+  "status": "frozen_for_internal_exploratory_diagnostic",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "vajont_used": false,
+  "source_data_status": "materialized_daily_modeling_series_not_independent_raw_gnss",
+  "model_input": {
+    "schema": "displacement_elevation_exog_v1",
+    "channel_count": 7,
+    "channels": [
+      "displacement_idw_grid",
+      "elevation_static_idw_grid",
+      "RWL",
+      "RWL_rate",
+      "Rain_cum7",
+      "Rain_cum15",
+      "Rain_cum30"
+    ],
+    "elevation_method": "station_zscore_then_horizontal_idw_static_channel",
+    "elevation_in_three_dimensional_distance": false
+  },
+  "training": {
+    "lookback_days": 7,
+    "horizon_days": 1,
+    "quantiles": [0.1, 0.5, 0.9],
+    "hidden_channels": 16,
+    "kernel_size": 3,
+    "epochs": 120,
+    "learning_rate": 0.001,
+    "loss": "mean_pinball_loss",
+    "target_coverage": 0.8,
+    "calibration_fraction_within_train": 0.2,
+    "hyperparameter_tuning": false
+  },
+  "outer_validation": {
+    "method": "expanding_window_nonoverlapping_fixed_287d_test",
+    "fold_count": 3,
+    "test_windows_per_fold": 287,
+    "minimum_fit_windows": 365,
+    "same_date_all_stations_grouped": true,
+    "test_used_for_selection": false,
+    "folds": [
+      {
+        "fold": 1,
+        "fit_start_date": "2016-08-06",
+        "fit_end_date": "2017-10-31",
+        "calibration_start_date": "2017-11-01",
+        "calibration_end_date": "2018-02-20",
+        "test_start_date": "2018-02-21",
+        "test_end_date": "2018-12-04"
+      },
+      {
+        "fold": 2,
+        "fit_start_date": "2016-08-06",
+        "fit_end_date": "2018-06-17",
+        "calibration_start_date": "2018-06-18",
+        "calibration_end_date": "2018-12-04",
+        "test_start_date": "2018-12-05",
+        "test_end_date": "2019-09-17"
+      },
+      {
+        "fold": 3,
+        "fit_start_date": "2016-08-06",
+        "fit_end_date": "2019-02-02",
+        "calibration_start_date": "2019-02-03",
+        "calibration_end_date": "2019-09-17",
+        "test_start_date": "2019-09-18",
+        "test_end_date": "2020-06-30"
+      }
+    ]
+  },
+  "rolling_validation": {
+    "seed": 0,
+    "run_id": "rolling_seed0"
+  },
+  "seed_stability": {
+    "seeds": [0, 1, 2, 3, 4],
+    "run_count": 15,
+    "best_seed_selected": false,
+    "run_id": "seed_stability_0_4",
+    "save_all_predictions": true,
+    "rolling_seed0_reproduction_required": true
+  },
+  "output_contract": {
+    "run_root": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1",
+    "historical_six_channel_root_files_preserved": true,
+    "historical_six_channel_sha256": {
+      "figures/convlstm/rolling_validation_folds.csv": "099e738917d99673953c2c8d732446613837e5277fd761e806d63a2dcc58250f",
+      "figures/convlstm/rolling_validation_metrics.csv": "1a2df84169a5e62d4d3e1dbf443fb56746ad4e1930b44e4a2edd0110272e9bd0",
+      "figures/convlstm/rolling_validation_predictions.csv": "7b11ea2ac05afadf1678e3a53fa87259603bbf710e0217af8b7732570e8997f6",
+      "figures/convlstm/seed_stability_runs.csv": "d4faa00c0a869c6511d52d2ed858d30c7e6d98fe39bc197611f05ba588fe819f",
+      "figures/convlstm/seed_stability_metrics.csv": "7db5ca7f2831b3812456046f2075504393d4108ca10f9083640477a9975d3772",
+      "figures/convlstm/seed_stability_summary.csv": "d47c1b849688e48379199c3d3f3b1d049b8dc44f9d370d429ef0cffe04c8809b",
+      "figures/convlstm/seed_stability_training.csv": "8bf53c3f7ef31e1cc385a73f17ca09eead7f357679e6873890a02b8a399cb34b"
+    },
+    "stage_bundles_promoted_independently": true
+  },
+  "next_stage_policy": {
+    "inner_validation_rerun_now": false,
+    "capacity_sensitivity_rerun_now": false,
+    "decision_basis": "run_fixed120_rolling_and_five_seed_diagnostics_first"
+  },
+  "not_claimed": [
+    "blind_test",
+    "independent_raw_gnss_validation",
+    "confirmatory_external_validation",
+    "causal_effect_of_elevation",
+    "cross_landslide_generalization",
+    "formal_warning_performance",
+    "specified_word_physics_guided_model_reproduction"
+  ]
+}

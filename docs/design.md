@@ -11,6 +11,8 @@
 > **高程感知初跑（2026-07-30）**：原始 GNSS 已确认无法取得，本阶段将上述总门禁拆为 `prototype_run_gate=allowed` 和 `confirmatory_evidence_gate=blocked`。`station_coords.csv::elev_m` 现已作为静态模型通道进入 ConvLSTM；这只授权藕塘内部工程初跑，不解除确认性证据或正式预警门禁。
 >
 > **v3 空间草案（2026-08-01）**：v2 全局最少有效点门禁已修复，并新增独立双轴 v3。它只替换 site 空间决策，复用 v2 的模型、阈值、逐点证据族与数据切分；v1/v2/v3 产物目录互不覆盖，正式门禁不变。
+>
+> **7 通道 fixed-120 修订（2026-08-04，运行前冻结）**：本轮只重跑藕塘的高程感知 ConvLSTM 固定训练协议；历史 6 通道结果继续保留。早停、容量敏感性和 Vajont 暂不执行，所得证据仅为内部探索性诊断。
 
 ## 1. 数据与约束
 
@@ -69,10 +71,10 @@ future frozen protocol + formal four-indicator executor
 | `code/convlstm/grid_interp.py` | 校验 `station/disp_col/x_m/y_m/elev_m` 一一对应并建立水平 IDW 规则网格 | 由全部 ConvLSTM 路径调用 |
 | `code/convlstm/block_bootstrap.py` | 生成非循环重叠日期块索引并计算百分位区间 | 由 `model.py` 调用 |
 | `code/convlstm/model.py` | 8 测点位移网格、静态高程网格和 5 个时变环境通道的 ConvLSTM，输出 P10/P50/P90 位移 | `models/convlstm.pt`、预测 CSV/图、`figures/convlstm/forecast_run_manifest.json` |
-| `code/convlstm/rolling_validation.py` | 固定现有 ConvLSTM 结构，执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/rolling_validation_*.csv` |
-| `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行预设五种子优化稳定性诊断 | `figures/convlstm/seed_stability_*.csv` |
-| `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对 | `figures/convlstm/inner_validation_*.csv` |
-| `code/convlstm/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置 | `figures/convlstm/capacity_*.csv` |
+| `code/convlstm/rolling_validation.py` | 固定 7 通道 ConvLSTM 结构，以 `seed=0` 执行三个非重叠测试折的扩展窗口验证 | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/*` |
+| `code/convlstm/seed_stability.py` | 固定三折、结构和超参数，执行 `seed=0-4` 的 15 个折-种子拟合 | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/*` |
+| `code/convlstm/inner_validation.py` | 在每折拟合期内部按时间选择训练轮数，完整拟合期重训后与固定 120 轮结果配对；本轮不执行 | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/inner_validation_v1/*` |
+| `code/convlstm/capacity_sensitivity.py` | 执行预注册 2x2 隐藏通道/权重衰减矩阵，仅按内层五种子验证 loss 逐折选择配置；本轮不执行 | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/capacity_sensitivity_v1/*` |
 | `code/convlstm/data_lineage_audit.py` | 只读核验 Figshare 工作簿与仓库 CSV、自然月多项式指纹、模型边界代数依赖和预测日期键集 | `figures/data_lineage/*`；只作数据血缘门禁，不修复或生成监测值 |
 | `code/warning/ngboost_warn.py` | 使用历史动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv`；历史/探索性 |
 | `code/warning/warning_fusion.py` | 历史 V0 主判、8 测点切线角升级复核、NGBoost 旁证；CSV 显式标为非正式 | `figures/warning_fusion/warning_fusion.csv`；历史/探索性 |
@@ -110,6 +112,7 @@ future frozen protocol + formal four-indicator executor
 - 当前 7 个输入通道依次为：位移网格、静态高程网格、`RWL`、`RWL_rate`、`Rain_cum7`、`Rain_cum15`、`Rain_cum30`。
 - 当前输入窗口：7 日。
 - 当前预测步长：1 日。
+- fixed-120 结构：`hidden_channels=16`、卷积核 `3`、训练 `120` 轮，损失为 pinball loss；本轮不依据已查看的测试折修改这些设置。
 - 输出：有序 P10/P50/P90 位移增量，再还原为累计位移。
 - 损失：分位数 pinball loss。
 - 评价：按测点及三个连续测试时段报告相对于发布物化序列的点误差、持久性基线、分位数损失、覆盖率、宽度和 80% interval score；R2/NSE 仅作趋势敏感的补充指标。
@@ -120,7 +123,7 @@ future frozen protocol + formal four-indicator executor
 - 内层 epoch 选择：原拟合期按日期切为 80% 内层训练和 20% 内层验证，最多 300 轮并按预注册早停规则选 epoch；同一种子在完整拟合期重训后，原校准段只估计 `qhat`，外层测试段只评价。固定 120 轮结果保留为配对参照。
 - 有限容量/正则化诊断：只比较隐藏通道 `8/16` 和 Adam 权重衰减 `0/1e-4` 的四个组合；每折以五种子内层最小验证 loss 均值排名，外层测试不参与配置选择，当前早停版本保留为配对参照。
 
-> 版本边界：现有 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 和 `capacity_*` 文件是在加入高程前的 6 通道版本上生成。相关代码已统一接入高程，但这些历史产物尚未重跑，不能被当作当前 7 通道模型的稳定性证据。
+> **2026-08-04 运行前协议边界**：7 个通道依次为位移 IDW 网格、静态高程 IDW 网格、`RWL`、`RWL_rate`、`Rain_cum7`、`Rain_cum15`、`Rain_cum30`；与历史 6 通道基线相比唯一变化是增加静态高程。高程由 8 点 `elev_m` 先做站点间 z-score，再用 `x_m/y_m` 水平 IDW 映射，不进入三维距离。三个扩展窗口折及既有日期边界保持不变；先运行 `seed=0` 三折滚动，再运行 `seed=0-4` × 三折的 15 个折-种子拟合；后者必须校验滚动 bundle，并复现 seed=0 的折元数据、指标和逐日预测。输入窗口 7 日、预测步长 1 日、`hidden_channels=16`、卷积核 `3`、120 轮和 pinball loss 均已冻结，测试段绝不用于选择模型、种子或参数。新产物只写入 `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/`，历史根目录的 6 通道 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 和 `capacity_*` 原样保留。本轮早停与容量阶段从默认管线排除，显式请求时也 fail-closed；Vajont 不运行。结果只可描述为内部探索性诊断，不得据此声称高程具有因果增益，亦不得声称外部泛化、盲测或确认性验证。
 
 ### 4.3 旧 NGBoost 路径（不作为本轮正式预警）
 
@@ -186,9 +189,9 @@ uv run --with pytest pytest -q
 - 当前发布序列的 8 条位移和 GWT 在全部 48 个自然月内具有强分段三次指纹；原始锚点、生成算法和未来信息使用状态未知，正式日预测、正式 `V0`、导数阈值与融合均被数据门禁阻断。
 - ConvLSTM 已启用日历上后置的时间校准，但 P10-P90 测试覆盖率仍低于名义 80%，最后连续测试块退化明显。
 - ConvLSTM 已输出日期块 95% 置信区间，但其局部平稳假设与已观察到的后期漂移冲突；区间不包含训练过程和未来制度变化的不确定性。
-- ConvLSTM 五种子诊断中，折 1/2 的方向性失败对初始化稳定，折 3 的点误差优势也对种子稳定但伴随明显方差收缩和接近零的平均增量相关性。初始化影响误差幅度，但不能解释跨折方向反转；训练样本量和时间分布作用仍未分离。
-- ConvLSTM 内层早停降低了多数固定 120 轮配对误差，但折 1/2 仍未超过持久性基线；第三折覆盖率改善伴随区间宽度和 interval score 恶化，所选 epoch 也存在明显种子差异。
-- ConvLSTM 有限容量/正则化诊断在三个折选出不同配置，且折 2 的内层选择未迁移为外层改善；仅折 3 达到多数种子双指标正 skill，当前数据已停止继续扩搜。
+- 历史 6 通道 ConvLSTM 五种子诊断中，折 1/2 的方向性失败对初始化稳定，折 3 的点误差优势也对种子稳定但伴随明显方差收缩和接近零的平均增量相关性。初始化影响误差幅度，但不能解释跨折方向反转；该结论不能提前套用于尚未运行的 7 通道 fixed-120 实验。
+- 历史 6 通道 ConvLSTM 内层早停降低了多数固定 120 轮配对误差，但折 1/2 仍未超过持久性基线；第三折覆盖率改善伴随区间宽度和 interval score 恶化，所选 epoch 也存在明显种子差异。本轮不重跑早停。
+- 历史 6 通道 ConvLSTM 有限容量/正则化诊断在三个折选出不同配置，且折 2 的内层选择未迁移为外层改善；仅折 3 达到多数种子双指标正 skill。该结果和相应参数量不代表当前 7 通道模型，本轮不重跑容量实验。
 - NGBoost 未超过昨日状态持续性基线。
 - 五折 SHAP 稳定性分析中，回归组排名稳定而分类组排名随时期变化；只有位移运动学组在两个任务均为 5/5 折删去后主指标恶化。环境组结果不稳定，不能解释为物理无效或因果缺失。
 - 测试段无橙色和红色样本，不能评价高等级识别能力。
