@@ -463,6 +463,12 @@ def main():
             Path(protocol.__file__),
             ROOT / "code" / "convlstm" / "grid_interp.py",
         ),
+        additional_input_paths=(
+            rolling.OUT_FOLDS,
+            rolling.OUT_METRICS,
+            rolling.OUT_PREDICTIONS,
+            rolling.OUT_MANIFEST,
+        ),
     )
     print(f"[convlstm-seeds] 运行协议: {OUT_RUNS}")
     print(f"[convlstm-seeds] 逐种子指标: {OUT_METRICS}")

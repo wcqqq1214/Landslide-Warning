@@ -262,9 +262,21 @@ def _build_stage_manifest(
     stage_parameters,
     source_paths,
     output_records,
+    additional_input_paths=(),
 ):
     protocol = load_and_validate_protocol()
-    input_paths = (base.FEAT_CSV, base.COORD_CSV, PROTOCOL_PATH)
+    input_paths = []
+    seen_inputs = set()
+    for path in (
+        base.FEAT_CSV,
+        base.COORD_CSV,
+        PROTOCOL_PATH,
+        *additional_input_paths,
+    ):
+        resolved = Path(path).resolve()
+        if resolved not in seen_inputs:
+            input_paths.append(resolved)
+            seen_inputs.add(resolved)
     tracked_status = _git_value("status", "--porcelain", "--untracked-files=no")
     return {
         "schema_version": "ootang_convlstm_stage_bundle_manifest_v1",
@@ -358,6 +370,7 @@ def write_stage_bundle(
     stage,
     stage_parameters,
     source_paths,
+    additional_input_paths=(),
 ):
     """Write, hash and promote a complete multi-file stage bundle.
 
@@ -391,6 +404,9 @@ def write_stage_bundle(
             stage_parameters=stage_parameters,
             source_paths=tuple(Path(path) for path in source_paths),
             output_records=output_records,
+            additional_input_paths=tuple(
+                Path(path) for path in additional_input_paths
+            ),
         )
         (staging / MANIFEST_NAME).write_text(
             json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
