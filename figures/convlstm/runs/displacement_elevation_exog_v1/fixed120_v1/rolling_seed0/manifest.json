@@ -1,0 +1,335 @@
+{
+  "confirmatory_external_validation": false,
+  "created_at": "2026-08-03T22:48:49+00:00",
+  "evidence_scope": "internal_exploratory_materialized_daily_series",
+  "formal_warning_output": false,
+  "git": {
+    "commit": "1e06629119e08b33ded2540a435e726c2d2da97a",
+    "tracked_worktree_dirty": false
+  },
+  "inputs": [
+    {
+      "path": "data/features.csv",
+      "sha256": "366188ba1f55fd56b6606f5333e34566fca26c4771dd9745eebfabfcbd4286d1",
+      "size_bytes": 1424208
+    },
+    {
+      "path": "data/station_coords.csv",
+      "sha256": "17dac7c5985891f27905e7056b45626a0d6f4dbf34f336534c17bb76ecd32f09",
+      "size_bytes": 274
+    },
+    {
+      "path": "config/ootang_convlstm_elevation_diagnostics.v1.json",
+      "sha256": "2b685a4ae149d13230996429b79ac1609c456c51e4884447585e215f578e7f10",
+      "size_bytes": 4178
+    }
+  ],
+  "model_input": {
+    "channel_count": 7,
+    "channels": [
+      "displacement_idw_grid",
+      "elevation_static_idw_grid",
+      "RWL",
+      "RWL_rate",
+      "Rain_cum7",
+      "Rain_cum15",
+      "Rain_cum30"
+    ],
+    "elevation_method": "station_zscore_then_horizontal_idw_static_channel",
+    "schema": "displacement_elevation_exog_v1"
+  },
+  "outputs": [
+    {
+      "columns": [
+        "fold",
+        "validation_method",
+        "fit_start_date",
+        "fit_end_date",
+        "fit_windows",
+        "calibration_start_date",
+        "calibration_end_date",
+        "calibration_windows",
+        "train_windows",
+        "test_start_date",
+        "test_end_date",
+        "test_windows",
+        "lookback_days",
+        "horizon_days",
+        "calibration_fraction_within_train",
+        "target_coverage",
+        "seed",
+        "model",
+        "hidden_channels",
+        "kernel_size",
+        "epochs",
+        "learning_rate",
+        "test_length_basis",
+        "test_length_selected_from_results",
+        "confirmatory_external_validation",
+        "model_input_schema",
+        "model_input_channels",
+        "station_geometry_sha256",
+        "qhat_MJ9_mm",
+        "qhat_MJ1_mm",
+        "qhat_MJ3_mm",
+        "qhat_ATU1_mm",
+        "qhat_ATU2_mm",
+        "qhat_ATU3_mm",
+        "qhat_ATU4_mm",
+        "qhat_ATU5_mm"
+      ],
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_folds.csv",
+      "rows": 3,
+      "sha256": "46bd601a7c64c336cc8390b4aa4dfac3db8d4854f9ef5aa27f34c74f13c246f6",
+      "size_bytes": 1828
+    },
+    {
+      "columns": [
+        "fold",
+        "model_input_schema",
+        "model_input_channels",
+        "station_geometry_sha256",
+        "scope",
+        "interval_variant",
+        "test_start_date",
+        "test_end_date",
+        "n_dates",
+        "n_stations",
+        "model_mean_error",
+        "baseline_mean_error",
+        "mean_actual_increment",
+        "mean_predicted_increment",
+        "actual_increment_std",
+        "predicted_increment_std",
+        "increment_std_ratio",
+        "increment_correlation",
+        "model_rmse",
+        "model_mae",
+        "model_r2",
+        "model_nse",
+        "baseline_rmse",
+        "baseline_mae",
+        "baseline_r2",
+        "baseline_nse",
+        "pinball_p10",
+        "pinball_p50",
+        "pinball_p90",
+        "mean_pinball",
+        "coverage",
+        "coverage_gap",
+        "mean_width",
+        "interval_score_80",
+        "p10_gt_p50",
+        "p50_gt_p90",
+        "total_points",
+        "rmse_skill_vs_baseline",
+        "rmse_difference_vs_baseline",
+        "mae_difference_vs_baseline",
+        "mae_skill_vs_baseline"
+      ],
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_metrics.csv",
+      "rows": 54,
+      "sha256": "e426b9b15db863a66eafca22ffcce69b1a7d5efe8951368f9357b593d7995931",
+      "size_bytes": 38348
+    },
+    {
+      "columns": [
+        "fold",
+        "model_input_schema",
+        "model_input_channels",
+        "station_geometry_sha256",
+        "date",
+        "station",
+        "actual",
+        "persistence",
+        "raw_p10",
+        "p50",
+        "raw_p90",
+        "calibrated_p10",
+        "calibrated_p90",
+        "qhat_mm"
+      ],
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_predictions.csv",
+      "rows": 6888,
+      "sha256": "ba0d7004be5cdfea1837ff28df06bd886e842429843688b3781ca209ff1b3149",
+      "size_bytes": 1701587
+    }
+  ],
+  "parameters": {
+    "epochs": 120,
+    "fold_count": 3,
+    "hidden_channels": 16,
+    "horizon_days": 1,
+    "kernel_size": 3,
+    "learning_rate": 0.001,
+    "lookback_days": 7,
+    "minimum_fit_windows": 365,
+    "seed": 0,
+    "test_used_for_selection": false,
+    "test_windows_per_fold": 287,
+    "validation_method": "expanding_window_nonoverlapping_fixed_287d_test"
+  },
+  "protocol": {
+    "frozen_content": {
+      "case": "ootang",
+      "formal_warning_output": false,
+      "model_input": {
+        "channel_count": 7,
+        "channels": [
+          "displacement_idw_grid",
+          "elevation_static_idw_grid",
+          "RWL",
+          "RWL_rate",
+          "Rain_cum7",
+          "Rain_cum15",
+          "Rain_cum30"
+        ],
+        "elevation_in_three_dimensional_distance": false,
+        "elevation_method": "station_zscore_then_horizontal_idw_static_channel",
+        "schema": "displacement_elevation_exog_v1"
+      },
+      "next_stage_policy": {
+        "capacity_sensitivity_rerun_now": false,
+        "decision_basis": "run_fixed120_rolling_and_five_seed_diagnostics_first",
+        "inner_validation_rerun_now": false
+      },
+      "not_claimed": [
+        "blind_test",
+        "independent_raw_gnss_validation",
+        "confirmatory_external_validation",
+        "causal_effect_of_elevation",
+        "cross_landslide_generalization",
+        "formal_warning_performance",
+        "specified_word_physics_guided_model_reproduction"
+      ],
+      "outer_validation": {
+        "fold_count": 3,
+        "folds": [
+          {
+            "calibration_end_date": "2018-02-20",
+            "calibration_start_date": "2017-11-01",
+            "fit_end_date": "2017-10-31",
+            "fit_start_date": "2016-08-06",
+            "fold": 1,
+            "test_end_date": "2018-12-04",
+            "test_start_date": "2018-02-21"
+          },
+          {
+            "calibration_end_date": "2018-12-04",
+            "calibration_start_date": "2018-06-18",
+            "fit_end_date": "2018-06-17",
+            "fit_start_date": "2016-08-06",
+            "fold": 2,
+            "test_end_date": "2019-09-17",
+            "test_start_date": "2018-12-05"
+          },
+          {
+            "calibration_end_date": "2019-09-17",
+            "calibration_start_date": "2019-02-03",
+            "fit_end_date": "2019-02-02",
+            "fit_start_date": "2016-08-06",
+            "fold": 3,
+            "test_end_date": "2020-06-30",
+            "test_start_date": "2019-09-18"
+          }
+        ],
+        "method": "expanding_window_nonoverlapping_fixed_287d_test",
+        "minimum_fit_windows": 365,
+        "same_date_all_stations_grouped": true,
+        "test_used_for_selection": false,
+        "test_windows_per_fold": 287
+      },
+      "output_contract": {
+        "historical_six_channel_root_files_preserved": true,
+        "historical_six_channel_sha256": {
+          "figures/convlstm/rolling_validation_folds.csv": "099e738917d99673953c2c8d732446613837e5277fd761e806d63a2dcc58250f",
+          "figures/convlstm/rolling_validation_metrics.csv": "1a2df84169a5e62d4d3e1dbf443fb56746ad4e1930b44e4a2edd0110272e9bd0",
+          "figures/convlstm/rolling_validation_predictions.csv": "7b11ea2ac05afadf1678e3a53fa87259603bbf710e0217af8b7732570e8997f6",
+          "figures/convlstm/seed_stability_metrics.csv": "7db5ca7f2831b3812456046f2075504393d4108ca10f9083640477a9975d3772",
+          "figures/convlstm/seed_stability_runs.csv": "d4faa00c0a869c6511d52d2ed858d30c7e6d98fe39bc197611f05ba588fe819f",
+          "figures/convlstm/seed_stability_summary.csv": "d47c1b849688e48379199c3d3f3b1d049b8dc44f9d370d429ef0cffe04c8809b",
+          "figures/convlstm/seed_stability_training.csv": "8bf53c3f7ef31e1cc385a73f17ca09eead7f357679e6873890a02b8a399cb34b"
+        },
+        "run_root": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1",
+        "stage_bundles_promoted_independently": true
+      },
+      "protocol_id": "ootang-convlstm-elevation-fixed120-v1",
+      "protocol_version": "1.0",
+      "rolling_validation": {
+        "run_id": "rolling_seed0",
+        "seed": 0
+      },
+      "schema_version": "ootang_convlstm_elevation_diagnostics_protocol_v1",
+      "seed_stability": {
+        "best_seed_selected": false,
+        "rolling_seed0_reproduction_required": true,
+        "run_count": 15,
+        "run_id": "seed_stability_0_4",
+        "save_all_predictions": true,
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "source_data_status": "materialized_daily_modeling_series_not_independent_raw_gnss",
+      "status": "frozen_for_internal_exploratory_diagnostic",
+      "training": {
+        "calibration_fraction_within_train": 0.2,
+        "epochs": 120,
+        "hidden_channels": 16,
+        "horizon_days": 1,
+        "hyperparameter_tuning": false,
+        "kernel_size": 3,
+        "learning_rate": 0.001,
+        "lookback_days": 7,
+        "loss": "mean_pinball_loss",
+        "quantiles": [
+          0.1,
+          0.5,
+          0.9
+        ],
+        "target_coverage": 0.8
+      },
+      "vajont_used": false
+    },
+    "id": "ootang-convlstm-elevation-fixed120-v1",
+    "path": "config/ootang_convlstm_elevation_diagnostics.v1.json",
+    "sha256": "2b685a4ae149d13230996429b79ac1609c456c51e4884447585e215f578e7f10",
+    "version": "1.0"
+  },
+  "runtime": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "python": "3.10.20",
+    "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+    "torch": "2.12.0"
+  },
+  "schema_version": "ootang_convlstm_stage_bundle_manifest_v1",
+  "sources": [
+    {
+      "path": "code/convlstm/rolling_validation.py",
+      "sha256": "74b9add46e9f2ee213443e34290c246d0224058ad3c722a226eded01d981e1ba",
+      "size_bytes": 24129
+    },
+    {
+      "path": "code/convlstm/model.py",
+      "sha256": "4c3fae317c652059d541ff7b94eb7cc166934ed8a9d9f6d6beec8995499bc238",
+      "size_bytes": 49556
+    },
+    {
+      "path": "code/convlstm/elevation_diagnostic_protocol.py",
+      "sha256": "b290ad5d4f9c59f5513646cdd95774bde97b292ba4fd3cf164c7761992ea49d1",
+      "size_bytes": 17902
+    },
+    {
+      "path": "code/convlstm/grid_interp.py",
+      "sha256": "b2e50698821d0f4fe523243a1318d489fff991749dd496ee81515ecd35361953",
+      "size_bytes": 3996
+    }
+  ],
+  "stage": "convlstm-rolling",
+  "status": "completed"
+}

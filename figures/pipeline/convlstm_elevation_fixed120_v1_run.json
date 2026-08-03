@@ -1,0 +1,107 @@
+{
+  "schema_version": 2,
+  "status": "completed",
+  "warning_pipeline_scope": "research_legacy_and_operational_draft_only",
+  "formal_warning_output": false,
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "started_at": "2026-08-04T06:47:55+08:00",
+  "finished_at": "2026-08-04T06:55:21+08:00",
+  "git_commit": "1e06629119e08b33ded2540a435e726c2d2da97a",
+  "source_sha256": "65391f9fb953d8ac32cded93f964740f2456262c7479b306bd8ed41a23937e4b",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 445.976,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "convlstm-rolling",
+      "script": "code/convlstm/rolling_validation.py",
+      "warning_artifact_scope": "research_support",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 54.383,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv",
+        "config/ootang_convlstm_elevation_diagnostics.v1.json"
+      ],
+      "outputs": [
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_folds.csv",
+          "size_bytes": 1828,
+          "sha256": "46bd601a7c64c336cc8390b4aa4dfac3db8d4854f9ef5aa27f34c74f13c246f6"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_metrics.csv",
+          "size_bytes": 38348,
+          "sha256": "e426b9b15db863a66eafca22ffcce69b1a7d5efe8951368f9357b593d7995931"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_predictions.csv",
+          "size_bytes": 1701587,
+          "sha256": "ba0d7004be5cdfea1837ff28df06bd886e842429843688b3781ca209ff1b3149"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json",
+          "size_bytes": 10884,
+          "sha256": "b25a3858b3c0ad0af2759a9484e2f3601464138d46747d041847c0ce0043e905"
+        }
+      ],
+      "contract_error": null
+    },
+    {
+      "name": "convlstm-seeds",
+      "script": "code/convlstm/seed_stability.py",
+      "warning_artifact_scope": "research_support",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 391.571,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "data/features.csv",
+        "data/station_coords.csv",
+        "config/ootang_convlstm_elevation_diagnostics.v1.json",
+        "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_folds.csv",
+        "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_metrics.csv",
+        "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/rolling_validation_predictions.csv",
+        "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json"
+      ],
+      "outputs": [
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_runs.csv",
+          "size_bytes": 10631,
+          "sha256": "21b45cb82d13a2716f3b7a5fd28b390dfb2937f7073872b5419345280dd7a788"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_metrics.csv",
+          "size_bytes": 189284,
+          "sha256": "362c55b7b26521bcf324bc45bff0a7d685d6b02e9904f2de0766270c2db395c6"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv",
+          "size_bytes": 71112,
+          "sha256": "f8fba7e24b109b14ed9f9c4b452f8c5132155c5324549ebe3cd80b8157ed55a3"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_training.csv",
+          "size_bytes": 260934,
+          "sha256": "540ba55538a41a444f533d041fca62c7894c05491081383855a8ca0b629bb4cd"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv",
+          "size_bytes": 8656758,
+          "sha256": "2627ad33c8caab5ff216ab5dd4cd6799e020625434a282300cfd149155ba6f6d"
+        },
+        {
+          "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json",
+          "size_bytes": 15540,
+          "sha256": "6e6fd0361241803a3cf5404583fd0a1be413abc227863d98d3b0bfddd653ffb5"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}

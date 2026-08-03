@@ -2,11 +2,13 @@
 
 > 整理日期：2026-07-16
 >
+> 最近更新：2026-08-04
+>
 > 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
 > 状态：执行工作稿；当前主线为藕塘滑坡重算，Vajont 降为后续补充案例
 >
-> 本文档只整理任务与验收标准，不代表相关代码、实验和结论已经修改或完成。
+> 本文档以任务与验收标准为主；只有明确标为“执行记录”或已勾选完成的条目代表相应工作已经落地，且其证据强度仍受数据与科研门禁约束。
 
 ## 0. 方法依据与文档优先级
 
@@ -629,12 +631,20 @@ figures/warning_draft/interval_reference_states_manifest.json
 
 数据血缘补充：上述完成判据只证明发布物化序列上的工程输出完整。当前 RMSE、coverage 和 interval score 不构成独立原始逐日 GNSS 的确认性性能，正式预测仍受 4.2.13 的 `data_gate=blocked` 约束。
 
-#### 2026-07-16：全测点 ConvLSTM 输出执行记录
+#### 2026-07-16：全测点 ConvLSTM 输出执行记录（历史 6 通道）
 
 - 已移除仅绘制 `MJ9/MJ1/MJ3` 的限制，并通过 `main.py --stage convlstm` 重跑藕塘单阶段。新主图为 `figures/convlstm/forecast_all_stations.png`，按 8 个测点展示全时间轴实际位移、fit 诊断、calibration 诊断和留出 test/prediction 段；两条竖线标出 2019-02-03 的 fit/calibration 边界和 2019-09-18 的 calibration/test 边界。
 - 新增 `figures/convlstm/forecast_predictions.csv`：共 11,400 行（8 测点 × 1,425 个目标日），fit/calibration/test 分别为 2016-08-06--2019-02-02、2019-02-03--2019-09-17、2019-09-18--2020-06-30。每行保存实际位移、持久性基线、原始 `P10/P50/P90`、校准端点、`qhat_mm` 和端点适用状态；fit 行的校准端点刻意为空，避免把后续 calibration 信息回灌为拟合期结果。
 - `forecast_metrics.csv` 现明确 `evaluation_split=test`，保留 8 测点 × 原始/校准两种区间的覆盖率、平均宽度、pinball loss、80% interval score 及持久性基线。此次单次留出测试的整体 P50 RMSE 为 0.318 mm，持久性基线为 0.340 mm；原始/校准 P10--P90 覆盖率为 0.734/0.752。它们只描述当前留出段表现，不能用作训练期拟合性能或五级预警有效性证据。
 - 此次预测表保留原始 `P10/P50/P90` 供论文参考区间状态使用；随后已生成单独的 `figures/warning_draft/interval_reference_states.csv`。该映射不使用 test 期调整任何分位数参数，且只作为观测后单项状态，不等同于正式综合预警。
+
+#### 2026-08-04：7 通道 fixed-120 滚动与五种子诊断记录
+
+- 已按运行前冻结的 [`ootang_convlstm_elevation_diagnostics.v1.json`](../config/ootang_convlstm_elevation_diagnostics.v1.json) 完成 7 通道模型的三个 287 日扩展窗口折，以及 `seed=0--4` 的 15 个折—种子拟合；没有选择最佳种子，也没有根据测试折调整高程、网络或区间参数。
+- 当前版本化结果写入 `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/`。rolling 共 3 折、54 行指标和 6,888 行逐点预测；five-seed 共 15 次运行、270 行指标、1,800 行训练轨迹和 34,440 行逐点预测。`seed=0` 两阶段结果在 `1e-12` 容差内一致，逐日主键、7 通道 schema、坐标哈希和输入/源码/输出哈希均通过验收。
+- fold 1/2 的 RMSE、MAE 对 5/5 个种子均劣于持久性基线；fold 3 对 5/5 个种子略优，但预测增量标准差仅为实际值约 `0.156`、平均相关为 `-0.041`，不能解释为稳定捕捉加速/减速过程。校准后 coverage 分别为 `0.387/0.956/0.754`，显示明显的跨时段欠覆盖/过覆盖不稳定。
+- 与历史 6 通道结果的配对版本比较没有改变上述跨时期结论，且增加通道同时改变了参数量、测试结果也已查看。因此该比较不是高程因果消融，不支持“高程显著提升预测”的表述。
+- 7 通道早停与容量敏感性没有运行，历史 6 通道相应产物不能迁移为当前证据；Vajont 仍未启动。完整审查见 [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md)，运行清单见 [`convlstm_elevation_fixed120_v1_run.json`](../figures/pipeline/convlstm_elevation_fixed120_v1_run.json)。
 
 ### 阶段 3：明确并重做 SHAP 主控因素分析
 
@@ -841,6 +851,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 3. 报告相对持久性基线和旧无高程快照的真实差异，不用已查看的 test 结果调整高程尺度、阈值或网络；
 4. 将 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked` 同步到方法、结果、限制和图表说明；
 5. 完成高程可信性、400 个未空间确认状态和典型状态日的专家审查，见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
+6. 按预先冻结协议完成 7 通道 fixed-120 的三折滚动与五随机种子诊断，并将产物与历史 6 通道结果隔离；结果审查确认 fold 1/2 的基线失败稳定存在，fold 3 的小幅点误差优势不等于动态过程捕捉。
 
 ### 审查后已处理
 
@@ -887,6 +898,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [x] 已复核 400 个未空间确认日和典型状态日：全部数据完整、候选只位于 O1，且 yellow–red 严重度由区间状态主导；高程只记为地形先验，不升级为已验证的物理约束。
 - [x] 已修复 v2 全局最少有效点门禁，并生成不覆盖 v2 的 v3 双轴空间产物；v3 全部保持非正式且没有启动 Vajont。
 - [x] 已补齐 514 日 × 8 点完整等级图及 8 点“累计位移 + 三项五级 + `ΔV` 三态 + 最终五级”联合诊断图；400 个 `NC` 明确为未空间确认而非缺测。
+- [x] 已完成当前 7 通道 fixed-120 的三折滚动和 `seed=0--4` 稳定性诊断；34,440 个逐点预测键完整，fold 1/2 均未超过持久性基线，fold 3 仅为强平滑条件下的小幅误差优势；早停/容量未运行且不借用历史 6 通道结论。
 
 ## 9. 最终论文完成定义
 
@@ -895,7 +907,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [ ] R1-R5、R7-R10 均有对应代码/数据/图表/正文证据；R3 的用户已确认分工、毕业论文方法先例及当前 NGBoost+SHAP 限制均已写清；R6 已记录为带用户授权门禁的 P2 后续项；
 - [ ] 数据来源、生成链和点位映射达到确认性主张所需可追溯性；藕塘无法补齐时，不以它承担该项证据；
 - [ ] 逐点速度和 `ΔV` 定义适用于日尺度与非等间隔数据；
-- [ ] ConvLSTM 展示所有测点、训练段和预测段；
+- [x] ConvLSTM 展示所有测点、训练段和预测段；
 - [x] SHAP 的被解释模型与目标写清楚；
 - [ ] 四项指标并列进入五级规则融合，不再使用主副指标逻辑；
 - [ ] 区间指标仅使用预测发布时刻以前的信息生成 P10/P50/P90，在观测到 `U_t` 后进行偏离状态识别；不以其宣称 `h` 天提前量；

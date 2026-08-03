@@ -1,6 +1,6 @@
 # 藕塘滑坡阶段性结果与后续决策包
 
-> 更新日期：2026-08-01
+> 更新日期：2026-08-04
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
 > 方法依据：以[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)和指定 Word 论文为主；用户本人的藕塘毕业论文仅作参考
@@ -17,7 +17,7 @@
 | 模块 | 已完成内容 | 当前边界 | 主要证据 |
 | --- | --- | --- | --- |
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
-| 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；fit/calibration/test 按日期分离 | 属于物化日序列内部的单次原型结果 | [`forecast_predictions.csv`](../figures/convlstm/forecast_predictions.csv)、[`forecast_metrics.csv`](../figures/convlstm/forecast_metrics.csv) |
+| 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；已完成 fixed-120 三个滚动折 × 五个预设种子及全部逐日预测 | 属于物化日序列内部探索性诊断；早停与容量敏感性尚未重跑 | [`7 通道 fixed-120 审查`](ootang_convlstm_elevation_fixed120_review.md)、[`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
 | 模型解释分工 | 用户批准原型由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost+SHAP 负责候选模型依赖；遗留标签仅作探索性事件归因 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合；尚无导师验收记录 | [`shap_provenance.json`](../figures/shap/shap_provenance.json)、[`shap_stability_protocol.md`](shap_stability_protocol.md) |
 | 四指标逐点判断 | 区间、速度、`ΔV`、改进切线角进入全部 4,112 条测点—时刻记录 | 当前 V0 是项目特有比较器，不是指定 Word 的严格 MVIF V0 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v3/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v3/ootang_operational_thresholds.csv) |
 | 多测点空间融合 | v3 分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v3/ootang_operational_site_timeline.csv)、[`v3 配置`](../config/ootang_operational_run.v3.draft.json) |
@@ -56,7 +56,9 @@ formal_warning_output = false
 
 8 个测点高程先按测点总体做 z-score，再仅依据水平坐标进行 IDW，生成固定的 `4×7` 高程网格。高程作为静态通道与随时间变化的位移和环境通道共同进入 ConvLSTM；它不参与距离度量，也没有被解释为三维位移或 GNSS 高程变化。
 
-模型保持 7 日输入、1 日预测、P10/P50/P90 三分位数和固定种子 0。fit 为 2016-08-06 至 2019-02-02，calibration 为 2019-02-03 至 2019-09-17，test 为 2019-09-18 至 2020-06-30。当前高程版本只完成单次最小链路；既有滚动验证、五种子、早停和容量敏感性属于加入高程前的 6 通道历史诊断，不能直接写成当前 7 通道模型的复验结果。
+模型保持 7 日输入、1 日预测和 P10/P50/P90 三分位数。当前 7 通道 fixed-120 协议固定 `hidden_channels=16`、卷积核 3、学习率 `1e-3`，并完成三个 287 日非重叠扩展窗口测试折：2018-02-21—2018-12-04、2018-12-05—2019-09-17、2019-09-18—2020-06-30。每折训练历史末 20% 仅用于区间校准，测试段不参与模型、种子或参数选择。
+
+滚动 seed 0 和预设种子 `0,1,2,3,4` 的 15 个折—种子拟合均已完成，保存了 34,440 条 `seed × fold × date × station` 逐日预测；rolling seed 0 与 five-seed 中的 seed 0 逐值一致。运行对应提交为 `1e06629119e08b33ded2540a435e726c2d2da97a`。当前 7 通道尚未运行早停和容量敏感性；加入高程前的 6 通道历史诊断仍只作探索性版本对照，不能替代 7 通道复验或用于高程因果归因。预警 v3 继续使用其已冻结的运行输入，未用五种子结果重新选择阈值或规则。
 
 R3 的原型模型分工已由用户确认，并沿用其毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离式角色先例。当前项目对应为：ConvLSTM 单独输出 P10/P50/P90 并评价覆盖；独立 NGBoost+SHAP 分析候选模型依赖，遗留二分类标签只作探索性事件归因。这不是 ConvLSTM-SHAP，不能称为已确定物理主控因素；当前 NGBoost 的回归目标和遗留二分类 V0 目标也不是正式五级融合。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。该解释可用于先跑通藕塘，但尚无导师验收记录。
 
@@ -84,17 +86,19 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 
 ## 5. 主要结果
 
-### 5.1 位移预测
+### 5.1 位移预测：fixed-120 三折 × 五种子
 
-当前高程感知 test 段包含 287 日 × 8 点，共 2,296 条逐点记录。总体指标为：
+每个测试折包含 287 日 × 8 点，共 2,296 条逐点记录；五种子合计 34,440 条预测。以下为总体、校准区间口径，`skill > 0` 表示优于昨日位移持久性基线：
 
-| 指标 | ConvLSTM | 持久性基线 | 解释 |
-| --- | ---: | ---: | --- |
-| RMSE | 0.338 mm | 0.340 mm | RMSE skill 为 0.007，仅略优于基线 |
-| MAE | 0.174 mm | 0.181 mm | 仅描述当前单次物化留出段 |
-| 校准后 P10–P90 覆盖率 | 0.770 | 目标 0.800 | 仍有约 0.030 的覆盖缺口 |
+| fold | 模型 RMSE，均值 ± SD (mm) | 基线 RMSE (mm) | RMSE skill；正值种子 | MAE skill；正值种子 | 增量相关 | 增量标准差比 | coverage / 目标 | 区间宽度 (mm) | mean pinball | 80% interval score |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 1.970 ± 0.418 | 0.245 | -7.036；0/5 | -8.270；0/5 | 0.202 | 6.933 | 0.387 / 0.800 | 2.959 | 0.534 | 8.463 |
+| 2 | 0.356 ± 0.085 | 0.120 | -1.970；0/5 | -1.363；0/5 | 0.187 | 3.668 | 0.956 / 0.800 | 1.320 | 0.086 | 1.475 |
+| 3 | 0.328 ± 0.008 | 0.340 | 0.036；5/5 | 0.066；5/5 | -0.041 | 0.156 | 0.754 / 0.800 | 0.476 | 0.065 | 1.102 |
 
-相对于加入高程前的同一单种子快照，高程版本 RMSE 约由 0.318 mm 增至 0.338 mm。由于 test 已被查看，后续不得据此选择高程尺度、网络规模、阈值或最佳种子。当前结果支持“流程已跑通”，不支持“高程已经改善预测性能”。
+fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波动；fold 3 虽对所有种子略优，但预测增量标准差约收缩 84%，相关性接近零，其增益更符合平均漂移修正和强平滑，不能解释为稳定跟踪逐日触发过程。80% 区间在三折分别明显欠覆盖、过覆盖和轻度欠覆盖，说明校准不能稳定跨时期迁移。
+
+历史 6 通道与当前 7 通道的 15 运行平均值显示，7 通道 RMSE/MAE 分别低约 14.3%/15.7%，但逐种子仅 8/15 个 RMSE 和 9/15 个 MAE 更低，fold 3 的平均 RMSE/MAE 反而高约 1.6%/2.6%，总体正 skill 数仍同为 5/15。该差异由早期高误差折主导，且历史工件缺少当前完整输入血缘，因此只能视为版本表现变化，不能证明高程带来因果增益。由于三个外层测试折均已查看，后续不得据此选择高程尺度、网络规模、轮数、阈值或最佳种子。
 
 ### 5.2 v3 逐点与滑坡体输出
 
@@ -124,7 +128,7 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 
 高程能够增加的是**空间结构信息**。对于 ConvLSTM，静态高程网格使不同坡位在卷积邻域中具有可区分的地形背景，因此比只用平面坐标和位移场更符合坡体空间异质性的建模直觉。
 
-高程不能自动增加的是**观测证据等级**。它不能替代原始 GNSS，不能恢复日序列生成链，也不能证明位移变化由高程所致。当前单种子结果甚至没有显示误差改善，因此论文中可写“引入静态地形先验并完成原型验证”，不应写“高程显著提高预测精度或预警可信性”。
+高程不能自动增加的是**观测证据等级**。它不能替代原始 GNSS，不能恢复日序列生成链，也不能证明位移变化由高程所致。当前三折 × 五种子结果显示版本差异随折次和种子改变，且没有改变“前两折失败、第三折仅小幅正 skill”的主要模式。因此论文中可写“引入静态地形先验并完成内部探索性诊断”，不应写“高程显著提高预测精度或预警可信性”。
 
 ## 7. V0、稳定段和阈值状态
 
@@ -136,10 +140,11 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 
 ### 可以写入阶段性方法或内部结果
 
-- 已建立包含静态高程先验的 7 通道 ConvLSTM，并完成 8 测点全链路运行；
+- 已建立包含静态高程先验的 7 通道 ConvLSTM，并完成 8 测点 fixed-120 三折 × 五种子内部诊断；
 - 已建立区间、速度、`ΔV`、改进切线角的透明逐点规则输出；
 - 已建立局部候选与滑坡体整体确认分离的 v3 双轴空间融合；
-- 当前单次原型只略优于持久性 RMSE 基线，未显示高程带来的性能提升；
+- fixed-120 结果在 fold 1/2 均劣于持久性基线，在 fold 3 仅小幅优于基线，跨时期预测与区间校准均不稳定；
+- 与历史 6 通道工件的探索性对照没有形成一致的折次和种子优势，不能据此归因于高程；
 - 现有结果适合用于方法跑通、输出设计和局限性讨论。
 
 ### 不能写成正式结论
@@ -153,7 +158,7 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 
 ## 9. 后续技术决策
 
-当前推荐冻结 v3，不再根据已经查看的 test 调模型或规则。下一步不是继续优化藕塘分数，而是决定最终论文的数据角色：
+当前推荐冻结 v3 和 7 通道 fixed-120 结果，不再根据已经查看的外层测试折调模型或规则。7 通道早停与容量敏感性尚未完成；若后续确需开展，应先冻结只使用训练内部时序切分的选择协议，且不得覆盖本轮 fixed-120 结果或使用外层测试折选参。下一步重点是决定最终论文的数据角色：
 
 1. **藕塘保留为原型案例**：使用本文件的谨慎口径，重点展示方法链、空间双轴输出和局限性；
 2. **选择可追溯的新主数据集**：先审计原始观测、坐标、时间生成链和事件标签，再重新冻结切分、稳定段、V0、阈值和验证协议；
@@ -174,3 +179,7 @@ v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开�
 | 六个代表日规则图 | [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg) |
 | 514 日完整预警状态图 | [`ootang_v3_full_warning_timeline.svg`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg) |
 | 8 点位移—四指标—最终等级联合图 | [`ootang_v3_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg) |
+| 7 通道 fixed-120 协议与科学审查 | [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md) |
+| 7 通道 rolling seed 0 产物与血缘 | [`rolling manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json) |
+| 7 通道三折 × 五种子产物与血缘 | [`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
+| 7 通道 fixed-120 管线运行记录 | [`convlstm_elevation_fixed120_v1_run.json`](../figures/pipeline/convlstm_elevation_fixed120_v1_run.json) |
