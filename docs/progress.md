@@ -22,7 +22,7 @@
 | SHAP 跨折稳定性与特征组消融 | 已完成 | `figures/shap/stability/`；固定 5 折、5 个特征组和任务专属主指标 |
 | 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
 | 新神经调参/机理消融与正式日预测 | 暂停 | 7 通道 fixed-120 结果已查看，不据此优化；早停/容量未运行，自然月分段三次结构仍限制确认性解释 |
-| Vajont 案例 | 未启动 | 未读取、未适配、未运行；开始前必须获得用户明确许可 |
+| Vajont 案例 | 未启动 | 本轮 fixed-120 未读取、未适配、未运行；此前仅做过只读内容盘点，不构成启动，开始前必须获得用户明确许可 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件 |
 | 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 
@@ -46,6 +46,14 @@
 - 本轮是藕塘公开物化日序列上的内部探索性诊断。历史 6 通道对照只能描述版本变化，不能当作 7 通道证据或高程因果消融。
 - 7 通道早停和容量敏感性未运行；Vajont 也未启动，后续开始必须先得到用户明确许可。
 - 版本化产物位于 `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/`，管线清单为 `figures/pipeline/convlstm_elevation_fixed120_v1_run.json`，完整审查见 `docs/ootang_convlstm_elevation_fixed120_review.md`。
+
+## 2026-08-04 藕塘原型文档收口记录
+
+- 已同步 `README.md`、方法/设计/框架状态、结果、限制、进度、图件说明及 `main.py` 阶段契约；当前 ConvLSTM 主结果统一为 7 通道 fixed-120 三折 × 五种子，历史 6 通道滚动、早停和容量结果均明确隔离。
+- 当前 7 通道最后一折 `seed=0` 的 14 日时间块结果已保留：模型相对持久性基线的 RMSE/MAE 差异 95% 区间均跨 0；三折 × 五种子 bundle 尚未扩展为逐折逐种子的全面 bootstrap。
+- 文档已统一报告站点异质性、强平滑、区间失配及物化日序列血缘限制；该同步完成的是内部原型记录，不解除 `confirmatory_evidence_gate=blocked`，也不把结果升级为正式预警证据。
+- Vajont 本轮未启动；如用户以后明确允许，须先冻结其外部验证、补充案例或方法演示角色，再建立独立数据与评价协议。
+- 提交前全量门禁为 `355 passed`、`45 subtests passed`；2 项失败仍是旧 `V0` 方法名和旧切线角列断言，未出现本轮新增回归。科学证据轴与规范轴独立审查均为 P0=0、P1=0。
 
 ## 2026-08-01 v3 空间规则实施记录
 
