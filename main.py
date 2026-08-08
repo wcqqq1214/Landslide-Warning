@@ -32,7 +32,7 @@ class Stage:
     outputs: tuple[str, ...] = ()
     warning_artifact_scope: str = "research_support"
     formal_warning_output: bool = False
-    enabled_by_default: bool = True
+    enabled_by_default: bool = False
 
 
 STAGES = (
@@ -47,6 +47,7 @@ STAGES = (
             "data/ootang_kinematics_summary.csv",
             "figures/tangent_angle/uniform_rates.csv",
         ),
+        enabled_by_default=True,
     ),
     Stage(
         "onset",
@@ -58,6 +59,7 @@ STAGES = (
             "figures/warning_onset/onset_targets.csv",
             "figures/warning_onset/onset_inventory.csv",
             "figures/thresholds/v0_thresholds.csv",
+            "figures/warning_onset/legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),
@@ -75,6 +77,7 @@ STAGES = (
             "figures/shap/shap_binary_cv_metrics.csv",
             "figures/shap/shap_provenance.json",
             "figures/thresholds/v0_thresholds.csv",
+            "figures/shap/legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),
@@ -95,6 +98,7 @@ STAGES = (
             "figures/shap/stability/group_ablation_summary.csv",
             "figures/shap/stability/shap_group_stability.png",
             "figures/shap/stability/group_ablation.png",
+            "figures/shap/stability/legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),
@@ -113,6 +117,7 @@ STAGES = (
             "figures/convlstm/forecast_bootstrap_ci.csv",
             "figures/convlstm/forecast_run_manifest.json",
         ),
+        enabled_by_default=True,
     ),
     Stage(
         "convlstm-rolling",
@@ -267,6 +272,7 @@ STAGES = (
             "figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic_manifest.json",
         ),
         warning_artifact_scope="operational_draft",
+        enabled_by_default=True,
     ),
     Stage(
         "ngboost",
@@ -279,6 +285,8 @@ STAGES = (
             "figures/ngboost/warning_metrics.csv",
             "figures/ngboost/warning_probabilities.csv",
             "figures/thresholds/v0_thresholds.csv",
+            "figures/ngboost/legacy_warning_manifest.json",
+            "models/ngboost_legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),
@@ -291,7 +299,10 @@ STAGES = (
             "data/monitoring_data.csv",
             "figures/ngboost/warning_probabilities.csv",
         ),
-        outputs=("figures/warning_fusion/warning_fusion.csv",),
+        outputs=(
+            "figures/warning_fusion/warning_fusion.csv",
+            "figures/warning_fusion/legacy_warning_manifest.json",
+        ),
         warning_artifact_scope="legacy_exploratory",
     ),
     Stage(
@@ -304,6 +315,7 @@ STAGES = (
             "figures/sensitivity/v0_parameters.csv",
             "figures/sensitivity/tangent_sensitivity.csv",
             "figures/sensitivity/tangent_parameters.csv",
+            "figures/sensitivity/legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),
@@ -322,6 +334,7 @@ STAGES = (
             "figures/tangent_angle/review/ATU4_stage_review.png",
             "figures/tangent_angle/review/ATU5_stage_review.png",
             "figures/tangent_angle/review/candidate_stage_comparison.csv",
+            "figures/tangent_angle/review/legacy_warning_manifest.json",
         ),
         warning_artifact_scope="legacy_exploratory",
     ),

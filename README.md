@@ -25,13 +25,10 @@
 
 ```bash
 uv sync
-uv run python main.py \
-  --stage features \
-  --stage convlstm \
-  --stage ootang-operational-v3
+uv run python main.py
 ```
 
-该最小链路不会启动 Vajont，也不会运行遗留 NGBoost/旧融合阶段。运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。
+无参数默认只执行 `features → convlstm → ootang-operational-v3`。该最小链路不会启动 Vajont，也不会运行遗留 NGBoost、旧融合、v1/v2 或滚动/多种子诊断阶段。使用 `--list` 查看全部 16 个阶段；其他阶段必须用 `--stage` 显式选择。运行会把提交哈希、源码指纹、各阶段状态、耗时和产物 SHA-256 写入 `figures/pipeline/latest_run.json`。
 
 复现当前 7 通道 fixed-120 诊断时，只选择已冻结的滚动和五种子阶段：
 
@@ -62,7 +59,7 @@ uv run python main.py \
 
 ## 管线阶段
 
-`main.py` 支持完整研究管线和显式选择的最小阶段链。各阶段声明输入和输出；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
+`main.py` 编排 16 个可独立选择的阶段；无参数入口只运行当前藕塘最小链，其余历史复现和诊断阶段均为 explicit-only。各阶段声明输入和输出；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
 
 ## 主要结果入口
 

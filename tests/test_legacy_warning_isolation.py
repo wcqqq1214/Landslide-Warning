@@ -149,6 +149,39 @@ class LegacyWarningIsolationTests(unittest.TestCase):
         )
         self.assertFalse(report["stages"][0]["formal_warning_output"])
 
+    def test_pipeline_contract_tracks_every_legacy_sidecar(self):
+        expected = {
+            "onset": {"figures/warning_onset/legacy_warning_manifest.json"},
+            "shap": {"figures/shap/legacy_warning_manifest.json"},
+            "shap-stability": {
+                "figures/shap/stability/legacy_warning_manifest.json"
+            },
+            "ngboost": {
+                "figures/ngboost/legacy_warning_manifest.json",
+                "models/ngboost_legacy_warning_manifest.json",
+            },
+            "fusion": {"figures/warning_fusion/legacy_warning_manifest.json"},
+            "sensitivity": {
+                "figures/sensitivity/legacy_warning_manifest.json"
+            },
+            "tangent-review": {
+                "figures/tangent_angle/review/legacy_warning_manifest.json"
+            },
+        }
+        legacy_stages = {
+            stage.name
+            for stage in pipeline.STAGES
+            if stage.warning_artifact_scope == "legacy_exploratory"
+        }
+
+        self.assertEqual(set(expected), legacy_stages)
+
+        for stage_name, sidecars in expected.items():
+            with self.subTest(stage=stage_name):
+                stage = pipeline.STAGE_BY_NAME[stage_name]
+                self.assertTrue(sidecars.issubset(set(stage.outputs)))
+                self.assertFalse(stage.enabled_by_default)
+
 
 if __name__ == "__main__":
     unittest.main()

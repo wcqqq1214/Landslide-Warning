@@ -16,18 +16,21 @@ SPEC.loader.exec_module(pipeline)
 
 
 class PipelineTests(unittest.TestCase):
-    def test_default_selection_excludes_explicit_only_stages(self):
+    def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
         self.assertEqual(
-            stages,
-            [stage for stage in pipeline.STAGES if stage.enabled_by_default],
-        )
-        self.assertNotIn(
-            "convlstm-inner-validation",
             [stage.name for stage in stages],
+            ["features", "convlstm", "ootang-operational-v3"],
         )
-        self.assertNotIn("convlstm-capacity", [stage.name for stage in stages])
+        self.assertTrue(all(stage.enabled_by_default for stage in stages))
+        self.assertTrue(
+            all(
+                not stage.enabled_by_default
+                for stage in pipeline.STAGES
+                if stage not in stages
+            )
+        )
 
     def test_selected_stages_are_deduplicated_and_canonically_ordered(self):
         stages = pipeline.select_stages(["fusion", "features", "fusion"])
@@ -73,7 +76,7 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(names.index("shap-stability"), names.index("shap") + 1)
         self.assertEqual(stage.script, "code/explainability/shap_stability.py")
-        self.assertEqual(len(stage.outputs), 11)
+        self.assertEqual(len(stage.outputs), 12)
         self.assertIn(
             "figures/shap/stability/cross_fold_station_feature_importance.csv",
             stage.outputs,

@@ -158,7 +158,7 @@ future frozen protocol + formal four-indicator executor
 uv run python main.py
 ```
 
-`main.py` 当前编排 16 个阶段；其中 `convlstm-inner-validation` 和 `convlstm-capacity` 为 explicit-only，不进入默认选择，且在当前冻结协议下显式调用也会 fail-closed。使用 `--stage` 可选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动补跑上游依赖；`convlstm-seeds` 会将 rolling 的三份 CSV 和 manifest 声明为必需输入，并在训练前校验其协议、输入、源码与输出哈希。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入指定的管线清单；本轮清单为 `figures/pipeline/convlstm_elevation_fixed120_v1_run.json`。
+`main.py` 当前编排 16 个阶段；无参数入口只选择 `features → convlstm → ootang-operational-v3`，其余 13 个历史复现或诊断阶段均为 explicit-only。`convlstm-inner-validation` 和 `convlstm-capacity` 在当前冻结协议下即使显式调用也会 fail-closed。使用 `--list` 可查看阶段及默认状态，`--stage` 可显式选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动补跑上游依赖；`convlstm-seeds` 会将 rolling 的三份 CSV 和 manifest 声明为必需输入，并在训练前校验其协议、输入、源码与输出哈希。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入指定的管线清单；本轮清单为 `figures/pipeline/convlstm_elevation_fixed120_v1_run.json`。
 
 阶段契约在子进程前检查必需输入，在子进程后检查预期输出存在且本次运行已更新。清单为每个通过检查的输出保存相对路径、文件大小和 SHA-256；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 
