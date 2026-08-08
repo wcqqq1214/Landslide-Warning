@@ -3,6 +3,7 @@
 \usepackage[a4paper,top=22mm,bottom=22mm,left=22mm,right=22mm]{geometry}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{amsmath}
 \usepackage{booktabs}
 \usepackage{tabularx}
 \usepackage{array}
@@ -35,6 +36,7 @@
 \setlength{\parskip}{0.35em}
 \setlist[itemize]{leftmargin=2em,itemsep=0.25em,topsep=0.35em}
 \renewcommand{\arraystretch}{1.25}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -48,6 +50,10 @@
     \parbox{0.96\linewidth}{\textbf{#1}\quad #2}%
   }%
 }
+
+\newcommand{\done}{\textcolor{reportgreen}{\textbf{已完成}}}
+\newcommand{\partialdone}{\textcolor{reportorange}{\textbf{原型完成}}}
+\newcommand{\notdone}{\textcolor{reportred}{\textbf{未完成}}}
 
 \title{\heiti\LARGE 藕塘滑坡位移概率预测与多测点预警研究进展报告\\[0.6em]
 \large 当前工程原型、结果判断与待确认问题}
@@ -72,22 +78,181 @@
 
 \section{本阶段要回答的问题}
 
-\emph{本节将在下一提交中加入技术路线总览图和简要说明。}
+这份报告只回答三个问题：藕塘案例目前跑到了哪里，结果是否支持预期，以及正式方法还缺什么。图~\ref{fig:overview} 先把边界画清楚：技术链已经跑通，但“能生成结果”不等于“结果已经证明模型有效”，更不等于可以发布现场预警。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/process_overview.png}
+  \caption{藕塘案例当前技术链与证据边界。输入为 1461 个连续日历行、8 个位移测点及其平面坐标和静态高程；当前已形成全测点概率预测、独立 NGBoost--SHAP 依赖分析和 v3 多测点空间审计。橙色和灰色框中的事项仍是正式方法与数据证据的门禁。}
+  \label{fig:overview}
+\end{figure}
+
+当前工作分成两条彼此独立的模型链。第一条由 ConvLSTM 输出次日累计位移的 P10、P50 和 P90，用来评价点预测和区间覆盖；第二条用独立 NGBoost 模型做 SHAP 分析，观察模型在位移运动学、环境量和测点身份等特征组上的依赖。预警部分没有把两条链强行合成一个“黑箱”：区间、速度、速度增量和改进切线角先逐项保留，再由可追溯的空间规则汇总 8 个测点。
+
+\statusbox{本轮直接结论}{工程上已经跑通藕塘原型；预测结果没有达到“跨时期稳定优于简单基线”的预期；预警结果可以用于检查规则和空间一致性，但还不能作为提前量或安全性的证据。}
 
 \section{ConvLSTM 概率位移预测}
 
-\emph{本节将在下一提交中加入全部测点预测图和三折×五种子结果图。}
+\subsection{模型和展示口径}
+
+当前 ConvLSTM 使用 7 个输入通道：位移空间场、静态高程空间场、库水位、库水位变化率，以及 7、15、30 日累计降雨。每次输入连续 7 日，预测下一日 8 个测点的累计位移分布。高程在这里是静态地形先验，不是孔压、稳定性系数或力学约束，因此本报告称其为“高程感知的时空数据驱动原型”，不称为已经完成的物理引导模型。
+
+图~\ref{fig:all-stations} 给出固定切分下的全时段结果。此前只展示三条曲线的问题已经补齐：8 个测点全部列出，拟合诊断段、校准段和测试段也在同一时间轴上标明。由于累计位移量级较大，概率区间在全时段图上看起来较窄；区间是否可靠不能凭肉眼判断，需结合后面的 coverage 和区间宽度。
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.79\textheight,keepaspectratio]{../figures/convlstm/forecast_all_stations.png}
+  \caption{8 个测点的 ConvLSTM 全时段概率位移结果。蓝色、绿色和红色分别对应拟合诊断、校准和留出测试阶段的 P50，浅色带为相应 P10--P90 区间；黑线为观测累计位移，竖虚线为阶段边界。图的作用是完整展示全部测点和训练/预测阶段，不单独作为泛化性能结论。}
+  \label{fig:all-stations}
+\end{figure}
+
+\clearpage
+\subsection{三折、五种子检验：结果不稳定}
+
+为避免只看一次随机初始化，本轮按预先固定的 3 个扩展时间折和 5 个随机种子完成 15 次拟合，共得到 34,440 条逐点预测。每折的测试期互不重叠，持久性基线直接使用前一日位移作为次日预测。图~\ref{fig:convlstm-validation} 汇总了最关键的四项结果。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/convlstm_validation_summary.png}
+  \caption{ConvLSTM 跨时期验证摘要，柱高为 5 个预设种子的均值，误差线为种子间标准差。a，模型 RMSE 与前一日持久性基线之比，小于 1 才表示改善；b，校准后 P10--P90 覆盖率，虚线为名义 0.80；c，预测与实际日增量相关；d，预测与实际日增量标准差之比，1 表示波动幅度相当。前三项共同说明，低点误差、合理覆盖和动态跟踪并未同时成立。}
+  \label{fig:convlstm-validation}
+\end{figure}
+
+结果可以直接概括为三句话。第一折和第二折的 RMSE 分别是持久性基线的约 8.04 倍和 2.97 倍，5/5 个种子都更差；第三折 5/5 个种子略好，但平均改善只有约 3.6\%。第三折的日增量相关为 $-0.041$，预测波动标准差只有实际值的 0.156，说明这一点误差优势主要伴随强平滑，而不是稳定跟踪每日加速和减速。校准后覆盖率为 0.387、0.956 和 0.754，也没有在三个时期稳定接近 0.80。
+
+\statusbox{结果判断}{当前 fixed-120 模型没有达到跨时期稳定预测的预期。结果并非“完全无用”：它暴露了前期过度响应、后期强平滑和区间迁移不稳三个具体问题；但不能写成模型已经稳定优于基线。为避免事后选择，本轮没有根据已看过的测试折继续调网络、区间或种子。}
 
 \section{SHAP 模型依赖分析}
 
-\emph{本节将在下一提交中加入 SHAP 稳定性和删组结果。}
+这里需要把导师原话中的“ConvLSTM+SHAP”拆开说明。当前 ConvLSTM 负责概率位移和覆盖评价；SHAP 解释的是另行训练的 NGBoost 回归与历史分类模型，不是直接解释 ConvLSTM。回归目标为下一观测间隔的位移增量，历史分类目标为同日 V0 状态；后者不是本轮五级空间融合的正式标签。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures/shap/stability/shap_group_stability.png}
+  \caption{独立 NGBoost 的五折 SHAP 特征组稳定性。左图为位移增量回归，位移运动学组在五折中的归一化平均绝对 SHAP 占比为 0.984--0.990；右图为历史状态分类，位移运动学仍较重要，但累计降雨、原始环境量和测点身份的相对占比随时期明显变化。数值表示模型依赖，不表示地质因果贡献。}
+  \label{fig:shap-stability}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{../figures/shap/stability/group_ablation.png}
+  \caption{删组检验。纵轴大于 0 表示移除该组后性能变差；彩色点为五个时间折，黑短线为中位数。位移运动学组在回归 MAE 和分类 Brier score 上均出现 5/5 折正退化，其余组的方向和幅度不稳定。该结果支持“模型持续依赖位移运动学”，但不支持把单一变量直接称为滑坡物理主控因素。}
+  \label{fig:shap-ablation}
+\end{figure}
+
+这两张图给出的结论比单次 SHAP 排名更可靠，但结论范围也更窄：位移速度及其变化是当前 NGBoost 在这组内部时间折中最稳定的依赖；环境特征在历史分类任务中的作用随时期变化。由于特征共线、目标由物化日序列构造，且没有独立事件标签，本轮只能报告“候选模型依赖”，不能把 SHAP 值写成降雨、库水位或速度的因果主控强度。
 
 \section{四指标与多测点预警原型}
 
-\emph{本节将在下一提交中加入完整时间线、逐点联合诊断和典型日空间融合图。}
+\subsection{四项指标怎样进入原型}
+
+导师指出原来的 $V_t=U_t-U_{t-30}$ 不合适后，速度已经统一改为逐点相邻时刻计算：
+
+\begin{equation}
+  v_i=\frac{U_i-U_{i-1}}{t_i-t_{i-1}}, \qquad
+  \Delta V_i=v_i-v_{i-1}, \qquad
+  \alpha_i=\arctan\!\left(\frac{v_i}{V_0}\right)\frac{180}{\pi}.
+  \label{eq:kinematics}
+\end{equation}
+
+其中 $v_i$ 为速度，$\Delta V_i$ 为速度增量，$\alpha_i$ 为改进切线角。当前数据是规则日间隔，所以 $\Delta V$ 可反映加速、近零或减速趋势；但代码没有再除以时间间隔，它在严格量纲上不是已经建立五级阈值的加速度。这个差别直接决定了导师要求的“加速度预警等级”仍未正式完成。
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{四项指标在当前原型中的实际角色}
+  \label{tab:indicators}
+  \begin{tabularx}{\textwidth}{>{\bfseries}p{2.2cm}YY}
+    \toprule
+    指标 & 当前计算与输出 & 当前边界 \\
+    \midrule
+    置信区间 & 目标日观测与此前发出的 P10/P50/P90 比较，形成五级区间偏离状态 & 属于观测后覆盖/偏离识别，不直接给出提前量 \\
+    速度 & 按式~\eqref{eq:kinematics} 逐测点、逐相邻时刻计算 & V0 来自项目比较器，正式稳定段尚未冻结 \\
+    $\Delta V$ & 分为负、近零、正三种趋势，逐时刻保留 & 尚不是论文要求的严格五级加速度分级 \\
+    改进切线角 & 按 $\alpha=\arctan(v/V_0)$ 计算并分级 & 与速度共享运动学信息，不能当成两份独立观测投票 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+逐点融合保留区间、速度、$\Delta V$ 和切线角四项输入，不再设置“主指标/副指标”。为防止速度和切线角重复计票，两者合并为一个运动学证据族；$\Delta V$ 保留趋势和一致性信息，但不凭正负号直接把颜色升一级。滑坡体层面同时输出两条轴：一条是跨测点、跨 O1/O2/O3 分区的整体确认等级，另一条是局部最高候选等级。这样可以保留 O1 的局部红色而不把整个滑坡体误报为红色。
+
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=\textwidth,height=0.80\textheight,keepaspectratio]{../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.pdf}
+  \caption{8 个测点的累计位移与四指标联合诊断。每个测点上方为累计位移，下方依次为区间（I）、速度（V）、速度增量趋势（$\Delta V$）、切线角（T）和逐点最终候选（F）；竖虚线为校准/测试边界。514 个日期均有对应状态，图中颜色是目标日观测到达后的状态审计，不是提前预警表现。}
+  \label{fig:station-diagnostic}
+\end{figure}
+
+\clearpage
+\subsection{全部时刻与多测点空间结果}
+
+图~\ref{fig:full-timeline} 把 514 日、8 个测点的五级候选和滑坡体双轴结果放在同一时间线上。共有 4,112 条测点--时刻记录；滑坡体整体确认颜色只在 114 日成立，其中绿色、蓝色、黄色、橙色、红色分别为 8、48、31、9、18 日。其余 400 日标为 NC（未获滑坡体确认），但这些日期并不缺数据：8/8 测点和三个分区都可评估，未确认的原因是黄色及以上支撑只位于 O1，未满足跨分区条件。
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.94\linewidth,height=0.76\textheight,keepaspectratio]{../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.pdf}
+  \caption{完整 514 日五级状态时间线。a，8 个测点逐日候选等级；b，上行为跨区确认的滑坡体等级，下行为局部最高候选。灰色 NC 表示数据完整但未满足空间确认，不表示缺测。当前 114 日获得整体颜色，400 日保留局部候选；两条轴同时展示，避免局部红色被静默降级或误写成全体红色。}
+  \label{fig:full-timeline}
+\end{figure}
+\end{landscape}
+
+图~\ref{fig:typical-days} 进一步列出六个代表日。2019-02-03 只有 MJ1/O1 达到黄色，因此不确认全体黄色；2020-03-09 的 O1 为局部红色，但只有黄色证据跨到 O3，所以整体只确认黄色；2020-06-13 在 O2、O3 各有红色支撑，整体和局部都达到红色。这些例子说明，多测点规则确实改变了“一根线代表整个滑坡体”的做法。
+
+\begin{landscape}
+\begin{figure}[p]
+  \centering
+  \includegraphics[width=0.94\linewidth,height=0.76\textheight,keepaspectratio]{../figures/warning_operational_draft_v3/ootang_v3_typical_days.pdf}
+  \caption{六个代表日的逐条空间规则审计。a--c 分别为区间、运动学和 $\Delta V$ 证据；d 同时给出滑坡体确认等级和局部最高候选；e 列出支撑测点与 O1/O2/O3 分区。代表日由冻结语义规则自动选择最早满足日期，不是人工挑选的“最好案例”。}
+  \label{fig:typical-days}
+\end{figure}
+\end{landscape}
+
+当前最需要警惕的是，高等级候选主要由区间偏离给出，速度和切线角在这批数据中最高只到黄色。400 个 NC 日期中的黄色及以上记录也全部位于 O1。因此，图~\ref{fig:full-timeline} 和图~\ref{fig:typical-days} 可以证明“每时刻可复算、每条规则可解释、多测点空间门槛已实现”，不能证明“模型已经提前识别滑坡危险”。
 
 \section{当前结论与下一步}
 
-\emph{本节将在下一提交中区分已完成、未完成和需要导师确认的事项。}
+\subsection{与导师原始修改意见逐项对照}
+
+\begin{table}[H]
+  \centering
+  \footnotesize
+  \caption{导师要求与当前完成状态}
+  \label{tab:advisor-status}
+  \begin{tabularx}{\textwidth}{p{4.1cm}p{1.8cm}Y}
+    \toprule
+    导师要求 & 状态 & 当前证据与剩余问题 \\
+    \midrule
+    相邻时刻逐点速度 & \done & 已统一为式~\eqref{eq:kinematics}，并同步用于特征、切线角和预警原型。 \\
+    全部测点，训练段与预测段均显示 & \done & 图~\ref{fig:all-stations} 已展示 8 个测点和拟合、校准、测试阶段。 \\
+    概率区间覆盖与 SHAP 主控因素 & \partialdone & 覆盖已完成三折五种子检验；SHAP 为独立 NGBoost 的模型依赖，不是 ConvLSTM 的直接 SHAP，也不是因果主控结论。 \\
+    区间、速度、加速度、切线角全部进入 & \partialdone & 四项均保留；但当前是 $\Delta V$ 三态，严格加速度五级尚未建立。 \\
+    NGBoost 训练正式预警模型 & \notdone & 当前改用透明规则原型。没有独立标签时，用规则自产标签训练 NGBoost 只能复刻规则，不能证明分类有效。 \\
+    Vajont 10 d 案例 & \notdone & 尚未读取、适配或运行；按约定必须先获得明确授权。 \\
+    依据论文建立加速度等级 & \notdone & 指定论文提供框架，但没有可直接迁移到藕塘的完整稳定段、V0 和加速度阈值。 \\
+    每个时刻显示五级信号 & \done & 514 日逐点候选和滑坡体双轴结果已完整输出，绿色为正常状态。 \\
+    清楚介绍方法、预测、SHAP 和预警结果 & \done & 本报告按技术链、结果和证据边界集中展示。 \\
+    多监测点综合评判 & \done & v3 使用 8 点和 O1/O2/O3 空间支撑，同时保留整体确认与局部最高。 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+\subsection{现在可以向导师汇报什么}
+
+现在可以汇报，而且不是因为工作做不下去。藕塘案例已经完成了一轮可复算的端到端初跑，正好到了应当让导师判断方法口径的节点。可以明确汇报三件事：第一，导师要求的相邻速度、全测点概率预测、四指标逐时刻展示和多测点融合都已经实现；第二，ConvLSTM 的跨时期结果不理想，不能把第三折的小幅改善包装成稳定成功；第三，正式 NGBoost、加速度五级和 V0 仍缺独立标签或可迁移的阈值依据，这些不是再多跑几次模型就能自动解决的问题。
+
+需要导师拍板的核心不是代码细节，而是两项方法选择：是否接受“ConvLSTM 负责概率预测、独立 NGBoost--SHAP 负责模型依赖”的分离解释；在没有独立五级标签的情况下，是否接受透明规则融合作为藕塘原型，还是要求另行制定人工/专家标签后再训练正式 NGBoost。Vajont 何时启动仍按单独授权执行。
+
+\subsection{建议的下一步}
+
+\begin{enumerate}
+  \item 保留当前 3 折 $\times$ 5 种子结果，不依据已经看过的测试折继续调参或挑选种子。
+  \item 若导师接受规则融合方向，下一步先冻结稳定段、正式 $V_0$、严格加速度定义及五级阈值，再提升预警协议版本；不能只改图注名称。
+  \item 若导师坚持正式 NGBoost 分类，需要先确定独立于当前规则输出的五级标签来源、标注时刻和评价事件。否则训练准确率只表示模型学会了规则。
+  \item 藕塘继续承担“流程跑通和规则展示”角色；论文若需要确认性预测或泛化结论，应在生成链可追溯的新时段或外部滑坡数据上重新冻结验证协议。
+  \item Vajont 保持未启动。获得授权后，再先冻结 10 d 采样、可用测点、外部驱动和验证角色，不能用它反向调整藕塘结果。
+\end{enumerate}
+
+\statusbox{阶段结语}{这轮最重要的产出不是一组看起来漂亮的红橙黄蓝图，而是把“已跑通”“结果是否好”和“能否正式使用”分开了。当前代码与产物可复算，但科学结论仍应保持谨慎。}
 
 \end{document}
