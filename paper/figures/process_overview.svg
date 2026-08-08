@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="416.16pt" height="244.476pt" viewBox="0 0 416.16 244.476" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2026-08-08T22:33:04.733249</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.9, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 244.476
+L 416.16 244.476
+L 416.16 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 20.05632 122.698152
+L 82.73088 122.698152
+Q 88.35552 122.698152 88.35552 119.477088
+L 88.35552 62.878392
+Q 88.35552 59.657328 82.73088 59.657328
+L 20.05632 59.657328
+Q 14.43168 59.657328 14.43168 62.878392
+L 14.43168 119.477088
+Q 14.43168 122.698152 20.05632 122.698152
+z
+" clip-path="url(#pc728812d1f)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_3">
+    <path d="M 87.943755 91.17774
+Q 90.565684 91.17774 91.845971 91.17774
+" clip-path="url(#pc728812d1f)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 86.645971 88.57774
+L 91.845971 91.17774
+L 86.645971 93.77774
+z
+" clip-path="url(#pc728812d1f)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 98.39952 122.698152
+L 161.07408 122.698152
+Q 166.69872 122.698152 166.69872 119.477088
+L 166.69872 62.878392
+Q 166.69872 59.657328 161.07408 59.657328
+L 98.39952 59.657328
+Q 92.77488 59.657328 92.77488 62.878392
+L 92.77488 119.477088
+Q 92.77488 122.698152 98.39952 122.698152
+z
+" clip-path="url(#pc728812d1f)" style="fill: #dce8f2; stroke: #416b8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 166.286955 91.17774
+Q 168.908884 91.17774 170.189171 91.17774
+" clip-path="url(#pc728812d1f)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 164.989171 88.57774
+L 170.189171 91.17774
+L 164.989171 93.77774
+z
+" clip-path="url(#pc728812d1f)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 176.74272 122.698152
+L 239.41728 122.698152
+Q 245.04192 122.698152 245.04192 119.477088
+L 245.04192 62.878392
+Q 245.04192 59.657328 239.41728 59.657328
+L 176.74272 59.657328
+Q 171.11808 59.657328 171.11808 62.878392
+L 171.11808 119.477088
+Q 171.11808 122.698152 176.74272 122.698152
+z
+" clip-path="url(#pc728812d1f)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 244.630155 91.17774
+Q 247.252084 91.17774 248.532371 91.17774
+" clip-path="url(#pc728812d1f)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 243.332371 88.57774
+L 248.532371 91.17774
+L 243.332371 93.77774
+z
+" clip-path="url(#pc728812d1f)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 255.08592 122.698152
+L 317.76048 122.698152
+Q 323.38512 122.698152 323.38512 119.477088
+L 323.38512 62.878392
+Q 323.38512 59.657328 317.76048 59.657328
+L 255.08592 59.657328
+Q 249.46128 59.657328 249.46128 62.878392
+L 249.46128 119.477088
+Q 249.46128 122.698152 255.08592 122.698152
+z
+" clip-path="url(#pc728812d1f)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 322.973355 91.17774
+Q 325.595284 91.17774 326.875571 91.17774
+" clip-path="url(#pc728812d1f)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 321.675571 88.57774
+L 326.875571 91.17774
+L 321.675571 93.77774
+z
+" clip-path="url(#pc728812d1f)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 333.42912 122.698152
+L 396.10368 122.698152
+Q 401.72832 122.698152 401.72832 119.477088
+L 401.72832 62.878392
+Q 401.72832 59.657328 396.10368 59.657328
+L 333.42912 59.657328
+Q 327.80448 59.657328 327.80448 62.878392
+L 327.80448 119.477088
+Q 327.80448 122.698152 333.42912 122.698152
+z
+" clip-path="url(#pc728812d1f)" style="fill: #f4dede; stroke: #b64d4d; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 20.85984 170.093808
+L 395.30016 170.093808
+Q 400.12128 170.093808 400.12128 167.332896
+L 400.12128 146.165904
+Q 400.12128 143.404992 395.30016 143.404992
+L 20.85984 143.404992
+Q 16.03872 143.404992 16.03872 146.165904
+L 16.03872 167.332896
+Q 16.03872 170.093808 20.85984 170.093808
+z
+" clip-path="url(#pc728812d1f)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 20.85984 202.304448
+L 395.30016 202.304448
+Q 400.12128 202.304448 400.12128 199.543536
+L 400.12128 178.376544
+Q 400.12128 175.615632 395.30016 175.615632
+L 20.85984 175.615632
+Q 16.03872 175.615632 16.03872 178.376544
+L 16.03872 199.543536
+Q 16.03872 202.304448 20.85984 202.304448
+z
+" clip-path="url(#pc728812d1f)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_13">
+    <path d="M 20.85984 234.515088
+L 395.30016 234.515088
+Q 400.12128 234.515088 400.12128 231.754176
+L 400.12128 210.587184
+Q 400.12128 207.826272 395.30016 207.826272
+L 20.85984 207.826272
+Q 16.03872 207.826272 16.03872 210.587184
+L 16.03872 231.754176
+Q 16.03872 234.515088 20.85984 234.515088
+z
+" clip-path="url(#pc728812d1f)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="text_1">
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="19.2528" y="23.30532" transform="rotate(-0 19.2528 23.30532)">藕塘案例当前技术链与证据边界</text>
+   </g>
+   <g id="text_2">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="19.2528" y="35.9595" transform="rotate(-0 19.2528 35.9595)">从 8 个测点的物化日序列出发，先完成概率预测，再进行独立解释和观测后状态审计。</text>
+   </g>
+   <g id="text_3">
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="51.3936" y="80.345401" transform="rotate(-0 51.3936 80.345401)">数据输入</text>
+   </g>
+   <g id="text_4">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(24.480788 96.894141)">1461 日 × 8 测点</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(25.690725 105.285909)">坐标 + 静态高程</text>
+   </g>
+   <g id="text_5">
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="129.7368" y="80.324557" transform="rotate(-0 129.7368 80.324557)">特征与运动学</text>
+   </g>
+   <g id="text_6">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(108.1368 96.894141)">相邻时刻速度</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(104.478863 105.285909)">ΔV / 水位 / 雨量</text>
+   </g>
+   <g id="text_7">
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="208.08" y="80.324557" transform="rotate(-0 208.08 80.324557)">ConvLSTM</text>
+   </g>
+   <g id="text_8">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(187.173 96.894141)">7 通道 × 7 日</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(174.663563 105.285909)">次日 P10 / P50 / P90</text>
+   </g>
+   <g id="text_9">
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="286.4232" y="80.324557" transform="rotate(-0 286.4232 80.324557)">独立 SHAP</text>
+   </g>
+   <g id="text_10">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(255.417638 96.894141)">解释 NGBoost 依赖</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(260.720325 105.285909)">回归 + 历史分类</text>
+   </g>
+   <g id="text_11">
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="364.7664" y="80.40362" transform="rotate(-0 364.7664 80.40362)">v3 空间融合</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(339.661463 96.844022)">四指标 × 8 测点</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(332.966025 105.336028)">整体确认 / 局部最高</text>
+   </g>
+   <g id="text_13">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5f8c62" x="25.2792" y="159.332212" transform="rotate(-0 25.2792 159.332212)">已跑通</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="158.761509" transform="rotate(-0 67.464 158.761509)">藕塘内部工程原型：全测点概率预测、SHAP 依赖分析、逐点状态和多测点空间审计</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="25.2792" y="191.542852" transform="rotate(-0 25.2792 191.542852)">尚未完成</text>
+   </g>
+   <g id="text_16">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="191.122735" transform="rotate(-0 67.464 191.122735)">正式稳定段 / V0、严格加速度等级、独立标签下的 NGBoost、正式 F / F_site 与前瞻预警评价</text>
+   </g>
+   <g id="text_17">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="25.2792" y="223.753492" transform="rotate(-0 25.2792 223.753492)">证据门禁</text>
+   </g>
+   <g id="text_18">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="223.599977" transform="rotate(-0 67.464 223.599977)">缺少原始 GNSS 与日值生成链：允许原型初跑，但确认性证据和正式预警仍阻断；Vajont 未获启动授权</text>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="pc728812d1f">
+   <rect x="7.2" y="7.2" width="401.76" height="230.076"/>
+  </clipPath>
+ </defs>
+</svg>
