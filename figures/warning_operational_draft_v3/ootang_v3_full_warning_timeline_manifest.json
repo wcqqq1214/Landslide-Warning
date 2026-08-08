@@ -109,7 +109,7 @@
   "source_inputs": {
     "core_run_manifest": {
       "path": "figures/warning_operational_draft_v3/ootang_operational_run_manifest.json",
-      "sha256": "8d1206f1e37dd0921b152ab941897957e2a7bbb241631941e8ff73825a82cf27"
+      "sha256": "8f9204c56d5a4f76dface25aa6a3df21f333127e374eb722ed5247bd244fcc84"
     },
     "site_timeline": {
       "core_manifest_match": true,

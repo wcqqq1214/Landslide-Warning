@@ -27,7 +27,9 @@ from warning.operational_run import (
     OperationalRunInputError,
     OperationalRunProfileError,
     _classify_velocity,
+    _load_operational_profile,
     _site_record,
+    _spatial_block_source_manifest,
     write_ootang_operational_run,
 )
 
@@ -333,6 +335,65 @@ class OotangOperationalRunTests(unittest.TestCase):
             v2_threshold_rows[threshold_contract_columns],
             check_dtype=False,
         )
+
+    def test_spatial_source_metadata_is_reproducible_without_local_pdf(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config_dir = Path(directory) / "config"
+            config_dir.mkdir()
+            profile_path = config_dir / "ootang_operational_run.v3.draft.json"
+            base_path = config_dir / "ootang_warning_protocol.v1.draft.json"
+            profile_path.write_bytes(
+                (
+                    ROOT / "config" / "ootang_operational_run.v3.draft.json"
+                ).read_bytes()
+            )
+            base_path.write_bytes(
+                (
+                    ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
+                ).read_bytes()
+            )
+
+            loaded = _load_operational_profile(profile_path)
+            source = _spatial_block_source_manifest(loaded)
+
+        self.assertIsNotNone(source)
+        self.assertFalse(source["source_file_available_at_run"])
+        self.assertEqual(
+            source["verification_status"],
+            "profile_declared_reviewed_sha256_only",
+        )
+        self.assertEqual(
+            source["sha256"],
+            "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
+        )
+
+    def test_spatial_source_rejects_a_drifted_declared_fingerprint(self):
+        profile = json.loads(
+            (
+                ROOT / "config" / "ootang_operational_run.v3.draft.json"
+            ).read_text(encoding="utf-8")
+        )
+        profile["site_fusion"]["spatial_blocks_source"][
+            "source_file_sha256"
+        ] = "0" * 64
+
+        with tempfile.TemporaryDirectory() as directory:
+            config_dir = Path(directory) / "config"
+            config_dir.mkdir()
+            profile_path = config_dir / "ootang_operational_run.v3.draft.json"
+            base_path = config_dir / "ootang_warning_protocol.v1.draft.json"
+            profile_path.write_text(json.dumps(profile), encoding="utf-8")
+            base_path.write_bytes(
+                (
+                    ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
+                ).read_bytes()
+            )
+
+            with self.assertRaisesRegex(
+                OperationalRunProfileError,
+                "reviewed paper fingerprint",
+            ):
+                _load_operational_profile(profile_path)
 
     def test_tracked_v3_implementation_fingerprints_match_sources(self):
         manifest_path = (

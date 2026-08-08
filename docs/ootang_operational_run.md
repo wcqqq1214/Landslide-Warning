@@ -49,7 +49,7 @@ v2 不改动 v1 目录、KMeans 对照基线、速度/切线角范围表或任�
 1. 速度和切线角合并为一个运动学证据族，取两者等级的最大值；二者不再作为两张独立选票；
 2. 测点候选等级为 `max(interval_level, kinematic_level)`；`ΔV=positive` 仅写入 `accelerating`，不单独升级五级颜色；
 3. 单一证据族的非绿异常保留为可评估候选，例如 `interval_only_not_accelerating`，不再写成缺失或 `uncorroborated`；
-4. 固定空间分区：O1=`MJ9/MJ1/MJ3`，O2=`ATU4/ATU5/ATU3`，O3=`ATU2/ATU1`。该拓扑只参考 Wang 等（2025，[DOI](https://doi.org/10.1029/2025JH000592)）PDF 第 7 页图 4(a,d) 和 5.2 节；配置与 manifest 锁定本地 PDF 指纹，**不**从该论文引申任何本项目的汇总阈值或正式预警规则；
+4. 固定空间分区：O1=`MJ9/MJ1/MJ3`，O2=`ATU4/ATU5/ATU3`，O3=`ATU2/ATU1`。该拓扑只参考 Wang 等（2025，[DOI](https://doi.org/10.1029/2025JH000592)）PDF 第 7 页图 4(a,d) 和 5.2 节；配置与 manifest 锁定已审查 PDF 的声明指纹，本地副本存在时还会强制复核，**不**从该论文引申任何本项目的汇总阈值或正式预警规则；
 5. 全滑坡体绿色要求至少 3 个可评估测点且三个分区均有覆盖。blue 仅在它是当日最高候选时可见，不要求跨区确认；黄色及以上则要求至少 2 个候选测点、跨至少 2 个分区达到或超过同一级别；
 6. 若 yellow--red 最高候选未获相应跨区支撑，输出 `candidate_not_site_confirmed`，保留候选颜色、测点和分区，**不得因其他分区存在 blue 候选而降为 blue**；它不再被误称为“有效测点不足”。
 
@@ -98,7 +98,7 @@ uv run python code/warning/operational_run_v3.py
 
 v2 仍可用 `uv run python code/warning/operational_run_v2.py` 单独重建。三个版本都会先刷新唯一的 `figures/warning_draft/` 输入证据集，再在临时目录写出并核验实施版文件，最后逐文件提升到各自目录：v1、v2、v3 分别拥有 `warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`。通用运行器会拒绝任一版本写入另一个版本的保留目录。
 
-v2/v3 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025) 的 PDF`](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf) 且 SHA-256 与配置一致；缺失或指纹不符会明确拒绝运行，不会从别的论文、网络副本或 Vajont 数据静默替代。
+v2/v3 仍要求本地存在高程感知预测清单。O1/O2/O3 的计算拓扑、Wang et al.（2025）的 DOI、页/图定位和已审查 PDF 的 SHA-256 已直接版本化在 profile 中，因此新克隆不需要分发论文 PDF 才能执行；若本地存在[该 PDF](../literature/Journal%20of%20Geophysical%20Research%20%20Machine%20Learning%20and%20Computation%20-%202025%20-%20Wang%20-%20Enhancing%20Landslide%20Displacement.pdf)，运行器会强制核对指纹，不匹配则拒绝。若本地副本缺失，manifest 会明确记录 `source_file_available_at_run=false` 和仅使用已锁定声明指纹的核验状态，不会从别的论文、网络副本或 Vajont 数据静默替代。
 
 每个版本目录中都有以下同名文件：
 
@@ -109,7 +109,7 @@ v2/v3 还要求本地存在高程感知预测清单，以及 [`Wang et al. (2025
 
 v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`station_confirmation_status`，以及 `trend_component`、`transition_status`、`evidence_consistency_status`、`composite_warning_signal`。后三类字段把 `ΔV` 的负/近零/正状态实质保留在完整信号和理由中，但不让它凭符号改变五色严重度，也不把速度与切线角重复计票；`acceleration_status` 仅作为向后兼容字段。v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
 
-这些文件均可从 manifest 中的路径与 SHA-256 复核。v2/v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区源文件的 DOI、页/图定位、路径和 SHA-256。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
+这些文件均可从 manifest 中的路径与 SHA-256 复核。v2/v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区来源的 DOI、页/图定位、预期路径、已审查 SHA-256、本地副本可用性和核验状态。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
 
 v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg)、PDF、300 dpi PNG 和独立图件 manifest。六个代表日不是按视觉效果手选，而是按冻结语义规则取最早满足日：未确认 yellow、单区 blue 关注、O1 严重候选簇未确认、site yellow/local red、确认 orange 和确认 red。图件清单锁定规则配置、精确日期、所绘子集、渲染器和三个导出文件的 SHA-256；它明确属于观测后规则解释，不用于评价误报率、召回率或提前量。
 

@@ -23,7 +23,7 @@
   "implementation_sources": {
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "dc22f44d874a24136ce3b875e2cee08db6fb7c107f3026c0a0e1633a28d9ed77"
+      "sha256": "fc681570fb83d1a68ab0293f715425009e288edfc9e65e166b01841b17cd0368"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -152,7 +152,9 @@
       "pdf_page": 7,
       "scope": "This source supports only the Ootang GNSS spatial-block topology O1/O2/O3. It does not prescribe this project's site-warning support counts, color fusion, or formal warning thresholds.",
       "section": "5.2 Adjacency Matrix Construction",
-      "sha256": "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df"
+      "sha256": "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
+      "source_file_available_at_run": true,
+      "verification_status": "local_file_sha256_match"
     }
   },
   "vajont_used": false

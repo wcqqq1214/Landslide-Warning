@@ -87,6 +87,9 @@ _V2_SITE_FUSION = "warning.operational_v2_fusion.fuse_site_spatial_blocks"
 _V2_PROFILE_ID = "ootang-operational-spatial-v2"
 _V3_SITE_FUSION = "warning.operational_v3_fusion.fuse_site_spatial_blocks_v3"
 _V3_PROFILE_ID = "ootang-operational-spatial-v3"
+_REVIEWED_SPATIAL_SOURCE_SHA256 = (
+    "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df"
+)
 _REQUIRED_PREDICTION_COLUMNS = (
     "date",
     "station",
@@ -363,8 +366,8 @@ def _resolve_spatial_block_source(
     site_fusion: dict[str, Any],
     *,
     profile_path: Path,
-) -> Path:
-    """Verify the exact paper copy used for the Ootang block topology."""
+) -> Path | None:
+    """Verify a local source copy when present and retain its reviewed digest."""
 
     source = site_fusion.get("spatial_blocks_source")
     if not isinstance(source, dict):
@@ -393,11 +396,13 @@ def _resolve_spatial_block_source(
         raise OperationalRunProfileError(
             "Spatial-block source must locate the topology at PDF page 7, Figure 4(a, d)."
         )
+    if source["source_file_sha256"] != _REVIEWED_SPATIAL_SOURCE_SHA256:
+        raise OperationalRunProfileError(
+            "Spatial-block source must retain the reviewed paper fingerprint."
+        )
     source_path = (profile_path.parent / source["source_file"]).resolve()
     if not source_path.is_file():
-        raise OperationalRunProfileError(
-            "Spatial-block source file does not exist: " + str(source_path)
-        )
+        return None
     if _sha256_file(source_path) != source["source_file_sha256"]:
         raise OperationalRunProfileError(
             "Spatial-block source file fingerprint does not match the profile."
@@ -869,6 +874,9 @@ def _spatial_block_source_manifest(
     }:
         return None
     source = loaded.profile["site_fusion"]["spatial_blocks_source"]
+    expected_source_path = (
+        loaded.profile_path.parent / source["source_file"]
+    ).resolve()
     source_path = _resolve_spatial_block_source(
         loaded.profile["site_fusion"],
         profile_path=loaded.profile_path,
@@ -876,8 +884,14 @@ def _spatial_block_source_manifest(
     return {
         "citation": source["citation"],
         "doi": source["doi"],
-        "path": str(source_path),
-        "sha256": _sha256_file(source_path),
+        "path": str(expected_source_path),
+        "sha256": source["source_file_sha256"],
+        "source_file_available_at_run": source_path is not None,
+        "verification_status": (
+            "local_file_sha256_match"
+            if source_path is not None
+            else "profile_declared_reviewed_sha256_only"
+        ),
         "pdf_page": source["pdf_page"],
         "figure": source["figure"],
         "section": source["section"],
