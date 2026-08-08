@@ -14,6 +14,8 @@
 >
 > **7 通道 fixed-120 结果（2026-08-04）**：运行前冻结的藕塘三折滚动与五种子诊断已完成。fold 1/2 均劣于持久性基线，fold 3 仅小幅改善且动态相关弱。历史 6 通道结果继续隔离保留，不得当作 7 通道证据。7 通道早停和容量敏感性未运行；Vajont 未启动，必须经用户明确许可后才能开始。所得证据仅为藕塘内部探索性诊断。
 
+> **工程收口（2026-08-08）**：代码库整体审查已完成并按 Git 提交记录。无参数入口现在只运行 `features → convlstm → ootang-operational-v3`，其余历史复现、v1/v2 和诊断阶段均为 explicit-only；入口清单采用 schema 3，记录逐阶段输入/输出文件指纹和工作树状态。该工程门禁不改变模型数值、阈值或证据等级；`latest_run.json` 等未带当前提交的清单仍须按其自身提交和源码指纹解释。
+
 ## 1. 数据与约束
 
 - 发布物化建模序列：`data/monitoring_data.csv`，1461 个连续日历行，2016-07-01 至 2020-06-30；原始 GNSS 时间戳、观测锚点和日值生成方法尚未提供。
@@ -89,7 +91,7 @@ future frozen protocol + formal four-indicator executor
 | `code/warning/ngboost_warn.py` | 使用历史动态 V0 当日四级标签训练 NGBoost 概率分类器 | `models/ngboost.pkl`、`figures/ngboost/*`、`figures/thresholds/v0_thresholds.csv`；历史/探索性 |
 | `code/warning/warning_fusion.py` | 历史 V0 主判、8 测点切线角升级复核、NGBoost 旁证；CSV 显式标为非正式 | `figures/warning_fusion/warning_fusion.csv`；历史/探索性 |
 | `code/warning/formal_warning.py` | 在冻结协议检查后才调用未来正式四指标执行器 | 当前只有门禁，无正式时间线或结果输出 |
-| `code/warning/operational_run.py` | 校验基础草案、fit-only 参数、预测/拓扑指纹，构建非正式逐点与滑坡体时间线，并隔离 v1/v2/v3 目录 | `figures/warning_operational_draft{,_v2,_v3}/*`；均非正式 |
+| `code/warning/operational_run.py` | 校验基础草案、fit-only 参数、预测/拓扑指纹，构建非正式逐点与滑坡体时间线，并隔离 v1/v2/v3 目录；v3 还记录 profile 锁定的拓扑来源摘要 | `figures/warning_operational_draft{,_v2,_v3}/*`；均非正式。Wang 论文 PDF 是可选来源证据副本：本地存在时必须与锁定摘要匹配，缺失时不阻塞计算但须在清单中保留未核验状态 |
 | `code/warning/operational_v2_fusion.py` | 将速度/切线角合并为一个运动学证据族；以五色严重度、`ΔV` 三态趋势和一致性组成可审计复合信号，并执行 v2 空间规则 | v2/v3 测点与滑坡体审计记录；`ΔV` 不作独立五级投票，也不是正式 `F/F_site` |
 | `code/warning/operational_v3_fusion.py` | 在全局 3 点/3 区覆盖后，分轴输出 `site_confirmed_level` 与 `local_max_candidate_level`，并记录局部 blue 关注 | `figures/warning_operational_draft_v3/*`；项目特有非监督草案 |
 | `code/warning/spatial_blocks.py` | 为 v2/v3 提供中性的空间分区成员校验，禁止测点跨区重复 | 空间融合共用契约；不规定颜色、阈值或支撑数 |
@@ -158,7 +160,7 @@ future frozen protocol + formal four-indicator executor
 uv run python main.py
 ```
 
-`main.py` 当前编排 16 个阶段；无参数入口只选择 `features → convlstm → ootang-operational-v3`，其余 13 个历史复现或诊断阶段均为 explicit-only。`convlstm-inner-validation` 和 `convlstm-capacity` 在当前冻结协议下即使显式调用也会 fail-closed。使用 `--list` 可查看阶段及默认状态，`--stage` 可显式选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动补跑上游依赖；`convlstm-seeds` 会将 rolling 的三份 CSV 和 manifest 声明为必需输入，并在训练前校验其协议、输入、源码与输出哈希。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入指定的管线清单；本轮清单为 `figures/pipeline/convlstm_elevation_fixed120_v1_run.json`。
+`main.py` 当前编排 16 个阶段；无参数入口只选择 `features → convlstm → ootang-operational-v3`，其余 13 个历史复现或诊断阶段均为 explicit-only。`convlstm-inner-validation` 和 `convlstm-capacity` 在当前冻结协议下即使显式调用也会 fail-closed。使用 `--list` 可查看阶段及默认状态，`--stage` 可显式选择阶段，`--skip` 可跳过阶段，`--dry-run` 可在不执行脚本时核对命令。阶段选择保持标准顺序，但不自动补跑上游依赖；`convlstm-seeds` 会将 rolling 的三份 CSV 和 manifest 声明为必需输入，并在训练前校验其协议、输入、源码与输出哈希。实际执行会将提交哈希、执行源码 SHA-256 指纹、运行环境、逐阶段状态、退出码和耗时写入 schema 3 管线清单；清单还保存逐阶段输入/输出文件的路径、大小、SHA-256 及启动时工作树状态。历史清单不得自动视为当前运行证据，需先核对其提交和源码指纹。
 
 阶段契约在子进程前检查必需输入并保存每个现有输入的相对路径、文件大小和 SHA-256，在子进程后检查预期输出存在且本次运行已更新，并以同样字段记录输出。清单同时记录启动时工作树是否含已跟踪或未跟踪变更；缺输入、缺输出或陈旧输出均使管线停止，不能仅凭脚本退出码 0 判定完成。
 

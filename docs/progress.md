@@ -1,13 +1,23 @@
 # 项目工作进度
 
-> 更新日期：2026-08-04。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。
+> 更新日期：2026-08-08。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-08 代码库审查与工程收口
+
+- 已完成整体 code-review，并将入口收敛为默认 `features → convlstm → ootang-operational-v3`；其余 13 个阶段继续保留为 explicit-only，历史 MVIF、6 通道和旧预警产物不删除、不混入当前主结果。
+- 44 个测试文件已纳入 Git。当前全量门禁为 `361 passed`、`52 subtests passed`；Ruff、Python 编译检查和 `main.py --dry-run` 均通过。该门禁证明工程快照可复核，不证明藕塘数据具备确认性证据或正式预警有效性。
+- 统一入口清单升级为 schema 3，逐阶段保存输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`latest_run.json` 及其他旧清单仍可能是历史快照，引用时必须核对其提交与源码哈希。
+- v2/v3 配置锁定的 Wang 论文 PDF 只作为空间拓扑来源证据，不是计算输入；本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并在运行清单记录未核验状态，错误副本会 fail-closed。v2 历史清单未因本次代码审查统一刷新，不应据此声称所有历史字段均已更新。
+- 本次没有重新训练模型、改动数值产物或启动 Vajont。Vajont 仍须用户明确授权；后续若获准，必须先冻结其角色并建立独立数据/评价目录。
+
+本节是工程收口记录，不替代 2026-08-04 的 7 通道科学结果，也不解除 `confirmatory_evidence_gate=blocked`、`formal_warning_output=false` 或最终论文门禁。
 
 ## 当前阶段
 
 | 项目 | 状态 | 可核对产物 |
 | --- | --- | --- |
 | 历史十三阶段统一管线 | 已完成（加入高程前的历史快照） | 旧运行记录中的 13/13 阶段与产物哈希；不代表当前高程感知模型已重跑全部历史诊断 |
-| 藕塘高程感知最小链路 | 已完成初跑；v3 已独立复算 | v2 三阶段运行清单保留；v3 产物见 `figures/warning_operational_draft_v3/` |
+| 藕塘高程感知最小链路 | 已完成初跑；v3 为当前默认草案 | v2 三阶段运行清单保留；v3 产物见 `figures/warning_operational_draft_v3/` |
 | 藕塘阶段性结果包 | 已完成 | `docs/ootang_stage_results_package.md` 统一汇总可写/不可写结论、证据门禁和后续数据决策 |
 | 代码目录按研究流程分组 | 已完成 | `code/features/`、`code/warning/`、`code/explainability/`、`code/convlstm/`；入口路径已在 `main.py`、`README.md` 和 `docs/design.md` 同步 |
 | ConvLSTM 高程静态通道 | 已完成初跑 | `elev_m` 标准化后经水平 IDW 形成静态网格；`figures/convlstm/forecast_run_manifest.json` 记录坐标哈希和处理方法 |

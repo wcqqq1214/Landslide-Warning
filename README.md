@@ -2,7 +2,7 @@
 
 基于机器学习方法的水库滑坡位移预测与预警研究代码仓库。当前以三峡库区藕塘滑坡日尺度监测数据为例，已跑通从特征工程、概率位移预测、独立 SHAP 探索到四指标融合的**非正式工程原型链路**；正式阈值、确认性验证和工程预警尚未完成。
 
-> 2026-08-04 已在 2026-08-01 藕塘高程感知初跑和 v3 双轴空间规则基础上，完成 7 通道 ConvLSTM fixed-120 的三折滚动验证与五种子诊断。原始 GNSS 确认无法取得，因此门禁仍为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：这是 Figshare 物化日序列上的藕塘内部探索性诊断，不是独立原始 GNSS 上的确认性预测或正式预警。
+> 2026-08-08 工程收口：已完成 7 通道 ConvLSTM fixed-120 三折滚动与五种子诊断、v3 双轴规则复算，以及入口和文档的一致性审查。原始 GNSS 确认无法取得，因此门禁仍为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：这是 Figshare 物化日序列上的藕塘内部探索性诊断，不是独立原始 GNSS 上的确认性预测或正式预警。
 
 ## 当前状态
 
@@ -18,6 +18,7 @@
 | 四指标透明融合 | 8 个测点的区间、速度、`ΔV` 三态和切线角均进入原型；运行用 V0 只是项目比较器，指定 Word 的稳定段/V0 仍未解决 |
 | 未来 onset | 已生成标签和事件清单；当前仅 3 个互不相连的可预测标签事件 |
 | 数据血缘 | 原始锚点和生成链不可取得；工程初跑允许，确认性证据与正式预警继续阻断 |
+| 工程可复现性 | 44 个测试文件已纳入 Git；全量 `361 passed, 52 subtests passed`；默认入口和输入指纹已固定 |
 
 ## 快速运行
 
@@ -28,7 +29,7 @@ uv sync
 uv run python main.py
 ```
 
-无参数默认只执行 `features → convlstm → ootang-operational-v3`。该最小链路不会启动 Vajont，也不会运行遗留 NGBoost、旧融合、v1/v2 或滚动/多种子诊断阶段。使用 `--list` 查看全部 16 个阶段；其他阶段必须用 `--stage` 显式选择。运行会把提交哈希、工作树状态、源码指纹、逐阶段输入/输出 SHA-256、状态和耗时写入 `figures/pipeline/latest_run.json`。
+无参数默认只执行 `features → convlstm → ootang-operational-v3`。该最小链路不会启动 Vajont，也不会运行遗留 NGBoost、旧融合、v1/v2 或滚动/多种子诊断阶段。使用 `--list` 查看全部 16 个阶段；其他阶段必须用 `--stage` 显式选择。运行会把提交哈希、工作树状态、源码指纹、逐阶段输入/输出 SHA-256、状态和耗时写入 schema 3 的 `figures/pipeline/latest_run.json`。已有清单可能是历史快照，解释结果时必须同时核对其提交和源码指纹。
 
 复现当前 7 通道 fixed-120 诊断时，只选择已冻结的滚动和五种子阶段：
 
@@ -59,7 +60,7 @@ uv run python main.py \
 
 ## 管线阶段
 
-`main.py` 编排 16 个可独立选择的阶段；无参数入口只运行当前藕塘最小链，其余历史复现和诊断阶段均为 explicit-only。各阶段声明输入和输出；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
+`main.py` 编排 16 个可独立选择的阶段；无参数入口只运行当前藕塘最小链，其余历史复现和诊断阶段均为 explicit-only。各阶段声明输入和输出，并为历史预警阶段声明 `legacy_warning_manifest.json` sidecar；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
 
 ## 主要结果入口
 
@@ -76,6 +77,7 @@ uv run python main.py \
 | `figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg` | 514 日 × 8 点候选状态及滑坡体整体确认/局部最高双轴 |
 | `figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg` | 8 点累计位移、区间/速度/ΔV/切线角和最终候选等级联合诊断 |
 | `docs/results_report.md` | 当前完整探索性结果和科研表述边界 |
+| `docs/codebase_review_2026-08-05.md` | 代码审查、过期代码处置、Git 提交记录和最终工程门禁 |
 | `docs/ootang_data_lineage_expert_review.md` | 藕塘发布日序列来源、数值指纹与数据闸门 |
 | `figures/README.md` | 每个 PNG/CSV 的用途和保留原则 |
 

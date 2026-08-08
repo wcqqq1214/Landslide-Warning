@@ -2,7 +2,7 @@
 
 > 整理日期：2026-07-16
 >
-> 最近更新：2026-08-04
+> 最近更新：2026-08-08
 >
 > 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
@@ -784,6 +784,8 @@ site_fusion_rule_version, contributing_stations, integration_reason
 
 **2026-08-04 执行记录**：本阶段列出的项目文档已完成藕塘原型口径同步。当前 ConvLSTM 主证据统一指向 7 通道 `displacement_elevation_exog_v1/fixed120_v1` 的三折 × 五种子产物；历史 6 通道的滚动、早停与容量结果均独立标注，不作为 7 通道证据。当前 7 通道最后一折 `seed=0` 已有 14 日时间块置信区间，但模型相对持久性基线的 RMSE/MAE 差异区间均跨 0；版本化三折 × 五种子 bundle 尚无逐折逐种子的完整 bootstrap。文档同步只关闭“原型项目记录一致性”事项，不解除 `confirmatory_evidence_gate=blocked`，也不把藕塘升级为最终论文的确认性案例。Vajont 本轮未启动；此前只读内容盘点不构成启动授权。
 
+**2026-08-08 工程代码审查收口**：已完成整体 code-review，并按独立 Git 提交记录入口、测试跟踪和输入指纹修复。当前无参数入口严格为 `features → convlstm → ootang-operational-v3`，其余 13 个阶段为 explicit-only；44 个测试文件已纳入 Git，全量门禁为 `361 passed`、`52 subtests passed`，Ruff、编译和 dry-run 均通过。管线清单采用 schema 3，记录逐阶段输入/输出指纹和工作树状态。v2/v3 配置锁定的 Wang 论文 PDF 只作拓扑来源证据：本地副本存在时核对摘要，缺失可运行但须记录未核验状态，错误副本拒绝运行；v2 历史清单可能尚未刷新。此次只更新工程与文档口径，没有重训模型、改动科学数值或启动 Vajont；最终论文第 9 节门禁仍未全部完成。
+
 ### 后续阶段（P2，延后且待用户授权）：Vajont `10d` 候选案例
 
 启动条件：藕塘阶段 1-6 已完成并通过审查，区间校准处置、藕塘阈值和规则融合协议已冻结，**并且用户已经明确允许启动 Vajont**。缺少用户授权时，即使其他条件均满足也不得启动；该阶段不阻塞本轮藕塘重算的完成。
@@ -890,7 +892,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 
 本阶段“先跑通”与后续论文正式完成分开验收：
 
-- [x] `features → convlstm → ootang-operational-v2` 在同一运行清单中完成，且没有启动 Vajont；
+- [x] 历史初跑 `features → convlstm → ootang-operational-v2` 在同一运行清单中完成，且没有启动 Vajont；当前默认入口已由后续 v3 工程收口记录更新；
 - [x] 8 个测点与 `disp_col` 一一对应，`x_m/y_m/elev_m` 有限；高程实际进入 7 通道 ConvLSTM，而不是只存在于 CSV；
 - [x] 输出 8 点全时间轴预测、逐点四指标时间线、滑坡体时间线、候选阈值表和带 SHA-256 的 manifest；
 - [x] `4112` 个测点—时刻的四项输入均可评估，`514` 个滑坡体时刻无重复或静默缺行；
@@ -902,7 +904,8 @@ site_fusion_rule_version, contributing_stations, integration_reason
 - [x] 已补齐 514 日 × 8 点完整等级图及 8 点“累计位移 + 三项五级 + `ΔV` 三态 + 最终五级”联合诊断图；400 个 `NC` 明确为未空间确认而非缺测。
 - [x] 已完成当前 7 通道 fixed-120 的三折滚动和 `seed=0--4` 稳定性诊断；34,440 个逐点预测键完整，fold 1/2 均未超过持久性基线，fold 3 仅为强平滑条件下的小幅误差优势；早停/容量未运行且不借用历史 6 通道结论。
 - [x] 已将当前 7 通道结果、历史 6 通道证据边界、单折时间块区间、站点异质性、数据门禁和 Vajont 授权门禁同步至方法、结果、限制与进度文档；这只完成藕塘原型文档收口，不等于第 9 节的最终论文同步。
-- [x] 2026-08-04 提交前全量门禁为 `355 passed`、`45 subtests passed`；仍有 2 项已知历史不兼容（旧 `V0` 方法名断言、旧切线角列断言），本轮文档同步没有新增测试失败。双轴独立审查均为 P0=0、P1=0。
+- [x] 历史快照（2026-08-04 提交前）全量门禁为 `355 passed`、`45 subtests passed`；仍有 2 项已知历史不兼容（旧 `V0` 方法名断言、旧切线角列断言），本轮文档同步没有新增测试失败。双轴独立审查均为 P0=0、P1=0。
+- [x] 2026-08-08 当前工程门禁为 `361 passed`、`52 subtests passed`；44 个测试文件已纳入 Git，默认 dry-run 精确为 `features → convlstm → ootang-operational-v3`，Ruff 与编译检查通过。该项只关闭代码库可复现性审查，不等于第 9 节最终论文完成。
 
 ## 9. 最终论文完成定义
 

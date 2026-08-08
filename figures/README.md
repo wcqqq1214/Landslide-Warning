@@ -4,6 +4,8 @@
 
 > `convlstm/` 根目录下的 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 与 `capacity_*` 均是加入高程前的 6 输入通道历史快照。当前 7 输入通道的 fixed120 滚动验证与五种子诊断只写入下述版本化 `runs/displacement_elevation_exog_v1/fixed120_v1/` 目录，不得跨目录混用。7 通道早停与容量敏感性尚未运行，Vajont 也未启动。
 
+> **工程口径（2026-08-08）**：默认入口只运行 `features → convlstm → ootang-operational-v3`；其余历史复现和诊断阶段必须显式选择。schema 3 管线清单保存逐阶段输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`pipeline/latest_run.json` 可能是历史快照，不能脱离其中的提交和源码指纹解释；本次文档更新未重建数值产物，也未读取或启动 Vajont。
+
 ## 7 通道 fixed120 版本化诊断
 
 本次仅运行藕塘 `convlstm-rolling` 和 `convlstm-seeds` 两个内部探索性阶段；高程按“测点间 z-score 后水平 IDW”形成静态第 2 通道。运行固定为 3 个 287 日测试折、`seed=0` 滚动验证以及 `seed=0-4` 五种子诊断，不选择最佳种子。两个阶段 manifest 均保留 `formal_warning_output=false` 和 `confirmatory_external_validation=false`，总管线 manifest 也固定 `formal_warning_output=false`；这些产物不能解释为正式预警、外部验证或高程的因果增益。
@@ -26,7 +28,7 @@
 
 | 文件 | 作用 | 类型 | 论文用途 |
 | --- | --- | --- | --- |
-| `pipeline/latest_run.json` | 保存统一入口最近一次实际运行的提交哈希、源码指纹、Python 版本、阶段契约状态、退出码、耗时及输出 SHA-256 | 工程验收清单 | 证明管线执行范围、产物完整性和失败点，不作为模型性能证据 |
+| `pipeline/latest_run.json` | 保存统一入口某次实际运行的提交哈希、源码指纹、Python 版本、schema 3 阶段契约状态、输入/输出文件 SHA-256、退出码、耗时及工作树状态 | 工程验收清单（可能为历史快照） | 证明对应运行的执行范围、产物完整性和失败点；使用前核对提交/源码指纹，不作为模型性能证据 |
 | `pipeline/shap_stability_run.json` | 保存 2026-06-23 历史 SHAP 稳定性单阶段运行的源码指纹、耗时和 9 个产物哈希 | 历史工程清单 | 仅追溯提交 `3c06d38` 的旧运行；不代表当前 `ΔV` 对齐后的产物 |
 | `data_lineage/ootang_data_lineage_manifest.json` | 固定 Figshare 来源、XLSX/CSV 哈希与一致性、代码/输入指纹、预测键集、自然月结构状态和数据闸门 | 数据血缘总清单 | `prototype_run_gate=allowed`，但 `confirmatory_evidence_gate=blocked`、`formal_warning_output=false`；不推断具体生成算法或已证实未来泄漏 |
 | `data_lineage/ootang_monthly_polynomial_fingerprint.csv` | 保存 9 个目标列和 5 个负对照逐自然月四阶差分、三次残差和二次误差 | 数据结构审计表 | 支撑“发布序列具有强自然月分段三次指纹”，不是插值算法识别 |

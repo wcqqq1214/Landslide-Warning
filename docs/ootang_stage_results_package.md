@@ -1,10 +1,12 @@
 # 藕塘滑坡阶段性结果与后续决策包
 
-> 更新日期：2026-08-04
+> 更新日期：2026-08-08
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
 > 方法依据：以[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)和指定 Word 论文为主；用户本人的藕塘毕业论文仅作参考
 > Vajont：本轮仅按用户要求完成现有文件的只读内容盘点；未启动数据适配、模型或实验，也未用于阈值选择或结果生成
+
+> 工程口径（2026-08-08）：代码审查已完成。默认入口为 `features → convlstm → ootang-operational-v3`，入口 manifest 使用 schema 3；本次只同步文档和工程契约，没有重训模型、改动数值结果或启动 Vajont。
 
 ## 1. 阶段结论
 
@@ -47,6 +49,8 @@ prototype_run_gate = allowed
 confirmatory_evidence_gate = blocked
 formal_warning_output = false
 ```
+
+统一入口还会记录逐阶段输入/输出文件的路径、大小和 SHA-256，以及启动时工作树状态。v3 profile 锁定的 Wang 论文 PDF 仅是拓扑来源证据：本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并记录未核验状态，错误副本则拒绝运行；它不构成模型计算输入。v2 的既有清单可能早于该字段扩展，需按清单自身日期和提交解释。
 
 这一状态表示导师要求的藕塘工程初跑已经完成，但不能把结果升级为独立原始 GNSS 上的确认性日预测、正式阈值或工程预警。详细数据血缘见[`藕塘数据血缘专家审查`](ootang_data_lineage_expert_review.md)。
 
@@ -175,7 +179,8 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 | v1/v2/v3 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
 | ConvLSTM 运行来源、切分和输出哈希 | [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | v3 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v3/ootang_operational_run_manifest.json) |
-| 完整最小链路运行记录 | [`latest_run.json`](../figures/pipeline/latest_run.json) |
+| schema 3 最小链路运行记录（可能为历史快照） | [`latest_run.json`](../figures/pipeline/latest_run.json) |
+| 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
 | 六个代表日规则图 | [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg) |
 | 514 日完整预警状态图 | [`ootang_v3_full_warning_timeline.svg`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg) |
 | 8 点位移—四指标—最终等级联合图 | [`ootang_v3_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg) |
