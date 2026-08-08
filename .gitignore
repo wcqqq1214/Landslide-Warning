@@ -10,8 +10,6 @@ build/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-tests/
-
 # Virtual environment
 .venv/
 
