@@ -55,7 +55,7 @@
 \newcommand{\partialdone}{\textcolor{reportorange}{\textbf{原型完成}}}
 \newcommand{\notdone}{\textcolor{reportred}{\textbf{未完成}}}
 
-\title{\heiti\LARGE 藕塘滑坡位移概率预测与多测点预警研究进展报告\\[0.6em]
+\title{\heiti\Large 藕塘滑坡位移概率预测与多测点预警\\研究进展报告\\[0.6em]
 \large 当前工程原型、结果判断与待确认问题}
 \author{韦承谦}
 \date{2026年8月}
@@ -157,6 +157,8 @@
 
 其中 $v_i$ 为速度，$\Delta V_i$ 为速度增量，$\alpha_i$ 为改进切线角。当前数据是规则日间隔，所以 $\Delta V$ 可反映加速、近零或减速趋势；但代码没有再除以时间间隔，它在严格量纲上不是已经建立五级阈值的加速度。这个差别直接决定了导师要求的“加速度预警等级”仍未正式完成。
 
+区间指标直接参考指定论文图 5-1 的五级相对区域。由于 ConvLSTM 输出的是分位数而不是 $\mu$ 和 $\sigma$，当前项目采用 $\mu=P50$、$\sigma=(P90-P10)/(2\times1.28155)$ 的正态近似，再按 $U\leq\mu$、$\mu<U\leq\mu+\sigma$、$\mu+\sigma<U\leq\mu+2\sigma$、$\mu+2\sigma<U\leq\mu+3\sigma$ 和 $U>\mu+3\sigma$ 映射为绿、蓝、黄、橙、红。五级区域来自指定论文，分位数到 $\mu/\sigma$ 的换算则是本项目的实现假设。
+
 \begin{table}[H]
   \centering
   \small
@@ -188,7 +190,24 @@
 
 图~\ref{fig:full-timeline} 把 514 日、8 个测点的五级候选和滑坡体双轴结果放在同一时间线上。共有 4,112 条测点--时刻记录；滑坡体整体确认颜色只在 114 日成立，其中绿色、蓝色、黄色、橙色、红色分别为 8、48、31、9、18 日。其余 400 日标为 NC（未获滑坡体确认），但这些日期并不缺数据：8/8 测点和三个分区都可评估，未确认的原因是黄色及以上支撑只位于 O1，未满足跨分区条件。
 
+\begin{table}[H]
+  \centering
+  \small
+  \caption{514 日滑坡体双轴结果的读图索引}
+  \begin{tabularx}{0.88\textwidth}{p{3.2cm}Y}
+    \toprule
+    项目 & 结果 \\
+    \midrule
+    数据完整性 & 每日 8/8 测点、O1/O2/O3 三个分区均可评估 \\
+    整体确认 & 114 日：绿/蓝/黄/橙/红为 8/48/31/9/18 \\
+    未整体确认 & 400 日；不是缺测，而是黄色及以上证据只位于 O1 \\
+    双轴保留 & 每日同时保存整体确认等级与局部最高候选 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
 \begin{landscape}
+\thispagestyle{empty}
 \begin{figure}[p]
   \centering
   \includegraphics[width=0.94\linewidth,height=0.76\textheight,keepaspectratio]{../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.pdf}
@@ -199,7 +218,23 @@
 
 图~\ref{fig:typical-days} 进一步列出六个代表日。2019-02-03 只有 MJ1/O1 达到黄色，因此不确认全体黄色；2020-03-09 的 O1 为局部红色，但只有黄色证据跨到 O3，所以整体只确认黄色；2020-06-13 在 O2、O3 各有红色支撑，整体和局部都达到红色。这些例子说明，多测点规则确实改变了“一根线代表整个滑坡体”的做法。
 
+\begin{table}[H]
+  \centering
+  \small
+  \caption{三个代表日的整体/局部差异}
+  \begin{tabularx}{0.92\textwidth}{p{2.8cm}p{2.8cm}Y}
+    \toprule
+    日期 & 整体/局部 & 空间原因 \\
+    \midrule
+    2019-02-03 & NC / 黄色 & 黄色只见于 MJ1/O1，只有一个测点、一个分区 \\
+    2020-03-09 & 黄色 / 红色 & O1 三点为红色，但跨到 O3 的最高共同证据只有黄色 \\
+    2020-06-13 & 红色 / 红色 & ATU4/O2 与 ATU1/O3 同时提供红色支撑 \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
 \begin{landscape}
+\thispagestyle{empty}
 \begin{figure}[p]
   \centering
   \includegraphics[width=0.94\linewidth,height=0.76\textheight,keepaspectratio]{../figures/warning_operational_draft_v3/ootang_v3_typical_days.pdf}
