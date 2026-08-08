@@ -56,3 +56,27 @@
 5. 运行全量测试、Ruff、编译和 dry-run，回填结果后推送 `main`。
 
 本轮不拆分大型科研模块、不迁移历史 6 通道产物、不删除历史复现代码，也不重新训练模型。
+
+## 6. 实施与 Git 记录（完成于 2026-08-08）
+
+| 提交 | 内容 |
+| --- | --- |
+| `4c279e0` | 保存本次代码库审查基线 |
+| `e375d9c` | 将本地 44 个测试文件全部纳入 Git，并修正两条过期断言 |
+| `130f8db` | 固定小型 Ruff 正确性规则集 `E7/E9/F` |
+| `f4a108e` | 将默认入口收窄为三段最小链，并补齐 7 个 legacy 阶段的 8 个 sidecar 契约 |
+| `5ac9c36` | 将总管线 manifest 升级为 schema 3，增加逐输入指纹和工作树状态 |
+| `ce83345` | 消除 v2/v3 对未跟踪 Wang 论文 PDF 的运行时硬依赖；保留声明指纹，并在本地副本存在时 fail-closed 核验 |
+| `3c3fa94` | 补齐错误本地 PDF 的拒绝测试，并明确当前 v2 历史 manifest 尚未刷新新增字段 |
+
+终审发现：默认 v3 和完整测试曾隐式依赖被 `literature/*` 忽略的 Wang 论文 PDF，因此本机通过不等于新克隆可复现。修复后，计算所需的 O1/O2/O3 拓扑、DOI、页/图定位和已审查 SHA-256 仍由受 Git 管理的 profile 锁定；本地 PDF 不再是计算输入，但若存在且指纹错误，运行会明确拒绝。只含 `git ls-files`、不含该 PDF 的临时副本中，20 项 v2/v3 相关测试全部通过。v3 重建没有改变阈值、测点时间线、滑坡体时间线或图像，只更新 4 份来源/级联血缘 manifest；没有执行 ConvLSTM 训练，也没有读取或启动 Vajont。
+
+## 7. 最终门禁与结论
+
+- 全量：`361 passed, 52 subtests passed`。
+- Ruff：`uv run --with ruff ruff check main.py code tests` 通过。
+- 编译：`uv run python -m compileall -q main.py code tests` 通过。
+- 默认 dry-run：精确为 `features → convlstm → ootang-operational-v3`。
+- 差异：`git diff --check` 通过；最终工作树只保留用户原有、未跟踪的 `review.md` 和 Vajont xlsx。
+
+本轮最终状态为 P0=0、P1=0。仍保留两个非阻断 P2：`operational_run.py` 体量较大，以及 `site_fusion.py` 是未来可删除候选。前者拆分会触及冻结产物血缘，后者仍有测试和文档历史证据，因此均不在本轮删除。结论是“需要收窄入口和修复可复现性，但不需要大规模清理过期代码”。
