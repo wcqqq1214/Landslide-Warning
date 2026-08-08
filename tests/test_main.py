@@ -1,3 +1,4 @@
+import hashlib
 import importlib.util
 import json
 import subprocess
@@ -242,9 +243,10 @@ class PipelineTests(unittest.TestCase):
             )
             report = json.loads(manifest.read_text(encoding="utf-8"))
 
-        self.assertEqual(report["schema_version"], 2)
+        self.assertEqual(report["schema_version"], 3)
         self.assertEqual(report["status"], "completed")
         self.assertEqual(report["failed_stage"], None)
+        self.assertIsInstance(report["git_worktree_dirty"], bool)
         self.assertEqual(len(report["source_sha256"]), 64)
         self.assertEqual(
             [stage["name"] for stage in report["stages"]],
@@ -276,7 +278,15 @@ class PipelineTests(unittest.TestCase):
             )
 
         output = report["stages"][0]["outputs"][0]
+        input_artifact = report["stages"][0]["input_artifacts"][0]
         self.assertEqual(report["stages"][0]["contract_status"], "passed")
+        self.assertEqual(report["stages"][0]["inputs"], ["input.txt"])
+        self.assertEqual(input_artifact["path"], "input.txt")
+        self.assertEqual(input_artifact["size_bytes"], 5)
+        self.assertEqual(
+            input_artifact["sha256"],
+            hashlib.sha256(b"input").hexdigest(),
+        )
         self.assertEqual(output["path"], "output.txt")
         self.assertEqual(output["size_bytes"], 6)
         self.assertEqual(len(output["sha256"]), 64)

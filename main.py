@@ -364,6 +364,23 @@ def current_git_commit() -> str | None:
     return result.stdout.strip() or None
 
 
+def git_worktree_is_dirty(root: Path = ROOT) -> bool | None:
+    """Return whether tracked or untracked files differ from HEAD, if available."""
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain", "--untracked-files=normal"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return None
+    if result.returncode != 0:
+        return None
+    return bool(result.stdout.strip())
+
+
 def timestamp() -> str:
     return datetime.now().astimezone().isoformat(timespec="seconds")
 
@@ -435,7 +452,7 @@ def run_pipeline(
     total_start = time.perf_counter()
     completed: list[tuple[str, float]] = []
     manifest = {
-        "schema_version": 2,
+        "schema_version": 3,
         "status": "running",
         "warning_pipeline_scope": WARNING_PIPELINE_SCOPE,
         "formal_warning_output": False,
@@ -443,6 +460,7 @@ def run_pipeline(
         "started_at": timestamp(),
         "finished_at": None,
         "git_commit": current_git_commit(),
+        "git_worktree_dirty": git_worktree_is_dirty(root),
         "source_sha256": source_fingerprint(),
         "python_executable": sys.executable,
         "python_version": sys.version.split()[0],
@@ -476,6 +494,7 @@ def run_pipeline(
             "returncode": None,
             "contract_status": "pending" if verify_contracts else "not_checked",
             "inputs": list(stage.inputs),
+            "input_artifacts": [],
             "outputs": [],
             "contract_error": None,
         }
@@ -483,6 +502,9 @@ def run_pipeline(
         input_paths = [root / path for path in stage.inputs]
         missing_inputs = [
             str(path.relative_to(root)) for path in input_paths if not path.is_file()
+        ]
+        stage_result["input_artifacts"] = [
+            file_fingerprint(path, root) for path in input_paths if path.is_file()
         ]
         if verify_contracts and missing_inputs:
             elapsed = time.perf_counter() - stage_start
