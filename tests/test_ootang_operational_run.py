@@ -395,6 +395,36 @@ class OotangOperationalRunTests(unittest.TestCase):
             ):
                 _load_operational_profile(profile_path)
 
+    def test_spatial_source_rejects_an_incorrect_local_pdf(self):
+        source_profile = (
+            ROOT / "config" / "ootang_operational_run.v3.draft.json"
+        )
+        profile = json.loads(source_profile.read_text(encoding="utf-8"))
+        source_name = Path(
+            profile["site_fusion"]["spatial_blocks_source"]["source_file"]
+        ).name
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            config_dir = root / "config"
+            literature_dir = root / "literature"
+            config_dir.mkdir()
+            literature_dir.mkdir()
+            profile_path = config_dir / source_profile.name
+            profile_path.write_bytes(source_profile.read_bytes())
+            (config_dir / "ootang_warning_protocol.v1.draft.json").write_bytes(
+                (
+                    ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
+                ).read_bytes()
+            )
+            (literature_dir / source_name).write_bytes(b"incorrect local source")
+
+            with self.assertRaisesRegex(
+                OperationalRunProfileError,
+                "file fingerprint does not match",
+            ):
+                _load_operational_profile(profile_path)
+
     def test_tracked_v3_implementation_fingerprints_match_sources(self):
         manifest_path = (
             ROOT

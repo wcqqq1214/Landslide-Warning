@@ -109,7 +109,7 @@ v2/v3 仍要求本地存在高程感知预测清单。O1/O2/O3 的计算拓扑�
 
 v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`station_confirmation_status`，以及 `trend_component`、`transition_status`、`evidence_consistency_status`、`composite_warning_signal`。后三类字段把 `ΔV` 的负/近零/正状态实质保留在完整信号和理由中，但不让它凭符号改变五色严重度，也不把速度与切线角重复计票；`acceleration_status` 仅作为向后兼容字段。v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
 
-这些文件均可从 manifest 中的路径与 SHA-256 复核。v2/v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区来源的 DOI、页/图定位、预期路径、已审查 SHA-256、本地副本可用性和核验状态。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
+这些文件均可从 manifest 中的路径与 SHA-256 复核。当前刷新后的 v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区来源的 DOI、页/图定位、预期路径、已审查 SHA-256、本地副本可用性和核验状态；历史 v2 快照保留原样，下次显式重建时才会写入新增的可用性字段。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
 
 v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg)、PDF、300 dpi PNG 和独立图件 manifest。六个代表日不是按视觉效果手选，而是按冻结语义规则取最早满足日：未确认 yellow、单区 blue 关注、O1 严重候选簇未确认、site yellow/local red、确认 orange 和确认 red。图件清单锁定规则配置、精确日期、所绘子集、渲染器和三个导出文件的 SHA-256；它明确属于观测后规则解释，不用于评价误报率、召回率或提前量。
 

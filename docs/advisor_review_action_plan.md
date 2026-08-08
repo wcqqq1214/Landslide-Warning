@@ -428,7 +428,7 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 对 v1 逐时刻审查发现：全部 8 点、4 项输入值在 514 个结果日均为有效，`341` 个 `insufficient_valid_station_results` 实际来自“测点两项佐证”后再要求 `6` 个有效融合结果的双层规则，而非传感器缺失；速度与切线角在全部 `4112` 个测点—时刻的等级完全一致，不能作为两份独立证据。为保留 v1 对照且不篡改既有结果，新增 [`config/ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json)、[`code/warning/operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py) 与独立目录 `figures/warning_operational_draft_v2/`。
 
-v2 保留同一 fit-only KMeans comparator、区间映射和 `ΔV` 容差，故不声称解决 MVIF 稳定段或 Word 论文 `V0`；它只将速度/切线角压缩为一个运动学证据族，测点候选取区间与运动学等级的最大值，`ΔV=positive` 仅标记加速性，不单独升级颜色。单一证据族异常保留为可评估候选而非缺失。滑坡体按 Wang 等（2025，DOI `10.1029/2025JH000592`）PDF 第 7 页图 4(a,d) 与 5.2 节的藕塘空间拓扑固定 O1=`MJ9/MJ1/MJ3`、O2=`ATU4/ATU5/ATU3`、O3=`ATU2/ATU1`；配置和 v2 manifest 锁定已审查 PDF 的 SHA-256，本地副本存在时必须匹配，缺失时则明确记录仅使用版本化拓扑与声明指纹。该来源只支持拓扑，不支持本项目的支撑数、颜色或正式预警结论。全体 green 需至少 3 个可评估测点并覆盖三个分区；blue 仅在它是当日最高候选时可见；黄色及以上需至少 2 个候选测点跨至少 2 个分区。若 yellow--red 最高候选未获相应跨区支撑，则输出 `candidate_not_site_confirmed`，不得因其他分区存在 blue 候选而降为 blue。
+v2 保留同一 fit-only KMeans comparator、区间映射和 `ΔV` 容差，故不声称解决 MVIF 稳定段或 Word 论文 `V0`；它只将速度/切线角压缩为一个运动学证据族，测点候选取区间与运动学等级的最大值，`ΔV=positive` 仅标记加速性，不单独升级颜色。单一证据族异常保留为可评估候选而非缺失。滑坡体按 Wang 等（2025，DOI `10.1029/2025JH000592`）PDF 第 7 页图 4(a,d) 与 5.2 节的藕塘空间拓扑固定 O1=`MJ9/MJ1/MJ3`、O2=`ATU4/ATU5/ATU3`、O3=`ATU2/ATU1`；配置锁定已审查 PDF 的 SHA-256，本地副本存在时必须匹配，重建后的 manifest 会明确记录本地副本核验状态。该来源只支持拓扑，不支持本项目的支撑数、颜色或正式预警结论。全体 green 需至少 3 个可评估测点并覆盖三个分区；blue 仅在它是当日最高候选时可见；黄色及以上需至少 2 个候选测点跨至少 2 个分区。若 yellow--red 最高候选未获相应跨区支撑，则输出 `candidate_not_site_confirmed`，不得因其他分区存在 blue 候选而降为 blue。
 
 该运行仍为非监督、项目特有、可替换的 `operational_draft_not_formal`，不复现指定 Word 的多项 Logistic 回归，也不冻结 `F`、`F_site`、`V0`、蓝带容差或 test 期性能。Vajont 不参与本次实现、参数选择或结果生成。
 
