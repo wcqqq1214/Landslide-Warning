@@ -63,17 +63,13 @@
     }
   },
   "outputs": {
-    "pdf": {
-      "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.pdf",
-      "sha256": "b905faaf8e4ccb14ce04e4a1099303126b2487d200982988e989ccad72dd622c"
-    },
     "png": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.png",
       "sha256": "5145b75e102b7357bca45c367cba30016e7de82e72e3abf50dedce0c12b6c50a"
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.svg",
-      "sha256": "6542e03773923a6af676b8aa3d4a68dca8c72647081a9e8a2cf486f311928f8c"
+      "sha256": "81da9d746e88168942b15040e8c47d6aee6967c5354585dcce5c9d3a5221f0b4"
     }
   },
   "profile": {

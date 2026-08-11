@@ -75,17 +75,13 @@
     }
   },
   "outputs": {
-    "pdf": {
-      "path": "figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.pdf",
-      "sha256": "4faadc5fe47f3627dce12d19e075a03f2196aeae1747c3e20b9631d0a4bc4dcc"
-    },
     "png": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.png",
       "sha256": "d73f140a0deb1f938a9a03a1398aa75396690c502b49fb8c561b905778acc74b"
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg",
-      "sha256": "0cbe84f10e1f8931aaa823f26d6ac3c5ba2a55d10a68b70da3f931c53bc13a98"
+      "sha256": "dd2afe6435d50b1862ec09b8af279d9f4ce7106eecfaf9c2106b05256d815fa9"
     }
   },
   "profile": {

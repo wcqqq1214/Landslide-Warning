@@ -81,6 +81,9 @@ class OperationalV4ArtifactTests(unittest.TestCase):
         self.assertIn("station_fusion_implementation", manifest["implementation_sources"])
         self.assertFalse(station["vajont_used"].any())
         self.assertTrue((station["acceleration_level"] > 0).sum() > 0)
+        for figure_manifest in sorted(source.glob("ootang_v4_*_manifest.json")):
+            figure = json.loads(figure_manifest.read_text())
+            self.assertEqual(set(figure["outputs"]), {"svg", "png"})
 
 
 if __name__ == "__main__":

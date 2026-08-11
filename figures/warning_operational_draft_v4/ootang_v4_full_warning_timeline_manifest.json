@@ -68,17 +68,13 @@
     }
   },
   "outputs": {
-    "pdf": {
-      "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf",
-      "sha256": "74da0892e3807ec5b41e014b26a6157365b2a1fdea6a303a9fa0b325cc02ed2f"
-    },
     "png": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.png",
       "sha256": "1b46a3626966bae4f22d420c4170805c16a4c91b69777796c6c2547608ef5a67"
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg",
-      "sha256": "53c87c85986f9148f9ecde2a406dd4d15bb6aecea9a82d1054428945887159a0"
+      "sha256": "3c5430df22cfc000f38cd2f4784b52247726bb897bcc3fbb293279c77a395d68"
     }
   },
   "profile": {

@@ -113,7 +113,7 @@ v4 图件包括：
 - [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)：完整测点候选五级与滑坡体双轴时间线；
 - [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)：按冻结规则选出的代表日逐条诊断。
 
-图件和 CSV 均标记 `formal_warning_output=false`、`vajont_used=false`。PDF 导出可在本地重建，但不纳入本次 Git 快照。
+图件和 CSV 均标记 `formal_warning_output=false`、`vajont_used=false`。默认 canonical bundle 只包含 SVG/PNG；如需本地排版 PDF，可设置 `OOTANG_V4_EXPORT_PDF=1` 生成可选 sidecar，该文件不属于版本化输出或 manifest 必需项。
 
 ## 6. v1/v2/v3 运行与产物（保留）
 

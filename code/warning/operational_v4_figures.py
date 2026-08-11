@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path
 from typing import Any
 
@@ -146,14 +147,25 @@ def _export(fig: plt.Figure, output_dir: Path, stem: str) -> dict[str, Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
     paths = {
         "svg": output_dir / f"{stem}.svg",
-        "pdf": output_dir / f"{stem}.pdf",
         "png": output_dir / f"{stem}.png",
     }
     fig.savefig(paths["svg"], metadata={"Date": None, "Creator": "Landslide-Warning"})
     svg = paths["svg"].read_text(encoding="utf-8")
     paths["svg"].write_text("\n".join(line.rstrip() for line in svg.splitlines()) + "\n", encoding="utf-8")
-    fig.savefig(paths["pdf"], metadata={"CreationDate": None, "ModDate": None, "Creator": "Landslide-Warning"})
     fig.savefig(paths["png"], dpi=300, metadata={"Software": "Landslide-Warning"})
+    # The canonical v4 bundle is SVG/PNG-only so a fresh clone never depends
+    # on an untracked PDF.  A local analyst may opt in to a PDF sidecar for
+    # convenience; when enabled it is included in that local manifest only.
+    if os.environ.get("OOTANG_V4_EXPORT_PDF") == "1":
+        paths["pdf"] = output_dir / f"{stem}.pdf"
+        fig.savefig(
+            paths["pdf"],
+            metadata={
+                "CreationDate": None,
+                "ModDate": None,
+                "Creator": "Landslide-Warning",
+            },
+        )
     plt.close(fig)
     return paths
 
