@@ -33,7 +33,7 @@
   },
   "core_run_manifest": {
     "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-    "sha256": "b76e58751a33ba93a2647069f8483b825377546a86717af5391a1ba67e35b5c7"
+    "sha256": "670ce697f7303908f519c2d35b0a2fa75c51ea625cfcb0ae52b8fe3bd909cf2f"
   },
   "formal_warning_output": false,
   "implementation_sources": {
@@ -41,13 +41,17 @@
       "path": "code/features/kinematics.py",
       "sha256": "b975b7430e1ef1413fa28abcb7005920d175f5e5eeb0bb5940fe8a7cdb485dc7"
     },
+    "figure_support": {
+      "path": "code/warning/operational_v3_figure_support.py",
+      "sha256": "e7a562400dc795d193d7c65d695e2da4bbfaa9cfa3a007b93228566dc5abab44"
+    },
     "renderer": {
       "path": "code/warning/operational_v4_figures.py",
-      "sha256": "fbf154fa51993b66788e3678527a7660d69f3753ab7b4856dcd603746cf591ee"
+      "sha256": "5f7cfa1e4d526ab6ea8f37654cf8ac739d0eff3ebf57b3163bc8297b1dde13ce"
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
+      "sha256": "70c6e5c098079ab5c0695d552600752149c11ffd161dd917211cbafb57575718"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -73,7 +77,7 @@
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.svg",
-      "sha256": "13661a9d4ef6948cf613546c1f421de90551038695a8fc6c7f1edd671933e7a3"
+      "sha256": "30329f32cac1c61e6ce5c32a48ddf8150bed9ddfc28ef41cae033cc4f0a676b3"
     }
   },
   "profile": {

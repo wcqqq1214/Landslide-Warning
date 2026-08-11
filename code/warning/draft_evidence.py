@@ -123,6 +123,30 @@ def _sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def _manifest_path(path: Path, *, repository_relative: bool) -> str:
+    """Render one manifest path without making external paths ambiguous."""
+
+    resolved = path.resolve()
+    if repository_relative:
+        try:
+            return resolved.relative_to(ROOT).as_posix()
+        except ValueError:
+            # Evidence runs may intentionally use temporary inputs or output
+            # directories outside this checkout.  Keep those paths absolute so
+            # they are not accidentally interpreted relative to ROOT.
+            pass
+    return str(resolved)
+
+
+def _resolve_manifest_path(path: str | Path) -> Path:
+    """Resolve a stored path using ROOT as the base for relative values."""
+
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = ROOT / candidate
+    return candidate.resolve()
+
+
 def _require_draft_ootang_protocol(protocol: dict[str, Any]) -> None:
     if protocol["case"] != "ootang":
         raise DraftEvidenceBundleProtocolError(
@@ -231,7 +255,9 @@ def _component_output(
         raise DraftEvidenceBundleIntegrityError(
             "Draft evidence component output must record its path and SHA-256."
         )
-    if Path(recorded_path).resolve() != recorded_output_path.resolve():
+    if _resolve_manifest_path(recorded_path) != _resolve_manifest_path(
+        recorded_output_path
+    ):
         raise DraftEvidenceBundleIntegrityError(
             "Draft evidence component output path does not match the writer result."
         )
@@ -263,7 +289,7 @@ def _require_manifest_source_path(
         raise DraftEvidenceBundleIntegrityError(
             f"Draft evidence component {component_name!r} has no {source_key} path."
         )
-    if Path(recorded_path).resolve() != expected_path.resolve():
+    if _resolve_manifest_path(recorded_path) != _resolve_manifest_path(expected_path):
         raise DraftEvidenceBundleIntegrityError(
             f"Draft evidence component {component_name!r} used a mismatched "
             f"{source_key} path."
@@ -278,6 +304,7 @@ def _component_record(
     predictions_path: Path,
     kinematics_path: Path,
     stable_segment_candidates_path: Path,
+    repository_relative_paths: bool,
 ) -> dict[str, Any]:
     """Validate one diagnostic sidecar and return a compact bundle record."""
 
@@ -350,9 +377,15 @@ def _component_record(
         "artifact_kind": artifact_kind,
         "status": _component_status(manifest),
         "formal_warning_output": False,
-        "output_path": str(component.target_output_path),
+        "output_path": _manifest_path(
+            component.target_output_path,
+            repository_relative=repository_relative_paths,
+        ),
         "output_sha256": _sha256_file(component.output_path),
-        "manifest_path": str(component.target_manifest_path),
+        "manifest_path": _manifest_path(
+            component.target_manifest_path,
+            repository_relative=repository_relative_paths,
+        ),
         "manifest_sha256": _sha256_file(component.manifest_path),
     }
 
@@ -482,26 +515,52 @@ def _write_staged_components(
     )
 
 
-def _replace_staged_paths(value: Any, path_mapping: dict[str, str]) -> Any:
+def _replace_staged_paths(
+    value: Any,
+    path_mapping: dict[str, str],
+    *,
+    repository_relative_paths: bool = False,
+) -> Any:
     if isinstance(value, dict):
         return {
-            key: _replace_staged_paths(item, path_mapping)
+            key: _replace_staged_paths(
+                item,
+                path_mapping,
+                repository_relative_paths=repository_relative_paths,
+            )
             for key, item in value.items()
         }
     if isinstance(value, list):
-        return [_replace_staged_paths(item, path_mapping) for item in value]
+        return [
+            _replace_staged_paths(
+                item,
+                path_mapping,
+                repository_relative_paths=repository_relative_paths,
+            )
+            for item in value
+        ]
     if isinstance(value, str):
-        return path_mapping.get(str(Path(value).resolve()), value)
+        mapped = path_mapping.get(str(Path(value).resolve()))
+        if mapped is not None:
+            return mapped
+        if repository_relative_paths and Path(value).is_absolute():
+            return _manifest_path(Path(value), repository_relative=True)
+        return value
     return value
 
 
 def _retarget_staged_component_manifests(
     components: tuple[_StagedComponent, ...],
+    *,
+    repository_relative_paths: bool = False,
 ) -> None:
     """Replace staging paths with live paths before promoting sidecars."""
 
     path_mapping = {
-        str(path.resolve()): str(target)
+        str(path.resolve()): _manifest_path(
+            target,
+            repository_relative=repository_relative_paths,
+        )
         for component in components
         for path, target in (
             (component.output_path, component.target_output_path),
@@ -510,7 +569,11 @@ def _retarget_staged_component_manifests(
     }
     for component in components:
         manifest = _load_component_manifest(component.manifest_path)
-        retargeted = _replace_staged_paths(manifest, path_mapping)
+        retargeted = _replace_staged_paths(
+            manifest,
+            path_mapping,
+            repository_relative_paths=repository_relative_paths,
+        )
         component.manifest_path.write_text(
             json.dumps(retargeted, ensure_ascii=False, indent=2, sort_keys=True)
             + "\n",
@@ -568,6 +631,7 @@ def _bundle_manifest(
     kinematics_path: Path,
     predictions_path: Path,
     components: list[dict[str, Any]],
+    repository_relative_paths: bool,
 ) -> dict[str, Any]:
     return {
         "artifact_kind": BUNDLE_ARTIFACT_KIND,
@@ -586,11 +650,17 @@ def _bundle_manifest(
         },
         "source_inputs": {
             "kinematics": {
-                "path": str(kinematics_path),
+                "path": _manifest_path(
+                    kinematics_path,
+                    repository_relative=repository_relative_paths,
+                ),
                 "sha256": _sha256_file(kinematics_path),
             },
             "predictions": {
-                "path": str(predictions_path),
+                "path": _manifest_path(
+                    predictions_path,
+                    repository_relative=repository_relative_paths,
+                ),
                 "sha256": _sha256_file(predictions_path),
             },
         },
@@ -612,12 +682,15 @@ def write_draft_warning_evidence_bundle(
     predictions_path: str | Path = DEFAULT_PREDICTIONS_PATH,
     output_dir: str | Path = DEFAULT_OUTPUT_DIR,
     protocol_path: str | Path = DEFAULT_PROTOCOL_PATH,
+    repository_relative_paths: bool = False,
 ) -> DraftEvidenceBundleArtifacts:
     """Rebuild every active Ootang draft diagnostic under one draft protocol.
 
     This is a reproducibility entry point, not a warning executor.  It verifies
     that all component sidecars use the exact same protocol fingerprint and
     retain ``formal_warning_output=false`` before writing the bundle manifest.
+    When ``repository_relative_paths`` is true, paths inside this checkout are
+    recorded relative to ``ROOT`` while paths outside it remain absolute.
     """
 
     protocol_file = Path(protocol_path).resolve()
@@ -644,7 +717,10 @@ def write_draft_warning_evidence_bundle(
             predictions_path=predictions_file,
             protocol_path=protocol_file,
         )
-        _retarget_staged_component_manifests(staged_components)
+        _retarget_staged_component_manifests(
+            staged_components,
+            repository_relative_paths=repository_relative_paths,
+        )
         stable_segment_candidates_path = next(
             component.target_output_path
             for component in staged_components
@@ -658,6 +734,7 @@ def write_draft_warning_evidence_bundle(
                 predictions_path=predictions_file,
                 kinematics_path=kinematics_file,
                 stable_segment_candidates_path=stable_segment_candidates_path,
+                repository_relative_paths=repository_relative_paths,
             )
             for component in staged_components
         ]
@@ -670,6 +747,7 @@ def write_draft_warning_evidence_bundle(
                     kinematics_path=kinematics_file,
                     predictions_path=predictions_file,
                     components=components,
+                    repository_relative_paths=repository_relative_paths,
                 ),
                 ensure_ascii=False,
                 indent=2,

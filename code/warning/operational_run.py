@@ -2622,11 +2622,16 @@ def write_ootang_operational_run(
     evidence_target = Path(evidence_dir).resolve() if evidence_dir is not None else (
         DEFAULT_V4_EVIDENCE_DIR if is_v4 else DEFAULT_EVIDENCE_DIR
     )
+    evidence_kwargs: dict[str, Any] = {
+        "kinematics_path": kinematics_file,
+        "predictions_path": predictions_file,
+        "output_dir": evidence_target,
+        "protocol_path": loaded.base_protocol_path,
+    }
+    if is_v4:
+        evidence_kwargs["repository_relative_paths"] = True
     evidence = write_draft_warning_evidence_bundle(
-        kinematics_path=kinematics_file,
-        predictions_path=predictions_file,
-        output_dir=evidence_target,
-        protocol_path=loaded.base_protocol_path,
+        **evidence_kwargs,
     )
     predictions = _load_predictions(
         predictions_file,

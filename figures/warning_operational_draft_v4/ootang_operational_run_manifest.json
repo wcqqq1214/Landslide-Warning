@@ -35,7 +35,7 @@
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
+      "sha256": "70c6e5c098079ab5c0695d552600752149c11ffd161dd917211cbafb57575718"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -148,7 +148,7 @@
   "source_inputs": {
     "draft_evidence_manifest": {
       "path": "figures/warning_draft_v4/ootang_draft_warning_evidence_manifest.json",
-      "sha256": "7fa785d809d54a800a0c603a5f79bad94223bd2aa92d21c98928f6fab476ca1f"
+      "sha256": "13c73e470efd05faac6cf3126982c4cf53506507c06bd186fa9b043485befb6a"
     },
     "forecast_run_manifest": {
       "confirmatory_evidence_gate": "blocked",

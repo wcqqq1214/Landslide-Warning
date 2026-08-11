@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -17,6 +19,7 @@ if str(CODE_DIR) not in sys.path:
 from warning.levels import WarningLevel
 from warning.operational_v2_fusion import fuse_station_evidence_families_v4
 from warning.operational_run import _load_operational_profile
+from warning.operational_v4_figures import write_v4_typical_days
 
 
 class OperationalV4FusionTests(unittest.TestCase):
@@ -84,6 +87,45 @@ class OperationalV4ArtifactTests(unittest.TestCase):
         for figure_manifest in sorted(source.glob("ootang_v4_*_manifest.json")):
             figure = json.loads(figure_manifest.read_text())
             self.assertEqual(set(figure["outputs"]), {"svg", "png"})
+
+    def test_figure_svg_is_reproducible_and_manifest_hashes_shared_support(self):
+        source = ROOT / "figures" / "warning_operational_draft_v4"
+        profile_path = ROOT / "config" / "ootang_operational_run.v4.draft.json"
+        kwargs = {
+            "station_path": source / "ootang_operational_station_timeline.csv",
+            "site_path": source / "ootang_operational_site_timeline.csv",
+            "core_manifest_path": source / "ootang_operational_run_manifest.json",
+            "profile_path": profile_path,
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            first_dir = root / "first"
+            second_dir = root / "second"
+            first_manifest_path = write_v4_typical_days(
+                **kwargs,
+                output_dir=first_dir,
+            )
+            second_manifest_path = write_v4_typical_days(
+                **kwargs,
+                output_dir=second_dir,
+            )
+            first_svg = first_dir / "ootang_v4_typical_days.svg"
+            second_svg = second_dir / "ootang_v4_typical_days.svg"
+            self.assertEqual(first_svg.read_bytes(), second_svg.read_bytes())
+            first_manifest = json.loads(first_manifest_path.read_text())
+            second_manifest = json.loads(second_manifest_path.read_text())
+
+        support_source = first_manifest["implementation_sources"]["figure_support"]
+        support_path = ROOT / support_source["path"]
+        self.assertFalse(Path(support_source["path"]).is_absolute())
+        self.assertEqual(
+            support_source["sha256"],
+            hashlib.sha256(support_path.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(
+            first_manifest["outputs"]["svg"]["sha256"],
+            second_manifest["outputs"]["svg"]["sha256"],
+        )
 
 
 if __name__ == "__main__":

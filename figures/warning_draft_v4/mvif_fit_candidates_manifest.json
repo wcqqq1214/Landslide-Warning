@@ -61,7 +61,7 @@
     "split": "fit"
   },
   "source_kinematics": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "path": "data/ootang_kinematics_long.csv",
     "selected_columns": [
       "date",
       "station",
@@ -72,7 +72,7 @@
     "time_filter": "station_date<=station_fit_end_date"
   },
   "source_predictions": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "path": "figures/convlstm/forecast_predictions.csv",
     "selected_columns": [
       "date",
       "station",
@@ -116,7 +116,7 @@
       "C",
       "tf_elapsed_days"
     ],
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/mvif_fit_candidates.csv",
+    "path": "figures/warning_draft_v4/mvif_fit_candidates.csv",
     "sha256": "5f8b04650d335de712d4fde9bbf107a7055357553db37e200d84274691668e55"
   }
 }

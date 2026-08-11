@@ -47,6 +47,7 @@ paper/*.log
 paper/*.out
 paper/*.toc
 paper/*.synctex.gz
+figures/warning_operational_draft_v4/*.pdf
 
 # Project — abandoned superpowers output
 docs/superpowers/

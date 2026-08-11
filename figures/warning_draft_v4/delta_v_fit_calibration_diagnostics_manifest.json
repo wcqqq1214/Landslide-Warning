@@ -110,7 +110,7 @@
   "source_kinematics": {
     "calibration_time_filter": "station_date_is_exact_calibration_prediction_date",
     "fit_time_filter": "station_date<=station_fit_end_date",
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "path": "data/ootang_kinematics_long.csv",
     "selected_columns": [
       "date",
       "station",
@@ -119,7 +119,7 @@
     ]
   },
   "source_predictions": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "path": "figures/convlstm/forecast_predictions.csv",
     "selected_columns": [
       "date",
       "station",
@@ -156,7 +156,7 @@
       "median_abs_delta_v",
       "max_abs_delta_v"
     ],
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/delta_v_fit_calibration_diagnostics.csv",
+    "path": "figures/warning_draft_v4/delta_v_fit_calibration_diagnostics.csv",
     "sha256": "ace0c6b5090909a35240ce1a1b9cc44607f6bc15e8943bf7c9ce3fea777c0fa6"
   }
 }

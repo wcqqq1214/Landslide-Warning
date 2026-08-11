@@ -27,7 +27,7 @@
   "outputs": {
     "summary": {
       "n_rows": 16,
-      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics.csv",
+      "path": "figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics.csv",
       "sha256": "687f7cc6786e3534b40784346d08f51864ac29d4b50531983b7c8f7d8bbf1e07"
     }
   },
@@ -129,7 +129,7 @@
     }
   },
   "source_kinematics": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "path": "data/ootang_kinematics_long.csv",
     "selected_columns": [
       "date",
       "station",
@@ -138,7 +138,7 @@
     ]
   },
   "source_predictions": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "path": "figures/convlstm/forecast_predictions.csv",
     "selected_columns": [
       "date",
       "station",
@@ -170,7 +170,7 @@
     "fit_kinematics_input_sha256": "6e6a712eb99f564ac017b1e024b5b6c18ecfa6263cf8a7a1cc2c7c19414bd0ad",
     "fit_prediction_input_sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0",
     "kinematics_temporal_scope": "all_station_history_through_fit_cutoff",
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/stable_segment_candidates.csv",
+    "path": "figures/warning_draft_v4/stable_segment_candidates.csv",
     "protocol_content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
     "selected_columns": [
       "station",

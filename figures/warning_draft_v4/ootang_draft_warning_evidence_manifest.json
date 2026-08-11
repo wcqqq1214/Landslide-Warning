@@ -6,70 +6,70 @@
     {
       "artifact_kind": "ootang_interval_reference_states",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_reference_states_manifest.json",
-      "manifest_sha256": "ad05dc23c5cb3aac30d01b69051b35a9259c4d8bd4e4e151305c67dfd632da46",
+      "manifest_path": "figures/warning_draft_v4/interval_reference_states_manifest.json",
+      "manifest_sha256": "bb8b9ea0dde1a25745c4dc1ad01a90ea0ae6d6d6f771461a7d8e826a310edb93",
       "name": "interval_reference_states",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_reference_states.csv",
+      "output_path": "figures/warning_draft_v4/interval_reference_states.csv",
       "output_sha256": "986ac974a68d94e6de29c4ddd941d99dd7b5eca5487b0b09b85ea02a187bc253",
       "status": "source_referenced_observed_interval_state_not_formal"
     },
     {
       "artifact_kind": "ootang_interval_calibration_diagnostics",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_calibration_diagnostics_manifest.json",
-      "manifest_sha256": "549a843c1156ba4825e7a11138c345053a3c6366d41a9ca284b26ecdee760d9b",
+      "manifest_path": "figures/warning_draft_v4/interval_calibration_diagnostics_manifest.json",
+      "manifest_sha256": "bf3a9ee8001b33a730260fbf38f641d775035b01960b5844e4d79d952c559695",
       "name": "interval_calibration_diagnostics",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_calibration_diagnostics.csv",
+      "output_path": "figures/warning_draft_v4/interval_calibration_diagnostics.csv",
       "output_sha256": "d256ec1b0c318717e1c207249ce60a37ae5e9d885059b90dca1588e56e001558",
       "status": "diagnostic_only_reference_mapping_quality"
     },
     {
       "artifact_kind": "ootang_fit_stable_segment_candidates",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/stable_segment_candidates_manifest.json",
-      "manifest_sha256": "c8373e6649624079f2efbd5ccf0958d9492a139e5648d8996ec3da7062fb241e",
+      "manifest_path": "figures/warning_draft_v4/stable_segment_candidates_manifest.json",
+      "manifest_sha256": "7dcc05c1f9c00fb37926c4af3df387707f7f7d3492d9f920cd1a7bd3c226871d",
       "name": "stable_segment_candidates",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/stable_segment_candidates.csv",
+      "output_path": "figures/warning_draft_v4/stable_segment_candidates.csv",
       "output_sha256": "e53422763805428507789201874212b842a50f175b2d2347c5f614308646bd96",
       "status": "draft_candidate_not_formal"
     },
     {
       "artifact_kind": "ootang_delta_v_fit_calibration_diagnostics",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/delta_v_fit_calibration_diagnostics_manifest.json",
-      "manifest_sha256": "65cd10ba10943017f2cba1d7beb1f5c0fcf9eb03417e689829a0e6a8436b9c2c",
+      "manifest_path": "figures/warning_draft_v4/delta_v_fit_calibration_diagnostics_manifest.json",
+      "manifest_sha256": "12639de9f0f15795ebf622bda40ba2724dc00a7079f97ec1712f40903df44395",
       "name": "delta_v_fit_calibration_diagnostics",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/delta_v_fit_calibration_diagnostics.csv",
+      "output_path": "figures/warning_draft_v4/delta_v_fit_calibration_diagnostics.csv",
       "output_sha256": "ace0c6b5090909a35240ce1a1b9cc44607f6bc15e8943bf7c9ce3fea777c0fa6",
       "status": "diagnostic_only_no_tolerance_decision"
     },
     {
       "artifact_kind": "ootang_velocity_tangent_fit_calibration_diagnostics",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics_manifest.json",
-      "manifest_sha256": "e9880ded1b0e23e23d92b3a7ab7089e7787a48075746c9f498a2d35e548bf367",
+      "manifest_path": "figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics_manifest.json",
+      "manifest_sha256": "08335ea13b74cd009a195066ee7c4e0208a0c97e7a00b6907ebdf38f5c1f6b16",
       "name": "velocity_tangent_fit_calibration_diagnostics",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics.csv",
+      "output_path": "figures/warning_draft_v4/velocity_tangent_fit_calibration_diagnostics.csv",
       "output_sha256": "687f7cc6786e3534b40784346d08f51864ac29d4b50531983b7c8f7d8bbf1e07",
       "status": "diagnostic_only_no_tolerance_decision"
     },
     {
       "artifact_kind": "ootang_fit_mvif_finite_tf_diagnostics",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/mvif_fit_candidates_manifest.json",
-      "manifest_sha256": "ba8be48694670a2ef23e3499b1161d011ce3868a93edd8ab6a41cfe41b022f3b",
+      "manifest_path": "figures/warning_draft_v4/mvif_fit_candidates_manifest.json",
+      "manifest_sha256": "821bd51d5a2ecae8bff1c2743e3fd92b16133b65af63623733c7fb742c07019f",
       "name": "mvif_fit_candidates",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/mvif_fit_candidates.csv",
+      "output_path": "figures/warning_draft_v4/mvif_fit_candidates.csv",
       "output_sha256": "5f8b04650d335de712d4fde9bbf107a7055357553db37e200d84274691668e55",
       "status": "diagnostic_only_no_v0"
     },
     {
       "artifact_kind": "ootang_fit_bai_perron_mvif_initial_slope_candidates",
       "formal_warning_output": false,
-      "manifest_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/bai_perron_mvif_initial_slope_candidates_manifest.json",
-      "manifest_sha256": "36998d7ed5eb09b336fe2fb3566d10dc45c5171af9d240b3241c2f6e3a0c94e2",
+      "manifest_path": "figures/warning_draft_v4/bai_perron_mvif_initial_slope_candidates_manifest.json",
+      "manifest_sha256": "9b8d63eb70f33720d4a6958dc3d76ab40ef9fbad5335178a339b5065d9d5d0e6",
       "name": "bai_perron_mvif_initial_slope_candidates",
-      "output_path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/bai_perron_mvif_initial_slope_candidates.csv",
+      "output_path": "figures/warning_draft_v4/bai_perron_mvif_initial_slope_candidates.csv",
       "output_sha256": "f736b8a4f7e7075c419f75747752452fa17603453ae933543aab51d2ba0d307a",
       "status": "draft_candidate_not_formal"
     }
@@ -113,11 +113,11 @@
   ],
   "source_inputs": {
     "kinematics": {
-      "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+      "path": "data/ootang_kinematics_long.csv",
       "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
     },
     "predictions": {
-      "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+      "path": "figures/convlstm/forecast_predictions.csv",
       "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
     }
   },

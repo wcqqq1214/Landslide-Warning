@@ -336,6 +336,44 @@ class OotangOperationalRunTests(unittest.TestCase):
             check_dtype=False,
         )
 
+    def test_v4_run_uses_repository_relative_evidence_paths(self):
+        profile_path = ROOT / "config" / "ootang_operational_run.v4.draft.json"
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            run_root = Path(directory)
+            artifacts = write_ootang_operational_run(
+                profile_path=profile_path,
+                output_dir=run_root / "output",
+                evidence_dir=run_root / "evidence",
+            )
+            evidence_manifest = json.loads(
+                artifacts.evidence_manifest_path.read_text(encoding="utf-8")
+            )
+
+            self.assertFalse(
+                Path(
+                    evidence_manifest["source_inputs"]["kinematics"]["path"]
+                ).is_absolute()
+            )
+            self.assertFalse(
+                Path(
+                    evidence_manifest["source_inputs"]["predictions"]["path"]
+                ).is_absolute()
+            )
+            for component in evidence_manifest["components"]:
+                self.assertFalse(Path(component["output_path"]).is_absolute())
+                self.assertFalse(Path(component["manifest_path"]).is_absolute())
+                component_manifest = json.loads(
+                    (ROOT / component["manifest_path"]).read_text(encoding="utf-8")
+                )
+                for source_key in (
+                    "source_predictions",
+                    "source_kinematics",
+                    "source_stable_segment_candidates",
+                ):
+                    source = component_manifest.get(source_key)
+                    if isinstance(source, dict):
+                        self.assertFalse(Path(source["path"]).is_absolute())
+
     def test_spatial_source_metadata_is_reproducible_without_local_pdf(self):
         with tempfile.TemporaryDirectory() as directory:
             config_dir = Path(directory) / "config"

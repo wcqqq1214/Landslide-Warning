@@ -40,7 +40,7 @@
     ]
   },
   "source_predictions": {
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "path": "figures/convlstm/forecast_predictions.csv",
     "selected_columns": [
       "split",
       "station",
@@ -72,7 +72,7 @@
       "n_standardized_residuals",
       "max_abs_z"
     ],
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_calibration_diagnostics.csv",
+    "path": "figures/warning_draft_v4/interval_calibration_diagnostics.csv",
     "sha256": "d256ec1b0c318717e1c207249ce60a37ae5e9d885059b90dca1588e56e001558"
   }
 }

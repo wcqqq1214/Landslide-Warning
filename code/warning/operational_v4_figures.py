@@ -40,6 +40,7 @@ STRIP_FIELDS = (
 )
 STRIP_LABELS = ("I", "V", "A", "T", "F")
 ARTIFACT_STATUS = "operational_draft_not_formal"
+SVG_HASHSALT = "ootang-operational-v4"
 
 
 def _sha256(path: Path) -> str:
@@ -149,7 +150,13 @@ def _export(fig: plt.Figure, output_dir: Path, stem: str) -> dict[str, Path]:
         "svg": output_dir / f"{stem}.svg",
         "png": output_dir / f"{stem}.png",
     }
-    fig.savefig(paths["svg"], metadata={"Date": None, "Creator": "Landslide-Warning"})
+    # Matplotlib otherwise generates random SVG element ids on every save.
+    # Fixing the salt makes the canonical editable artifact byte-reproducible.
+    with matplotlib.rc_context({"svg.hashsalt": SVG_HASHSALT}):
+        fig.savefig(
+            paths["svg"],
+            metadata={"Date": None, "Creator": "Landslide-Warning"},
+        )
     svg = paths["svg"].read_text(encoding="utf-8")
     paths["svg"].write_text("\n".join(line.rstrip() for line in svg.splitlines()) + "\n", encoding="utf-8")
     fig.savefig(paths["png"], dpi=300, metadata={"Software": "Landslide-Warning"})
@@ -191,6 +198,11 @@ def _common_manifest(
     implementation_sources["renderer"] = {
         "path": support.manifest_path(renderer_path),
         "sha256": _sha256(renderer_path),
+    }
+    support_path = Path(support.__file__).resolve()
+    implementation_sources["figure_support"] = {
+        "path": support.manifest_path(support_path),
+        "sha256": _sha256(support_path),
     }
     core_outputs = core_manifest.get("outputs", {})
     core_output_row_counts = {

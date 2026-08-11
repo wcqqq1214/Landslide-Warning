@@ -53,7 +53,7 @@
   },
   "source_predictions": {
     "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g_date_%Y-%m-%d",
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "path": "figures/convlstm/forecast_predictions.csv",
     "selected_columns": [
       "date",
       "station",
@@ -93,7 +93,7 @@
     ],
     "mapped_row_count": 4112,
     "not_applicable_row_count": 7288,
-    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_reference_states.csv",
+    "path": "figures/warning_draft_v4/interval_reference_states.csv",
     "sha256": "986ac974a68d94e6de29c4ddd941d99dd7b5eca5487b0b09b85ea02a187bc253"
   }
 }

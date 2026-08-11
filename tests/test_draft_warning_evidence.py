@@ -72,6 +72,67 @@ class DraftWarningEvidenceBundleTests(unittest.TestCase):
                 manifest["protocol"]["content_sha256"],
             )
 
+    def test_repository_relative_paths_cover_bundle_and_component_sidecars(self):
+        """ROOT-relative manifests remain readable independent of cwd."""
+
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            output_dir = Path(directory) / "warning_draft"
+            artifacts = write_draft_warning_evidence_bundle(
+                output_dir=output_dir,
+                repository_relative_paths=True,
+            )
+            manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
+
+            self.assertFalse(
+                Path(manifest["source_inputs"]["kinematics"]["path"]).is_absolute()
+            )
+            self.assertFalse(
+                Path(manifest["source_inputs"]["predictions"]["path"]).is_absolute()
+            )
+            for component in manifest["components"]:
+                for field in ("output_path", "manifest_path"):
+                    recorded = Path(component[field])
+                    self.assertFalse(recorded.is_absolute())
+                    self.assertTrue((ROOT / recorded).is_file())
+
+                component_manifest = json.loads(
+                    (ROOT / component["manifest_path"]).read_text(encoding="utf-8")
+                )
+                for path in self._manifest_paths(component_manifest):
+                    self.assertFalse(Path(path).is_absolute(), path)
+                    self.assertTrue((ROOT / path).is_file(), path)
+
+    def test_repository_relative_mode_keeps_external_output_paths_absolute(self):
+        with tempfile.TemporaryDirectory() as directory:
+            output_dir = Path(directory) / "warning_draft"
+            artifacts = write_draft_warning_evidence_bundle(
+                output_dir=output_dir,
+                repository_relative_paths=True,
+            )
+            manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
+            first_component = manifest["components"][0]
+            first_sidecar = json.loads(
+                artifacts.component_manifest_paths[0].read_text(encoding="utf-8")
+            )
+
+        self.assertFalse(
+            Path(manifest["source_inputs"]["predictions"]["path"]).is_absolute()
+        )
+        self.assertTrue(Path(first_component["output_path"]).is_absolute())
+        self.assertTrue(Path(first_component["manifest_path"]).is_absolute())
+        self.assertTrue(Path(first_sidecar["states"]["path"]).is_absolute())
+
+    @staticmethod
+    def _manifest_paths(value):
+        if isinstance(value, dict):
+            for key, item in value.items():
+                if key == "path" and isinstance(item, str):
+                    yield item
+                yield from DraftWarningEvidenceBundleTests._manifest_paths(item)
+        elif isinstance(value, list):
+            for item in value:
+                yield from DraftWarningEvidenceBundleTests._manifest_paths(item)
+
     def test_rejects_a_frozen_protocol_before_writing_a_draft_bundle(self):
         frozen = copy.deepcopy(load_protocol())
         frozen["status"] = "frozen"
