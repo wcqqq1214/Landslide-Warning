@@ -1,12 +1,12 @@
 # 藕塘四指标数据字典（协议草案）
 
-> 协议：[`ootang-five-level-rule-v1`](../config/ootang_warning_protocol.v1.draft.json)
+> 基础协议：[`ootang-five-level-rule-v1`](../config/ootang_warning_protocol.v1.draft.json)；v4 加速度扩展：[`ootang_warning_protocol.v2.draft.json`](../config/ootang_warning_protocol.v2.draft.json)
 >
 > 状态：`draft`；本文件记录已确认的数据契约与未冻结项，**不授权生成正式预警结果**。
 >
 > 方法依据：[行动计划](advisor_review_action_plan.md)、导师指定[论文](../literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx)第五章，以及[改进切线角原始文献](../literature/一种改进的切线角及对应的滑坡预警判据_许强.pdf)。
 
-> 工程口径（2026-08-08）：本字典仍是 `draft` 数据契约，不授权正式预警。代码审查后默认入口为 `features → convlstm → ootang-operational-v3`，schema 3 管线清单记录阶段输入/输出指纹；这次只同步工程说明，不改变本字典的阈值未决项、数据门禁或 Vajont 授权边界。
+> 工程口径（2026-08-11）：本字典仍是 `draft` 数据契约，不授权正式预警。默认入口切换为 `features → convlstm → ootang-operational-v4`；v3 数值快照保留为对照。v4 的导师确认范围是加速度计算方法，阈值相对带宽是用户批准的项目操作假设；二者不写成指定 Word 论文已给出的藕塘阈值。schema 3 管线清单记录阶段输入/输出指纹，Vajont 仍未启动。
 
 ## 1. 共用约束
 
@@ -20,6 +20,7 @@
 - [`code/warning/draft_evidence.py`](../code/warning/draft_evidence.py) 的 `write_draft_warning_evidence_bundle()` 是当前七份有效藕塘草案诊断的统一重建入口：它只接受 `case=ootang`、`status=draft` 的协议，核验每份组件的协议内容指纹、未决项、来源路径、输出 SHA-256 和 `formal_warning_output=false`，并写入 `figures/warning_draft/ootang_draft_warning_evidence_manifest.json`。它在临时目录完成组件生成和核验、成功后才逐文件原子替换相应快照；若出现 Python 可捕获的写入、核验或提升错误，会恢复旧快照，但不宣称进程被强制终止或断电时的 bundle 级目录事务。排除已退役的 MVIF profile 候选，不调用正式执行器，不将原始速度 KMeans 草案候选写作或用于指定 Word 的正式 `V0`，也不计算单项等级、融合或时间线，更不使用 Vajont。
 - 为满足“先跑通藕塘”的实施需求，保留 [`ootang_operational_run.v1.draft.json`](../config/ootang_operational_run.v1.draft.json) 作为双计票对照，并新增 [`ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json) 与 [`operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py)。两版都仅从 fit 期产生 KMeans 对照、`V0±σ`、`5V0/10V0`、切线角和选段 `ΔV` MAD 参数，在 calibration/test 执行。v2 把速度/切线角合并为一个运动学证据族，`ΔV` 仅标记加速性，单一证据族异常保留为可评估候选，并按 O1=`MJ9/MJ1/MJ3`、O2=`ATU4/ATU5/ATU3`、O3=`ATU2/ATU1` 做跨区汇总；该空间拓扑只参考 Wang 等（2025，DOI `10.1029/2025JH000592`）PDF 第 7 页图 4(a,d) 和 5.2 节，配置锁定已审查源文件指纹，**按当前代码重建的** manifest 记录本地副本核验状态；已有 v2 历史快照可能尚未包含该字段。该来源不扩展成跨区支撑数或颜色规则的论文结论。blue 仅在它是最高候选时可见；未获 yellow--red 跨区确认的更高候选不得降为 blue。配置均锁定基础协议 `1.3-draft` 的内容指纹与完整七项未决项，所有 CSV/manifest 输出 `operational_draft_not_formal`、`formal_warning_output=false`、`vajont_used=false`。这不修改本字典的正式字段定义，也不将 KMeans 对照、严格 MVIF 失败或任何运行颜色升级为 Word 论文的正式方法或预警结论；详见 [`ootang_operational_run.md`](ootang_operational_run.md)。
 - 2026-08-01 新增独立 [`ootang_operational_run.v3.draft.json`](../config/ootang_operational_run.v3.draft.json) 与 [`operational_v3_fusion.py`](../code/warning/operational_v3_fusion.py)。v3 完全复用 v2 的逐点指标、阈值、测点证据族和分区，只把滑坡体输出拆为 `site_confirmed_level` 与 `local_max_candidate_level`：任何 site 色先要求至少 3 点及三个分区覆盖，blue 也要求 2 点/2 区，未确认 yellow--red 不降级，孤立/单区 blue 记为 site green + `localized_blue_attention`。这是非正式运行字段，不冻结正式 `F_site`，也不改变数据与确认性证据门禁。
+- 2026-08-11 新增 [`ootang_operational_run.v4.draft.json`](../config/ootang_operational_run.v4.draft.json) 与 [`operational_v4_fusion.py`](../code/warning/operational_v4_fusion.py)。v4 逐测点计算 `v_i=(U_i-U_{i-1})/Δt_i`、`a_i=(v_i-v_{i-1})/Δt_i`，单位分别为 `mm/day`、`mm/day²`，并在 fit-only 候选稳定段上计算 `A`、`sigma_a`、`A0`。加速度是独立五级 evidence family；速度与切线角仍合并为一个运动学 family；原始 `delta_v` 仅作审计字段。v4 同时锁定 v1 基础协议和 v2 扩展协议的 SHA-256，核心与三类图件 manifest 还复制实现源码指纹、输出行数/哈希和双协议声明；输出目录为 `figures/warning_operational_draft_v4/`，不覆盖 v3 数值快照。导师确认的是计算方法，`A0` 相对带宽为用户批准假设；加速度阈值尚未现场独立验证。
 - 当前的历史 `warning_fusion.py`、旧 30 日位移增量、旧四级/主副指标路径均只是溯源材料，不是本字典所定义的正式路径。
 - 正式执行器未来只能通过 [`formal_warning.py`](../code/warning/formal_warning.py) 的 `run_formal_warning()` 进入；它先调用 `require_frozen_protocol()`，且在正式四指标执行器尚未实现前会明确拒绝，而不会接受旧融合函数。当前 `main.py` 运行清单和历史预警阶段均固定标为非正式；旧融合、阈值及可单独运行的历史脚本的新表格携带 `warning_path=legacy_exploratory` 与 `formal_warning_output=false`，输出目录另有 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则配套同目录的 `ngboost_legacy_warning_manifest.json`。完整映射见 [`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。
 - 用户于 2026-07-21 确认：指定 Word 论文优先于藕塘毕业论文；后者的 `30` 日、四级 `V0` 路径只可复核历史产物，不能替代本字典的逐点日速度、指定 Word 式（5-3）或五级规则。
@@ -35,6 +36,16 @@
 | 变形速率增量：`delta_v` / `delta_v_state` | `ΔV_i=v_i-v_{i-1}`，是速度增量而非加速度，单位仍为 `mm/day`。它是物化序列的二阶差分性质派生量，状态仅为 `negative`、`near_zero`、`positive`，不是单独虚构的五级阈值。 | 需要连续两个有效速度，涉及 `i-2,i-1,i` 三个物化日历值；近零容差只能在预先声明的 fit/calibration 阶段审计。`figures/warning_draft/delta_v_fit_calibration_diagnostics.csv` 只固化数值摘要：fit 取截止日前历史，calibration 只取精确预测日期，不按起止日期包络扩展。 | 前两行是 `warmup`；当前速度无效则为 `velocity_invalid`，前一速度无效则为 `previous_velocity_invalid`。 | 指定论文只将 `ΔV` 称为辅助判别，正文 `[92]` 无法从该 Word 文件的参考文献表追溯；其融合公式的解释还只列区间、切线角和速率三类输出，未能恢复 `ΔV` 的精确特征角色。可采用负/近零/正的过程语义，但 `delta_v_near_zero_tolerance` 与其参与 `F` 的规则未冻结；数据门禁通过前也不冻结为正式量。 |
 | 改进切线角：`tangent_angle` / `tangent_angle_level` | 原始方法将累计位移坐标变换为时间量纲后计算 `α_i=(180/π)arctan((T_i-T_{i-1})/(t_i-t_{i-1}))`；在当前发布表的等间隔日历网格中，速率比形式为 `α_i=(180/π)arctan(v_i/V0)`，输出单位为 degree。它仍是物化序列导数的变换。 | 原始文献要求先识别等速变形阶段并计算其平均速率 `V0`。本项目的自动稳定段仅是 fit-only 草案候选；当前遗留的 3 日因果平滑和持续性规则不可自动升格为正式窗口。`velocity_tangent_fit_calibration_diagnostics.csv` 只保存该原始角度及其相对 45° 的描述统计。 | 原始文献建议不等间隔观测先等间隔化。藕塘发布表为逐日日历网格，但不能据此推断原始采样频率；出现原始缺测/非等间隔时的重采样、无效标记或其他处置尚未恢复。 | 指定论文表 5-2 和许强等（2009）给出 `α<45°`、`α≈45°`、`45°<α<80°`、`80°≤α<85°`、`α≥85°` 对应五色。`α≈45°` 没有数值容差或边界归属，因此 `tangent_blue_tolerance`、`nonregular_tangent_handling`、稳定段选择和数据血缘仍阻止正式五级；该诊断表不输出切线角等级或容差。 |
 
+### 2.1 v4 加速度扩展
+
+v4 新增 `acceleration`、`acceleration_level`、`acceleration_indicator_status` 和 `acceleration_reason`。其定义与状态如下：
+
+| 字段 | 定义 | fit 基线与五级映射 | 语义边界 |
+| --- | --- | --- | --- |
+| `acceleration` | `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，单位 `mm/day²`，使用当前速度对应的真实 `Δt_i` | `A=mean(a)`、`sigma_a=std(a,ddof=1)`、`A0=max(1.5A,A+2sigma_a)`；green `<A0-sigma_a`，blue `A0-sigma_a…A0+sigma_a`，yellow `A0+sigma_a…5A0`，orange `5A0…10A0`，red `≥10A0`，边界归属以 v2 JSON 为准 | 计算方法来自导师确认；相对带宽由用户授权沿用速度规则，不是 Word 论文已经给出的藕塘加速度阈值。`A0` 非有限/非正时 fail-closed。 |
+
+三点暖启动规则为：首个速度行和前两个加速度行不分级；缺失位移、无效日期或非正 `Δt` 保留明确状态。负加速度自然落入 green 的相对范围，但不以 `delta_v` 符号替代加速度分级。`delta_v` 仍保留为 `mm/day` 的原始审计字段，v4 不将其作为独立 ordinal vote。
+
 ## 3. 输出与融合边界
 
 逐测点的未来可复算表至少应含：
@@ -45,6 +56,8 @@ interval_level, interval_status, interval_color, interval_mapping_basis,
 interval_mu, interval_sigma, interval_z, interval_reason,
 velocity, velocity_level, velocity_status,
 delta_v, delta_v_state, delta_v_status,
+acceleration, acceleration_level, acceleration_indicator_status,
+acceleration_reason,
 tangent_angle, tangent_angle_level, tangent_status,
 station_warning_level, station_warning_color,
 fusion_rule_version, fusion_reason, validity_flag

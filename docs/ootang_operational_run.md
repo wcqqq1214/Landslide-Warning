@@ -1,20 +1,21 @@
 # 藕塘实施版运行说明（导师复核用）
 
-> 当前运行配置：[ootang_operational_run.v3.draft.json](../config/ootang_operational_run.v3.draft.json)
+> 当前运行配置：[ootang_operational_run.v4.draft.json](../config/ootang_operational_run.v4.draft.json)
 >
-> 保留对照配置：[v2](../config/ootang_operational_run.v2.draft.json)、[v1](../config/ootang_operational_run.v1.draft.json)
+> 保留对照配置：[v3](../config/ootang_operational_run.v3.draft.json)、[v2](../config/ootang_operational_run.v2.draft.json)、[v1](../config/ootang_operational_run.v1.draft.json)
 >
 > 状态：`operational_draft`；用于先完整跑通藕塘案例并便于导师后续替换规则，**不是正式预警结果**。
 >
-> 执行决策（2026-07-30）：原始 GNSS 确认无法取得。`prototype_run_gate=allowed`，允许导师要求的高程感知工程初跑；`confirmatory_evidence_gate=blocked`，其颜色、速度、`ΔV`、切线角和区间仍不能升级为独立原始 GNSS 上的确认性证据。
+> 执行决策（2026-07-30）：原始 GNSS 确认无法取得。`prototype_run_gate=allowed`，允许导师要求的高程感知工程初跑；`confirmatory_evidence_gate=blocked`，其颜色、速度、加速度、切线角和区间仍不能升级为独立原始 GNSS 上的确认性证据。
 
-> 工程收口（2026-08-08）：整体 code-review 已完成。默认入口只运行 `features → convlstm → ootang-operational-v3`；schema 3 管线清单记录逐阶段输入/输出指纹和工作树状态。本说明的 v1/v2/v3 规则、阈值和非正式证据边界未因代码审查改变，且没有重训模型或启动 Vajont。
+> v4 决策（2026-08-11）：导师确认加速度采用逐点导数方法；用户授权本轮沿用速度相对带宽作为加速度阈值。默认入口切换为 `features → convlstm → ootang-operational-v4`；v1/v2/v3 数值快照保留，Vajont 未启动。
 
 ## 1. 目的与边界
 
 用户于 2026-07-23 授权按当前推荐技术路线先跑通藕塘，导师后续若提出方法调整，再替换相应规则。为避免这项工程授权被误写成论文方法已经完全冻结，本运行独立于正式协议：
 
 - 基础协议仍是 [`ootang-five-level-rule-v1`](../config/ootang_warning_protocol.v1.draft.json) 的 `1.3-draft`；实施版配置锁定其内容 SHA-256 和七项未决项，任一漂移都会拒绝运行；
+- v4 另外锁定 [`ootang_warning_protocol.v2.draft.json`](../config/ootang_warning_protocol.v2.draft.json) 的扩展 SHA-256；v1 是证据基础协议，v2 是加速度方法/阈值扩展，二者哈希均写入 v4 manifest；
 - 每份 CSV 和 manifest 均写入 `formal_warning_output=false`、`artifact_status=operational_draft_not_formal` 与 `vajont_used=false`；
 - 不调用 [`formal_warning.py`](../code/warning/formal_warning.py)，不把发布序列相邻差分速度 KMeans 候选称为指定 Word 论文的 MVIF `V0` 实现；
 - 参数只由 `split=fit` 的候选稳定段和运动学记录产生；calibration/test 仅执行，不反向选择参数。
@@ -77,7 +78,44 @@ v3 复用 v2 的逐点四指标、V0 对照基线、阈值、测点证据族和 
 
 这仍是项目特有的透明非监督草案。green 现在可表达“覆盖完整但没有跨区 blue+，且不存在未确认 yellow+ 候选”，并不等于经现场验证的安全状态。
 
-## 5. 运行与产物
+## 5. v4 加速度独立证据运行（当前默认）
+
+v4 保留 v3 的双轴滑坡体空间规则，但把严格逐点加速度作为第三个独立 evidence family。导师确认的是计算方法；加速度阈值沿用速度相对带宽则是用户批准的本轮项目操作假设，二者来源边界已写入 [`v4 决策记录`](ootang_v4_acceleration_decision.md) 和 v2 扩展协议。
+
+1. 逐点计算 `v_i=(U_i-U_{i-1})/Δt_i`、`a_i=(v_i-v_{i-1})/Δt_i`，单位分别为 `mm/day` 和 `mm/day²`，使用真实 `Δt_i`；首个速度和前两个加速度行是暖启动，原始 `delta_v=v_i-v_{i-1}` 仅保留作审计字段；
+2. 在与速度相同的 fit-only 候选稳定段上计算 `A=mean(a)`、`sigma_a=std(a, ddof=1)`、`A0=max(1.5A,A+2sigma_a)`。`A0` 非有限或不大于零时 fail-closed；
+3. 加速度五级为：`a<A0-sigma_a` green；`A0-sigma_a≤a≤A0+sigma_a` blue；`A0+sigma_a<a<5A0` yellow；`5A0≤a<10A0` orange；`a≥10A0` red。负加速度不因 `delta_v` 符号机械升级；
+4. 测点候选由区间、运动学（速度/切线角）和加速度三个 family 的局部最大值组成。速度与切线角只计一个 family；加速度可独立改变候选等级；每项等级、状态、贡献和理由均写入逐时刻 CSV；
+5. 滑坡体继续使用 v3 的 O1/O2/O3 双轴逻辑，分别输出 `site_confirmed_*` 与 `local_max_candidate_*`。局部最高异常未获跨区支撑时保留 `candidate_not_site_confirmed`，不伪装为整体确认。
+
+当前 v4 运行命令：
+
+```bash
+uv run python code/warning/operational_run_v4.py
+```
+
+统一入口默认链路为：
+
+```bash
+uv run python main.py \
+  --stage features \
+  --stage convlstm \
+  --stage ootang-operational-v4
+```
+
+v3 现为 `explicit-only` 对照阶段，仍可用 `uv run python code/warning/operational_run_v3.py` 重建；它不会被 v4 覆盖。v4 所有核心 CSV 和图件位于 `figures/warning_operational_draft_v4/`，输入证据仍单独位于 `figures/warning_draft_v4/`。
+
+本次藕塘 v4 产物包含 8 点 × 514 日的 4,112 行测点时间线、514 行滑坡体时间线和 8 行阈值表。加速度单项等级计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`；这是冻结规则在物化序列上的工程审计计数，不是现场验证的预警性能。
+
+v4 图件包括：
+
+- [`ootang_v4_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg)：8 个测点累计位移、区间/速度/加速度/切线角和候选等级；
+- [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)：完整测点候选五级与滑坡体双轴时间线；
+- [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)：按冻结规则选出的代表日逐条诊断。
+
+图件和 CSV 均标记 `formal_warning_output=false`、`vajont_used=false`。PDF 导出可在本地重建，但不纳入本次 Git 快照。
+
+## 6. v1/v2/v3 运行与产物（保留）
 
 ```bash
 uv run python code/warning/operational_run.py
@@ -109,7 +147,9 @@ v2/v3 仍要求本地存在高程感知预测清单。O1/O2/O3 的计算拓扑�
 - `ootang_operational_site_timeline.csv`：每日的有效点数量、各级计数、贡献点、未获佐证点与滑坡体实施版状态；
 - `ootang_operational_run_manifest.json`：基础协议/实施版配置/输入/输出哈希、结果状态计数和明确的非正式边界。
 
-v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`station_confirmation_status`，以及 `trend_component`、`transition_status`、`evidence_consistency_status`、`composite_warning_signal`。后三类字段把 `ΔV` 的负/近零/正状态实质保留在完整信号和理由中，但不让它凭符号改变五色严重度，也不把速度与切线角重复计票；`acceleration_status` 仅作为向后兼容字段。v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
+v2 的测点表新增 `station_assessment_status`、`candidate_level/color`、`kinematic_level/color`、`evidence_families`、`station_confirmation_status`，以及 `trend_component`、`transition_status`、`evidence_consistency_status`、`composite_warning_signal`。后三类字段把 `ΔV` 的负/近零/正状态实质保留在完整信号和理由中，但不让它凭符号改变五色严重度，也不把速度与切线角重复计票；v2/v3 中的 `acceleration_status` 仅作为向后兼容字段。v3 完全复用这些测点值。v3 滑坡体表以 `site_confirmed_level/color`、`local_max_candidate_level/color`、`local_attention_status` 为规范双轴，同时保留 `site_level/color`、`site_candidate_level/color` 和 `candidate_stations/blocks` 兼容别名。v2/v3 中 `fusion_status=valid` 只表示四项输入可评估，**不再表示两项独立投票已佐证**。
+
+v4 新增规范字段 `acceleration`、`acceleration_level/color`、`acceleration_indicator_status` 和 `acceleration_reason`，并将 `evidence_families` 明确写成 `interval`、`kinematic_velocity_tangent`、`acceleration` 三族；`delta_v` 及其原始状态仍可审计但不参加五级投票。v4 的 `fusion_status=valid` 要求四项逐时刻输入均有效；任一暖启动或无效行均保留原因并 fail-closed，不静默改成 green。
 
 这些文件均可从 manifest 中的路径与 SHA-256 复核。当前刷新后的 v3 manifest 记录高程感知预测清单、预测哈希匹配状态，以及 Wang 等（2025）空间分区来源的 DOI、页/图定位、预期路径、已审查 SHA-256、本地副本可用性和核验状态；历史 v2 快照保留原样，下次显式重建时才会写入新增的可用性字段。v3 manifest 还锁定运行器、测点融合和 v3 空间融合源码指纹，并汇总双轴等级及局部蓝状态。参数表不会因仅改变 test 期预测值而变化；该性质由集成测试覆盖。若发生 Python 可捕获的写入或提升错误，旧实施版快照会恢复；不宣称进程被强制终止或断电时的目录级事务。
 
@@ -121,7 +161,7 @@ v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_ty
 
 核心时间线与三类图件分别以独立 bundle 原子提升，v3 入口按顺序生成四个 bundle；它们不是一次覆盖整个目录的单一事务。若后续图件失败，统一管线会将该阶段标为失败，较早 bundle 可能已更新；每个图件 manifest 都锁定核心 CSV/manifest 哈希，因而旧图件不能通过新核心快照的 provenance 校验，也不能被当作一次完整成功运行发布。
 
-### 5.1 2026-08-01 v3 快照
+### 6.1 2026-08-01 v3 快照
 
 - `station_coords.csv` 中 8 个 `station/disp_col` 一一对应，`x_m/y_m/elev_m` 均为有限米制数值；
 - 高程范围为 `190–515 m`，在 8 个固定测点间 z-score 后按水平 IDW 生成静态网格，不进入三维距离；
@@ -136,7 +176,7 @@ v3 入口还会在核心 CSV/manifest 指纹全部匹配后生成 [`ootang_v3_ty
 - 8 点联合图在同一日期轴上展示累计位移、四指标状态与最终候选等级，补齐 R9 的联合展示要求；
 - 本快照只证明链路完整。高程版本较此前无高程单种子快照的 RMSE 更高，因此不宣称加入高程改善预测，也不据 test 结果继续调参。
 
-## 6. 解读限制
+## 7. 解读限制
 
 - `operational_draft` 的色彩仅表示当前实施版规则的输出，不能在论文中称为“正式预警等级”；
 - 严格 MVIF 失败这一事实没有被删除或放宽；KMeans 候选仍不是指定 Word 的 MVIF 初始稳定斜率；
