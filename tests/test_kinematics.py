@@ -104,6 +104,27 @@ class PointKinematicsTests(unittest.TestCase):
         self.assertEqual(frame.loc[4, "velocity"], 1.0)
         self.assertTrue(np.isnan(frame.loc[4, "delta_v"]))
         self.assertTrue(np.isnan(frame.loc[4, "acceleration"]))
+        self.assertEqual(
+            frame["acceleration_status"].tolist(),
+            [
+                "warmup",
+                "warmup",
+                "velocity_invalid",
+                "nonpositive_dt",
+                "previous_velocity_invalid",
+            ],
+        )
+
+    def test_invalid_time_status_is_not_hidden_by_acceleration_warmup(self):
+        frame = compute_point_kinematics(
+            ["2020-01-01", "2020-01-01", "2020-01-02"],
+            [0.0, 1.0, 2.0],
+        )
+
+        self.assertEqual(
+            frame["acceleration_status"].tolist(),
+            ["warmup", "nonpositive_dt", "previous_velocity_invalid"],
+        )
 
 
 class LongKinematicsTests(unittest.TestCase):

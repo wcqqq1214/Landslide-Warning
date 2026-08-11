@@ -49,7 +49,7 @@ class OperationalV4FusionTests(unittest.TestCase):
             delta_v_state="near_zero",
         )
         self.assertEqual(result.kinematic_level, WarningLevel.YELLOW)
-        self.assertEqual(result.evidence_families, ("kinematic",))
+        self.assertEqual(result.evidence_families, ("kinematic_velocity_tangent",))
 
 
 class OperationalV4ArtifactTests(unittest.TestCase):
@@ -67,7 +67,18 @@ class OperationalV4ArtifactTests(unittest.TestCase):
         self.assertEqual(len(station), 4112)
         self.assertEqual(len(site), 514)
         self.assertEqual(station["acceleration_level"].value_counts().to_dict(), {0: 4012, 1: 98, 2: 2})
+        allowed_families = {"interval", "kinematic_velocity_tangent", "acceleration"}
+        family_tokens = {
+            token
+            for value in station["evidence_families"].dropna().astype(str)
+            for token in value.split(";")
+            if token
+        }
+        self.assertTrue(family_tokens)
+        self.assertTrue(family_tokens <= allowed_families)
+        self.assertNotIn("kinematic", family_tokens)
         self.assertEqual(manifest["acceleration_protocol_extension"]["id"], "ootang-four-indicator-rule-v2")
+        self.assertIn("station_fusion_implementation", manifest["implementation_sources"])
         self.assertFalse(station["vajont_used"].any())
         self.assertTrue((station["acceleration_level"] > 0).sum() > 0)
 

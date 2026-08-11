@@ -38,17 +38,17 @@
   },
   "core_run_manifest": {
     "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-    "sha256": "66042abb953ce1a2cb08318a090ae74c89e9e3d13448f13cd5dda3fb0a211d69"
+    "sha256": "b76e58751a33ba93a2647069f8483b825377546a86717af5391a1ba67e35b5c7"
   },
   "formal_warning_output": false,
   "implementation_sources": {
     "acceleration_kinematics": {
       "path": "code/features/kinematics.py",
-      "sha256": "804fc678d69769c21b6d22f032fc5a4673c7952d4632889d285f9f352b22b0a1"
+      "sha256": "b975b7430e1ef1413fa28abcb7005920d175f5e5eeb0bb5940fe8a7cdb485dc7"
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "c9f3d71765e46de7ebc1978c0a1f3ae4e8dedeb7d31f43efc319d677969afdcc"
+      "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -61,26 +61,30 @@
     "station_fusion": {
       "path": "code/warning/operational_v4_fusion.py",
       "sha256": "51a87e1f692c69658de5c3c613406ac4f51cd859c159f73c865efe0baa4d81b1"
+    },
+    "station_fusion_implementation": {
+      "path": "code/warning/operational_v2_fusion.py",
+      "sha256": "77d9c80908ac0ba5a2d5f374d63c418e8533fef6939d462e3603eb40b3cae872"
     }
   },
   "outputs": {
     "pdf": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf",
-      "sha256": "f8b268251d28bc30f65c46f40fc48a77d4c940b87fd3a1b03513bc734237f997"
+      "sha256": "74da0892e3807ec5b41e014b26a6157365b2a1fdea6a303a9fa0b325cc02ed2f"
     },
     "png": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.png",
-      "sha256": "0919b84538e8c2ddb331518f1d8ae92e675dd70c0f760c9e729f77ab2aeebc79"
+      "sha256": "1b46a3626966bae4f22d420c4170805c16a4c91b69777796c6c2547608ef5a67"
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg",
-      "sha256": "e0a0cc566a9e7c2dda1416c14126a533482f1483099427012721e7a5b5d2e54a"
+      "sha256": "53c87c85986f9148f9ecde2a406dd4d15bb6aecea9a82d1054428945887159a0"
     }
   },
   "profile": {
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
-    "sha256": "22cfbd61b748b6111d5769023f64a18d198256d7af5d1ed26fdf0373e93f27a7"
+    "sha256": "07da8e2dcaf6527e8d1267c2d01872fa91c0ca406bfd8930cd320fc68e63f477"
   },
   "source_inputs": {
     "site_timeline": {
@@ -91,7 +95,7 @@
     "station_timeline": {
       "n_rows": 4112,
       "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
-      "sha256": "2908bb060c8035477df379ba3c7e5a363f8ba9bb7bb2169144eeb0606a9815f7"
+      "sha256": "28452fe7369dc5845496f7048c39410f64b4ef5a234bdac3e7771562f69fad1e"
     }
   },
   "timeline_coverage": {

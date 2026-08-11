@@ -23,7 +23,7 @@
   "implementation_sources": {
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "c9f3d71765e46de7ebc1978c0a1f3ae4e8dedeb7d31f43efc319d677969afdcc"
+      "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -35,7 +35,7 @@
     },
     "station_fusion": {
       "path": "code/warning/operational_v2_fusion.py",
-      "sha256": "228d4c15f18aa69fbe0fb9211732edb67c76c3ed4fe075f0bfe9c9bc3764a495"
+      "sha256": "77d9c80908ac0ba5a2d5f374d63c418e8533fef6939d462e3603eb40b3cae872"
     }
   },
   "not_claimed": [

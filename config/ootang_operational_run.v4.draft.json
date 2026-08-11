@@ -4,7 +4,7 @@
   "status": "operational_draft",
   "case": "ootang",
   "formal_warning_output": false,
-  "run_scope": "mentor_confirmed_pointwise_acceleration_oootang_draft_not_formal",
+  "run_scope": "mentor_confirmed_pointwise_acceleration_ootang_draft_not_formal",
   "authorization_context": {
     "date": "2026-08-11",
     "decision": "Add strict pointwise acceleration as an independent five-level evidence family while preserving the v3 dual-axis spatial rule.",

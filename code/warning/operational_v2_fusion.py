@@ -361,7 +361,7 @@ def fuse_station_evidence_families_v4(
         family
         for family, level in (
             ("interval", interval),
-            ("kinematic", kinematic),
+            ("kinematic_velocity_tangent", kinematic),
             ("acceleration", acceleration),
         )
         if level > WarningLevel.GREEN
@@ -398,7 +398,7 @@ def fuse_station_evidence_families_v4(
             family
             for family, level in (
                 ("interval", interval),
-                ("kinematic", kinematic),
+                ("kinematic_velocity_tangent", kinematic),
                 ("acceleration", acceleration),
             )
             if level == candidate

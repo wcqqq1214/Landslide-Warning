@@ -174,12 +174,15 @@ def compute_point_kinematics(dates, displacement):
 
     acceleration_status = np.full(n_rows, "warmup", dtype=object)
     for index in range(n_rows):
-        if index < 2:
+        if time_status.iloc[index] in {"invalid_date", "nonpositive_dt"}:
+            # Preserve a real timestamp failure even during the first two
+            # three-point warm-up rows; downstream code must not confuse an
+            # invalid interval with an intentional warm-up.
+            acceleration_status[index] = time_status.iloc[index]
+        elif index < 2:
             acceleration_status[index] = "warmup"
         elif acceleration_valid.iloc[index]:
             acceleration_status[index] = "valid"
-        elif time_status.iloc[index] in {"invalid_date", "nonpositive_dt"}:
-            acceleration_status[index] = time_status.iloc[index]
         elif not velocity_valid.iloc[index]:
             acceleration_status[index] = "velocity_invalid"
         else:

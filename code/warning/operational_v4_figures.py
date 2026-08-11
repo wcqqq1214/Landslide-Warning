@@ -248,7 +248,11 @@ def write_v4_station_combined_diagnostic(
             strip_ax.set_title("I interval · V velocity · A acceleration · T tangent · F fused", fontsize=7)
     axes[-1, 0].set_xlabel("result date index")
     axes[-1, 1].set_xlabel(f"{len(dates)} dates; acceleration is an independent v4 family")
-    fig.suptitle("Ootang v4 all-station diagnostic (observed-after-forecast; non-formal)", fontsize=9)
+    fig.suptitle(
+        "Ootang v4 all-station diagnostic · OBSERVED-AFTER-FORECAST · "
+        "NOT FORMAL · vajont_used=false",
+        fontsize=9,
+    )
     outputs = _export(fig, output_dir, "ootang_v4_all_station_combined_diagnostic")
     manifest_path = output_dir / "ootang_v4_all_station_combined_diagnostic_manifest.json"
     manifest = _common_manifest(
@@ -289,7 +293,11 @@ def write_v4_full_timeline(
     axes[2].set_xlabel("result date index")
     for ax in axes:
         ax.grid(axis="y", color="#dddddd", linewidth=0.3)
-    fig.suptitle("Ootang v4 complete warning-state timeline (non-formal; site and local axes)", fontsize=9)
+    fig.suptitle(
+        "Ootang v4 complete warning-state timeline · OBSERVED-AFTER-FORECAST · "
+        "NOT FORMAL · vajont_used=false",
+        fontsize=9,
+    )
     outputs = _export(fig, output_dir, "ootang_v4_full_warning_timeline")
     manifest_path = output_dir / "ootang_v4_full_warning_timeline_manifest.json"
     return _write_manifest(
@@ -325,7 +333,11 @@ def write_v4_typical_days(
         ax.set_title(date, fontsize=6, rotation=45, ha="left")
         ax.set_xticks(range(len(STRIP_LABELS)), STRIP_LABELS, fontsize=6)
         ax.set_yticks(range(len(STATIONS)), STATIONS if index == 0 else [], fontsize=5)
-    fig.suptitle("Ootang v4 representative dates: interval / velocity / acceleration / tangent / fused", fontsize=8)
+    fig.suptitle(
+        "Ootang v4 representative dates: interval / velocity / acceleration / "
+        "tangent / fused · OBSERVED-AFTER-FORECAST · NOT FORMAL · vajont_used=false",
+        fontsize=8,
+    )
     outputs = _export(fig, output_dir, "ootang_v4_typical_days")
     manifest_path = output_dir / "ootang_v4_typical_days_manifest.json"
     return _write_manifest(

@@ -2372,6 +2372,20 @@ def _manifest(
                 if is_v4
                 else {}
             ),
+            **(
+                {
+                    # The versioned v4 wrapper owns the import contract, while
+                    # the implementation remains in the shared fusion module.
+                    # Hash both files so the manifest covers the code that is
+                    # actually executed as well as the versioned entry point.
+                    "station_fusion_implementation": ROOT
+                    / "code"
+                    / "warning"
+                    / "operational_v2_fusion.py"
+                }
+                if is_v4
+                else {}
+            ),
         }
         if is_spatial
         else {}

@@ -33,17 +33,17 @@
   },
   "core_run_manifest": {
     "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-    "sha256": "66042abb953ce1a2cb08318a090ae74c89e9e3d13448f13cd5dda3fb0a211d69"
+    "sha256": "b76e58751a33ba93a2647069f8483b825377546a86717af5391a1ba67e35b5c7"
   },
   "formal_warning_output": false,
   "implementation_sources": {
     "acceleration_kinematics": {
       "path": "code/features/kinematics.py",
-      "sha256": "804fc678d69769c21b6d22f032fc5a4673c7952d4632889d285f9f352b22b0a1"
+      "sha256": "b975b7430e1ef1413fa28abcb7005920d175f5e5eeb0bb5940fe8a7cdb485dc7"
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "c9f3d71765e46de7ebc1978c0a1f3ae4e8dedeb7d31f43efc319d677969afdcc"
+      "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
     },
     "site_fusion": {
       "path": "code/warning/operational_v3_fusion.py",
@@ -56,26 +56,30 @@
     "station_fusion": {
       "path": "code/warning/operational_v4_fusion.py",
       "sha256": "51a87e1f692c69658de5c3c613406ac4f51cd859c159f73c865efe0baa4d81b1"
+    },
+    "station_fusion_implementation": {
+      "path": "code/warning/operational_v2_fusion.py",
+      "sha256": "77d9c80908ac0ba5a2d5f374d63c418e8533fef6939d462e3603eb40b3cae872"
     }
   },
   "outputs": {
     "pdf": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.pdf",
-      "sha256": "93156b4f0f4191f0f68fbbed1a40e0a16118257a9bcc61a6b9e04cee6a946fd9"
+      "sha256": "b905faaf8e4ccb14ce04e4a1099303126b2487d200982988e989ccad72dd622c"
     },
     "png": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.png",
-      "sha256": "eab881eb618e1b089e2ee3c964af536a19cf3007965c700750f6e6276ec6d052"
+      "sha256": "5145b75e102b7357bca45c367cba30016e7de82e72e3abf50dedce0c12b6c50a"
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.svg",
-      "sha256": "675992f752b2cdfa5b315e9d7612606691c91e3dae8515ab07d8402112e76852"
+      "sha256": "6542e03773923a6af676b8aa3d4a68dca8c72647081a9e8a2cf486f311928f8c"
     }
   },
   "profile": {
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
-    "sha256": "22cfbd61b748b6111d5769023f64a18d198256d7af5d1ed26fdf0373e93f27a7"
+    "sha256": "07da8e2dcaf6527e8d1267c2d01872fa91c0ca406bfd8930cd320fc68e63f477"
   },
   "selected_dates": [
     "2019-06-30",
@@ -94,7 +98,7 @@
     "station_timeline": {
       "n_rows": 4112,
       "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
-      "sha256": "2908bb060c8035477df379ba3c7e5a363f8ba9bb7bb2169144eeb0606a9815f7"
+      "sha256": "28452fe7369dc5845496f7048c39410f64b4ef5a234bdac3e7771562f69fad1e"
     }
   },
   "strip_order": [
