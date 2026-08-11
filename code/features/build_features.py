@@ -76,6 +76,7 @@ def build_features(df, reference_stages=None, *, include_kinematics=False):
         out[f"{station}_disp"] = station_kinematics["displacement"]
         out[f"{station}_v"] = station_kinematics["velocity"]
         out[f"{station}_delta_v"] = station_kinematics["delta_v"]
+        out[f"{station}_a"] = station_kinematics["acceleration"]
         for suffix in (
             "_alpha_raw",
             "_alpha_smooth",
@@ -122,9 +123,10 @@ def main():
     print(f"[features] 列({len(out.columns)}): {list(out.columns)}")
     print(f"[features] NaN 总数: {int(out.isna().sum().sum())}")
     print(
-        "[features] 运动学有效速度/ΔV: "
+        "[features] 运动学有效速度/ΔV/加速度: "
         f"{int(summary['n_valid_velocity'].sum())}/"
-        f"{int(summary['n_valid_delta_v'].sum())}"
+        f"{int(summary['n_valid_delta_v'].sum())}/"
+        f"{int(summary['n_valid_acceleration'].sum())}"
     )
     alpha_cols = [c for c in out.columns if c.endswith("_alpha")]
     amin, amax = out[alpha_cols].min().min(), out[alpha_cols].max().max()

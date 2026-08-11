@@ -38,12 +38,19 @@ class PointKinematicsTests(unittest.TestCase):
         self.assertTrue(np.isnan(frame.loc[0, "delta_v"]))
         self.assertTrue(np.isnan(frame.loc[1, "delta_v"]))
         self.assertEqual(frame.loc[2, "delta_v"], 0.0)
+        self.assertTrue(np.isnan(frame.loc[0, "acceleration"]))
+        self.assertTrue(np.isnan(frame.loc[1, "acceleration"]))
+        self.assertEqual(frame.loc[2, "acceleration"], 0.0)
         self.assertEqual(
             frame["velocity_status"].tolist(),
             ["warmup", "valid", "valid"],
         )
         self.assertEqual(
             frame["delta_v_status"].tolist(),
+            ["warmup", "warmup", "valid"],
+        )
+        self.assertEqual(
+            frame["acceleration_status"].tolist(),
             ["warmup", "warmup", "valid"],
         )
 
@@ -81,6 +88,7 @@ class PointKinematicsTests(unittest.TestCase):
         )
         self.assertEqual(frame.loc[4, "velocity"], 1.0)
         self.assertTrue(np.isnan(frame.loc[4, "delta_v"]))
+        self.assertTrue(np.isnan(frame.loc[4, "acceleration"]))
 
 
 class LongKinematicsTests(unittest.TestCase):
@@ -114,6 +122,8 @@ class LongKinematicsTests(unittest.TestCase):
                 "velocity_status",
                 "delta_v",
                 "delta_v_status",
+                "acceleration",
+                "acceleration_status",
             ],
         )
         self.assertEqual(set(long_frame["station"]), {"A", "B"})
@@ -122,12 +132,17 @@ class LongKinematicsTests(unittest.TestCase):
         self.assertEqual(summary.loc["A", "n_observations"], 3)
         self.assertEqual(summary.loc["A", "n_valid_velocity"], 2)
         self.assertEqual(summary.loc["A", "n_valid_delta_v"], 1)
+        self.assertEqual(summary.loc["A", "n_valid_acceleration"], 1)
         self.assertEqual(
             summary.loc["A", "first_valid_velocity_date"].strftime("%Y-%m-%d"),
             "2020-01-03",
         )
         self.assertEqual(
             summary.loc["A", "first_valid_delta_v_date"].strftime("%Y-%m-%d"),
+            "2020-01-04",
+        )
+        self.assertEqual(
+            summary.loc["A", "first_valid_acceleration_date"].strftime("%Y-%m-%d"),
             "2020-01-04",
         )
 

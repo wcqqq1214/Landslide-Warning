@@ -5,6 +5,7 @@ conflated in the pipeline:
 
 ``velocity_i = (U_i - U_(i-1)) / (t_i - t_(i-1))``
 ``delta_v_i = velocity_i - velocity_(i-1)``
+``acceleration_i = (velocity_i - velocity_(i-1)) / (t_i - t_(i-1))``
 
 ``delta_v`` is a velocity increment (mm/day), not an acceleration.  Missing
 observations and unusable timestamps are never imputed; they are represented
@@ -32,6 +33,8 @@ KINEMATICS_COLUMNS = (
     "velocity_status",
     "delta_v",
     "delta_v_status",
+    "acceleration",
+    "acceleration_status",
 )
 
 SUMMARY_COLUMNS = (
@@ -42,11 +45,13 @@ SUMMARY_COLUMNS = (
     "last_observation_date",
     "first_valid_velocity_date",
     "first_valid_delta_v_date",
+    "first_valid_acceleration_date",
     "n_nonfinite_displacement",
     "n_invalid_date",
     "n_nonpositive_dt",
     "n_valid_velocity",
     "n_valid_delta_v",
+    "n_valid_acceleration",
 )
 
 
@@ -156,6 +161,35 @@ def compute_point_kinematics(dates, displacement):
         dtype="object",
     )
 
+    # Strict pointwise acceleration: use the two adjacent velocities and the
+    # current observation's real time gap.  The first two rows are a genuine
+    # three-point warm-up; no smoothing or interpolation is applied.  The raw
+    # delta_v remains available independently for audit purposes.
+    acceleration_valid = delta_v_valid & time_status.eq("valid")
+    acceleration = pd.Series(np.nan, index=dates.index, dtype=float)
+    acceleration.loc[acceleration_valid] = (
+        velocity.loc[acceleration_valid]
+        - velocity.shift(1).loc[acceleration_valid]
+    ) / dt_days.loc[acceleration_valid]
+
+    acceleration_status = np.full(n_rows, "warmup", dtype=object)
+    for index in range(n_rows):
+        if index < 2:
+            acceleration_status[index] = "warmup"
+        elif acceleration_valid.iloc[index]:
+            acceleration_status[index] = "valid"
+        elif time_status.iloc[index] in {"invalid_date", "nonpositive_dt"}:
+            acceleration_status[index] = time_status.iloc[index]
+        elif not velocity_valid.iloc[index]:
+            acceleration_status[index] = "velocity_invalid"
+        else:
+            acceleration_status[index] = "previous_velocity_invalid"
+    acceleration_status = pd.Series(
+        acceleration_status,
+        index=dates.index,
+        dtype="object",
+    )
+
     return pd.DataFrame(
         {
             "date": dates,
@@ -167,6 +201,8 @@ def compute_point_kinematics(dates, displacement):
             "velocity_status": velocity_status,
             "delta_v": delta_v,
             "delta_v_status": delta_v_status,
+            "acceleration": acceleration,
+            "acceleration_status": acceleration_status,
         }
     )
 
@@ -262,6 +298,10 @@ def summarize_kinematics(long_frame):
                     group,
                     "delta_v_status",
                 ),
+                "first_valid_acceleration_date": _first_valid_date(
+                    group,
+                    "acceleration_status",
+                ),
                 "n_nonfinite_displacement": int(
                     (~group["displacement_valid"].astype(bool)).sum()
                 ),
@@ -274,6 +314,9 @@ def summarize_kinematics(long_frame):
                 ),
                 "n_valid_delta_v": int(
                     group["delta_v_status"].eq("valid").sum()
+                ),
+                "n_valid_acceleration": int(
+                    group["acceleration_status"].eq("valid").sum()
                 ),
             }
         )
