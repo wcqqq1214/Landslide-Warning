@@ -45,6 +45,7 @@ from warning.operational_v2_fusion import (
     StationEvidenceResult,
     fuse_site_spatial_blocks,
     fuse_station_evidence_families,
+    fuse_station_evidence_families_v4,
 )
 from warning.operational_v3_fusion import (
     SpatialSiteFusionV3Result,
@@ -69,7 +70,9 @@ DEFAULT_FORECAST_MANIFEST_PATH = (
 DEFAULT_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft"
 DEFAULT_V2_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v2"
 DEFAULT_V3_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v3"
+DEFAULT_V4_OUTPUT_DIR = ROOT / "figures" / "warning_operational_draft_v4"
 DEFAULT_EVIDENCE_DIR = ROOT / "figures" / "warning_draft"
+DEFAULT_V4_EVIDENCE_DIR = ROOT / "figures" / "warning_draft_v4"
 STATION_TIMELINE_FILENAME = "ootang_operational_station_timeline.csv"
 SITE_TIMELINE_FILENAME = "ootang_operational_site_timeline.csv"
 THRESHOLDS_FILENAME = "ootang_operational_thresholds.csv"
@@ -87,6 +90,8 @@ _V2_SITE_FUSION = "warning.operational_v2_fusion.fuse_site_spatial_blocks"
 _V2_PROFILE_ID = "ootang-operational-spatial-v2"
 _V3_SITE_FUSION = "warning.operational_v3_fusion.fuse_site_spatial_blocks_v3"
 _V3_PROFILE_ID = "ootang-operational-spatial-v3"
+_V4_STATION_FUSION = "warning.operational_v4_fusion.fuse_station_evidence_families_v4"
+_V4_PROFILE_ID = "ootang-operational-spatial-v4"
 _REVIEWED_SPATIAL_SOURCE_SHA256 = (
     "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df"
 )
@@ -109,6 +114,10 @@ _REQUIRED_KINEMATICS_COLUMNS = (
     "velocity_status",
     "delta_v",
     "delta_v_status",
+)
+_REQUIRED_ACCELERATION_COLUMNS = (
+    "acceleration",
+    "acceleration_status",
 )
 _REQUIRED_CANDIDATE_COLUMNS = (
     "protocol_id",
@@ -154,6 +163,8 @@ class _LoadedProfile:
     profile_path: Path
     base_protocol: dict[str, Any]
     base_protocol_path: Path
+    acceleration_protocol: dict[str, Any] | None = None
+    acceleration_protocol_path: Path | None = None
 
 
 def _sha256_file(path: Path) -> str:
@@ -242,12 +253,18 @@ def _require_boundary_spec(
         raise OperationalRunProfileError(f"{name} has unsupported boundary kind: {kind}.")
     if kind == "v0_plus_sigma":
         _require_finite_number(value.get("sigma_multiplier"), name=f"{name}.sigma_multiplier")
+    elif kind == "a0_plus_sigma":
+        _require_finite_number(value.get("sigma_multiplier"), name=f"{name}.sigma_multiplier")
     elif kind == "v0_multiple":
         multiple = _require_finite_number(value.get("multiple"), name=f"{name}.multiple")
         if multiple <= 0:
             raise OperationalRunProfileError(f"{name}.multiple must be positive.")
     elif kind == "absolute_degrees":
         _require_finite_number(value.get("value"), name=f"{name}.value")
+    elif kind == "a0_multiple":
+        multiple = _require_finite_number(value.get("multiple"), name=f"{name}.multiple")
+        if multiple <= 0:
+            raise OperationalRunProfileError(f"{name}.multiple must be positive.")
 
 
 def _require_range_mapping(
@@ -512,11 +529,52 @@ def _require_v2_fusion_profile(
         )
 
 
+def _require_v4_station_fusion_profile(station_fusion: dict[str, Any]) -> None:
+    """Validate the v4 four-indicator station-fusion contract."""
+
+    if station_fusion.get("implementation") != _V4_STATION_FUSION:
+        raise OperationalRunProfileError(
+            "v4 profile must name the versioned acceleration-aware station fusion."
+        )
+    if station_fusion.get("required_input_policy") != "all_four_inputs_must_be_valid":
+        raise OperationalRunProfileError(
+            "v4 station fusion must require interval, velocity, acceleration, "
+            "and tangent-angle inputs."
+        )
+    if station_fusion.get("kinematic_family") != {
+        "members": ["velocity", "tangent_angle"],
+        "combine": "max_level_one_evidence_family",
+        "independence_policy": "not_independent_not_two_votes",
+    }:
+        raise OperationalRunProfileError(
+            "v4 must keep velocity/tangent as one kinematic family."
+        )
+    if station_fusion.get("acceleration_family") != {
+        "members": ["acceleration"],
+        "combine": "ordinal_level",
+        "independence_policy": "independent_evidence_family",
+    }:
+        raise OperationalRunProfileError(
+            "v4 must expose acceleration as an independent evidence family."
+        )
+    if station_fusion.get("delta_v_role") != "raw_audit_only_no_ordinal_vote":
+        raise OperationalRunProfileError(
+            "v4 must retain delta_v as an audit field without ordinal voting."
+        )
+
+
 def _require_v3_fusion_profile(
     station_fusion: dict[str, Any],
     site_fusion: dict[str, Any],
 ) -> None:
-    _require_evidence_family_station_fusion(station_fusion)
+    if station_fusion.get("implementation") == _V2_STATION_FUSION:
+        _require_evidence_family_station_fusion(station_fusion)
+    elif station_fusion.get("implementation") == _V4_STATION_FUSION:
+        _require_v4_station_fusion_profile(station_fusion)
+    else:
+        raise OperationalRunProfileError(
+            "v3/v4 spatial fusion must declare a supported station fusion."
+        )
     if site_fusion.get("implementation") != _V3_SITE_FUSION:
         raise OperationalRunProfileError(
             "Operational profile must name the v3 dual-axis spatial site fusion."
@@ -616,6 +674,12 @@ def _require_profile_fields(profile: dict[str, Any]) -> None:
         raise OperationalRunProfileError(
             "Operational profile must explicitly prohibit formal warning output."
         )
+    if profile.get("profile_id") == _V4_PROFILE_ID:
+        extension = profile.get("acceleration_protocol_extension")
+        if not isinstance(extension, dict):
+            raise OperationalRunProfileError(
+                "v4 profile must lock an acceleration protocol extension."
+            )
     if tuple(profile["ootang_stations"]) != OOTANG_STATIONS:
         raise OperationalRunProfileError(
             "Operational profile station order must match the eight Ootang stations."
@@ -729,6 +793,33 @@ def _require_profile_fields(profile: dict[str, Any]) -> None:
             "Operational tangent-angle required dt_days must be positive."
         )
 
+    acceleration = profile.get("acceleration")
+    if isinstance(acceleration, dict):
+        if acceleration.get("formula") != {
+            "kind": "pointwise_velocity_difference_over_current_dt",
+            "unit": "mm_per_day_squared",
+        }:
+            raise OperationalRunProfileError(
+                "Acceleration formula must use adjacent velocities and the current dt."
+            )
+        baseline = acceleration.get("baseline")
+        if not isinstance(baseline, dict) or baseline.get("source") != (
+            "selected_stable_segment_fit_rows_only"
+        ):
+            raise OperationalRunProfileError(
+                "Acceleration baseline must use the selected fit-only stable segment."
+            )
+        if baseline.get("a0_formula") != "max(1.5*A, A+2*sigma_a)":
+            raise OperationalRunProfileError(
+                "Acceleration baseline must declare the approved A0 formula."
+            )
+        _require_range_mapping(
+            acceleration.get("mapping"),
+            name="acceleration.mapping",
+            labels=_LEVEL_LABELS,
+            allowed_kinds={"a0_plus_sigma", "a0_multiple"},
+        )
+
     station_fusion = profile["station_fusion"]
     site_fusion = profile["site_fusion"]
     if not isinstance(station_fusion, dict) or not isinstance(site_fusion, dict):
@@ -746,6 +837,15 @@ def _require_profile_fields(profile: dict[str, Any]) -> None:
         station_fusion.get("implementation") == _V2_STATION_FUSION
         and site_fusion.get("implementation") == _V3_SITE_FUSION
     ):
+        _require_v3_fusion_profile(station_fusion, site_fusion)
+    elif (
+        station_fusion.get("implementation") == _V4_STATION_FUSION
+        and site_fusion.get("implementation") == _V3_SITE_FUSION
+    ):
+        if not isinstance(acceleration, dict):
+            raise OperationalRunProfileError(
+                "v4 station fusion requires an acceleration configuration."
+            )
         _require_v3_fusion_profile(station_fusion, site_fusion)
     elif station_fusion.get("implementation") == _V2_STATION_FUSION:
         raise OperationalRunProfileError(
@@ -772,7 +872,12 @@ def _load_operational_profile(path: str | Path) -> _LoadedProfile:
         expected_profile_id = (
             _V2_PROFILE_ID
             if site_implementation == _V2_SITE_FUSION
-            else _V3_PROFILE_ID
+            else (
+                _V4_PROFILE_ID
+                if profile.get("station_fusion", {}).get("implementation")
+                == _V4_STATION_FUSION
+                else _V3_PROFILE_ID
+            )
         )
         if profile["profile_id"] != expected_profile_id:
             raise OperationalRunProfileError(
@@ -814,11 +919,33 @@ def _load_operational_profile(path: str | Path) -> _LoadedProfile:
         raise OperationalRunProfileError(
             "Base draft protocol unresolved items do not match the operational profile."
         )
+    extension_protocol = None
+    extension_path = None
+    if profile.get("profile_id") == _V4_PROFILE_ID:
+        extension = profile["acceleration_protocol_extension"]
+        if not isinstance(extension.get("path"), str):
+            raise OperationalRunProfileError(
+                "v4 acceleration protocol extension path must be a string."
+            )
+        extension_path = (profile_path.parent / extension["path"]).resolve()
+        extension_protocol = load_protocol(extension_path)
+        for field in ("expected_protocol_id", "expected_protocol_version"):
+            if extension_protocol.get(field.removeprefix("expected_")) != extension.get(field):
+                raise OperationalRunProfileError(
+                    f"v4 acceleration protocol extension {field} does not match."
+                )
+        expected_extension_hash = extension.get("expected_protocol_content_sha256")
+        if protocol_content_sha256(extension_protocol) != expected_extension_hash:
+            raise OperationalRunProfileError(
+                "v4 acceleration protocol extension fingerprint does not match."
+            )
     return _LoadedProfile(
         profile=profile,
         profile_path=profile_path,
         base_protocol=base_protocol,
         base_protocol_path=base_path,
+        acceleration_protocol=extension_protocol,
+        acceleration_protocol_path=extension_path,
     )
 
 
@@ -829,6 +956,8 @@ def _default_output_dir_for_profile(loaded: _LoadedProfile) -> Path:
     if site_implementation == _V2_SITE_FUSION:
         return DEFAULT_V2_OUTPUT_DIR
     if site_implementation == _V3_SITE_FUSION:
+        if loaded.profile.get("profile_id") == _V4_PROFILE_ID:
+            return DEFAULT_V4_OUTPUT_DIR
         return DEFAULT_V3_OUTPUT_DIR
     return DEFAULT_OUTPUT_DIR
 
@@ -845,6 +974,7 @@ def _resolve_operational_output_dir(
         "v1": DEFAULT_OUTPUT_DIR.resolve(),
         "v2": DEFAULT_V2_OUTPUT_DIR.resolve(),
         "v3": DEFAULT_V3_OUTPUT_DIR.resolve(),
+        "v4": DEFAULT_V4_OUTPUT_DIR.resolve(),
     }
     generation = next(
         name for name, directory in reserved.items() if directory == expected
@@ -956,19 +1086,32 @@ def _load_predictions(path: Path, *, result_splits: tuple[str, ...]) -> pd.DataF
     return result.sort_values(["date", "station"], kind="stable").reset_index(drop=True)
 
 
-def _load_kinematics(path: Path) -> pd.DataFrame:
+def _load_kinematics(
+    path: Path,
+    *,
+    require_acceleration: bool = False,
+) -> pd.DataFrame:
+    columns = _REQUIRED_KINEMATICS_COLUMNS + (
+        _REQUIRED_ACCELERATION_COLUMNS if require_acceleration else ()
+    )
     kinematics = _read_csv_columns(
         path,
-        _REQUIRED_KINEMATICS_COLUMNS,
+        columns,
         source_name="Kinematics input",
     )
     kinematics = _normalise_coordinates(kinematics, source_name="Kinematics input")
     case = kinematics["case"].astype("string").str.strip()
     if not case.eq("ootang").all():
         raise OperationalRunInputError("Kinematics input must contain only case=ootang.")
-    for column in ("dt_days", "velocity", "delta_v"):
+    numeric_columns = ("dt_days", "velocity", "delta_v")
+    if require_acceleration:
+        numeric_columns += ("acceleration",)
+    for column in numeric_columns:
         kinematics[column] = pd.to_numeric(kinematics[column], errors="coerce")
-    for column in ("time_status", "velocity_status", "delta_v_status"):
+    status_columns = ("time_status", "velocity_status", "delta_v_status")
+    if require_acceleration:
+        status_columns += ("acceleration_status",)
+    for column in status_columns:
         kinematics[column] = kinematics[column].astype("string").str.strip()
     return kinematics.sort_values(["date", "station"], kind="stable").reset_index(
         drop=True
@@ -1056,6 +1199,10 @@ def _resolve_boundary(spec: dict[str, Any], *, values: dict[str, float]) -> floa
         )
     elif kind == "absolute_degrees":
         value = float(spec["value"])
+    elif kind == "a0_plus_sigma":
+        value = values["a0"] + float(spec["sigma_multiplier"]) * values["sigma_a"]
+    elif kind == "a0_multiple":
+        value = float(spec["multiple"]) * values["a0"]
     elif kind == "state_center_minus_tau":
         value = values["state_center"] - values["tau"]
     elif kind == "state_center_plus_tau":
@@ -1141,6 +1288,8 @@ def _derive_thresholds(
     scale = float(tolerance_spec["scale"])
     state_center = float(tolerance_spec["state_center"])
     tolerance_floor = float(tolerance_spec["minimum_absolute_tolerance"])
+    is_v4 = profile["station_fusion"].get("implementation") == _V4_STATION_FUSION
+    acceleration_profile = profile.get("acceleration") if is_v4 else None
     records: list[dict[str, Any]] = []
     for candidate in candidates.itertuples(index=False):
         segment = kinematics.loc[
@@ -1155,6 +1304,59 @@ def _derive_thresholds(
             raise OperationalRunInputError(
                 f"No valid fit-segment delta-V values for station {candidate.station}."
             )
+        acceleration_status = "not_applicable"
+        acceleration_stats: dict[str, Any] = {}
+        acceleration_bounds: dict[str, float] = {}
+        if is_v4:
+            acceleration_segment = kinematics.loc[
+                kinematics["station"].eq(candidate.station)
+                & kinematics["date"].ge(candidate.segment_start_date)
+                & kinematics["date"].le(candidate.segment_end_date)
+                & kinematics["acceleration_status"].eq("valid")
+            ].copy()
+            acceleration_values = pd.to_numeric(
+                acceleration_segment["acceleration"], errors="coerce"
+            )
+            acceleration_values = acceleration_values.loc[
+                np.isfinite(acceleration_values.to_numpy(dtype=float))
+            ]
+            if acceleration_values.empty:
+                acceleration_status = "failed_no_finite_fit_values"
+            else:
+                mean_a = float(acceleration_values.mean())
+                sigma_a = float(acceleration_values.std(ddof=1))
+                a0 = max(1.5 * mean_a, mean_a + 2.0 * sigma_a)
+                acceleration_stats = {
+                    "acceleration_fit_segment_n": int(len(acceleration_values)),
+                    "acceleration_fit_mean_mm_per_day_squared": mean_a,
+                    "acceleration_fit_sigma_ddof1_mm_per_day_squared": sigma_a,
+                    "acceleration_a0_mm_per_day_squared": a0,
+                }
+                if (
+                    not np.isfinite(mean_a)
+                    or not np.isfinite(sigma_a)
+                    or sigma_a < 0
+                    or not np.isfinite(a0)
+                    or a0 <= 0
+                ):
+                    acceleration_status = "failed_nonfinite_or_nonpositive_a0"
+                else:
+                    acceleration_status = "valid"
+                    values = {"a0": a0, "sigma_a": sigma_a}
+                    mapping = acceleration_profile["mapping"]
+                    for entry in mapping:
+                        for side in ("lower", "upper"):
+                            if side in entry:
+                                key = f"{entry['label']}_{side}"
+                                acceleration_bounds[key] = _resolve_boundary(
+                                    entry[side], values=values
+                                )
+                    _classify_configured_range(
+                        value=mean_a,
+                        mapping=mapping,
+                        boundary_values=values,
+                        mapping_name="acceleration.mapping",
+                    )
         median = float(delta_v.median())
         mad = float((delta_v - median).abs().median())
         tau = max(scale * mad, tolerance_floor)
@@ -1213,8 +1415,7 @@ def _derive_thresholds(
             boundary_values={"state_center": state_center, "tau": tau},
             mapping_name="delta_v.mapping",
         )
-        records.append(
-            {
+        record = {
                 "station": candidate.station,
                 "fit_segment_start_date": candidate.segment_start_date.strftime("%Y-%m-%d"),
                 "fit_segment_end_date": candidate.segment_end_date.strftime("%Y-%m-%d"),
@@ -1233,7 +1434,26 @@ def _derive_thresholds(
                 "velocity_baseline_source": profile["velocity_baseline"]["source"],
                 "delta_v_tolerance_method": tolerance_spec["method"],
             }
-        )
+        if is_v4:
+            record.update(
+                {
+                    "acceleration_formula": acceleration_profile["formula"]["kind"],
+                    "acceleration_unit": acceleration_profile["formula"]["unit"],
+                    "acceleration_baseline_source": acceleration_profile[
+                        "baseline"
+                    ]["source"],
+                    "acceleration_a0_formula": acceleration_profile["baseline"][
+                        "a0_formula"
+                    ],
+                    "acceleration_threshold_status": acceleration_status,
+                    **acceleration_stats,
+                    **{
+                        f"acceleration_{key}_mm_per_day_squared": value
+                        for key, value in acceleration_bounds.items()
+                    },
+                }
+            )
+        records.append(record)
     return pd.DataFrame(records).sort_values("station", kind="stable").reset_index(
         drop=True
     )
@@ -1292,6 +1512,45 @@ def _classify_velocity(
     reason = f"configured_{label}_range"
     result.update(_level_record(level, name="velocity"))
     result["velocity_reason"] = reason
+    return result
+
+
+def _classify_acceleration(
+    *,
+    acceleration: float,
+    status: str,
+    threshold_status: str,
+    threshold_row: Any,
+    mapping: list[dict[str, Any]],
+) -> dict[str, Any]:
+    result: dict[str, Any] = {
+        "acceleration_indicator_status": status,
+        "acceleration_level": pd.NA,
+        "acceleration_color": pd.NA,
+        "acceleration_reason": pd.NA,
+    }
+    if status != "valid":
+        result["acceleration_reason"] = f"source_{status}"
+        return result
+    if threshold_status != "valid":
+        result["acceleration_indicator_status"] = "invalid"
+        result["acceleration_reason"] = f"threshold_{threshold_status}"
+        return result
+    if not np.isfinite(acceleration):
+        result["acceleration_indicator_status"] = "invalid"
+        result["acceleration_reason"] = "nonfinite_acceleration"
+        return result
+    a0 = float(threshold_row.acceleration_a0_mm_per_day_squared)
+    sigma_a = float(threshold_row.acceleration_fit_sigma_ddof1_mm_per_day_squared)
+    label = _classify_configured_range(
+        value=acceleration,
+        mapping=mapping,
+        boundary_values={"a0": a0, "sigma_a": sigma_a},
+        mapping_name="acceleration.mapping",
+    )
+    level = WarningLevel[label.upper()]
+    result.update(_level_record(level, name="acceleration"))
+    result["acceleration_reason"] = f"configured_{label}_range"
     return result
 
 
@@ -1417,12 +1676,21 @@ def _build_station_timeline(
         )
 
     records: list[dict[str, Any]] = []
+    is_v4 = loaded.profile["station_fusion"].get("implementation") == _V4_STATION_FUSION
     for row in timeline.itertuples(index=False):
         velocity_status = _normalise_input_status(row.velocity_status)
         delta_v_status = _normalise_input_status(row.delta_v_status)
         interval_status = _normalise_input_status(row.interval_status)
         velocity_value = _as_float_or_nan(row.velocity)
         delta_v_value = _as_float_or_nan(row.delta_v)
+        acceleration_status = (
+            _normalise_input_status(row.acceleration_status)
+            if is_v4
+            else "not_applicable"
+        )
+        acceleration_value = (
+            _as_float_or_nan(row.acceleration) if is_v4 else float("nan")
+        )
         dt_days_value = _as_float_or_nan(row.dt_days)
         velocity_record = _classify_velocity(
             velocity=velocity_value,
@@ -1454,6 +1722,24 @@ def _build_station_timeline(
             state_center=float(row.delta_v_state_center_mm_per_day),
             mapping=loaded.profile["delta_v"]["mapping"],
         )
+        acceleration_record = (
+            _classify_acceleration(
+                acceleration=acceleration_value,
+                status=acceleration_status,
+                threshold_status=str(
+                    getattr(row, "acceleration_threshold_status", "not_applicable")
+                ),
+                threshold_row=row,
+                mapping=loaded.profile["acceleration"]["mapping"],
+            )
+            if is_v4
+            else {
+                "acceleration_indicator_status": "not_applicable",
+                "acceleration_level": pd.NA,
+                "acceleration_color": pd.NA,
+                "acceleration_reason": "v3_delta_v_only",
+            }
+        )
         fusion_inputs = {
             "interval_level": (
                 None if interval_status != "valid" else int(row.interval_level)
@@ -1473,25 +1759,59 @@ def _build_station_timeline(
                 if tangent_record["tangent_angle_indicator_status"] != "valid"
                 else int(tangent_record["tangent_angle_level"])
             ),
+            "acceleration_level": (
+                None
+                if not is_v4
+                or acceleration_record["acceleration_indicator_status"] != "valid"
+                else int(acceleration_record["acceleration_level"])
+            ),
             "input_statuses": {
                 "interval": interval_status,
                 "velocity": velocity_record["velocity_indicator_status"],
                 "delta_v": delta_v_record["delta_v_indicator_status"],
                 "tangent_angle": tangent_record["tangent_angle_indicator_status"],
+                **(
+                    {
+                        "acceleration": acceleration_record[
+                            "acceleration_indicator_status"
+                        ]
+                    }
+                    if is_v4
+                    else {}
+                ),
             },
         }
         if loaded.profile["station_fusion"]["implementation"] == _V1_STATION_FUSION:
+            fusion_inputs.pop("acceleration_level", None)
             fusion = fuse_station_indicators_with_minimum_support(
                 **fusion_inputs,
                 minimum_support=int(loaded.profile["station_fusion"]["minimum_support"]),
             )
+        elif is_v4:
+            fusion = fuse_station_evidence_families_v4(
+                **fusion_inputs,
+            )
         else:
+            fusion_inputs.pop("acceleration_level", None)
             fusion = fuse_station_evidence_families(**fusion_inputs)
         record = row._asdict()
         record.update(velocity_record)
         record.update(tangent_record)
         record.update(delta_v_record)
+        record.update(acceleration_record)
         record.update(fusion.to_record())
+        if not is_v4:
+            # Keep the v1-v3 CSV schema/numeric snapshot byte-for-byte stable.
+            # The shared kinematics table now carries raw acceleration columns,
+            # but acceleration is a v4-only ordinal family; v3 retains only its
+            # historical acceleration_status compatibility field.
+            for key in (
+                "acceleration_indicator_status",
+                "acceleration_level",
+                "acceleration_color",
+                "acceleration_reason",
+            ):
+                record.pop(key, None)
         record.update(
             {
                 "operational_profile_id": loaded.profile["profile_id"],
@@ -1584,9 +1904,22 @@ def _station_evidence_results(
         )
         acceleration = (
             None
-            if pd.isna(row.acceleration_status)
+            if not hasattr(row, "acceleration_status") or pd.isna(row.acceleration_status)
             else str(row.acceleration_status)
         )
+        acceleration_level = getattr(row, "acceleration_level", pd.NA)
+        if pd.isna(acceleration_level):
+            acceleration_level_value = None
+        else:
+            acceleration_level_value = _warning_level_or_none(acceleration_level)
+        acceleration_indicator_status = getattr(
+            row, "acceleration_indicator_status", None
+        )
+        if pd.isna(acceleration_indicator_status):
+            acceleration_indicator_status = None
+        acceleration_reason = getattr(row, "acceleration_reason", None)
+        if pd.isna(acceleration_reason):
+            acceleration_reason = None
         trend_component = (
             None if pd.isna(row.trend_component) else str(row.trend_component)
         )
@@ -1618,6 +1951,9 @@ def _station_evidence_results(
             confirmation_status=confirmation,
             reason=reason,
             input_statuses=_parse_serialized_input_statuses(row.input_statuses),
+            acceleration_level=acceleration_level_value,
+            acceleration_indicator_status=acceleration_indicator_status,
+            acceleration_reason=acceleration_reason,
         )
     return results
 
@@ -1998,17 +2334,20 @@ def _manifest(
     thresholds_hash_path: Path,
     station_timeline: pd.DataFrame,
     site_timeline: pd.DataFrame,
+    thresholds: pd.DataFrame,
 ) -> dict[str, Any]:
     base_protocol_hash = protocol_content_sha256(loaded.base_protocol)
     spatial_block_source = _spatial_block_source_manifest(loaded)
-    is_v3 = loaded.profile["site_fusion"]["implementation"] == _V3_SITE_FUSION
+    is_v3 = loaded.profile.get("profile_id") == _V3_PROFILE_ID
+    is_v4 = loaded.profile.get("profile_id") == _V4_PROFILE_ID
+    is_spatial = is_v3 or is_v4
     forecast_source = dict(forecast_manifest_source)
-    if is_v3 and isinstance(forecast_source.get("path"), str):
+    if is_spatial and isinstance(forecast_source.get("path"), str):
         forecast_source["path"] = _manifest_path(
             Path(forecast_source["path"]),
             repository_relative=True,
         )
-    if is_v3 and spatial_block_source is not None:
+    if is_spatial and spatial_block_source is not None:
         spatial_block_source = dict(spatial_block_source)
         spatial_block_source["path"] = _manifest_path(
             Path(spatial_block_source["path"]),
@@ -2017,11 +2356,24 @@ def _manifest(
     v3_implementation_sources = (
         {
             "runner": Path(__file__).resolve(),
-            "station_fusion": ROOT / "code" / "warning" / "operational_v2_fusion.py",
+            "station_fusion": ROOT
+            / "code"
+            / "warning"
+            / ("operational_v4_fusion.py" if is_v4 else "operational_v2_fusion.py"),
             "site_fusion": ROOT / "code" / "warning" / "operational_v3_fusion.py",
             "spatial_blocks": ROOT / "code" / "warning" / "spatial_blocks.py",
+            **(
+                {
+                    "acceleration_kinematics": ROOT
+                    / "code"
+                    / "features"
+                    / "kinematics.py"
+                }
+                if is_v4
+                else {}
+            ),
         }
-        if is_v3
+        if is_spatial
         else {}
     )
     return {
@@ -2038,7 +2390,7 @@ def _manifest(
             "status": loaded.profile["status"],
             "path": _manifest_path(
                 loaded.profile_path,
-                repository_relative=is_v3,
+                repository_relative=is_spatial,
             ),
             "content_sha256": _canonical_json_sha256(loaded.profile),
         },
@@ -2048,15 +2400,36 @@ def _manifest(
             "status": loaded.base_protocol["status"],
             "path": _manifest_path(
                 loaded.base_protocol_path,
-                repository_relative=is_v3,
+                repository_relative=is_spatial,
             ),
             "content_sha256": base_protocol_hash,
             "unresolved_item_ids": list(unresolved_item_ids(loaded.base_protocol)),
         },
         **(
             {
+                "acceleration_protocol_extension": {
+                    "id": loaded.acceleration_protocol["protocol_id"],
+                    "version": loaded.acceleration_protocol["protocol_version"],
+                    "status": loaded.acceleration_protocol["status"],
+                    "path": _manifest_path(
+                        loaded.acceleration_protocol_path,
+                        repository_relative=is_spatial,
+                    ),
+                    "content_sha256": protocol_content_sha256(
+                        loaded.acceleration_protocol
+                    ),
+                    "role": loaded.profile["acceleration_protocol_extension"]["role"],
+                }
+            }
+            if is_v4 and loaded.acceleration_protocol is not None
+            else {}
+        ),
+        **(
+            {
                 "site_output_contract": {
-                    "version": "v3_dual_axis_1",
+                    "version": "v4_dual_axis_acceleration_1"
+                    if is_v4
+                    else "v3_dual_axis_1",
                     "site_axis": "site_confirmed_level",
                     "local_axis": "local_max_candidate_level",
                     "localized_blue_policy": (
@@ -2074,7 +2447,7 @@ def _manifest(
                     for name, path in v3_implementation_sources.items()
                 },
             }
-            if is_v3
+            if is_spatial
             else {}
         ),
         "parameter_fit_splits": list(loaded.profile["parameter_fit_splits"]),
@@ -2083,14 +2456,14 @@ def _manifest(
             "kinematics": {
                 "path": _manifest_path(
                     kinematics_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(kinematics_path),
             },
             "predictions": {
                 "path": _manifest_path(
                     predictions_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(predictions_path),
             },
@@ -2098,7 +2471,7 @@ def _manifest(
             "draft_evidence_manifest": {
                 "path": _manifest_path(
                     evidence_manifest_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(evidence_manifest_path),
             },
@@ -2112,7 +2485,7 @@ def _manifest(
             "station_timeline": {
                 "path": _manifest_path(
                     station_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(station_hash_path),
                 "n_rows": len(station_timeline),
@@ -2120,7 +2493,7 @@ def _manifest(
             "site_timeline": {
                 "path": _manifest_path(
                     site_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(site_hash_path),
                 "n_rows": len(site_timeline),
@@ -2128,9 +2501,10 @@ def _manifest(
             "thresholds": {
                 "path": _manifest_path(
                     thresholds_path,
-                    repository_relative=is_v3,
+                    repository_relative=is_spatial,
                 ),
                 "sha256": _sha256_file(thresholds_hash_path),
+                "n_rows": len(thresholds),
             },
         },
         "result_status_counts": {
@@ -2146,6 +2520,30 @@ def _manifest(
                     dropna=False
                 ).items()
             },
+            **(
+                {
+                    "acceleration_level": {
+                        str(status): int(count)
+                        for status, count in station_timeline[
+                            "acceleration_level"
+                        ]
+                        .fillna("not_assessable")
+                        .value_counts(dropna=False)
+                        .items()
+                    },
+                    "acceleration_indicator_status": {
+                        str(status): int(count)
+                        for status, count in station_timeline[
+                            "acceleration_indicator_status"
+                        ]
+                        .fillna("not_assessable")
+                        .value_counts(dropna=False)
+                        .items()
+                    },
+                }
+                if is_v4
+                else {}
+            ),
             **(
                 {
                     "site_confirmed_color": {
@@ -2173,7 +2571,7 @@ def _manifest(
                         ].value_counts(dropna=False).items()
                     },
                 }
-                if is_v3
+                if is_spatial
                 else {}
             ),
         },
@@ -2198,6 +2596,7 @@ def write_ootang_operational_run(
     """
 
     loaded = _load_operational_profile(profile_path)
+    is_v4 = loaded.profile.get("profile_id") == _V4_PROFILE_ID
     kinematics_file = Path(kinematics_path).resolve()
     predictions_file = Path(predictions_path).resolve()
     forecast_manifest_file = Path(forecast_manifest_path).resolve()
@@ -2206,10 +2605,8 @@ def write_ootang_operational_run(
         predictions_file,
     )
     target_dir = _resolve_operational_output_dir(loaded, output_dir)
-    evidence_target = (
-        Path(evidence_dir).resolve()
-        if evidence_dir is not None
-        else DEFAULT_EVIDENCE_DIR
+    evidence_target = Path(evidence_dir).resolve() if evidence_dir is not None else (
+        DEFAULT_V4_EVIDENCE_DIR if is_v4 else DEFAULT_EVIDENCE_DIR
     )
     evidence = write_draft_warning_evidence_bundle(
         kinematics_path=kinematics_file,
@@ -2221,7 +2618,7 @@ def write_ootang_operational_run(
         predictions_file,
         result_splits=tuple(loaded.profile["result_splits"]),
     )
-    kinematics = _load_kinematics(kinematics_file)
+    kinematics = _load_kinematics(kinematics_file, require_acceleration=is_v4)
     candidates = _load_candidate_baselines(
         evidence_target / "stable_segment_candidates.csv",
         loaded=loaded,
@@ -2278,6 +2675,7 @@ def write_ootang_operational_run(
                     thresholds_hash_path=staged_thresholds_path,
                     station_timeline=station_timeline,
                     site_timeline=site_timeline,
+                    thresholds=thresholds,
                 ),
                 ensure_ascii=False,
                 indent=2,

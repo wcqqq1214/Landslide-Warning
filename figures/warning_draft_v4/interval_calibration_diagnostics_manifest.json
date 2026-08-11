@@ -1,0 +1,78 @@
+{
+  "artifact_kind": "ootang_interval_calibration_diagnostics",
+  "calibration_input": {
+    "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+    "sha256": "e2e3c6fd032b95d0d698b6c2c630950f4e44143c8b57c070dcf22558388afec9"
+  },
+  "diagnostic_status": "diagnostic_only_reference_mapping_quality",
+  "formal_warning_output": false,
+  "not_evaluated": [
+    "calibration_quality_pass_fail_thresholds",
+    "strict_horizon_ahead_warning_performance"
+  ],
+  "protocol": {
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "id": "ootang-five-level-rule-v1",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.3-draft"
+  },
+  "selection": {
+    "n_rows": 1816,
+    "split": "calibration",
+    "stations": [
+      "ATU1",
+      "ATU2",
+      "ATU3",
+      "ATU4",
+      "ATU5",
+      "MJ1",
+      "MJ3",
+      "MJ9"
+    ]
+  },
+  "source_predictions": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "selected_columns": [
+      "split",
+      "station",
+      "actual",
+      "p10",
+      "p50",
+      "p90"
+    ],
+    "selected_split": "calibration"
+  },
+  "summary": {
+    "columns": [
+      "protocol_id",
+      "protocol_version",
+      "protocol_status",
+      "protocol_content_sha256",
+      "diagnostic_status",
+      "source_split",
+      "calibration_input_sha256",
+      "station",
+      "n_rows",
+      "n_valid_quantile_rows",
+      "n_valid_observation_rows",
+      "n_nonfinite_input",
+      "n_quantile_order_invalid",
+      "coverage_80",
+      "mean_abs_midpoint_error",
+      "max_abs_midpoint_error",
+      "n_standardized_residuals",
+      "max_abs_z"
+    ],
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/interval_calibration_diagnostics.csv",
+    "sha256": "d256ec1b0c318717e1c207249ce60a37ae5e9d885059b90dca1588e56e001558"
+  }
+}

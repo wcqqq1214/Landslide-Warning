@@ -1,0 +1,158 @@
+{
+  "artifact_kind": "ootang_fit_bai_perron_mvif_initial_slope_candidates",
+  "candidate_status": "draft_candidate_not_formal",
+  "fit_kinematics_input": {
+    "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+    "sha256": "583b276e15c492d24b00a3db8693d76817741ec0b59fb6dbe2fef763d72160f1"
+  },
+  "fit_prediction_input": {
+    "canonicalization": "csv_utf8_lf_na_<NA>_float_%.17g",
+    "sha256": "7de7e222645707950c8c8b92bb0cebaedec83e3b390fbf2796ce32e670c4f2c0"
+  },
+  "formal_warning_output": false,
+  "not_evaluated": [
+    "break_uncertainty",
+    "sigma_convention",
+    "formal_initial_stable_slope_rule_acceptance",
+    "formal_v0_adoption",
+    "five_level_velocity_mapping",
+    "v0_blue_tolerance",
+    "tangent_angle",
+    "per_station_fusion",
+    "landslide_body_fusion",
+    "formal_warning_output"
+  ],
+  "protocol": {
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "id": "ootang-five-level-rule-v1",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.3-draft"
+  },
+  "selection": {
+    "candidate_method": {
+      "candidate_statistics": {
+        "V": "ordinary_least_squares_slope_of_selected_initial_MVIF_trend_segment_mm_per_day",
+        "candidate_v0": "not_emitted_until_sigma_convention_and_formal_segment_rule_are_frozen",
+        "sigma": "not_evaluated_until_a_source_or_mentor_approved_operational_convention_is_frozen"
+      },
+      "failure_policy": "emit_explicit_failed_candidate_and_do_not_emit_V_sigma_V0_velocity_level_tangent_angle_fusion_or_warning_output_when_strict_MVIF_fitting_or_Bai_Perron_initial_segment_acceptance_fails",
+      "formula": "s(t)=A*ln((tf-B*t)/(tf-t))+C",
+      "id": "strict_mvif_bai_perron_initial_slope",
+      "input": "per_station_cumulative_displacement_rows_with_displacement_valid_then_strictly_accepted_fitted_MVIF_trend_displacement",
+      "objective": "BIC_selected_multiple_structural_change_piecewise_OLS_on_the_strictly_accepted_MVIF_trend_to_audit_a_candidate_initial_slope",
+      "role": "project_adaptation_for_automatic_MVIF_initial_stable_slope_candidate_not_formal_Word_V0_implementation",
+      "segmentation": {
+        "algorithm": "Bai_Perron_multiple_structural_change_piecewise_unconstrained_OLS",
+        "bic_formula": "n*ln(max(RSS/n,eps*max(1,var(trend_displacement))))+2*K*ln(n)",
+        "continuity_constraint": "none",
+        "first_segment_acceptance": "require_positive_initial_slope_and_immediately_following_slope_greater_than_initial_slope",
+        "input": "strictly_accepted_fitted_MVIF_trend_displacement",
+        "max_segments": 6,
+        "minimum_segment_observations": 30,
+        "regression_parameters_per_segment": 2,
+        "segment_count_selection": "bic",
+        "selection_rule": "bic_selected_bai_perron_piecewise_ols_first_accelerating_segment",
+        "source_boundary": "Bai-Perron supplies the structural-change computation and model-selection basis; the specified Word thesis does not prescribe this automatic selection rule, so it remains a project draft adaptation."
+      },
+      "selection_rule": "bic_selected_bai_perron_piecewise_ols_first_accelerating_segment",
+      "strict_mvif_precondition": "strict_accepted_finite_tf_MVIF_fit_required_before_segmentation",
+      "time_origin": "first_fit_displacement_date_numerical_coordinate_only",
+      "word_thesis_v0_input": "MVIF_trend_displacement_initial_stable_slope",
+      "word_thesis_v0_input_status": "strict_MVIF_gated_draft_V_candidate_only_no_sigma_or_V0"
+    },
+    "fit_end_dates": {
+      "ATU1": "2019-02-02",
+      "ATU2": "2019-02-02",
+      "ATU3": "2019-02-02",
+      "ATU4": "2019-02-02",
+      "ATU5": "2019-02-02",
+      "MJ1": "2019-02-02",
+      "MJ3": "2019-02-02",
+      "MJ9": "2019-02-02"
+    },
+    "n_stations": 8,
+    "source_boundary": {
+      "bai_perron": "project_adaptation_for_automatic_fit_only_candidate_selection_not_a_source_prescribed_V0_or_warning_rule",
+      "specified_word_thesis": "uses_MVIF_trend_initial_stable_slope_but_does_not_specify_an_automatic_segment_selection_algorithm"
+    },
+    "split": "fit"
+  },
+  "source_kinematics": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/data/ootang_kinematics_long.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "displacement",
+      "displacement_valid"
+    ],
+    "temporal_scope": "all_station_history_through_fit_cutoff",
+    "time_filter": "station_date<=station_fit_end_date",
+    "vajont_used": false
+  },
+  "source_predictions": {
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/convlstm/forecast_predictions.csv",
+    "selected_columns": [
+      "date",
+      "station",
+      "split"
+    ],
+    "selected_split": "fit",
+    "test_split_used": false
+  },
+  "summary": {
+    "columns": [
+      "protocol_id",
+      "protocol_version",
+      "protocol_status",
+      "protocol_content_sha256",
+      "candidate_status",
+      "candidate_method_id",
+      "candidate_method_role",
+      "word_thesis_v0_input",
+      "word_thesis_v0_input_status",
+      "mvif_formula",
+      "selection_rule",
+      "source_split",
+      "kinematics_temporal_scope",
+      "fit_prediction_input_sha256",
+      "fit_kinematics_input_sha256",
+      "station",
+      "fit_status",
+      "failure_reason",
+      "fit_start_date",
+      "fit_end_date",
+      "n_fit_rows",
+      "min_segment_observations",
+      "max_segments_considered",
+      "segment_count_selection",
+      "regression_parameters_per_segment",
+      "selected_segment_count",
+      "selected_bic",
+      "one_segment_bic",
+      "initial_segment_start_date",
+      "initial_segment_end_date",
+      "initial_segment_n_observations",
+      "initial_segment_covers_full_fit",
+      "first_break_date",
+      "following_segment_n_observations",
+      "following_segment_v_mm_per_day",
+      "candidate_v_mm_per_day",
+      "mvif_fit_status",
+      "mvif_fit_failure_reason",
+      "mvif_trend_evaluation_failure_reason",
+      "mvif_fit_objective_cost",
+      "mvif_fit_tf_elapsed_days"
+    ],
+    "path": "/Users/wcqqq1214/Project/Landslide-Warning/figures/warning_draft_v4/bai_perron_mvif_initial_slope_candidates.csv",
+    "sha256": "f736b8a4f7e7075c419f75747752452fa17603453ae933543aab51d2ba0d307a"
+  }
+}

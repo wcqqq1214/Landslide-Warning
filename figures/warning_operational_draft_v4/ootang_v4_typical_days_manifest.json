@@ -1,0 +1,108 @@
+{
+  "acceleration_protocol_extension": {
+    "content_sha256": "c0ea9327d4d79456fb93ed93a61deb96975f5f3082f50be26f264e95432fd49f",
+    "id": "ootang-four-indicator-rule-v2",
+    "path": "config/ootang_warning_protocol.v2.draft.json",
+    "role": "v4_acceleration_method_and_threshold_decision_extension_over_v1_evidence_protocol",
+    "status": "draft",
+    "version": "2.0-draft"
+  },
+  "artifact_kind": "ootang_operational_v4_typical_days",
+  "artifact_status": "operational_draft_not_formal",
+  "base_draft_protocol": {
+    "content_sha256": "b7a252175d2ba5789572c0bc8a073802f079fbe22cdc1c523cec21ac0dda450b",
+    "id": "ootang-five-level-rule-v1",
+    "path": "config/ootang_warning_protocol.v1.draft.json",
+    "status": "draft",
+    "unresolved_item_ids": [
+      "stable_segment_selection",
+      "v0_blue_tolerance",
+      "tangent_blue_tolerance",
+      "delta_v_near_zero_tolerance",
+      "per_station_fusion_function",
+      "landslide_body_fusion_function",
+      "nonregular_tangent_handling"
+    ],
+    "version": "1.3-draft"
+  },
+  "case": "ootang",
+  "core_output_row_counts": {
+    "site_timeline": 514,
+    "station_timeline": 4112,
+    "thresholds": 8
+  },
+  "core_run_manifest": {
+    "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+    "sha256": "66042abb953ce1a2cb08318a090ae74c89e9e3d13448f13cd5dda3fb0a211d69"
+  },
+  "formal_warning_output": false,
+  "implementation_sources": {
+    "acceleration_kinematics": {
+      "path": "code/features/kinematics.py",
+      "sha256": "804fc678d69769c21b6d22f032fc5a4673c7952d4632889d285f9f352b22b0a1"
+    },
+    "runner": {
+      "path": "code/warning/operational_run.py",
+      "sha256": "c9f3d71765e46de7ebc1978c0a1f3ae4e8dedeb7d31f43efc319d677969afdcc"
+    },
+    "site_fusion": {
+      "path": "code/warning/operational_v3_fusion.py",
+      "sha256": "cf05ee09e1890ff1e308527a94060f8c5ff8d3ad439ce30c96da48c16cf5338d"
+    },
+    "spatial_blocks": {
+      "path": "code/warning/spatial_blocks.py",
+      "sha256": "02ef533970816f746932190530ca97ec36c3a6ee032ddc1acb1f679154305b1b"
+    },
+    "station_fusion": {
+      "path": "code/warning/operational_v4_fusion.py",
+      "sha256": "51a87e1f692c69658de5c3c613406ac4f51cd859c159f73c865efe0baa4d81b1"
+    }
+  },
+  "outputs": {
+    "pdf": {
+      "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.pdf",
+      "sha256": "93156b4f0f4191f0f68fbbed1a40e0a16118257a9bcc61a6b9e04cee6a946fd9"
+    },
+    "png": {
+      "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.png",
+      "sha256": "eab881eb618e1b089e2ee3c964af536a19cf3007965c700750f6e6276ec6d052"
+    },
+    "svg": {
+      "path": "figures/warning_operational_draft_v4/ootang_v4_typical_days.svg",
+      "sha256": "675992f752b2cdfa5b315e9d7612606691c91e3dae8515ab07d8402112e76852"
+    }
+  },
+  "profile": {
+    "id": "ootang-operational-spatial-v4",
+    "path": "config/ootang_operational_run.v4.draft.json",
+    "sha256": "22cfbd61b748b6111d5769023f64a18d198256d7af5d1ed26fdf0373e93f27a7"
+  },
+  "selected_dates": [
+    "2019-06-30",
+    "2019-07-03",
+    "2020-03-09",
+    "2020-06-04",
+    "2020-06-13"
+  ],
+  "selection_policy": "earliest_available_site_confirmed_colors_then_fallback",
+  "source_inputs": {
+    "site_timeline": {
+      "n_rows": 514,
+      "path": "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+      "sha256": "e32df1e380d8c86202461e034e2063107470d2b8643fdd62746065576ad9e9dd"
+    },
+    "station_timeline": {
+      "n_rows": 4112,
+      "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+      "sha256": "2908bb060c8035477df379ba3c7e5a363f8ba9bb7bb2169144eeb0606a9815f7"
+    }
+  },
+  "strip_order": [
+    "I",
+    "V",
+    "A",
+    "T",
+    "F"
+  ],
+  "vajont_used": false
+}

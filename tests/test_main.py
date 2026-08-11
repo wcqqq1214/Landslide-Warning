@@ -22,7 +22,7 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(
             [stage.name for stage in stages],
-            ["features", "convlstm", "ootang-operational-v3"],
+            ["features", "convlstm", "ootang-operational-v4"],
         )
         self.assertTrue(all(stage.enabled_by_default for stage in stages))
         self.assertTrue(
@@ -37,6 +37,18 @@ class PipelineTests(unittest.TestCase):
         stages = pipeline.select_stages(["fusion", "features", "fusion"])
 
         self.assertEqual([stage.name for stage in stages], ["features", "fusion"])
+
+    def test_v3_is_explicit_only_and_v4_is_default_operational_stage(self):
+        self.assertFalse(pipeline.STAGE_BY_NAME["ootang-operational-v3"].enabled_by_default)
+        self.assertTrue(pipeline.STAGE_BY_NAME["ootang-operational-v4"].enabled_by_default)
+        self.assertEqual(
+            pipeline.STAGE_BY_NAME["ootang-operational-v4"].script,
+            "code/warning/operational_run_v4.py",
+        )
+        self.assertIn(
+            "config/ootang_warning_protocol.v2.draft.json",
+            pipeline.STAGE_BY_NAME["ootang-operational-v4"].inputs,
+        )
 
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["shap", "convlstm"])

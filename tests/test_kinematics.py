@@ -23,6 +23,21 @@ from features.kinematics import (  # noqa: E402
 
 
 class PointKinematicsTests(unittest.TestCase):
+    def test_acceleration_uses_current_real_time_gap_and_three_point_warmup(self):
+        frame = compute_point_kinematics(
+            ["2020-01-01", "2020-01-02", "2020-01-04"],
+            [0.0, 1.0, 5.0],
+        )
+
+        # v=[warmup, 1, 2] mm/day; a_2=(2-1)/(4-2)=0.5 mm/day^2.
+        self.assertEqual(frame.loc[2, "dt_days"], 2.0)
+        self.assertEqual(frame.loc[2, "delta_v"], 1.0)
+        self.assertEqual(frame.loc[2, "acceleration"], 0.5)
+        self.assertEqual(
+            frame["acceleration_status"].tolist(),
+            ["warmup", "warmup", "valid"],
+        )
+
     def test_velocity_uses_actual_time_gap_and_delta_v_is_velocity_difference(self):
         frame = compute_point_kinematics(
             ["2020-01-01", "2020-01-03", "2020-01-04"],

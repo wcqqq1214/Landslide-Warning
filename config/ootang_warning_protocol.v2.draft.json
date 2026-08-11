@@ -1,0 +1,114 @@
+{
+  "protocol_id": "ootang-four-indicator-rule-v2",
+  "protocol_version": "2.0-draft",
+  "status": "draft",
+  "case": "ootang",
+  "revision_date": "2026-08-11",
+  "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
+  "source_evidence": [
+    {
+      "source": "docs/advisor_review_action_plan.md",
+      "role": "latest mentor and user decisions"
+    },
+    {
+      "source": "literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx",
+      "role": "five-level interval, velocity, tangent-angle framework and source formulas"
+    },
+    {
+      "source": "mentor_reply_2026-08-11",
+      "role": "pointwise acceleration calculation method confirmed by mentor"
+    },
+    {
+      "source": "user_decision_2026-08-11",
+      "role": "acceleration threshold family authorized to reuse the velocity relative bands"
+    }
+  ],
+  "confirmed": {
+    "kinematics": {
+      "velocity_formula": "v_i=(U_i-U_{i-1})/(t_i-t_{i-1})",
+      "delta_v_formula": "delta_v_i=v_i-v_{i-1}",
+      "acceleration_formula": "a_i=(v_i-v_{i-1})/(t_i-t_{i-1})",
+      "velocity_unit": "mm/day",
+      "acceleration_unit": "mm/day^2",
+      "warmup_policy": "first_velocity_row_and_first_two_acceleration_rows_are_warmup",
+      "invalid_time_handling": "nonpositive_or_missing_dt_is_invalid",
+      "delta_v_audit_policy": "retain_raw_delta_v_without_ordinal_acceleration_vote"
+    },
+    "warning_levels": ["green", "blue", "yellow", "orange", "red"],
+    "interval": {
+      "semantic": "observed_per_timepoint_interval_deviation_state_identification",
+      "mapping": {
+        "green": "U<=mu",
+        "blue": "mu<U<=mu+sigma",
+        "yellow": "mu+sigma<U<=mu+2*sigma",
+        "orange": "mu+2*sigma<U<=mu+3*sigma",
+        "red": "U>mu+3*sigma"
+      },
+      "mu": "P50",
+      "sigma_formula": "(P90-P10)/(2*1.28155)",
+      "source_boundary": "project_quantile_normal_approximation_reusing_the_specified_thesis_figure_5_1_mapping",
+      "not_claimed": "not_a_strict_horizon_ahead_warning"
+    },
+    "tangent_angle": {
+      "formula": "alpha=atan(V/V0) in degrees",
+      "mapping": {
+        "green": "alpha<45_degree",
+        "blue": "alpha_approximately_45_degree",
+        "yellow": "45_degree<alpha<80_degree",
+        "orange": "80_degree<=alpha<85_degree",
+        "red": "alpha>=85_degree"
+      }
+    },
+    "acceleration": {
+      "method_source": "mentor_confirmed_same_pointwise_derivative_method",
+      "threshold_source": "user_authorized_same_relative_bands_as_velocity",
+      "baseline": "A0=max(1.5*A,A+2*sigma_a)",
+      "mapping": {
+        "green": "a<A0-sigma_a",
+        "blue": "A0-sigma_a<=a<=A0+sigma_a",
+        "yellow": "A0+sigma_a<a<5*A0",
+        "orange": "5*A0<=a<10*A0",
+        "red": "a>=10*A0"
+      },
+      "failure_policy": "nonfinite_or_nonpositive_A0_is_fail_closed"
+    },
+    "fusion": {
+      "mode": "transparent_non_supervised_rules",
+      "ordinal_families": ["interval", "kinematic_velocity_tangent", "acceleration"],
+      "delta_v_role": "raw_audit_only_no_ordinal_vote",
+      "site_rule": "reuse_v3_dual_axis_spatial_logic"
+    }
+  },
+  "unresolved_items": [
+    {
+      "id": "stable_segment_selection",
+      "reason": "The Word thesis requires the initial stable slope of MVIF trend displacement; the current Ootang MVIF gate remains failed and the raw-velocity comparator is a project prototype.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "v0_blue_tolerance",
+      "reason": "The source writes V approximately equal to V0 without a universal numeric tolerance.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "tangent_blue_tolerance",
+      "reason": "The source writes alpha approximately equal to 45 degrees without a universal numeric tolerance.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "acceleration_site_validation",
+      "reason": "Acceleration levels and A0 are an Ootang implementation prototype and have not been independently validated as formal warning thresholds.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "landslide_body_fusion_function",
+      "reason": "The spatial dual-axis rule remains a non-formal project implementation.",
+      "required_before_formal_run": true
+    },
+    {
+      "id": "nonregular_tangent_handling",
+      "reason": "The daily Ootang sequence is regular in the materialized input, but missing/nonregular data remain a formal boundary.",
+      "required_before_formal_run": true
+    }
+  ]
+}
