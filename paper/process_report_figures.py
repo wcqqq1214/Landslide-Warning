@@ -56,6 +56,7 @@ def _configure_style() -> None:
             "font.sans-serif": [selected, "DejaVu Sans"],
             "axes.unicode_minus": False,
             "svg.fonttype": "none",
+            "svg.hashsalt": "ootang-process-report-v1",
             "pdf.fonttype": 42,
             "font.size": 9,
             "axes.labelsize": 9,
@@ -73,9 +74,18 @@ def _configure_style() -> None:
 
 
 def _save_figure(fig: plt.Figure, stem: str) -> None:
-    fig.savefig(OUTPUT_DIR / f"{stem}.png", dpi=300, bbox_inches="tight")
+    fig.savefig(
+        OUTPUT_DIR / f"{stem}.png",
+        dpi=300,
+        bbox_inches="tight",
+        metadata={"Software": "Landslide-Warning"},
+    )
     svg_path = OUTPUT_DIR / f"{stem}.svg"
-    fig.savefig(svg_path, bbox_inches="tight")
+    fig.savefig(
+        svg_path,
+        bbox_inches="tight",
+        metadata={"Date": None, "Creator": "Landslide-Warning"},
+    )
     svg_text = svg_path.read_text(encoding="utf-8")
     svg_path.write_text(
         "\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n",
@@ -145,13 +155,13 @@ def build_process_overview() -> None:
     ax.text(
         0.03,
         0.875,
-        "从 8 个测点的物化日序列出发，先完成概率预测，再进行独立解释和观测后状态审计。",
+        "从 8 个测点的物化日序列出发，分别完成概率预测/状态审计与独立模型依赖分析。",
         fontsize=7.2,
         color=COLORS["gray"],
         transform=ax.transAxes,
     )
 
-    cards = [
+    main_cards = [
         (
             "数据输入",
             ["1461 日 × 8 测点", "坐标 + 静态高程"],
@@ -160,7 +170,7 @@ def build_process_overview() -> None:
         ),
         (
             "特征与运动学",
-            ["相邻时刻速度", "ΔV / 水位 / 雨量"],
+            ["相邻速度 / 加速度", "ΔV 审计 / 水位 / 雨量"],
             COLORS["blue_light"],
             COLORS["blue"],
         ),
@@ -171,27 +181,21 @@ def build_process_overview() -> None:
             COLORS["green"],
         ),
         (
-            "独立 SHAP",
-            ["解释 NGBoost 依赖", "回归 + 历史分类"],
-            COLORS["orange_light"],
-            COLORS["orange"],
-        ),
-        (
-            "v3 空间融合",
-            ["四指标 × 8 测点", "整体确认 / 局部最高"],
+            "v4 三族融合",
+            ["I / V / A / T × 8 测点", "整体确认 / 局部最高"],
             COLORS["red_light"],
             COLORS["red"],
         ),
     ]
 
-    x_positions = np.linspace(0.03, 0.81, len(cards))
-    width = 0.16
-    y = 0.51
-    height = 0.25
-    for index, (title, lines, facecolor, edgecolor) in enumerate(cards):
+    x_positions = [0.03, 0.275, 0.52, 0.765]
+    width = 0.20
+    y = 0.60
+    height = 0.20
+    for index, (title, lines, facecolor, edgecolor) in enumerate(main_cards):
         x = float(x_positions[index])
         _add_card(ax, x, y, width, height, title, lines, facecolor, edgecolor)
-        if index < len(cards) - 1:
+        if index < len(main_cards) - 1:
             next_x = float(x_positions[index + 1])
             arrow = FancyArrowPatch(
                 (x + width + 0.006, y + height / 2),
@@ -204,14 +208,49 @@ def build_process_overview() -> None:
             )
             ax.add_patch(arrow)
 
+    branch_x = 0.385
+    branch_y = 0.43
+    branch_width = 0.25
+    branch_height = 0.11
+    _add_card(
+        ax,
+        branch_x,
+        branch_y,
+        branch_width,
+        branch_height,
+        "独立 NGBoost–SHAP",
+        ["解释模型依赖：回归 + 历史分类"],
+        COLORS["orange_light"],
+        COLORS["orange"],
+    )
+    branch_arrow = FancyArrowPatch(
+        (x_positions[1] + width / 2, y - 0.006),
+        (branch_x + branch_width / 2, branch_y + branch_height + 0.006),
+        arrowstyle="-|>",
+        mutation_scale=13,
+        linewidth=1.2,
+        color=COLORS["orange"],
+        connectionstyle="arc3,rad=0.08",
+        transform=ax.transAxes,
+    )
+    ax.add_patch(branch_arrow)
+    ax.text(
+        0.39,
+        0.56,
+        "独立分析支路",
+        fontsize=7,
+        color=COLORS["orange"],
+        transform=ax.transAxes,
+    )
+
     bands = [
         (
             0.03,
             0.30,
             0.94,
             0.10,
-            "已跑通",
-            "藕塘内部工程原型：全测点概率预测、SHAP 依赖分析、逐点状态和多测点空间审计",
+            "已有结果",
+            "藕塘工程原型：全测点概率预测、SHAP 依赖、加速度五级与多测点空间审计",
             COLORS["green_light"],
             COLORS["green"],
         ),
@@ -221,7 +260,7 @@ def build_process_overview() -> None:
             0.94,
             0.10,
             "尚未完成",
-            "正式稳定段 / V0、严格加速度等级、独立标签下的 NGBoost、正式 F / F_site 与前瞻预警评价",
+            "正式稳定段 / V0、加速度阈值现场验证、独立标签 NGBoost、正式融合与前瞻评价",
             COLORS["orange_light"],
             COLORS["orange"],
         ),
