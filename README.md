@@ -60,7 +60,7 @@ uv run python main.py \
 
 ## 管线阶段
 
-`main.py` 编排 16 个可独立选择的阶段；无参数入口只运行当前藕塘最小链，其余历史复现和诊断阶段均为 explicit-only。各阶段声明输入和输出，并为历史预警阶段声明 `legacy_warning_manifest.json` sidecar；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
+`main.py` 编排 17 个可独立选择的阶段；无参数入口只运行当前藕塘最小链，其余历史复现和诊断阶段均为 explicit-only。各阶段声明输入和输出，并为历史预警阶段声明 `legacy_warning_manifest.json` sidecar；管线会在执行前检查输入是否存在，并在执行后检查预期产物是否更新，阶段失败时立即停止。模块边界见 `docs/design.md`。
 
 ## 主要结果入口
 

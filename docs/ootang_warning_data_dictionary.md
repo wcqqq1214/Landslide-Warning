@@ -48,22 +48,25 @@ v4 新增 `acceleration`、`acceleration_level`、`acceleration_indicator_status
 
 ## 3. 输出与融合边界
 
-逐测点的未来可复算表至少应含：
+v4 核心逐测点表（`figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv`）的规范字段包括：
 
 ```text
-case_id, date, split, station,
+case, date, split, station,
 interval_level, interval_status, interval_color, interval_mapping_basis,
 interval_mu, interval_sigma, interval_z, interval_reason,
-velocity, velocity_level, velocity_status,
-delta_v, delta_v_state, delta_v_status,
-acceleration, acceleration_level, acceleration_indicator_status,
-acceleration_reason,
-tangent_angle, tangent_angle_level, tangent_status,
-station_warning_level, station_warning_color,
-fusion_rule_version, fusion_reason, validity_flag
+velocity, velocity_level, velocity_indicator_status, velocity_color,
+delta_v, delta_v_state, delta_v_status, delta_v_indicator_status,
+acceleration, acceleration_status, acceleration_level,
+acceleration_indicator_status, acceleration_color, acceleration_reason,
+tangent_angle_degree, tangent_angle_level, tangent_angle_indicator_status,
+tangent_angle_color, candidate_level, candidate_color,
+kinematic_level, kinematic_color, evidence_families,
+fusion_status, fusion_reason, input_statuses,
+operational_profile_id, base_protocol_content_sha256,
+formal_warning_output, vajont_used
 ```
 
-其中 `station_warning_level` 只能来自已冻结的四指标函数 `F`；滑坡体层还需要独立冻结 `F_site`。当前 `rule_fusion.py` 的“两项佐证”仅为项目特有草案候选，且在任一输入非 `valid` 时保留相应无效状态。它不能解除协议 `draft` 状态，也不能产生监督模型概率、F1、Brier 或混淆矩阵结论。
+其中 v4 的 `candidate_level/candidate_color` 是当前非正式测点候选，`evidence_families` 使用 `interval`、`kinematic_velocity_tangent`、`acceleration` 三个规范族名；速度与切线角不重复计票，`delta_v` 只作原始审计。v1--v3 仍保留各自历史字段快照（v3 的 `acceleration_status` 仅为兼容字段），不能以 v4 字段反推旧 CSV 已升级。滑坡体层还需要独立冻结 `F_site`；当前空间输出仍是 prototype/non-formal。任何版本在任一输入非 `valid` 时都保留相应无效状态，不能解除协议 `draft` 状态，也不能产生监督模型概率、F1、Brier 或混淆矩阵结论。
 
 在 `F_site` 冻结前，[`site_fusion.py`](../code/warning/site_fusion.py) 只提供诊断汇总：仅当测点结果同时满足 `status=valid` 与已有等级时，才统计有效点、异常点、各级数量和有效点中的最高等级；`uncorroborated` 单列，绝不按 green 或 elevated 处理。该汇总固定输出 `integrated_level=null`、`integrated_color=null` 与 `formal_warning_output=false`，所以其中的 `max_station_level` 不是滑坡体级预警，不能写入阶段 5 的正式综合预警表。
 

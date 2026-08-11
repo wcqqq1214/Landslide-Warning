@@ -8,6 +8,8 @@
 
 > **工程收口（2026-08-08）**：代码库默认入口、测试跟踪和输入指纹已完成审查；当前门禁为默认三阶段链、schema 3 运行清单和全量 `361 passed / 52 subtests passed`。这只改善可复核性，不改变数据血缘、模型效果或预警有效性限制；Vajont 仍受明确授权门禁约束。
 
+> **v4 更新（2026-08-11）**：默认链已切换为 `features → convlstm → ootang-operational-v4`；v3 数值快照仅显式复现。v4 加速度计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`，全量门禁为 367 tests；加速度阈值仍是用户授权的 prototype 操作假设，不解除数据血缘或正式预警限制，Vajont 未启动。
+
 ## 1. 数据血缘限制
 
 - `data/monitoring_data.xlsx` 已确认是 Wang 等（2025）Figshare 发布文件，CSV 是数值等价转换；它是发布物化日建模序列，不是已验证的独立原始逐日 GNSS。

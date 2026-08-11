@@ -496,11 +496,11 @@ v3 的 514 日状态仍为 `valid=114`、`candidate_not_site_confirmed=400`；�
 
 #### 4.2.16 v4 严格逐点加速度扩展（2026-08-11）
 
-v4 在不覆盖 v3 核心数值 CSV 的前提下，复用其双轴空间逻辑并增加严格逐点加速度。`code/features/kinematics.py` 保留真实 `dt_days`、三点暖启动和 raw `delta_v` 审计；`code/warning/operational_v4_fusion.py` 是版本化入口，实际融合把 interval、kinematic（velocity+tangent）和 acceleration 作为三族取局部最大等级。每个时刻的四项输入均需有效，否则测点结果明确 fail-closed。
+v4 在不覆盖 v3 核心数值 CSV 的前提下，复用其双轴空间逻辑并增加严格逐点加速度。`code/features/kinematics.py` 保留真实 `dt_days`、三点暖启动和 raw `delta_v` 审计；`code/warning/operational_v4_fusion.py` 是版本化入口，实际融合把 interval、`kinematic_velocity_tangent`（velocity+tangent）和 acceleration 作为三族取局部最大等级。每个时刻的四项输入均需有效，否则测点结果明确 fail-closed。
 
 v4 运行清单和三份图件清单均核验输出哈希、行数、实现源码哈希、v1 基础协议哈希、v2 扩展协议哈希、`formal_warning_output=false` 和 `vajont_used=false`。物化结果为 4,112 条测点记录、514 条滑坡体记录、8 行阈值表；加速度五级计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`。这些是非正式工程审计计数，不是独立标签性能。
 
-新增全时间线图和独立 provenance manifest，完整覆盖 calibration/test 的 514 日 × 8 点候选状态，并并列展示 `site_confirmed_level` 与 `local_max_candidate_level`。400 个 `candidate_not_site_confirmed` 日以灰色 `NC` 显示，固定解释为“数据完整但未满足空间确认”，不再以空白或 green 代替。另以 4×2 小多图逐点对齐累计位移、interval、velocity、`ΔV` 三态、tangent angle 和 final candidate，补齐 R9 的联合展示项。图件明确标记 `OBSERVED-AFTER-FORECAST`、`NOT FORMAL` 和 `vajont_used=false`，因此完成的是 R8/R9 的原型输出完整性，不是严格前瞻预警性能或现场安全证明。
+新增全时间线图和独立 provenance manifest，完整覆盖 calibration/test 的 514 日 × 8 点候选状态，并并列展示 `site_confirmed_level` 与 `local_max_candidate_level`。400 个 `candidate_not_site_confirmed` 日以灰色 `NC` 显示，固定解释为“数据完整但未满足空间确认”，不再以空白或 green 代替。另以 4×2 小多图逐点对齐累计位移、interval、velocity、acceleration、tangent angle 和 final candidate；raw `ΔV` 仍在 CSV 审计字段中保留但不作为五级色带，补齐 R9 的联合展示项。图件标题与 manifest 明确标记 `OBSERVED-AFTER-FORECAST`、`NOT FORMAL` 和 `vajont_used=false`，因此完成的是 R8/R9 的原型输出完整性，不是严格前瞻预警性能或现场安全证明。
 
 ### 4.3 已确认的 P0：区间指标的逐时刻偏离状态识别
 
