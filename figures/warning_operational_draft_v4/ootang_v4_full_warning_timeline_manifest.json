@@ -46,6 +46,10 @@
       "path": "code/features/kinematics.py",
       "sha256": "b975b7430e1ef1413fa28abcb7005920d175f5e5eeb0bb5940fe8a7cdb485dc7"
     },
+    "renderer": {
+      "path": "code/warning/operational_v4_figures.py",
+      "sha256": "fbf154fa51993b66788e3678527a7660d69f3753ab7b4856dcd603746cf591ee"
+    },
     "runner": {
       "path": "code/warning/operational_run.py",
       "sha256": "d621b3b29d9f06fae662eec988fab4d712fde77ab901f3e5002872f9de6a9a8a"
@@ -74,7 +78,7 @@
     },
     "svg": {
       "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg",
-      "sha256": "3c5430df22cfc000f38cd2f4784b52247726bb897bcc3fbb293279c77a395d68"
+      "sha256": "9d6023881de157a4dbd3b97005ded0e0576a1e041d331df47b4b31b7c38a3dd2"
     }
   },
   "profile": {

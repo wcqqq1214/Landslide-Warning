@@ -186,6 +186,12 @@ def _common_manifest(
     extra: dict[str, Any],
 ) -> dict[str, Any]:
     core_manifest = json.loads(core_manifest_path.read_text(encoding="utf-8"))
+    implementation_sources = dict(core_manifest.get("implementation_sources", {}))
+    renderer_path = Path(__file__).resolve()
+    implementation_sources["renderer"] = {
+        "path": support.manifest_path(renderer_path),
+        "sha256": _sha256(renderer_path),
+    }
     core_outputs = core_manifest.get("outputs", {})
     core_output_row_counts = {
         name: declaration.get("n_rows")
@@ -214,7 +220,7 @@ def _common_manifest(
         "acceleration_protocol_extension": core_manifest.get(
             "acceleration_protocol_extension"
         ),
-        "implementation_sources": core_manifest.get("implementation_sources"),
+        "implementation_sources": implementation_sources,
         "core_output_row_counts": core_output_row_counts,
         "source_inputs": {
             "station_timeline": {
