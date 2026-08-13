@@ -29,7 +29,6 @@ from warning.interval_state import (  # noqa: E402
 from warning.delta_v_diagnostics import (  # noqa: E402
     DIAGNOSTIC_STATUS as DELTA_V_DIAGNOSTIC_STATUS,
 )
-from warning.rule_fusion import DEFAULT_MINIMUM_SUPPORT  # noqa: E402
 from warning.stable_segment import (  # noqa: E402
     DEFAULT_INIT,
     DEFAULT_N_CLUSTERS,
@@ -207,10 +206,7 @@ class WarningDraftProtocolTests(unittest.TestCase):
         self.assertIn(
             "formal_v0_adoption", bai_perron_candidate["not_evaluated"]
         )
-        self.assertEqual(
-            fusion_candidate["minimum_support"],
-            DEFAULT_MINIMUM_SUPPORT,
-        )
+        self.assertEqual(fusion_candidate["minimum_support"], 2)
         self.assertEqual(fusion_candidate["status"], "draft_candidate_not_formal")
         self.assertEqual(
             interval_candidate["status"],

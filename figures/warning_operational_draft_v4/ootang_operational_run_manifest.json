@@ -35,11 +35,11 @@
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "70c6e5c098079ab5c0695d552600752149c11ffd161dd917211cbafb57575718"
+      "sha256": "a21a49d7690485201ea0810959d2ccb590b61e0523f9355a8f036c91764baffb"
     },
     "site_fusion": {
-      "path": "code/warning/operational_v3_fusion.py",
-      "sha256": "cf05ee09e1890ff1e308527a94060f8c5ff8d3ad439ce30c96da48c16cf5338d"
+      "path": "code/warning/operational_spatial_fusion.py",
+      "sha256": "7cc1a4e379bf4605247be93b4c445f918125d501ee02e558cd526d9113c26010"
     },
     "spatial_blocks": {
       "path": "code/warning/spatial_blocks.py",
@@ -47,11 +47,7 @@
     },
     "station_fusion": {
       "path": "code/warning/operational_v4_fusion.py",
-      "sha256": "51a87e1f692c69658de5c3c613406ac4f51cd859c159f73c865efe0baa4d81b1"
-    },
-    "station_fusion_implementation": {
-      "path": "code/warning/operational_v2_fusion.py",
-      "sha256": "77d9c80908ac0ba5a2d5f374d63c418e8533fef6939d462e3603eb40b3cae872"
+      "sha256": "b6d4947cf8ab673abbec48f634923257af3dce3b4879ed5a3ab4db63860f18b2"
     }
   },
   "not_claimed": [
@@ -75,7 +71,7 @@
     "MJ9"
   ],
   "operational_profile": {
-    "content_sha256": "dad20c39499b750acc9e93ec6e07535d7a19f74b065ef80a8424751286ff1a91",
+    "content_sha256": "c96c7566e4c47d749fc6147dd59393432fd5012a34db6a3701c65ba21eeac703",
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
     "status": "operational_draft",

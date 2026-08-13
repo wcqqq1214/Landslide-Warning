@@ -104,7 +104,7 @@
     "single_family_elevation_policy": "visible_assessable_candidate_not_missing"
   },
   "site_fusion": {
-    "implementation": "warning.operational_v3_fusion.fuse_site_spatial_blocks_v3",
+    "implementation": "warning.operational_spatial_fusion.fuse_site_spatial_blocks",
     "spatial_blocks": {"O1": ["MJ9", "MJ1", "MJ3"], "O2": ["ATU4", "ATU5", "ATU3"], "O3": ["ATU2", "ATU1"]},
     "spatial_blocks_source": {
       "citation": "Wang, J., Zhu, H.-H., Zhang, W., Tan, D.-Y., & Pasuto, A. (2025). Enhancing Landslide Displacement Prediction Using a Spatio-Temporal Deep Learning Model With Interpretable Features. Journal of Geophysical Research: Machine Learning and Computation, 2, e2025JH000592.",

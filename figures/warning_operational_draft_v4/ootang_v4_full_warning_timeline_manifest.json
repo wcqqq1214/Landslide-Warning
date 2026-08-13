@@ -38,7 +38,7 @@
   },
   "core_run_manifest": {
     "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-    "sha256": "133d0c321fab5c7e3b4213fb60cf4292b21545d469023f682ebb8ba14afd6801"
+    "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120"
   },
   "formal_warning_output": false,
   "implementation_sources": {
@@ -46,21 +46,17 @@
       "path": "code/features/kinematics.py",
       "sha256": "b975b7430e1ef1413fa28abcb7005920d175f5e5eeb0bb5940fe8a7cdb485dc7"
     },
-    "figure_support": {
-      "path": "code/warning/operational_v3_figure_support.py",
-      "sha256": "e7a562400dc795d193d7c65d695e2da4bbfaa9cfa3a007b93228566dc5abab44"
-    },
     "renderer": {
       "path": "code/warning/operational_v4_figures.py",
-      "sha256": "5f7cfa1e4d526ab6ea8f37654cf8ac739d0eff3ebf57b3163bc8297b1dde13ce"
+      "sha256": "aa329f1fe5b2c937dce000915212e0ce2605b51cab01e0d6cc5808cf02e07887"
     },
     "runner": {
       "path": "code/warning/operational_run.py",
-      "sha256": "70c6e5c098079ab5c0695d552600752149c11ffd161dd917211cbafb57575718"
+      "sha256": "a21a49d7690485201ea0810959d2ccb590b61e0523f9355a8f036c91764baffb"
     },
     "site_fusion": {
-      "path": "code/warning/operational_v3_fusion.py",
-      "sha256": "cf05ee09e1890ff1e308527a94060f8c5ff8d3ad439ce30c96da48c16cf5338d"
+      "path": "code/warning/operational_spatial_fusion.py",
+      "sha256": "7cc1a4e379bf4605247be93b4c445f918125d501ee02e558cd526d9113c26010"
     },
     "spatial_blocks": {
       "path": "code/warning/spatial_blocks.py",
@@ -68,11 +64,7 @@
     },
     "station_fusion": {
       "path": "code/warning/operational_v4_fusion.py",
-      "sha256": "51a87e1f692c69658de5c3c613406ac4f51cd859c159f73c865efe0baa4d81b1"
-    },
-    "station_fusion_implementation": {
-      "path": "code/warning/operational_v2_fusion.py",
-      "sha256": "77d9c80908ac0ba5a2d5f374d63c418e8533fef6939d462e3603eb40b3cae872"
+      "sha256": "b6d4947cf8ab673abbec48f634923257af3dce3b4879ed5a3ab4db63860f18b2"
     }
   },
   "outputs": {
@@ -88,7 +80,7 @@
   "profile": {
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
-    "sha256": "7c2e160b0d9b15cfec01f078060796f624531a0713c4b1a410393ca005b80f7d"
+    "sha256": "442b6e0ac2fcfddf2637ea6a2c6823c0f516e8466ced2e05339a5389216e75ca"
   },
   "source_inputs": {
     "site_timeline": {

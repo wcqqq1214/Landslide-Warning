@@ -17,7 +17,7 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from warning.levels import WarningLevel
-from warning.operational_v2_fusion import fuse_station_evidence_families_v4
+from warning.operational_v4_fusion import fuse_station_evidence_families_v4
 from warning.operational_run import _load_operational_profile
 from warning.operational_v4_figures import write_v4_typical_days
 
@@ -53,6 +53,46 @@ class OperationalV4FusionTests(unittest.TestCase):
         )
         self.assertEqual(result.kinematic_level, WarningLevel.YELLOW)
         self.assertEqual(result.evidence_families, ("kinematic_velocity_tangent",))
+
+    def test_delta_v_is_audit_only_and_does_not_change_the_candidate(self):
+        candidates = {
+            state: fuse_station_evidence_families_v4(
+                interval_level=WarningLevel.YELLOW,
+                velocity_level=WarningLevel.GREEN,
+                tangent_angle_level=WarningLevel.GREEN,
+                acceleration_level=WarningLevel.GREEN,
+                delta_v_state=state,
+            )
+            for state in ("negative", "near_zero", "positive")
+        }
+
+        self.assertEqual(
+            {result.candidate_level for result in candidates.values()},
+            {WarningLevel.YELLOW},
+        )
+        self.assertEqual(
+            {
+                state: result.transition_status
+                for state, result in candidates.items()
+            },
+            {
+                "negative": "velocity_decreasing",
+                "near_zero": "velocity_near_steady",
+                "positive": "velocity_increasing",
+            },
+        )
+
+    def test_any_nonvalid_indicator_blocks_station_assessment(self):
+        result = fuse_station_evidence_families_v4(
+            interval_level=WarningLevel.GREEN,
+            velocity_level=None,
+            tangent_angle_level=WarningLevel.GREEN,
+            acceleration_level=WarningLevel.GREEN,
+            input_statuses={"velocity": "invalid"},
+        )
+
+        self.assertEqual(result.status, "invalid")
+        self.assertIsNone(result.candidate_level)
 
 
 class OperationalV4ArtifactTests(unittest.TestCase):
@@ -109,14 +149,15 @@ class OperationalV4ArtifactTests(unittest.TestCase):
         self.assertTrue(family_tokens <= allowed_families)
         self.assertNotIn("kinematic", family_tokens)
         self.assertEqual(manifest["acceleration_protocol_extension"]["id"], "ootang-four-indicator-rule-v2")
-        self.assertIn("station_fusion_implementation", manifest["implementation_sources"])
+        self.assertIn("station_fusion", manifest["implementation_sources"])
+        self.assertNotIn("station_fusion_implementation", manifest["implementation_sources"])
         self.assertFalse(station["vajont_used"].any())
         self.assertTrue((station["acceleration_level"] > 0).sum() > 0)
         for figure_manifest in sorted(source.glob("ootang_v4_*_manifest.json")):
             figure = json.loads(figure_manifest.read_text())
             self.assertEqual(set(figure["outputs"]), {"svg", "png"})
 
-    def test_figure_svg_is_reproducible_and_manifest_hashes_shared_support(self):
+    def test_figure_svg_is_reproducible_and_manifest_hashes_renderer(self):
         source = ROOT / "figures" / "warning_operational_draft_v4"
         profile_path = ROOT / "config" / "ootang_operational_run.v4.draft.json"
         kwargs = {
@@ -143,12 +184,12 @@ class OperationalV4ArtifactTests(unittest.TestCase):
             first_manifest = json.loads(first_manifest_path.read_text())
             second_manifest = json.loads(second_manifest_path.read_text())
 
-        support_source = first_manifest["implementation_sources"]["figure_support"]
-        support_path = ROOT / support_source["path"]
-        self.assertFalse(Path(support_source["path"]).is_absolute())
+        renderer_source = first_manifest["implementation_sources"]["renderer"]
+        renderer_path = ROOT / renderer_source["path"]
+        self.assertFalse(Path(renderer_source["path"]).is_absolute())
         self.assertEqual(
-            support_source["sha256"],
-            hashlib.sha256(support_path.read_bytes()).hexdigest(),
+            renderer_source["sha256"],
+            hashlib.sha256(renderer_path.read_bytes()).hexdigest(),
         )
         self.assertEqual(
             first_manifest["outputs"]["svg"]["sha256"],

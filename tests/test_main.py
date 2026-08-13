@@ -34,12 +34,16 @@ class PipelineTests(unittest.TestCase):
         )
 
     def test_selected_stages_are_deduplicated_and_canonically_ordered(self):
-        stages = pipeline.select_stages(["fusion", "features", "fusion"])
+        stages = pipeline.select_stages(["ngboost-shap", "features", "ngboost-shap"])
 
-        self.assertEqual([stage.name for stage in stages], ["features", "fusion"])
+        self.assertEqual(
+            [stage.name for stage in stages], ["features", "ngboost-shap"]
+        )
 
-    def test_v3_is_explicit_only_and_v4_is_default_operational_stage(self):
-        self.assertFalse(pipeline.STAGE_BY_NAME["ootang-operational-v3"].enabled_by_default)
+    def test_v4_is_the_only_registered_operational_stage(self):
+        self.assertNotIn("ootang-operational", pipeline.STAGE_BY_NAME)
+        self.assertNotIn("ootang-operational-v2", pipeline.STAGE_BY_NAME)
+        self.assertNotIn("ootang-operational-v3", pipeline.STAGE_BY_NAME)
         self.assertTrue(pipeline.STAGE_BY_NAME["ootang-operational-v4"].enabled_by_default)
         self.assertEqual(
             pipeline.STAGE_BY_NAME["ootang-operational-v4"].script,
@@ -51,14 +55,15 @@ class PipelineTests(unittest.TestCase):
         )
 
     def test_skipped_stages_are_removed(self):
-        stages = pipeline.select_stages(skipped=["shap", "convlstm"])
+        stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])
 
-        self.assertNotIn("shap", [stage.name for stage in stages])
+        self.assertNotIn("ngboost-shap", [stage.name for stage in stages])
         self.assertNotIn("convlstm", [stage.name for stage in stages])
         expected = [
             stage
             for stage in pipeline.STAGES
-            if stage.enabled_by_default and stage.name not in {"shap", "convlstm"}
+                if stage.enabled_by_default
+                and stage.name not in {"ngboost-shap", "convlstm"}
         ]
         self.assertEqual(stages, expected)
 
@@ -82,22 +87,6 @@ class PipelineTests(unittest.TestCase):
             ),
         )
         self.assertIn(pipeline.CONVLSTM_PROTOCOL_FILE, rolling_stage.inputs)
-
-    def test_shap_stability_stage_follows_base_shap_stage(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        stage = pipeline.STAGE_BY_NAME["shap-stability"]
-
-        self.assertEqual(names.index("shap-stability"), names.index("shap") + 1)
-        self.assertEqual(stage.script, "code/explainability/shap_stability.py")
-        self.assertEqual(len(stage.outputs), 12)
-        self.assertIn(
-            "figures/shap/stability/cross_fold_station_feature_importance.csv",
-            stage.outputs,
-        )
-        self.assertIn(
-            "figures/shap/stability/cross_fold_station_feature_stability.csv",
-            stage.outputs,
-        )
 
     def test_convlstm_seed_stage_follows_rolling_validation(self):
         names = [stage.name for stage in pipeline.STAGES]
@@ -154,20 +143,6 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(stage.outputs), 9)
         self.assertFalse(stage.enabled_by_default)
 
-    def test_tangent_review_stage_requires_all_station_figures(self):
-        stage = pipeline.STAGE_BY_NAME["tangent-review"]
-
-        expected_figures = {
-            f"figures/tangent_angle/review/{station}_stage_review.png"
-            for station in ("MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5")
-        }
-
-        self.assertTrue(expected_figures.issubset(set(stage.outputs)))
-        self.assertIn(
-            "figures/tangent_angle/review/candidate_stage_comparison.csv",
-            stage.outputs,
-        )
-
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 
@@ -208,9 +183,9 @@ class PipelineTests(unittest.TestCase):
     def test_failure_stops_later_stages_and_returns_exit_code(self):
         calls = []
 
-        def fail_on_onset(command, **kwargs):
+        def fail_on_ngboost_shap(command, **kwargs):
             calls.append(Path(command[1]).stem)
-            if Path(command[1]).stem == "onset_analysis":
+            if Path(command[1]).stem == "ngboost_shap":
                 raise subprocess.CalledProcessError(7, command)
             return subprocess.CompletedProcess(command, 0)
 
@@ -221,21 +196,19 @@ class PipelineTests(unittest.TestCase):
                     "--stage",
                     "features",
                     "--stage",
-                    "onset",
-                    "--stage",
-                    "shap",
+                    "ngboost-shap",
                     "--manifest",
                     str(manifest),
                 ],
-                runner=fail_on_onset,
+                runner=fail_on_ngboost_shap,
                 verify_contracts=False,
             )
             report = json.loads(manifest.read_text(encoding="utf-8"))
 
         self.assertEqual(exit_code, 7)
-        self.assertEqual(calls, ["build_features", "onset_analysis"])
+        self.assertEqual(calls, ["build_features", "ngboost_shap"])
         self.assertEqual(report["status"], "failed")
-        self.assertEqual(report["failed_stage"], "onset")
+        self.assertEqual(report["failed_stage"], "ngboost-shap")
         self.assertEqual(
             [stage["status"] for stage in report["stages"]],
             ["completed", "failed"],
@@ -248,7 +221,7 @@ class PipelineTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             manifest = Path(tmp_dir) / "completed.json"
             pipeline.run_pipeline(
-                pipeline.select_stages(["features", "onset"]),
+                pipeline.select_stages(["features", "ngboost-shap"]),
                 runner=succeed,
                 manifest_path=manifest,
                 verify_contracts=False,
@@ -262,7 +235,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(report["source_sha256"]), 64)
         self.assertEqual(
             [stage["name"] for stage in report["stages"]],
-            ["features", "onset"],
+            ["features", "ngboost-shap"],
         )
         self.assertTrue(all(stage["returncode"] == 0 for stage in report["stages"]))
 

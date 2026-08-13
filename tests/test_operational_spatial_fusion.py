@@ -1,4 +1,4 @@
-"""Behavioral tests for the v3 non-formal Ootang spatial fusion rules."""
+"""Behavioral tests for the current non-formal Ootang spatial fusion rules."""
 
 from __future__ import annotations
 
@@ -12,8 +12,8 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from warning.levels import WarningLevel
-from warning.operational_v2_fusion import fuse_station_evidence_families
-from warning.operational_v3_fusion import fuse_site_spatial_blocks_v3
+from warning.operational_v4_fusion import fuse_station_evidence_families_v4
+from warning.operational_spatial_fusion import fuse_site_spatial_blocks
 
 BLOCKS = {
     "O1": ("MJ9", "MJ1", "MJ3"),
@@ -23,16 +23,17 @@ BLOCKS = {
 
 
 def _station(level: WarningLevel = WarningLevel.GREEN):
-    return fuse_station_evidence_families(
+    return fuse_station_evidence_families_v4(
         interval_level=level,
         velocity_level=WarningLevel.GREEN,
         tangent_angle_level=WarningLevel.GREEN,
+        acceleration_level=WarningLevel.GREEN,
         delta_v_state="near_zero",
     )
 
 
 def _fuse(results):
-    return fuse_site_spatial_blocks_v3(
+    return fuse_site_spatial_blocks(
         results,
         blocks=BLOCKS,
         minimum_assessable_station_count=3,
@@ -42,7 +43,7 @@ def _fuse(results):
     )
 
 
-class OperationalV3SpatialSiteFusionTests(unittest.TestCase):
+class OperationalSpatialFusionTests(unittest.TestCase):
     def test_any_site_colour_requires_global_assessable_coverage(self):
         result = _fuse(
             {

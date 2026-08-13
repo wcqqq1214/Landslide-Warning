@@ -1,9 +1,8 @@
 """Compact, version-owned figures for the non-formal Ootang v4 run.
 
-The v3 renderers deliberately describe a three-state ``delta_v`` strip.  This
-module keeps v3 untouched and renders the v4 four-indicator contract explicitly:
-interval, velocity/tangent, acceleration, and the fused candidate.  The raw
-``delta_v`` state remains available in the CSV but is not drawn as a warning
+The figures render the four-indicator contract explicitly: interval,
+velocity, acceleration, tangent angle, and the fused candidate. Raw
+``delta_v`` remains available in the CSV as an audit field, not as a warning
 level.
 """
 
@@ -23,12 +22,17 @@ import numpy as np
 import pandas as pd
 from matplotlib.colors import ListedColormap
 
-from warning import operational_v3_figure_support as support
 from warning.protocol import load_protocol, protocol_content_sha256
 
 ROOT = Path(__file__).resolve().parents[2]
-LEVEL_NAMES = support.LEVEL_NAMES
-LEVEL_COLORS = support.LEVEL_COLORS
+LEVEL_NAMES = ("green", "blue", "yellow", "orange", "red")
+LEVEL_COLORS = {
+    "green": "#6FA86B",
+    "blue": "#4C78A8",
+    "yellow": "#E8C95A",
+    "orange": "#DF8C3F",
+    "red": "#C44E52",
+}
 LEVEL_CMAP = ListedColormap([LEVEL_COLORS[name] for name in LEVEL_NAMES])
 STATIONS = ("MJ9", "MJ1", "MJ3", "ATU4", "ATU5", "ATU3", "ATU2", "ATU1")
 STRIP_FIELDS = (
@@ -45,6 +49,16 @@ SVG_HASHSALT = "ootang-operational-v4"
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _manifest_path(path: Path) -> str:
+    """Return repository-relative provenance paths where possible."""
+
+    resolved = path.resolve()
+    try:
+        return resolved.relative_to(ROOT).as_posix()
+    except ValueError:
+        return str(resolved)
 
 
 def _read_inputs(
@@ -196,13 +210,8 @@ def _common_manifest(
     implementation_sources = dict(core_manifest.get("implementation_sources", {}))
     renderer_path = Path(__file__).resolve()
     implementation_sources["renderer"] = {
-        "path": support.manifest_path(renderer_path),
+        "path": _manifest_path(renderer_path),
         "sha256": _sha256(renderer_path),
-    }
-    support_path = Path(support.__file__).resolve()
-    implementation_sources["figure_support"] = {
-        "path": support.manifest_path(support_path),
-        "sha256": _sha256(support_path),
     }
     core_outputs = core_manifest.get("outputs", {})
     core_output_row_counts = {
@@ -218,11 +227,11 @@ def _common_manifest(
         "case": "ootang",
         "profile": {
             "id": "ootang-operational-spatial-v4",
-            "path": support.manifest_path(profile_path),
+            "path": _manifest_path(profile_path),
             "sha256": _sha256(profile_path),
         },
         "core_run_manifest": {
-            "path": support.manifest_path(core_manifest_path),
+            "path": _manifest_path(core_manifest_path),
             "sha256": _sha256(core_manifest_path),
         },
         # Carry the core run's protocol and implementation declarations into
@@ -236,18 +245,18 @@ def _common_manifest(
         "core_output_row_counts": core_output_row_counts,
         "source_inputs": {
             "station_timeline": {
-                "path": support.manifest_path(station_path),
+                "path": _manifest_path(station_path),
                 "sha256": _sha256(station_path),
                 "n_rows": core_output_row_counts.get("station_timeline"),
             },
             "site_timeline": {
-                "path": support.manifest_path(site_path),
+                "path": _manifest_path(site_path),
                 "sha256": _sha256(site_path),
                 "n_rows": core_output_row_counts.get("site_timeline"),
             },
         },
         "outputs": {
-            suffix: {"path": support.manifest_path(output), "sha256": _sha256(output)}
+            suffix: {"path": _manifest_path(output), "sha256": _sha256(output)}
             for suffix, output in outputs.items()
         },
         **extra,

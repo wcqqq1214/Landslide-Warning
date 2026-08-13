@@ -1,6 +1,6 @@
-"""Non-formal v3 whole-body/local-candidate fusion for the Ootang case.
+"""Current dual-axis spatial fusion used by the Ootang v4 prototype.
 
-The v3 draft keeps two questions separate:
+The active v4 implementation asks two distinct questions:
 
 * ``site_confirmed_level``: is there spatially corroborated whole-body evidence?
 * ``local_max_candidate_level``: what is the highest assessable local candidate?
@@ -16,13 +16,17 @@ from numbers import Integral
 from typing import Any
 
 from warning.levels import WARNING_LEVELS, WarningLevel
-from warning.operational_v2_fusion import StationEvidenceResult
+from warning.operational_v4_fusion import StationEvidenceResult
 from warning.spatial_blocks import normalise_spatial_blocks
 
 
 @dataclass(frozen=True)
-class SpatialSiteFusionV3Result:
-    """Site corroboration and local-candidate state reported on separate axes."""
+class SpatialSiteFusionResult:
+    """Site corroboration and local-candidate state reported on separate axes.
+
+    The current caller is v4 only.  Historical snapshots remain in Git rather
+    than defining this public interface.
+    """
 
     status: str
     site_confirmed_level: WarningLevel | None
@@ -64,7 +68,7 @@ class SpatialSiteFusionV3Result:
         minimum_supporting_blocks: int,
         higher_confirmation_minimum_level: WarningLevel = WarningLevel.YELLOW,
     ) -> dict[str, Any]:
-        """Return explicit v3 axes plus stable v2-compatible aliases."""
+        """Return explicit dual axes plus stable historical aliases."""
 
         counts = dict(self.level_counts)
         site_level = (
@@ -123,7 +127,7 @@ class SpatialSiteFusionV3Result:
         }
 
 
-def fuse_site_spatial_blocks_v3(
+def fuse_site_spatial_blocks(
     station_results: Mapping[str, StationEvidenceResult],
     *,
     blocks: Mapping[str, tuple[str, ...] | list[str]],
@@ -133,8 +137,8 @@ def fuse_site_spatial_blocks_v3(
     minimum_supporting_blocks: int,
     higher_confirmation_minimum_level: int
     | WarningLevel = WarningLevel.YELLOW,
-) -> SpatialSiteFusionV3Result:
-    """Apply the v3 coverage gate before issuing any whole-body site colour."""
+) -> SpatialSiteFusionResult:
+    """Apply the current coverage gate before issuing a site candidate colour."""
 
     if not isinstance(station_results, Mapping):
         raise TypeError("station_results must be a mapping of station identifiers")
@@ -225,7 +229,7 @@ def fuse_site_spatial_blocks_v3(
     )
 
     if not coverage_complete:
-        return SpatialSiteFusionV3Result(
+        return SpatialSiteFusionResult(
             status="insufficient_assessable_coverage",
             site_confirmed_level=None,
             local_max_candidate_level=local_max,
@@ -243,7 +247,7 @@ def fuse_site_spatial_blocks_v3(
         )
 
     if local_max == WarningLevel.GREEN:
-        return SpatialSiteFusionV3Result(
+        return SpatialSiteFusionResult(
             status="valid",
             site_confirmed_level=WarningLevel.GREEN,
             local_max_candidate_level=WarningLevel.GREEN,
@@ -276,7 +280,7 @@ def fuse_site_spatial_blocks_v3(
             len(blue_stations) >= int(minimum_supporting_stations)
             and len(blue_blocks) >= int(minimum_supporting_blocks)
         ):
-            return SpatialSiteFusionV3Result(
+            return SpatialSiteFusionResult(
                 status="valid",
                 site_confirmed_level=WarningLevel.GREEN,
                 local_max_candidate_level=WarningLevel.BLUE,
@@ -292,7 +296,7 @@ def fuse_site_spatial_blocks_v3(
                 local_attention_status="localized_blue_attention",
                 reason="blue_candidate_lacks_cross_block_site_support",
             )
-        return SpatialSiteFusionV3Result(
+        return SpatialSiteFusionResult(
             status="valid",
             site_confirmed_level=WarningLevel.BLUE,
             local_max_candidate_level=WarningLevel.BLUE,
@@ -335,7 +339,7 @@ def fuse_site_spatial_blocks_v3(
             confirmed_blocks = supporting_blocks
 
     if confirmed_level is None:
-        return SpatialSiteFusionV3Result(
+        return SpatialSiteFusionResult(
             status="candidate_not_site_confirmed",
             site_confirmed_level=None,
             local_max_candidate_level=local_max,
@@ -355,7 +359,7 @@ def fuse_site_spatial_blocks_v3(
                 f"{higher_confirmation_minimum.color}_or_higher_support"
             ),
         )
-    return SpatialSiteFusionV3Result(
+    return SpatialSiteFusionResult(
         status="valid",
         site_confirmed_level=confirmed_level,
         local_max_candidate_level=local_max,
@@ -376,4 +380,4 @@ def fuse_site_spatial_blocks_v3(
     )
 
 
-__all__ = ["SpatialSiteFusionV3Result", "fuse_site_spatial_blocks_v3"]
+__all__ = ["SpatialSiteFusionResult", "fuse_site_spatial_blocks"]

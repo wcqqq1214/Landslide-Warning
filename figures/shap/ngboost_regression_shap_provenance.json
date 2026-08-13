@@ -1,0 +1,31 @@
+{
+  "schema_version": 2,
+  "explained_model": "NGBoost regressor",
+  "model_role": "independent_exploratory_explainer",
+  "analysis_scope": "independent NGBoost regression model-dependence analysis; not ConvLSTM explanation, causal inference, warning classification, or formal five-level output",
+  "target_definition": "target-observation displacement increment U_t - U_(t-1)",
+  "target_unit": "mm per observation interval",
+  "feature_kinematics_definition": "lagged point velocity (mm/day) and delta_v=velocity_t-velocity_t-1 (mm/day); delta_v is retained as an input feature, not a warning label",
+  "split_date": "2019-09-19",
+  "train_start": "2016-08-04",
+  "train_end": "2019-09-18",
+  "holdout_start": "2019-09-19",
+  "holdout_end": "2020-06-30",
+  "background_date_count": 12,
+  "background_rows": 96,
+  "background_start": "2016-08-04",
+  "background_end": "2019-09-18",
+  "explanation_date_count": 25,
+  "explanation_rows": 200,
+  "explanation_start": "2019-09-19",
+  "explanation_end": "2020-06-30",
+  "data_source": "data/monitoring_data.csv",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "implementation_source": "code/explainability/ngboost_shap.py",
+  "implementation_sha256": "8ea814cd60be659c09bebec99d1bdc818cc581189ca98da9d40866aa1717ef5d",
+  "outputs": {
+    "summary_plot": "figures/shap/ngboost_regression_shap.png",
+    "importance": "figures/shap/ngboost_regression_shap_importance.csv",
+    "metrics": "figures/shap/ngboost_regression_metrics.csv"
+  }
+}
