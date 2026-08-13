@@ -1,6 +1,6 @@
 {
   "acceleration_protocol_extension": {
-    "content_sha256": "c0ea9327d4d79456fb93ed93a61deb96975f5f3082f50be26f264e95432fd49f",
+    "content_sha256": "de8d6175bef75a95ae754a55172aec7ab30b19a04cc82b4f02623caa5540fd85",
     "id": "ootang-four-indicator-rule-v2",
     "path": "config/ootang_warning_protocol.v2.draft.json",
     "role": "v4_acceleration_method_and_threshold_decision_extension_over_v1_evidence_protocol",
@@ -61,7 +61,8 @@
     "supervised_warning_classifier_performance",
     "Vajont_external_case",
     "test_period_parameter_selection",
-    "mentor_validation_of_acceleration_threshold_values"
+    "direct_word_acceleration_threshold_table",
+    "field_validation_of_acceleration_thresholds"
   ],
   "ootang_stations": [
     "ATU1",
@@ -74,7 +75,7 @@
     "MJ9"
   ],
   "operational_profile": {
-    "content_sha256": "81e742157e4ac43f3b954437614234af6a04f7e41153eccc6ae0b8cc10c70130",
+    "content_sha256": "dad20c39499b750acc9e93ec6e07535d7a19f74b065ef80a8424751286ff1a91",
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
     "status": "operational_draft",

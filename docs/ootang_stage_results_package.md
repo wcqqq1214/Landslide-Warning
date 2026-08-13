@@ -21,7 +21,7 @@
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；已完成 fixed-120 三个滚动折 × 五个预设种子及全部逐日预测 | 属于物化日序列内部探索性诊断；早停与容量敏感性尚未重跑 | [`7 通道 fixed-120 审查`](ootang_convlstm_elevation_fixed120_review.md)、[`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
 | 模型解释分工 | 用户批准原型由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost+SHAP 负责候选模型依赖；遗留标签仅作探索性事件归因 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合；尚无导师验收记录 | [`shap_provenance.json`](../figures/shap/shap_provenance.json)、[`shap_stability_protocol.md`](shap_stability_protocol.md) |
-| v4 三族逐点判断 | 区间、运动学（速度/切线角）和严格逐点加速度进入全部 4,112 条测点—时刻记录；raw `ΔV` 保留审计 | V0 是项目特有比较器；加速度相对带是用户批准假设，不是指定 Word 的严格阈值 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) |
+| v4 三族逐点判断 | 区间、运动学（速度/切线角）和严格逐点加速度进入全部 4,112 条测点—时刻记录；raw `ΔV` 保留审计 | V0 是项目特有比较器；导师确认加速度沿用指定 Word 速度 `V0` 的相对结构，v4 以加速度自身 A0 量纲一致转置，不伪称 Word 有严格加速度表 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) |
 | 多测点空间融合 | v4 复用 v3，分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv)、[`v4 配置`](../config/ootang_operational_run.v4.draft.json) |
 | 代表日审计 | v4 代表日显示 interval/velocity/acceleration/tangent/fused 证据、双轴等级和跨区支撑 | 属于观测后规则说明，不用于评价提前量或预警性能 | [`代表日诊断图`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_typical_days_manifest.json) |
 | 全时刻等级展示 | 覆盖 514 日 × 8 点候选等级，并同时显示滑坡体整体确认与局部最高双轴 | 400 个 `NC` 是空间佐证不足而非缺测；属于观测后状态审计 | [`完整时间线`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline_manifest.json) |
@@ -82,7 +82,7 @@ R3 的原型模型分工已由用户确认，并沿用其毕业论文中“Light
 v4 在保留区间、速度/切线角运动学族和原始 `ΔV` 审计字段的同时，新增独立加速度证据族。对相邻速度使用真实时间间隔计算
 `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，单位为 `mm/day²`；首个速度行和前两个加速度行执行三点 warmup。所有加速度阈值只在同一 fit-only 稳定段估计：`A=mean(a)`、`sigma_a=sample std(ddof=1)`、`A0=max(1.5A,A+2sigma_a)`；`A0` 非有限或不大于零时 fail closed。五级边界为 green `<A0-sigma_a`、blue `[A0-sigma_a,A0+sigma_a]`、yellow `(A0+sigma_a,5A0)`、orange `[5A0,10A0)`、red `>=10A0`。速度与切线角仍只计一个运动学族，加速度可独立改变候选等级，raw `ΔV` 不参加 ordinal vote。
 
-本轮导师确认的是逐点导数计算方法；沿用相对带宽是用户授权的项目操作假设，并非指定 Word 论文已给出的藕塘阈值。v4 同时显式绑定 v1 基础协议和 v2 加速度扩展协议的内容 SHA-256；核心及三类图件 manifest 均复核源码指纹、输入/输出哈希、行数、双协议哈希、`formal_warning_output=false` 和 `vajont_used=false`。
+导师后续确认加速度阈值也沿用指定 Word 的速度相对结构。因 Word 没有严格加速度阈值表，v4 将 `V/V0` 量纲一致地转为 `a/A0`，保留 `1×/5×/10×` 倍数，且将定性“约等于”操作化为 `A0±sigma_a`。这不等于现场验证；v4 同时显式绑定 v1 基础协议和 v2 加速度扩展协议的内容 SHA-256；核心及三类图件 manifest 均复核源码指纹、输入/输出哈希、行数、双协议哈希、`formal_warning_output=false` 和 `vajont_used=false`。
 
 ### 4.4 滑坡体 v3 双轴空间规则（v4 复用）
 

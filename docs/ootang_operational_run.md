@@ -8,7 +8,7 @@
 >
 > 执行决策（2026-07-30）：原始 GNSS 确认无法取得。`prototype_run_gate=allowed`，允许导师要求的高程感知工程初跑；`confirmatory_evidence_gate=blocked`，其颜色、速度、加速度、切线角和区间仍不能升级为独立原始 GNSS 上的确认性证据。
 
-> v4 决策（2026-08-11）：导师确认加速度采用逐点导数方法；用户授权本轮沿用速度相对带宽作为加速度阈值。默认入口切换为 `features → convlstm → ootang-operational-v4`；v1/v2/v3 数值快照保留，Vajont 未启动。
+> v4 决策（2026-08-11；阈值来源澄清于 2026-08-13）：导师确认加速度采用逐点导数方法，后续确认阈值沿用指定 Word 的速度 `V0` 相对结构。由于 Word 没有严格加速度阈值表，v4 以加速度自身 `A0` 量纲一致地复用其 `1×/5×/10×` 结构；默认入口为 `features → convlstm → ootang-operational-v4`，v1/v2/v3 数值快照保留，Vajont 未启动。
 
 ## 1. 目的与边界
 
@@ -80,11 +80,11 @@ v3 复用 v2 的逐点四指标、V0 对照基线、阈值、测点证据族和 
 
 ## 5. v4 加速度独立证据运行（当前默认）
 
-v4 保留 v3 的双轴滑坡体空间规则，但把严格逐点加速度作为第三个独立 evidence family。导师确认的是计算方法；加速度阈值沿用速度相对带宽则是用户批准的本轮项目操作假设，二者来源边界已写入 [`v4 决策记录`](ootang_v4_acceleration_decision.md) 和 v2 扩展协议。
+v4 保留 v3 的双轴滑坡体空间规则，但把严格逐点加速度作为第三个独立 evidence family。导师后续确认阈值也沿用指定 Word 的速度相对结构；Word 只提供 `V0` 速度规则，v4 因量纲差异以加速度自身 `A0` 转置其基线公式和 `1×/5×/10×` 倍数，来源边界已写入 [`v4 决策记录`](ootang_v4_acceleration_decision.md) 和 v2 扩展协议。
 
 1. 逐点计算 `v_i=(U_i-U_{i-1})/Δt_i`、`a_i=(v_i-v_{i-1})/Δt_i`，单位分别为 `mm/day` 和 `mm/day²`，使用真实 `Δt_i`；首个速度和前两个加速度行是暖启动，原始 `delta_v=v_i-v_{i-1}` 仅保留作审计字段；
-2. 在与速度相同的 fit-only 候选稳定段上计算 `A=mean(a)`、`sigma_a=std(a, ddof=1)`、`A0=max(1.5A,A+2sigma_a)`。`A0` 非有限或不大于零时 fail-closed；
-3. 加速度五级为：`a<A0-sigma_a` green；`A0-sigma_a≤a≤A0+sigma_a` blue；`A0+sigma_a<a<5A0` yellow；`5A0≤a<10A0` orange；`a≥10A0` red。负加速度不因 `delta_v` 符号机械升级；
+2. 在与速度相同的 fit-only 候选稳定段上计算 `A=mean(a)`、`sigma_a=std(a, ddof=1)`、`A0=max(1.5A,A+2sigma_a)`；这以 `A0` 对应 Word 的速度 `V0`，不将单位不同的 `V0` 数值直接套用。`A0` 非有限或不大于零时 fail-closed；
+3. 加速度五级为：`a<A0-sigma_a` green；`A0-sigma_a≤a≤A0+sigma_a` blue；`A0+sigma_a<a<5A0` yellow；`5A0≤a<10A0` orange；`a≥10A0` red。yellow/orange/red 保留 Word 速度结构的 `1×/5×/10×` 相对倍数；`A0±sigma_a` 是对其定性“约等于”blue 的项目操作化。负加速度不因 `delta_v` 符号机械升级；
 4. 测点候选由区间、运动学（速度/切线角）和加速度三个 family 的局部最大值组成。速度与切线角只计一个 family；加速度可独立改变候选等级；每项等级、状态、贡献和理由均写入逐时刻 CSV；
 5. 滑坡体继续使用 v3 的 O1/O2/O3 双轴逻辑，分别输出 `site_confirmed_*` 与 `local_max_candidate_*`。局部最高异常未获跨区支撑时保留 `candidate_not_site_confirmed`，不伪装为整体确认。
 

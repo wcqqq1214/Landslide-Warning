@@ -1,6 +1,6 @@
 {
   "acceleration_protocol_extension": {
-    "content_sha256": "c0ea9327d4d79456fb93ed93a61deb96975f5f3082f50be26f264e95432fd49f",
+    "content_sha256": "de8d6175bef75a95ae754a55172aec7ab30b19a04cc82b4f02623caa5540fd85",
     "id": "ootang-four-indicator-rule-v2",
     "path": "config/ootang_warning_protocol.v2.draft.json",
     "role": "v4_acceleration_method_and_threshold_decision_extension_over_v1_evidence_protocol",
@@ -33,7 +33,7 @@
   },
   "core_run_manifest": {
     "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-    "sha256": "670ce697f7303908f519c2d35b0a2fa75c51ea625cfcb0ae52b8fe3bd909cf2f"
+    "sha256": "133d0c321fab5c7e3b4213fb60cf4292b21545d469023f682ebb8ba14afd6801"
   },
   "formal_warning_output": false,
   "implementation_sources": {
@@ -83,7 +83,7 @@
   "profile": {
     "id": "ootang-operational-spatial-v4",
     "path": "config/ootang_operational_run.v4.draft.json",
-    "sha256": "07da8e2dcaf6527e8d1267c2d01872fa91c0ca406bfd8930cd320fc68e63f477"
+    "sha256": "7c2e160b0d9b15cfec01f078060796f624531a0713c4b1a410393ca005b80f7d"
   },
   "selected_dates": [
     "2019-06-30",

@@ -3,7 +3,7 @@
   "protocol_version": "2.0-draft",
   "status": "draft",
   "case": "ootang",
-  "revision_date": "2026-08-11",
+  "revision_date": "2026-08-13",
   "formal_run_policy": "A draft protocol must not be used to generate formal warning results.",
   "source_evidence": [
     {
@@ -12,7 +12,7 @@
     },
     {
       "source": "literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx",
-      "role": "five-level interval, velocity, tangent-angle framework and source formulas"
+      "role": "five-level interval, velocity, tangent-angle framework; chapter 5 Equation (5-3) and Table 5-4 provide the V0 velocity baseline and relative 1/5/10 structure, not a strict acceleration threshold table"
     },
     {
       "source": "mentor_reply_2026-08-11",
@@ -20,7 +20,11 @@
     },
     {
       "source": "user_decision_2026-08-11",
-      "role": "acceleration threshold family authorized to reuse the velocity relative bands"
+      "role": "initial implementation authorization for the acceleration extension"
+    },
+    {
+      "source": "mentor_reply_2026-08-13_via_user",
+      "role": "mentor confirmed that acceleration thresholds should follow the same threshold structure; v4 applies a dimensionally consistent A0 transfer because the Word source defines velocity, not acceleration, thresholds"
     }
   ],
   "confirmed": {
@@ -61,7 +65,19 @@
     },
     "acceleration": {
       "method_source": "mentor_confirmed_same_pointwise_derivative_method",
-      "threshold_source": "user_authorized_same_relative_bands_as_velocity",
+      "threshold_source": "mentor_confirmed_word_velocity_threshold_structure_dimensionally_transposed_to_acceleration_A0",
+      "word_rate_reference": {
+        "baseline_formula": "V0=max(1.5*V,V+2*sigma)",
+        "relative_mapping": {
+          "green": "V<V0",
+          "blue": "V approximately equal to V0",
+          "yellow": "V0<V<5*V0",
+          "orange": "5*V0<=V<10*V0",
+          "red": "V>=10*V0"
+        },
+        "source_boundary": "The specified Word thesis does not define strict pointwise acceleration formulae or acceleration thresholds."
+      },
+      "dimensionally_consistent_transfer": "Replace V/V0 with a/A0, compute A0 in mm/day^2 from fit-only acceleration, retain the 1/5/10 relative multipliers, and use A0±sigma_a as the project operationalization of the qualitative approximately-equal blue relation.",
       "baseline": "A0=max(1.5*A,A+2*sigma_a)",
       "mapping": {
         "green": "a<A0-sigma_a",

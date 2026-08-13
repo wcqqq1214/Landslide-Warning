@@ -2,7 +2,7 @@
 
 基于机器学习方法的水库滑坡位移预测与预警研究代码仓库。当前以三峡库区藕塘滑坡日尺度监测数据为例，已跑通从特征工程、概率位移预测、独立 SHAP 探索到四指标融合的**非正式工程原型链路**；正式阈值、确认性验证和工程预警尚未完成。
 
-> 2026-08-11 v4 收口：导师确认逐点加速度计算方法，用户授权本轮沿用速度相对带作为加速度阈值；默认入口切换到 `features → convlstm → ootang-operational-v4`。v4 保留 v3 双轴空间逻辑，v3 数值快照仍为 explicit-only 对照。原始 GNSS 确认无法取得，因此门禁仍为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：这是 Figshare 物化序列上的藕塘内部探索性诊断，不是独立原始 GNSS 上的确认性预测或正式预警。
+> 2026-08-11 v4 收口，2026-08-13 澄清阈值来源：导师确认逐点加速度和“相同阈值”。指定 Word 给的是速度 `V0` 的基线公式和 `1×/5×/10×` 相对结构、没有严格加速度阈值表；v4 因此以加速度自身 `A0` 量纲一致地复用该结构。默认入口为 `features → convlstm → ootang-operational-v4`；v4 保留 v3 双轴空间逻辑，v3 数值快照仍为 explicit-only 对照。原始 GNSS 确认无法取得，因此门禁仍为 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked`：这是 Figshare 物化序列上的藕塘内部探索性诊断，不是独立原始 GNSS 上的确认性预测或正式预警。
 
 ## 当前状态
 

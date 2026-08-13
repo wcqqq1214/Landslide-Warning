@@ -6,9 +6,9 @@
   "formal_warning_output": false,
   "run_scope": "mentor_confirmed_pointwise_acceleration_ootang_draft_not_formal",
   "authorization_context": {
-    "date": "2026-08-11",
-    "decision": "Add strict pointwise acceleration as an independent five-level evidence family while preserving the v3 dual-axis spatial rule.",
-    "method_boundary": "The mentor confirmed the same pointwise derivative method; the relative acceleration bands are a user-authorized project operating assumption, not a quoted mentor or Word-thesis threshold.",
+    "date": "2026-08-13",
+    "decision": "Add strict pointwise acceleration as an independent five-level evidence family while preserving the v3 dual-axis spatial rule, and apply the mentor-confirmed same threshold structure through an acceleration-specific A0 baseline.",
+    "method_boundary": "The specified Word thesis gives the V0 velocity baseline and relative 1/5/10 five-level structure, not a strict acceleration threshold table. Per the mentor's subsequent same-threshold instruction, v4 dimensionally transposes that structure to the acceleration-specific A0 baseline; the ±sigma_a blue band operationalizes the thesis's qualitative approximately-equal boundary.",
     "case_boundary": "Ootang only. Vajont is not read or used."
   },
   "base_draft_protocol": {
@@ -32,7 +32,7 @@
     "path": "ootang_warning_protocol.v2.draft.json",
     "expected_protocol_id": "ootang-four-indicator-rule-v2",
     "expected_protocol_version": "2.0-draft",
-    "expected_protocol_content_sha256": "c0ea9327d4d79456fb93ed93a61deb96975f5f3082f50be26f264e95432fd49f",
+    "expected_protocol_content_sha256": "de8d6175bef75a95ae754a55172aec7ab30b19a04cc82b4f02623caa5540fd85",
     "role": "v4_acceleration_method_and_threshold_decision_extension_over_v1_evidence_protocol"
   },
   "ootang_stations": ["ATU1", "ATU2", "ATU3", "ATU4", "ATU5", "MJ1", "MJ3", "MJ9"],
@@ -70,6 +70,11 @@
   "acceleration": {
     "formula": {"kind": "pointwise_velocity_difference_over_current_dt", "unit": "mm_per_day_squared"},
     "baseline": {"source": "selected_stable_segment_fit_rows_only", "statistics": "A=mean(a), sigma_a=sample_std(ddof=1)", "a0_formula": "max(1.5*A, A+2*sigma_a)", "failure_policy": "nonfinite_or_nonpositive_A0_is_fail_closed"},
+    "threshold_transfer": {
+      "source": "specified_word_thesis_chapter_5_equation_5_3_and_table_5_4_via_mentor_same_threshold_instruction",
+      "word_scope": "The source defines V0=max(1.5*V, V+2*sigma) and the velocity relative structure V<V0, V approximately equal to V0, V0<V<5V0, 5V0<=V<10V0, V>=10V0; it does not define strict pointwise acceleration thresholds.",
+      "v4_interpretation": "Use the same baseline formula and 1/5/10 relative multipliers in acceleration units by replacing V/V0 with a/A0. The A0±sigma_a blue band is a project operationalization of the qualitative approximately-equal relation, not a verbatim Word threshold."
+    },
     "mapping": [
       {"label": "green", "upper": {"kind": "a0_plus_sigma", "sigma_multiplier": -1}, "upper_inclusive": false},
       {"label": "blue", "lower": {"kind": "a0_plus_sigma", "sigma_multiplier": -1}, "lower_inclusive": true, "upper": {"kind": "a0_plus_sigma", "sigma_multiplier": 1}, "upper_inclusive": true},
@@ -128,6 +133,7 @@
     "supervised_warning_classifier_performance",
     "Vajont_external_case",
     "test_period_parameter_selection",
-    "mentor_validation_of_acceleration_threshold_values"
+    "direct_word_acceleration_threshold_table",
+    "field_validation_of_acceleration_thresholds"
   ]
 }

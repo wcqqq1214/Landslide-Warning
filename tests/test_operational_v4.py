@@ -62,6 +62,34 @@ class OperationalV4ArtifactTests(unittest.TestCase):
         self.assertEqual(loaded.acceleration_protocol["protocol_id"], "ootang-four-indicator-rule-v2")
         self.assertEqual(loaded.profile["acceleration"]["baseline"]["a0_formula"], "max(1.5*A, A+2*sigma_a)")
 
+    def test_acceleration_transposes_the_word_rate_structure_to_a0(self):
+        loaded = _load_operational_profile(ROOT / "config" / "ootang_operational_run.v4.draft.json")
+        acceleration = loaded.acceleration_protocol["confirmed"]["acceleration"]
+        self.assertEqual(
+            acceleration["threshold_source"],
+            "mentor_confirmed_word_velocity_threshold_structure_"
+            "dimensionally_transposed_to_acceleration_A0",
+        )
+        self.assertEqual(
+            acceleration["word_rate_reference"]["baseline_formula"],
+            "V0=max(1.5*V,V+2*sigma)",
+        )
+        self.assertEqual(
+            acceleration["word_rate_reference"]["relative_mapping"],
+            {
+                "green": "V<V0",
+                "blue": "V approximately equal to V0",
+                "yellow": "V0<V<5*V0",
+                "orange": "5*V0<=V<10*V0",
+                "red": "V>=10*V0",
+            },
+        )
+        transfer = loaded.profile["acceleration"]["threshold_transfer"]
+        self.assertIn("replacing V/V0 with a/A0", transfer["v4_interpretation"])
+        self.assertIn(
+            "direct_word_acceleration_threshold_table", loaded.profile["not_claimed"]
+        )
+
     def test_materialized_v4_bundle_has_full_grid_and_acceleration_counts(self):
         source = ROOT / "figures" / "warning_operational_draft_v4"
         station = pd.read_csv(source / "ootang_operational_station_timeline.csv")

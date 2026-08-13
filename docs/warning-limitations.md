@@ -8,7 +8,7 @@
 
 > **工程收口（2026-08-08）**：代码库默认入口、测试跟踪和输入指纹已完成审查；当前门禁为默认三阶段链、schema 3 运行清单和全量 `361 passed / 52 subtests passed`。这只改善可复核性，不改变数据血缘、模型效果或预警有效性限制；Vajont 仍受明确授权门禁约束。
 
-> **v4 更新（2026-08-11）**：默认链已切换为 `features → convlstm → ootang-operational-v4`；v3 数值快照仅显式复现。v4 加速度计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`，全量门禁为 367 tests；加速度阈值仍是用户授权的 prototype 操作假设，不解除数据血缘或正式预警限制，Vajont 未启动。
+> **v4 更新（2026-08-11；阈值来源澄清于 2026-08-13）**：默认链为 `features → convlstm → ootang-operational-v4`；v3 数值快照仅显式复现。导师确认加速度沿用指定 Word 的速度 `V0` 相对阈值结构；Word 没有严格加速度表，v4 使用自身 `A0` 作量纲一致转换。加速度计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`；这仍是未获现场独立验证的 prototype 规则，不解除数据血缘或正式预警限制，Vajont 未启动。
 
 ## 1. 数据血缘限制
 
