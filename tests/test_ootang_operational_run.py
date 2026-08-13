@@ -30,6 +30,49 @@ from warning.operational_run import (  # noqa: E402
 
 
 class OotangOperationalRunTests(unittest.TestCase):
+    def _profile_variant(self, directory: Path, mutate) -> Path:
+        """Write a v4 profile copy with linked repository inputs made explicit."""
+
+        profile = json.loads(
+            (ROOT / "config" / "ootang_operational_run.v4.draft.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        profile["base_draft_protocol"]["path"] = str(
+            ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
+        )
+        profile["acceleration_protocol_extension"]["path"] = str(
+            ROOT / "config" / "ootang_warning_protocol.v2.draft.json"
+        )
+        mutate(profile)
+        path = directory / "ootang_operational_run.v4.variant.json"
+        path.write_text(
+            json.dumps(profile, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        return path
+
+    def _assert_repo_relative_paths(self, payload: object) -> None:
+        """Every manifest field named path must resolve inside this checkout."""
+
+        paths: list[str] = []
+
+        def collect(value: object, key: str | None = None) -> None:
+            if isinstance(value, dict):
+                for child_key, child_value in value.items():
+                    collect(child_value, child_key)
+            elif isinstance(value, list):
+                for child_value in value:
+                    collect(child_value, key)
+            elif key == "path" and isinstance(value, str):
+                paths.append(value)
+
+        collect(payload)
+        self.assertTrue(paths)
+        for path in paths:
+            self.assertFalse(Path(path).is_absolute(), path)
+            self.assertTrue((ROOT / path).exists(), path)
+
     def test_pipeline_registers_only_v4_operational_stage(self):
         spec = importlib.util.spec_from_file_location("pipeline_main", ROOT / "main.py")
         if spec is None or spec.loader is None:
@@ -85,14 +128,29 @@ class OotangOperationalRunTests(unittest.TestCase):
                 evidence_dir=root / "evidence",
             )
             manifest = json.loads(artifacts.manifest_path.read_text(encoding="utf-8"))
-
-        for source in manifest["implementation_sources"].values():
-            self.assertFalse(Path(source["path"]).is_absolute())
-            source_path = ROOT / source["path"]
-            self.assertEqual(hashlib.sha256(source_path.read_bytes()).hexdigest(), source["sha256"])
-        for source in manifest["source_inputs"].values():
-            if isinstance(source, dict) and "path" in source:
+            evidence_manifest = json.loads(
+                artifacts.evidence_manifest_path.read_text(encoding="utf-8")
+            )
+            self._assert_repo_relative_paths(manifest)
+            self._assert_repo_relative_paths(evidence_manifest)
+            for source in manifest["implementation_sources"].values():
                 self.assertFalse(Path(source["path"]).is_absolute())
+                source_path = ROOT / source["path"]
+                self.assertEqual(
+                    hashlib.sha256(source_path.read_bytes()).hexdigest(),
+                    source["sha256"],
+                )
+            for source in manifest["source_inputs"].values():
+                if isinstance(source, dict) and "path" in source:
+                    self.assertFalse(Path(source["path"]).is_absolute())
+
+            for component in evidence_manifest["components"]:
+                sidecar = json.loads(
+                    (ROOT / component["manifest_path"]).read_text(encoding="utf-8")
+                )
+                self._assert_repo_relative_paths(sidecar)
+                self.assertFalse(Path(component["manifest_path"]).is_absolute())
+                self.assertFalse(Path(component["output_path"]).is_absolute())
 
     def test_profile_rejects_removed_historical_operational_profile(self):
         with self.assertRaisesRegex(OperationalRunProfileError, "only the v4"):
@@ -121,6 +179,88 @@ class OotangOperationalRunTests(unittest.TestCase):
             "profile_declared_reviewed_sha256_only",
         )
 
+    def test_profile_rejects_spatial_source_declared_sha_drift(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            profile_path = self._profile_variant(
+                Path(directory),
+                lambda profile: profile["site_fusion"]["spatial_blocks_source"].update(
+                    source_file_sha256="0" * 64
+                ),
+            )
+            with self.assertRaisesRegex(
+                OperationalRunProfileError,
+                "reviewed paper fingerprint",
+            ):
+                _load_operational_profile(profile_path)
+
+    def test_profile_rejects_incorrect_local_spatial_source_copy(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            fake_paper = root / "paper.pdf"
+            fake_paper.write_bytes(b"not the reviewed paper")
+            profile_path = self._profile_variant(
+                root,
+                lambda profile: profile["site_fusion"]["spatial_blocks_source"].update(
+                    source_file=str(fake_paper)
+                ),
+            )
+            with self.assertRaisesRegex(
+                OperationalRunProfileError,
+                "fingerprint does not match",
+            ):
+                _load_operational_profile(profile_path)
+
+    def test_profile_rejects_formal_warning_output(self):
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            profile_path = self._profile_variant(
+                Path(directory),
+                lambda profile: profile.update(formal_warning_output=True),
+            )
+            with self.assertRaisesRegex(
+                OperationalRunProfileError,
+                "must explicitly prohibit formal warning output",
+            ):
+                _load_operational_profile(profile_path)
+
+    def test_profile_rejects_base_protocol_version_or_content_hash_drift(self):
+        for field, value, message in (
+            (
+                "protocol_version",
+                "1.3-drift",
+                "Base draft protocol protocol_version",
+            ),
+            (
+                "revision_date",
+                "2099-01-01",
+                "content fingerprint",
+            ),
+        ):
+            with self.subTest(field=field):
+                with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+                    root = Path(directory)
+                    altered_protocol = json.loads(
+                        (
+                            ROOT / "config" / "ootang_warning_protocol.v1.draft.json"
+                        ).read_text(encoding="utf-8")
+                    )
+                    altered_protocol[field] = value
+                    altered_protocol_path = root / "altered_base_protocol.json"
+                    altered_protocol_path.write_text(
+                        json.dumps(altered_protocol, ensure_ascii=False, indent=2),
+                        encoding="utf-8",
+                    )
+                    profile_path = self._profile_variant(
+                        root,
+                        lambda profile, altered_protocol_path=altered_protocol_path: profile[
+                            "base_draft_protocol"
+                        ].update(path=str(altered_protocol_path)),
+                    )
+                    with self.assertRaisesRegex(
+                        OperationalRunProfileError,
+                        message,
+                    ):
+                        _load_operational_profile(profile_path)
+
     def test_rejects_prediction_mismatched_to_forecast_manifest(self):
         predictions_source = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
         with tempfile.TemporaryDirectory() as directory:
@@ -135,6 +275,49 @@ class OotangOperationalRunTests(unittest.TestCase):
                     output_dir=root / "output",
                     evidence_dir=root / "evidence",
                 )
+
+    def test_test_split_prediction_changes_do_not_change_fit_only_thresholds(self):
+        predictions_source = ROOT / "figures" / "convlstm" / "forecast_predictions.csv"
+        manifest_source = ROOT / "figures" / "convlstm" / "forecast_run_manifest.json"
+        with tempfile.TemporaryDirectory(dir=ROOT) as directory:
+            root = Path(directory)
+            altered_predictions = root / "altered_predictions.csv"
+            predictions = pd.read_csv(predictions_source)
+            test_index = predictions.index[predictions["split"].eq("test")][0]
+            for column in ("actual", "p10", "p50", "p90"):
+                predictions.loc[test_index, column] += 0.25
+            predictions.to_csv(altered_predictions, index=False)
+
+            forecast_manifest = json.loads(
+                manifest_source.read_text(encoding="utf-8")
+            )
+            forecast_manifest["outputs"]["figures/convlstm/forecast_predictions.csv"][
+                "sha256"
+            ] = hashlib.sha256(altered_predictions.read_bytes()).hexdigest()
+            altered_manifest = root / "altered_forecast_run_manifest.json"
+            altered_manifest.write_text(
+                json.dumps(forecast_manifest, ensure_ascii=False, indent=2),
+                encoding="utf-8",
+            )
+
+            baseline = write_ootang_operational_run(
+                output_dir=root / "baseline_output",
+                evidence_dir=root / "baseline_evidence",
+            )
+            altered = write_ootang_operational_run(
+                predictions_path=altered_predictions,
+                forecast_manifest_path=altered_manifest,
+                output_dir=root / "altered_output",
+                evidence_dir=root / "altered_evidence",
+            )
+            baseline_thresholds = pd.read_csv(baseline.thresholds_path)
+            altered_thresholds = pd.read_csv(altered.thresholds_path)
+
+        pd.testing.assert_frame_equal(
+            baseline_thresholds,
+            altered_thresholds,
+            check_dtype=False,
+        )
 
     def test_promotion_failure_restores_existing_snapshot(self):
         with tempfile.TemporaryDirectory() as directory:

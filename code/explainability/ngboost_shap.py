@@ -23,7 +23,6 @@ import pandas as pd
 import shap
 from ngboost import NGBRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from sklearn.model_selection import TimeSeriesSplit
 
 CODE_DIR = Path(__file__).resolve().parents[1]
 if str(CODE_DIR) not in sys.path:
@@ -184,28 +183,6 @@ def time_train_mask(meta: pd.DataFrame, train_frac: float = 0.8) -> tuple[pd.Ser
     split_index = min(max(int(len(dates) * train_frac), 1), len(dates) - 1)
     split_date = dates[split_index]
     return meta["Date"] < split_date, split_date
-
-
-def walk_forward_date_ranges(
-    dates: pd.Series | pd.DatetimeIndex, *, n_splits: int = 5
-) -> list[dict[str, pd.Timestamp | int]]:
-    """Return chronological expanding-window fold boundaries."""
-
-    unique_dates = pd.DatetimeIndex(pd.to_datetime(dates).unique()).sort_values()
-    ranges: list[dict[str, pd.Timestamp | int]] = []
-    for fold, (train_indices, test_indices) in enumerate(
-        TimeSeriesSplit(n_splits=n_splits).split(unique_dates), start=1
-    ):
-        ranges.append(
-            {
-                "fold": fold,
-                "train_start": unique_dates[train_indices[0]],
-                "train_end": unique_dates[train_indices[-1]],
-                "test_start": unique_dates[test_indices[0]],
-                "test_end": unique_dates[test_indices[-1]],
-            }
-        )
-    return ranges
 
 
 def evenly_spaced_date_sample(
