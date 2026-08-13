@@ -37,6 +37,18 @@ uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 
 Vajont 尚未启动；读取、适配或运行其数据前必须获得用户明确许可。
 
+## 验证与历史边界
+
+当前测试只保护工作树中仍可执行的接口：参考阶段加载/训练期门禁、人工阶段优先级，以及 v4 的非正式、fail-closed 证据与协议契约。可用以下命令复核：
+
+```bash
+.venv/bin/python -m unittest discover -s tests -p 'test_*.py'
+uv run ruff check code tests main.py
+.venv/bin/python -m compileall -q code main.py tests
+```
+
+旧 30 日 `V0`、v1/v2/v3 运行入口和对应历史测试已从当前工作树移除；需要复现历史快照时，必须按提交从 Git 历史恢复，不应把旧产物当作当前 v4 接口或结果。
+
 ## 代码结构
 
 ```text

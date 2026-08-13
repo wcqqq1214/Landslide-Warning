@@ -6,9 +6,9 @@
 >
 > **门禁保持不变**：用户已确认藕塘原始 GNSS 无法取得。当前 `prototype_run_gate=allowed`、`confirmatory_evidence_gate=blocked`、`formal_warning_output=false`；历史 6 通道的时间块、早停和容量结果不得套用于当前 7 通道。本轮 fixed-120 未读取、未适配或运行 Vajont；此前仅做过只读内容盘点，不构成启动，启动前仍须取得用户明确许可。
 
-> **工程收口（2026-08-08）**：代码库默认入口、测试跟踪和输入指纹已完成审查；当前门禁为默认三阶段链、schema 3 运行清单和全量 `361 passed / 52 subtests passed`。这只改善可复核性，不改变数据血缘、模型效果或预警有效性限制；Vajont 仍受明确授权门禁约束。
+> **历史工程收口快照（2026-08-08）**：当时的代码库默认入口、测试跟踪和输入指纹审查记录了默认三阶段链、schema 3 运行清单和全量 `361 passed / 52 subtests passed`。这些数字属于历史快照，不是当前门禁；该记录只改善可复核性，不改变数据血缘、模型效果或预警有效性限制。Vajont 仍受明确授权门禁约束。
 
-> **v4 更新（2026-08-11；阈值来源澄清于 2026-08-13）**：默认链为 `features → convlstm → ootang-operational-v4`；v3 数值快照仅显式复现。导师确认加速度沿用指定 Word 的速度 `V0` 相对阈值结构；Word 没有严格加速度表，v4 使用自身 `A0` 作量纲一致转换。加速度计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`；这仍是未获现场独立验证的 prototype 规则，不解除数据血缘或正式预警限制，Vajont 未启动。
+> **v4 更新（2026-08-11；阈值来源澄清于 2026-08-13）**：默认链为 `features → convlstm → ootang-operational-v4`；v3 数值产物仍跟踪为历史快照，但可执行复现入口仅在 Git 历史。导师确认加速度沿用指定 Word 的速度 `V0` 相对阈值结构；Word 没有严格加速度表，v4 使用自身 `A0` 作量纲一致转换。加速度计数为 green/blue/yellow/orange/red=`4012/98/2/0/0`；这仍是未获现场独立验证的 prototype 规则，不解除数据血缘或正式预警限制，Vajont 未启动。
 
 ## 1. 数据血缘限制
 

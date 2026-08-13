@@ -64,13 +64,13 @@ formal_warning_output = false
 vajont_used = false
 ```
 
-`prototype_run_gate=allowed` 只授权 `features → convlstm → ootang-operational-v4` 的藕塘内部初跑、逐点状态和非监督空间融合；v3 为 explicit-only 数值对照，v1/v2 快照保留。`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
+`prototype_run_gate=allowed` 只授权 `features → convlstm → ootang-operational-v4` 的藕塘内部初跑、逐点状态和非监督空间融合；v3 及 v1/v2 仅为历史快照，当前工作树没有可执行的 v1/v2/v3 对照入口，若需复现必须从 Git 历史恢复对应提交或路径。`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
 
 ### v4 加速度决策（2026-08-11；阈值来源澄清于 2026-08-13）
 
 导师确认加速度沿用逐点导数方法：`a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，单位 `mm/day²`，使用真实相邻时间差，前三个观测点形成两行暖启动；后续确认“阈值也取相同的”。核对指定 Word 第五章式（5-3）和表 5-4 可知，它给出的是速度 `V0=max(1.5V,V+2σ)` 与 `1×/5×/10×` 五级相对结构，没有严格加速度阈值表。因此 v4 在 fit-only 稳定段计算 `A=mean(a)`、样本 `sigma_a`，用 `A0=max(1.5A,A+2sigma_a)` 量纲一致地把 `V/V0` 转为 `a/A0`：`green a<A0-sigma_a`、`blue [A0-sigma_a,A0+sigma_a]`、`yellow (A0+sigma_a,5A0)`、`orange [5A0,10A0)`、`red >=10A0`。`A0±sigma_a` 是对 Word 定性“约等于”的项目操作化；并非声称 Word 给出了藕塘的加速度数值阈值。A0 非有限或不大于零时 fail-closed。
 
-v4 将加速度作为独立 evidence family，速度与切线角合成一个 kinematic family，原始 `delta_v` 只作审计字段；滑坡体复用 v3 双轴 O1/O2/O3 规则。v4 仍为 `operational_draft_not_formal`，NGBoost 未在本任务完成，Vajont 未读取/启动。v1 基础协议与 v2 加速度扩展协议的内容 SHA-256 必须同时写入核心及图件 manifest。
+v4 将加速度作为独立 evidence family，速度与切线角合成一个 kinematic family，原始 `delta_v` 只作审计字段；滑坡体使用当前 v4 调用的中性双轴 O1/O2/O3 实现（该空间逻辑最初记录于历史 v3 草案）。v4 仍为 `operational_draft_not_formal`，NGBoost 未在本任务完成，Vajont 未读取/启动。v1 基础协议与 v2 加速度扩展协议的内容 SHA-256 必须同时写入核心及图件 manifest。
 
 ### 当前解释与正式 NGBoost 边界（2026-08-13）
 

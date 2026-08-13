@@ -60,7 +60,7 @@
 | `warning_operational_draft/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存 v1 的 8 点运行版基线/容差、calibration/test 四指标逐点结果和逐日多点汇总 | v1 非正式实施版审计表 | `uncorroborated`/`insufficient_valid_station_results` 不能并入 green，参数只来自 fit，不能用 test 期反调 |
 | `warning_operational_draft_v2/ootang_operational_run_manifest.json` | 保存 v2 测点证据族、O1/O2/O3 来源、空间规则和结果计数 | v2 非正式空间草案清单 | 速度/切线角只算一个运动学证据族；未确认 yellow--red 不降级，不能解释为正式 `F_site` |
 | `warning_operational_draft_v2/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存 v2 逐点候选、`ΔV` 三态趋势/一致性复合信号、空间覆盖与跨区确认 | v2 非正式审计表 | 全局最少 3 点门禁已修复；`ΔV` 改变完整信号但不凭符号改变五色严重度，不得覆盖为 v3 |
-| `warning_operational_draft_v3/ootang_operational_run_manifest.json` | 保存 v3 双轴契约、实现源码指纹、输入/输出哈希及整体/局部颜色计数 | v3 非正式空间草案清单（explicit-only 对照） | 固定 `formal_warning_output=false`、`vajont_used=false`；green 仍是项目规则状态，不是现场安全结论 |
+| `warning_operational_draft_v3/ootang_operational_run_manifest.json` | 保存 v3 双轴契约、实现源码指纹、输入/输出哈希及整体/局部颜色计数 | v3 非正式空间草案清单（保留产物；运行入口仅在 Git 历史） | 固定 `formal_warning_output=false`、`vajont_used=false`；green 仍是项目规则状态，不是现场安全结论 |
 | `warning_operational_draft_v3/ootang_operational_{thresholds,station_timeline,site_timeline}.csv` | 保存与 v2 相同的逐点指标/阈值，以及 `site_confirmed_*`、`local_max_candidate_*`、`local_attention_status` 双轴空间结果 | v3 非正式审计表 | 8 个 green 日仍保留局部 blue 关注；400 个未确认高候选不得并入 green，且 v3 不覆盖 v2 |
 | `warning_operational_draft_v3/ootang_v3_typical_days.{svg,pdf,png}` | 六个冻结语义代表日的逐点 interval/kinematic/`ΔV`、整体/局部双轴和 O1/O2/O3 支撑诊断 | v3 非正式规则解释图 | SVG 保留可编辑文字；未确认 site 显式为 `NC`；属于观测后示例，不是性能、提前量或正式预警图 |
 | `warning_operational_draft_v3/ootang_v3_typical_days_manifest.json` | 保存代表日规则配置、核心清单/CSV/渲染器指纹、所绘子集指纹及三个导出文件哈希 | v3 图件 provenance 清单 | 固定 `formal_warning_output=false`、`vajont_used=false`；核心实现指纹过期时拒绝绘图 |
