@@ -1,16 +1,16 @@
 # 藕塘滑坡阶段性结果与后续决策包
 
-> 更新日期：2026-08-11
+> 更新日期：2026-08-13
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
 > 方法依据：以[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)和指定 Word 论文为主；用户本人的藕塘毕业论文仅作参考
 > Vajont：本轮仅按用户要求完成现有文件的只读内容盘点；未启动数据适配、模型或实验，也未用于阈值选择或结果生成
 
-> 工程口径（2026-08-11）：v4 加速度扩展已完成并设为默认阶段。默认入口为 `features → convlstm → ootang-operational-v4`，v3 数值快照保留为 explicit-only 对照，入口 manifest 使用 schema 3；本次未启动 NGBoost 或 Vajont。
+> 工程口径（2026-08-13）：v4 加速度扩展是唯一可执行预警原型。默认入口为 `features → convlstm → ootang-operational-v4`，入口 manifest 使用 schema 3；旧 30 日 V0、旧融合及 v1/v2/v3 运行入口仅留在 Git 历史。本次未启动正式 NGBoost 或 Vajont。
 
 ## 1. 阶段结论
 
-藕塘案例已经达到导师要求的“先跑通”目标。`features → convlstm → ootang-operational-v4` 三阶段可重复执行，8 个测点均进入高程感知 ConvLSTM、逐测点区间/运动学/加速度三族判断和滑坡体级 v3 双轴空间融合，运行清单、逐时刻结果和图件均已生成。当前不需要因为拿不到原始 GNSS 而停止这条原型路线。
+藕塘案例已经达到导师要求的“先跑通”目标。`features → convlstm → ootang-operational-v4` 三阶段可重复执行，8 个测点均进入高程感知 ConvLSTM、逐测点区间/运动学/加速度三族判断和滑坡体级双轴空间融合（实现沿自早期 v3 规则，但当前仅由 v4 调用），运行清单、逐时刻结果和图件均已生成。当前不需要因为拿不到原始 GNSS 而停止这条原型路线。
 
 数据限制影响的是**结论强度**，不是“能否运行”。现有输入是公开包中的物化日序列，原始 GNSS 锚点及日值生成链不可取得；因此本案例可用于验证代码链、输出结构和规则可审计性，但不能证明模型在独立原始 GNSS 上具有确认性预测能力，也不能把当前阈值和颜色写成可直接部署的工程预警标准。
 
@@ -20,9 +20,9 @@
 | --- | --- | --- | --- |
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；已完成 fixed-120 三个滚动折 × 五个预设种子及全部逐日预测 | 属于物化日序列内部探索性诊断；早停与容量敏感性尚未重跑 | [`7 通道 fixed-120 审查`](ootang_convlstm_elevation_fixed120_review.md)、[`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
-| 模型解释分工 | 用户批准原型由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost+SHAP 负责候选模型依赖；遗留标签仅作探索性事件归因 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合；尚无导师验收记录 | [`shap_provenance.json`](../figures/shap/shap_provenance.json)、[`shap_stability_protocol.md`](shap_stability_protocol.md) |
+| 模型解释分工 | 导师确认由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost 回归+SHAP 负责候选模型依赖 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合，也不能单独证明物理因果主控 | [`回归 SHAP provenance`](../figures/shap/ngboost_regression_shap_provenance.json)、[`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) |
 | v4 三族逐点判断 | 区间、运动学（速度/切线角）和严格逐点加速度进入全部 4,112 条测点—时刻记录；raw `ΔV` 保留审计 | V0 是项目特有比较器；导师确认加速度沿用指定 Word 速度 `V0` 的相对结构，v4 以加速度自身 A0 量纲一致转置，不伪称 Word 有严格加速度表 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) |
-| 多测点空间融合 | v4 复用 v3，分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv)、[`v4 配置`](../config/ootang_operational_run.v4.draft.json) |
+| 多测点空间融合 | v4 使用双轴空间融合，分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv)、[`v4 配置`](../config/ootang_operational_run.v4.draft.json) |
 | 代表日审计 | v4 代表日显示 interval/velocity/acceleration/tangent/fused 证据、双轴等级和跨区支撑 | 属于观测后规则说明，不用于评价提前量或预警性能 | [`代表日诊断图`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_typical_days_manifest.json) |
 | 全时刻等级展示 | 覆盖 514 日 × 8 点候选等级，并同时显示滑坡体整体确认与局部最高双轴 | 400 个 `NC` 是空间佐证不足而非缺测；属于观测后状态审计 | [`完整时间线`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline_manifest.json) |
 | 位移—指标—等级联合展示 | 4×2 小多图逐点对齐 514 日累计位移、区间/速度/加速度/切线角和最终候选等级 | raw `ΔV` 仍只作审计；属于观测后联合诊断，不证明提前量 | [`联合诊断图`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic_manifest.json) |
@@ -50,7 +50,7 @@ confirmatory_evidence_gate = blocked
 formal_warning_output = false
 ```
 
-统一入口还会记录逐阶段输入/输出文件的路径、大小和 SHA-256，以及启动时工作树状态。v3 profile 锁定的 Wang 论文 PDF 仅是拓扑来源证据：本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并记录未核验状态，错误副本则拒绝运行；它不构成模型计算输入。v2 的既有清单可能早于该字段扩展，需按清单自身日期和提交解释。
+统一入口还会记录逐阶段输入/输出文件的路径、大小和 SHA-256，以及启动时工作树状态。v4 profile 锁定的 Wang 论文 PDF 仅是拓扑来源证据：本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并记录未核验状态，错误副本则拒绝运行；它不构成模型计算输入。
 
 这一状态表示导师要求的藕塘工程初跑已经完成，但不能把结果升级为独立原始 GNSS 上的确认性日预测、正式阈值或工程预警。详细数据血缘见[`藕塘数据血缘专家审查`](ootang_data_lineage_expert_review.md)。
 
@@ -62,9 +62,9 @@ formal_warning_output = false
 
 模型保持 7 日输入、1 日预测和 P10/P50/P90 三分位数。当前 7 通道 fixed-120 协议固定 `hidden_channels=16`、卷积核 3、学习率 `1e-3`，并完成三个 287 日非重叠扩展窗口测试折：2018-02-21—2018-12-04、2018-12-05—2019-09-17、2019-09-18—2020-06-30。每折训练历史末 20% 仅用于区间校准，测试段不参与模型、种子或参数选择。
 
-滚动 seed 0 和预设种子 `0,1,2,3,4` 的 15 个折—种子拟合均已完成，保存了 34,440 条 `seed × fold × date × station` 逐日预测；rolling seed 0 与 five-seed 中的 seed 0 逐值一致。运行对应提交为 `1e06629119e08b33ded2540a435e726c2d2da97a`。当前 7 通道尚未运行早停和容量敏感性；加入高程前的 6 通道历史诊断仍只作探索性版本对照，不能替代 7 通道复验或用于高程因果归因。预警 v3 继续使用其已冻结的运行输入，未用五种子结果重新选择阈值或规则。
+滚动 seed 0 和预设种子 `0,1,2,3,4` 的 15 个折—种子拟合均已完成，保存了 34,440 条 `seed × fold × date × station` 逐日预测；rolling seed 0 与 five-seed 中的 seed 0 逐值一致。运行对应提交为 `1e06629119e08b33ded2540a435e726c2d2da97a`。当前 7 通道尚未运行早停和容量敏感性；加入高程前的 6 通道历史诊断仍只作探索性版本对照，不能替代 7 通道复验或用于高程因果归因。预警 v4 继续使用其已冻结的运行输入，未用五种子结果重新选择阈值或规则。
 
-R3 的原型模型分工已由用户确认，并沿用其毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离式角色先例。当前项目对应为：ConvLSTM 单独输出 P10/P50/P90 并评价覆盖；独立 NGBoost+SHAP 分析候选模型依赖，遗留二分类标签只作探索性事件归因。这不是 ConvLSTM-SHAP，不能称为已确定物理主控因素；当前 NGBoost 的回归目标和遗留二分类 V0 目标也不是正式五级融合。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。该解释可用于先跑通藕塘，但尚无导师验收记录。
+R3 的模型分工已由导师确认，并沿用毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离式角色先例。当前项目对应为：ConvLSTM 单独输出 P10/P50/P90 并评价覆盖；独立 NGBoost 回归+SHAP 分析候选模型依赖。这不是 ConvLSTM-SHAP，不能称为已确定物理主控因素；该独立回归目标也不是正式五级融合。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。
 
 ### 4.2 四指标测点规则
 
@@ -72,10 +72,10 @@ R3 的原型模型分工已由用户确认，并沿用其毕业论文中“Light
 
 1. 观测位移相对预测分布的区间偏离状态；
 2. 逐日速度 `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`；
-3. 变形速率增量 `ΔV_i=v_i-v_{i-1}` 的负、近零、正状态；
+3. 严格逐点加速度 `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`；
 4. 基于速度比较器的改进切线角。
 
-速度与切线角属于同一运动学证据族，不能当作两个独立投票。测点完整信号写为“候选五色严重度 + `ΔV` 三态趋势 + 运动学一致性”：`ΔV` 的负/近零/正会改变 `trend_component`、`evidence_consistency_status`、`composite_warning_signal` 和融合理由，但不凭符号机械升降颜色。逐点输出同时保留四项状态、贡献指标、融合理由和不可评估原因。
+速度与切线角属于同一运动学证据族，不能当作两个独立投票；区间与加速度各为独立族，测点候选取三族最高等级。原始 `ΔV_i=v_i-v_{i-1}` 仍记录为过程审计，会进入 `transition_status` 和一致性说明，但不凭符号机械升降颜色。逐点输出同时保留四项状态、贡献指标、融合理由和不可评估原因。
 
 ### 4.3 v4 严格逐点加速度扩展
 
@@ -84,9 +84,9 @@ v4 在保留区间、速度/切线角运动学族和原始 `ΔV` 审计字段的
 
 导师后续确认加速度阈值也沿用指定 Word 的速度相对结构。因 Word 没有严格加速度阈值表，v4 将 `V/V0` 量纲一致地转为 `a/A0`，保留 `1×/5×/10×` 倍数，且将定性“约等于”操作化为 `A0±sigma_a`。这不等于现场验证；v4 同时显式绑定 v1 基础协议和 v2 加速度扩展协议的内容 SHA-256；核心及三类图件 manifest 均复核源码指纹、输入/输出哈希、行数、双协议哈希、`formal_warning_output=false` 和 `vajont_used=false`。
 
-### 4.4 滑坡体 v3 双轴空间规则（v4 复用）
+### 4.4 滑坡体双轴空间规则（当前 v4 使用）
 
-v3 把“滑坡体整体确认等级”和“局部最高候选等级”分开：
+当前实现把“滑坡体整体确认等级”和“局部最高候选等级”分开；该空间逻辑最初形成于 v3 草案，但当前不再存在 v3 运行入口：
 
 - 所有整体颜色首先要求至少 3 个可评估测点，并覆盖 O1、O2、O3；
 - blue 及以上整体状态还要求至少 2 个测点、至少 2 个空间分区提供相应支撑；
@@ -145,15 +145,15 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 
 指定 Word 论文要求以 MVIF 趋势项的初始稳定斜率确定逐测点基准速度，并按 `V0=MAX(1.5V, V+2σ)` 建立速度框架。当前输入上的严格 MVIF 拟合无法稳定识别有限 `t_f`，因此项目没有伪造一个“论文同款 MVIF V0”。
 
-为先跑通藕塘，v3 使用的是明确标记为 `raw_velocity_kmeans_comparator` 的项目特有比较器，并在配置和结果中保留这一来源。它可以支持工程流程演示，但不能在论文中不加限定地称为指定 Word 方法的严格复现。若最终数据集具备可解释稳定段，应重新冻结逐点稳定段、V、σ、V0、blue 边界、`ΔV≈0` 容差和切线角参数，再进行确认性验证。
+为先跑通藕塘，v4 使用的是明确标记为 `raw_velocity_kmeans_comparator` 的项目特有比较器，并在配置和结果中保留这一来源。它可以支持工程流程演示，但不能在论文中不加限定地称为指定 Word 方法的严格复现。若最终数据集具备可解释稳定段，应重新冻结逐点稳定段、V、σ、V0、blue 边界、加速度基线和切线角参数，再进行确认性验证。
 
 ## 8. 当前可以与不可以写入论文的结论
 
 ### 可以写入阶段性方法或内部结果
 
 - 已建立包含静态高程先验的 7 通道 ConvLSTM，并完成 8 测点 fixed-120 三折 × 五种子内部诊断；
-- 已建立区间、速度、`ΔV`、改进切线角的透明逐点规则输出；
-- 已建立局部候选与滑坡体整体确认分离的 v3 双轴空间融合；
+- 已建立区间、速度、加速度、改进切线角的透明逐点规则输出；
+- 已建立局部候选与滑坡体整体确认分离的 v4 双轴空间融合；
 - fixed-120 结果在 fold 1/2 均劣于持久性基线，在 fold 3 仅小幅优于基线，跨时期预测与区间校准均不稳定；
 - 与历史 6 通道工件的探索性对照没有形成一致的折次和种子优势，不能据此归因于高程；
 - 现有结果适合用于方法跑通、输出设计和局限性讨论。
@@ -165,11 +165,11 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 - 不能声称高程造成预测性能改善或具有因果作用；
 - 不能把当前比较器写成指定 Word 的严格 MVIF V0；
 - 不能把代表日或规则输出写成真实事件召回、误报或提前量；
-- 不能把 v3 颜色写成已经通过现场验证的正式预警等级。
+- 不能把 v4 颜色写成已经通过现场验证的正式预警等级。
 
 ## 9. 后续技术决策
 
-当前推荐冻结 v3 和 7 通道 fixed-120 结果，不再根据已经查看的外层测试折调模型或规则。7 通道早停与容量敏感性尚未完成；若后续确需开展，应先冻结只使用训练内部时序切分的选择协议，且不得覆盖本轮 fixed-120 结果或使用外层测试折选参。下一步重点是决定最终论文的数据角色：
+当前推荐冻结 v4 和 7 通道 fixed-120 结果，不再根据已经查看的外层测试折调模型或规则。7 通道早停与容量敏感性尚未完成；若后续确需开展，应先冻结只使用训练内部时序切分的选择协议，且不得覆盖本轮 fixed-120 结果或使用外层测试折选参。正式 NGBoost 的前提是独立五级结局标签，不能用 v4 规则输出自训练。下一步重点是决定最终论文的数据角色：
 
 1. **藕塘保留为原型案例**：使用本文件的谨慎口径，重点展示方法链、空间双轴输出和局限性；
 2. **选择可追溯的新主数据集**：先审计原始观测、坐标、时间生成链和事件标签，再重新冻结切分、稳定段、V0、阈值和验证协议；
@@ -183,14 +183,14 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 | 导师意见、来源优先级和执行边界 | [`advisor_review_action_plan.md`](advisor_review_action_plan.md) |
 | 数据来源与确认性证据门禁 | [`ootang_data_lineage_expert_review.md`](ootang_data_lineage_expert_review.md) |
 | 高程可信性、400 日成因和空间规则审查 | [`ootang_elevation_warning_expert_review.md`](ootang_elevation_warning_expert_review.md) |
-| v1/v2/v3 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
+| 当前 v4 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
 | ConvLSTM 运行来源、切分和输出哈希 | [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
-| v3 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v3/ootang_operational_run_manifest.json) |
+| v4 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v4/ootang_operational_run_manifest.json) |
 | schema 3 最小链路运行记录（可能为历史快照） | [`latest_run.json`](../figures/pipeline/latest_run.json) |
 | 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
-| 六个代表日规则图 | [`ootang_v3_typical_days.svg`](../figures/warning_operational_draft_v3/ootang_v3_typical_days.svg) |
-| 514 日完整预警状态图 | [`ootang_v3_full_warning_timeline.svg`](../figures/warning_operational_draft_v3/ootang_v3_full_warning_timeline.svg) |
-| 8 点位移—四指标—最终等级联合图 | [`ootang_v3_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v3/ootang_v3_all_station_combined_diagnostic.svg) |
+| 代表日规则图 | [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg) |
+| 514 日完整预警状态图 | [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) |
+| 8 点位移—四指标—最终等级联合图 | [`ootang_v4_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg) |
 | 7 通道 fixed-120 协议与科学审查 | [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md) |
 | 7 通道 rolling seed 0 产物与血缘 | [`rolling manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json) |
 | 7 通道三折 × 五种子产物与血缘 | [`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |

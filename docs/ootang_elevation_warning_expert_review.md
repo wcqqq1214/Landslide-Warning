@@ -184,7 +184,7 @@ Wang 等（2025）的藕塘研究也报告不同分区的主控因素不同：�
 
 ### 7.2 P0：有效测点门禁没有作用于非绿色分支（已修复）
 
-[`operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py) 第 365–367 行只计算 `coverage_complete`，但第 396–487 行在 yellow+ 和 blue 返回前没有检查它。合成反例为：
+当时的 v2 融合实现（现仅在 Git 历史）第 365–367 行只计算 `coverage_complete`，但第 396–487 行在 yellow+ 和 blue 返回前没有检查它。合成反例为：
 
 ```text
 仅 MJ9(O1) 与 ATU4(O2) 两点有效且均为 yellow

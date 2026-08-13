@@ -1,18 +1,26 @@
 # 项目工作进度
 
-> 更新日期：2026-08-11。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+> 更新日期：2026-08-13。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-13 当前代码树与解释支路同步
+
+- 当前可执行最小链严格为 `features → convlstm → ootang-operational-v4`；旧 30 日 `V0` 标签、旧融合以及 v1/v2/v3 运行入口和对应测试已从工作树移除，仅保留在 Git 历史。
+- 独立解释支路改为 NGBoost 回归 + SHAP：目标是下一观测位移增量，输出候选模型依赖；它不是 ConvLSTM-SHAP、因果主控因素识别或正式五级预警分类。
+- v4 数值产物重跑后仍为 4,112 条测点记录、514 条滑坡体记录和 8 行阈值；加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`。代码清理只更新来源指纹和解释产物，不改这些 v4 数值。
+- 正式 NGBoost 未启动：缺少独立五级结局标签。不能把当前四指标规则输出作为标签，再以同一输入训练模型并称为正式验证。
+- 本节之后的 v1/v2/v3、旧 SHAP/分类和历史测试数量均为时间戳所示的历史记录，不描述当前入口。
 
 ## 2026-08-11 v4 严格逐点加速度扩展收口（阈值来源于 2026-08-13 澄清）
 
 - 导师确认逐点导数方法及“相同阈值”。核对指定 Word 后，v4 沿用的是其速度 `V0` 基线形式和 `1×/5×/10×` 相对结构，而非不存在的严格加速度阈值表：以加速度自身 `A0` 量纲一致转置，`a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，真实 `dt`，单位 `mm/day²`，三点 warmup；raw `delta_v` 仍只作审计。
 - fit-only 稳定段阈值固定为 `A=mean(a)`、`sigma_a=sample std(ddof=1)`、`A0=max(1.5A,A+2sigma_a)`；`A0<=0` 或非有限时 fail-closed。五级为 green `<A0-sigma_a`、blue `[A0-sigma_a,A0+sigma_a]`、yellow `(A0+sigma_a,5A0)`、orange `[5A0,10A0)`、red `>=10A0`。
-- v4 复用 v3 O1/O2/O3 双轴空间规则；速度/切线角仍是同一运动学 family，加速度独立计票。8 点、514 日输出已复算：测点加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`，滑坡体整体 green/blue/yellow/orange/red=`8/48/31/9/18`，`valid=114`、`candidate_not_site_confirmed=400`。
-- v4 核心与图件 manifest 均绑定源码指纹、输出哈希与行数、v1 基础协议及 v2 扩展协议双哈希，并保留 `formal_warning_output=false`、`vajont_used=false`。默认入口现为 `features → convlstm → ootang-operational-v4`；v3 数值快照为 explicit-only 对照。NGBoost 正式预警模型仍未完成，Vajont 未启动。
+- v4 使用 O1/O2/O3 双轴空间规则（实现最初形成于 v3 草案，但当前只由 v4 调用）；速度/切线角仍是同一运动学 family，加速度独立计票。8 点、514 日输出已复算：测点加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`，滑坡体整体 green/blue/yellow/orange/red=`8/48/31/9/18`，`valid=114`、`candidate_not_site_confirmed=400`。
+- v4 核心与图件 manifest 均绑定源码指纹、输出哈希与行数、v1 基础协议及 v2 扩展协议双哈希，并保留 `formal_warning_output=false`、`vajont_used=false`。默认入口现为 `features → convlstm → ootang-operational-v4`；v3 数值仅为保留的历史快照，不再有可执行对照入口。NGBoost 正式预警模型仍未完成，Vajont 未启动。
 - 本轮不改变既有 v3 核心数值 CSV；共享 runner 源码哈希变化仅刷新 v3 manifest/图件 provenance，未将 v3 数值混入 v4 阈值。
 
 ## 2026-08-08 代码库审查与工程收口
 
-- 已完成整体 code-review，并将入口收敛为默认 `features → convlstm → ootang-operational-v4`；v3 及其余阶段继续保留为 explicit-only，历史 MVIF、6 通道和旧预警产物不删除、不混入当前主结果。
+- 这是 2026-08-08 的历史工程收口记录：当时 v3 及其余阶段仍为 explicit-only。2026-08-13 后，旧运行入口与专属代码已移至 Git 历史；保留的 MVIF、6 通道和旧预警产物仍不混入当前主结果。
 - 44 个测试文件已纳入 Git。当前全量门禁为 `361 passed`、`52 subtests passed`；Ruff、Python 编译检查和 `main.py --dry-run` 均通过。该门禁证明工程快照可复核，不证明藕塘数据具备确认性证据或正式预警有效性。
 - 统一入口清单升级为 schema 3，逐阶段保存输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`latest_run.json` 及其他旧清单仍可能是历史快照，引用时必须核对其提交与源码哈希。
 - v2/v3 配置锁定的 Wang 论文 PDF 只作为空间拓扑来源证据，不是计算输入；本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并在运行清单记录未核验状态，错误副本会 fail-closed。v2 历史清单未因本次代码审查统一刷新，不应据此声称所有历史字段均已更新。

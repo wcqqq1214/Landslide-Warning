@@ -1,5 +1,7 @@
 # 藕塘高程感知初步跑通记录
 
+> 历史记录说明（2026-08-13）：本文件记录高程原型初跑时的 v2 运行命令和产物。当前可执行预警入口已收敛为 `ootang-operational-v4`；旧 v2 命令仅能通过 Git 历史复现。
+
 > 运行日期：2026-07-30<br>
 > 状态：`prototype_internal_not_confirmatory`<br>
 > 正式预警：`false`<br>

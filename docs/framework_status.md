@@ -10,7 +10,7 @@
 >
 > **fixed-120 诊断更新（2026-08-04）**：当前 7 通道版本已经按冻结协议完成三个扩展窗口折和五随机种子诊断；历史根目录的 6 通道文件仍保留为旧版本。7 通道早停和容量敏感性没有运行，且本轮结果只支持内部探索性诊断，不解除数据血缘、正式阈值或外部泛化门禁。
 
-> **工程收口（2026-08-11）**：默认入口已固定为 `features → convlstm → ootang-operational-v4`，v3 保留为显式复现入口，其余阶段 explicit-only；全量门禁为 `367 tests passed`，并已通过 Ruff、编译、`main.py --dry-run` 和 `git diff --check`。v4 加速度五级规则仍是 prototype/non-formal，schema 3 入口清单记录逐阶段输入/输出指纹及工作树状态。该更新只解决可复现性和文档口径，不把原型结果升级为正式预警，也没有启动 Vajont。
+> **当前树同步（2026-08-13）**：默认入口为 `features → convlstm → ootang-operational-v4`。旧 30 日 `V0`、旧融合及 v1/v2/v3 运行入口已经从当前工作树移除，仅在 Git 历史中保留；v4 当前使用中性命名的双轴空间融合模块。独立解释改为 NGBoost 回归 + SHAP，不再保留旧同日 V0 分类支路。v4 仍是 prototype/non-formal，正式 NGBoost 仍因缺少独立五级结局标签而未实现；本更新不启动 Vajont，也不解除数据门禁。
 
 历史工程验收：新增 `shap-stability` 后曾有十三阶段统一入口 13/13 通过、65/65 个产物哈希的记录（`figures/pipeline/latest_run.json`）；`figures/pipeline/shap_stability_run.json` 同样仅记录 2026-06-23 的历史单阶段运行。2026-07-18 的 `ΔV` 对齐 SHAP 已按单阶段脚本重算并写入新的溯源/测点分层产物，尚未将其表述为新的完整管线验收。工程通过只证明架构可端到端执行，不等同于阈值、模型或预警效果已获确认。
 

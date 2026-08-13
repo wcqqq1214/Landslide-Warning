@@ -4,7 +4,18 @@
 
 > `convlstm/` 根目录下的 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 与 `capacity_*` 均是加入高程前的 6 输入通道历史快照。当前 7 输入通道的 fixed120 滚动验证与五种子诊断只写入下述版本化 `runs/displacement_elevation_exog_v1/fixed120_v1/` 目录，不得跨目录混用。7 通道早停与容量敏感性尚未运行，Vajont 也未启动。
 
-> **工程口径（2026-08-11）**：默认入口运行 `features → convlstm → ootang-operational-v4`；v3 为 explicit-only 数值对照，其余历史复现和诊断阶段必须显式选择。schema 3 管线清单保存逐阶段输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`pipeline/latest_run.json` 可能是历史快照，不能脱离其中的提交和源码指纹解释；v4 仍为非正式原型，未读取或启动 Vajont。
+> **当前代码树（2026-08-13）**：默认入口为 `features → convlstm → ootang-operational-v4`。当前可运行的解释支路仅为独立 NGBoost 回归 + SHAP；旧 30 日 `V0`、旧分类、旧融合及 v1/v2/v3 运行脚本已移出工作树，仅可通过 Git 历史恢复。下表中带有 `v1`、`v2`、`v3` 或 `legacy` 的条目是保留的历史产物快照，不能据此推断当前仍有相应运行入口。schema 3 管线清单保存逐阶段输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`pipeline/latest_run.json` 可能是历史快照，不能脱离其中的提交和源码指纹解释；v4 仍为非正式原型，未读取或启动 Vajont。
+
+## 当前独立 NGBoost 回归 SHAP 产物
+
+下列文件由当前 `ngboost-shap` 阶段生成。目标为相邻观测的位移增量，只用于描述候选模型依赖；不解释 ConvLSTM、不推断物理因果，也不是正式五级预警分类器。跨折稳定性和删组诊断未纳入当前精简原型。
+
+| 文件 | 作用 | 边界 |
+| --- | --- | --- |
+| `shap/ngboost_regression_metrics.csv` | 单一时序留出下的独立 NGBoost 回归指标 | 仅为模型依赖分析的质量摘要，不等同预警性能 |
+| `shap/ngboost_regression_shap_importance.csv` | 留出样本的 mean absolute permutation-SHAP 排序 | 相关特征会分摊贡献，不能解释为唯一主控因素 |
+| `shap/ngboost_regression_shap.png` | 独立 NGBoost 回归 SHAP 可视化 | 不是 ConvLSTM-SHAP 图 |
+| `shap/ngboost_regression_shap_provenance.json` | 输入、模型和输出指纹 | 用于重建与审计，不解除数据血缘门禁 |
 
 ## 7 通道 fixed120 版本化诊断
 
@@ -128,4 +139,4 @@
 - 三个阶段原先各自保存的 `v0_thresholds.csv` 内容完全相同，现合并为 `thresholds/v0_thresholds.csv`。
 - 其余 CSV 承担不同任务，不是重复文件。需要清理空间时可以整体删除并按 README 的运行顺序重建，但不要只删除某一张支撑表后继续引用旧结果。
 - 如果未来 SHAP、NGBoost 和 onset 使用不同的 V0 参数，必须按分析范围分别命名输出，不能继续覆盖公共阈值表。
-- 历史脚本的 figures 输出目录会同时写入 `legacy_warning_manifest.json`，使 PNG 等非表格产物也可追溯为非正式；`models/ngboost.pkl` 配套同目录的 `ngboost_legacy_warning_manifest.json`。已存档 CSV 若早于上述字段或 sidecar，仍作为历史快照保留，其身份以 [`docs/legacy_warning_artifact_inventory.md`](../docs/legacy_warning_artifact_inventory.md) 为准。
+- 已存档的旧 CSV、PNG 与模型副本仍作为历史快照保留，但其生成脚本、专属测试和旧清单已从当前工作树移除；若需恢复其生成语义或路径对应关系，应查阅 Git 历史，而不是把它们视为当前方法的一部分。

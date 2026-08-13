@@ -2,13 +2,15 @@
 
 > 整理日期：2026-07-16
 >
-> 最近更新：2026-08-11
+> 最近更新：2026-08-13
 >
 > 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
-> 状态：执行工作稿；当前主线为藕塘滑坡重算，Vajont 降为需另行授权并冻结角色的后续候选案例
+> 状态：当前主线为藕塘 v4 原型；Vajont 降为需另行授权并冻结角色的后续候选案例
 >
 > 本文档以任务与验收标准为主；只有明确标为“执行记录”或已勾选完成的条目代表相应工作已经落地，且其证据强度仍受数据与科研门禁约束。
+
+> **当前代码树同步（2026-08-13）**：当前可执行路线只保留 `features → convlstm → ootang-operational-v4`、独立 NGBoost 回归 SHAP 及 ConvLSTM 诊断。旧 30 日 `V0` 标签、旧融合、旧 v1/v2/v3 运行入口和对应测试已从工作树删除，仅在 Git 历史中保留。本文件后续出现的旧脚本名、v1/v2/v3 路径和旧数值属于执行历史，不能作为当前代码契约；当前实现以 [`design.md`](design.md)、[`ootang_operational_run.md`](ootang_operational_run.md) 和 [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) 为准。
 
 ## 0. 方法依据与文档优先级
 
@@ -33,8 +35,8 @@
 
 1. 统一速度、变形速率增量 `ΔV` 和改进切线角的定义与单位；
 2. 补全 ConvLSTM 全测点、全时间段结果，并明确 SHAP 的解释对象；
-3. 将预警体系改为“区间、速度、变形速率增量 `ΔV`、改进切线角”四指标并列输入；
-4. 以五级透明规则融合为当前**非正式原型实施路径和拟定正式方法方向**，逐时刻输出单测点和多测点综合状态；只有取得独立标签后，才将 NGBoost 作为另行验证的监督分支；
+3. 将预警体系改为“区间、速度、加速度、改进切线角”四指标并列输入；原始 `ΔV` 仅保留为过程审计字段；
+4. 以五级透明规则融合为当前**非正式原型实施路径**，逐时刻输出单测点和多测点综合状态；只有取得独立标签后，才另建并验证 NGBoost 监督分支；
 5. 先完成藕塘滑坡全链路重算；Vajont `10d` 数据仅保留为后续候选案例，不阻塞本轮主线，获准后再冻结其外部验证、补充案例或方法演示角色。
 
 这会影响特征工程、阈值与标签、模型输入、类别编码、评估指标、图表、管线产物和论文表述。旧结果不能在更换定义后继续沿用，必须在协议确认后整体重算。
@@ -70,6 +72,12 @@ vajont_used = false
 
 v4 将加速度作为独立 evidence family，速度与切线角合成一个 kinematic family，原始 `delta_v` 只作审计字段；滑坡体复用 v3 双轴 O1/O2/O3 规则。v4 仍为 `operational_draft_not_formal`，NGBoost 未在本任务完成，Vajont 未读取/启动。v1 基础协议与 v2 加速度扩展协议的内容 SHA-256 必须同时写入核心及图件 manifest。
 
+### 当前解释与正式 NGBoost 边界（2026-08-13）
+
+导师确认的 R3 分工已落实为两条独立支路：ConvLSTM 输出全测点 `P10/P50/P90` 并评价区间覆盖；独立 NGBoost **回归** + SHAP 只描述候选模型依赖。旧“当日 30 日 V0 状态分类”代码和产物不再是当前路线的一部分。
+
+正式五级 NGBoost 预警模型仍不能诚实地完成，原因不是工程无法训练，而是尚没有独立、可核验的五级结局标签。若把 v4 的区间、速度、加速度、切线角规则输出当标签，再以同一批输入训练 NGBoost，只是在拟合既有规则，构成标签泄漏/循环验证，不能称为正式预警。后续必须由导师或数据条件确定独立标签来源（现场事件/专家记录优先；否则预先冻结未来窗口的位移结局定义、空间粒度、时间/事件验证和样本量门槛），再另建正式 NGBoost 分支。
+
 ### 决策状态（2026-07-16）
 
 本文中的 **P0** 表示“正式重算结果发布前必须完成”，**不等于仍需向导师重复确认**。为避免混淆，后续事项统一分为三类：
@@ -81,9 +89,9 @@ v4 将加速度作为独立 evidence family，速度与切线角合成一个 kin
 | 状态 | 已确认内容或待办 | 开发处理 |
 | --- | --- | --- |
 | 已确认 | R1：逐点速度为 `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})` | 立即替换旧 30 日位移增量“速率”，并重算其下游产物 |
-| 用户已确认；有其毕业论文方法先例 | R3：ConvLSTM 单独用于位移概率预测、`P10/P50/P90` 及覆盖评价；独立 NGBoost+SHAP 用于候选模型依赖分析，其遗留标签只作探索性事件归因 | 该分工沿用用户毕业论文中“LightGBM+SHAP 解释与 LSTM 概率预测分离”的角色先例；当前 SHAP 不是 ConvLSTM-SHAP，必须写清 NGBoost 的解释对象、目标、样本和限制，且不将其遗留目标写成正式五级融合。它是用户批准的 R3 原型解释，不等同于已有导师验收 |
-| 已确认 | R4/R7：区间、速度、`ΔV`、改进切线角四指标并列；`ΔV_i=v_i-v_{i-1}`；green 为正常状态，整体采用五级颜色；2026-08-11 v4 另按导师确认增加严格逐点加速度 | v1/v2/v3 保留 `ΔV` 三态审计；v4 将加速度作为独立 family，删除主副指标和“只能升级”逻辑 |
-| 已确认 | R5：本轮原型路径采用不依赖监督标签的透明规则融合，并作为拟定正式方法方向 | 不以规则自产生的等级训练 NGBoost；独立标签出现后再单列监督验证；正式发布仍受协议冻结与证据门禁约束 |
+| 导师已确认；有毕业论文方法先例 | R3：ConvLSTM 单独用于位移概率预测、`P10/P50/P90` 及覆盖评价；独立 NGBoost 回归+SHAP 用于候选模型依赖分析 | 该分工沿用毕业论文中“LightGBM+SHAP 解释与 LSTM 概率预测分离”的角色先例；当前 SHAP 不是 ConvLSTM-SHAP，必须写清 NGBoost 的解释对象、目标、样本和限制，不将其写成正式五级融合或物理因果主控证据。 |
+| 已确认 | R4/R7：区间、速度、加速度、改进切线角四指标并列；green 为正常状态，整体采用五级颜色 | v4 将速度与切线角合为一个运动学 family、加速度为独立 family，原始 `ΔV_i=v_i-v_{i-1}` 仅作审计；删除主副指标和“只能升级”逻辑 |
+| 已确认 | R5：本轮原型路径采用不依赖监督标签的透明规则融合；正式 NGBoost 必须另建独立监督验证分支 | 不以规则自产生的等级训练 NGBoost；独立标签、时间/事件验证和样本量门槛冻结后再单列正式模型；正式发布仍受协议冻结与证据门禁约束 |
 | 已确认 | R10：采用“测点级判断 + 滑坡体级综合判断”两层输出 | 8 个藕塘测点均参与，逐时刻记录贡献测点与综合理由 |
 | 已确认 | 先重算藕塘；Vajont 为 P2 后续候选案例 | Vajont 不阻塞本轮，也不参与藕塘规则选择；未获得用户明确允许前不得启动，获准后先冻结外部验证、补充案例或方法演示角色 |
 | 已确认 | 区间指标采用**逐时刻区间偏离状态识别**：以预测时已发布的 `U_t` 分布和随后观测到的 `U_t` 进行分级 | 输出名称使用“区间偏离状态预警/状态识别”；不把它表述为对 `t+h` 的严格前瞻预警或报告提前量 |
@@ -99,9 +107,9 @@ v4 将加速度作为独立 evidence family，速度与切线角合成一个 kin
 
 | 对应项 | `review.md` 原始表述 | 后续确认或决策 | 当前执行口径 |
 | --- | --- | --- | --- |
-| R3 | ConvLSTM+SHAP 主要用于确定置信区间覆盖程度及主控因素 | 用户确认采用其毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离角色 | 当前项目中 ConvLSTM 单独输出 `P10/P50/P90` 并评价覆盖；独立 NGBoost+SHAP 分析候选模型依赖，遗留标签仅作探索性事件归因；不写成 ConvLSTM-SHAP，也不写成对正式五级融合的解释 |
-| R4/R7 | 使用“加速度”作为指标并设置等级 | 历史 v1/v2/v3 按参考论文术语采用 `ΔV` 三态；2026-08-11 v4 按导师确认恢复严格逐点加速度，后续确认用 Word 速度 `V0` 的相对结构 | v1/v2/v3 以 `ΔV_i=v_i-v_{i-1}` 作过程趋势；v4 使用 `a_i=(v_i-v_{i-1})/Δt_i`、`A0=max(1.5A,A+2sigma_a)` 的独立五级 family，以 `a/A0` 量纲一致复用 `1×/5×/10×`，不把它写成 Word 原有加速度阈值 |
-| R5 | 采用 NGBoost 对预警指标分类训练 | 用户允许改为不依赖监督标签的规则融合 | 本轮采用非正式透明规则原型，并将其作为拟定正式方法方向；获得独立标签后才另设 NGBoost 监督验证分支 |
+| R3 | ConvLSTM+SHAP 主要用于确定置信区间覆盖程度及主控因素 | 用户确认采用其毕业论文中“LightGBM+SHAP 负责特征解释，LSTM 负责概率预测”的分离角色 | 当前项目中 ConvLSTM 单独输出 `P10/P50/P90` 并评价覆盖；独立 NGBoost 回归+SHAP 分析候选模型依赖；不写成 ConvLSTM-SHAP，也不写成对正式五级融合的解释 |
+| R4/R7 | 使用“加速度”作为指标并设置等级 | 2026-08-11 导师确认严格逐点加速度，后续确认用 Word 速度 `V0` 的相对结构 | v4 使用 `a_i=(v_i-v_{i-1})/Δt_i`、`A0=max(1.5A,A+2sigma_a)` 的独立五级 family，以 `a/A0` 量纲一致复用 `1×/5×/10×`；原始 `ΔV` 仅作审计，不把 A0 表述为 Word 原有加速度阈值 |
+| R5 | 采用 NGBoost 对预警指标分类训练 | 用户允许当前先采用不依赖监督标签的规则融合 | 本轮采用非正式透明规则原型；获得独立标签后才另设 NGBoost 正式监督验证分支，不能以规则自标签替代 |
 | R6 | 使用 Vajont `10d` 数据增加案例 | 导师补充为先重算藕塘、降低 Vajont 优先级；用户进一步要求 Vajont 启动必须获得其明确允许 | Vajont 保留为 P2，不阻塞藕塘；未获用户允许不得启动，获准后也不得反向调整藕塘方案 |
 | R8 | 显示每个时刻的红橙黄蓝预警信号 | 后续确认五级颜色，green 为正常状态 | 每个有效时刻输出 green/blue/yellow/orange/red 或明确的无效/暖启动状态 |
 | 区间指标补充 | 原意见要求将置信区间作为预警指标，但未明确其时间语义和五级映射 | 用户接受逐时刻区间偏离状态识别方案，并选择直接参考指定论文阈值 | 预测先发布、观测后分级；对有效已发布预测直接采用图 5-1 的 `μ_t/σ_t` 五级区域，fit 行不着色；质量诊断不虚构通过门槛 |
@@ -128,21 +136,21 @@ R3 中的毕业论文只用于支持“概率预测模型与独立 SHAP 解释�
 | --- | --- | --- | --- | --- | --- |
 | R1 | 将 `Vt = Ut - Ut-30` 改为逐点速度 `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})` | 方法 / P0 | 已确认 | 统一速度公式、单位和缺测处理；重算所有依赖旧 30 日量的阈值、等级和结果 | 公式、单位、代码和派生 CSV 一致；非等间隔数据按真实 `Δt` 计算 |
 | R2 | ConvLSTM 展示所有测点，并同时显示训练段和预测段 | 结果完整性 / P1 | 已确认 | 将 3 测点测试段图改为全测点全时间轴图；标注 fit、calibration、test/prediction 边界 | 藕塘 8 个测点全部出现；图和逐时刻预测 CSV 可互相核对 |
-| R3 | 明确 ConvLSTM 与 SHAP 分别用于区间覆盖和主控因素分析 | 方法解释 / P0 | 用户已确认原型解释；有毕业论文方法先例 | ConvLSTM 单独输出 `P10/P50/P90` 并评价覆盖；独立 NGBoost+SHAP 分析候选模型依赖，遗留标签仅作探索性事件归因；写清 SHAP 的模型、目标、样本和输出 | 不将当前 SHAP 写成 ConvLSTM 的直接解释、因果证据或已确认的物理主控因素；该替代解释尚无导师验收记录，但不阻塞藕塘原型跑通 |
-| R4 | 采用区间、速度、变形速率增量 `ΔV`、改进切线角四项预警指标；v4 另增加严格逐点加速度扩展 | 方法 / P0 | 已确认 | v1/v2/v3 保留四指标透明审计；v4 增加加速度独立 family，删除“V0 主判、切线角副判/升级复核”逻辑 | v4 每时刻可追溯 interval、velocity/tangent、acceleration 三族及融合理由；不存在只升级不降级的主副规则 |
+| R3 | 明确 ConvLSTM 与 SHAP 分别用于区间覆盖和主控因素分析 | 方法解释 / P0 | 用户已确认原型解释；有毕业论文方法先例 | ConvLSTM 单独输出 `P10/P50/P90` 并评价覆盖；独立 NGBoost 回归+SHAP 分析下一观测位移增量的候选模型依赖；写清 SHAP 的模型、目标、样本和输出 | 不将当前 SHAP 写成 ConvLSTM 的直接解释、因果证据或已确认的物理主控因素；该替代解释尚无导师验收记录，但不阻塞藕塘原型跑通 |
+| R4 | 采用区间、速度、加速度、改进切线角四项预警指标 | 方法 / P0 | 已确认 | v4 将四项逐时刻物化；速度与切线角组成一个运动学 family，加速度为独立 family，原始 `ΔV` 只作审计；删除“V0 主判、切线角副判/升级复核”逻辑 | v4 每时刻可追溯 interval、velocity/tangent、acceleration 三族及融合理由；不存在只升级不降级的主副规则 |
 | R5 | 原要求为 NGBoost 分类训练 | 规则融合 / P1 | 已调整并确认 | 本轮以透明规则原型、五级总体状态替代监督 NGBoost；v4 的加速度是独立 family；若后续获得独立标签，再单列 NGBoost 对照/验证 | 每时刻均可追溯三族等级、raw `ΔV`、最终等级和融合理由；正式发布前仍须冻结协议，本轮不将规则融合伪称为独立监督分类 |
 | R6 | 增加 Vajont 案例，使用工作簿 `10d` 数据 | 外部案例 / P2（延后） | 已延期；待用户授权 | 保留数据与方法审计记录；只有在藕塘重算完成且用户明确允许启动后，才建立 Vajont 数据适配、质量检查和独立结果目录 | 本轮只记录依赖、边界和启动门禁；获准启用后保证输入来源、列映射、日期范围、缺测和切分可追溯 |
-| R7 | 为加速度设置预警等级，并参考指定论文 | 方法 / P0 | 已调整并确认 | v1/v2/v3 按论文术语采用 `ΔV` 三态；v4 按导师确认逐点导数方法，并以自身 A0 量纲一致复用 Word 速度 V0 的五级相对结构 | 加速度公式、单位、A0 基线、三点暖启动、失效策略及其在 v4 `F` 中的参与方式写入 v2 扩展协议；明确 Word 未给严格加速度表，现场独立验证仍未完成 |
-| R8 | 显示每个时刻对应的预警等级和红橙黄蓝信号 | 输出 / P1 | 已确认 | 输出逐时刻区间/速度/切线角五级、`ΔV` 三态趋势、最终五级状态、颜色和触发证据；图中用色带或阶梯线展示完整时间序列 | 每个有效时刻均有 green/blue/yellow/orange/red 中一个总体状态及可追溯的融合理由；无静默缺行 |
+| R7 | 为加速度设置预警等级，并参考指定论文 | 方法 / P0 | 已调整并确认 | v4 按导师确认的逐点导数方法，以自身 A0 量纲一致复用 Word 速度 V0 的五级相对结构 | 加速度公式、单位、A0 基线、三点暖启动、失效策略及其在 v4 融合中的参与方式写入 v2 扩展协议；明确 Word 未给藕塘的严格加速度数值表，现场独立验证仍未完成 |
+| R8 | 显示每个时刻对应的预警等级和红橙黄蓝信号 | 输出 / P1 | 已确认 | 输出逐时刻区间、速度、加速度、切线角五级、`ΔV` 三态审计、测点候选、滑坡体整体确认/局部最高候选和触发证据；图中用色带或阶梯线展示完整时间序列 | 4,112 条有效测点记录均有 green/blue/yellow/orange/red 候选及可追溯理由；514 日滑坡体记录明确整体确认色或 `candidate_not_site_confirmed`，无静默缺行 |
 | R9 | 清楚介绍研究方法，并展示预测、SHAP 和逐时刻预警结果 | 论文与展示 / P2 | 已确认 | 重写方法流程、预测结果、解释结果和预警结果章节；所有结论绑定图表/CSV | 方法可复现；预测、SHAP、单点与综合预警均有对应图表和限制说明 |
 | R10 | 利用多监测点综合预警，而不是只看一条线 | 方法 / P1 | 已确认 | 先对藕塘建立“逐测点判断 + 滑坡体级综合判断”两层输出；时间切分按日期分组，避免同日测点跨集合泄漏 | 本轮藕塘 8 点全部参与，综合结果保留各测点贡献和异常点数量；Vajont 后续启用时沿用同一输出结构 |
 
-## 3. 已核对的当前实现与主要差距
+## 3. 已核对的旧实现与主要差距（历史记录）
 
 ### 3.1 速度定义并不统一
 
-- `code/features/build_features.py:56-60` 已按日差分计算速度和加速度：`a_i=(v_i-v_{i-1})/Δt_i`。对当前连续日数据而言，速度实现与导师提出的逐点速度一致；但现有加速度不能直接改名为本轮确认采用的 `ΔV`。
-- `code/warning/warning_thresholds.py:75-89` 仍使用 `U_t-U_{t-30}` 构造所谓 30 日“速率”，本质是 30 日位移增量，没有除以时间。
+- 当时的 `code/features/build_features.py` 已按日差分计算速度和加速度。现行 `code/features/kinematics.py` 以真实时间间隔计算 `v_i` 与 `a_i`，与导师确认的逐点定义一致。
+- 历史 `warning_thresholds.py` 曾用 `U_t-U_{t-30}` 构造所谓 30 日“速率”，本质是未除以时间的位移增量；该代码已移至 Git 历史。
 - 因此 R1/R7 不是局部改名，而是会改变特征定义、阈值、等级、融合结果、SHAP 分类目标和敏感性分析的跨模块方法变更。
 
 ### 3.2 ConvLSTM 已计算 8 个测点，但图只展示 3 个测试段
@@ -152,19 +160,18 @@ R3 中的毕业论文只用于支持“概率预测模型与独立 SHAP 解释�
 - `figures/convlstm/forecast_metrics.csv` 已有 8 个测点的原始/校准指标，说明模型输出不是只有三条线，当前主要缺口是可视化和完整逐时刻预测产物。
 - 训练段拟合只能作为拟合诊断，不能与留出段性能混合汇报。
 
-### 3.3 当前 SHAP 并不直接解释 ConvLSTM
+### 3.3 SHAP 并不直接解释 ConvLSTM
 
-- `code/explainability/shap_select.py` 当前重新训练 NGBoost 回归器和分类器，再进行 permutation SHAP。
-- 回归目标是位移增量，分类目标是当日动态 V0 状态；当前 SHAP 不是 ConvLSTM 的 SHAP。
+- 历史 `shap_select.py` 曾同时训练 NGBoost 回归器和 30 日 V0 分类器；该脚本已移至 Git 历史。
+- 当前 `code/explainability/ngboost_shap.py` 只训练独立 NGBoost 回归器并进行 permutation SHAP，目标为相邻观测位移增量；它不是 ConvLSTM 的 SHAP。
 - 用户已确认采用其毕业论文中“LightGBM+SHAP 用于特征解释，LSTM 单独用于概率预测”的模型分工。映射到当前项目，ConvLSTM 负责 `P10/P50/P90` 和覆盖评价，独立 NGBoost+SHAP 负责候选模型依赖分析；只有遗留二分类标签可作探索性事件归因，不能归因本轮正式五级融合。
 - 当前结果必须如实写清被解释模型、目标、样本和局限，不得写成 ConvLSTM-SHAP。独立 NGBoost 的回归目标和遗留二分类 V0 目标也不是正式五级融合；该毕业论文先例不用于重定指定 Word 的预警阈值或融合规则。
 
-### 3.4 当前预警结构与导师要求不同
+### 3.4 历史预警结构与导师要求不同
 
-- 当前 `code/warning/warning_fusion.py` 明确采用 V0 主判、切线角只升级不降级、NGBoost 概率仅作旁证。
-- 当前 `code/warning/ngboost_warn.py` 的输入是 8 测点速度/加速度的均值和最大值，加上水位与降雨变量；不是四项预警指标本身，也不再是本轮正式预警路径。
-- 当前 NGBoost 标签由各测点 30 日位移增量等级的最大值产生。若未来把同一批指标既当输入又直接生成标签，会形成定义循环或目标泄漏。
-- 当前类别只有 `green/yellow/orange/red` 四级，缺少导师指定参考体系中的 `blue`。本轮透明规则融合应统一为：
+- 历史 `warning_fusion.py` 曾采用 V0 主判、切线角只升级不降级、NGBoost 概率仅作旁证；历史 `ngboost_warn.py` 使用速度/加速度聚合量、水位和降雨作为输入。两者都已移至 Git 历史。
+- 历史 NGBoost 标签由各测点 30 日位移增量等级的最大值产生。若未来把同一批指标既当输入又直接生成标签，会形成定义循环或目标泄漏。
+- 历史类别只有 `green/yellow/orange/red` 四级，缺少本轮使用的 `blue`。当前 v4 的非正式透明规则统一为：
 
 ```text
 0 = green   安全
@@ -365,28 +372,11 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 产物为 `figures/warning_draft/bai_perron_mvif_initial_slope_candidates.csv` 及 manifest，固定 `candidate_status=draft_candidate_not_formal`、`formal_warning_output=false`，记录协议内容指纹、fit 输入切片哈希、严格 MVIF 状态、BIC 选段摘要和失败原因。它明确 `test_split_used=false`、`vajont_used=false`。当前藕塘版本的 8 个测点全部在严格 MVIF 前置门禁处以 `failed/strict_mvif_fit_failed` 停止，底层原因均为既有 `tf_multistart_unstable`；因此当前没有任何站点获得 `V` 候选，更没有 `V0` 或正式预警结论。
 
-#### 4.2.4 测点级四指标融合的草案候选（2026-07-18）
+#### 4.2.4 历史四指标融合草案（2026-07-18）
 
-指定 Word 的第五章以监督式多项逻辑回归融合区间、速率和切线角；用户已允许本轮改为非监督透明规则。因此，`code/warning/rule_fusion.py` 只实现下列**项目特有的草案候选 `F`**，不声称复现原论文，也不生成正式预警：
+当时的 `rule_fusion.py` 与 `site_fusion.py` 以区间、速度、`ΔV` 和切线角构造项目特有的候选规则，并没有定义完整的滑坡体级 `F_site`。这两份代码及其旧审计接口已移至 Git 历史；它们不再是当前 v4 的实现或方法依据。
 
-1. 四项输入为 `interval_level`、`velocity_level`、`delta_v_state`、`tangent_angle_level`。任何一项处于 `warmup`、`invalid` 或 `not_applicable` 时，测点结果保留该状态，绝不静默丢弃该项；
-2. 对 blue--red 的每个候选等级 `L`，区间、速度和切线角只要自身等级 `≥L` 即记为一项支持；`ΔV>0` 作为该等级的定性升级支持，`ΔV<0/≈0` 不支持升级；
-3. 取满足“至少两项支持”的最高 `L` 为测点草案等级，并记录该等级的贡献指标及每级支持集合；
-4. 三个有序指标均为 green 且 `ΔV` 为负或近零时才输出 green。若只有一个异常指标（或只有 `ΔV>0`），输出 `uncorroborated` 而不是把异常静默重标为 green；
-5. `F_site` 尚未定义。`site_fusion.py` 只能将已独立计算的测点结果汇总为审计输入，不对 8 个测点赋予滑坡体级等级或颜色，也不写任何正式预警 CSV/图。
-
-该候选的核心作用是把“多因素共同决定”落实为可审计、可单测且不会把单一异常掩盖为正常的接口。区间单项映射已按图 5-1 直接参考实现；它仍依赖未冻结的速度五级边界、`ΔV≈0` 容差和滑坡体级规则，因此草案配置持续保持 `status=draft`，`require_frozen_protocol()` 仍会拒绝任何正式运行。
-
-#### 4.2.4.1 滑坡体级输入审计（不等同于 `F_site`，2026-07-18）
-
-新增 `code/warning/site_fusion.py`，仅接收各测点已经产生的 `StationFusionResult`，生成一个固定标记为 `diagnostic_only_unconfigured_site_rule` 的审计汇总。它的边界刻意收紧为：
-
-1. 只有 `status=valid` 且含有测点等级的结果才计入 `valid_station_count`、五级计数、`elevated_station_count` 和 `max_station_level`；
-2. `uncorroborated` 测点单列为 `uncorroborated_stations`，不计为 green，也不因为其候选异常等级而计为 elevated；`warmup`、`invalid` 与 `not_applicable` 同样仅保留状态计数；
-3. 输出中的 `integrated_level` 和 `integrated_color` 永远为 `null`，`formal_warning_output=false`。`max_station_level` 只是“有效测点中的最高等级”，不能被解释为滑坡体预警；
-4. 该审计接口不假定必须恰有 8 个有效测点。未来 `F_site` 才必须冻结缺测、最少有效点、平局、贡献测点和跨点一致性规则。
-
-因此，这项实现为之后的 `F_site` 提供可复核输入，而不以代码默认值替代尚未定义的多测点判据。
+当前 v4 改用区间、速度、加速度、切线角四项输入：速度与切线角合为一个运动学证据族，加速度为独立证据族，并由 `operational_v4_fusion.py` 与 `operational_spatial_fusion.py` 输出测点候选、整体确认和局部最高候选。现行口径及行级字段见 `ootang_operational_run.md` 与 `ootang_warning_data_dictionary.md`。
 
 #### 4.2.5 四指标数据字典（2026-07-18）
 
@@ -420,9 +410,9 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 为防止“研究管线可以运行”被误读为“本轮正式预警已经生成”，新增[`code/warning/formal_warning.py`](../code/warning/formal_warning.py)作为未来正式执行器的唯一代码接缝。`run_formal_warning()` 先调用 `require_frozen_protocol()`；当前 `1.3-draft` 协议仍有未决项时，抛出 `ProtocolNotFrozenError`。即使未来协议冻结，当前也会抛出 `FormalWarningExecutorUnavailableError`：模块尚未注册实际四指标时间线，且入口不接受任意 callable，不能把旧 V0/融合函数注入为“正式”执行器。
 
-`main.py` 保持可复核，运行清单固定为 `warning_pipeline_scope=research_legacy_and_operational_draft_only` 和 `formal_warning_output=false`；onset、旧标签 SHAP、NGBoost、旧融合、敏感性和切线角复核阶段逐项标为 `legacy_exploratory`，而 `ootang-operational`、`ootang-operational-v2`、`ootang-operational-v3` 分别作为独立 `operational_draft` 阶段。`warning_fusion.py`、旧 `threshold_rows()` 及上述历史脚本的新表格都写入 `warning_path=legacy_exploratory`、`formal_warning_output=false` 和 `warning_method_id=legacy_30_day_v0_four_level_primary_secondary_fusion`；历史输出目录另写入 `legacy_warning_manifest.json`，`models/ngboost.pkl` 则在同目录配套 `ngboost_legacy_warning_manifest.json`，使模型/PNG 等非表格产物同样保留非正式身份。新增阶段也不改变旧数值、`V0` 公式、阈值、融合逻辑或任何科学结论。
+以下为 2026-07-22 的历史实现记录：当时 `main.py` 使用 `warning_pipeline_scope=research_legacy_and_operational_draft_only`，并显式登记旧 onset、标签 SHAP、NGBoost、融合、敏感性和切线角复核阶段。对应脚本、旧清单及其专属测试已于 2026-08-13 从工作树移除，只有历史快照与 Git 提交保留；当前入口的 scope 为 `research_and_operational_draft_only`，不再提供上述阶段。
 
-完整的模块—产物—用途—禁止用途映射见[`legacy_warning_artifact_inventory.md`](legacy_warning_artifact_inventory.md)。旧快照若早于这些字段，仍按该清单解释为历史材料；重新运行旧脚本才会写入新标识。Vajont 不进入本次隔离工作，也不因此获得启动授权。
+完整的历史模块—产物—用途—禁止用途映射已随退役代码保留在 Git 历史。旧快照仍是历史材料，不能按当前路径重跑或解释为当前方法。Vajont 不进入本次隔离工作，也不因此获得启动授权。
 
 #### 4.2.9 藕塘实施版运行（2026-07-23）
 
@@ -432,7 +422,7 @@ CSV 和 manifest 均标为 `draft_candidate_not_formal`、`formal_warning_output
 
 #### 4.2.10 藕塘 v2 空间证据族实施版（2026-07-26）
 
-对 v1 逐时刻审查发现：全部 8 点、4 项输入值在 514 个结果日均为有效，`341` 个 `insufficient_valid_station_results` 实际来自“测点两项佐证”后再要求 `6` 个有效融合结果的双层规则，而非传感器缺失；速度与切线角在全部 `4112` 个测点—时刻的等级完全一致，不能作为两份独立证据。为保留 v1 对照且不篡改既有结果，新增 [`config/ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json)、[`code/warning/operational_v2_fusion.py`](../code/warning/operational_v2_fusion.py) 与独立目录 `figures/warning_operational_draft_v2/`。
+对 v1 逐时刻审查发现：全部 8 点、4 项输入值在 514 个结果日均为有效，`341` 个 `insufficient_valid_station_results` 实际来自“测点两项佐证”后再要求 `6` 个有效融合结果的双层规则，而非传感器缺失；速度与切线角在全部 `4112` 个测点—时刻的等级完全一致，不能作为两份独立证据。为保留 v1 对照且不篡改既有结果，当时新增 [`config/ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json)、历史 v2 融合实现（现仅在 Git 历史）与独立目录 `figures/warning_operational_draft_v2/`。
 
 v2 保留同一 fit-only KMeans comparator、区间映射和 `ΔV` 容差，故不声称解决 MVIF 稳定段或 Word 论文 `V0`；它只将速度/切线角压缩为一个运动学证据族，测点候选取区间与运动学等级的最大值，`ΔV=positive` 仅标记加速性，不单独升级颜色。单一证据族异常保留为可评估候选而非缺失。滑坡体按 Wang 等（2025，DOI `10.1029/2025JH000592`）PDF 第 7 页图 4(a,d) 与 5.2 节的藕塘空间拓扑固定 O1=`MJ9/MJ1/MJ3`、O2=`ATU4/ATU5/ATU3`、O3=`ATU2/ATU1`；配置锁定已审查 PDF 的 SHA-256，本地副本存在时必须匹配，重建后的 manifest 会明确记录本地副本核验状态。该来源只支持拓扑，不支持本项目的支撑数、颜色或正式预警结论。全体 green 需至少 3 个可评估测点并覆盖三个分区；blue 仅在它是当日最高候选时可见；黄色及以上需至少 2 个候选测点跨至少 2 个分区。若 yellow--red 最高候选未获相应跨区支撑，则输出 `candidate_not_site_confirmed`，不得因其他分区存在 blue 候选而降为 blue。
 
@@ -484,7 +474,7 @@ vajont_used = false
 
 按专家审查建议，先修复 v2 的全局最少有效点门禁：少于 3 个可评估测点时，blue/yellow/orange/red 也不能返回；同时以兼容测试保留 v2“全分区覆盖只约束 green”的历史语义。当前 514 日均为 8/8 点有效，因此这项门禁修复没有改变既有候选色或滑坡体统计。
 
-新增 [`config/ootang_operational_run.v3.draft.json`](../config/ootang_operational_run.v3.draft.json)、[`code/warning/operational_v3_fusion.py`](../code/warning/operational_v3_fusion.py)、独立运行入口和 `figures/warning_operational_draft_v3/`。v3 复用 v2 的高程感知预测、fit-only 参数、区间/速度/切线角/`ΔV`、测点证据族与 O1/O2/O3，只替换滑坡体空间决策：所有 site 颜色先要求至少 3 点并覆盖三个分区；blue 也要求至少 2 点跨 2 区；未确认 yellow--red 保留 `candidate_not_site_confirmed`；孤立/单区 blue 输出 site green 并另记 `localized_blue_attention`；同时输出 `site_confirmed_level` 与 `local_max_candidate_level`。
+当时新增 [`config/ootang_operational_run.v3.draft.json`](../config/ootang_operational_run.v3.draft.json)、历史 v3 融合实现与独立运行入口（均现仅在 Git 历史）和 `figures/warning_operational_draft_v3/`。v3 复用 v2 的高程感知预测、fit-only 参数、区间/速度/切线角/`ΔV`、测点证据族与 O1/O2/O3，只替换滑坡体空间决策：所有 site 颜色先要求至少 3 点并覆盖三个分区；blue 也要求至少 2 点跨 2 区；未确认 yellow--red 保留 `candidate_not_site_confirmed`；孤立/单区 blue 输出 site green 并另记 `localized_blue_attention`；同时输出 `site_confirmed_level` 与 `local_max_candidate_level`。
 
 v3 的 514 日状态仍为 `valid=114`、`candidate_not_site_confirmed=400`；整体确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 400 日不发布整体色；局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`。测点时间线和阈值表除 profile ID/version 外与 v2 逐单元格一致。本步骤没有调整模型、test、V0 或任何阈值，也没有读取或启动 Vajont；全部输出仍为 `operational_draft_not_formal`。
 
@@ -658,67 +648,42 @@ figures/warning_draft/interval_reference_states_manifest.json
 - 与历史 6 通道结果的配对版本比较没有改变上述跨时期结论，且增加通道同时改变了参数量、测试结果也已查看。因此该比较不是高程因果消融，不支持“高程显著提升预测”的表述。
 - 7 通道早停与容量敏感性没有运行，历史 6 通道相应产物不能迁移为当前证据；Vajont 仍未启动。完整审查见 [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md)，运行清单见 [`convlstm_elevation_fixed120_v1_run.json`](../figures/pipeline/convlstm_elevation_fixed120_v1_run.json)。
 
-### 阶段 3：明确并重做 SHAP 主控因素分析
+### 阶段 3：独立 NGBoost 回归与 SHAP 候选依赖分析
 
-涉及区域：
+涉及区域：`code/explainability/ngboost_shap.py`、`docs/ngboost_shap_protocol.md`。
 
-- `code/explainability/shap_select.py`
-- `code/explainability/shap_stability.py`
+本轮落实两条独立支路：ConvLSTM 单独负责全部测点的 `P10/P50/P90` 概率预测和覆盖评价；NGBoost 回归 + permutation SHAP 解释相邻观测位移增量的候选模型依赖。它不是 ConvLSTM-SHAP、不输出预警类别，也不能被写成物理因果主控因素。
 
-本轮按用户已确认的分离式模型分工保留独立 NGBoost+SHAP，不新增 ConvLSTM-SHAP：ConvLSTM 单独负责 `P10/P50/P90` 概率预测和覆盖评价，NGBoost+SHAP 负责候选模型依赖分析；遗留标签只用于探索性事件归因。该分工沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的方法先例，但不改变当前 NGBoost 的解释对象/目标并非正式五级融合的限制，也不用该先例覆盖指定 Word 的阈值或融合方法。
+- [x] 在图题、CSV 和 provenance 中明确被解释模型、目标、时间留出、数据与源码指纹；
+- [x] 输出全局 mean-absolute SHAP 排序和可视化；
+- [x] 将结果限定为“候选模型依赖”，不作因果、主控因素或预警提前量结论；
+- [ ] 若未来要主张跨时期稳定性，须另行冻结时间折、评价规则和计算预算；历史跨折/删组脚本与产物只在 Git 历史中保留。
 
-任务：
+完成判据：解释对象、目标、样本和限制能由 `ngboost_shap_protocol.md` 与版本化产物复核。
 
-- [x] 在图题和 CSV 中写明被解释模型、目标和样本时段；
-- [x] 输出全局重要性、方向、测点/时间折稳定性和组级消融；
-- [x] 将“主控因素”谨慎表述为“模型依赖较强、且在当前验证中较稳定的候选因素”；
-- [x] 只有结合地质机理、参考文献和跨案例证据后，才升级为物理主控因素结论；本轮没有作此升级；
-- [x] 禁止把 SHAP 重要性当作因果效应或预警提前量。
+### 阶段 4：v4 四指标透明规则融合与五级总体输出
 
-完成判据：每个主控因素结论同时有模型证据、稳定性证据和表述边界。
+涉及区域：`code/warning/operational_v4_fusion.py`、`code/warning/operational_spatial_fusion.py`、`code/warning/operational_run.py` 及 v4 协议/配置。
 
-#### 2026-07-18：SHAP 解释对象、`ΔV` 特征与稳定性重算记录
-
-- 当前 SHAP 解释对象固定为独立 NGBoost，而非 ConvLSTM。回归目标为目标观测位置的 `U_t-U_(t-1)`（mm/观测间隔）；分类目标固定为遗留同日测点 V0 月位移量标签 `warning_level >= 1`，并在所有图、CSV 和 `figures/shap/shap_provenance.json` 中标为非正式五级预警、非因果、非前瞻预警。
-- 为使遗留分类标签可复算，`shap_provenance.json`、分类重要性表和指标表记录 V0 的方法、月窗口、截断分位、拟合日期与阈值表路径。当前单次留出标签的 V0 使用发布建模表前 80%（2016-07-02 至 2019-09-11）拟合；独立 NGBoost 的特征训练期随后延至 2019-09-18，二者在仓库代码层面均早于留出期，但这不能证明上游日值生成独立，且仍是遗留标签口径而非正式五级规则。
-- 单次 SHAP 不再使用训练集尾部 200 行（其行序会偏向最后一个测点），改为留出期 25 个均匀日期 × 全部 8 个测点（200 行）；背景为训练期 12 个均匀日期 × 全部测点（96 行）。这改变的是解释抽样的审计质量，不改变 NGBoost 参数、时间切分、阈值或五级预警规则。
-- `disp_accel_lag*` 已从当前解释代码、协议和产物替换为时间感知 `disp_delta_v_lag*`，其中 `ΔV_i=v_i-v_{i-1}` 是速度增量（mm/day），不是再除以时间的加速度。全局重要性表各 88 行，当前产物中不存在旧 `disp_accel` 名称。
-- 五折重算使用原有 5 个扩展时间折、88 个输入、12/24 个背景/解释日期及五组删组集合，生成 11 项稳定性产物。其中新增 `cross_fold_station_feature_importance.csv`（7,040 行）和 `cross_fold_station_feature_stability.csv`（1,408 行），覆盖 2 个任务 × 5 折 × 8 测点 × 88 特征。测点分层复用同一全测点模型和解释样本，**不是**留一测点空间泛化验证；`station_*` 不作为地质主控因素候选。
-- 当前可表述为：位移运动学组在这组内部时间折中呈现较强、较稳定的模型依赖，并在两个任务的删组结果中均为 5/5 折正退化；环境组与测点标识的结果随时间折变化。该表述不等同于任何变量的物理因果主控结论，也不为正式四指标融合、`ΔV≈0` 容差或五级颜色赋值。Vajont 未读取、未修改、未启动。
-
-### 阶段 4：建立四指标透明规则融合与五级总体输出
-
-涉及区域：
-
-- `code/warning/warning_fusion.py`（建议重构职责或由新模块替代）
-- 四指标阈值与等级模块
-
-每个时刻、每个测点至少形成以下输入：
+每个时刻、每个测点使用以下四项输入：
 
 ```text
-interval_indicator / interval_level
-velocity / velocity_level
-delta_v / delta_v_state
-tangent_angle / tangent_level
+interval_level
+velocity_level
+acceleration_level
+tangent_angle_level
 ```
 
-任务：
+原始 `delta_v=v_i-v_{i-1}` 只保留为运动学审计字段，不作为额外五级投票。速度与切线角组成一个运动学 evidence family；区间和加速度各为一个独立 family。测点候选取三族最高等级，滑坡体同时输出整体确认与局部最高候选两条空间轴。
 
-> 以下未勾选项指**正式协议冻结与确认性输出**。当前 v3 已另行完成非正式、项目特有的可复算实现，不应因原型可运行而把这些正式门禁改写为已通过。
+- [x] 以真实 `Δt` 计算逐点速度和三点暖启动的逐点加速度；
+- [x] 以各测点 fit-only 的 `A0=max(1.5A,A+2σ_a)` 建立加速度基准，并按导师确认的 Word 速度 `1×/5×/10×` 相对结构映射五级；
+- [x] 物化区间、速度、加速度、切线角、raw `ΔV`、三族融合、颜色和逐条理由，覆盖 4,112 个测点—时刻；
+- [x] 物化 514 个滑坡体时刻的整体确认/局部最高候选及 O1/O2/O3 空间理由；
+- [x] 在 CSV、图件和 manifest 中固定 `formal_warning_output=false` 与 `vajont_used=false`；
+- [ ] 正式预警仍须取得独立、可核验的结局标签和确认性资料；现有透明规则不能替代正式 NGBoost 监督验证。
 
-- [ ] 删除 V0 主判、切线角只升级不降级的主副逻辑；
-- [ ] 按已确认的逐点速度定义重算速度基线和五级边界，并将 blue 的精确边界写入配置；
-- [ ] 仅用拟合/校准阶段冻结 `ΔV<0/≈0/>0` 的“近零”容差及其参与 `F` 的规则，在测试期只执行、不反调；不把它伪装成论文给出的 `τ1...τ4`；
-- [x] 生成论文参考的 `interval_level`，并记录 `μ_t`、`σ_t`、实际 `U_t`、触发区间和 `interval_mapping_basis`；fit/暖启动/无效输入仍显式输出 `not_applicable/invalid`，不强行着色为 green；
-- [x] 新增隔离的测点级草案模块：`code/warning/rule_fusion.py` 按四项输入、两项佐证和显式无效/暖启动规则输出可审计候选，不替换历史 `warning_fusion.py`；
-- [x] 新增不赋值的滑坡体级审计模块：`code/warning/site_fusion.py` 只统计有效测点、最高测点等级和未获佐证测点，`integrated_level/color` 固定为空，不能替代 `F_site`；
-- [ ] 固定区间/速度/切线角五级与 `ΔV` 三态合成为测点最终五级的函数 `F`，并明确平局、冲突、缺失和暖启动规则；
-- [ ] 固定多测点合成为滑坡体级等级的函数 `F_site`，并输出异常测点数和贡献测点；
-- [ ] 输出区间/速度/切线角五级、`ΔV` 三态、最终五级、颜色、规则版本和逐条触发理由；
-- [ ] 将规则输入、阈值、等级与输出按日期写入可复算 CSV；
-- [ ] 本轮不输出伪概率、真实等级、F1、Brier 或混淆矩阵；若未来有独立标签，再另立 NGBoost 监督验证分支。
-
-完成判据：任一输出等级均可由冻结规则、版本化阈值和同一行四项输入复算；本轮结论准确表述为规则预警，不伪称监督分类性能。
+完成判据：任一候选状态均可由同一行四项输入、版本化阈值和空间规则复算；本轮结论只称为非正式规则原型。
 
 ### 阶段 5：逐时刻、多测点综合预警输出
 
@@ -796,7 +761,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 
 **2026-08-04 执行记录**：本阶段列出的项目文档已完成藕塘原型口径同步。当前 ConvLSTM 主证据统一指向 7 通道 `displacement_elevation_exog_v1/fixed120_v1` 的三折 × 五种子产物；历史 6 通道的滚动、早停与容量结果均独立标注，不作为 7 通道证据。当前 7 通道最后一折 `seed=0` 已有 14 日时间块置信区间，但模型相对持久性基线的 RMSE/MAE 差异区间均跨 0；版本化三折 × 五种子 bundle 尚无逐折逐种子的完整 bootstrap。文档同步只关闭“原型项目记录一致性”事项，不解除 `confirmatory_evidence_gate=blocked`，也不把藕塘升级为最终论文的确认性案例。Vajont 本轮未启动；此前只读内容盘点不构成启动授权。
 
-**2026-08-08 工程代码审查收口**：已完成整体 code-review，并按独立 Git 提交记录入口、测试跟踪和输入指纹修复。当前无参数入口严格为 `features → convlstm → ootang-operational-v3`，其余 13 个阶段为 explicit-only；44 个测试文件已纳入 Git，全量门禁为 `361 passed`、`52 subtests passed`，Ruff、编译和 dry-run 均通过。管线清单采用 schema 3，记录逐阶段输入/输出指纹和工作树状态。v2/v3 配置锁定的 Wang 论文 PDF 只作拓扑来源证据：本地副本存在时核对摘要，缺失可运行但须记录未核验状态，错误副本拒绝运行；v2 历史清单可能尚未刷新。此次只更新工程与文档口径，没有重训模型、改动科学数值或启动 Vajont；最终论文第 9 节门禁仍未全部完成。
+**2026-08-08 工程代码审查收口（历史记录）**：当时已完成整体 code-review，并按独立 Git 提交记录入口、测试跟踪和输入指纹修复；无参数入口当时为 `features → convlstm → ootang-operational-v3`，其余 13 个阶段为 explicit-only。此处的 `361 passed`、`52 subtests passed` 与 v2/v3 PDF 核验均只描述当时快照。2026-08-13 后，当前代码树已进一步收敛为 v4，旧运行入口、旧分类/融合和专属测试仅保留在 Git 历史；以本文件开头“当前代码树同步”及 `design.md` 为准。两次工程收口都没有重训 ConvLSTM、改动 v4 科学数值或启动 Vajont；最终论文第 9 节门禁仍未全部完成。
 
 ### 后续阶段（P2，延后且待用户授权）：Vajont `10d` 候选案例
 
