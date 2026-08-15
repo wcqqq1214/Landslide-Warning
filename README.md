@@ -33,7 +33,7 @@ uv run python main.py --stage ngboost-shap
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
-每个阶段声明输入输出，管线在运行前后检查文件新鲜度，并将提交、输入输出 SHA-256、状态与耗时写入 `figures/pipeline/latest_run.json`。已有清单是其生成时的快照，解释时须核对自身提交和源码指纹。
+每个阶段声明输入输出，管线在运行前后检查文件新鲜度，并将提交、输入输出 SHA-256、状态与耗时写入 `figures/pipeline/latest_run.json`。该文件当前不存在：原有清单是 2026-08-01 的 v3 阶段残留记录，已于 2026-08-15 删除，下次完整运行会重新生成。解释任何运行清单时须核对其自身提交和源码指纹。
 
 Vajont 尚未启动；读取、适配或运行其数据前必须获得用户明确许可。
 
