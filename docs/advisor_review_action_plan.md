@@ -12,6 +12,8 @@
 
 > **当前代码树同步（2026-08-13）**：当前可执行路线只保留 `features → convlstm → ootang-operational-v4`、独立 NGBoost 回归 SHAP 及 ConvLSTM 诊断。旧 30 日 `V0` 标签、旧融合、旧 v1/v2/v3 运行入口和对应测试已从工作树删除，仅在 Git 历史中保留。本文件后续出现的旧脚本名、v1/v2/v3 路径和旧数值属于执行历史，不能作为当前代码契约；当前实现以 [`design.md`](design.md)、[`ootang_operational_run.md`](ootang_operational_run.md) 和 [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) 为准。
 
+> **已退役产物删除（2026-08-15）**：按用户决定，`figures/` 下的 `ngboost/`、`warning_fusion/`、`warning_onset/`、`thresholds/`、`sensitivity/`、`warning_draft/`、`warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`、`warning_review/` 共 82 个跟踪文件，以及 `pipeline/latest_run.json` 与 `pipeline/shap_stability_run.json` 已从工作树删除。**本文件后续所有指向这些路径的引用（4.2.3.1、4.2.3.4、4.2.3.8、4.2.6、4.2.6.1、4.2.7、4.2.10、4.2.11、4.2.12、4.2.14、4.3.3、4.3.4 及阶段 2 产物清单）均只描述当时生成的审计产物，现仅存于 Git 历史提交 `7d2e38b` 及之前，不再存在于工作树。** 这些条目记录的方法边界、失败状态和未决门禁仍然有效，特别是：8/8 测点 KMeans 候选 `rejected_for_formal_v0`、8/8 严格 MVIF `tf_multistart_unstable`、区间校准 `no_fixed_calibration_candidate_promoted`。当前有效的等效产物在 `figures/warning_draft_v4/` 与 `figures/warning_operational_draft_v4/`；删除经核验不影响 v4 管线与数值。`config/ootang_warning_protocol.v1.draft.json` 中出现的 `figures/warning_draft/mvif_initial_slope_candidates.*` 属于**拒绝写出清单**（4.2.3.7 已退役路线），不是产物指针，故未随本次清理改动——该文件的内容 SHA-256 已锁入 v4 manifest，不得修改。
+
 ## 0. 方法依据与文档优先级
 
 本轮正式方法、阈值和论文表述按以下顺序判定：

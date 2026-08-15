@@ -12,7 +12,7 @@
 
 > **当前树同步（2026-08-13）**：默认入口为 `features → convlstm → ootang-operational-v4`。旧 30 日 `V0`、旧融合及 v1/v2/v3 运行入口已经从当前工作树移除，仅在 Git 历史中保留；v4 当前使用中性命名的双轴空间融合模块。独立解释改为 NGBoost 回归 + SHAP，不再保留旧同日 V0 分类支路。v4 仍是 prototype/non-formal，正式 NGBoost 仍因缺少独立五级结局标签而未实现；本更新不启动 Vajont，也不解除数据门禁。
 
-历史工程验收：新增 `shap-stability` 后曾有十三阶段统一入口 13/13 通过、65/65 个产物哈希的记录（`figures/pipeline/latest_run.json`）；`figures/pipeline/shap_stability_run.json` 同样仅记录 2026-06-23 的历史单阶段运行。2026-07-18 的 `ΔV` 对齐 SHAP 已按单阶段脚本重算并写入新的溯源/测点分层产物，尚未将其表述为新的完整管线验收。工程通过只证明架构可端到端执行，不等同于阈值、模型或预警效果已获确认。
+历史工程验收：新增 `shap-stability` 后曾有十三阶段统一入口 13/13 通过、65/65 个产物哈希的记录（当时的 `figures/pipeline/latest_run.json`）；`figures/pipeline/shap_stability_run.json` 同样仅记录 2026-06-23 的历史单阶段运行。这两份清单均已于 2026-08-15 随已退役产物清理删除，仅存于 Git 历史提交 `7d2e38b` 及之前。2026-07-18 的 `ΔV` 对齐 SHAP 已按单阶段脚本重算并写入新的溯源/测点分层产物，尚未将其表述为新的完整管线验收。工程通过只证明架构可端到端执行，不等同于阈值、模型或预警效果已获确认。
 
 ## 1. 指标与方法覆盖
 

@@ -1,5 +1,7 @@
 # 藕塘高程通道与空间预警结果专家审查
 
+> **产物链接失效说明（2026-08-15）**：本文引用的 `figures/warning_operational_draft_v2/` 两份时间线和 `figures/warning_operational_draft_v3/ootang_v3_typical_days.svg` 已随已退役产物清理从工作树删除，可按 Git 历史提交 `7d2e38b` 及之前恢复。文中记录的 SHA-256 保留用于溯源核对，审查结论不受影响；当前等效产物在 `figures/warning_operational_draft_v4/`（数值口径已随 v4 加速度扩展变化，不可直接互换）。
+
 > 审查日期：2026-07-30
 > 审查对象：高程感知 ConvLSTM 初跑、四指标测点状态、滑坡体空间融合、400 个未空间确认时刻与典型状态日
 > 结论等级：**工程复现已验证；物理合理性为谨慎支持；预测可信性提升未获支持；正式预警仍阻断**

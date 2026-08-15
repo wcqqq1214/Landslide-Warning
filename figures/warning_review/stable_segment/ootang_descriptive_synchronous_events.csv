@@ -1,6 +1,0 @@
-date,selection_role,median_within_station_30d_rate_percentile,station_count_at_or_above_p90,stations_at_or_above_p90,top_three_station_percentile_ranks,rain_30d_mm,rwl_change_30d_m,gwt_change_30d_m,formal_warning_output,vajont_used
-2017-05-18,descriptive_rank_only_not_stable_segment_rule,0.8391494002181026,2,MJ1;MJ9,MJ1:0.935660;MJ9:0.907306;MJ3:0.840785,360.0,-7.030000000000001,5.8930448553747965,False,False
-2017-07-02,descriptive_rank_only_not_stable_segment_rule,0.9471101417666303,7,MJ1;ATU4;MJ3;ATU3;ATU2;ATU1;ATU5,MJ1:0.969466;ATU4:0.952017;MJ3:0.947655,1020.0,-0.12999999999999545,-3.7917682720920993,False,False
-2017-08-16,descriptive_rank_only_not_stable_segment_rule,0.777535441657579,0,,ATU2:0.871320;MJ3:0.865867;ATU4:0.863686,169.0,-6.980000000000018,-2.382837674905147,False,False
-2017-10-01,descriptive_rank_only_not_stable_segment_rule,0.9989094874591058,6,ATU5;ATU1;ATU4;ATU3;ATU2;MJ3,ATU5:1.000000;ATU1:1.000000;ATU4:0.998909,2254.5,15.149999999999977,7.522280000000023,False,False
-2018-05-28,descriptive_rank_only_not_stable_segment_rule,0.7895310796074155,0,,MJ1:0.806979;ATU2:0.798255;MJ9:0.791712,1546.5,-8.849999999999994,2.660405056136767,False,False

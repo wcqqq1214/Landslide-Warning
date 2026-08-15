@@ -1,6 +1,14 @@
 # 项目工作进度
 
-> 更新日期：2026-08-13。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+> 更新日期：2026-08-15。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-15 已退役产物清理
+
+- 按用户决定删除已退役路线的版本化产物，只保留当前 v4 链所需目录。删除 `figures/` 下 `ngboost/`、`warning_fusion/`、`warning_onset/`、`thresholds/`、`sensitivity/`、`warning_draft/`、`warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`、`warning_review/` 共 82 个跟踪文件，另删 `pipeline/latest_run.json`（v3 阶段残留记录）与 `pipeline/shap_stability_run.json`（已退役 `shap-stability` 阶段）。
+- 删除前已核验：这 10 个目录在 `code/`、`main.py` 和 `tests/` 中引用数均为 0；v4 链只读 `figures/convlstm/`，写 `figures/warning_draft_v4/` 与 `figures/warning_operational_draft_v4/`。删除后 v4 核心 manifest 的 13 个路径 SHA-256 全部匹配，`main.py --dry-run` 仍精确为 `features → convlstm → ootang-operational-v4`。
+- `figures/tangent_angle/` 未删：`features` 阶段仍向其写出 `uniform_rates.csv`，删除会打断默认管线。`figures/shap/` 及 `shap/stability/` 未删：仍被 `paper/process_report.tex` 引用。
+- 本次清理不改动任何 v4 数值、阈值、模型或协议内容哈希，也未启动 Vajont。删除项一律按 Git 历史（提交 `7d2e38b` 及之前）恢复，不在当前目录重建同名文件。
+- 副作用：`ootang_stable_segment_expert_review.md` 与 `ootang_interval_calibration_expert_review.md` 内嵌的审查图和支撑 CSV 链接已失效，两份文档的文字结论仍有效。
 
 ## 2026-08-13 当前代码树与解释支路同步
 
@@ -22,7 +30,7 @@
 
 - 这是 2026-08-08 的历史工程收口记录：当时 v3 及其余阶段仍为 explicit-only。2026-08-13 后，旧运行入口与专属代码已移至 Git 历史；保留的 MVIF、6 通道和旧预警产物仍不混入当前主结果。
 - 44 个测试文件已纳入 Git。当前全量门禁为 `361 passed`、`52 subtests passed`；Ruff、Python 编译检查和 `main.py --dry-run` 均通过。该门禁证明工程快照可复核，不证明藕塘数据具备确认性证据或正式预警有效性。
-- 统一入口清单升级为 schema 3，逐阶段保存输入/输出路径、大小、SHA-256、源码指纹和工作树状态。`latest_run.json` 及其他旧清单仍可能是历史快照，引用时必须核对其提交与源码哈希。
+- 统一入口清单升级为 schema 3，逐阶段保存输入/输出路径、大小、SHA-256、源码指纹和工作树状态。当时的 `latest_run.json` 已于 2026-08-15 作为 v3 残留记录删除；当前 HEAD 尚无端到端运行清单，下次完整运行会重新生成。
 - v2/v3 配置锁定的 Wang 论文 PDF 只作为空间拓扑来源证据，不是计算输入；本地副本存在时必须匹配锁定摘要，缺失时允许原型计算并在运行清单记录未核验状态，错误副本会 fail-closed。v2 历史清单未因本次代码审查统一刷新，不应据此声称所有历史字段均已更新。
 - 本次没有重新训练模型、改动数值产物或启动 Vajont。Vajont 仍须用户明确授权；后续若获准，必须先冻结其角色并建立独立数据/评价目录。
 
@@ -84,7 +92,7 @@
 ## 2026-08-01 v3 空间规则实施记录
 
 - 修复 v2 的 P0 覆盖门禁：少于 3 个可评估测点时，任何 site 颜色都不能返回；v2 的“全分区仅约束 green”历史语义保持不变，当前 v2 四份产物 SHA-256 未改变。
-- 新增独立 `ootang-operational-spatial-v3` 配置、融合模块、运行入口和 `figures/warning_operational_draft_v3/`，没有覆盖 v1/v2。
+- 新增独立 `ootang-operational-spatial-v3` 配置、融合模块、运行入口和 `figures/warning_operational_draft_v3/`（该目录已于 2026-08-15 删除，仅存于 Git 历史），没有覆盖 v1/v2。
 - v3 将 `site_confirmed_level` 与 `local_max_candidate_level` 分轴。所有 site 颜色先要求至少 3 点并覆盖 O1/O2/O3；blue 也要求至少 2 点跨 2 区；未确认 yellow–red 不降级；孤立/单区 blue 记为 site green + `localized_blue_attention`。
 - 514 日仍有 `valid=114`、`candidate_not_site_confirmed=400`；整体确认色为 green `8`、blue `48`、yellow `31`、orange `9`、red `18`，另有 400 日不发布整体颜色；局部最高候选为 blue `56`、yellow `196`、orange `111`、red `151`。
 - v2/v3 的 4112 条测点时间线新增 `trend_component`、`transition_status`、`evidence_consistency_status` 和 `composite_warning_signal`：`ΔV` 三态现在改变完整信号和理由，但不改变五色候选，也不作为速度/切线角之外的独立投票。候选色和 514 日滑坡体统计保持不变。

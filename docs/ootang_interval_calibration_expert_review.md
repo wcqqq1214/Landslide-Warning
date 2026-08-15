@@ -1,5 +1,7 @@
 # 藕塘滑坡区间校准专家审查
 
+> **产物链接失效说明（2026-08-15）**：本文引用的 `figures/warning_review/interval_calibration/` 审查产物（审查协议、时间折、OOF 预测、候选与测点指标、时段/月度诊断、残差相关、处置表、总览图与 MJ1/MJ3/MJ9 证据图）已随已退役产物清理从工作树删除，可按 Git 历史提交 `7d2e38b` 及之前恢复。本文的审查结论不受影响：六种固定候选无一同时改善逐点覆盖、中心偏差、proper score 和时间稳定性，故仍冻结为 `no_fixed_calibration_candidate_promoted`；calibration 期 ATU1--ATU5 原始覆盖率均为 1.0，而 MJ1/MJ3/MJ9 分别为 0.705/0.568/0.599，MJ3 的 227 天实测全部高于 P50，MJ1 的偏差在期内由正转负。这一测点异质性是当前区间指标主导测点候选色的直接原因。
+
 ## Material Passport
 
 - Origin Skill: `academic-research-suite / experiment-agent`

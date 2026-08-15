@@ -186,7 +186,7 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 | 当前 v4 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
 | ConvLSTM 运行来源、切分和输出哈希 | [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | v4 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v4/ootang_operational_run_manifest.json) |
-| schema 3 最小链路运行记录（可能为历史快照） | [`latest_run.json`](../figures/pipeline/latest_run.json) |
+| schema 3 最小链路运行记录 | 原 `figures/pipeline/latest_run.json` 为 2026-08-01 的 v3 残留记录，已于 2026-08-15 删除；当前 HEAD 无端到端运行清单，需按 Git 历史提交 `7d2e38b` 查阅旧记录或重新完整运行生成 |
 | 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
 | 代表日规则图 | [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg) |
 | 514 日完整预警状态图 | [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) |

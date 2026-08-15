@@ -1,5 +1,7 @@
 # 藕塘滑坡逐测点初始稳定段专家审查
 
+> **产物链接失效说明（2026-08-15）**：本文引用的 `figures/warning_review/stable_segment/` 审查产物（逐测点复算表、同步事件描述表、总览图、8 张测点证据图和 manifest）已随已退役产物清理从工作树删除，可按 Git 历史提交 `7d2e38b` 及之前恢复。本文的审查结论不受影响：8/8 个 KMeans 候选仍为 `rejected_for_formal_v0`，严格 MVIF 8/8 仍为 `tf_multistart_unstable`，正式状态仍为 `no_stable_baseline_identified`，正式 `V`、`σ`、`V0` 均为 `NA`。这些结论是当前速度和改进切线角阈值层仍未获得可用基线的直接依据。
+
 ## Material Passport
 
 - Origin Skill: `academic-research-suite / experiment-agent`

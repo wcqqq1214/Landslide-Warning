@@ -2,6 +2,8 @@
 
 > 历史记录说明（2026-08-13）：本文件记录高程原型初跑时的 v2 运行命令和产物。当前可执行预警入口已收敛为 `ootang-operational-v4`；旧 v2 命令仅能通过 Git 历史复现。
 
+> **产物链接失效说明（2026-08-15）**：本文末尾引用的 `figures/warning_operational_draft_v2/` 四份产物已随已退役产物清理从工作树删除，可按 Git 历史提交 `7d2e38b` 及之前恢复。文中记录的 v2 数值（`valid=114`、`candidate_not_site_confirmed=400`、blue `56`/yellow `31`/orange `9`/red `18`）仍是当时 v2 快照的结果，**不等于**当前 v4 的滑坡体统计（整体确认 green `8`/blue `48`/yellow `31`/orange `9`/red `18`）。当前结果请查阅 `figures/warning_operational_draft_v4/`。
+
 > 运行日期：2026-07-30<br>
 > 状态：`prototype_internal_not_confirmatory`<br>
 > 正式预警：`false`<br>
@@ -66,7 +68,7 @@ monitoring_data.csv
   → O1/O2/O3 滑坡体空间汇总
 ```
 
-三阶段均通过输入/输出契约检查，基于提交 `a01f061` 的最终复跑总耗时约 `40.7 s`。完整阶段、源码指纹和产物哈希见[`latest_run.json`](../figures/pipeline/latest_run.json)。
+三阶段均通过输入/输出契约检查，基于提交 `a01f061` 的最终复跑总耗时约 `40.7 s`。完整阶段、源码指纹和产物哈希见当时的 `figures/pipeline/latest_run.json`（该文件已于 2026-08-15 删除，按 Git 历史提交 `7d2e38b` 及之前查阅）。
 
 ## 4. 预测结果
 

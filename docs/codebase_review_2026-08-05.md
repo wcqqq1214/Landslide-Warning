@@ -34,7 +34,7 @@
 
 ### P2
 
-1. `figures/pipeline/latest_run.json` 是历史快照，不应被解释为当前代码的最新运行证据；本轮不重跑模型，保留并明确边界。
+1. `figures/pipeline/latest_run.json` 是历史快照，不应被解释为当前代码的最新运行证据；本轮不重跑模型，保留并明确边界。（该文件已于 2026-08-15 作为 v3 残留记录删除，仅存于 Git 历史提交 `7d2e38b` 及之前。）
 2. 当前 v3 仍是 `formal_warning_output=false` 的原型草案；代码清理不得把它重标为正式 `F/F_site`。
 
 ## 4. 过期代码判断
