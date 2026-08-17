@@ -2,7 +2,7 @@
 
 > 更新日期：2026-08-17。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
-## 2026-08-17 NGBoost 下一日区间代理 pilot
+## 2026-08-17 NGBoost 区间代理 pilot 与提前量敏感性
 
 - 新增显式阶段 `ootang-ngboost-interval-proxy-pilot`，默认链仍严格为 `features → convlstm → ootang-operational-v4`。本阶段只读取既有藕塘 ConvLSTM、逐点运动学和 v4 比较基准，不重训/修改 ConvLSTM，不修改 v4，也未读取或引入其他案例。
 - 使用当前 `interval_z`、逐点速度、原始 `ΔV` 和连续切线角四项指标，加 8 个测点 one-hot 控制量，预测下一自然日的五级原始区间偏离代理状态。物理加速度、环境变量、校准后区间和 v4 融合等级均未进入输入。
@@ -10,6 +10,9 @@
 - 固定 `NGBClassifier` 五分类参数，只用 fit 训练，不做搜索、早停、重拟合、类别权重、SMOTE、合成标签或事后概率校准。calibration/test 全时刻 accuracy 为 `0.906/0.947`、macro-F1（支持类）为 `0.905/0.925`；状态持续基线分别为 `0.916/0.952` 与 `0.923/0.936`，NGBoost 未超过简单持续性基线。
 - 状态转移行上 NGBoost calibration/test accuracy 仅为 `0.132/0.209`；test 的 macro-F1 `0.229` 和 ordinal MAE `0.791` 优于多数类基线的 `0.083/1.527`，但 calibration 未稳定复现。因此该模型只保留为探索性概率 pilot，不引入主流程，不改动既有模型或论文结论。
 - 版本化产物位于 `figures/ngboost_interval_proxy_pilot_ootang_v1/`，模型为 `models/ootang_ngboost_interval_proxy_pilot_v1.pkl`，完整边界与结果见 `docs/ootang_ngboost_interval_proxy_pilot.md`。
+- 在模型、四指标、测点控制量、训练策略和类别处理完全相同的条件下，新增显式 h=1/3/7 提前量敏感性。fit/calibration/test 样本分别为 h1 `7280/1808/2288`、h3 `7264/1792/2272`、h7 `7232/1760/2240`；三个 fit 均含五类，三个 calibration 均无 red。
+- h1/h3/h7 的 calibration 全时刻 accuracy 为 `0.906/0.781/0.715`，对应持续基线为 `0.916/0.833/0.744`；test 为 `0.947/0.860/0.675`，对应持续基线为 `0.952/0.876/0.773`。三个 horizon 的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线，且 log loss、Brier、ECE 随提前量增加而整体升高。
+- 状态转移行信息随提前量增加而增多，部分转移指标优于简单基线，但没有在 calibration/test 和不同指标间稳定一致。敏感性产物明确 `selection_performed=false`、`ranking_performed=false`，不输出最佳 horizon，不改变当前“不引入主流程”的判断。完整结果见 `docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md`。
 
 ## 2026-08-15 已退役产物清理
 
@@ -67,6 +70,7 @@
 | 新神经调参/机理消融与正式日预测 | 暂停 | 7 通道 fixed-120 结果已查看，不据此优化；早停/容量未运行，自然月分段三次结构仍限制确认性解释 |
 | Vajont 案例 | 未启动 | 本轮 fixed-120 未读取、未适配、未运行；此前仅做过只读内容盘点，不构成启动，开始前必须获得用户明确许可 |
 | NGBoost 区间代理 pilot | 已完成显式初跑；不进入默认链 | 11,376 条一日配对、五级概率与基线比较；calibration/test 未超过状态持续基线 |
+| NGBoost h=1/3/7 提前量敏感性 | 已完成显式、非排名初跑 | 同一模型与输入并列报告；三个 horizon 全时刻 accuracy、macro-F1、ordinal MAE 均未超过持续基线，不选择最佳提前量 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件；区间代理 pilot 不解除该门禁 |
 | 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 

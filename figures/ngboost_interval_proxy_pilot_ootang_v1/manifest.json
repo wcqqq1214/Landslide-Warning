@@ -85,7 +85,7 @@
     "future_or_target_side_fields"
   ],
   "formal_warning_output": false,
-  "git_commit": "b6327c57a8403f38781641a3457a0d44528b5d5d",
+  "git_commit": "d28056f23dae876768037863906e825439e858e7",
   "git_worktree_dirty": true,
   "implementation_sources": {
     "interval_state": {
@@ -94,7 +94,7 @@
     },
     "pilot": {
       "path": "code/warning/ootang_ngboost_interval_proxy_pilot.py",
-      "sha256": "038fb1be3e8620db75f9c550b472226ca05d9c89213c0c3e0e792a15496bf031"
+      "sha256": "547cd095286cb83e406580eddb99d4c8e213c94a8c1d4dc915a04561ba36079f"
     }
   },
   "model": {

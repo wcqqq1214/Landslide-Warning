@@ -8,6 +8,7 @@
 - ConvLSTM 独立输出全部 8 个测点的 P10/P50/P90 位移预测，以及训练、校准和测试时段的图表与覆盖率诊断。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
+- 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
 - v4 按导师确认的逐点方法计算速度和加速度：
   `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，
   `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`。
@@ -32,6 +33,7 @@ uv run python main.py
 uv run python main.py --list
 uv run python main.py --stage ngboost-shap
 uv run python main.py --stage ootang-ngboost-interval-proxy-pilot
+uv run python main.py --stage ootang-ngboost-interval-proxy-horizon-sensitivity
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -54,7 +56,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（9 个可选阶段）
+main.py                         # 当前管线入口（10 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -77,11 +79,12 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`figures/convlstm/forecast_all_stations.png`](figures/convlstm/forecast_all_stations.png) | 全测点概率位移预测及训练/结果分段 |
 | [`figures/shap/ngboost_regression_shap.png`](figures/shap/ngboost_regression_shap.png) | 独立 NGBoost 回归的候选模型依赖 SHAP 图 |
 | [`docs/ootang_ngboost_interval_proxy_pilot.md`](docs/ootang_ngboost_interval_proxy_pilot.md) | NGBoost 下一日五级区间代理试验、基线比较和不引入主流程的当前判断 |
+| [`docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md`](docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md) | 固定 NGBoost 的 h=1/3/7 非排名提前量敏感性和概率质量诊断 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
 | [`docs/progress.md`](docs/progress.md) | 当前实现进度、已清理历史代码与未完成门禁 |
 
 ## 尚未完成的关键事项
 
-1. 当前 NGBoost 区间代理 pilot 已完成，但 calibration/test 全时刻指标未超过状态持续基线，不能据此引入主流程；正式模型仍需独立、可核验的五级结局标签。
+1. 当前 NGBoost 区间代理 pilot 及 h=1/3/7 敏感性已完成，但所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过状态持续基线，不能据此引入主流程或选择 horizon；正式模型仍需独立、可核验的五级结局标签。
 2. 取得可追溯的原始观测或独立验证资料，并冻结正式稳定段/V0、切线角容差、融合和评价协议。
 3. 只有获得用户授权后，才启动 Vajont 的数据适配与外部案例评估。

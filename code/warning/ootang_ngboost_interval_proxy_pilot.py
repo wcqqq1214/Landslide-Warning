@@ -597,6 +597,13 @@ def build_future_interval_proxy_samples(
             f"kinematics={sorted(missing_kinematics)}, "
             f"thresholds={sorted(missing_thresholds)}"
         )
+    horizon_days = profile.get("target", {}).get("horizon_days")
+    if (
+        isinstance(horizon_days, bool)
+        or not isinstance(horizon_days, int)
+        or horizon_days < 1
+    ):
+        raise PilotInputError("Pilot horizon_days must be a positive integer")
 
     prediction_frame = _require_station_date_frame(
         predictions.loc[:, PREDICTION_COLUMNS],
@@ -700,16 +707,22 @@ def build_future_interval_proxy_samples(
     }
     grouped = frame.groupby(["station", "split"], sort=False)
     for source, target in target_columns.items():
-        frame[target] = grouped[source].shift(-1)
+        frame[target] = grouped[source].shift(-horizon_days)
 
     terminal = frame["target_date"].isna()
-    expected_terminals = len(OOTANG_STATIONS) * len(SPLIT_ORDER)
+    expected_terminals = (
+        len(OOTANG_STATIONS) * len(SPLIT_ORDER) * horizon_days
+    )
     if int(terminal.sum()) != expected_terminals:
-        raise PilotInputError("Each station/split group must have exactly one terminal row")
+        raise PilotInputError(
+            "Each station/split group must have exactly horizon_days terminal rows"
+        )
     samples = frame.loc[~terminal].copy()
     gap_days = (samples["target_date"] - samples["date"]).dt.days
-    if not gap_days.eq(profile["target"]["horizon_days"]).all():
-        raise PilotInputError("Pilot pairs must be exactly one calendar day apart")
+    if not gap_days.eq(horizon_days).all():
+        raise PilotInputError(
+            f"Pilot pairs must be exactly {horizon_days} calendar days apart"
+        )
 
     for station in OOTANG_STATIONS:
         samples[f"station_{station}"] = samples["station"].eq(station).astype(int)
@@ -1434,7 +1447,11 @@ def _manifest(
         "feature_order": [*MODEL_FEATURES, *CONTROL_FEATURES],
         "split_summary": _split_summary(samples),
         "target_class_support": _class_support(samples),
-        "terminal_source_rows_excluded": len(OOTANG_STATIONS) * len(SPLIT_ORDER),
+        "terminal_source_rows_excluded": (
+            len(OOTANG_STATIONS)
+            * len(SPLIT_ORDER)
+            * int(profile["target"]["horizon_days"])
+        ),
         "model": {
             **profile["model"],
             "fitted_boosting_iterations": int(len(model.base_models)),

@@ -1,0 +1,561 @@
+{
+  "artifact_kind": "ootang_ngboost_interval_proxy_horizon_sensitivity",
+  "artifact_status": "exploratory_proxy_horizon_sensitivity_not_formal",
+  "base_pilot_artifacts": {
+    "confusion_matrices": {
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/confusion_matrices.csv",
+      "sha256": "417759f91fb9b5c8eaa4dfc8a1b0e62375c00454d6d0901e3f4143e204ebf1ae"
+    },
+    "manifest": {
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/manifest.json",
+      "sha256": "5d53749ca71b05f594b8d55f4f3a0348432b739d0f1a0ab9a95c32e56bc26545"
+    },
+    "metrics": {
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/metrics.csv",
+      "sha256": "65b51add02f9fb06266051b7a39f87f3e03b9412c4a8cef3fcba617443f98d23"
+    },
+    "model": {
+      "path": "models/ootang_ngboost_interval_proxy_pilot_v1.pkl",
+      "sha256": "44728c506d34820ca2bec1af0c5056575f2033e75e046bd41e559156f895a8e3"
+    },
+    "predictions": {
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/predictions.csv",
+      "sha256": "4e66e9b767e6d0728f60ed5d3183b5722fcf9c50ad1969644b02764fd0f53725"
+    },
+    "reliability": {
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/reliability.csv",
+      "sha256": "18a4e0f8b7bc95854d41efcf7c25a799c3db989157c5df5bbcc3f8aab197818a"
+    }
+  },
+  "base_pilot_profile": {
+    "content_sha256": "1e73852dcd2406bab78f5b2495e7d4d6b9972518df85803722683b16dfbfb5ef",
+    "file_sha256": "a550c73828f5443a748bb3d494a428a96b1b1722c42b9daf7b03b940480d21aa",
+    "id": "ootang-ngboost-interval-proxy-pilot-v1",
+    "path": "config/ootang_ngboost_interval_proxy_pilot.v1.json",
+    "version": "1.0-pilot"
+  },
+  "case": "ootang",
+  "control_features": [
+    "station_ATU1",
+    "station_ATU2",
+    "station_ATU3",
+    "station_ATU4",
+    "station_ATU5",
+    "station_MJ1",
+    "station_MJ3",
+    "station_MJ9"
+  ],
+  "default_pipeline_member": false,
+  "feature_order": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "delta_v_mm_per_day",
+    "tangent_angle_degree",
+    "station_ATU1",
+    "station_ATU2",
+    "station_ATU3",
+    "station_ATU4",
+    "station_ATU5",
+    "station_MJ1",
+    "station_MJ3",
+    "station_MJ9"
+  ],
+  "forbidden_predictors": [
+    "acceleration",
+    "acceleration_status",
+    "acceleration_thresholds",
+    "actual_displacement_as_model_input",
+    "calibrated_p10",
+    "calibrated_p90",
+    "qhat_mm",
+    "rainfall",
+    "reservoir_water_level",
+    "groundwater_level",
+    "temperature_or_other_environment",
+    "coordinates_or_elevation",
+    "spatial_blocks",
+    "v4_station_or_site_fused_levels",
+    "date_or_split_as_model_input",
+    "future_or_target_side_fields"
+  ],
+  "formal_warning_output": false,
+  "git_commit": "d28056f23dae876768037863906e825439e858e7",
+  "git_worktree_dirty": true,
+  "h1_parity": {
+    "compared_columns": [
+      "split",
+      "date",
+      "target_date",
+      "station",
+      "interval_z",
+      "velocity_mm_per_day",
+      "delta_v_mm_per_day",
+      "tangent_angle_degree",
+      "station_ATU1",
+      "station_ATU2",
+      "station_ATU3",
+      "station_ATU4",
+      "station_ATU5",
+      "station_MJ1",
+      "station_MJ3",
+      "station_MJ9",
+      "current_interval_level",
+      "current_interval_color",
+      "target_interval_level",
+      "target_interval_color",
+      "ngboost_predicted_level",
+      "ngboost_predicted_color",
+      "prob_green",
+      "prob_blue",
+      "prob_yellow",
+      "prob_orange",
+      "prob_red",
+      "fit_majority_predicted_level",
+      "fit_majority_predicted_color",
+      "persistence_predicted_level",
+      "persistence_predicted_color",
+      "transition_type",
+      "ngboost_ordinal_error",
+      "ngboost_abs_ordinal_error",
+      "ngboost_false_escalation_vs_proxy",
+      "ngboost_false_deescalation_vs_proxy",
+      "actual",
+      "p10",
+      "p50",
+      "p90",
+      "target_actual",
+      "target_p10",
+      "target_p50",
+      "target_p90"
+    ],
+    "maximum_absolute_numeric_difference": 7.105427357601002e-15,
+    "maximum_absolute_probability_difference": 1.1102230246251565e-16,
+    "rows": 4096,
+    "status": "exact_within_1e-12"
+  },
+  "horizons": [
+    {
+      "calibration_red_support": 0,
+      "fit_class_priors": {
+        "blue": 0.3942307692307692,
+        "green": 0.485989010989011,
+        "orange": 0.0114010989010989,
+        "red": 0.012087912087912088,
+        "yellow": 0.0962912087912088
+      },
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "persistence": {
+        "calibration": {
+          "accuracy": 0.9164823008849557,
+          "correct": 1657,
+          "total": 1808
+        },
+        "fit": {
+          "accuracy": 0.9210164835164835,
+          "correct": 6705,
+          "total": 7280
+        },
+        "test": {
+          "accuracy": 0.9519230769230769,
+          "correct": 2178,
+          "total": 2288
+        }
+      },
+      "sample_counts": {
+        "calibration": 1808,
+        "fit": 7280,
+        "test": 2288
+      },
+      "target_class_support": {
+        "calibration": {
+          "blue": 847,
+          "green": 531,
+          "orange": 143,
+          "red": 0,
+          "yellow": 287
+        },
+        "fit": {
+          "blue": 2870,
+          "green": 3538,
+          "orange": 83,
+          "red": 88,
+          "yellow": 701
+        },
+        "test": {
+          "blue": 1039,
+          "green": 584,
+          "orange": 133,
+          "red": 350,
+          "yellow": 182
+        }
+      },
+      "terminal_source_rows_excluded": 24,
+      "transition_counts": {
+        "calibration": 151,
+        "fit": 575,
+        "test": 110
+      }
+    },
+    {
+      "calibration_red_support": 0,
+      "fit_class_priors": {
+        "blue": 0.394273127753304,
+        "green": 0.4856828193832599,
+        "orange": 0.011426211453744494,
+        "red": 0.012114537444933921,
+        "yellow": 0.0965033039647577
+      },
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "persistence": {
+        "calibration": {
+          "accuracy": 0.8325892857142857,
+          "correct": 1492,
+          "total": 1792
+        },
+        "fit": {
+          "accuracy": 0.8151156387665198,
+          "correct": 5921,
+          "total": 7264
+        },
+        "test": {
+          "accuracy": 0.8763204225352113,
+          "correct": 1991,
+          "total": 2272
+        }
+      },
+      "sample_counts": {
+        "calibration": 1792,
+        "fit": 7264,
+        "test": 2272
+      },
+      "target_class_support": {
+        "calibration": {
+          "blue": 845,
+          "green": 519,
+          "orange": 143,
+          "red": 0,
+          "yellow": 285
+        },
+        "fit": {
+          "blue": 2864,
+          "green": 3528,
+          "orange": 83,
+          "red": 88,
+          "yellow": 701
+        },
+        "test": {
+          "blue": 1038,
+          "green": 571,
+          "orange": 133,
+          "red": 350,
+          "yellow": 180
+        }
+      },
+      "terminal_source_rows_excluded": 72,
+      "transition_counts": {
+        "calibration": 300,
+        "fit": 1343,
+        "test": 281
+      }
+    },
+    {
+      "calibration_red_support": 0,
+      "fit_class_priors": {
+        "blue": 0.3946349557522124,
+        "green": 0.48478982300884954,
+        "orange": 0.011476769911504425,
+        "red": 0.012168141592920354,
+        "yellow": 0.09693030973451328
+      },
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "persistence": {
+        "calibration": {
+          "accuracy": 0.7443181818181818,
+          "correct": 1310,
+          "total": 1760
+        },
+        "fit": {
+          "accuracy": 0.7042311946902655,
+          "correct": 5093,
+          "total": 7232
+        },
+        "test": {
+          "accuracy": 0.7732142857142857,
+          "correct": 1732,
+          "total": 2240
+        }
+      },
+      "sample_counts": {
+        "calibration": 1760,
+        "fit": 7232,
+        "test": 2240
+      },
+      "target_class_support": {
+        "calibration": {
+          "blue": 841,
+          "green": 499,
+          "orange": 142,
+          "red": 0,
+          "yellow": 278
+        },
+        "fit": {
+          "blue": 2854,
+          "green": 3506,
+          "orange": 83,
+          "red": 88,
+          "yellow": 701
+        },
+        "test": {
+          "blue": 1034,
+          "green": 547,
+          "orange": 133,
+          "red": 350,
+          "yellow": 176
+        }
+      },
+      "terminal_source_rows_excluded": 168,
+      "transition_counts": {
+        "calibration": 450,
+        "fit": 2139,
+        "test": 508
+      }
+    }
+  ],
+  "implementation_sources": {
+    "base_pilot": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+      "sha256": "547cd095286cb83e406580eddb99d4c8e213c94a8c1d4dc915a04561ba36079f"
+    },
+    "interval_state": {
+      "path": "code/warning/interval_state.py",
+      "sha256": "3695f62c4f34ad3af9425f3b486dfbcbf4fbe236d79ac2f6b619dbda61c3f501"
+    },
+    "sensitivity": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py",
+      "sha256": "9d948109f3d16b7321f31e92a6bdd2aa497f44bfd6600047b4447b1d3993c2c2"
+    }
+  },
+  "not_claimed": [
+    "selected_or_optimal_horizon",
+    "horizon_ranking",
+    "expert_or_field_truth",
+    "independent_event_labels",
+    "formal_warning_output",
+    "operational_warning_validation",
+    "operational_false_alarm_or_missed_event_rates",
+    "convlstm_replacement_or_improvement",
+    "v4_replacement_validation_threshold_or_fusion_change",
+    "optimized_hyperparameters",
+    "posthoc_probability_calibration",
+    "causal_interpretation",
+    "external_confirmation",
+    "vajont_use_or_validation"
+  ],
+  "optimal_horizon_days": null,
+  "outputs": {
+    "confusion_matrices": {
+      "n_rows": 900,
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/confusion_matrices.csv",
+      "sha256": "533303727e25e865a04688984441e63f2e91e988ae742b5b0c7b8b7599086803",
+      "size_bytes": 79906
+    },
+    "horizon_summary": {
+      "n_rows": 96,
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/horizon_summary.csv",
+      "sha256": "aac1fc92bce26969a09f5987b66d3b7ebf93b0c28d1039e9b88cc964397aa667",
+      "size_bytes": 18804
+    },
+    "metrics": {
+      "n_rows": 1584,
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/metrics.csv",
+      "sha256": "856c1abf833fad22de780c0a562bc59244f83080f5ef0a7e7c0b06eb398b6de9",
+      "size_bytes": 177381
+    },
+    "model_h1": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h1.pkl",
+      "sha256": "e857458eecc12b8018a07b5bc9cde67f8d091338a20d23dbe3683bcd36a89dee",
+      "size_bytes": 2476090
+    },
+    "model_h3": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h3.pkl",
+      "sha256": "5a1167b028784340ae059013e8a2f8354dbc9f32fbd1d63721056d096c26c857",
+      "size_bytes": 2654821
+    },
+    "model_h7": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h7.pkl",
+      "sha256": "8a5bbc36a161cd5601322937d218289b3ef4d902c83e2138d8ceea09edd5c462",
+      "size_bytes": 2645749
+    },
+    "predictions": {
+      "n_rows": 12160,
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/predictions.csv",
+      "sha256": "aa5225981fdeb1dd6205db05c923b9035b4e581c59a723a31362be74b74b2356",
+      "size_bytes": 6694651
+    },
+    "reliability": {
+      "n_rows": 1440,
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/reliability.csv",
+      "sha256": "e6ba37956fc87f8ceb312d80d195707bf3654158fa1b8b871ed5271f95fd8ee9",
+      "size_bytes": 195420
+    }
+  },
+  "package_versions": {
+    "ngboost": "0.5.10",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2"
+  },
+  "profile": {
+    "content_sha256": "6c2ff02c77ec4dc80c710dfedd227fff842740d33ba1556b523591031e181b7d",
+    "file_sha256": "6363da3f31c2618824966572bc4ce66ac97d88f94091943912d2e6e059eba867",
+    "id": "ootang-ngboost-interval-proxy-horizon-sensitivity-v1",
+    "path": "config/ootang_ngboost_interval_proxy_horizon_sensitivity.v1.json",
+    "status": "exploratory_horizon_sensitivity",
+    "version": "1.0-sensitivity"
+  },
+  "ranking_performed": false,
+  "reporting": {
+    "evaluation_splits": [
+      "calibration",
+      "test"
+    ],
+    "optimal_horizon_days": null,
+    "ranking_performed": false,
+    "reporting_mode": "predeclared_side_by_side_nonranking",
+    "selected_horizon_days": null,
+    "selection_performed": false,
+    "summary_metrics": [
+      {
+        "direction": "higher_is_better",
+        "name": "accuracy"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "macro_f1_fixed_five"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "macro_f1_supported_classes"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "balanced_accuracy_supported_classes"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "ordinal_mae"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "quadratic_weighted_kappa"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "false_escalation_vs_proxy_rate"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "false_deescalation_vs_proxy_rate"
+      }
+    ],
+    "test_used_for_horizon_choice": false
+  },
+  "schema_version": 1,
+  "scientific_predictors": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "delta_v_mm_per_day",
+    "tangent_angle_degree"
+  ],
+  "selected_horizon_days": null,
+  "selection_performed": false,
+  "shared_model": {
+    "base_learner": {
+      "class": "DecisionTreeRegressor",
+      "criterion": "friedman_mse",
+      "max_depth": 3,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "random_state": 0,
+      "splitter": "best"
+    },
+    "class": "NGBClassifier",
+    "col_sample": 1.0,
+    "distribution": {
+      "classes": 5,
+      "kind": "k_categorical"
+    },
+    "learning_rate": 0.01,
+    "minibatch_frac": 1.0,
+    "n_estimators": 500,
+    "natural_gradient": true,
+    "random_state": 0,
+    "score": "LogScore",
+    "tol": 0.0001,
+    "verbose": false,
+    "verbose_eval": 100
+  },
+  "shared_training_policy": {
+    "early_stopping": false,
+    "fit_split_only": true,
+    "hyperparameter_search": false,
+    "one_independent_fit_per_horizon": true,
+    "posthoc_class_threshold_selection": false,
+    "posthoc_probability_calibration": false,
+    "refit_on_fit_plus_calibration": false,
+    "resampling_used": false,
+    "sample_weight_used": false,
+    "smote_used": false,
+    "synthetic_labels_used": false,
+    "validation_input_to_fit": false
+  },
+  "source_inputs": {
+    "forecast_manifest": {
+      "path": "figures/convlstm/forecast_run_manifest.json",
+      "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "prediction_sha256_matches": true,
+      "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/forecast_predictions.csv",
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+    },
+    "thresholds": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+      "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce",
+      "used_columns": [
+        "station",
+        "comparator_v0_mm_per_day"
+      ]
+    },
+    "v4_manifest": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+      "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120",
+      "sources": {
+        "kinematics": {
+          "path": "data/ootang_kinematics_long.csv",
+          "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+        },
+        "predictions": {
+          "path": "figures/convlstm/forecast_predictions.csv",
+          "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+        },
+        "thresholds": {
+          "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+          "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce"
+        }
+      }
+    }
+  },
+  "test_used_for_horizon_choice": false,
+  "vajont_used": false
+}
