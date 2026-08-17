@@ -1,6 +1,15 @@
 # 项目工作进度
 
-> 更新日期：2026-08-15。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+> 更新日期：2026-08-17。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-17 NGBoost 下一日区间代理 pilot
+
+- 新增显式阶段 `ootang-ngboost-interval-proxy-pilot`，默认链仍严格为 `features → convlstm → ootang-operational-v4`。本阶段只读取既有藕塘 ConvLSTM、逐点运动学和 v4 比较基准，不重训/修改 ConvLSTM，不修改 v4，也未读取或引入其他案例。
+- 使用当前 `interval_z`、逐点速度、原始 `ΔV` 和连续切线角四项指标，加 8 个测点 one-hot 控制量，预测下一自然日的五级原始区间偏离代理状态。物理加速度、环境变量、校准后区间和 v4 融合等级均未进入输入。
+- 严格同测点、同 split、一日配对得到 fit/calibration/test=`7280/1808/2288`，目标五级支持分别为 `3538/2870/701/83/88`、`531/847/287/143/0`、`584/1039/182/133/350`。calibration 无 red，相关指标明确记为不可定义。
+- 固定 `NGBClassifier` 五分类参数，只用 fit 训练，不做搜索、早停、重拟合、类别权重、SMOTE、合成标签或事后概率校准。calibration/test 全时刻 accuracy 为 `0.906/0.947`、macro-F1（支持类）为 `0.905/0.925`；状态持续基线分别为 `0.916/0.952` 与 `0.923/0.936`，NGBoost 未超过简单持续性基线。
+- 状态转移行上 NGBoost calibration/test accuracy 仅为 `0.132/0.209`；test 的 macro-F1 `0.229` 和 ordinal MAE `0.791` 优于多数类基线的 `0.083/1.527`，但 calibration 未稳定复现。因此该模型只保留为探索性概率 pilot，不引入主流程，不改动既有模型或论文结论。
+- 版本化产物位于 `figures/ngboost_interval_proxy_pilot_ootang_v1/`，模型为 `models/ootang_ngboost_interval_proxy_pilot_v1.pkl`，完整边界与结果见 `docs/ootang_ngboost_interval_proxy_pilot.md`。
 
 ## 2026-08-15 已退役产物清理
 
@@ -20,7 +29,7 @@
 
 ## 2026-08-11 v4 严格逐点加速度扩展收口（阈值来源于 2026-08-13 澄清）
 
-- 导师确认逐点导数方法及“相同阈值”。核对指定 Word 后，v4 沿用的是其速度 `V0` 基线形式和 `1×/5×/10×` 相对结构，而非不存在的严格加速度阈值表：以加速度自身 `A0` 量纲一致转置，`a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，真实 `dt`，单位 `mm/day²`，三点 warmup；raw `delta_v` 仍只作审计。
+- 导师确认逐点导数方法及“相同阈值”。经课题组内部方法核对后，v4 沿用速度 `V0` 基线形式和 `1×/5×/10×` 相对结构，而非不存在的严格加速度阈值表：以加速度自身 `A0` 量纲一致转置，`a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，真实 `dt`，单位 `mm/day²`，三点 warmup；raw `delta_v` 仍只作审计。
 - fit-only 稳定段阈值固定为 `A=mean(a)`、`sigma_a=sample std(ddof=1)`、`A0=max(1.5A,A+2sigma_a)`；`A0<=0` 或非有限时 fail-closed。五级为 green `<A0-sigma_a`、blue `[A0-sigma_a,A0+sigma_a]`、yellow `(A0+sigma_a,5A0)`、orange `[5A0,10A0)`、red `>=10A0`。
 - v4 使用 O1/O2/O3 双轴空间规则（实现最初形成于 v3 草案，但当前只由 v4 调用）；速度/切线角仍是同一运动学 family，加速度独立计票。8 点、514 日输出已复算：测点加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`，滑坡体整体 green/blue/yellow/orange/red=`8/48/31/9/18`，`valid=114`、`candidate_not_site_confirmed=400`。
 - v4 核心与图件 manifest 均绑定源码指纹、输出哈希与行数、v1 基础协议及 v2 扩展协议双哈希，并保留 `formal_warning_output=false`、`vajont_used=false`。默认入口现为 `features → convlstm → ootang-operational-v4`；v3 数值仅为保留的历史快照，不再有可执行对照入口。NGBoost 正式预警模型仍未完成，Vajont 未启动。
@@ -48,7 +57,7 @@
 | ConvLSTM 日历后置校准 | 已完成（当前单次初跑） | `figures/convlstm/forecast_calibration_metrics.csv`；不证明上游日值生成独立 |
 | ConvLSTM 配对日期块 95% 区间 | 已完成 | `figures/convlstm/forecast_bootstrap_ci.csv` |
 | ConvLSTM 7 通道 fixed-120 诊断 | 三折滚动与五种子已完成；早停/容量未运行 | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/`；历史 6 通道根目录产物只作对照，不是 7 通道证据 |
-| 高程与空间预警专家审查 | 已完成 | `docs/ootang_elevation_warning_expert_review.md`；400 日成因、典型日、指定 Word 方法边界及高程可信性已核对 |
+| 高程与空间预警专家审查 | 已完成 | `docs/ootang_elevation_warning_expert_review.md`；400 日成因、典型日、课题组内部方法边界及高程可信性已核对 |
 | v2 空间融合覆盖门禁 | 已修复 | `minimum_assessable_station_count=3` 先于全部颜色执行；2 个跨区 yellow 点反例及 v2 兼容语义均有测试 |
 | 滑坡体 green/blue 语义 | v3 草案已实现并复算 | 双轴输出整体确认等级与局部最高候选；green `8`、blue `48`，局部 blue 关注 `8` 日 |
 | 全时刻预警状态展示 | 已完成（非正式、观测后） | 514 日 × 8 点候选色带及 `site-confirmed/local maximum` 双轴；400 个 NC 明确不是缺测 |
@@ -57,7 +66,8 @@
 | 藕塘数据血缘 | 已审查并拆分门禁 | `source_recovery_status=unavailable_by_project_constraint`；原型初跑允许，确认性证据与正式预警阻断 |
 | 新神经调参/机理消融与正式日预测 | 暂停 | 7 通道 fixed-120 结果已查看，不据此优化；早停/容量未运行，自然月分段三次结构仍限制确认性解释 |
 | Vajont 案例 | 未启动 | 本轮 fixed-120 未读取、未适配、未运行；此前仅做过只读内容盘点，不构成启动，开始前必须获得用户明确许可 |
-| NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件 |
+| NGBoost 区间代理 pilot | 已完成显式初跑；不进入默认链 | 11,376 条一日配对、五级概率与基线比较；calibration/test 未超过状态持续基线 |
+| NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件；区间代理 pilot 不解除该门禁 |
 | 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
 
 ## 当前滚动验证协议
@@ -123,7 +133,7 @@
 ## 2026-07-30 高程与空间预警专家审查
 
 - 审查报告见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
-- 高程作为静态地形先验可提高输入结构的物理合理性，但指定 Word 的“物理引导”实际来自 GeoStudio 稳定性系数和半经验物理位移，并使用 GCN/T-GCN/ST-GCN；当前高程 ConvLSTM 是项目改造，不是该方法的复现。
+- 高程作为静态地形先验可提高输入结构的物理合理性，但课题组内部方案的“物理引导”实际来自稳定性系数和半经验物理位移，并使用 GCN/T-GCN/ST-GCN；当前高程 ConvLSTM 是项目改造，不是该方法的复现。
 - 在相同 `11400` 个预测键、观测和 persistence 下，高程版相对无高程单种子快照的 test RMSE/MAE 分别增加 `0.0196/0.0158 mm`；14 日配对块重采样的差值区间均高于 0。由于 test 已查看且只有单种子，该结果只是否定当前已显示提升，不构成确认性消融。
 - 400 个未空间确认日全部为 8/8 测点和 3/3 分区有效，并非缺失：`189` 日不足 2 个 yellow+ 点，`211` 日已经达到至少 2 点但仍全部位于 O1。
 - 对应 `755` 条 O1 yellow+ 测点记录的候选等级全部由区间指标决定；当前 orange/red 不能解释为速度或切线角达到同级。

@@ -27,12 +27,18 @@ ootang_kinematics_long.csv + forecast_predictions.csv
   └─ warning/operational_run_v4.py
        └─ figures/warning_operational_draft_v4/*
 
+forecast_predictions.csv + ootang_kinematics_long.csv
+  + v4 comparator V0 + isolated NGBoost pilot profile
+  └─ warning/ootang_ngboost_interval_proxy_pilot.py
+       ├─ models/ootang_ngboost_interval_proxy_pilot_v1.pkl
+       └─ figures/ngboost_interval_proxy_pilot_ootang_v1/*
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains eight independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP and all ConvLSTM diagnostics require `--stage`.
+`main.py` contains nine independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, the NGBoost interval-proxy pilot, and all ConvLSTM diagnostics require `--stage`.
 
 ## 模块职责
 
@@ -43,6 +49,7 @@ future frozen protocol + independent outcome labels
 | `code/convlstm/model.py` | 以 7 通道输入预测全部八测点位移 P10/P50/P90 | 输出训练/校准/测试分段图、预测 CSV、覆盖率和运行 manifest |
 | `code/convlstm/rolling_validation.py`、`seed_stability.py` | 固定 7 通道的滚动和多种子诊断 | 当前显式阶段；不将历史 6 通道结果当作 7 通道证据 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
+| `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/draft_evidence.py` | 重建 v4 所需的区间、运动学和稳定段证据 bundle | 只作审计；严格 MVIF 失败不得生成正式 V0 |
 | `code/warning/operational_run.py` | 验证 v4 profile、fit-only 参数、输入与来源指纹，写测点和滑坡体时间线 | 只接受 v4 profile，拒绝旧 profile；不输出正式预警 |
 | `code/warning/operational_v4_fusion.py` | 区间、运动学和加速度三证据族的测点候选融合 | 速度与切线角为一个 family；`ΔV` 不参与 ordinal 投票 |
@@ -53,7 +60,7 @@ future frozen protocol + independent outcome labels
 
 测点输入是：观测后区间状态、逐点速度、严格逐点加速度和改进切线角。速度与切线角合并成一个运动学证据族，加速度是独立证据族；原始 `ΔV` 只用于过程审计。候选色为三个族的最高等级。
 
-加速度基线由 fit-only 稳定段候选求得：`A=mean(a)`、`σ_a=std(a,ddof=1)`、`A0=max(1.5A,A+2σ_a)`。导师已确认沿用指定 Word 速度部分的相对阈值结构：green `< A0-σ_a`、blue `A0±σ_a`、yellow 至 `5A0`、orange 至 `10A0`、red `≥10A0`。这是当前案例的可复算操作化，不是现场验证的预警性能结论。
+加速度基线由 fit-only 稳定段候选求得：`A=mean(a)`、`σ_a=std(a,ddof=1)`、`A0=max(1.5A,A+2σ_a)`。导师已确认采用相同的五级相对阈值结构：green `< A0-σ_a`、blue `A0±σ_a`、yellow 至 `5A0`、orange 至 `10A0`、red `≥10A0`。这是当前案例的可复算操作化，不是现场验证的预警性能结论。
 
 滑坡体输出分为两轴：
 
@@ -61,6 +68,12 @@ future frozen protocol + independent outcome labels
 - `local_max_candidate_level`：任何可评估测点的最高局部候选。
 
 因此“整体无色”不等于没有局部异常，也不等于数据缺失。green 仅指当前规则下的候选状态，不能写作现场安全结论。
+
+## NGBoost 区间代理 pilot
+
+该显式阶段使用时刻 `t` 的区间标准化偏离、逐点速度、`ΔV` 和连续切线角，预测 `t+1` 的五级原始区间偏离代理状态。8 个测点 one-hot 仅作为控制变量；物理加速度和环境变量不进入模型。模型只在 fit 训练，calibration/test 只评价，不调参、不重拟合、不做样本合成或事后校准。
+
+pilot 已完整输出 11,376 条一日配对记录和五级概率。NGBoost 在 calibration/test 全部时刻的 accuracy 为 `0.906/0.947`，略低于状态持续基线的 `0.916/0.952`；状态转移行 accuracy 为 `0.132/0.209`。因此它只作为技术可行性和概率诊断支路保留，不进入默认链，也不授权修改 ConvLSTM、v4 或正式论文结论。
 
 ## 版本化与清理原则
 

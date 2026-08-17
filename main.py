@@ -191,6 +191,29 @@ STAGES = (
         warning_artifact_scope="operational_draft",
         enabled_by_default=True,
     ),
+    Stage(
+        "ootang-ngboost-interval-proxy-pilot",
+        "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+        "运行藕塘 NGBoost 下一日区间风险代理五分类试验（显式、非正式）",
+        inputs=(
+            "config/ootang_ngboost_interval_proxy_pilot.v1.json",
+            "figures/convlstm/forecast_predictions.csv",
+            "figures/convlstm/forecast_run_manifest.json",
+            "data/ootang_kinematics_long.csv",
+            "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+            "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+        ),
+        outputs=(
+            "models/ootang_ngboost_interval_proxy_pilot_v1.pkl",
+            "figures/ngboost_interval_proxy_pilot_ootang_v1/predictions.csv",
+            "figures/ngboost_interval_proxy_pilot_ootang_v1/metrics.csv",
+            "figures/ngboost_interval_proxy_pilot_ootang_v1/confusion_matrices.csv",
+            "figures/ngboost_interval_proxy_pilot_ootang_v1/reliability.csv",
+            "figures/ngboost_interval_proxy_pilot_ootang_v1/manifest.json",
+        ),
+        warning_artifact_scope="exploratory_proxy_pilot",
+        enabled_by_default=False,
+    ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
 Runner = Callable[..., subprocess.CompletedProcess]

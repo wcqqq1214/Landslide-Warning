@@ -53,6 +53,50 @@ class PipelineTests(unittest.TestCase):
             "config/ootang_warning_protocol.v2.draft.json",
             pipeline.STAGE_BY_NAME["ootang-operational-v4"].inputs,
         )
+        operational = [
+            stage.name for stage in pipeline.STAGES if "operational" in stage.name
+        ]
+        self.assertEqual(operational, ["ootang-operational-v4"])
+
+    def test_ngboost_interval_proxy_pilot_is_explicit_and_isolated(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-interval-proxy-pilot"]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-operational-v4") + 1,
+        )
+        self.assertEqual(
+            stage.script,
+            "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+        )
+        self.assertIn(
+            "config/ootang_ngboost_interval_proxy_pilot.v1.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+            stage.inputs,
+        )
+        self.assertTrue(
+            all(
+                "vajont" not in path.lower()
+                for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+        protected_outputs = {
+            path
+            for protected in pipeline.STAGES
+            if protected.name in {"convlstm", "ngboost-shap", "ootang-operational-v4"}
+            for path in protected.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(protected_outputs))
+        self.assertNotIn("models/ngboost.pkl", stage.outputs)
+        self.assertEqual(
+            pipeline.STAGE_BY_NAME["ngboost-shap"].script,
+            "code/explainability/ngboost_shap.py",
+        )
 
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])

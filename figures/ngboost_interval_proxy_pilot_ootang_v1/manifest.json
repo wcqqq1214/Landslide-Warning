@@ -1,0 +1,331 @@
+{
+  "artifact_kind": "ootang_ngboost_next_day_interval_proxy_pilot",
+  "artifact_status": "exploratory_proxy_pilot_not_formal",
+  "case": "ootang",
+  "control_features": [
+    "station_ATU1",
+    "station_ATU2",
+    "station_ATU3",
+    "station_ATU4",
+    "station_ATU5",
+    "station_MJ1",
+    "station_MJ3",
+    "station_MJ9"
+  ],
+  "default_pipeline_member": false,
+  "evaluation": {
+    "calibration_red_metric_policy": "undefined_metrics_are_NA_with_explicit_status",
+    "calibration_red_support": 0,
+    "estimators": [
+      "ngboost",
+      "fit_majority_prior",
+      "current_state_persistence"
+    ],
+    "metrics": [
+      "accuracy",
+      "per_class_precision_recall_f1_support",
+      "macro_f1_fixed_five",
+      "macro_f1_supported_classes",
+      "balanced_accuracy_supported_classes",
+      "ordinal_mae",
+      "quadratic_weighted_kappa",
+      "multiclass_log_loss",
+      "multiclass_brier",
+      "top_label_ece",
+      "classwise_ece",
+      "one_vs_rest_roc_auc",
+      "one_vs_rest_pr_auc",
+      "false_escalation_vs_proxy",
+      "false_deescalation_vs_proxy"
+    ],
+    "reliability_bins": 10,
+    "subsets": [
+      "all",
+      "transition_only"
+    ],
+    "test_status": "historical_holdout_already_inspected_not_confirmatory"
+  },
+  "feature_order": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "delta_v_mm_per_day",
+    "tangent_angle_degree",
+    "station_ATU1",
+    "station_ATU2",
+    "station_ATU3",
+    "station_ATU4",
+    "station_ATU5",
+    "station_MJ1",
+    "station_MJ3",
+    "station_MJ9"
+  ],
+  "fit_class_priors": {
+    "blue": 0.3942307692307692,
+    "green": 0.485989010989011,
+    "orange": 0.0114010989010989,
+    "red": 0.012087912087912088,
+    "yellow": 0.0962912087912088
+  },
+  "forbidden_predictors": [
+    "acceleration",
+    "acceleration_status",
+    "acceleration_thresholds",
+    "actual_displacement_as_model_input",
+    "calibrated_p10",
+    "calibrated_p90",
+    "qhat_mm",
+    "rainfall",
+    "reservoir_water_level",
+    "groundwater_level",
+    "temperature_or_other_environment",
+    "coordinates_or_elevation",
+    "spatial_blocks",
+    "v4_station_or_site_fused_levels",
+    "date_or_split_as_model_input",
+    "future_or_target_side_fields"
+  ],
+  "formal_warning_output": false,
+  "git_commit": "b6327c57a8403f38781641a3457a0d44528b5d5d",
+  "git_worktree_dirty": true,
+  "implementation_sources": {
+    "interval_state": {
+      "path": "code/warning/interval_state.py",
+      "sha256": "3695f62c4f34ad3af9425f3b486dfbcbf4fbe236d79ac2f6b619dbda61c3f501"
+    },
+    "pilot": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+      "sha256": "038fb1be3e8620db75f9c550b472226ca05d9c89213c0c3e0e792a15496bf031"
+    }
+  },
+  "model": {
+    "base_learner": {
+      "class": "DecisionTreeRegressor",
+      "criterion": "friedman_mse",
+      "max_depth": 3,
+      "min_samples_leaf": 1,
+      "min_samples_split": 2,
+      "min_weight_fraction_leaf": 0.0,
+      "random_state": 0,
+      "splitter": "best"
+    },
+    "class": "NGBClassifier",
+    "col_sample": 1.0,
+    "distribution": {
+      "classes": 5,
+      "kind": "k_categorical"
+    },
+    "fitted_boosting_iterations": 500,
+    "learning_rate": 0.01,
+    "minibatch_frac": 1.0,
+    "n_estimators": 500,
+    "natural_gradient": true,
+    "random_state": 0,
+    "score": "LogScore",
+    "tol": 0.0001,
+    "verbose": false,
+    "verbose_eval": 100
+  },
+  "not_claimed": [
+    "expert_or_field_truth",
+    "independent_event_labels",
+    "formal_warning_output",
+    "operational_warning_validation",
+    "operational_false_alarm_or_missed_event_rates",
+    "convlstm_replacement_or_improvement",
+    "v4_replacement_validation_threshold_or_fusion_change",
+    "optimized_hyperparameters",
+    "posthoc_probability_calibration",
+    "causal_interpretation",
+    "out_of_fold_or_cross_fitted_fit_interval_features",
+    "external_confirmation",
+    "vajont_use_or_validation"
+  ],
+  "outputs": {
+    "confusion_matrices": {
+      "n_rows": 450,
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/confusion_matrices.csv",
+      "sha256": "417759f91fb9b5c8eaa4dfc8a1b0e62375c00454d6d0901e3f4143e204ebf1ae",
+      "size_bytes": 35639
+    },
+    "metrics": {
+      "n_rows": 792,
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/metrics.csv",
+      "sha256": "65b51add02f9fb06266051b7a39f87f3e03b9412c4a8cef3fcba617443f98d23",
+      "size_bytes": 81120
+    },
+    "model": {
+      "path": "models/ootang_ngboost_interval_proxy_pilot_v1.pkl",
+      "sha256": "44728c506d34820ca2bec1af0c5056575f2033e75e046bd41e559156f895a8e3",
+      "size_bytes": 2476291
+    },
+    "predictions": {
+      "n_rows": 11376,
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/predictions.csv",
+      "sha256": "4e66e9b767e6d0728f60ed5d3183b5722fcf9c50ad1969644b02764fd0f53725",
+      "size_bytes": 6001414
+    },
+    "reliability": {
+      "n_rows": 720,
+      "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/reliability.csv",
+      "sha256": "18a4e0f8b7bc95854d41efcf7c25a799c3db989157c5df5bbcc3f8aab197818a",
+      "size_bytes": 90663
+    }
+  },
+  "package_versions": {
+    "ngboost": "0.5.10",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2"
+  },
+  "profile": {
+    "content_sha256": "1e73852dcd2406bab78f5b2495e7d4d6b9972518df85803722683b16dfbfb5ef",
+    "file_sha256": "a550c73828f5443a748bb3d494a428a96b1b1722c42b9daf7b03b940480d21aa",
+    "id": "ootang-ngboost-interval-proxy-pilot-v1",
+    "path": "config/ootang_ngboost_interval_proxy_pilot.v1.json",
+    "status": "exploratory_pilot",
+    "version": "1.0-pilot"
+  },
+  "schema_version": 1,
+  "scientific_predictors": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "delta_v_mm_per_day",
+    "tangent_angle_degree"
+  ],
+  "source_inputs": {
+    "forecast_manifest": {
+      "audit": {
+        "path": "figures/convlstm/forecast_run_manifest.json",
+        "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+        "prediction_sha256_matches": true,
+        "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+        "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+      },
+      "path": "figures/convlstm/forecast_run_manifest.json",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/forecast_predictions.csv",
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+    },
+    "thresholds": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+      "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce",
+      "used_columns": [
+        "station",
+        "comparator_v0_mm_per_day"
+      ]
+    },
+    "v4_manifest": {
+      "audit": {
+        "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+        "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120",
+        "sources": {
+          "kinematics": {
+            "path": "data/ootang_kinematics_long.csv",
+            "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+          },
+          "predictions": {
+            "path": "figures/convlstm/forecast_predictions.csv",
+            "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+          },
+          "thresholds": {
+            "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+            "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce"
+          }
+        }
+      },
+      "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+      "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120"
+    }
+  },
+  "split_summary": {
+    "calibration": {
+      "evaluation_role": "chronological_evaluation_only",
+      "feature_dates": 226,
+      "feature_end": "2019-09-16",
+      "feature_start": "2019-02-03",
+      "rows": 1808,
+      "target_end": "2019-09-17",
+      "target_start": "2019-02-04",
+      "transition_rows": 151
+    },
+    "fit": {
+      "evaluation_role": "training_only",
+      "feature_dates": 910,
+      "feature_end": "2019-02-01",
+      "feature_start": "2016-08-06",
+      "rows": 7280,
+      "target_end": "2019-02-02",
+      "target_start": "2016-08-07",
+      "transition_rows": 575
+    },
+    "test": {
+      "evaluation_role": "historical_holdout_evaluation_only",
+      "feature_dates": 286,
+      "feature_end": "2020-06-29",
+      "feature_start": "2019-09-18",
+      "rows": 2288,
+      "target_end": "2020-06-30",
+      "target_start": "2019-09-19",
+      "transition_rows": 110
+    }
+  },
+  "target": {
+    "class_order": [
+      "green",
+      "blue",
+      "yellow",
+      "orange",
+      "red"
+    ],
+    "horizon_days": 1,
+    "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+    "kind": "next_calendar_day_raw_interval_proxy_level",
+    "raw_quantiles_only": true,
+    "source_function": "warning.interval_state.classify_observed_interval_states"
+  },
+  "target_class_support": {
+    "calibration": {
+      "blue": 847,
+      "green": 531,
+      "orange": 143,
+      "red": 0,
+      "yellow": 287
+    },
+    "fit": {
+      "blue": 2870,
+      "green": 3538,
+      "orange": 83,
+      "red": 88,
+      "yellow": 701
+    },
+    "test": {
+      "blue": 1039,
+      "green": 584,
+      "orange": 133,
+      "red": 350,
+      "yellow": 182
+    }
+  },
+  "terminal_source_rows_excluded": 24,
+  "training_policy": {
+    "early_stopping": false,
+    "fit_split_only": true,
+    "hyperparameter_search": false,
+    "posthoc_class_threshold_selection": false,
+    "posthoc_probability_calibration": false,
+    "refit_on_fit_plus_calibration": false,
+    "resampling_used": false,
+    "sample_weight_api_available": true,
+    "sample_weight_used": false,
+    "smote_used": false,
+    "synthetic_labels_used": false,
+    "validation_input_to_fit": false
+  },
+  "vajont_used": false
+}
