@@ -38,12 +38,16 @@ same fixed pilot contract + predeclared horizons [1, 3, 7]
        ├─ models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h{1,3,7}.pkl
        └─ figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/*
 
+same fixed horizons/model + seven predeclared feature sets
+  └─ warning/ootang_ngboost_interval_proxy_feature_ablation.py
+       └─ figures/ngboost_interval_proxy_feature_ablation_ootang_v1/*
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains ten independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, the NGBoost proxy pilot/sensitivity, and all ConvLSTM diagnostics require `--stage`.
+`main.py` contains eleven independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, the NGBoost proxy pilot/sensitivity/ablation, and all ConvLSTM diagnostics require `--stage`.
 
 ## 模块职责
 
@@ -56,6 +60,7 @@ future frozen protocol + independent outcome labels
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
+| `code/warning/ootang_ngboost_interval_proxy_feature_ablation.py` | 固定模型与 horizon，对七组输入进行 21 次分组消融 | 不保存消融模型、不排名；区间主导代理任务，`ΔV` 对状态转移的增量最一致 |
 | `code/warning/draft_evidence.py` | 重建 v4 所需的区间、运动学和稳定段证据 bundle | 只作审计；严格 MVIF 失败不得生成正式 V0 |
 | `code/warning/operational_run.py` | 验证 v4 profile、fit-only 参数、输入与来源指纹，写测点和滑坡体时间线 | 只接受 v4 profile，拒绝旧 profile；不输出正式预警 |
 | `code/warning/operational_v4_fusion.py` | 区间、运动学和加速度三证据族的测点候选融合 | 速度与切线角为一个 family；`ΔV` 不参与 ordinal 投票 |
@@ -82,6 +87,8 @@ future frozen protocol + independent outcome labels
 pilot 已完整输出 11,376 条一日配对记录和五级概率。NGBoost 在 calibration/test 全部时刻的 accuracy 为 `0.906/0.947`，略低于状态持续基线的 `0.916/0.952`；状态转移行 accuracy 为 `0.132/0.209`。因此它只作为技术可行性和概率诊断支路保留，不进入默认链，也不授权修改 ConvLSTM、v4 或正式论文结论。
 
 提前量敏感性保持相同模型、输入和训练策略，并列运行 h=1/3/7。三个 horizon 在 calibration/test 的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线；随着 horizon 增加，log loss、Brier 和 ECE 整体升高。转移行存在有限信息，但未在时段和指标间稳定一致，因此敏感性只作非排名诊断，不输出“最佳”或“选定”提前量。
+
+七组输入消融进一步表明：去掉 `interval_z` 会使全时刻 macro-F1、ordinal MAE 和 log loss 大幅恶化，而仅区间模型已接近 full，说明当前代理标签任务由区间持续性主导；但仅区间在六个 horizon×split 的转移行 macro-F1 和 ordinal MAE 上均差于 full，非区间指标对状态变化仍有增量。其中去掉 `ΔV` 后转移行 ordinal MAE 在六个时段全部恶化，是最一致的增量证据。分别去掉速度、切线角或 station one-hot 的影响较小且方向混合，不能据此宣称单项必要或跨点可迁移。消融不排名、不选特征集，也不改变不引入主流程的判断。
 
 ## 版本化与清理原则
 

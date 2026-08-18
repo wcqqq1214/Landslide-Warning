@@ -1,0 +1,2392 @@
+{
+  "artifact_kind": "ootang_ngboost_interval_proxy_feature_ablation",
+  "artifact_status": "exploratory_proxy_feature_ablation_not_formal",
+  "base_sensitivity_artifacts": {
+    "confusion_matrices": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/confusion_matrices.csv",
+      "sha256": "533303727e25e865a04688984441e63f2e91e988ae742b5b0c7b8b7599086803"
+    },
+    "horizon_summary": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/horizon_summary.csv",
+      "sha256": "aac1fc92bce26969a09f5987b66d3b7ebf93b0c28d1039e9b88cc964397aa667"
+    },
+    "manifest": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/manifest.json",
+      "sha256": "56ee7a80e4fe13f15f232b22c7b26c2fd736a6bf8dfce7c5a4339f27c831ce53"
+    },
+    "metrics": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/metrics.csv",
+      "sha256": "856c1abf833fad22de780c0a562bc59244f83080f5ef0a7e7c0b06eb398b6de9"
+    },
+    "model_h1": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h1.pkl",
+      "sha256": "e857458eecc12b8018a07b5bc9cde67f8d091338a20d23dbe3683bcd36a89dee"
+    },
+    "model_h3": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h3.pkl",
+      "sha256": "5a1167b028784340ae059013e8a2f8354dbc9f32fbd1d63721056d096c26c857"
+    },
+    "model_h7": {
+      "path": "models/ootang_ngboost_interval_proxy_horizon_sensitivity_v1_h7.pkl",
+      "sha256": "8a5bbc36a161cd5601322937d218289b3ef4d902c83e2138d8ceea09edd5c462"
+    },
+    "predictions": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/predictions.csv",
+      "sha256": "aa5225981fdeb1dd6205db05c923b9035b4e581c59a723a31362be74b74b2356"
+    },
+    "reliability": {
+      "path": "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/reliability.csv",
+      "sha256": "e6ba37956fc87f8ceb312d80d195707bf3654158fa1b8b871ed5271f95fd8ee9"
+    }
+  },
+  "base_sensitivity_profile": {
+    "content_sha256": "6c2ff02c77ec4dc80c710dfedd227fff842740d33ba1556b523591031e181b7d",
+    "file_sha256": "6363da3f31c2618824966572bc4ce66ac97d88f94091943912d2e6e059eba867",
+    "id": "ootang-ngboost-interval-proxy-horizon-sensitivity-v1",
+    "path": "config/ootang_ngboost_interval_proxy_horizon_sensitivity.v1.json",
+    "version": "1.0-sensitivity"
+  },
+  "case": "ootang",
+  "default_pipeline_member": false,
+  "feature_sets": [
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "full",
+      "removed_groups": [],
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ]
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "interval_only",
+      "removed_groups": [
+        "velocity",
+        "delta_v",
+        "tangent_angle"
+      ],
+      "scientific_features": [
+        "interval_z"
+      ]
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "without_interval",
+      "removed_groups": [
+        "interval"
+      ],
+      "scientific_features": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ]
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "without_velocity",
+      "removed_groups": [
+        "velocity"
+      ],
+      "scientific_features": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ]
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "without_delta_v",
+      "removed_groups": [
+        "delta_v"
+      ],
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree"
+      ]
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "name": "without_tangent",
+      "removed_groups": [
+        "tangent_angle"
+      ],
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day"
+      ]
+    },
+    {
+      "control_features": [],
+      "name": "without_station_controls",
+      "removed_groups": [
+        "station_controls"
+      ],
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ]
+    }
+  ],
+  "fit_count": 21,
+  "fit_records": [
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "full",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "interval_only",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_interval",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_velocity",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_delta_v",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_tangent",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "feature_set": "without_station_controls",
+      "fit_class_support": {
+        "blue": 2870,
+        "green": 3538,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7280,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 1,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 1,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "full",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "interval_only",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_interval",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_velocity",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_delta_v",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_tangent",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "feature_set": "without_station_controls",
+      "fit_class_support": {
+        "blue": 2864,
+        "green": 3528,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7264,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 3,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 3,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "full",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "interval_only",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_interval",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_velocity",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_delta_v",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9"
+      ],
+      "feature_set": "without_tangent",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    },
+    {
+      "control_features": [],
+      "feature_order": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "feature_set": "without_station_controls",
+      "fit_class_support": {
+        "blue": 2854,
+        "green": 3506,
+        "orange": 83,
+        "red": 88,
+        "yellow": 701
+      },
+      "fit_rows": 7232,
+      "fitted_boosting_iterations": 500,
+      "horizon_days": 7,
+      "model_class": "NGBClassifier",
+      "model_parameters": {
+        "base_learner": {
+          "class": "DecisionTreeRegressor",
+          "criterion": "friedman_mse",
+          "max_depth": 3,
+          "min_samples_leaf": 1,
+          "min_samples_split": 2,
+          "min_weight_fraction_leaf": 0.0,
+          "random_state": 0,
+          "splitter": "best"
+        },
+        "class": "NGBClassifier",
+        "col_sample": 1.0,
+        "distribution": {
+          "classes": 5,
+          "kind": "k_categorical"
+        },
+        "learning_rate": 0.01,
+        "minibatch_frac": 1.0,
+        "n_estimators": 500,
+        "natural_gradient": true,
+        "random_state": 0,
+        "score": "LogScore",
+        "tol": 0.0001,
+        "verbose": false,
+        "verbose_eval": 100
+      },
+      "model_persisted": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "scientific_features": [
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree"
+      ],
+      "target": {
+        "class_order": [
+          "green",
+          "blue",
+          "yellow",
+          "orange",
+          "red"
+        ],
+        "horizon_days": 7,
+        "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+        "kind": "future_raw_interval_proxy_level",
+        "raw_quantiles_only": true,
+        "source_function": "warning.interval_state.classify_observed_interval_states"
+      },
+      "validation_input_used": false
+    }
+  ],
+  "formal_warning_output": false,
+  "full_parity": {
+    "confusion_matrices": {
+      "columns": [
+        "horizon_days",
+        "split",
+        "evaluation_role",
+        "estimator",
+        "subset",
+        "actual_level",
+        "actual_color",
+        "predicted_level",
+        "predicted_color",
+        "count"
+      ],
+      "maximum_absolute_numeric_difference": 0.0,
+      "name": "confusion_matrices",
+      "rows": 300,
+      "status": "exact_within_1e-12"
+    },
+    "metrics": {
+      "columns": [
+        "horizon_days",
+        "split",
+        "evaluation_role",
+        "estimator",
+        "subset",
+        "metric",
+        "class_level",
+        "class_color",
+        "value",
+        "numerator",
+        "denominator",
+        "status"
+      ],
+      "maximum_absolute_numeric_difference": 2.220446049250313e-16,
+      "name": "metrics",
+      "rows": 588,
+      "status": "exact_within_1e-12"
+    },
+    "predictions": {
+      "columns": [
+        "horizon_days",
+        "split",
+        "date",
+        "target_date",
+        "station",
+        "interval_z",
+        "velocity_mm_per_day",
+        "delta_v_mm_per_day",
+        "tangent_angle_degree",
+        "station_ATU1",
+        "station_ATU2",
+        "station_ATU3",
+        "station_ATU4",
+        "station_ATU5",
+        "station_MJ1",
+        "station_MJ3",
+        "station_MJ9",
+        "current_interval_level",
+        "current_interval_color",
+        "target_interval_level",
+        "target_interval_color",
+        "ngboost_predicted_level",
+        "ngboost_predicted_color",
+        "prob_green",
+        "prob_blue",
+        "prob_yellow",
+        "prob_orange",
+        "prob_red",
+        "fit_majority_predicted_level",
+        "fit_majority_predicted_color",
+        "persistence_predicted_level",
+        "persistence_predicted_color",
+        "transition_type",
+        "ngboost_ordinal_error",
+        "ngboost_abs_ordinal_error",
+        "ngboost_false_escalation_vs_proxy",
+        "ngboost_false_deescalation_vs_proxy",
+        "actual",
+        "p10",
+        "p50",
+        "p90",
+        "target_actual",
+        "target_p10",
+        "target_p50",
+        "target_p90"
+      ],
+      "maximum_absolute_numeric_difference": 7.105427357601002e-15,
+      "name": "predictions",
+      "rows": 12160,
+      "status": "exact_within_1e-12"
+    },
+    "reliability": {
+      "columns": [
+        "horizon_days",
+        "split",
+        "evaluation_role",
+        "estimator",
+        "subset",
+        "reliability_kind",
+        "class_level",
+        "class_color",
+        "bin_index",
+        "bin_lower",
+        "bin_upper",
+        "count",
+        "mean_predicted_probability",
+        "observed_frequency",
+        "class_support",
+        "calibration_status"
+      ],
+      "maximum_absolute_numeric_difference": 1.1102230246251565e-16,
+      "name": "reliability",
+      "rows": 720,
+      "status": "exact_within_1e-12"
+    }
+  },
+  "git_commit": "0bc7591a649be2b42e6a025699eb10a1efbeefcd",
+  "git_worktree_dirty": true,
+  "horizons": [
+    1,
+    3,
+    7
+  ],
+  "implementation_sources": {
+    "ablation": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_feature_ablation.py",
+      "sha256": "ffc63fdf9b6ae561931ec9bffdde4f61833ea6cdbf0cc2731eaf3ba2f0b2da89"
+    },
+    "pilot": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+      "sha256": "547cd095286cb83e406580eddb99d4c8e213c94a8c1d4dc915a04561ba36079f"
+    },
+    "sensitivity": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py",
+      "sha256": "9d948109f3d16b7321f31e92a6bdd2aa497f44bfd6600047b4447b1d3993c2c2"
+    }
+  },
+  "models_persisted": false,
+  "not_claimed": [
+    "selected_or_optimal_feature_set",
+    "feature_set_ranking",
+    "selected_or_optimal_horizon",
+    "horizon_ranking",
+    "expert_or_field_truth",
+    "independent_event_labels",
+    "formal_warning_output",
+    "operational_warning_validation",
+    "operational_false_alarm_or_missed_event_rates",
+    "convlstm_replacement_or_improvement",
+    "v4_replacement_validation_threshold_or_fusion_change",
+    "optimized_hyperparameters",
+    "posthoc_probability_calibration",
+    "causal_interpretation",
+    "external_confirmation",
+    "vajont_use_or_validation"
+  ],
+  "optimal_feature_set": null,
+  "outputs": {
+    "ablation_summary": {
+      "n_rows": 840,
+      "path": "figures/ngboost_interval_proxy_feature_ablation_ootang_v1/ablation_summary.csv",
+      "sha256": "b21bf8b4c6610ea741550b7ce966986a2c89e86e15e5afe0bcf481ffbaa06151",
+      "size_bytes": 274485
+    },
+    "confusion_matrices": {
+      "n_rows": 2100,
+      "path": "figures/ngboost_interval_proxy_feature_ablation_ootang_v1/confusion_matrices.csv",
+      "sha256": "91e2c4381683260362afe793451c4192a162b28d790f04e480da871eb49dd5a2",
+      "size_bytes": 199094
+    },
+    "metrics": {
+      "n_rows": 4116,
+      "path": "figures/ngboost_interval_proxy_feature_ablation_ootang_v1/metrics.csv",
+      "sha256": "6f1fe4c6976d63aa8068a74370ac563e72ffdda4e16fb1c9cddc2be5f533a140",
+      "size_bytes": 502121
+    },
+    "predictions": {
+      "n_rows": 85120,
+      "path": "figures/ngboost_interval_proxy_feature_ablation_ootang_v1/predictions.csv",
+      "sha256": "35d4a3858a5a11a7cc335368bf3b12496c74a6ddd5361c311857c079e20a9acc",
+      "size_bytes": 59581016
+    },
+    "reliability": {
+      "n_rows": 5040,
+      "path": "figures/ngboost_interval_proxy_feature_ablation_ootang_v1/reliability.csv",
+      "sha256": "9c4042d51f8dcd1d1858aa0b5dbf6c93e796a5de5442e1707350ec96bde0a5fd",
+      "size_bytes": 771213
+    }
+  },
+  "package_versions": {
+    "ngboost": "0.5.10",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.7.2"
+  },
+  "profile": {
+    "content_sha256": "bfb6e49985fe40331428f6d5402265b8d82f1a52a921f60229f0780e537929cf",
+    "file_sha256": "c0bedd69c83bb38f1a8ba3c0700a216ba9333c3ed0c5e03a87dcabae7343740f",
+    "id": "ootang-ngboost-interval-proxy-feature-ablation-v1",
+    "path": "config/ootang_ngboost_interval_proxy_feature_ablation.v1.json",
+    "status": "exploratory_feature_ablation",
+    "version": "1.0-ablation"
+  },
+  "ranking_performed": false,
+  "reporting": {
+    "evaluation_splits": [
+      "calibration",
+      "test"
+    ],
+    "models_persisted": false,
+    "optimal_feature_set": null,
+    "ranking_performed": false,
+    "reporting_mode": "predeclared_side_by_side_nonranking",
+    "selected_feature_set": null,
+    "selected_horizon_days": null,
+    "selection_performed": false,
+    "summary_metrics": [
+      {
+        "direction": "higher_is_better",
+        "name": "accuracy"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "macro_f1_supported_classes"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "balanced_accuracy_supported_classes"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "ordinal_mae"
+      },
+      {
+        "direction": "higher_is_better",
+        "name": "quadratic_weighted_kappa"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "multiclass_log_loss"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "multiclass_brier"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "top_label_ece"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "false_escalation_vs_proxy_rate"
+      },
+      {
+        "direction": "lower_is_better",
+        "name": "false_deescalation_vs_proxy_rate"
+      }
+    ],
+    "test_used_for_feature_selection": false
+  },
+  "schema_version": 1,
+  "selected_feature_set": null,
+  "selected_horizon_days": null,
+  "selection_performed": false,
+  "shared_contract": {
+    "full_scientific_features": [
+      "interval_z",
+      "velocity_mm_per_day",
+      "delta_v_mm_per_day",
+      "tangent_angle_degree"
+    ],
+    "model": {
+      "base_learner": {
+        "class": "DecisionTreeRegressor",
+        "criterion": "friedman_mse",
+        "max_depth": 3,
+        "min_samples_leaf": 1,
+        "min_samples_split": 2,
+        "min_weight_fraction_leaf": 0.0,
+        "random_state": 0,
+        "splitter": "best"
+      },
+      "class": "NGBClassifier",
+      "col_sample": 1.0,
+      "distribution": {
+        "classes": 5,
+        "kind": "k_categorical"
+      },
+      "learning_rate": 0.01,
+      "minibatch_frac": 1.0,
+      "n_estimators": 500,
+      "natural_gradient": true,
+      "random_state": 0,
+      "score": "LogScore",
+      "tol": 0.0001,
+      "verbose": false,
+      "verbose_eval": 100
+    },
+    "station_control_features": [
+      "station_ATU1",
+      "station_ATU2",
+      "station_ATU3",
+      "station_ATU4",
+      "station_ATU5",
+      "station_MJ1",
+      "station_MJ3",
+      "station_MJ9"
+    ],
+    "target_class_order": [
+      "green",
+      "blue",
+      "yellow",
+      "orange",
+      "red"
+    ],
+    "target_interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+    "target_raw_quantiles_only": true,
+    "target_source_function": "warning.interval_state.classify_observed_interval_states",
+    "training_policy": {
+      "early_stopping": false,
+      "hyperparameter_search": false,
+      "posthoc_class_threshold_selection": false,
+      "posthoc_probability_calibration": false,
+      "refit_on_fit_plus_calibration": false,
+      "resampling_used": false,
+      "sample_weight_used": false,
+      "smote_used": false,
+      "synthetic_labels_used": false,
+      "validation_input_to_fit": false
+    }
+  },
+  "source_inputs": {
+    "forecast_manifest": {
+      "path": "figures/convlstm/forecast_run_manifest.json",
+      "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "prediction_sha256_matches": true,
+      "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/forecast_predictions.csv",
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+    },
+    "thresholds": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+      "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce",
+      "used_columns": [
+        "station",
+        "comparator_v0_mm_per_day"
+      ]
+    },
+    "v4_manifest": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+      "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120",
+      "sources": {
+        "kinematics": {
+          "path": "data/ootang_kinematics_long.csv",
+          "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+        },
+        "predictions": {
+          "path": "figures/convlstm/forecast_predictions.csv",
+          "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+        },
+        "thresholds": {
+          "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+          "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce"
+        }
+      }
+    }
+  },
+  "targets_by_horizon": {
+    "1": {
+      "class_order": [
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "red"
+      ],
+      "horizon_days": 1,
+      "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+      "kind": "future_raw_interval_proxy_level",
+      "raw_quantiles_only": true,
+      "source_function": "warning.interval_state.classify_observed_interval_states"
+    },
+    "3": {
+      "class_order": [
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "red"
+      ],
+      "horizon_days": 3,
+      "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+      "kind": "future_raw_interval_proxy_level",
+      "raw_quantiles_only": true,
+      "source_function": "warning.interval_state.classify_observed_interval_states"
+    },
+    "7": {
+      "class_order": [
+        "green",
+        "blue",
+        "yellow",
+        "orange",
+        "red"
+      ],
+      "horizon_days": 7,
+      "interpretation": "future_interval_risk_proxy_not_expert_or_field_truth",
+      "kind": "future_raw_interval_proxy_level",
+      "raw_quantiles_only": true,
+      "source_function": "warning.interval_state.classify_observed_interval_states"
+    }
+  },
+  "test_used_for_feature_selection": false,
+  "vajont_used": false
+}

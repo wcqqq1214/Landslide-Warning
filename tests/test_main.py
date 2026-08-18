@@ -141,6 +141,55 @@ class PipelineTests(unittest.TestCase):
             3,
         )
 
+    def test_ngboost_feature_ablation_is_explicit_nonranking_and_isolated(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        sensitivity_stage = pipeline.STAGE_BY_NAME[
+            "ootang-ngboost-interval-proxy-horizon-sensitivity"
+        ]
+        stage = pipeline.STAGE_BY_NAME[
+            "ootang-ngboost-interval-proxy-feature-ablation"
+        ]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertEqual(
+            names.index(stage.name),
+            names.index(sensitivity_stage.name) + 1,
+        )
+        self.assertEqual(
+            stage.script,
+            "code/warning/ootang_ngboost_interval_proxy_feature_ablation.py",
+        )
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "exploratory_proxy_feature_ablation",
+        )
+        self.assertIn(
+            "config/ootang_ngboost_interval_proxy_feature_ablation.v1.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "config/ootang_ngboost_interval_proxy_pilot.v1.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/manifest.json",
+            stage.inputs,
+        )
+        self.assertTrue(
+            all(
+                "vajont" not in path.lower()
+                for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+        self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
+
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])
 
