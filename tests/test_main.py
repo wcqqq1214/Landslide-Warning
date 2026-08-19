@@ -190,6 +190,80 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
         self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
 
+    def test_auto_v0_stage_is_explicit_nonformal_and_isolated(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        ablation = pipeline.STAGE_BY_NAME[
+            "ootang-ngboost-interval-proxy-feature-ablation"
+        ]
+        stage = pipeline.STAGE_BY_NAME["ootang-auto-v0-direct-bai-perron"]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertEqual(names.index(stage.name), names.index(ablation.name) + 1)
+        self.assertEqual(stage.script, "code/warning/auto_v0_direct_bai_perron.py")
+        self.assertEqual(stage.warning_artifact_scope, "exploratory_v0_candidate")
+        self.assertIn("config/ootang_auto_v0_direct_bai_perron.v1.json", stage.inputs)
+        self.assertIn("data/ootang_kinematics_long.csv", stage.inputs)
+        self.assertTrue(
+            all("vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs))
+        )
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+        self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
+
+    def test_v5_candidate_display_stage_is_explicit_nonformal_and_isolated(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        auto_v0 = pipeline.STAGE_BY_NAME["ootang-auto-v0-direct-bai-perron"]
+        stage = pipeline.STAGE_BY_NAME["ootang-v5-candidate-display"]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertEqual(names.index(stage.name), names.index(auto_v0.name) + 1)
+        self.assertEqual(
+            stage.script,
+            "code/warning/ootang_v5_candidate_display.py",
+        )
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "exploratory_v5_candidate_display",
+        )
+        self.assertIn("config/ootang_v5_candidate_display.v1.json", stage.inputs)
+        self.assertIn(
+            "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+            stage.inputs,
+        )
+        self.assertTrue(
+            all(
+                "vajont" not in path.lower()
+                for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+        self.assertTrue(
+            all(
+                path.startswith("figures/v5_candidate_display_ootang_v1/")
+                for path in stage.outputs
+            )
+        )
+        self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
+
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])
 

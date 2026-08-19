@@ -1,0 +1,9 @@
+case,station,v0_candidate_status,candidate_v0_mm_per_day,fit_start_date,fit_end_date,v5_kinematic_branch_status,result_rows,v0_available_rows,v0_not_applicable_rows,valid_delta_v_rows,candidate_display_only,v5_fusion_output,formal_warning_output,vajont_used
+ootang,ATU1,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False
+ootang,ATU2,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False
+ootang,ATU3,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False
+ootang,ATU4,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False
+ootang,ATU5,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False
+ootang,MJ1,initial_segment_selected,0.2503420449965549,2016-07-01,2019-02-02,candidate_available,514,514,0,514,True,False,False,False
+ootang,MJ3,initial_segment_selected,0.2481312611240816,2016-07-01,2019-02-02,candidate_available,514,514,0,514,True,False,False,False
+ootang,MJ9,unavailable,,2016-07-01,2019-02-02,not_applicable_v0_unavailable,514,0,514,514,True,False,False,False

@@ -2,6 +2,18 @@
 
 > 更新日期：2026-08-18。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-18 v5 候选展示
+
+- 新增显式阶段 `ootang-v5-candidate-display`，只读取既有自动 V0、藕塘运动学、ConvLSTM 原始预测和 v4 历史参考产物。默认链仍为 `features → convlstm → ootang-operational-v4`；本阶段不训练或保存模型，不调用 v4 融合，不读取 Vajont。
+- `candidate_timeline.csv` 完整保留 514 日 × 8 点共 4,112 行。MJ1/MJ3 共 1,028 行标记 `candidate_available`，显示自动 V0 相关速度比和连续切线角；其余 6 点共 3,084 行标记 `not_applicable_v0_unavailable`，不补 V0 或候选字段。所有行仍保留原始速度、`ΔV`、区间状态和明确命名的 v4 历史参考列。
+- 新增 `figures/v5_candidate_display_ootang_v1/`：候选时间表、8 点摘要、MJ1/MJ3 五面板图、六点 unavailable 状态表和 manifest。产物固定 `candidate_display_only=true`、`ngboost_inference_output=false`、`v5_fusion_output=false`、`formal_warning_output=false`；因此不构成新的 8 点预警颜色或 v5 综合结果。
+
+## 2026-08-18 自动 V0 候选诊断
+
+- 新增显式阶段 `ootang-auto-v0-direct-bai-perron`，只使用藕塘 fit 累计位移和真实时间轴做自动 BIC 分段线性选择；不人工选段、不回退 KMeans、不使用严格 MVIF 失败结果、不读取 Vajont，不改写 v4/ConvLSTM/NGBoost。
+- 8 个测点均输出候选记录；MJ1/MJ3 状态为 `initial_segment_selected`，候选 V0 约 `0.2503/0.2481 mm/day`；ATU1/ATU2/ATU4/ATU5 因首个断点不满足“后一段更快”而 unavailable，ATU3/MJ9 因数值分段失败而 unavailable。unavailable 是自动门禁结果，不用人工补选。
+- 新增 `figures/auto_v0_direct_bai_perron_ootang_v1/`：候选表、分段审计表、8 点诊断图和 manifest。该 V0 仅为 v5 候选，不进入 v4 阈值或 NGBoost 主输入；报告已在现有 `paper/process_report.tex` 中精简更新。
+
 ## 2026-08-18 NGBoost 四指标分组消融
 
 - 在已冻结的 h=1/3/7、五级区间代理标签、固定 NGBoost 参数和 fit-only 协议下，新增七组预声明输入：full、interval-only、分别去掉区间/速度/`ΔV`/切线角，以及去掉 station one-hot。共完成 21 次固定拟合，不调参、不排名、不选择特征集，也不保存消融模型。
@@ -80,8 +92,10 @@
 | NGBoost 区间代理 pilot | 已完成显式初跑；不进入默认链 | 11,376 条一日配对、五级概率与基线比较；calibration/test 未超过状态持续基线 |
 | NGBoost h=1/3/7 提前量敏感性 | 已完成显式、非排名初跑 | 同一模型与输入并列报告；三个 horizon 全时刻 accuracy、macro-F1、ordinal MAE 均未超过持续基线，不选择最佳提前量 |
 | NGBoost 四指标分组消融 | 已完成 21 次固定拟合；不保存模型 | 区间主导代理任务；`ΔV` 对状态转移的增量最一致；不排名或选择特征集 |
+| 自动 V0 候选诊断 | 已完成显式初跑；2/8 点可用 | MJ1/MJ3 形成 fit-only 候选，其余 6 点 unavailable；不人工补段、不写入 v4 |
+| v5 候选展示 | 已完成显式初跑；不形成融合结果 | 4,112 行保留全部 8 点；MJ1/MJ3 可用、其余 6 点 not applicable；无 NGBoost 推断、颜色或模型输出 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件；区间代理 pilot 不解除该门禁 |
-| 切线角等速阶段确认 | 待导师或现场资料决定 | `figures/tangent_angle/review/` 已覆盖 8 个测点；当前无 `approved` 人工阶段 |
+| 正式切线角/V0 覆盖 | 待导师或现场资料决定 | 自动 fit-only 候选仅覆盖 MJ1/MJ3；其余 6 点保持 unavailable，尚无可提升为正式 V0 的独立验证 |
 
 ## 当前滚动验证协议
 

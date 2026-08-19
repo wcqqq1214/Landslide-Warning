@@ -1,0 +1,186 @@
+{
+  "artifact_kind": "ootang_v5_candidate_display",
+  "artifact_status": "exploratory_candidate_display_not_formal",
+  "branch_status_counts": {
+    "candidate_available": 1028,
+    "not_applicable_v0_unavailable": 3084
+  },
+  "candidate_display_only": true,
+  "candidate_warning_color_output": false,
+  "case": "ootang",
+  "default_pipeline_member": false,
+  "formal_warning_output": false,
+  "git_commit": "4145eef46efb797a818dae4704c1b45777652fd3",
+  "git_worktree_dirty": true,
+  "implementation_sources": {
+    "artifact_promotion": {
+      "path": "code/warning/draft_evidence.py",
+      "sha256": "04d6d294a778a5f90219a87be8aa125e56cfdb6d2b5efa6e34c802c5dbba6622",
+      "size_bytes": 29323
+    },
+    "automatic_v0": {
+      "path": "code/warning/auto_v0_direct_bai_perron.py",
+      "sha256": "650cef402359b62bc71766b29c5e1dcc27e3d1f816f0479b39093a7609d4f412",
+      "size_bytes": 32325
+    },
+    "interval_state": {
+      "path": "code/warning/interval_state.py",
+      "sha256": "3695f62c4f34ad3af9425f3b486dfbcbf4fbe236d79ac2f6b619dbda61c3f501",
+      "size_bytes": 12540
+    },
+    "lineage_helpers": {
+      "path": "code/warning/ootang_ngboost_interval_proxy_pilot.py",
+      "sha256": "547cd095286cb83e406580eddb99d4c8e213c94a8c1d4dc915a04561ba36079f",
+      "size_bytes": 66225
+    },
+    "runner": {
+      "path": "code/warning/ootang_v5_candidate_display.py",
+      "sha256": "31fdd1fe382df40970b30ef1a7971643d89bc9ad5501df54a8c366e0f9e04cd1",
+      "size_bytes": 49788
+    }
+  },
+  "ngboost_inference_output": false,
+  "not_claimed": [
+    "v5_fused_warning_output",
+    "formal_warning_output",
+    "ngboost_inference_or_probability_output",
+    "expert_or_field_truth",
+    "validated_formal_v0",
+    "v4_replacement_or_change",
+    "site_level_candidate_color",
+    "unavailable_v0_imputation",
+    "causal_interpretation",
+    "external_confirmation",
+    "vajont_use_or_validation"
+  ],
+  "outputs": {
+    "figure_png": {
+      "path": "figures/v5_candidate_display_ootang_v1/candidate_display.png",
+      "sha256": "3ce3cf5b0bcb5f816a269460c771ab065c27db37418f0843d1e9a0f6a0bd822b",
+      "size_bytes": 692076
+    },
+    "figure_svg": {
+      "path": "figures/v5_candidate_display_ootang_v1/candidate_display.svg",
+      "sha256": "d345984330b689cee46373fa2230a25a26bdc505d58a6d54bb107d6e0b3f9369",
+      "size_bytes": 245024
+    },
+    "summary": {
+      "n_rows": 8,
+      "path": "figures/v5_candidate_display_ootang_v1/candidate_summary.csv",
+      "sha256": "86dc71684705be3eca15d4bb71af0b381f282ac88763bd242546754e7f307548",
+      "size_bytes": 1209
+    },
+    "timeline": {
+      "n_rows": 4112,
+      "path": "figures/v5_candidate_display_ootang_v1/candidate_timeline.csv",
+      "sha256": "ec5a7e6643e4781722c19ef6bcaf3f942efbf19105e985124769a9f620eb8255",
+      "size_bytes": 1266819
+    }
+  },
+  "profile": {
+    "content_sha256": "12cb78938f94f1faee051aa47d3e10f986f4b35d64a834b02c20903937dd947d",
+    "file_sha256": "3b5de116ac59f51099312e12e90b1862d6613132cb817ec472e5d04952a4546c",
+    "id": "ootang-v5-candidate-display-v1",
+    "path": "config/ootang_v5_candidate_display.v1.json",
+    "version": "1.0-display"
+  },
+  "result_splits": [
+    "calibration",
+    "test"
+  ],
+  "schema_version": 1,
+  "source_inputs": {
+    "forecast_manifest": {
+      "path": "figures/convlstm/forecast_run_manifest.json",
+      "prediction_sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8",
+      "prediction_sha256_matches": true,
+      "schema_version": "ootang_elevation_aware_convlstm_run_v1",
+      "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/forecast_predictions.csv",
+      "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+    },
+    "v0_candidates": {
+      "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidates.csv",
+      "sha256": "9162595f17b55c75ed143dc982eb5df89eb63b2cc62dbbc422a1cb5ee6b4c99b"
+    },
+    "v0_manifest": {
+      "artifact_kind": "ootang_auto_v0_direct_bai_perron_candidate",
+      "artifact_status": "exploratory_v0_candidate_not_formal",
+      "fit_only_contract_verified": true,
+      "path": "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
+      "profile_sha256": "13a85608aa24218b940db4a3d5ffb0ecfd61fd0debbb429533bcd84b92412b53",
+      "sha256": "64e643ba68df642c51ae1ac7aecb72b6af0f781a5ab65285734908cf535c897d"
+    },
+    "v0_segments": {
+      "path": "figures/auto_v0_direct_bai_perron_ootang_v1/segments.csv",
+      "sha256": "1e697ec07034d0eec0cd607084db7946f139b2a55337cdad132866b4c0a8d209"
+    },
+    "v4_manifest": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+      "reference_outputs": {
+        "site_timeline": {
+          "n_rows": 514,
+          "path": "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+          "sha256": "e32df1e380d8c86202461e034e2063107470d2b8643fdd62746065576ad9e9dd"
+        },
+        "station_timeline": {
+          "n_rows": 4112,
+          "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+          "sha256": "28452fe7369dc5845496f7048c39410f64b4ef5a234bdac3e7771562f69fad1e"
+        }
+      },
+      "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120",
+      "sources": {
+        "kinematics": {
+          "path": "data/ootang_kinematics_long.csv",
+          "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+        },
+        "predictions": {
+          "path": "figures/convlstm/forecast_predictions.csv",
+          "sha256": "dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8"
+        },
+        "thresholds": {
+          "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+          "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce"
+        }
+      }
+    },
+    "v4_site": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+      "sha256": "e32df1e380d8c86202461e034e2063107470d2b8643fdd62746065576ad9e9dd"
+    },
+    "v4_station": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+      "sha256": "28452fe7369dc5845496f7048c39410f64b4ef5a234bdac3e7771562f69fad1e"
+    }
+  },
+  "status_counts": {
+    "initial_segment_selected": 2,
+    "unavailable": 6
+  },
+  "summary_rows": 8,
+  "timeline_dates": 514,
+  "timeline_rows": 4112,
+  "v0_available_rows": 1028,
+  "v0_available_stations": [
+    "MJ1",
+    "MJ3"
+  ],
+  "v0_not_applicable_rows": 3084,
+  "v0_unavailable_stations": [
+    "ATU1",
+    "ATU2",
+    "ATU3",
+    "ATU4",
+    "ATU5",
+    "MJ9"
+  ],
+  "v5_fusion_output": false,
+  "vajont_used": false
+}

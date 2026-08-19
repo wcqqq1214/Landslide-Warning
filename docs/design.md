@@ -42,12 +42,21 @@ same fixed horizons/model + seven predeclared feature sets
   └─ warning/ootang_ngboost_interval_proxy_feature_ablation.py
        └─ figures/ngboost_interval_proxy_feature_ablation_ootang_v1/*
 
+fit cumulative displacement + real elapsed time + point velocity
+  └─ warning/auto_v0_direct_bai_perron.py
+       └─ figures/auto_v0_direct_bai_perron_ootang_v1/*
+
+automatic V0 candidates + raw kinematics + raw ConvLSTM intervals
+  + historical v4 reference artifacts
+  └─ warning/ootang_v5_candidate_display.py
+       └─ figures/v5_candidate_display_ootang_v1/*
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains eleven independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, the NGBoost proxy pilot/sensitivity/ablation, and all ConvLSTM diagnostics require `--stage`.
+`main.py` contains thirteen independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics, NGBoost proxy experiments, automatic V0, and the v5 candidate display all require `--stage`.
 
 ## 模块职责
 
@@ -61,6 +70,8 @@ future frozen protocol + independent outcome labels
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
 | `code/warning/ootang_ngboost_interval_proxy_feature_ablation.py` | 固定模型与 horizon，对七组输入进行 21 次分组消融 | 不保存消融模型、不排名；区间主导代理任务，`ΔV` 对状态转移的增量最一致 |
+| `code/warning/auto_v0_direct_bai_perron.py` | 只用 fit 累计位移、真实时间轴和逐点速度生成自动 V0 候选 | MJ1/MJ3 可用，其余 6 点 unavailable；不人工选段、不回退 KMeans、不改写 v4 |
+| `code/warning/ootang_v5_candidate_display.py` | 将自动 V0 可用性、原始速度/`ΔV`、连续切线角、原始区间状态和历史 v4 参考列物化为 8 点 × 514 日候选展示 | 只显式运行；不补 V0、不调用 v4 融合、不输出 NGBoost 概率、候选颜色或正式预警 |
 | `code/warning/draft_evidence.py` | 重建 v4 所需的区间、运动学和稳定段证据 bundle | 只作审计；严格 MVIF 失败不得生成正式 V0 |
 | `code/warning/operational_run.py` | 验证 v4 profile、fit-only 参数、输入与来源指纹，写测点和滑坡体时间线 | 只接受 v4 profile，拒绝旧 profile；不输出正式预警 |
 | `code/warning/operational_v4_fusion.py` | 区间、运动学和加速度三证据族的测点候选融合 | 速度与切线角为一个 family；`ΔV` 不参与 ordinal 投票 |
@@ -90,9 +101,21 @@ pilot 已完整输出 11,376 条一日配对记录和五级概率。NGBoost 在 
 
 七组输入消融进一步表明：去掉 `interval_z` 会使全时刻 macro-F1、ordinal MAE 和 log loss 大幅恶化，而仅区间模型已接近 full，说明当前代理标签任务由区间持续性主导；但仅区间在六个 horizon×split 的转移行 macro-F1 和 ordinal MAE 上均差于 full，非区间指标对状态变化仍有增量。其中去掉 `ΔV` 后转移行 ordinal MAE 在六个时段全部恶化，是最一致的增量证据。分别去掉速度、切线角或 station one-hot 的影响较小且方向混合，不能据此宣称单项必要或跨点可迁移。消融不排名、不选特征集，也不改变不引入主流程的判断。
 
+## 自动 V0 候选诊断
+
+`warning/auto_v0_direct_bai_perron.py` 只读取藕塘 fit 累计位移和逐点速度，用时间感知的 BIC 分段线性算法自动确定候选初始段。第一段正斜率且下一段斜率更高时，自动生成候选；若全 fit 只是一段正线性基线，则标记为 `stable_full_fit_baseline`；其他情况为 `unavailable`。本阶段不人工指定日期、不回退 KMeans、不使用 MVIF 失败结果、不写入 v4，也不输出预警等级。
+
+当前 8 个测点中 MJ1/MJ3 形成候选 V0（约 `0.2503/0.2481 mm/day`），其余 6 点显式 unavailable。这是自动流程的真实诊断结果，不应通过放宽门禁或人工补段来“补齐”8 点。结果与拟合段、断点和状态标签保存在 `figures/auto_v0_direct_bai_perron_ootang_v1/`，供后续 v5 候选审核。
+
+## v5 候选展示
+
+`warning/ootang_v5_candidate_display.py` 只消费已验证的自动 V0 bundle、藕塘原始运动学、ConvLSTM 原始分位数和当前 v4 历史参考产物。输出保留 calibration/test 的完整 514 日 × 8 点网格：MJ1/MJ3 共 1,028 行标记 `candidate_available`，其余 6 点共 3,084 行标记 `not_applicable_v0_unavailable`。自动 V0 相关速度比与切线角只在前两点计算，任何 unavailable 行都不补值。
+
+该阶段只提供候选输入和可用性审计。manifest 固定 `candidate_display_only=true`、`ngboost_inference_output=false`、`v5_fusion_output=false`、`formal_warning_output=false` 和 `vajont_used=false`；没有模型文件、候选颜色或 8 点综合等级。v4 station/site 列仅以 `v4_reference_*` 命名保留，不参与新计算。
+
 ## 版本化与清理原则
 
-1. 当前代码只运行 v4；历史脚本、旧运行入口和对应单元测试从工作树删除，保留在 Git 历史。
+1. 当前默认预警阶段只运行 v4；历史脚本、旧运行入口和对应单元测试从工作树删除，保留在 Git 历史。
 2. 历史 v1/v2/v3 CSV、配置和文档中的结果描述可以作为已发生实验的溯源快照，但不再是当前可执行方法。
 3. 当前 v4 的共享空间融合已使用中性模块名；历史 v1/v2/v3 的代码只保留在 Git 历史，不在工作树中提供运行入口。
 4. 任何正式 NGBoost 预警模型必须以独立结局标签训练和验证，不能把同一四指标透明规则生成的标签再包装成正式预警验证。

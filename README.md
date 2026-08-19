@@ -10,6 +10,8 @@
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
 - 显式分组消融显示当前区间代理任务由 `interval_z` 主导；非区间指标主要在状态转移行提供增量，其中 `ΔV` 的转移贡献最一致，速度/切线角和测点控制量的单独影响较小且不稳定。消融不排名或选择特征集，也不改变“不引入主流程”的判断。
+- 显式阶段 `ootang-auto-v0-direct-bai-perron` 只用 fit 累计位移自动做 BIC 分段，生成每测点 V0 候选；当前 8 点中 2 点可用、6 点 unavailable。它不改写 v4，也不使用人工日期范围或 KMeans 回退。
+- 显式阶段 `ootang-v5-candidate-display` 保留全部 8 点 × 514 个结果时刻：MJ1/MJ3 显示自动 V0 相关速度比、`ΔV` 和连续切线角，其余 6 点明确 `not_applicable_v0_unavailable`。该阶段不运行新的 NGBoost 推断、不生成候选颜色或融合结果，也不改写 v4。
 - v4 按导师确认的逐点方法计算速度和加速度：
   `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，
   `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`。
@@ -36,6 +38,7 @@ uv run python main.py --stage ngboost-shap
 uv run python main.py --stage ootang-ngboost-interval-proxy-pilot
 uv run python main.py --stage ootang-ngboost-interval-proxy-horizon-sensitivity
 uv run python main.py --stage ootang-ngboost-interval-proxy-feature-ablation
+uv run python main.py --stage ootang-auto-v0-direct-bai-perron --stage ootang-v5-candidate-display
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -45,7 +48,7 @@ Vajont 尚未启动；读取、适配或运行其数据前必须获得用户明�
 
 ## 验证与历史边界
 
-当前测试只保护工作树中仍可执行的接口：参考阶段加载/训练期门禁、人工阶段优先级，以及 v4 的非正式、fail-closed 证据与协议契约。可用以下命令复核：
+当前测试保护工作树中仍可执行的接口：默认链与显式阶段隔离、fit-only 自动 V0、v5 unavailable 门禁，以及 v4 的非正式、fail-closed 证据与协议契约。可用以下命令复核：
 
 ```bash
 .venv/bin/python -m unittest discover -s tests -p 'test_*.py'
@@ -58,11 +61,11 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（11 个可选阶段）
+main.py                         # 当前管线入口（13 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
-code/warning/                   # v4 四指标、多测点非正式运行与协议门禁
+code/warning/                   # v4 历史规则、自动 V0 与 v5 候选展示门禁
 data/                           # 发布物化序列、坐标和派生特征
 figures/                        # 版本化预测、规则审计和图件
 docs/                           # 当前方法、结果边界和研究计划
@@ -83,11 +86,13 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_ngboost_interval_proxy_pilot.md`](docs/ootang_ngboost_interval_proxy_pilot.md) | NGBoost 下一日五级区间代理试验、基线比较和不引入主流程的当前判断 |
 | [`docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md`](docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md) | 固定 NGBoost 的 h=1/3/7 非排名提前量敏感性和概率质量诊断 |
 | [`docs/ootang_ngboost_interval_proxy_feature_ablation.md`](docs/ootang_ngboost_interval_proxy_feature_ablation.md) | 七组固定输入的非排名消融及四指标增量信息边界 |
+| [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
+| [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
 | [`docs/progress.md`](docs/progress.md) | 当前实现进度、已清理历史代码与未完成门禁 |
 
 ## 尚未完成的关键事项
 
-1. 当前 NGBoost 区间代理 pilot、h=1/3/7 敏感性和分组消融已完成；`interval_z` 主导该代理任务，`ΔV` 主要对状态转移提供有限增量，但 full 模型在所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过状态持续基线。因此不能据此引入主流程或选择 horizon/特征集，正式模型仍需独立、可核验的五级结局标签。
+1. 当前 NGBoost 区间代理 pilot、h=1/3/7 敏感性、分组消融、自动 V0 诊断和 v5 候选展示已完成；`interval_z` 主导代理任务，`ΔV` 主要对状态转移提供有限增量，自动 V0 仅覆盖 2/8 个测点。候选展示不含新的 NGBoost 推断、颜色或融合，不能据此引入主流程或选择 horizon/特征集/V0；正式方法仍需独立五级结局标签、稳定段验证和不可用测点协议。
 2. 取得可追溯的原始观测或独立验证资料，并冻结正式稳定段/V0、切线角容差、融合和评价协议。
 3. 只有获得用户授权后，才启动 Vajont 的数据适配与外部案例评估。
