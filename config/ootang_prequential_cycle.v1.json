@@ -1,0 +1,66 @@
+{
+  "schema_version": "ootang_prequential_cycle_profile_v1",
+  "profile_id": "ootang-prequential-cycle-v1",
+  "profile_version": "1.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "e2b2_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "deploy_profile": {
+    "path": "config/ootang_prequential_deploy.v1.json",
+    "expected_sha256": "60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940"
+  },
+  "live_profile": {
+    "path": "config/ootang_prequential_live.v1.json",
+    "expected_sha256": "bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00"
+  },
+  "runtime": {
+    "root": "runtime/ootang_prequential_live_v1",
+    "outcome_inbox": "outcome_inbox",
+    "outcome_status": "outcome_materializer_status.json",
+    "outcome_receipts": "outcome_receipts",
+    "objects": "objects/sha256",
+    "cycle_status": "cycle_status.json",
+    "cycle_lock": "prequential_cycle.lock"
+  },
+  "outcome": {
+    "schema_version": "ootang_live_outcome_batch_v1",
+    "input_manifest_schema_version": "ootang_outcome_input_manifest_v1",
+    "receipt_schema_version": "ootang_outcome_materializer_receipt_v1",
+    "target_selection_policy": "revision_first_then_outstanding_then_contiguous_backfill",
+    "require_current_source_record": true,
+    "require_finalized_at_or_before_machine_time": true,
+    "same_revision_same_semantics": "idempotent_preserve_first_bytes",
+    "same_revision_changed_semantics": "blocked_integrity",
+    "active_date_pointer_policy": "atomic_replace_after_prior_receipt_verification",
+    "atomic_write": true
+  },
+  "cycle": {
+    "stage_order": [
+      "source_ingest",
+      "bundle_ensure",
+      "live_reconcile_before_outcome",
+      "outcome_materialize",
+      "live_reconcile_after_outcome",
+      "issue_produce",
+      "live_seal_issue"
+    ],
+    "max_iterations": 64,
+    "stable_iterations_to_stop": 1,
+    "progress_token_schema_version": "ootang_prequential_cycle_progress_v1",
+    "busy_exit_code": 3,
+    "blocked_exit_code": 2
+  },
+  "engineering_capabilities": {
+    "outcome_materializer_implemented": true,
+    "automatic_cycle_orchestration_implemented": true,
+    "runner_independent_checkpoint_inference_replayed": false,
+    "trusted_anchor_receipt_verified": false,
+    "automatic_epoch_rotation_implemented": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false
+  }
+}

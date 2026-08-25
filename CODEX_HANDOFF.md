@@ -3,10 +3,107 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline:** `a4e7de2 feat: add autonomous prequential live ledger`
-**State:** the numerical audit, G1--G4 fail-closed preflight, machine-only E1 monitor,
-and E2-A ledger are committed. E2-B1 source/bundle/issue engineering is implemented
-and verified in the current continuation; nothing has been pushed.
+**Committed baseline before this increment:** `d191ad3 feat: add autonomous prequential deployment core`
+**State:** E2-B2 source-receipt hardening, machine outcome materialization, and the
+fixed-point cycle are implemented and fully verified. This handoff is part of the
+requested E2-B2 commit; nothing in this continuation has been pushed.
+
+## 2026-08-26 E2-B2 machine outcome and fixed-point continuation
+
+Two explicit-only stages have been added without changing the three-stage default chain:
+
+```text
+ootang-outcome-materializer
+ootang-prequential-cycle
+```
+
+`main.py` now exposes 20 selectable stages. With no arguments it still runs exactly
+`features -> convlstm -> ootang-operational-v4`. The cycle is the machine scheduling
+entry point and runs this fixed internal order:
+
+```text
+source ingest
+  -> bundle ensure
+  -> live reconcile
+  -> outcome materialize
+  -> live reconcile
+  -> issue produce
+  -> live seal
+  -> repeat until the scientific progress token is stable
+```
+
+The source commit protocol is also hardened. `source_current.json` is now
+`ootang_source_current_pointer_v2`; per-day revisions form immutable predecessor/
+sequence receipt chains, and every whole-source snapshot is registered in a separate
+content-addressed global `ootang_source_snapshot_receipt_v1` chain. The current
+pointer must match the verified unique tip. A missing or stale pointer may be rebuilt
+only from that tip; rollback (including r1 -> r2 -> r1), branch, orphan, duplicate
+sequence, receipt/object tampering, or a non-tip binding fails closed. Legacy pointer
+v1 bytes do not migrate implicitly; a future automatic epoch protocol must establish
+the replacement epoch explicitly.
+
+The outcome materializer consumes only finalized daily records recursively verified
+through immutable current-source provenance. Candidate order is fixed: a newer source
+revision already relevant to the ledger, then a sealed outstanding issue, then the
+next contiguous backfill. It never derives truth from predictions, ledger scores,
+wall-clock date selection, or a human-maintained table. Each target's revisions form
+an immutable sequence/predecessor receipt chain with one tip, an active-receipt
+pointer, an exact content object, and an inbox publication. Receipt -> pointer ->
+inbox crash windows recover from the verified committed tip; branches, rollback,
+same-revision semantic changes, and poisoned active bytes block. A revision at or
+before the activation watermark returns the durable machine wait
+`waiting_epoch_rotation_required`; it does not mutate the old epoch or request a
+human freeze. One invocation-scoped monotonic clock covers initial reads, multi-chain
+receipt recovery, publication, and blocked status. The adversarial 10 -> 11 -> 9 -> 10
+sequence now rolls back every public pointer/inbox and records the block at the last
+successful observation, 11.
+
+The cycle holds a non-blocking outer `cycle_lock`. It does not pre-hold child locks
+while calling stages; a scientific snapshot briefly acquires deploy -> runner locks
+to avoid a torn cross-producer view. Its progress token covers the source pointer,
+model manifest, verified scientific ledger projection, issue/outcome receipt tips,
+active bindings, and inbox bytes. Poll timestamps, mutable status bytes, raw ledger
+head/event count, and repeated failed-anchor bookkeeping are excluded, so an anchor
+endpoint that stays unavailable does not prevent convergence. Empty input converges
+to `converged_waiting` in one iteration. Recoverable zero-byte or valid-schema/no-
+genesis ledger crash states are represented as pre-genesis and allowed to reach E2-A
+initialization; structurally damaged ledgers still block.
+
+A call processes at most 64 distinct-progress iterations. Legitimate monotonic
+backlog then returns `work_remaining/exit 0` for the scheduler to continue, rather
+than misreporting an integrity failure. Continuation token history is persisted in
+cycle status, so a later invocation that returns to any prior scientific token
+(including a 65-state ring) is detected as oscillation and blocked. Runtime paths
+reject both root escapes and root-internal symlink aliases; receipt/inbox trees reject
+symbolic entries; every substage result, status path, schema, provenance binding, and
+status is revalidated against a strict allowlist. Production dependency/token
+injection is rejected unless the test-only
+`OOTANG_E2B_ALLOW_TEST_CYCLE_OVERRIDE=1` switch is explicitly set.
+
+There is no operator-supplied target-date, freeze, approve, force, backdate, or
+manual-signature CLI/control field in this path. Missing source/model/outcome remains
+a successful machine waiting fixed point; lock contention is `busy/exit 3`, and integrity conflicts are
+`blocked_integrity/exit 2`. All evidence and real-activation flags remain false.
+
+Final evidence is outcome-materializer 31/31, cycle 23/23, cycle/main 50/50,
+the combined E2-B2 set 197/197, and the full repository 566/566. Ruff, compileall,
+diff-check, and an actual empty-runtime seven-stage one-iteration
+`converged_waiting` exercise passed. The v5 preflight remains 23/23 with G0 PASS,
+G1--G4 BLOCKED and G5a unauthorized. E1's four hashes and the 97-path aggregate
+remain unchanged. Independent final adversarial review found no remaining P0/P1.
+
+Current bound configuration SHA-256 values are:
+
+- cycle: `2e4a0da22034a3063f612a723f007bf20b600c1dbdb7c62761368aa7a37810ef`;
+- deploy: `60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940`;
+- live: `bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00`.
+
+Remaining activation gates are runner-independent checkpoint/input replay, trusted
+cryptographic time verification, an immutable automatic epoch registry/rotation,
+and removal of repeated receipt/ledger full scans that can grow as O(N^2). None may
+be replaced by manual date selection, freezing, approval, signing, or fabricated
+backfill. The detailed contract is in
+`docs/ootang_prequential_cycle_engineering.md`.
 
 ## 2026-08-26 E2-B1 machine deployment continuation
 
@@ -74,13 +171,11 @@ E1 output hashes and the 97-path protected aggregate remain unchanged; exact val
 are recorded in `docs/progress.md` and
 `docs/ootang_prequential_deploy_engineering.md`.
 
-The next concrete implementation is a machine-only outcome materializer and cycle
-orchestrator: only after a sealed issue may a per-date observation with immutable
-availability/finalization provenance become an E2-A outcome. It must then trigger
-reveal/update before source advancement and the next issue. Runner-independent
-checkpoint/input replay, pinned cryptographic time verification, immutable epoch
-registry/automatic rotation, fault injection, and long-lived replay optimization
-remain separate gates. Do not substitute manual freezes or manual signatures.
+The subsequent E2-B2 increment now supplies the machine-only outcome materializer,
+receipt/pointer/inbox crash recovery, source pointer v2, and fixed-point cycle described
+above. Runner-independent checkpoint/input replay, pinned cryptographic time
+verification, immutable automatic epoch registry/rotation, and O(N^2) long-chain scan
+optimization remain separate gates. Do not substitute manual freezes or signatures.
 
 ## 2026-08-26 E2-A append-only live engineering continuation
 
@@ -122,11 +217,11 @@ Primary E2-A files:
 - `tests/test_ootang_prequential_live.py`;
 - `docs/ootang_prequential_live_engineering.md`.
 
-The next implementation target is not manual live-data freezing. E2-B1 has supplied
-the content-addressed five-seed deployment/issue producer; the next target is its
-machine outcome/cycle counterpart, followed by runner-independent replay, immutable
-per-epoch registry and safe machine rotation. A trusted cryptographic time-receipt
-verifier remains a separate activation gate. Until those exist, the correct runtime
+The next implementation target is not manual live-data freezing. E2-B1 supplied the
+content-addressed five-seed deployment/issue producer and E2-B2 has now supplied its
+machine outcome/cycle counterpart. Remaining targets are runner-independent replay,
+an immutable per-epoch registry with safe automatic rotation, trusted cryptographic
+time verification, and O(N^2) scan removal. Until those exist, the correct runtime
 state is an automatic wait or fail-closed block, not fabricated live evidence.
 
 Final E2-A verification: 64 targeted tests, 23 frozen gate tests, and 414/414
@@ -598,20 +693,26 @@ E2-A/E2-B machine-live files:
 
 - `config/ootang_prequential_live.v1.json`
 - `config/ootang_prequential_deploy.v1.json`
+- `config/ootang_prequential_cycle.v1.json`
 - `code/monitoring/prequential_core.py`
 - `code/monitoring/ootang_live_ledger.py`
 - `code/monitoring/ootang_prequential_live.py`
 - `code/monitoring/ootang_live_source.py`
 - `code/convlstm/ootang_production_bundle.py`
 - `code/monitoring/ootang_issue_producer.py`
+- `code/monitoring/ootang_outcome_materializer.py`
+- `code/monitoring/ootang_prequential_cycle.py`
 - `tests/test_prequential_core.py`
 - `tests/test_ootang_live_ledger.py`
 - `tests/test_ootang_prequential_live.py`
 - `tests/test_ootang_live_source.py`
 - `tests/test_ootang_production_bundle.py`
 - `tests/test_ootang_issue_producer.py`
+- `tests/test_ootang_outcome_materializer.py`
+- `tests/test_ootang_prequential_cycle.py`
 - `docs/ootang_prequential_live_engineering.md`
 - `docs/ootang_prequential_deploy_engineering.md`
+- `docs/ootang_prequential_cycle_engineering.md`
 
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
@@ -634,14 +735,13 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    xargs shasum -a 256 < docs/v5_v0_protected_paths.txt | shasum -a 256
    ```
 
-3. Continue with E2-B2: implement a machine-only outcome materializer and one-cycle
-   orchestrator. It must require a sealed issue, extract only the matching finalized
-   date from immutable source provenance, publish atomically/idempotently, run E2-A
-   reveal/update, and only then permit source advancement and the next issue. Include
-   crash recovery and fault injection; do not add a human freeze/approval step.
-4. Add runner-independent checkpoint/input replay, then an immutable epoch registry
-   with prebuild and safe automatic rotation. Do not use historical OOF CSV rows as
-   future predictions, select a best seed, or backdate a missed target.
+3. Add runner-independent checkpoint/input replay without trusting only the producer's
+   declared result. Keep its scientific projection and failure states deterministic,
+   and do not add a human freeze/approval/date interface.
+4. Add an immutable automatic epoch
+   registry with prebuild and safe rotation. Optimize repeated receipt/ledger full
+   scans so long-lived operation does not grow as O(N^2). Do not use historical OOF
+   CSV rows as future predictions, select a best seed, or backdate a missed target.
 5. Add a pinned, cryptographically verified time-receipt adapter before any
    `engineering_blind_time_order_candidate` can become E2 evidence. Keep operation
    machine-only. No new data means

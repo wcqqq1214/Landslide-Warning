@@ -383,6 +383,222 @@ class TestSourceMaterialization(unittest.TestCase):
             self.assertNotEqual(second.source.dataset.sha256, first.source.dataset.sha256)
             self.assertEqual(fixture.activation_path.read_bytes(), activation_before)
 
+    def test_revision_history_rejects_r1_r2_r1_rollback(self) -> None:
+        with _Fixture() as fixture:
+            fixture.ingest()
+            original = fixture.payload()
+
+            revised = fixture.payload(exported_at="2020-07-01T07:30:00Z")
+            revised["records"][0]["revision_id"] = "source-revision-1b"  # type: ignore[index]
+            revised["records"][0]["displacement_mm"]["ATU1"] += 2.0  # type: ignore[index]
+            fixture.write(revised)
+            accepted = source.ingest_source(
+                fixture.profile,
+                runtime_root=fixture.root,
+                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+            )
+            assert accepted.source is not None
+            accepted_pointer = fixture.pointer_path.read_bytes()
+
+            original["exported_at_utc"] = "2020-07-01T07:45:00Z"
+            fixture.write(original)
+            with self.assertRaisesRegex(
+                source.SourceIntegrityError, "revision history would roll back"
+            ):
+                source.ingest_source(
+                    fixture.profile,
+                    runtime_root=fixture.root,
+                    now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                )
+            self.assertEqual(fixture.pointer_path.read_bytes(), accepted_pointer)
+
+    def test_saved_old_pointer_is_not_a_valid_snapshot_chain_tip(self) -> None:
+        with _Fixture() as fixture:
+            fixture.ingest()
+            old_pointer = fixture.pointer_path.read_bytes()
+
+            revised = fixture.payload(exported_at="2020-07-01T07:30:00Z")
+            revised["records"][0]["revision_id"] = "source-revision-1b"  # type: ignore[index]
+            revised["records"][0]["displacement_mm"]["ATU1"] += 2.0  # type: ignore[index]
+            fixture.write(revised)
+            source.ingest_source(
+                fixture.profile,
+                runtime_root=fixture.root,
+                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+            )
+            latest_pointer = fixture.pointer_path.read_bytes()
+
+            fixture.pointer_path.write_bytes(old_pointer)
+            with self.assertRaisesRegex(
+                source.SourceIntegrityError, "snapshot chain tip"
+            ):
+                source.load_current_source(
+                    fixture.profile, runtime_root=fixture.root
+                )
+
+            # The machine ingest path recovers only a verified predecessor and
+            # then preserves the newest accepted semantics.
+            fixture.write(revised)
+            recovered = source.ingest_source(
+                fixture.profile,
+                runtime_root=fixture.root,
+                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+            )
+            assert recovered.source is not None
+            self.assertEqual(fixture.pointer_path.read_bytes(), latest_pointer)
+            self.assertEqual(
+                recovered.source.records[0].revision_id, "source-revision-1b"
+            )
+
+    def test_receipt_first_crash_recovers_revision_before_rejecting_rollback(self) -> None:
+        with _Fixture() as fixture:
+            fixture.ingest()
+            original = fixture.payload(exported_at="2020-07-01T07:45:00Z")
+            revised = fixture.payload(exported_at="2020-07-01T07:30:00Z")
+            revised["records"][0]["revision_id"] = "source-revision-1b"  # type: ignore[index]
+            revised["records"][0]["displacement_mm"]["ATU1"] += 2.0  # type: ignore[index]
+            fixture.write(revised)
+
+            atomic_write = source._atomic_write
+
+            def crash_before_public_pointer(path: Path, raw: bytes) -> None:
+                if path == fixture.pointer_path:
+                    raise OSError("simulated crash before public pointer")
+                atomic_write(path, raw)
+
+            with mock.patch.object(
+                source, "_atomic_write", side_effect=crash_before_public_pointer
+            ):
+                with self.assertRaises(source.SourceIntegrityError):
+                    source.ingest_source(
+                        fixture.profile,
+                        runtime_root=fixture.root,
+                        now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                    )
+
+            fixture.write(original)
+            with self.assertRaisesRegex(
+                source.SourceIntegrityError, "revision history would roll back"
+            ):
+                source.ingest_source(
+                    fixture.profile,
+                    runtime_root=fixture.root,
+                    now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                )
+            recovered = source.load_current_source(
+                fixture.profile, runtime_root=fixture.root
+            )
+            self.assertEqual(recovered.records[0].revision_id, "source-revision-1b")
+
+    def test_committed_tip_recovers_before_missing_or_malformed_feed(self) -> None:
+        for feed_bytes in (None, b"", b"{not-json"):
+            with self.subTest(feed_bytes=feed_bytes):
+                with _Fixture() as fixture:
+                    fixture.ingest()
+                    revised = fixture.payload(
+                        exported_at="2020-07-01T07:30:00Z"
+                    )
+                    revised["records"][0]["revision_id"] = "source-revision-1b"  # type: ignore[index]
+                    revised["records"][0]["displacement_mm"]["ATU1"] += 2.0  # type: ignore[index]
+                    fixture.write(revised)
+                    atomic_write = source._atomic_write
+
+                    def crash_before_pointer(path: Path, raw: bytes) -> None:
+                        if path == fixture.pointer_path:
+                            raise OSError("simulated crash before public pointer")
+                        atomic_write(path, raw)
+
+                    with mock.patch.object(
+                        source, "_atomic_write", side_effect=crash_before_pointer
+                    ):
+                        with self.assertRaises(source.SourceIntegrityError):
+                            source.ingest_source(
+                                fixture.profile,
+                                runtime_root=fixture.root,
+                                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                            )
+
+                    if feed_bytes is None:
+                        fixture.feed_path.unlink()
+                        result = source.ingest_source(
+                            fixture.profile,
+                            runtime_root=fixture.root,
+                            now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                        )
+                        self.assertEqual(
+                            result.status, "waiting_for_daily_finalized_feed"
+                        )
+                    else:
+                        fixture.feed_path.write_bytes(feed_bytes)
+                        with self.assertRaises(source.SourceInputError):
+                            source.ingest_source(
+                                fixture.profile,
+                                runtime_root=fixture.root,
+                                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                            )
+                    recovered = source.load_current_source(
+                        fixture.profile, runtime_root=fixture.root
+                    )
+                    self.assertEqual(
+                        recovered.records[0].revision_id, "source-revision-1b"
+                    )
+
+    def test_prepared_revision_receipt_can_retry_to_snapshot_commit(self) -> None:
+        with _Fixture() as fixture:
+            fixture.ingest()
+            revised = fixture.payload(exported_at="2020-07-01T07:30:00Z")
+            revised["records"][0]["revision_id"] = "source-revision-1b"  # type: ignore[index]
+            revised["records"][0]["displacement_mm"]["ATU1"] += 2.0  # type: ignore[index]
+            fixture.write(revised)
+
+            with mock.patch.object(
+                source,
+                "_write_snapshot_receipt",
+                side_effect=OSError("simulated crash after prepared revision receipt"),
+            ):
+                with self.assertRaises(source.SourceIntegrityError):
+                    source.ingest_source(
+                        fixture.profile,
+                        runtime_root=fixture.root,
+                        now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                    )
+
+            committed = source.ingest_source(
+                fixture.profile,
+                runtime_root=fixture.root,
+                now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+            )
+            assert committed.source is not None
+            self.assertEqual(
+                committed.source.records[0].revision_id, "source-revision-1b"
+            )
+            self.assertEqual(committed.source.snapshot_sequence_id, 2)
+
+    def test_in_root_pointer_symlink_cannot_alias_a_content_object(self) -> None:
+        with _Fixture() as fixture:
+            fixture.ingest()
+            pointer_raw = fixture.pointer_path.read_bytes()
+            pointer_sha = hashlib.sha256(pointer_raw).hexdigest()
+            pointer_object = (
+                fixture.root
+                / fixture.profile["runtime"]["objects"]
+                / f"{pointer_sha}.source-pointer.json"
+            )
+            object_before = pointer_object.read_bytes()
+            fixture.pointer_path.unlink()
+            fixture.pointer_path.symlink_to(pointer_object)
+
+            with self.assertRaisesRegex(
+                source.SourceConfigError, "must not traverse a symlink"
+            ):
+                source.ingest_source(
+                    fixture.profile,
+                    runtime_root=fixture.root,
+                    now=datetime(2020, 7, 1, 8, tzinfo=timezone.utc),
+                )
+            self.assertEqual(pointer_object.read_bytes(), object_before)
+            self.assertEqual(_sha256(pointer_object), pointer_sha)
+
     def test_object_tamper_is_detected_recursively(self) -> None:
         with _Fixture() as fixture:
             result = fixture.ingest()

@@ -37,13 +37,18 @@ E2-B1 仍是工程基础设施，不是 E2 live evidence，也不是正式预警
 `producer_checkpoint_inference_replayed` 表示该次 poll 是否实际执行成功；等待态
 不得把“已实现”误写成“已完成”。
 
+后续 E2-B2 已增加 source pointer v2/receipt 链加固、machine-only outcome
+materializer 和 fixed-point cycle。它们完成机器物化与调度，但不改变上述
+evidence/activation 门禁；详见 `docs/ootang_prequential_cycle_engineering.md`。
+
 ## 2. 机器数据流
 
 ```text
 incoming/daily_finalized_feed.json
   -> ootang-live-source
   -> immutable content objects
-  -> source_current.json + one-time activation source
+  -> per-day revision receipts + global snapshot receipt chain
+  -> source_current v2 + one-time activation source
 
 activation source
   -> ootang-production-bundle
@@ -58,6 +63,15 @@ source_current + activation source + model bundle + E2-A ledger status
 issue inbox + outcome inbox
   -> ootang-prequential-live
   -> append-only ledger + online state/status
+
+verified current source + ledger projection
+  -> ootang-outcome-materializer
+  -> exact outcome object + revision receipt chain
+  -> active receipt pointer + outcome inbox
+
+all producers/runner above
+  -> ootang-prequential-cycle
+  -> bounded fixed-point scheduling + continuation status
 ```
 
 显式运行命令为：
@@ -68,9 +82,11 @@ uv run python main.py \
   --stage ootang-production-bundle \
   --stage ootang-issue-producer \
   --stage ootang-prequential-live
+
+uv run python main.py --stage ootang-prequential-cycle
 ```
 
-这四个阶段不属于默认链。默认链仍严格是
+这些机器阶段不属于默认链。默认链仍严格是
 `features → convlstm → ootang-operational-v4`。
 
 ## 3. finalized feed 合同
@@ -127,6 +143,14 @@ E2-A profile、部署 profile 与派生 schema 同样受哈希或精确字段合
 `source_snapshot/manifest.json` 是该 epoch 第一次合法 ingest 时的 immutable activation
 快照，只允许原子创建一次，绝不被后续 feed 覆盖。语义完全相同而只有 export 时间
 变化的重复投递保持原 pointer 和 manifest 字节不变。
+
+E2-B2 将 current pointer 升级为 `ootang_source_current_pointer_v2`。每个目标日的
+revision 使用 `ootang_source_revision_receipt_v1` predecessor/sequence 链记录，每个
+全局 snapshot 另写入内容寻址 `ootang_source_snapshot_receipt_v1` 链。全局链带
+`snapshot_sequence_id`、predecessor 和唯一 tip，current pointer 必须精确绑定该 tip。
+进程在 receipt 已提交但 pointer 尚未发布时崩溃，下一 poll 可从递归验证的唯一
+tip 恢复缺失/陈旧 pointer；r1→r2→r1 回退、分支、孤儿、重复 sequence、非 tip
+绑定或 object/receipt 篡改均 fail closed。
 
 source ingest 遇到配置内错误时写 `blocked_integrity`；未预期的 I/O、pandas/CSV 或
 竞态异常会被规范化为 `SourceIntegrityError`，并 best-effort 原子刷新 blocked
@@ -219,7 +243,7 @@ inbox 原子发布前以及发布后均重新采机器 UTC；若发布跨越目�
 持有 E2-A runner lock 时移除该不可消费 inbox 并写 blocked 状态，不会把早期采样时间
 冒充实际持久化时间。
 
-## 6. 当前实机等待演练
+## 6. E2-B1 历史实机等待演练
 
 仓库当前没有配置的未来 daily finalized feed。真实四阶段 poll 的结果为：
 
@@ -242,22 +266,35 @@ station SHA-256 分别保持 `2e680d06a6e04e02562bb31ec53b885acecafc068015417525
 97 条保护路径聚合仍为
 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
 
-## 7. 下一机器闭环
+## 7. E2-B2 闭环与下一机器门禁
 
-E2-B1 后的首要实现不是人工冻结，而是 machine-only outcome materializer 与周期
-编排：从同一 immutable per-date feed provenance 中只抽取已经存在 sealed issue 的
-目标日观测，原子生成 `outcome_inbox/YYYY-MM-DD.json`，再触发 E2-A reveal/update，
-随后才允许 source/current 推进和下一日 issue。
+E2-B2 已实现 machine-only outcome materializer 与有界 fixed-point cycle。materializer
+只从已验证 immutable per-date source provenance 抽取 finalized 目标观测，按
+revision → sealed outstanding issue → contiguous backfill 的固定优先级物化。每目标
+revision 用 immutable receipt predecessor/sequence 链、唯一 tip、active receipt pointer、
+exact object 和 inbox 分层提交，支持 receipt→pointer→inbox 崩溃恢复并拒绝分支/
+回退。activation watermark 及更早修订返回 `waiting_epoch_rotation_required`，
+不暗中改写旧 epoch。
+
+cycle 按 source ingest → bundle ensure → live reconcile → outcome materialize →
+live reconcile → issue produce → live seal 顺序反复运行，直到验证科学
+progress token 不再变化。token 包含 source/model、verified ledger scientific projection、
+receipt tips、active bindings 与 inbox bytes，但排除 poll 时间、raw ledger head 与持续失败
+anchor retry。空输入是一轮 `converged_waiting`；64 轮合法单调进展后还有 backlog
+则以 `work_remaining/exit 0` 交回调度器，跨调用 continuation token history 只在科学状态
+回到已见 token 时按振荡阻断。详细锁序、pre-genesis ledger 恢复、symlink/status
+复验和 focused 测试见 `docs/ootang_prequential_cycle_engineering.md`。E2-B2 完整仓库
+最终回归为相关联合 197/197、全仓 566/566；outcome/cycle focused 分别为 31/31
+和 23/23，独立对抗复审最终无 P0/P1。本文第 6 节 136/136 与 505/505 仍只是
+E2-B1 历史记录。
 
 仍需完成：
 
-1. outcome materializer、单周期 orchestrator、崩溃恢复和故障注入测试；
-2. runner 独立于 producer 的 checkpoint/input 重放；
-3. pinned provider 的可信密码学时间回执验证；
-4. immutable epoch registry、预构建与安全自动轮换；
-5. E2-A 当前 O(D·N) 全量重放的长期运行性能优化；
-6. 验证上游能否在下一自然日边界前稳定 finalization，并为错过窗口定义纯机器
-   rollover/abstain 策略。
+1. runner 独立于 producer 的 checkpoint/input 重放；
+2. pinned provider 与可验证签名的可信密码学时间；
+3. immutable epoch registry、预构建与安全自动 rotation；
+4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 
 这些工程门关闭前，E2 证据与真实激活保持 false。正式 v5 的 G1--G4 状态也完全
-独立，不得由这条位移预测工程支路绕过。
+独立，不得由这条位移预测工程支路绕过。不得为了推进日期而增加人工冻结、
+日期选择、批准、签名或补写 outcome/backfill 入口。

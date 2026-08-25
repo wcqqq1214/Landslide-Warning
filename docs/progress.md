@@ -5,6 +5,66 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 E2-B2 机器 outcome 与 fixed-point cycle
+
+- 新增两个显式且非默认阶段 `ootang-outcome-materializer` 和
+  `ootang-prequential-cycle`，当前共 20 个可选阶段；无参数默认链仍严格是
+  `features → convlstm → ootang-operational-v4`。cycle 的七步内部顺序固定为
+  source ingest → bundle ensure → live reconcile → outcome materialize →
+  live reconcile → issue produce → live seal。
+- source current pointer 升级为 `ootang_source_current_pointer_v2`。每日 source
+  revision 以 predecessor/sequence receipt 链保留，每次全局 snapshot 另写入内容寻址
+  `ootang_source_snapshot_receipt_v1` 链；current pointer 必须精确对应唯一 tip。
+  缺失或陈旧 pointer 只能从已完整验证的 tip 恢复，r1→r2→r1 回退、分支、
+  孤儿、重复 sequence 或 object/receipt 篡改均 fail closed。旧的 pointer v1
+  不做隐式迁移；实现、依赖或 epoch 合同变化也必须进入后续自动 rotation 协议。
+- outcome materializer 只消费 current source 中已由 producer 递归验证的 finalized
+  record，选择顺序固定为 source revision → sealed outstanding issue → 连续
+  backfill，不从预测、score、当前日期或人工表格推导真值。每目标 revision
+  通过内容寻址 exact object、带 sequence/predecessor 的 immutable receipt 链、唯一
+  active receipt pointer 和 inbox 分层提交；在 receipt→pointer→inbox 任一崩溃窗口后
+  都只能从已验证 tip/object 恢复，分支、回退、污染或同 revision 异语义拒绝。
+  activation watermark 及更早记录/修订不会悄然改写旧 epoch，而是返回
+  `waiting_epoch_rotation_required`。outcome 的机器时间由 invocation-scoped 单调
+  sampler 贯穿初始读取、多 receipt 恢复、发布和阻断状态；跨链 `10→11→9→10`
+  故障注入会撤销本轮所有公开 pointer/inbox，blocked status 保留最后成功观测时间。
+- cycle 在外层只长持非阻塞 `cycle_lock`；调用子阶段时不预持
+  deploy/runner 子锁，仅在收集 progress snapshot 时按 deploy → runner 短持锁以
+  避免 torn snapshot。科学 token 绑定 source pointer、model manifest、verified ledger
+  scientific projection、issue/outcome receipt tips、active bindings 与 inbox bytes；不绑定
+  poll 时间戳、可变 status bytes、raw ledger head/event count 或持续失败的 anchor
+  retry，因而无科学进展时可真正收敛。
+- 空输入在一轮返回 `converged_waiting`；zero-byte 或有效 schema 但无 genesis
+  的崩溃中间 ledger 作为可恢复 pre-genesis 状态，不会在 live 自动初始化前
+  被 token snapshot 阻断；真正的 schema/hash 损坏仍 blocked。单次最多 64 个有科学
+  进展的轮次，尚有合法 backlog 时以 `work_remaining/exit 0` 交回调度器；上次
+  continuation token history 持久化后，跨调用回到已见 token 才会按振荡阻断。
+- runtime 内外部 symlink alias、阶段 status 路径/schema/provenance 与非白名单状态
+  均 fail closed；busy 统一为 exit 3，integrity 冲突为 exit 2。生产不允许注入假
+  stage/token；仅显式 `OOTANG_E2B_ALLOW_TEST_CYCLE_OVERRIDE=1` 的测试环境可用依赖
+  注入。所有 evidence/activation flags 仍固定 false。
+- 最终验证：outcome materializer 31/31、cycle 23/23、cycle/main 50/50，E2-B2
+  相关联合回归 197/197，全仓 566/566；Ruff、compileall 与 `git diff --check`
+  均通过。独立对抗复审最终无 P0/P1。真实空 runtime 七阶段只生成 status/lock，
+  一轮返回 `converged_waiting`，未生成 source pointer、activation、model、issue、
+  outcome 或 ledger；无参数 dry-run 仍严格显示默认三阶段。
+- 正式 v5 fail-closed preflight 23/23，报告仍为 G0 PASS、G1--G4 BLOCKED、
+  G5a 未授权。E1 manifest/metrics/site/station SHA-256 仍分别为
+  `2e680d06a6e04e02562bb31ec53b885acecafc068015417525dee115de97f253`、
+  `9d790ecb4550ee849001cf6e21873b3047598212508c1c86c6fc6c188e4eab96`、
+  `d35822d7dc198f859308b1d46071d8df128e9bff4203458ccadfd1aa86e3a6fd`、
+  `805951dcf77aa19e7d5021fa53a51bfa2067663b7fda0e5dd0fcc483ad2a7bfe`；
+  97 条保护路径聚合仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+- 当前 cycle/deploy/live 配置 SHA-256 分别为
+  `2e4a0da22034a3063f612a723f007bf20b600c1dbdb7c62761368aa7a37810ef`、
+  `60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940` 和
+  `bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00`。
+- 后续仍需 runner-independent checkpoint/input replay、可信密码学时间、
+  immutable automatic epoch registry/rotation，以及消除 receipt/ledger 链反复全扫的
+  O(N²) 瓶颈。这些门禁不得被人工日期、冻结、批准、补签或伪造 backfill
+  取代。
+
 ## 2026-08-26 E2-B1 机器 source、bundle 与 issue producer
 
 - E2-A 已提交为 `a4e7de2 feat: add autonomous prequential live ledger`。在其后新增
@@ -62,10 +122,10 @@
 - E1 manifest/metrics/site/station 四项 SHA 与既有记录完全一致，97 条保护路径聚合仍为
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`；正式 v5
   仍为 G0 PASS、G1--G4 BLOCKED、G5a 未授权。
-- E2-B1 仍固定 `e2_live_evidence_eligible=false`、`real_activation_ready=false`。
-  下一增量是 machine-only outcome materializer 与 cycle orchestrator，然后完成
-  runner 独立 checkpoint/input replay、可信密码学时间 verifier、immutable epoch
-  registry/自动轮换和长期 replay 性能优化；不得退回人工日冻结或人工签发。
+- E2-B1 当时固定 `e2_live_evidence_eligible=false`、`real_activation_ready=false`。
+  后续 E2-B2 已完成 machine-only outcome materializer 与 cycle orchestrator；剩余为
+  runner 独立 checkpoint/input replay、可信密码学时间、immutable epoch
+  registry/自动轮换和 O(N²) 长链扫描优化；不得退回人工日冻结或人工签发。
 - 设计、合同、feed 示例、运行命令与边界详见
   `docs/ootang_prequential_deploy_engineering.md`。
 
@@ -100,9 +160,10 @@
   输出与 97 路径聚合哈希保持不变；完整命令和哈希见
   `docs/ootang_prequential_live_engineering.md`。
 - 后续 E2-B1 已完成机器生成的 content-addressed 五种子部署 bundle 与 issue
-  producer；仍缺 outcome materializer、runner 独立推理复核、安全自动 epoch 轮换
-  和 pinned cryptographic time verifier。这些步骤都不得退回人工日冻结。长寿命
-  部署前还需把当前全量科学重放从 O(D·N) 优化为单次 O(N) 扫描。
+  producer，E2-B2 又完成 outcome materializer 和 fixed-point cycle。仍缺 runner 独立
+  checkpoint/input 重放、安全自动 epoch registry/rotation 和可信密码学时间。
+  这些步骤都不得退回人工日冻结。长寿命部署前还需消除 receipt/ledger
+  registry 反复全量扫描导致的 O(N²) 增长。
 
 ## 2026-08-26 全自动 prequential 机器闭环首版
 

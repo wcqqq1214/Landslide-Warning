@@ -9,7 +9,7 @@ infrastructure: it does not alter the E2-A evidence-eligibility boundary.
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import date, datetime, time, timedelta, timezone
 import fcntl
 import hashlib
@@ -38,7 +38,9 @@ UTC_RE = re.compile(
 
 DATASET_SCHEMA_VERSION = "ootang_canonical_model_source_v1"
 SEMANTIC_MANIFEST_SCHEMA_VERSION = "ootang_source_semantic_manifest_v1"
-CURRENT_POINTER_SCHEMA_VERSION = "ootang_source_current_pointer_v1"
+CURRENT_POINTER_SCHEMA_VERSION = "ootang_source_current_pointer_v2"
+REVISION_RECEIPT_SCHEMA_VERSION = "ootang_source_revision_receipt_v1"
+SNAPSHOT_RECEIPT_SCHEMA_VERSION = "ootang_source_snapshot_receipt_v1"
 STATUS_SCHEMA_VERSION = "ootang_source_ingest_status_v1"
 RUNTIME_RELATIVE_PATH_KEYS = frozenset(
     {
@@ -101,6 +103,10 @@ class CanonicalSource:
     dataset: ArtifactRef
     semantic_manifest: ArtifactRef
     activation_manifest: ArtifactRef
+    revision_heads: tuple[ArtifactRef, ...] = ()
+    revision_ids_by_date: tuple[tuple[str, tuple[str, ...]], ...] = ()
+    snapshot_receipt: ArtifactRef | None = None
+    snapshot_sequence_id: int = 0
 
 
 @dataclass(frozen=True)
@@ -132,6 +138,15 @@ class _Feed:
     exported_at_text: str
     exported_at: datetime
     records: tuple[DailySourceRecord, ...]
+
+
+@dataclass(frozen=True)
+class _SnapshotRegistry:
+    head: ArtifactRef
+    head_payload: dict[str, Any]
+    head_pointer: ArtifactRef
+    head_pointer_raw: bytes
+    pointer_artifacts_by_sha256: dict[str, ArtifactRef]
 
 
 def _reject_constant(value: str) -> None:
@@ -349,8 +364,18 @@ def _runtime_path(profile: dict[str, Any], key: str, *, root: Path) -> Path:
         )
     try:
         resolved_root = root.resolve()
-        resolved = (resolved_root / relative).resolve(strict=False)
+        lexical = resolved_root / relative
+        cursor = resolved_root
+        for part in relative.parts:
+            cursor /= part
+            if cursor.is_symlink():
+                raise SourceConfigError(
+                    f"runtime.{key} must not traverse a symlink"
+                )
+        resolved = lexical.resolve(strict=False)
         resolved.relative_to(resolved_root)
+    except SourceConfigError:
+        raise
     except (OSError, RuntimeError) as exc:
         raise SourceConfigError(
             f"runtime.{key} cannot be safely resolved below runtime.root"
@@ -401,8 +426,16 @@ def _runtime_child_path(root: Path, relative: str | Path, *, name: str) -> Path:
         raise SourceIntegrityError(f"{name} is not a confined relative child")
     try:
         resolved_root = root.resolve()
-        resolved = (resolved_root / candidate).resolve(strict=False)
+        lexical = resolved_root / candidate
+        cursor = resolved_root
+        for part in candidate.parts:
+            cursor /= part
+            if cursor.is_symlink():
+                raise SourceIntegrityError(f"{name} must not traverse a symlink")
+        resolved = lexical.resolve(strict=False)
         resolved.relative_to(resolved_root)
+    except SourceIntegrityError:
+        raise
     except (OSError, RuntimeError) as exc:
         raise SourceIntegrityError(f"{name} cannot be safely resolved") from exc
     except ValueError as exc:
@@ -880,6 +913,10 @@ def _write_content_object(directory: Path, raw: bytes, *, suffix: str) -> Artifa
     sha256 = _sha256_bytes(raw)
     path = directory / f"{sha256}.{suffix}"
     directory.mkdir(parents=True, exist_ok=True)
+    if path.is_symlink():
+        raise SourceIntegrityError(
+            f"content-addressed object path must not be a symlink: {path}"
+        )
     if path.exists():
         actual_sha, actual_size = _sha256_file(path)
         if (actual_sha, actual_size) != (sha256, len(raw)):
@@ -911,6 +948,565 @@ def _write_content_object(directory: Path, raw: bytes, *, suffix: str) -> Artifa
             if temporary.exists():
                 temporary.unlink()
     return ArtifactRef(path=path.resolve(), sha256=sha256, size_bytes=len(raw))
+
+
+def _daily_record_payload(record: DailySourceRecord) -> dict[str, object]:
+    """Return the normalized semantics protected by one revision receipt."""
+
+    return {
+        "date": record.day.isoformat(),
+        "revision_id": record.revision_id,
+        "observed_at_utc": record.observed_at_utc,
+        "available_at_utc": record.available_at_utc,
+        "finalized_at_utc": record.finalized_at_utc,
+        "rainfall_mm": float(record.rainfall_mm),
+        "reservoir_water_level_m": float(record.reservoir_water_level_m),
+        "displacement_mm": {
+            station: float(value)
+            for station, value in record.displacement_mm.items()
+        },
+    }
+
+
+def _validate_revision_record_payload(
+    value: object,
+    *,
+    name: str,
+    expected_day: date,
+    expected_revision_id: str,
+    stations: list[str],
+) -> dict[str, object]:
+    record = _exact_object(
+        value,
+        {
+            "date",
+            "revision_id",
+            "observed_at_utc",
+            "available_at_utc",
+            "finalized_at_utc",
+            "rainfall_mm",
+            "reservoir_water_level_m",
+            "displacement_mm",
+        },
+        name=name,
+    )
+    if _canonical_date(record["date"], name=f"{name}.date") != expected_day:
+        raise SourceIntegrityError(f"{name} date differs from its receipt")
+    revision_id = _nonempty_string(
+        record["revision_id"], name=f"{name}.revision_id"
+    )
+    if revision_id != expected_revision_id:
+        raise SourceIntegrityError(f"{name} revision id differs from its receipt")
+    observed = _utc(record["observed_at_utc"], name=f"{name}.observed_at_utc")
+    available = _utc(record["available_at_utc"], name=f"{name}.available_at_utc")
+    finalized = _utc(record["finalized_at_utc"], name=f"{name}.finalized_at_utc")
+    if not observed <= available <= finalized:
+        raise SourceIntegrityError(f"{name} timestamps are not monotone")
+    _finite_float(record["rainfall_mm"], name=f"{name}.rainfall_mm")
+    _finite_float(
+        record["reservoir_water_level_m"],
+        name=f"{name}.reservoir_water_level_m",
+    )
+    displacement = _exact_object(
+        record["displacement_mm"], set(stations), name=f"{name}.displacement_mm"
+    )
+    if list(displacement) != stations:
+        raise SourceIntegrityError(f"{name} station order changed")
+    for station in stations:
+        _finite_float(
+            displacement[station], name=f"{name}.displacement_mm.{station}"
+        )
+    return record
+
+
+def _load_revision_chain(
+    head_value: object,
+    *,
+    objects: Path,
+    expected_day: date,
+    expected_source_id: str,
+    stations: list[str],
+) -> tuple[ArtifactRef, tuple[dict[str, Any], ...]]:
+    """Verify one immutable per-date revision chain from newest to oldest."""
+
+    head = _content_object_from_payload(
+        head_value,
+        name=f"revision_heads.{expected_day}.receipt",
+        directory=objects,
+        suffix="source-revision.json",
+    )
+    current = head
+    expected_sequence: int | None = None
+    seen_artifacts: set[str] = set()
+    seen_revisions: set[str] = set()
+    receipts: list[dict[str, Any]] = []
+    while True:
+        if current.sha256 in seen_artifacts:
+            raise SourceIntegrityError(
+                f"source revision chain cycles for {expected_day}"
+            )
+        seen_artifacts.add(current.sha256)
+        payload = _load_json_artifact(
+            current, name=f"source revision receipt {expected_day}"
+        )
+        receipt = _exact_object(
+            payload,
+            {
+                "schema_version",
+                "case",
+                "outcome_source_id",
+                "target_date",
+                "revision_id",
+                "revision_sequence_id",
+                "record_sha256",
+                "record",
+                "accepted_source_semantic_manifest",
+                "predecessor_revision_receipt",
+            },
+            name=f"source revision receipt {expected_day}",
+        )
+        if receipt["schema_version"] != REVISION_RECEIPT_SCHEMA_VERSION:
+            raise SourceIntegrityError("source revision receipt schema changed")
+        if receipt["case"] != "ootang":
+            raise SourceIntegrityError("source revision receipt case changed")
+        source_id = _nonempty_string(
+            receipt["outcome_source_id"],
+            name="revision_receipt.outcome_source_id",
+        )
+        if source_id != expected_source_id:
+            raise SourceIntegrityError("source revision receipt source id changed")
+        if _canonical_date(
+            receipt["target_date"], name="revision_receipt.target_date"
+        ) != expected_day:
+            raise SourceIntegrityError("source revision receipt date changed")
+        revision_id = _nonempty_string(
+            receipt["revision_id"], name="revision_receipt.revision_id"
+        )
+        if revision_id in seen_revisions:
+            raise SourceIntegrityError(
+                f"source revision id repeats in history for {expected_day}"
+            )
+        seen_revisions.add(revision_id)
+        sequence = receipt["revision_sequence_id"]
+        if isinstance(sequence, bool) or not isinstance(sequence, int) or sequence <= 0:
+            raise SourceIntegrityError(
+                "source revision sequence id must be a positive integer"
+            )
+        if expected_sequence is None:
+            expected_sequence = sequence
+        if sequence != expected_sequence:
+            raise SourceIntegrityError(
+                f"source revision chain sequence is discontinuous for {expected_day}"
+            )
+        record = _validate_revision_record_payload(
+            receipt["record"],
+            name=f"revision_receipt[{expected_day}].record",
+            expected_day=expected_day,
+            expected_revision_id=revision_id,
+            stations=stations,
+        )
+        expected_record_sha = _require_sha256(
+            receipt["record_sha256"], name="revision_receipt.record_sha256"
+        )
+        if _sha256_bytes(_canonical_bytes(record)) != expected_record_sha:
+            raise SourceIntegrityError("source revision record digest changed")
+        _content_object_from_payload(
+            receipt["accepted_source_semantic_manifest"],
+            name="revision_receipt.accepted_source_semantic_manifest",
+            directory=objects,
+            suffix="source-manifest.json",
+        )
+        receipts.append(receipt)
+        predecessor = receipt["predecessor_revision_receipt"]
+        if predecessor is None:
+            if sequence != 1:
+                raise SourceIntegrityError(
+                    f"source revision chain lacks genesis for {expected_day}"
+                )
+            break
+        if sequence == 1:
+            raise SourceIntegrityError(
+                f"source revision genesis has a predecessor for {expected_day}"
+            )
+        current = _content_object_from_payload(
+            predecessor,
+            name=f"revision_receipt[{expected_day}].predecessor",
+            directory=objects,
+            suffix="source-revision.json",
+        )
+        expected_sequence = sequence - 1
+    return head, tuple(receipts)
+
+
+def _load_revision_heads(
+    value: object,
+    *,
+    source: CanonicalSource,
+    objects: Path,
+) -> tuple[
+    tuple[ArtifactRef, ...],
+    tuple[tuple[str, tuple[str, ...]], ...],
+]:
+    if not isinstance(value, list) or len(value) != len(source.records):
+        raise SourceIntegrityError(
+            "current source pointer must contain one revision head per feed date"
+        )
+    stations = list(source.records[0].displacement_mm)
+    heads: list[ArtifactRef] = []
+    histories: list[tuple[str, tuple[str, ...]]] = []
+    for index, (entry_value, current_record) in enumerate(
+        zip(value, source.records, strict=True)
+    ):
+        entry = _exact_object(
+            entry_value,
+            {"target_date", "receipt"},
+            name=f"pointer.revision_heads[{index}]",
+        )
+        target = _canonical_date(
+            entry["target_date"],
+            name=f"pointer.revision_heads[{index}].target_date",
+        )
+        if target != current_record.day:
+            raise SourceIntegrityError("pointer revision-head order/date changed")
+        head, newest_first = _load_revision_chain(
+            entry["receipt"],
+            objects=objects,
+            expected_day=target,
+            expected_source_id=source.outcome_source_id,
+            stations=stations,
+        )
+        newest = newest_first[0]
+        if newest["revision_id"] != current_record.revision_id:
+            raise SourceIntegrityError(
+                f"current source revision head mismatch for {target}"
+            )
+        if newest["record"] != _daily_record_payload(current_record):
+            raise SourceIntegrityError(
+                f"current source record differs from revision head for {target}"
+            )
+        heads.append(head)
+        histories.append(
+            (
+                target.isoformat(),
+                tuple(receipt["revision_id"] for receipt in reversed(newest_first)),
+            )
+        )
+    return tuple(heads), tuple(histories)
+
+
+def _write_revision_receipt(
+    *,
+    objects: Path,
+    source_id: str,
+    record: DailySourceRecord,
+    semantic_manifest: ArtifactRef,
+    predecessor: ArtifactRef | None,
+    sequence_id: int,
+) -> ArtifactRef:
+    record_payload = _daily_record_payload(record)
+    payload = {
+        "schema_version": REVISION_RECEIPT_SCHEMA_VERSION,
+        "case": "ootang",
+        "outcome_source_id": source_id,
+        "target_date": record.day.isoformat(),
+        "revision_id": record.revision_id,
+        "revision_sequence_id": sequence_id,
+        "record_sha256": _sha256_bytes(_canonical_bytes(record_payload)),
+        "record": record_payload,
+        "accepted_source_semantic_manifest": semantic_manifest.as_dict(),
+        "predecessor_revision_receipt": (
+            predecessor.as_dict() if predecessor is not None else None
+        ),
+    }
+    return _write_content_object(
+        objects,
+        _canonical_bytes(payload),
+        suffix="source-revision.json",
+    )
+
+
+def _artifact_from_object_path(
+    path: Path,
+    *,
+    objects: Path,
+    suffix: str,
+    name: str,
+) -> ArtifactRef:
+    """Verify a directory-discovered object still obeys SHA-named confinement."""
+
+    if path.is_symlink():
+        raise SourceIntegrityError(f"{name} must not be a symlink")
+    try:
+        resolved_objects = objects.resolve()
+        resolved = path.resolve(strict=True)
+        resolved.relative_to(resolved_objects)
+    except (OSError, RuntimeError) as exc:
+        raise SourceIntegrityError(f"{name} cannot be safely resolved") from exc
+    except ValueError as exc:
+        raise SourceIntegrityError(f"{name} escapes the object registry") from exc
+    if resolved.parent != resolved_objects:
+        raise SourceIntegrityError(f"{name} is not a direct object-registry child")
+    ending = f".{suffix}"
+    if not resolved.name.endswith(ending):
+        raise SourceIntegrityError(f"{name} has a noncanonical suffix")
+    expected_sha = _require_sha256(
+        resolved.name[: -len(ending)], name=f"{name}.filename_sha256"
+    )
+    actual_sha, size = _sha256_file(resolved)
+    if actual_sha != expected_sha:
+        raise SourceIntegrityError(f"{name} filename/content digest mismatch")
+    return ArtifactRef(resolved, actual_sha, size)
+
+
+def _load_snapshot_receipt_registry(
+    objects: Path,
+    *,
+    required: bool,
+) -> _SnapshotRegistry | None:
+    """Find and verify the unique append-only source-snapshot receipt-chain tip."""
+
+    try:
+        candidates = sorted(objects.glob("*.source-snapshot-receipt.json"))
+    except OSError as exc:
+        raise SourceIntegrityError("cannot enumerate source snapshot receipts") from exc
+    if not candidates:
+        if required:
+            raise SourceIntegrityError(
+                "current source pointer has no append-only snapshot receipt"
+            )
+        return None
+
+    receipts: dict[
+        str, tuple[ArtifactRef, dict[str, Any], ArtifactRef, bytes]
+    ] = {}
+    predecessor_hashes: set[str] = set()
+    for index, path in enumerate(candidates):
+        artifact = _artifact_from_object_path(
+            path,
+            objects=objects,
+            suffix="source-snapshot-receipt.json",
+            name=f"source snapshot receipt[{index}]",
+        )
+        payload = _load_json_artifact(
+            artifact, name=f"source snapshot receipt[{index}]"
+        )
+        receipt = _exact_object(
+            payload,
+            {
+                "schema_version",
+                "case",
+                "profile_id",
+                "outcome_source_id",
+                "snapshot_sequence_id",
+                "source_pointer",
+                "source_semantic_manifest",
+                "predecessor_snapshot_receipt",
+            },
+            name=f"source snapshot receipt[{index}]",
+        )
+        if receipt["schema_version"] != SNAPSHOT_RECEIPT_SCHEMA_VERSION:
+            raise SourceIntegrityError("source snapshot receipt schema changed")
+        if receipt["case"] != "ootang":
+            raise SourceIntegrityError("source snapshot receipt case changed")
+        _nonempty_string(receipt["profile_id"], name="snapshot_receipt.profile_id")
+        _nonempty_string(
+            receipt["outcome_source_id"],
+            name="snapshot_receipt.outcome_source_id",
+        )
+        sequence = receipt["snapshot_sequence_id"]
+        if isinstance(sequence, bool) or not isinstance(sequence, int) or sequence <= 0:
+            raise SourceIntegrityError(
+                "source snapshot receipt sequence must be positive"
+            )
+        pointer = _content_object_from_payload(
+            receipt["source_pointer"],
+            name="snapshot_receipt.source_pointer",
+            directory=objects,
+            suffix="source-pointer.json",
+        )
+        pointer_raw = _read_verified_artifact(
+            pointer, name="snapshot receipt source pointer"
+        )
+        pointer_payload = _decode_json(
+            pointer_raw, name="snapshot receipt source pointer"
+        )
+        pointer_record = _exact_object(
+            pointer_payload,
+            {
+                "schema_version",
+                "case",
+                "profile_id",
+                "updated_at_utc",
+                "maximum_complete_finalized_date",
+                "outcome_source_id",
+                "dataset",
+                "semantic_manifest",
+                "activation_source_manifest",
+                "revision_heads",
+            },
+            name="snapshot receipt source pointer",
+        )
+        if pointer_record["schema_version"] != CURRENT_POINTER_SCHEMA_VERSION:
+            raise SourceIntegrityError("snapshot receipt pointer schema changed")
+        if (
+            pointer_record["case"] != "ootang"
+            or pointer_record["profile_id"] != receipt["profile_id"]
+            or pointer_record["outcome_source_id"] != receipt["outcome_source_id"]
+        ):
+            raise SourceIntegrityError("snapshot receipt/pointer scope mismatch")
+        semantic = _content_object_from_payload(
+            receipt["source_semantic_manifest"],
+            name="snapshot_receipt.source_semantic_manifest",
+            directory=objects,
+            suffix="source-manifest.json",
+        )
+        if pointer_record["semantic_manifest"] != semantic.as_dict():
+            raise SourceIntegrityError(
+                "snapshot receipt semantic manifest differs from its pointer"
+            )
+        predecessor = receipt["predecessor_snapshot_receipt"]
+        if predecessor is not None:
+            predecessor_artifact = _content_object_from_payload(
+                predecessor,
+                name="snapshot_receipt.predecessor",
+                directory=objects,
+                suffix="source-snapshot-receipt.json",
+            )
+            predecessor_hashes.add(predecessor_artifact.sha256)
+        receipts[artifact.sha256] = (
+            artifact,
+            receipt,
+            pointer,
+            pointer_raw,
+        )
+
+    heads = sorted(set(receipts) - predecessor_hashes)
+    if len(heads) != 1:
+        raise SourceIntegrityError(
+            "source snapshot receipt registry has no unique chain tip"
+        )
+    head_sha = heads[0]
+    visited: set[str] = set()
+    pointer_artifacts: dict[str, ArtifactRef] = {}
+    current_sha = head_sha
+    expected_sequence: int | None = None
+    expected_profile_id: str | None = None
+    expected_source_id: str | None = None
+    while True:
+        if current_sha in visited or current_sha not in receipts:
+            raise SourceIntegrityError("source snapshot receipt chain is corrupt")
+        visited.add(current_sha)
+        _, receipt, pointer, _ = receipts[current_sha]
+        sequence = receipt["snapshot_sequence_id"]
+        if expected_sequence is None:
+            expected_sequence = sequence
+            expected_profile_id = receipt["profile_id"]
+            expected_source_id = receipt["outcome_source_id"]
+        if sequence != expected_sequence:
+            raise SourceIntegrityError(
+                "source snapshot receipt sequence is discontinuous"
+            )
+        if (
+            receipt["profile_id"] != expected_profile_id
+            or receipt["outcome_source_id"] != expected_source_id
+        ):
+            raise SourceIntegrityError("source snapshot receipt scope changed")
+        if pointer.sha256 in pointer_artifacts:
+            raise SourceIntegrityError(
+                "source snapshot receipt chain reuses a prior pointer"
+            )
+        pointer_artifacts[pointer.sha256] = pointer
+        predecessor = receipt["predecessor_snapshot_receipt"]
+        if predecessor is None:
+            if sequence != 1:
+                raise SourceIntegrityError(
+                    "source snapshot receipt chain lacks genesis"
+                )
+            break
+        if sequence == 1:
+            raise SourceIntegrityError(
+                "source snapshot receipt genesis has a predecessor"
+            )
+        current_sha = predecessor["sha256"]
+        expected_sequence = sequence - 1
+    if visited != set(receipts):
+        raise SourceIntegrityError(
+            "source snapshot receipt registry contains a branch or orphan receipt"
+        )
+    head_artifact, head_payload, head_pointer, head_pointer_raw = receipts[head_sha]
+    return _SnapshotRegistry(
+        head=head_artifact,
+        head_payload=head_payload,
+        head_pointer=head_pointer,
+        head_pointer_raw=head_pointer_raw,
+        pointer_artifacts_by_sha256=pointer_artifacts,
+    )
+
+
+def _write_snapshot_receipt(
+    *,
+    profile: dict[str, Any],
+    objects: Path,
+    source_id: str,
+    pointer: ArtifactRef,
+    semantic_manifest: ArtifactRef,
+    predecessor: ArtifactRef | None,
+    sequence_id: int,
+) -> ArtifactRef:
+    payload = {
+        "schema_version": SNAPSHOT_RECEIPT_SCHEMA_VERSION,
+        "case": "ootang",
+        "profile_id": profile["profile_id"],
+        "outcome_source_id": source_id,
+        "snapshot_sequence_id": sequence_id,
+        "source_pointer": pointer.as_dict(),
+        "source_semantic_manifest": semantic_manifest.as_dict(),
+        "predecessor_snapshot_receipt": (
+            predecessor.as_dict() if predecessor is not None else None
+        ),
+    }
+    return _write_content_object(
+        objects,
+        _canonical_bytes(payload),
+        suffix="source-snapshot-receipt.json",
+    )
+
+
+def _recover_current_pointer_from_snapshot_registry(
+    pointer_path: Path,
+    *,
+    objects: Path,
+) -> None:
+    """Recover only a missing or verified-stale public pointer to the chain tip."""
+
+    registry = _load_snapshot_receipt_registry(objects, required=False)
+    if registry is None:
+        if pointer_path.exists():
+            raise SourceIntegrityError(
+                "source pointer exists without an append-only snapshot receipt"
+            )
+        return
+    if not pointer_path.exists():
+        _atomic_write(pointer_path, registry.head_pointer_raw)
+        return
+    try:
+        with pointer_path.open("rb") as handle:
+            public_raw = handle.read()
+    except OSError as exc:
+        raise SourceIntegrityError("cannot read current source pointer") from exc
+    public_sha = _sha256_bytes(public_raw)
+    if public_sha == registry.head_pointer.sha256:
+        if public_raw != registry.head_pointer_raw:
+            raise SourceIntegrityError("current source pointer digest collision")
+        return
+    prior = registry.pointer_artifacts_by_sha256.get(public_sha)
+    if prior is None or _read_verified_artifact(
+        prior, name="stale source pointer"
+    ) != public_raw:
+        raise SourceIntegrityError(
+            "current source pointer is neither the chain tip nor a verified predecessor"
+        )
+    _atomic_write(pointer_path, registry.head_pointer_raw)
 
 
 def _dataset_payload(frame: pd.DataFrame, profile: dict[str, Any], watermark: date) -> dict[str, object]:
@@ -1335,13 +1931,24 @@ def load_current_source(
     activation_path = _runtime_path(
         profile, "activation_source_manifest", root=root
     )
-    pointer, _, _ = _load_json_snapshot(pointer_path, name="current source pointer")
+    pointer, pointer_raw, pointer_sha256 = _load_json_snapshot(
+        pointer_path, name="current source pointer"
+    )
+    registry = _load_snapshot_receipt_registry(objects, required=True)
+    assert registry is not None
+    if (
+        pointer_sha256 != registry.head_pointer.sha256
+        or pointer_raw != registry.head_pointer_raw
+    ):
+        raise SourceIntegrityError(
+            "current source pointer is not the append-only snapshot chain tip"
+        )
     record = _exact_object(
         pointer,
         {
             "schema_version", "case", "profile_id", "updated_at_utc",
             "maximum_complete_finalized_date", "outcome_source_id", "dataset",
-            "semantic_manifest", "activation_source_manifest",
+            "semantic_manifest", "activation_source_manifest", "revision_heads",
         },
         name="current source pointer",
     )
@@ -1391,6 +1998,9 @@ def load_current_source(
     )
     if loaded.dataset != dataset:
         raise SourceIntegrityError("semantic manifest dataset reference mismatch")
+    revision_heads, revision_ids_by_date = _load_revision_heads(
+        record["revision_heads"], source=loaded, objects=objects
+    )
     activation_source = load_activation_source(
         profile,
         runtime_root=root,
@@ -1400,7 +2010,13 @@ def load_current_source(
         raise SourceIntegrityError("current and activation source ids differ")
     if activation_source.watermark > loaded.watermark:
         raise SourceIntegrityError("current source predates immutable activation")
-    return loaded
+    return replace(
+        loaded,
+        revision_heads=revision_heads,
+        revision_ids_by_date=revision_ids_by_date,
+        snapshot_receipt=registry.head,
+        snapshot_sequence_id=registry.head_payload["snapshot_sequence_id"],
+    )
 
 
 def load_activation_source(
@@ -1465,6 +2081,16 @@ def _ingest_source_locked(
     try:
         if checked_at.tzinfo is None:
             raise SourceInputError("injected machine time must be timezone-aware")
+        pointer_path = _runtime_path(
+            profile, "current_source_pointer", root=root
+        )
+        objects = _runtime_path(profile, "objects", root=root)
+        # The snapshot receipt is the source commit point.  Recover its exact
+        # pointer before looking at the next feed so a missing or malformed
+        # delivery cannot strand an already committed source revision.
+        _recover_current_pointer_from_snapshot_registry(
+            pointer_path, objects=objects
+        )
         if not feed_path.is_file():
             _write_status(
                 status_path, profile, status="waiting_for_daily_finalized_feed",
@@ -1482,9 +2108,6 @@ def _ingest_source_locked(
             )
             return SourceIngestResult(status_path, "waiting_for_post_baseline_row", None)
 
-        pointer_path = _runtime_path(
-            profile, "current_source_pointer", root=root
-        )
         current: CanonicalSource | None = None
         if pointer_path.exists():
             current = load_current_source(
@@ -1518,11 +2141,18 @@ def _ingest_source_locked(
                     raise SourceIntegrityError(
                         f"source revision id reused for changed date {old.day}"
                     )
+                if old.revision_id != new.revision_id:
+                    known = dict(current.revision_ids_by_date).get(
+                        old.day.isoformat(), ()
+                    )
+                    if new.revision_id in known:
+                        raise SourceIntegrityError(
+                            f"source revision history would roll back date {old.day}"
+                        )
 
         activation_path = _runtime_path(
             profile, "activation_source_manifest", root=root
         )
-        objects = _runtime_path(profile, "objects", root=root)
         existing_activation: ArtifactRef | None = None
         if activation_path.exists():
             existing_activation = _load_activation(
@@ -1569,6 +2199,56 @@ def _ingest_source_locked(
             )
             activation_created = True
 
+        old_records = (
+            {record.day: record for record in current.records}
+            if current is not None
+            else {}
+        )
+        old_heads = (
+            {
+                record.day: head
+                for record, head in zip(
+                    current.records, current.revision_heads, strict=True
+                )
+            }
+            if current is not None
+            else {}
+        )
+        old_histories = (
+            {
+                date.fromisoformat(day): revisions
+                for day, revisions in current.revision_ids_by_date
+            }
+            if current is not None
+            else {}
+        )
+        revision_head_entries: list[dict[str, object]] = []
+        for record in feed.records:
+            old_record = old_records.get(record.day)
+            if old_record == record:
+                head = old_heads[record.day]
+            else:
+                predecessor = old_heads.get(record.day)
+                prior_revisions = old_histories.get(record.day, ())
+                if record.revision_id in prior_revisions:
+                    raise SourceIntegrityError(
+                        f"source revision history would roll back date {record.day}"
+                    )
+                head = _write_revision_receipt(
+                    objects=objects,
+                    source_id=feed.outcome_source_id,
+                    record=record,
+                    semantic_manifest=semantic_artifact,
+                    predecessor=predecessor,
+                    sequence_id=len(prior_revisions) + 1,
+                )
+            revision_head_entries.append(
+                {
+                    "target_date": record.day.isoformat(),
+                    "receipt": head.as_dict(),
+                }
+            )
+
         pointer_payload = {
             "schema_version": CURRENT_POINTER_SCHEMA_VERSION,
             "case": "ootang",
@@ -1579,8 +2259,32 @@ def _ingest_source_locked(
             "dataset": dataset_artifact.as_dict(),
             "semantic_manifest": semantic_artifact.as_dict(),
             "activation_source_manifest": existing_activation.as_dict(),
+            "revision_heads": revision_head_entries,
         }
-        _atomic_write(pointer_path, _canonical_bytes(pointer_payload))
+        pointer_raw = _canonical_bytes(pointer_payload)
+        pointer_artifact = _write_content_object(
+            objects, pointer_raw, suffix="source-pointer.json"
+        )
+        snapshot_receipt = _write_snapshot_receipt(
+            profile=profile,
+            objects=objects,
+            source_id=feed.outcome_source_id,
+            pointer=pointer_artifact,
+            semantic_manifest=semantic_artifact,
+            predecessor=(current.snapshot_receipt if current is not None else None),
+            sequence_id=(current.snapshot_sequence_id + 1 if current is not None else 1),
+        )
+        registry = _load_snapshot_receipt_registry(objects, required=True)
+        assert registry is not None
+        if (
+            registry.head != snapshot_receipt
+            or registry.head_pointer != pointer_artifact
+            or registry.head_pointer_raw != pointer_raw
+        ):
+            raise SourceIntegrityError(
+                "new source snapshot receipt is not the unique registry tip"
+            )
+        _atomic_write(pointer_path, pointer_raw)
         source = load_current_source(
             profile, runtime_root=root, project_root=project_root
         )
