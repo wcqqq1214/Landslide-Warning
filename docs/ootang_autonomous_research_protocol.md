@@ -5,7 +5,8 @@
 > 适用对象：藕塘 8 个位移监测点的机器自主科研监测轨<br>
 > 首版实现合同：`config/ootang_prequential_monitor.v1.json`<br>
 > 输出边界：`retrospective_prequential_self_supervised_not_confirmatory`<br>
-> 当前证据状态：`E0(replay 核心)=已实现`、`E1=已实现`、`E2=协议已定义但 live runner 待实现`、`E3=BLOCKED`
+> 当前证据状态：`E0(replay/ledger 核心)=已实现`、`E1=已实现`、
+> `E2-A=工程 runner 已实现但真实激活门禁未满足`、`E2-B=待实现`、`E3=BLOCKED`
 
 ## 1. 决策摘要
 
@@ -19,7 +20,8 @@
 4. 在机器证据不足、输入不完整、状态重热或实现合同失配时自动回退或
    `abstain`；
 5. 当前 E1 将每批签发写入 run-wide issue-only 审计链，并绑定逐点状态前后哈希；
-   目标 E2 再把签发、揭示、修订和状态更新全部写入 append-only 事件账本。
+   E2-A 已把签发、揭示、修订和状态更新写入 append-only 事件账本；E2-B 再把
+   checkpoint 推理、输入语义、可信时间证明和自动 epoch 接入同一机器闭环。
 
 这条路线与现有正式 v5 门禁并行，不绕过也不改写 G1--G4。它解决的是
 “机器能否在严格时序下持续预测、量化不确定性并发现运动学新颖性”，不是
@@ -34,9 +36,11 @@ persistence 专家、连续单侧残差异常、O1/O2/O3 连续空间聚合。�
 
 ### 2.1 不需要逐日人工操作
 
-以下是 E2 live runner 的目标正常运行行为。当前 E1 runner 已自动完成历史日期
-推进、同日 batch、评分、更新、漂移重置、退避和确定性产物写入；新数据发现、
-等待/恢复、真实签发与完整 append-only 事件账本仍属于待实现的 E2。
+以下是 E2 live runner 的目标正常运行行为。E1 runner 已自动完成历史日期
+prequential replay；E2-A runner 已实现新数据发现、跨进程等待/恢复、真实文件
+级 issue/outcome 隔离和完整 append-only 事件账本。由于当前尚未在 runner 内部
+重放 checkpoint 推理、验证 input-manifest 语义、验证可信密码学时间回执或自动
+轮换 immutable epoch，E2-A 仍不能产生 E2 live evidence；这些是 E2-B 门禁。
 
 激活一个协议版本后，正常运行中的下列动作全部由机器完成：
 
@@ -94,9 +98,9 @@ issue chain；独立的 `epoch_genesis` 事件属于 E2 完整 ledger。
 
 | 层级 | 机器要证明什么 | 当前可做性 | 允许的表述 | 不能推出什么 |
 |---|---|---|---|---|
-| E0 工程完整性 | 输入、代码、配置、模型、状态、输出和执行顺序可验证；同一自然键不被静默覆盖；失败可恢复 | E1 replay 核心已实现；live ledger、恢复与修订事件待 E2 | “已实现子项完整、可复算”，并逐项列出未实现项 | 预测有效、异常真实、灾害风险 |
+| E0 工程完整性 | 输入、代码、配置、模型、状态、输出和执行顺序可验证；同一自然键不被静默覆盖；失败可恢复 | E1 replay 与 E2-A ledger/恢复/修订重放已实现；checkpoint inference、manifest 语义、可信时间与自动 epoch 待 E2-B | “已实现子项完整、可复算”，并逐项列出未实现项 | 预测有效、异常真实、灾害风险 |
 | E1 历史 prequential 回放 | 对已有 OOF 预测按日期模拟先 issue、后 reveal；任何更新只消费较早结局 | 现在可做 | “内部回顾性预序评价” | 历史盲测、确认性效果、未来泛化 |
-| E2 未来 append-only 盲态运动学证据 | 对激活水位线之后自然到达的新数据，在目标结局可见前真实签发并封存预测，随后自动评价 | 协议已定义；live ingest/ledger runner 待实现 | 实现并真实积累后才可写“前瞻盲态运动学预测/校准证据” | 独立灾害结局、灾害风险或正式报警能力 |
+| E2 未来 append-only 盲态运动学证据 | 对激活水位线之后自然到达的新数据，在目标结局可见前真实签发并封存预测，随后自动评价 | E2-A 工程状态机已实现但证据资格固定为 false；E2-B 四项激活门禁待实现 | 只有可信部署后真实积累，才可写“前瞻盲态运动学预测/校准证据” | 独立灾害结局、灾害风险或正式报警能力 |
 | E3 独立灾害结局 | 使用与本模型输出相互独立、带信息可见时间的现场事件/处置/失稳结局评价 | `BLOCKED` | 只有数据与协议齐备后才可按新版本表述 | 当前不得声称 event recall、FAR 或灾害效能 |
 
 ### 3.1 E0：工程完整性
@@ -132,7 +136,7 @@ epoch**。折开始时重置在线 expert、conformal/ACI 和 drift 状态，禁
 算法顺序的可复算模拟，不是当年真实产生并经外部时间戳封存的盲态 ledger。
 任何结果固定标注 `retrospective_prequential_self_supervised_not_confirmatory`。
 
-### 3.3 E2：未来追加式盲态运动学证据（目标设计，尚未部署）
+### 3.3 E2：未来追加式盲态运动学证据（E2-A 已实现，E2-B 尚未部署）
 
 E2 的 genesis 记录机器激活时的数据水位线；按当前仓库证据，现有藕塘序列上限
 为 2020-06-30。只有水位线之后自然到达、且在 issue 时目标值尚不可见的日期，
@@ -150,6 +154,13 @@ E2 ledger 必须 append-only：原 issue、首次接受的 outcome、后续修�
 操作。
 
 E2 只评价位移预测、区间覆盖、残差新颖性、漂移和拒绝行为。它仍然不是 E3。
+
+当前 E2-A 的可执行边界是：严格加载结构化 source/model/issue/outcome 文件、
+追加和完整重放账本、自动等待/回填/修订及外部锚接口。它不解析 issue 引用的
+input manifest 语义，也不从五个 checkpoint 重放预测；HTTPS 回执没有 pinned
+provider 或密码学 verifier；模型/源码/环境变化会 fail closed，尚未由机器自动
+建立新的 immutable epoch。因此所有 E2-A settlement 固定
+`e2_live_evidence_eligible=false`，即使时间顺序可形成工程候选也不得升格。
 
 ### 3.4 E3：独立灾害结局
 
@@ -246,7 +257,7 @@ E1 的源 CSV 会在回放开始前整体载入并校验；因而它不能声称
 E2 中若 reveal 阶段失败，已经封存的 issue 仍然保留；机器下一次从未结算 issue
 恢复，而不是重发更有利的预测。若 issue 阶段未完整封存，则该 batch 不进入评分，
 机器记录失败并按自然键幂等恢复。当前 E1 依靠整包临时构建和原子提升避免半成品，
-尚未实现这种逐事件恢复。
+自身没有逐事件恢复；E2-A 已以 SQLite 原子事务和 ledger 全重放实现这一能力。
 
 ## 6. 审计链与目标 append-only ledger
 
@@ -261,8 +272,9 @@ E1 v1 的输出合同还固定 CSV 浮点写出为 `%.17g`、重读为
 再完整重放站点在线状态、ACI、异常分数、漂移重置、空间聚合与
 metrics；任一落盘篡改都必须在 promotion 前 fail closed。
 
-以下 6.1--6.2 是 E2 完整 append-only event ledger 的目标合同；在 live runner
-实现前，不得把当前 E1 issue-only chain 写成已经具备这些事件能力。
+以下 6.1--6.2 已由 E2-A SQLite ledger 实现并通过数学全重放；E1 issue-only
+chain 仍不得与它混写。可信签发时间和 checkpoint 推理来源属于账本之外仍待
+E2-B 关闭的 provenance 门禁。
 
 ### 6.1 事件与自然键
 
@@ -586,10 +598,12 @@ validate_contract
    核对、同日 batch 顺序、issue-only 审计链、状态连续性、落盘全重放、
    原子产物与三折历史 prequential replay；
 2. E1 结果（已实现）：固化 manifest、局限声明和 machine-readable metrics；
-3. E2 工程（待实现）：append-only event ledger、幂等恢复、outcome revision、
-   live ingest 和自动外部时间锚；
-4. 初始化独立 E2 live ledger，自动等待 2020-06-30 之后的新数据；
-5. 新数据到达后按同一合同自动 issue/reveal/update；
+3. E2-A 工程（已实现）：append-only event ledger、幂等恢复、outcome revision、
+   issue/outcome 隔离、自动等待和不可信外部锚接口；
+4. E2-B 部署（待实现）：content-addressed 五种子模型、input-manifest 语义、
+   checkpoint inference replay、pinned cryptographic time verifier 与 immutable
+   epoch registry/自动轮换；
+5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
 这个顺序不要求人为为每个日期选择样本或点击批准，但要求机器在证据不足时诚实
@@ -620,10 +634,11 @@ validate_contract
 
 ## 14. 本协议的最终边界
 
-在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay 及其核心 E0
-校验；完整 live-ledger E0 子项仍归入 E2。E2 的状态机、账本与等待语义已经在
-协议中定义，但 live ingest/issue/reveal runner 尚未实现；只有该 runner 部署并
-真实签发未来日期后，才能开始积累 append-only 盲态运动学证据。
+在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay，以及 E2-A 的
+live 状态机、append-only ledger、等待/恢复/修订和数学全重放。E2-A 仍是工程
+基础，不是 live 证据：只有 E2-B 关闭 checkpoint 推理、输入语义、可信时间和
+自动 epoch 四项门禁，并真实签发未来日期后，才可能开始积累 append-only 盲态
+运动学证据。
 
 E3 仍然 `BLOCKED`。在独立灾害结局不存在时，最科学的机器行为不是生成五级
 颜色或给 anomaly score 起一个“风险概率”的名字，而是持续预测、诚实量化不

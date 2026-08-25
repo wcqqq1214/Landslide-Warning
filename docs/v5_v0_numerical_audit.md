@@ -1,8 +1,8 @@
 # V5 automatic V0 numerical audit
 
-**Status:** closed<br>
-**Started:** 2026-08-20<br>
-**Completed:** 2026-08-20<br>
+**Status:** closed  
+**Started:** 2026-08-20  
+**Completed:** 2026-08-20  
 **Baseline commit:** `07ad977f762309ed3f6c1574313abc22631cfbb3`
 
 ## Purpose

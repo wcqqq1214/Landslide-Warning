@@ -59,12 +59,18 @@ automatic V0 candidates + raw kinematics + raw ConvLSTM intervals
        ├─ O1/O2/O3 continuous spatial aggregation
        └─ figures/prequential_anomaly_ootang_v1/*
 
+machine source/model manifests + separated issue/outcome inboxes
+  └─ monitoring/ootang_prequential_live.py
+       ├─ prequential_core.py (pure issue/reveal/site mathematics)
+       ├─ ootang_live_ledger.py (SQLite WAL append-only hash chain)
+       └─ runtime/ootang_prequential_live_v1/{status,ledger,inboxes,anchors}
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains fourteen independently selectable stages. Its no-argument chain is exactly
+`main.py` contains fifteen independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor, NGBoost proxy experiments, automatic V0, and the v5 candidate display
 all require `--stage`.
@@ -77,7 +83,10 @@ all require `--stage`.
 | `code/features/build_features.py` | 生成环境、水文、运动学和切线角特征 | 不构造旧 30 日 `V0` 分类标签 |
 | `code/convlstm/model.py` | 以 7 通道输入预测全部八测点位移 P10/P50/P90 | 输出训练/校准/测试分段图、预测 CSV、覆盖率和运行 manifest |
 | `code/convlstm/rolling_validation.py`、`seed_stability.py` | 固定 7 通道的滚动和多种子诊断 | 当前显式阶段；不将历史 6 通道结果当作 7 通道证据 |
-| `code/monitoring/ootang_prequential_monitor.py` | 对 5-seed 严格时序 OOF + persistence 做同日先 issue 后 reveal 的机器在线组合、校准、漂移和连续空间聚合 | 当前只物化 E1 回顾性 replay；不逐日人工选样本/阈值，不输出颜色、灾害概率或正式预警；E2 live ingest/ledger runner 待实现 |
+| `code/monitoring/ootang_prequential_monitor.py` | 对 5-seed 严格时序 OOF + persistence 做同日先 issue 后 reveal 的机器在线组合、校准、漂移和连续空间聚合 | 物化 E1 回顾性 replay；不逐日人工选样本/阈值，不输出颜色、灾害概率或正式预警 |
+| `code/monitoring/prequential_core.py` | 提供不可变 StationState 及 issue/reveal/site 纯数学 | 与 E1 v1 数学逐字段等价；不访问文件、时钟或网络 |
+| `code/monitoring/ootang_live_ledger.py` | 提供 SQLite WAL 追加式事务、自然键幂等、schema trigger 和完整哈希链验证 | SHA-256 证明内部内容一致性，不证明作者身份或可信时间 |
+| `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | engineering-only；checkpoint inference、input-manifest 语义、可信时间 verifier 与自动 epoch rotation 未实现，E2 evidence 固定 false |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -134,11 +143,23 @@ conformal/ACI、正向低估残差 anomaly 与 ADWIN-inspired 漂移状态。fol
 漂移都由合同自动重置，重热期自动 abstain；O1/O2/O3 用 block max 与跨区 min
 保留连续分数，不做颜色阈值。
 
-当前实现是 E1 retrospective replay：源文件会整体载入校验，但同日 `actual`
+E1 实现是 retrospective replay：源文件会整体载入校验，但同日 `actual`
 不进入 issue 载荷、issue-time 状态或 issue hash。三个 fold 的在线状态彼此重置，
 issue batch 则形成一条 run-wide 审计链。它不是 E2 实时追加账本，也没有证明
-灾害风险。E2 需要另行实现自动 live ingest、outcome 隔离、append-only 事件
-ledger、恢复/修订和时间锚；这些运行操作仍应由机器完成，而不是逐日人工冻结。
+灾害风险。
+
+E2-A 已用独立 namespace 实现 SQLite append-only ledger、真实文件级
+issue/outcome 隔离、完整八站事务、自动等待/回填/恢复/修订和时间锚接口。每次
+恢复会从 genesis 重算 issue、reveal、score、expert/conformal/drift 状态与 site
+聚合；本地回执文件可从账本恢复，链或 schema 漂移会 fail closed。历史 outcome
+只能记为 `backfill_not_blind`，目标当日及更早日期禁止事后 issue。
+
+E2-A 的 source/model/issue 文件只建立结构和哈希合同，尚未验证 issue input
+manifest 的科学语义，也没有从五个 checkpoint 重放外部预计算的预测。时间锚
+接口也没有 pinned provider/密码学回执验证；实现或模型变化暂时阻断旧 epoch，
+尚未自动创建 immutable 新 epoch。因此它只输出工程时序候选，固定
+`e2_live_evidence_eligible=false`。E2-B 将实现生产 bundle/issue producer、可信
+时间 verifier 和机器 epoch registry/rotation；不得用人工逐日冻结代替。
 
 ## 版本化与清理原则
 

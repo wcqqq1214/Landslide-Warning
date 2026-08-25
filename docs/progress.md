@@ -5,6 +5,42 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 E2-A 追加式 live 工程基础
+
+- 新增显式阶段 `ootang-prequential-live`；默认链仍严格保持
+  `features → convlstm → ootang-operational-v4`。该阶段单次机器 poll 后退出，
+  由调度器重复调用，不需要人工逐日挑日期、冻结样本或批准状态更新。
+- 新增纯函数在线数学核心和 SQLite WAL 追加式 ledger。所有写入使用
+  `BEGIN IMMEDIATE` 与 `synchronous=FULL`，自然键同内容幂等、异内容拒绝，
+  update/delete trigger 与完整 SHA-256 链共同 fail closed；issue 与 outcome 各自
+  作为完整事务写入，8 点 issue 全部持久化并 seal 后才允许调用 outcome loader。
+- runner 自动处理冷启动 genesis、无数据等待、自然日缺口、历史
+  `backfill_not_blind`、外部锚请求/失败/回执、outcome reveal/score/state update、
+  outcome revision 与回顾性重算。修订不回写历史事件或在线 StationState；若修订
+  在下一次 issue 前到达，则机器使用最新正式位移作为 persistence 基线。
+- 恢复不信任 settlement 自带状态：每次从 ledger 重放 genesis、issue、reveal、
+  expert/conformal/drift 更新和 O1/O2/O3 site score，并校验事件顺序、站点顺序、
+  状态哈希、输入/模型/配置/实现/环境哈希。回执文件丢失时从 ledger 自动重建，
+  回执或 SQLite schema/链被改写时状态更新为 `blocked_integrity`。
+- E2-A 仍是 `e2a_engineering_only_not_live_evidence`。当前 issue 预测来自外部预计算
+  feed，尚未从五个 checkpoint 内部重放；input manifest 仅校验文件哈希，尚未校验
+  语义；HTTPS 回执没有 pinned provider/密码学 verifier；epoch 变化仍 fail closed，
+  尚无自动 registry/rotation。因此 profile/status 固定
+  `input_manifest_semantics_verified=false`、`checkpoint_inference_replayed=false`、
+  `trusted_anchor_receipt_verified=false`、`automatic_epoch_rotation_implemented=false`
+  和 `real_activation_ready=false`。任何回执最多形成工程时序候选，E2 live evidence
+  计数保持 0。
+- live/core/ledger/main 定向测试共 64 项通过（live 20、ledger 12、core 7、main 25），
+  冻结 G0--G4 gate 23/23 通过，全仓 414/414 通过；Ruff、compileall、显式/默认
+  dry-run 和真实缺前提 poll 均通过。真实 poll 自动等待且不创建 ledger。E1 四项
+  输出与 97 路径聚合哈希保持不变；完整命令和哈希见
+  `docs/ootang_prequential_live_engineering.md`。
+- 下一步是机器生成的 content-addressed 五种子部署 bundle 与 issue producer：固定
+  seeds 0--4、不选 best seed，绑定输入 schema、checkpoint 推理、可见时间与不可变
+  epoch 目录，并实现安全自动轮换。随后再接 pinned cryptographic time verifier。
+  这两步都不得退回人工日冻结。长寿命部署前还需把当前全量科学重放从
+  O(D·N) 优化为单次 O(N) 扫描。
+
 ## 2026-08-26 全自动 prequential 机器闭环首版
 
 - 新增显式阶段 `ootang-prequential-monitor`，消费固定 5-seed、3-fold 严格时序
@@ -31,7 +67,8 @@
   取回 `data/features.csv` Git blob，核对 6,888 条 actual 和 6,888 条上一自然日
   persistence；staged CSV 以 `%.17g`/round-trip 重读后全量重放站点状态、
   site 聚合与 metrics，通过后才原子提升。
-  这仍不是实时 append-only event ledger 或历史盲测；E2 live runner 待实现。
+  这仍不是实时 append-only event ledger 或历史盲测；后续 E2-A runner 已实现，
+  但不改变本条 E1 结果的证据等级。
 - 最终产物 SHA-256：station
   `805951dcf77aa19e7d5021fa53a51bfa2067663b7fda0e5dd0fcc483ad2a7bfe`、site
   `d35822d7dc198f859308b1d46071d8df128e9bff4203458ccadfd1aa86e3a6fd`、metrics
@@ -42,8 +79,9 @@
   `compileall`、`git diff --check` 与默认/显式 dry-run 通过。97 个受保护路径聚合
   哈希仍为 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
 - 正式 v5 的 G1--G4 blocked 状态未被修改；机器支路也未生成颜色、灾害概率、
-  event recall 或 FAR。下一步为 E2 自动 live ingest/issue/reveal、完整 append-only
-  ledger、恢复/修订与时间锚，而不是回到人工逐日冻结。
+  event recall 或 FAR。其后的 E2-A 已实现 ledger/恢复/修订与不可信锚接口；真实
+  激活仍需五种子推理 producer、输入语义、自动 epoch 和可信时间验证，而不是回到
+  人工逐日冻结。
 
 ## 2026-08-20 G1--G4 证据盘点与机器预检
 

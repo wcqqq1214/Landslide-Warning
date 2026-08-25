@@ -26,6 +26,7 @@ build/
 # Project — generated / transient
 tmp/*
 literature/*
+runtime/*
 
 # LaTeX / paper outputs
 *.aux

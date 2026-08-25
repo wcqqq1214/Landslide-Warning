@@ -3,10 +3,68 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Audit baseline:** `07ad977 feat: add automatic v0 candidate display`
+**Committed baseline:** `b4c04aa feat: add autonomous ootang monitoring safeguards`
 **State:** the numerical audit, G1--G4 fail-closed preflight, and machine-only E1
-prequential monitor are implemented in the working tree; they remain uncommitted
-and unpushed.
+prequential monitor are committed. E2-A engineering infrastructure is implemented,
+fully verified, and forms the next commit boundary; nothing from this continuation
+has been pushed.
+
+## 2026-08-26 E2-A append-only live engineering continuation
+
+The explicit-only `ootang-prequential-live` stage now performs one fully automatic
+machine poll and exits. It uses a separate cold-start namespace, strict issue and
+outcome inboxes, a SQLite WAL append-only hash chain, atomic multi-event issue and
+outcome transactions, complete mathematical replay, revision-only retrospective
+rescoring, lock-based single-writer recovery, and automatic waiting states. No
+daily human date selection, threshold selection, or manual freeze is part of the
+runner.
+
+The runner is intentionally fail-closed and engineering-only. With no activation
+artifacts it writes
+`waiting_for_production_bundle_or_source_snapshot` and creates no ledger. A
+historical complete outcome is appended as `backfill_not_blind` without inventing
+an issue or changing online model state. A target on or before the current local
+day cannot be retroactively issued. Outcome files are not loaded until all eight
+station issues are durably sealed and an automatic anchor attempt has been
+recorded.
+
+E2-A does **not** yet generate the five predictions from checkpoint bytes, validate
+the semantic contents of the external issue input manifest, cryptographically
+verify a pinned time-stamp provider, or rotate immutable epochs automatically.
+Those four facts are machine-readable in the profile and status. Consequently an
+arbitrary HTTPS JSON receipt can be, at most, an
+`engineering_blind_time_order_candidate`; v1 hard-codes
+`trusted_anchor_receipt_verified=false`, `e2_live_evidence_eligible=false`, and
+`real_activation_ready=false`.
+
+Primary E2-A files:
+
+- `config/ootang_prequential_live.v1.json`;
+- `code/monitoring/prequential_core.py`;
+- `code/monitoring/ootang_live_ledger.py`;
+- `code/monitoring/ootang_prequential_live.py`;
+- `tests/test_prequential_core.py`;
+- `tests/test_ootang_live_ledger.py`;
+- `tests/test_ootang_prequential_live.py`;
+- `docs/ootang_prequential_live_engineering.md`.
+
+The next implementation target is not manual live-data freezing. It is an
+automatic content-addressed five-seed deployment/issue producer with verified
+input semantics, checkpoint inference replay, immutable per-epoch registry and
+safe machine epoch rotation. A trusted cryptographic time-receipt verifier is a
+separate activation gate. Until those exist, the correct runtime state is an
+automatic wait or fail-closed block, not fabricated live evidence.
+
+Final E2-A verification: 64 targeted tests, 23 frozen gate tests, and 414/414
+full-suite tests passed. Ruff and compileall passed; the real missing-prerequisite
+poll returned the automatic waiting state without creating a ledger. All 18
+register-referenced frozen files match, the four E1 output hashes are unchanged,
+and the 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+The final suite exposed a pre-existing Markdown hard-break normalization in
+`docs/v5_g1_g4_preflight.md` and `docs/v5_v0_numerical_audit.md`; their exact
+registered bytes were restored without changing the frozen register. The five
+resulting trailing-space lines are intentional hash-locked snapshot bytes.
 
 ## 2026-08-26 machine-only continuation note
 
@@ -483,11 +541,14 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    xargs shasum -a 256 < docs/v5_v0_protected_paths.txt | shasum -a 256
    ```
 
-3. Implement E2 as a new version/namespace: automatic live ingest and waiting,
-   prediction-target separation, append-only event ledger, idempotent crash
-   recovery, outcome revision events, and automatic external time anchoring.
-   Do not rewrite the E1 bundle into a fake live history.
-4. Keep E2 operation machine-only. No new data means
+3. Continue with E2-B activation prerequisites: build a content-addressed
+   five-seed production bundle and issue producer that replay checkpoint
+   inference, validate the input-manifest semantics, retain immutable per-epoch
+   artifacts, and rotate epochs by machine policy. Do not use historical OOF CSV
+   rows as future predictions and do not select a best seed.
+4. Add a pinned, cryptographically verified time-receipt adapter before any
+   `engineering_blind_time_order_candidate` can become E2 evidence. Keep operation
+   machine-only. No new data means
    `waiting_for_new_data`; schema/hash/state conflict means
    `blocked_integrity`; neither state should trigger a human date-selection
    workflow or fabricated backfill.

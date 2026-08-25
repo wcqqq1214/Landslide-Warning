@@ -392,6 +392,70 @@ class PipelineTests(unittest.TestCase):
             )
         )
 
+    def test_prequential_live_is_explicit_engineering_after_monitor(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-prequential-live"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-prequential-monitor") + 1,
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "live_prequential_monitoring_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_prequential_live.py",
+        )
+        self.assertEqual(
+            stage.inputs,
+            (
+                "config/ootang_prequential_live.v1.json",
+                "config/ootang_prequential_monitor.v1.json",
+                "figures/prequential_anomaly_ootang_v1/manifest.json",
+            ),
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_prequential_live.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_prequential_live_v1/status.json",),
+        )
+        self.assertNotIn(
+            "runtime/ootang_prequential_live_v1/ledger.sqlite3",
+            stage.outputs,
+        )
+
+    def test_prequential_live_runner_receives_explicit_config_argument(self):
+        calls = []
+
+        def record(command, **kwargs):
+            calls.append((command, kwargs))
+            return subprocess.CompletedProcess(command, 0)
+
+        pipeline.run_pipeline(
+            pipeline.select_stages(["ootang-prequential-live"]),
+            runner=record,
+            verify_contracts=False,
+        )
+
+        command, kwargs = calls[0]
+        self.assertEqual(
+            command,
+            [
+                sys.executable,
+                str(ROOT / "code" / "monitoring" / "ootang_prequential_live.py"),
+                "--config",
+                "config/ootang_prequential_live.v1.json",
+            ],
+        )
+        self.assertEqual(kwargs, {"cwd": ROOT, "check": True})
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

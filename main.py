@@ -30,6 +30,7 @@ class Stage:
     description: str
     inputs: tuple[str, ...] = ()
     outputs: tuple[str, ...] = ()
+    arguments: tuple[str, ...] = ()
     warning_artifact_scope: str = "research_support"
     formal_warning_output: bool = False
     enabled_by_default: bool = False
@@ -177,6 +178,21 @@ STAGES = (
             "figures/prequential_anomaly_ootang_v1/manifest.json",
         ),
         warning_artifact_scope="retrospective_prequential_monitoring_research",
+        enabled_by_default=False,
+    ),
+    Stage(
+        "ootang-prequential-live",
+        "code/monitoring/ootang_prequential_live.py",
+        "执行藕塘 E2-A 机器轮询、追加式事件账本与完整性状态更新（工程基础设施，非正式）",
+        inputs=(
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_monitor.v1.json",
+            "figures/prequential_anomaly_ootang_v1/manifest.json",
+        ),
+        outputs=("runtime/ootang_prequential_live_v1/status.json",),
+        arguments=("--config", "config/ootang_prequential_live.v1.json"),
+        warning_artifact_scope="live_prequential_monitoring_engineering",
+        formal_warning_output=False,
         enabled_by_default=False,
     ),
     Stage(
@@ -484,7 +500,7 @@ def run_pipeline(
     )
 
     for index, stage in enumerate(stages, start=1):
-        command = [sys.executable, str(root / stage.script)]
+        command = [sys.executable, str(root / stage.script), *stage.arguments]
         print(
             f"\n[pipeline] [{index}/{len(stages)}] {stage.name}: {stage.description}",
             flush=True,
