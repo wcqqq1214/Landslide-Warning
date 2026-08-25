@@ -51,12 +51,23 @@ automatic V0 candidates + raw kinematics + raw ConvLSTM intervals
   └─ warning/ootang_v5_candidate_display.py
        └─ figures/v5_candidate_display_ootang_v1/*
 
+5-seed strict-temporal OOF P50 + persistence
+  + versioned prequential monitor contract
+  └─ monitoring/ootang_prequential_monitor.py
+       ├─ online expert weighting + symmetric conformal/ACI
+       ├─ one-sided residual anomaly + drift/reset/abstain
+       ├─ O1/O2/O3 continuous spatial aggregation
+       └─ figures/prequential_anomaly_ootang_v1/*
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains thirteen independently selectable stages. Its no-argument chain is exactly `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics, NGBoost proxy experiments, automatic V0, and the v5 candidate display all require `--stage`.
+`main.py` contains fourteen independently selectable stages. Its no-argument chain is exactly
+`features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
+the prequential monitor, NGBoost proxy experiments, automatic V0, and the v5 candidate display
+all require `--stage`.
 
 ## 模块职责
 
@@ -66,6 +77,7 @@ future frozen protocol + independent outcome labels
 | `code/features/build_features.py` | 生成环境、水文、运动学和切线角特征 | 不构造旧 30 日 `V0` 分类标签 |
 | `code/convlstm/model.py` | 以 7 通道输入预测全部八测点位移 P10/P50/P90 | 输出训练/校准/测试分段图、预测 CSV、覆盖率和运行 manifest |
 | `code/convlstm/rolling_validation.py`、`seed_stability.py` | 固定 7 通道的滚动和多种子诊断 | 当前显式阶段；不将历史 6 通道结果当作 7 通道证据 |
+| `code/monitoring/ootang_prequential_monitor.py` | 对 5-seed 严格时序 OOF + persistence 做同日先 issue 后 reveal 的机器在线组合、校准、漂移和连续空间聚合 | 当前只物化 E1 回顾性 replay；不逐日人工选样本/阈值，不输出颜色、灾害概率或正式预警；E2 live ingest/ledger runner 待实现 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -103,15 +115,30 @@ pilot 已完整输出 11,376 条一日配对记录和五级概率。NGBoost 在 
 
 ## 自动 V0 候选诊断
 
-`warning/auto_v0_direct_bai_perron.py` 只读取藕塘 fit 累计位移和逐点速度，用时间感知的 BIC 分段线性算法自动确定候选初始段。第一段正斜率且下一段斜率更高时，自动生成候选；若全 fit 只是一段正线性基线，则标记为 `stable_full_fit_baseline`；其他情况为 `unavailable`。本阶段不人工指定日期、不回退 KMeans、不使用 MVIF 失败结果、不写入 v4，也不输出预警等级。
+`warning/auto_v0_direct_bai_perron.py` 的候选数值计算只使用藕塘 fit 累计位移、实际经过时间和逐点速度；运行器还只读 ConvLSTM predictions、forecast manifest、v4 thresholds 与 v4 manifest，以锁定 fit 边界并验证来源血缘，但这些字段不进入分段或 V0 公式。时间感知的 BIC 分段线性算法自动确定候选初始段。每个候选段从自身起点重定时间和位移原点后计算局部 OLS 充分统计量，避免晚期短段从全历史 float64 前缀原始矩相减产生负 SSE；随后仍使用同一最小段长、动态规划、BIC 和首段接受规则。共享 v4 Bai--Perron 实现不变。第一段正斜率且下一段斜率更高时，自动生成候选；若全 fit 只是一段正线性基线，则标记为 `stable_full_fit_baseline`；其他情况为 `unavailable`。本阶段不人工指定日期、不回退 KMeans、不使用 MVIF 失败结果、不写入 v4，也不输出预警等级。
 
-当前 8 个测点中 MJ1/MJ3 形成候选 V0（约 `0.2503/0.2481 mm/day`），其余 6 点显式 unavailable。这是自动流程的真实诊断结果，不应通过放宽门禁或人工补段来“补齐”8 点。结果与拟合段、断点和状态标签保存在 `figures/auto_v0_direct_bai_perron_ootang_v1/`，供后续 v5 候选审核。
+当前 8 个测点中 MJ1/MJ3 形成候选 V0（约 `0.2503/0.2481 mm/day`）；ATU1--ATU5 因首个断点后没有更快而 unavailable，MJ9 因首段斜率非正而 unavailable。八站均保留 BIC 选定分段，数值失败不再与科学门禁混为一谈。这仍是自动流程的候选诊断结果，不应通过放宽门禁或人工补段来“补齐”8 点。结果与拟合段、断点和状态标签保存在 `figures/auto_v0_direct_bai_perron_ootang_v1/`，根因审计见 `docs/v5_v0_numerical_audit.md`，供后续 v5 候选审核。
 
 ## v5 候选展示
 
 `warning/ootang_v5_candidate_display.py` 只消费已验证的自动 V0 bundle、藕塘原始运动学、ConvLSTM 原始分位数和当前 v4 历史参考产物。输出保留 calibration/test 的完整 514 日 × 8 点网格：MJ1/MJ3 共 1,028 行标记 `candidate_available`，其余 6 点共 3,084 行标记 `not_applicable_v0_unavailable`。自动 V0 相关速度比与切线角只在前两点计算，任何 unavailable 行都不补值。
 
 该阶段只提供候选输入和可用性审计。manifest 固定 `candidate_display_only=true`、`ngboost_inference_output=false`、`v5_fusion_output=false`、`formal_warning_output=false` 和 `vajont_used=false`；没有模型文件、候选颜色或 8 点综合等级。v4 station/site 列仅以 `v4_reference_*` 命名保留，不参与新计算。
+
+## 机器 prequential 监测支路
+
+`monitoring/ootang_prequential_monitor.py` 消费固定的 5-seed、3-fold OOF P50，
+并始终保留 persistence 专家。每个日期先从旧状态生成全部 8 点 issue 和 batch
+hash，再统一读取同日 outcome，更新站点特异专家权重、绝对残差双侧
+conformal/ACI、正向低估残差 anomaly 与 ADWIN-inspired 漂移状态。fold 切换和
+漂移都由合同自动重置，重热期自动 abstain；O1/O2/O3 用 block max 与跨区 min
+保留连续分数，不做颜色阈值。
+
+当前实现是 E1 retrospective replay：源文件会整体载入校验，但同日 `actual`
+不进入 issue 载荷、issue-time 状态或 issue hash。三个 fold 的在线状态彼此重置，
+issue batch 则形成一条 run-wide 审计链。它不是 E2 实时追加账本，也没有证明
+灾害风险。E2 需要另行实现自动 live ingest、outcome 隔离、append-only 事件
+ledger、恢复/修订和时间锚；这些运行操作仍应由机器完成，而不是逐日人工冻结。
 
 ## 版本化与清理原则
 

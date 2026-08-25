@@ -10,7 +10,7 @@
   "case": "ootang",
   "default_pipeline_member": false,
   "formal_warning_output": false,
-  "git_commit": "4145eef46efb797a818dae4704c1b45777652fd3",
+  "git_commit": "07ad977f762309ed3f6c1574313abc22631cfbb3",
   "git_worktree_dirty": true,
   "implementation_sources": {
     "artifact_promotion": {
@@ -20,8 +20,8 @@
     },
     "automatic_v0": {
       "path": "code/warning/auto_v0_direct_bai_perron.py",
-      "sha256": "650cef402359b62bc71766b29c5e1dcc27e3d1f816f0479b39093a7609d4f412",
-      "size_bytes": 32325
+      "sha256": "d8b63f24c119011f4e7b0351965cb840915bfca4cebcefb45c39b04cd52a98f3",
+      "size_bytes": 41217
     },
     "interval_state": {
       "path": "code/warning/interval_state.py",
@@ -35,8 +35,8 @@
     },
     "runner": {
       "path": "code/warning/ootang_v5_candidate_display.py",
-      "sha256": "31fdd1fe382df40970b30ef1a7971643d89bc9ad5501df54a8c366e0f9e04cd1",
-      "size_bytes": 49788
+      "sha256": "bca678d7c8d6f357b872f41b81dd022bf4dbdf31abb4133ff1a202e70d29f856",
+      "size_bytes": 53126
     }
   },
   "ngboost_inference_output": false,
@@ -107,19 +107,19 @@
     },
     "v0_candidates": {
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidates.csv",
-      "sha256": "9162595f17b55c75ed143dc982eb5df89eb63b2cc62dbbc422a1cb5ee6b4c99b"
+      "sha256": "ce5b67db28f8df869d521876fee876fd5104548aab58a9ef7e3fc0ca8c28d019"
     },
     "v0_manifest": {
       "artifact_kind": "ootang_auto_v0_direct_bai_perron_candidate",
       "artifact_status": "exploratory_v0_candidate_not_formal",
       "fit_only_contract_verified": true,
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
-      "profile_sha256": "13a85608aa24218b940db4a3d5ffb0ecfd61fd0debbb429533bcd84b92412b53",
-      "sha256": "64e643ba68df642c51ae1ac7aecb72b6af0f781a5ab65285734908cf535c897d"
+      "profile_sha256": "47c0b639917cd0b96e797b21d8095898ebc4f2088038925036f9c51aaa1273d9",
+      "sha256": "fb826a734d0d9ec11e2bfca9097080b3eb28b4325760ad62c26b799c15f1ef71"
     },
     "v0_segments": {
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/segments.csv",
-      "sha256": "1e697ec07034d0eec0cd607084db7946f139b2a55337cdad132866b4c0a8d209"
+      "sha256": "5af9b6dda29621f7dc523b42b2f55f9451777f897c1ba76adc910edda1c83890"
     },
     "v4_manifest": {
       "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",

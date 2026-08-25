@@ -19,8 +19,20 @@
     "MJ9": "2019-02-02"
   },
   "formal_warning_output": false,
-  "git_commit": "4145eef46efb797a818dae4704c1b45777652fd3",
+  "git_commit": "07ad977f762309ed3f6c1574313abc22631cfbb3",
   "git_worktree_dirty": true,
+  "implementation_sources": {
+    "runner": {
+      "path": "code/warning/auto_v0_direct_bai_perron.py",
+      "sha256": "d8b63f24c119011f4e7b0351965cb840915bfca4cebcefb45c39b04cd52a98f3",
+      "size_bytes": 41217
+    },
+    "shared_bic_definition": {
+      "path": "code/warning/bai_perron_initial_slope.py",
+      "sha256": "85bdc543b118926582532f583beab9336646f8b6d13565fe1420a8e3eab01280",
+      "size_bytes": 20369
+    }
+  },
   "method": {
     "algorithm": "Bai_Perron_multiple_structural_change_piecewise_unconstrained_OLS",
     "bic_formula": "n*ln(max(RSS/n,eps*max(1,var(displacement))))+2*K*ln(n)",
@@ -33,7 +45,9 @@
     "mvif_prerequisite": false,
     "regression_parameters_per_segment": 2,
     "segment_count_selection": "bic",
-    "single_segment_rule": "positive_full_fit_is_stable_full_fit_baseline"
+    "segment_statistics_origin": "per_segment_start",
+    "single_segment_rule": "positive_full_fit_is_stable_full_fit_baseline",
+    "sse_roundoff_multiplier": 32.0
   },
   "not_claimed": [
     "formal_v0",
@@ -53,32 +67,32 @@
     "candidates": {
       "n_rows": 8,
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidates.csv",
-      "sha256": "9162595f17b55c75ed143dc982eb5df89eb63b2cc62dbbc422a1cb5ee6b4c99b",
-      "size_bytes": 2128
+      "sha256": "ce5b67db28f8df869d521876fee876fd5104548aab58a9ef7e3fc0ca8c28d019",
+      "size_bytes": 2303
     },
     "figure_png": {
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png",
-      "sha256": "96d2b037a4e4479801b662e0d97e2bef0a4365ab71d3109194c710f18911acd1",
-      "size_bytes": 542691
+      "sha256": "c5b234a898ed7dc479e7f82fd8a383c4caf3b877854af1f3de8820fc9e976901",
+      "size_bytes": 556732
     },
     "figure_svg": {
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.svg",
-      "sha256": "818774867f58992be4d3f26932917622aedc72919b088598a61bb79d0dc2240b",
-      "size_bytes": 219180
+      "sha256": "9a525a9636ed83a7cdeca57477d1b6ba0ef5f61b11f105c45783e27366a12ff6",
+      "size_bytes": 232256
     },
     "segments": {
-      "n_rows": 36,
+      "n_rows": 48,
       "path": "figures/auto_v0_direct_bai_perron_ootang_v1/segments.csv",
-      "sha256": "1e697ec07034d0eec0cd607084db7946f139b2a55337cdad132866b4c0a8d209",
-      "size_bytes": 5484
+      "sha256": "5af9b6dda29621f7dc523b42b2f55f9451777f897c1ba76adc910edda1c83890",
+      "size_bytes": 7259
     }
   },
   "profile": {
-    "content_sha256": "7714c9efe9388e55f6e2eab6e3a78c7d031c33e0ae7f7b0db65bba798e451879",
-    "file_sha256": "13a85608aa24218b940db4a3d5ffb0ecfd61fd0debbb429533bcd84b92412b53",
+    "content_sha256": "41744411681281c6601b571bf72dd578ba1a5205d19dee824abc7c4082ab922a",
+    "file_sha256": "47c0b639917cd0b96e797b21d8095898ebc4f2088038925036f9c51aaa1273d9",
     "id": "ootang-auto-v0-direct-bai-perron-v1",
     "path": "config/ootang_auto_v0_direct_bai_perron.v1.json",
-    "version": "1.0-candidate"
+    "version": "1.0.1-candidate"
   },
   "schema_version": 1,
   "selection_status_counts": {

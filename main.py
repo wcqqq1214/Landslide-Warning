@@ -162,6 +162,24 @@ STAGES = (
         enabled_by_default=False,
     ),
     Stage(
+        "ootang-prequential-monitor",
+        "code/monitoring/ootang_prequential_monitor.py",
+        "运行藕塘五种子 OOF 预测的全自动 prequential 校准、漂移与退避回放（非正式）",
+        inputs=(
+            "config/ootang_prequential_monitor.v1.json",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/manifest.json",
+        ),
+        outputs=(
+            "figures/prequential_anomaly_ootang_v1/station_timeline.csv",
+            "figures/prequential_anomaly_ootang_v1/site_timeline.csv",
+            "figures/prequential_anomaly_ootang_v1/prequential_metrics.csv",
+            "figures/prequential_anomaly_ootang_v1/manifest.json",
+        ),
+        warning_artifact_scope="retrospective_prequential_monitoring_research",
+        enabled_by_default=False,
+    ),
+    Stage(
         "ootang-operational-v4",
         "code/warning/operational_run_v4.py",
         "运行藕塘 v4 严格逐点加速度四指标/双轴空间实施版（非正式）",

@@ -1,0 +1,344 @@
+{
+  "schema_version": "ootang_v5_gate_register_v1",
+  "register_id": "ootang-v5-g0-g4-register-v1",
+  "register_version": "1.0.0-blocked",
+  "status": "draft_blocked",
+  "case": "ootang",
+  "scope": "g0_g4_preflight_only",
+  "candidate_only": true,
+  "formal_warning_output": false,
+  "ngboost_inference_output": false,
+  "v5_fusion_output": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "policy_document": {
+    "path": "docs/v5_validation_protocol.md",
+    "sha256": "9e2aae33cbbe73fb2faa4fd6b3fa401d3b0405ef14a8325441652b0bf77d9d34"
+  },
+  "inventory_document": {
+    "path": "docs/v5_g1_g4_preflight.md",
+    "sha256": "213074e86c5aad82fac7d1336a5d8cfe1cf6599599968ae78fcbf0f24296ae25"
+  },
+  "implementation_sources": {
+    "preflight": {
+      "path": "code/warning/ootang_v5_gate_preflight.py",
+      "sha256": "14eebaf4376afe3a222eda8adc52c8638dc8734132a099fef0d63fab33cab50c"
+    }
+  },
+  "gates": {
+    "G0": {
+      "declared_status": "PASS",
+      "blocker_codes": [],
+      "decision": {
+        "closed_on": "2026-08-20",
+        "basis": "docs/v5_v0_numerical_audit.md",
+        "candidate_availability": {
+          "available": [
+            "MJ1",
+            "MJ3"
+          ],
+          "unavailable": {
+            "ATU1": "first_break_is_not_accelerating",
+            "ATU2": "first_break_is_not_accelerating",
+            "ATU3": "first_break_is_not_accelerating",
+            "ATU4": "first_break_is_not_accelerating",
+            "ATU5": "first_break_is_not_accelerating",
+            "MJ9": "nonpositive_initial_segment_slope"
+          }
+        }
+      },
+      "evidence": [
+        {
+          "role": "numerical_audit",
+          "path": "docs/v5_v0_numerical_audit.md",
+          "sha256": "4db2ea6c20dcf1c8dd864abc41dead427c8aae2136b7a3a364559a28cee27fcf"
+        },
+        {
+          "role": "automatic_v0_manifest",
+          "path": "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
+          "sha256": "fb826a734d0d9ec11e2bfca9097080b3eb28b4325760ad62c26b799c15f1ef71"
+        },
+        {
+          "role": "automatic_v0_profile",
+          "path": "config/ootang_auto_v0_direct_bai_perron.v1.json",
+          "sha256": "47c0b639917cd0b96e797b21d8095898ebc4f2088038925036f9c51aaa1273d9"
+        },
+        {
+          "role": "automatic_v0_runner",
+          "path": "code/warning/auto_v0_direct_bai_perron.py",
+          "sha256": "d8b63f24c119011f4e7b0351965cb840915bfca4cebcefb45c39b04cd52a98f3"
+        },
+        {
+          "role": "shared_bic_definition",
+          "path": "code/warning/bai_perron_initial_slope.py",
+          "sha256": "85bdc543b118926582532f583beab9336646f8b6d13565fe1420a8e3eab01280"
+        }
+      ],
+      "approval": null
+    },
+    "G1": {
+      "declared_status": "BLOCKED",
+      "blocker_codes": [
+        "independent_label_definition_missing",
+        "independent_label_file_missing",
+        "label_manifest_missing",
+        "label_approval_missing"
+      ],
+      "decision": {
+        "label_definition": null,
+        "label_file": null,
+        "label_manifest": null,
+        "unknown_policy": "preserve_unknown_never_negative",
+        "self_generated_labels_allowed": false
+      },
+      "evidence": [
+        {
+          "role": "inventory",
+          "path": "docs/v5_g1_g4_preflight.md",
+          "sha256": "213074e86c5aad82fac7d1336a5d8cfe1cf6599599968ae78fcbf0f24296ae25"
+        },
+        {
+          "role": "proxy_manifest",
+          "path": "figures/ngboost_interval_proxy_pilot_ootang_v1/manifest.json",
+          "sha256": "5d53749ca71b05f594b8d55f4f3a0348432b739d0f1a0ab9a95c32e56bc26545"
+        },
+        {
+          "role": "v4_draft_manifest",
+          "path": "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
+          "sha256": "ae83bb9538d15e3715df9115b9ec244dfab555ee01e2d8a3b63a493735f7f120"
+        },
+        {
+          "role": "v5_candidate_manifest",
+          "path": "figures/v5_candidate_display_ootang_v1/manifest.json",
+          "sha256": "dfa5b62e8a12215c4ebe13404edc62e8294b276e9d5d8940a4bfd9b9ab18d6a6"
+        },
+        {
+          "role": "expert_review",
+          "path": "docs/ootang_elevation_warning_expert_review.md",
+          "sha256": "2b7cd769230b8534c8522f996ba277afcec1fa117c5cd8504d5659d85ce52140"
+        }
+      ],
+      "approval": null
+    },
+    "G2": {
+      "declared_status": "BLOCKED",
+      "blocker_codes": [
+        "primary_horizon_unapproved",
+        "release_unit_unapproved",
+        "confirmation_block_unregistered",
+        "unseal_authority_unassigned"
+      ],
+      "decision": {
+        "primary_horizon_days": null,
+        "release_unit": null,
+        "as_of_rule": null,
+        "existing_splits": {
+          "fit": {
+            "start_date": "2016-08-06",
+            "end_date": "2019-02-02",
+            "role": "model_fit_training_and_feature_statistics_only"
+          },
+          "calibration": {
+            "start_date": "2019-02-03",
+            "end_date": "2019-09-17",
+            "role": "registered_model_and_threshold_selection_only"
+          },
+          "historical_test": {
+            "start_date": "2019-09-18",
+            "end_date": "2020-06-30",
+            "role": "retrospective_internal_only_already_viewed"
+          }
+        },
+        "v0_selection_window": {
+          "start_date": "2016-07-01",
+          "end_date": "2019-02-02",
+          "station_rows": 947,
+          "role": "automatic_v0_fit_end_bounded_kinematics_only"
+        },
+        "confirmation_manifest": null,
+        "confirmation_sealed": false,
+        "selection_used": null,
+        "unseal_authority": null
+      },
+      "evidence": [
+        {
+          "role": "inventory",
+          "path": "docs/v5_g1_g4_preflight.md",
+          "sha256": "213074e86c5aad82fac7d1336a5d8cfe1cf6599599968ae78fcbf0f24296ae25"
+        },
+        {
+          "role": "forecast_manifest",
+          "path": "figures/convlstm/forecast_run_manifest.json",
+          "sha256": "4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353"
+        },
+        {
+          "role": "lineage_manifest",
+          "path": "figures/data_lineage/ootang_data_lineage_manifest.json",
+          "sha256": "a9a8c7991a77420abff52ced51009e41bbe573023b6a58eaf2a94643287fd42c"
+        },
+        {
+          "role": "rolling_validation_folds",
+          "path": "figures/convlstm/rolling_validation_folds.csv",
+          "sha256": "099e738917d99673953c2c8d732446613837e5277fd761e806d63a2dcc58250f"
+        },
+        {
+          "role": "calibration_review",
+          "path": "docs/ootang_interval_calibration_expert_review.md",
+          "sha256": "56f1a046a82d8dae1b257faff0c7a5c9465e87efc282111334846e7fc3285f90"
+        }
+      ],
+      "approval": null
+    },
+    "G3": {
+      "declared_status": "BLOCKED",
+      "blocker_codes": [
+        "deployment_scope_unapproved",
+        "unavailable_behavior_unapproved",
+        "coverage_denominator_unapproved",
+        "site_level_behavior_unapproved"
+      ],
+      "decision": {
+        "deployment_scope": null,
+        "mixed_availability_output_allowed": null,
+        "coverage_denominator": null,
+        "site_level_behavior": null,
+        "hard_policy": {
+          "unavailable_state": "not_applicable_abstain",
+          "unavailable_as_negative_or_green": false,
+          "imputation_allowed": false,
+          "cross_station_borrowing_allowed": false,
+          "v4_comparator_fallback_allowed": false,
+          "constant_v0_allowed": false,
+          "weight_renormalization_on_missing_allowed": false,
+          "posthoc_segmentation_relaxation_allowed": false,
+          "complete_case_required_for_two_branch_fusion": true
+        },
+        "current_snapshot": {
+          "deployment_stations": 8,
+          "available_stations": 2,
+          "station_coverage_fraction": 0.25,
+          "result_dates": 514,
+          "deployment_station_days": 4112,
+          "available_station_days": 1028,
+          "unavailable_station_days": 3084,
+          "station_day_coverage_fraction": 0.25,
+          "covered_spatial_blocks": [
+            "O1"
+          ],
+          "required_spatial_blocks_unapproved": [
+            "O1",
+            "O2",
+            "O3"
+          ],
+          "formal_site_output_days": 0
+        },
+        "coverage_threshold_source": "G4.decision.thresholds.coverage_min"
+      },
+      "evidence": [
+        {
+          "role": "inventory",
+          "path": "docs/v5_g1_g4_preflight.md",
+          "sha256": "213074e86c5aad82fac7d1336a5d8cfe1cf6599599968ae78fcbf0f24296ae25"
+        },
+        {
+          "role": "automatic_v0_manifest",
+          "path": "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
+          "sha256": "fb826a734d0d9ec11e2bfca9097080b3eb28b4325760ad62c26b799c15f1ef71"
+        },
+        {
+          "role": "automatic_v0_candidates",
+          "path": "figures/auto_v0_direct_bai_perron_ootang_v1/candidates.csv",
+          "sha256": "ce5b67db28f8df869d521876fee876fd5104548aab58a9ef7e3fc0ca8c28d019"
+        },
+        {
+          "role": "v5_candidate_manifest",
+          "path": "figures/v5_candidate_display_ootang_v1/manifest.json",
+          "sha256": "dfa5b62e8a12215c4ebe13404edc62e8294b276e9d5d8940a4bfd9b9ab18d6a6"
+        },
+        {
+          "role": "v4_profile",
+          "path": "config/ootang_operational_run.v4.draft.json",
+          "sha256": "442b6e0ac2fcfddf2637ea6a2c6823c0f516e8466ced2e05339a5389216e75ca"
+        }
+      ],
+      "approval": null
+    },
+    "G4": {
+      "declared_status": "BLOCKED",
+      "blocker_codes": [
+        "primary_thresholds_unset",
+        "fusion_increment_metric_unset",
+        "minimum_support_unset",
+        "confidence_interval_method_unapproved",
+        "metric_approval_missing"
+      ],
+      "decision": {
+        "primary_metrics": [
+          "event_recall",
+          "false_alarms_per_100_negative_release_unit_days"
+        ],
+        "baselines": [
+          "B0",
+          "B1",
+          "B2",
+          "B3",
+          "B4",
+          "B5"
+        ],
+        "thresholds": {
+          "event_recall_min": null,
+          "far_max_per_100_negative_unit_days": null,
+          "coverage_min": {
+            "station_day": null,
+            "site_day": null,
+            "spatial_complete": null,
+            "event_window": null,
+            "class_conditional": null
+          },
+          "fusion_increment": {
+            "metric": null,
+            "direction": null,
+            "delta_min": null,
+            "comparator_policy": null
+          },
+          "far_noninferiority_margin": null
+        },
+        "minimum_support": {
+          "independent_events": null,
+          "negative_unit_days": null,
+          "per_class": null
+        },
+        "ci_contract": {
+          "status": "proposed_unapproved",
+          "joint_one_sided_confidence": 0.975,
+          "event_recall": {
+            "method": "exact_clopper_pearson",
+            "bound": "lower",
+            "sampling_unit": "independent_event_id"
+          },
+          "block_bootstrap": {
+            "method": "paired_moving_date_block",
+            "sampling_unit": "complete_date_blocks_all_stations",
+            "block_length_days_rule": "max(H,7)",
+            "resamples": 10000,
+            "seed": 20260820
+          },
+          "station_day_independence_assumed": false
+        }
+      },
+      "evidence": [
+        {
+          "role": "inventory",
+          "path": "docs/v5_g1_g4_preflight.md",
+          "sha256": "213074e86c5aad82fac7d1336a5d8cfe1cf6599599968ae78fcbf0f24296ae25"
+        },
+        {
+          "role": "validation_protocol",
+          "path": "docs/v5_validation_protocol.md",
+          "sha256": "9e2aae33cbbe73fb2faa4fd6b3fa401d3b0405ef14a8325441652b0bf77d9d34"
+        }
+      ],
+      "approval": null
+    }
+  }
+}

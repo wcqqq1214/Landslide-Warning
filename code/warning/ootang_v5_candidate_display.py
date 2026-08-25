@@ -247,6 +247,12 @@ def _validate_v0_manifest(
     manifest_path: Path,
     candidates_path: Path,
     segments_path: Path,
+    *,
+    kinematics_path: Path = DEFAULT_KINEMATICS_PATH,
+    predictions_path: Path = DEFAULT_PREDICTIONS_PATH,
+    forecast_manifest_path: Path = DEFAULT_FORECAST_MANIFEST_PATH,
+    thresholds_path: Path = DEFAULT_THRESHOLDS_PATH,
+    v4_manifest_path: Path = DEFAULT_V4_MANIFEST_PATH,
 ) -> dict[str, Any]:
     manifest = _load_json(manifest_path, "automatic V0 manifest")
     required = {
@@ -265,22 +271,8 @@ def _validate_v0_manifest(
             )
 
     method = manifest.get("method")
-    method_contract = {
-        "failure_policy": "unavailable_with_reason",
-        "initial_segment_rule": (
-            "positive_first_slope_and_immediately_following_slope_greater"
-        ),
-        "single_segment_rule": "positive_full_fit_is_stable_full_fit_baseline",
-        "mvif_prerequisite": False,
-        "kmeans_fallback": False,
-    }
     if not isinstance(method, dict):
         raise CandidateDisplayInputError("Automatic V0 manifest lacks method")
-    for name, expected in method_contract.items():
-        if method.get(name) != expected:
-            raise CandidateDisplayInputError(
-                f"Automatic V0 method has invalid {name}"
-            )
 
     not_claimed = manifest.get("not_claimed")
     required_nonclaims = {
@@ -307,7 +299,90 @@ def _validate_v0_manifest(
         raise CandidateDisplayInputError(
             "Automatic V0 profile does not match its manifest"
         )
-    auto_v0.load_auto_v0_profile(source_profile_path)
+    source_profile = auto_v0.load_auto_v0_profile(source_profile_path)
+    expected_profile_fields = {
+        "id": source_profile["profile_id"],
+        "version": source_profile["profile_version"],
+        "content_sha256": _canonical_json_sha256(source_profile),
+    }
+    for name, expected in expected_profile_fields.items():
+        if profile_record.get(name) != expected:
+            raise CandidateDisplayInputError(
+                f"Automatic V0 profile has invalid {name}"
+            )
+    if method != source_profile["segmentation"]:
+        raise CandidateDisplayInputError(
+            "Automatic V0 method does not match its validated profile"
+        )
+    if manifest.get("v0_contract") != source_profile["v0"]:
+        raise CandidateDisplayInputError(
+            "Automatic V0 formula contract does not match its validated profile"
+        )
+
+    implementation_sources = manifest.get("implementation_sources")
+    expected_implementation_sources = {
+        "runner": {
+            "path": _manifest_path(auto_v0.IMPLEMENTATION_PATH),
+            "sha256": _sha256_file(auto_v0.IMPLEMENTATION_PATH),
+            "size_bytes": auto_v0.IMPLEMENTATION_PATH.stat().st_size,
+        },
+        "shared_bic_definition": {
+            "path": _manifest_path(auto_v0.SHARED_BIC_PATH),
+            "sha256": _sha256_file(auto_v0.SHARED_BIC_PATH),
+            "size_bytes": auto_v0.SHARED_BIC_PATH.stat().st_size,
+        },
+    }
+    if implementation_sources != expected_implementation_sources:
+        raise CandidateDisplayInputError(
+            "Automatic V0 implementation sources do not match the validated code"
+        )
+
+    kinematics_path = Path(kinematics_path).resolve()
+    predictions_path = Path(predictions_path).resolve()
+    forecast_manifest_path = Path(forecast_manifest_path).resolve()
+    thresholds_path = Path(thresholds_path).resolve()
+    v4_manifest_path = Path(v4_manifest_path).resolve()
+    try:
+        forecast_source = base.validate_forecast_lineage(
+            predictions_path,
+            forecast_manifest_path,
+        )
+        v4_source = base.validate_v4_lineage(
+            kinematics_path=kinematics_path,
+            predictions_path=predictions_path,
+            thresholds_path=thresholds_path,
+            manifest_path=v4_manifest_path,
+        )
+    except base.PilotInputError as exc:
+        raise CandidateDisplayInputError(
+            "Automatic V0 source lineage is not valid"
+        ) from exc
+    expected_source_inputs = {
+        "kinematics": {
+            "path": _manifest_path(kinematics_path),
+            "sha256": _sha256_file(kinematics_path),
+        },
+        "predictions": {
+            "path": _manifest_path(predictions_path),
+            "sha256": _sha256_file(predictions_path),
+        },
+        "forecast_manifest": forecast_source,
+        "v4_manifest": v4_source,
+    }
+    if manifest.get("source_inputs") != expected_source_inputs:
+        raise CandidateDisplayInputError(
+            "Automatic V0 source inputs do not match the current lineage"
+        )
+    expected_fit_end_dates = {
+        station: fit_end.date().isoformat()
+        for station, fit_end in auto_v0._load_fit_end_dates(
+            predictions_path
+        ).items()
+    }
+    if manifest.get("fit_end_dates") != expected_fit_end_dates:
+        raise CandidateDisplayInputError(
+            "Automatic V0 fit boundaries do not match current predictions"
+        )
 
     outputs = manifest.get("outputs")
     if not isinstance(outputs, dict):
@@ -1065,6 +1140,11 @@ def write_candidate_display(
         v0_manifest_path,
         v0_candidates_path,
         v0_segments_path,
+        kinematics_path=kinematics_path,
+        predictions_path=predictions_path,
+        forecast_manifest_path=forecast_manifest_path,
+        thresholds_path=thresholds_path,
+        v4_manifest_path=v4_manifest_path,
     )
     forecast_source = base.validate_forecast_lineage(
         predictions_path, forecast_manifest_path

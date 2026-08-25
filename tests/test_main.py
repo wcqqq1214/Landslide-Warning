@@ -353,6 +353,45 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(stage.outputs), 9)
         self.assertFalse(stage.enabled_by_default)
 
+    def test_prequential_monitor_is_explicit_and_uses_only_oof_bundle(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-prequential-monitor"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("convlstm-capacity") + 1,
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "retrospective_prequential_monitoring_research",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_prequential_monitor.py",
+        )
+        self.assertIn(
+            "figures/convlstm/runs/displacement_elevation_exog_v1/"
+            "fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv",
+            stage.inputs,
+        )
+        self.assertNotIn("figures/convlstm/forecast_predictions.csv", stage.inputs)
+        self.assertTrue(
+            all(
+                path.startswith("figures/prequential_anomaly_ootang_v1/")
+                for path in stage.outputs
+            )
+        )
+        forbidden = ("warning_color", "event_recall", "far", "vajont")
+        self.assertFalse(
+            any(
+                token in path.lower()
+                for token in forbidden
+                for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 

@@ -1,6 +1,6 @@
 {
   "profile_id": "ootang-auto-v0-direct-bai-perron-v1",
-  "profile_version": "1.0-candidate",
+  "profile_version": "1.0.1-candidate",
   "status": "exploratory_v0_candidate",
   "case": "ootang",
   "formal_warning_output": false,
@@ -27,6 +27,8 @@
     "regression_parameters_per_segment": 2,
     "continuity_constraint": "none",
     "bic_formula": "n*ln(max(RSS/n,eps*max(1,var(displacement))))+2*K*ln(n)",
+    "segment_statistics_origin": "per_segment_start",
+    "sse_roundoff_multiplier": 32.0,
     "initial_segment_rule": "positive_first_slope_and_immediately_following_slope_greater",
     "single_segment_rule": "positive_full_fit_is_stable_full_fit_baseline",
     "failure_policy": "unavailable_with_reason",

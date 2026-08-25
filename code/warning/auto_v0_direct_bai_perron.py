@@ -7,7 +7,9 @@ levels, or promote a candidate to a formal V0.
 from __future__ import annotations
 
 import argparse
+from dataclasses import dataclass
 import json
+import math
 from pathlib import Path
 import sys
 import tempfile
@@ -31,7 +33,7 @@ from warning.bai_perron_initial_slope import (  # noqa: E402
     MIN_SEGMENT_OBSERVATIONS,
     REGRESSION_PARAMETERS_PER_SEGMENT,
     SEGMENTATION_ALGORITHM,
-    _select_bic_segmented_model,
+    _bic_for_segment_count,
 )
 from warning.draft_evidence import FileReplacement, OOTANG_STATIONS, promote_staged_files  # noqa: E402
 from warning import ootang_ngboost_interval_proxy_pilot as base  # noqa: E402
@@ -45,8 +47,12 @@ DEFAULT_FORECAST_MANIFEST_PATH = ROOT / "figures" / "convlstm" / "forecast_run_m
 DEFAULT_THRESHOLDS_PATH = ROOT / "figures" / "warning_operational_draft_v4" / "ootang_operational_thresholds.csv"
 DEFAULT_V4_MANIFEST_PATH = ROOT / "figures" / "warning_operational_draft_v4" / "ootang_operational_run_manifest.json"
 DEFAULT_OUTPUT_DIR = ROOT / "figures" / "auto_v0_direct_bai_perron_ootang_v1"
+IMPLEMENTATION_PATH = Path(__file__).resolve()
+SHARED_BIC_PATH = CODE_DIR / "warning" / "bai_perron_initial_slope.py"
 ARTIFACT_KIND = "ootang_auto_v0_direct_bai_perron_candidate"
 ARTIFACT_STATUS = "exploratory_v0_candidate_not_formal"
+SEGMENT_STATISTICS_ORIGIN = "per_segment_start"
+SSE_ROUNDOFF_MULTIPLIER = 32.0
 CANDIDATE_COLUMNS = (
     "case",
     "station",
@@ -105,6 +111,17 @@ class AutoV0OutputError(RuntimeError):
     """Raised when an automatic V0 output violates its contract."""
 
 
+@dataclass(frozen=True)
+class _DirectSegmentModel:
+    """One raw-displacement OLS segment in the original coordinate system."""
+
+    start_index: int
+    end_index: int
+    intercept: float
+    slope: float
+    sse: float
+
+
 def _sha256_file(path: Path) -> str:
     digest = __import__("hashlib").sha256()
     with path.open("rb") as handle:
@@ -142,7 +159,7 @@ def load_auto_v0_profile(path: Path = DEFAULT_PROFILE_PATH) -> dict[str, Any]:
         raise AutoV0ProfileError("Profile must be an object")
     fixed = {
         "profile_id": "ootang-auto-v0-direct-bai-perron-v1",
-        "profile_version": "1.0-candidate",
+        "profile_version": "1.0.1-candidate",
         "status": "exploratory_v0_candidate",
         "case": "ootang",
         "formal_warning_output": False,
@@ -175,6 +192,8 @@ def load_auto_v0_profile(path: Path = DEFAULT_PROFILE_PATH) -> dict[str, Any]:
         "regression_parameters_per_segment": REGRESSION_PARAMETERS_PER_SEGMENT,
         "continuity_constraint": "none",
         "bic_formula": BIC_FORMULA.replace("trend_displacement", "displacement"),
+        "segment_statistics_origin": SEGMENT_STATISTICS_ORIGIN,
+        "sse_roundoff_multiplier": SSE_ROUNDOFF_MULTIPLIER,
         "initial_segment_rule": "positive_first_slope_and_immediately_following_slope_greater",
         "single_segment_rule": "positive_full_fit_is_stable_full_fit_baseline",
         "failure_policy": "unavailable_with_reason",
@@ -216,6 +235,229 @@ def _validate_output_dir(output_dir: Path) -> None:
         raise AutoV0OutputError("Automatic V0 output_dir must be a directory")
 
 
+def _fit_direct_segment(
+    *,
+    time_days: np.ndarray,
+    displacement: np.ndarray,
+    start_index: int,
+    end_index: int,
+) -> _DirectSegmentModel:
+    """Fit one segment after translating both axes to its own first point."""
+
+    n_observations = end_index - start_index
+    if n_observations < 2:
+        raise ValueError("a linear segment requires at least two observations")
+    local_time = time_days[start_index:end_index] - time_days[start_index]
+    local_displacement = (
+        displacement[start_index:end_index] - displacement[start_index]
+    )
+    sum_x = float(np.cumsum(local_time, dtype=float)[-1])
+    sum_y = float(np.cumsum(local_displacement, dtype=float)[-1])
+    sum_xx = float(np.cumsum(local_time * local_time, dtype=float)[-1])
+    sum_xy = float(
+        np.cumsum(local_time * local_displacement, dtype=float)[-1]
+    )
+    sum_yy = float(
+        np.cumsum(local_displacement * local_displacement, dtype=float)[-1]
+    )
+    denominator = n_observations * sum_xx - sum_x * sum_x
+    if not math.isfinite(denominator) or denominator <= 0.0:
+        raise ValueError("nonpositive_segment_time_variation")
+    slope = (
+        n_observations * sum_xy - sum_x * sum_y
+    ) / denominator
+    local_intercept = (sum_y - slope * sum_x) / n_observations
+    sse = sum_yy - local_intercept * sum_y - slope * sum_xy
+    if not all(
+        math.isfinite(value) for value in (local_intercept, slope, sse)
+    ):
+        raise ValueError("nonfinite_segment_ols_result")
+    numerical_scale = max(
+        1.0,
+        abs(sum_yy),
+        abs(local_intercept * sum_y),
+        abs(slope * sum_xy),
+    )
+    roundoff_tolerance = (
+        np.finfo(float).eps
+        * numerical_scale
+        * SSE_ROUNDOFF_MULTIPLIER
+    )
+    if sse < 0.0 and abs(sse) <= roundoff_tolerance:
+        sse = 0.0
+    if sse < 0.0:
+        raise ValueError("negative_segment_sse")
+    intercept = (
+        local_intercept
+        + displacement[start_index]
+        - slope * time_days[start_index]
+    )
+    return _DirectSegmentModel(
+        start_index=start_index,
+        end_index=end_index,
+        intercept=float(intercept),
+        slope=float(slope),
+        sse=float(sse),
+    )
+
+
+def _direct_segment_cost_matrix(
+    time_days: np.ndarray,
+    displacement: np.ndarray,
+) -> np.ndarray:
+    """Return OLS costs from per-segment local sufficient statistics."""
+
+    n_rows = len(time_days)
+    costs = np.full((n_rows + 1, n_rows + 1), np.inf, dtype=float)
+    for start_index in range(
+        0, n_rows - MIN_SEGMENT_OBSERVATIONS + 1
+    ):
+        local_time = time_days[start_index:] - time_days[start_index]
+        local_displacement = (
+            displacement[start_index:] - displacement[start_index]
+        )
+        offset = MIN_SEGMENT_OBSERVATIONS - 1
+        sum_x = np.cumsum(local_time, dtype=float)[offset:]
+        sum_y = np.cumsum(local_displacement, dtype=float)[offset:]
+        sum_xx = np.cumsum(local_time * local_time, dtype=float)[offset:]
+        sum_xy = np.cumsum(
+            local_time * local_displacement, dtype=float
+        )[offset:]
+        sum_yy = np.cumsum(
+            local_displacement * local_displacement, dtype=float
+        )[offset:]
+        n_observations = np.arange(
+            MIN_SEGMENT_OBSERVATIONS,
+            len(local_time) + 1,
+            dtype=float,
+        )
+        denominator = n_observations * sum_xx - sum_x * sum_x
+        if not np.isfinite(denominator).all() or (denominator <= 0.0).any():
+            raise ValueError("nonpositive_segment_time_variation")
+        slope = (
+            n_observations * sum_xy - sum_x * sum_y
+        ) / denominator
+        intercept = (sum_y - slope * sum_x) / n_observations
+        sse = sum_yy - intercept * sum_y - slope * sum_xy
+        if not (
+            np.isfinite(intercept).all()
+            and np.isfinite(slope).all()
+            and np.isfinite(sse).all()
+        ):
+            raise ValueError("nonfinite_segment_ols_result")
+        numerical_scale = np.maximum.reduce(
+            (
+                np.ones_like(sse),
+                np.abs(sum_yy),
+                np.abs(intercept * sum_y),
+                np.abs(slope * sum_xy),
+            )
+        )
+        roundoff_tolerance = (
+            np.finfo(float).eps
+            * numerical_scale
+            * SSE_ROUNDOFF_MULTIPLIER
+        )
+        sse = np.where(
+            (sse < 0.0) & (np.abs(sse) <= roundoff_tolerance),
+            0.0,
+            sse,
+        )
+        if (sse < 0.0).any():
+            raise ValueError("negative_segment_sse")
+        end_indices = np.arange(
+            start_index + MIN_SEGMENT_OBSERVATIONS,
+            n_rows + 1,
+            dtype=int,
+        )
+        costs[start_index, end_indices] = sse
+    return costs
+
+
+def _select_direct_bic_segmented_model(
+    *,
+    time_days: np.ndarray,
+    displacement: np.ndarray,
+) -> tuple[list[_DirectSegmentModel], int, float, float]:
+    """Run the declared DP/BIC model with stable per-segment statistics."""
+
+    n_rows = len(time_days)
+    max_segments = min(MAX_SEGMENTS, n_rows // MIN_SEGMENT_OBSERVATIONS)
+    if max_segments < 1:
+        raise ValueError("insufficient_rows_for_bai_perron_break_selection")
+    costs = _direct_segment_cost_matrix(time_days, displacement)
+    dynamic_costs = np.full(
+        (max_segments + 1, n_rows + 1), np.inf, dtype=float
+    )
+    backpointers = np.full(
+        (max_segments + 1, n_rows + 1), -1, dtype=int
+    )
+    dynamic_costs[0, 0] = 0.0
+    for segment_count in range(1, max_segments + 1):
+        first_end = segment_count * MIN_SEGMENT_OBSERVATIONS
+        for end_index in range(first_end, n_rows + 1):
+            previous_ends = np.arange(
+                (segment_count - 1) * MIN_SEGMENT_OBSERVATIONS,
+                end_index - MIN_SEGMENT_OBSERVATIONS + 1,
+                dtype=int,
+            )
+            candidate_costs = (
+                dynamic_costs[segment_count - 1, previous_ends]
+                + costs[previous_ends, end_index]
+            )
+            best_offset = int(np.argmin(candidate_costs))
+            best_cost = float(candidate_costs[best_offset])
+            if math.isfinite(best_cost):
+                dynamic_costs[segment_count, end_index] = best_cost
+                backpointers[segment_count, end_index] = int(
+                    previous_ends[best_offset]
+                )
+
+    trend_variance = float(np.var(displacement))
+    bic_by_segment_count = {}
+    for segment_count in range(1, max_segments + 1):
+        rss = float(dynamic_costs[segment_count, n_rows])
+        if math.isfinite(rss):
+            bic_by_segment_count[segment_count] = _bic_for_segment_count(
+                rss=rss,
+                n_rows=n_rows,
+                segment_count=segment_count,
+                trend_variance=trend_variance,
+            )
+    if not bic_by_segment_count:
+        raise ValueError("no_bai_perron_partition")
+    selected_segment_count = min(
+        bic_by_segment_count,
+        key=lambda count: (bic_by_segment_count[count], count),
+    )
+    boundaries = [n_rows]
+    end_index = n_rows
+    for segment_count in range(selected_segment_count, 0, -1):
+        start_index = int(backpointers[segment_count, end_index])
+        if start_index < 0:
+            raise ValueError("bai_perron_backpointer_unavailable")
+        boundaries.append(start_index)
+        end_index = start_index
+    boundaries.reverse()
+    models = [
+        _fit_direct_segment(
+            time_days=time_days,
+            displacement=displacement,
+            start_index=start_index,
+            end_index=end_index,
+        )
+        for start_index, end_index in zip(
+            boundaries[:-1], boundaries[1:], strict=True
+        )
+    ]
+    return (
+        models,
+        selected_segment_count,
+        bic_by_segment_count[selected_segment_count],
+        bic_by_segment_count[1],
+    )
+
+
 def segment_piecewise_linear_signal(
     signal: pd.DataFrame,
     *,
@@ -253,9 +495,9 @@ def segment_piecewise_linear_signal(
         raise ValueError("signal contains nonfinite values")
     value_origin = float(values[0])
     models, selected_count, selected_bic, one_segment_bic = (
-        _select_bic_segmented_model(
+        _select_direct_bic_segmented_model(
             time_days=time_days,
-            trend_displacement=values - value_origin,
+            displacement=values - value_origin,
         )
     )
     segments = []
@@ -632,6 +874,14 @@ def _output_record(path: Path, target: Path, rows: int | None = None) -> dict[st
     return record
 
 
+def _implementation_record(path: Path) -> dict[str, Any]:
+    return {
+        "path": _manifest_path(path),
+        "sha256": _sha256_file(path),
+        "size_bytes": path.stat().st_size,
+    }
+
+
 def write_auto_v0_candidates(
     *,
     profile_path: Path = DEFAULT_PROFILE_PATH,
@@ -718,6 +968,10 @@ def write_auto_v0_candidates(
             },
             "git_commit": base._git_commit(),
             "git_worktree_dirty": base._git_worktree_dirty(),
+            "implementation_sources": {
+                "runner": _implementation_record(IMPLEMENTATION_PATH),
+                "shared_bic_definition": _implementation_record(SHARED_BIC_PATH),
+            },
             "source_inputs": {
                 "kinematics": {"path": _manifest_path(kinematics_path), "sha256": _sha256_file(kinematics_path)},
                 "predictions": {"path": _manifest_path(predictions_path), "sha256": _sha256_file(predictions_path)},

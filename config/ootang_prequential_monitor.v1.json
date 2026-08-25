@@ -1,0 +1,142 @@
+{
+  "profile_id": "ootang-prequential-monitor-v1",
+  "profile_version": "1.0.0",
+  "artifact_kind": "ootang_prequential_anomaly_monitor",
+  "artifact_status": "retrospective_prequential_self_supervised_not_confirmatory",
+  "case": "ootang",
+  "default_pipeline_member": false,
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "source_contract": {
+    "predictions": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv",
+    "manifest": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json",
+    "manifest_schema_version": "ootang_convlstm_stage_bundle_manifest_v1",
+    "manifest_stage": "convlstm-seeds",
+    "manifest_status": "completed",
+    "evidence_scope": "internal_exploratory_materialized_daily_series",
+    "required_columns": [
+      "seed",
+      "fold",
+      "model_input_schema",
+      "model_input_channels",
+      "station_geometry_sha256",
+      "date",
+      "station",
+      "actual",
+      "persistence",
+      "raw_p10",
+      "p50",
+      "raw_p90",
+      "calibrated_p10",
+      "calibrated_p90",
+      "qhat_mm"
+    ],
+    "model_input_schema": "displacement_elevation_exog_v1",
+    "model_input_channels": 7,
+    "seeds": [0, 1, 2, 3, 4],
+    "folds": [1, 2, 3],
+    "dates_per_fold": 287,
+    "stations": ["ATU1", "ATU2", "ATU3", "ATU4", "ATU5", "MJ1", "MJ3", "MJ9"],
+    "same_seed_key_fields": ["fold", "date", "station"],
+    "same_seed_value_fields": [
+      "actual",
+      "persistence",
+      "model_input_schema",
+      "model_input_channels",
+      "station_geometry_sha256"
+    ],
+    "quantile_orders": [
+      ["raw_p10", "p50", "raw_p90"],
+      ["calibrated_p10", "p50", "calibrated_p90"]
+    ],
+    "persistence_reference": {
+      "retrieval": "git_blob_at_source_manifest_commit",
+      "manifest_commit_field": "git.commit",
+      "manifest_input_path": "data/features.csv",
+      "date_column": "Date",
+      "station_displacement_columns": {
+        "ATU1": "ATU1_disp",
+        "ATU2": "ATU2_disp",
+        "ATU3": "ATU3_disp",
+        "ATU4": "ATU4_disp",
+        "ATU5": "ATU5_disp",
+        "MJ1": "MJ1_disp",
+        "MJ3": "MJ3_disp",
+        "MJ9": "MJ9_disp"
+      },
+      "actual_rule": "target_natural_day_station_displacement",
+      "persistence_rule": "previous_natural_day_station_displacement",
+      "first_target_policy": "require_previous_natural_day_reference",
+      "comparison": "exact_binary64_after_round_trip_csv_parse"
+    }
+  },
+  "algorithm": {
+    "expert_columns": ["persistence", "seed0_p50", "seed1_p50", "seed2_p50", "seed3_p50", "seed4_p50"],
+    "expert_loss": "absolute_error_divided_by_same_station_date_max_expert_absolute_error",
+    "expert_weight_rule": "exp_negative_eta_t_times_cumulative_past_normalized_loss",
+    "eta_rule": "sqrt_8_log_k_div_t",
+    "minimum_history": 60,
+    "maximum_history": 180,
+    "target_coverage": 0.8,
+    "conformal_residual": "absolute_actual_minus_issue_point",
+    "conformal_interval": "symmetric_two_sided",
+    "conformal_quantile": "finite_sample_higher",
+    "aci": {
+      "initial_alpha": 0.2,
+      "gamma": 0.005555555555555556,
+      "minimum_alpha": 0.01,
+      "maximum_alpha": 0.5,
+      "update_phase": "after_outcome_reveal"
+    },
+    "anomaly": {
+      "residual": "max_actual_minus_issue_point_zero",
+      "p_value": "one_plus_past_greater_equal_divided_by_one_plus_past_count",
+      "score": "negative_log10_p_value"
+    },
+    "drift": {
+      "detector": "adwin_inspired_bounded_hoeffding_adaptive_window",
+      "input": "absolute_residual_empirical_surprise_rank",
+      "delta": 0.002,
+      "minimum_subwindow": 30,
+      "maximum_history": 180,
+      "reset_timing": "after_reveal_so_next_date_rewarms"
+    },
+    "fold_change_policy": "reset_all_station_online_state_before_first_issue_of_new_fold",
+    "same_date_policy": "issue_all_eight_stations_then_reveal_all_eight_outcomes",
+    "rewarm_policy": {
+      "point_forecast": "online_weighted_ensemble_from_issue_time_past_only",
+      "fallback_shadow": "persistence",
+      "forecast_action": "abstain",
+      "interval": "unavailable"
+    },
+    "spatial_blocks": {
+      "O1": ["MJ9", "MJ1", "MJ3"],
+      "O2": ["ATU4", "ATU5", "ATU3"],
+      "O3": ["ATU2", "ATU1"]
+    },
+    "site_score": "minimum_of_the_three_block_maximum_anomaly_scores"
+  },
+  "outputs": {
+    "directory": "figures/prequential_anomaly_ootang_v1",
+    "station_timeline": "station_timeline.csv",
+    "site_timeline": "site_timeline.csv",
+    "metrics": "prequential_metrics.csv",
+    "manifest": "manifest.json"
+  },
+  "replay_contract": {
+    "mode": "retrospective_replay_not_realtime_sealing",
+    "issue_batch_hash": {
+      "kind": "canonical_issue_only_sha256_chain",
+      "algorithm": "sha256",
+      "columns": "runner_issue_columns_v1_in_declared_order",
+      "row_order": "source_contract_station_order",
+      "float_serialization": "binary64_round_trip_percent_dot_17g",
+      "null_serialization": "json_null",
+      "json_serialization": "utf8_sort_keys_compact_no_nan",
+      "payload": "previous_hash_newline_then_canonical_issue_json"
+    },
+    "outcome_use": "actual_is_used_only_after_all_same_date_issues_for_reveal_and_future_updates"
+  }
+}

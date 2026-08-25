@@ -1,6 +1,70 @@
 # 项目工作进度
 
-> 更新日期：2026-08-18。本文件记录工程与研究实现进度；研究协议以 `advisor_review_action_plan.md` 为准，结果数值以版本化 CSV 和运行清单为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+> 更新日期：2026-08-26。本文件记录工程与研究实现进度；正式 v5 门禁以
+> `v5_validation_protocol.md` 为准，机器连续预测支路以
+> `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
+> 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-26 全自动 prequential 机器闭环首版
+
+- 新增显式阶段 `ootang-prequential-monitor`，消费固定 5-seed、3-fold 严格时序
+  OOF P50 与 persistence，对 861 个 fold-date、8 个测点自动执行同日先 issue、
+  后 reveal 的在线专家组合、双侧 conformal/ACI、单侧残差 anomaly、漂移重置、
+  rewarm abstain 与 O1/O2/O3 连续空间聚合。算法不需要逐日人工挑段、选阈值、
+  冻结样本或批准更新。
+- 输出 `station_timeline/site_timeline/prequential_metrics/manifest` 分别为
+  6,888/861/27/1 个记录文件；正常 point forecast 4,041 行、abstain 2,847 行、
+  自动 drift 26 次。site 状态为完整 80 日、三个 block 均有可用子集 445 日、
+  空间不完整 abstain 336 日。
+- 三折 all-population MAE skill 相对 persistence 为
+  `0.119925/0.132698/0.119456`，但 RMSE skill 为
+  `-0.200329/-0.086410/0.038628`，没有稳定 RMSE 优势。active population 的
+  RMSE skill 为 `0.106951/-0.035278/0.036118`，fold 2 仍为负。
+- 目标 0.8 的区间覆盖率为 `0.791192/0.695061/0.630746`，后两折明显不足；
+  abstain rate 为 `0.426394/0.391551/0.422038`。因此 v1 只作为内部回顾性科研
+  监测器，不晋升生产；后续校准 challenger 必须新版本预声明，不能从已查看输出
+  反复调参回写 v1。
+- E1 使用 run-wide issue-only SHA-256 chain；runner 的 bundle validator 会从全零起点逐批
+  重算链、校验 previous 链接、station/site 一致性和同 fold 跨日状态衔接。
+  同日 actual 修改不改变当日 issue/hash，未来 actual 修改不改变因果前缀。
+  runner 还从源 manifest 锁定的 commit `1e06629119e08b33ded2540a435e726c2d2da97a`
+  取回 `data/features.csv` Git blob，核对 6,888 条 actual 和 6,888 条上一自然日
+  persistence；staged CSV 以 `%.17g`/round-trip 重读后全量重放站点状态、
+  site 聚合与 metrics，通过后才原子提升。
+  这仍不是实时 append-only event ledger 或历史盲测；E2 live runner 待实现。
+- 最终产物 SHA-256：station
+  `805951dcf77aa19e7d5021fa53a51bfa2067663b7fda0e5dd0fcc483ad2a7bfe`、site
+  `d35822d7dc198f859308b1d46071d8df128e9bff4203458ccadfd1aa86e3a6fd`、metrics
+  `9d790ecb4550ee849001cf6e21873b3047598212508c1c86c6fc6c188e4eab96`、manifest
+  `2e680d06a6e04e02562bb31ec53b885acecafc068015417525dee115de97f253`；连续复跑
+  完全一致。
+- prequential 模块 19 项、合并定向 91 项、全量 373 项测试通过；`ruff`、
+  `compileall`、`git diff --check` 与默认/显式 dry-run 通过。97 个受保护路径聚合
+  哈希仍为 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+- 正式 v5 的 G1--G4 blocked 状态未被修改；机器支路也未生成颜色、灾害概率、
+  event recall 或 FAR。下一步为 E2 自动 live ingest/issue/reveal、完整 append-only
+  ledger、恢复/修订与时间锚，而不是回到人工逐日冻结。
+
+## 2026-08-20 G1--G4 证据盘点与机器预检
+
+- 已完成标签、时间暴露、V0 unavailable 覆盖和指标门槛的只读盘点：当前 `G0=PASS`，`G1--G4=BLOCKED`。详细证据、待决策项与建议契约记录在 `docs/v5_g1_g4_preflight.md`。
+- G1 无法关闭：仓库中没有独立五级现场真值、事件文件或标签 manifest。区间代理标签、v4/v5 规则等级、历史 onset/SHAP 规则标签以及已查看模型输出的专家复算都不得冒充独立真值；`unknown` 必须保留，不得转为阴性/绿色。
+- G2 无法关闭：当前藕塘物化数据仅覆盖 2016-07-01 至 2020-06-30；model fit 为 2016-08-06 至 2019-02-02，自动 V0 selection window 则按实际 runner 合同覆盖 2016-07-01 至 2019-02-02（每站 947 行），二者不得混写。calibration 为 2019-02-03 至 2019-09-17，historical test 为 2019-09-18 至 2020-06-30；滚动验证还已将 2018-02-21 至 2020-06-30 依次暴露为外层 test，因此现有范围无法重切出 unseen 确认块。
+- G3 当前覆盖仅 MJ1/MJ3：2/8 站、1,028/4,112 点日，均为 25%；两站均属 O1，当前正式 site 发布为 0/514 日。已记录 fail-closed 底线：unavailable 一律 abstain/not-applicable，禁止绿色化、插补、跨站借值、v4/常数回退、缺失后权重重归一和事后放宽分段门；部署范围、覆盖分母、site 行为和数值门槛仍待批准。
+- G4 只冻结了候选指标和区间方案：共同主指标为事件召回与每 100 个阴性发布单位日的 FAR，对比 B0--B5；97.5% 单侧 exact Clopper--Pearson 事件召回下界和配对移动日期块 bootstrap 仅为未批准建议。`R_min`、`FAR_max`、各层 `coverage_min`、fusion `delta_min`、FAR 非劣效界与最低支持量均保持 null。
+- 新增 `config/ootang_v5_gate_register.v1.json` 作为 G0--G4 机器状态权威源，`code/warning/ootang_v5_gate_preflight.py` 以严格 schema、路径和 SHA-256 校验 fail closed。v1 是不可就地升格的 blocked snapshot；解除 blocker 需新 schema/version、交叉哈希 manifest、对应 validator 和审查后的默认源切换。`--report` 仅报告，`--require-g0-g4`/默认模式在当前状态下必须拒绝；CLI 和生产 guard 均不允许用 path/root 覆盖默认源。G0--G4 全 PASS 也只是 G5a 必要条件；正式 G5a 还需独立版本化 run contract 及专用 guard，当前均未实现。
+- 新预检模块 23 项、合并定向回归 71 项和全量 353 项测试全部通过；`ruff`、`compileall`、`git diff --check`、默认/显式 dry-run 均通过。97 个保护路径及共享 v4 Bai--Perron 源无工作树漂移。
+- 本轮没有读取标签 payload，没有启动 NGBoost 训练/推理或融合，没有生成预警颜色，也没有读取或修改 Vajont 工作簿与 `review.md`。
+
+## 2026-08-20 自动 V0 数值审计
+
+- ATU3/MJ9 的 `negative_segment_sse` 已确认为全历史 float64 前缀原始矩相减引起的灾难性消减：失败窗口的闭式 SSE 为负，但直接残差平方和与 60 位 Decimal 参考均非负；日期严格递增且设计矩阵满秩。
+- 自动 V0 wrapper 统一改为“每个候选段从自身起点重定时间/位移原点，再计算局部充分统计量”，随后执行相同的最小段长、DP、BIC 和首段选择规则。共享 v4 Bai--Perron 文件保持逐字节不变，未采用放大容差、全局均值中心化或只对失败站点重试的回退方案。
+- 八站重新生成后，原六站的分段数、边界和状态不变；ATU3 改为可审计的 `first_break_is_not_accelerating`，MJ9 改为 `nonpositive_initial_segment_slope`。候选仍仅 MJ1/MJ3，V0 仍为 `0.25034204499655494/0.24813126112408163 mm/day`。
+- 自动 V0 分段表由 36 行增至 48 行，完整保存八站各 6 个 BIC 选定段；v5 展示仍为 4,112 行，其中 1,028 行可用、3,084 行 not applicable。97 个 v4/ConvLSTM/NGBoost/模型保护文件在显式重生成前后哈希完全一致。
+- v5 展示对上游自动 V0 改为完整 fail-closed 验证：profile/method、V0 公式、runner/shared-BIC、kinematics/predictions/forecast/v4 血缘和八站 fit 截止日任一缺失或漂移均拒绝；对应篡改负测已纳入 48 项定向与 330 项全量门禁。
+- 根因、最小复现、假设检验和验收证据持续记录在 `docs/v5_v0_numerical_audit.md`；正式 v5 的标签、切分、指标、覆盖率和融合决策门记录在 `docs/v5_validation_protocol.md`。数值门关闭不解除其余正式验证门禁。
+- 验证协议将运行前授权与运行后候选验收严格分开：G5b/G6b 不得作为生成自身证据的前提。G0--G4 机器预检也不会自动授权 G5a，避免用一个 register 布尔值跳过未实现的运行契约。
 
 ## 2026-08-18 v5 候选展示
 
@@ -11,7 +75,7 @@
 ## 2026-08-18 自动 V0 候选诊断
 
 - 新增显式阶段 `ootang-auto-v0-direct-bai-perron`，只使用藕塘 fit 累计位移和真实时间轴做自动 BIC 分段线性选择；不人工选段、不回退 KMeans、不使用严格 MVIF 失败结果、不读取 Vajont，不改写 v4/ConvLSTM/NGBoost。
-- 8 个测点均输出候选记录；MJ1/MJ3 状态为 `initial_segment_selected`，候选 V0 约 `0.2503/0.2481 mm/day`；ATU1/ATU2/ATU4/ATU5 因首个断点不满足“后一段更快”而 unavailable，ATU3/MJ9 因数值分段失败而 unavailable。unavailable 是自动门禁结果，不用人工补选。
+- 8 个测点均输出候选记录；MJ1/MJ3 状态为 `initial_segment_selected`，候选 V0 约 `0.2503/0.2481 mm/day`。本节初跑时 ATU3/MJ9 因数值分段失败而 unavailable；2026-08-20 数值审计修复后，ATU1--ATU5 均因首个断点不满足“后一段更快”而 unavailable，MJ9 因首段斜率非正而 unavailable。没有人工补选。
 - 新增 `figures/auto_v0_direct_bai_perron_ootang_v1/`：候选表、分段审计表、8 点诊断图和 manifest。该 V0 仅为 v5 候选，不进入 v4 阈值或 NGBoost 主输入；报告已在现有 `paper/process_report.tex` 中精简更新。
 
 ## 2026-08-18 NGBoost 四指标分组消融
@@ -92,6 +156,8 @@
 | NGBoost 区间代理 pilot | 已完成显式初跑；不进入默认链 | 11,376 条一日配对、五级概率与基线比较；calibration/test 未超过状态持续基线 |
 | NGBoost h=1/3/7 提前量敏感性 | 已完成显式、非排名初跑 | 同一模型与输入并列报告；三个 horizon 全时刻 accuracy、macro-F1、ordinal MAE 均未超过持续基线，不选择最佳提前量 |
 | NGBoost 四指标分组消融 | 已完成 21 次固定拟合；不保存模型 | 区间主导代理任务；`ΔV` 对状态转移的增量最一致；不排名或选择特征集 |
+| 自动 V0 数值审计 | 已关闭 | ATU3/MJ9 不再因负 SSE 提前退出；八站均完成数值分段，候选仍仅 MJ1/MJ3；共享 v4 与 97 个保护文件不变 |
+| v5 G0--G4 机器预检 | v1 冻结快照；G0 PASS、G1--G4 BLOCKED | 无独立标签与 unseen 块；V0 覆盖 25%；数值门槛仍 null；不授权 G5a |
 | 自动 V0 候选诊断 | 已完成显式初跑；2/8 点可用 | MJ1/MJ3 形成 fit-only 候选，其余 6 点 unavailable；不人工补段、不写入 v4 |
 | v5 候选展示 | 已完成显式初跑；不形成融合结果 | 4,112 行保留全部 8 点；MJ1/MJ3 可用、其余 6 点 not applicable；无 NGBoost 推断、颜色或模型输出 |
 | NGBoost 未来 onset 正式调参 | 暂停 | 当前仅 3 个互不相连的可预测标签事件，不满足稳定调参与外层评价条件；区间代理 pilot 不解除该门禁 |

@@ -80,6 +80,69 @@ class CandidateDisplayProfileTests(unittest.TestCase):
                     display.load_candidate_display_profile(profile_path)
 
 
+class CandidateDisplayV0ManifestTests(unittest.TestCase):
+    def test_v0_manifest_rejects_method_or_implementation_drift(self):
+        manifest = json.loads(display.DEFAULT_V0_MANIFEST_PATH.read_text())
+        shared_source = manifest["implementation_sources"][
+            "shared_bic_definition"
+        ]
+        mutations = (
+            ("algorithm", "tampered_algorithm"),
+            ("bic_formula", "tampered_bic"),
+            ("minimum_segment_observations", 31),
+        )
+
+        changed_manifests = []
+        for field, value in mutations:
+            changed = json.loads(json.dumps(manifest))
+            changed["method"][field] = value
+            changed_manifests.append((f"method.{field}", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["implementation_sources"]["runner"]["sha256"] = "0" * 64
+        changed_manifests.append(("runner.sha256", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["implementation_sources"]["runner"] = shared_source
+        changed_manifests.append(("runner.path", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["implementation_sources"]["shared_bic_definition"][
+            "sha256"
+        ] = "0" * 64
+        changed_manifests.append(("shared_bic_definition.sha256", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        del changed["source_inputs"]
+        changed_manifests.append(("source_inputs.missing", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["source_inputs"]["kinematics"] = {
+            "path": manifest["source_inputs"]["predictions"]["path"],
+            "sha256": manifest["source_inputs"]["predictions"]["sha256"],
+        }
+        changed_manifests.append(("source_inputs.kinematics", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["fit_end_dates"]["ATU1"] = "2019-02-01"
+        changed_manifests.append(("fit_end_dates.ATU1", changed))
+
+        changed = json.loads(json.dumps(manifest))
+        changed["v0_contract"]["V0_formula"] = "tampered_formula"
+        changed_manifests.append(("v0_contract.V0_formula", changed))
+
+        for name, changed in changed_manifests:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                manifest_path = Path(directory) / "manifest.json"
+                manifest_path.write_text(json.dumps(changed), encoding="utf-8")
+                with self.assertRaises(display.CandidateDisplayInputError):
+                    display._validate_v0_manifest(
+                        manifest_path,
+                        display.DEFAULT_V0_CANDIDATES_PATH,
+                        display.DEFAULT_V0_SEGMENTS_PATH,
+                    )
+
+
 class CandidateDisplayDataTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -426,6 +489,8 @@ class CandidateDisplayReportTests(unittest.TestCase):
         self.assertIn("\\label{tab:v5-candidate-display}", report)
         self.assertIn("不运行新的 NGBoost 推断", report)
         self.assertIn("不输出 v5 融合或正式预警", report)
+        self.assertIn("MJ9 因首段非正而停止", report)
+        self.assertNotIn("数值拟合失败", report)
         for unpublished_name in (
             "advisor_review_action_plan",
             "review.md",
