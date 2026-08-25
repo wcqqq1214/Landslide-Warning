@@ -11,7 +11,8 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
-from dataclasses import asdict, dataclass, fields
+from collections.abc import Mapping
+from dataclasses import asdict, dataclass, fields, replace
 from datetime import date, datetime, timedelta, timezone
 import fcntl
 import hashlib
@@ -20,8 +21,11 @@ import math
 import os
 from pathlib import Path
 import platform
+import sqlite3
+import stat
 import sys
 import tempfile
+from types import MappingProxyType
 from typing import Any, Callable, Iterable
 from urllib import error as urlerror
 from urllib import request as urlrequest
@@ -179,6 +183,32 @@ class LiveProjection:
     blind_settled_count: int
     engineering_blind_candidate_count: int
     backfill_count: int
+
+
+@dataclass(frozen=True)
+class VerifiedLedgerProjection:
+    """Deeply read-only scientific replay of one existing verified ledger."""
+
+    epoch_id: str
+    states: Mapping[str, StationStateV1]
+    last_finalized_date: date
+    latest_displacement_mm: Mapping[str, float]
+    outstanding_target_date: date | None
+    outstanding_issue_id: str | None
+    issue_events: Mapping[str, LedgerEvent]
+    seal_event: LedgerEvent | None
+    anchored_seal_hashes: Mapping[str, Mapping[str, Any]]
+    settled_events: Mapping[str, LedgerEvent]
+    backfill_events: Mapping[str, LedgerEvent]
+    revision_ids: Mapping[str, Mapping[str, str]]
+    latest_actuals_by_date: Mapping[str, Mapping[str, float]]
+    blind_settled_count: int
+    engineering_blind_candidate_count: int
+    backfill_count: int
+    ledger_events: tuple[LedgerEvent, ...]
+    ledger_event_count: int
+    ledger_terminal_sequence_id: int
+    ledger_terminal_sha256: str
 
 
 AnchorClient = Callable[[str, dict[str, Any]], dict[str, Any]]
@@ -1940,6 +1970,143 @@ def _reconstruct_projection(
     )
 
 
+class _ReadOnlyAppendOnlyLedger(AppendOnlyLedger):
+    """Use the ledger's full verifier without its create/initialize path."""
+
+    def __init__(self, path: Path, *, timeout_seconds: float = 10.0) -> None:
+        self.path = path
+        self.timeout_seconds = timeout_seconds
+
+    def _connect(self) -> sqlite3.Connection:
+        connection: sqlite3.Connection | None = None
+        try:
+            connection = sqlite3.connect(
+                f"{self.path.resolve().as_uri()}?mode=ro",
+                timeout=self.timeout_seconds,
+                isolation_level=None,
+                uri=True,
+            )
+            connection.row_factory = sqlite3.Row
+            connection.execute(
+                f"PRAGMA busy_timeout={int(self.timeout_seconds * 1000)}"
+            )
+            connection.execute("PRAGMA query_only=ON")
+            if int(connection.execute("PRAGMA query_only").fetchone()[0]) != 1:
+                raise LedgerError("ledger connection did not remain query-only")
+            return connection
+        except LedgerError:
+            if connection is not None:
+                connection.close()
+            raise
+        except sqlite3.Error as exc:
+            if connection is not None:
+                connection.close()
+            raise LedgerError("cannot open existing ledger read-only") from exc
+
+
+def _freeze_ledger_value(value: Any) -> Any:
+    if isinstance(value, dict):
+        return MappingProxyType(
+            {key: _freeze_ledger_value(child) for key, child in value.items()}
+        )
+    if isinstance(value, list):
+        return tuple(_freeze_ledger_value(child) for child in value)
+    return value
+
+
+def _freeze_ledger_event(event: LedgerEvent) -> LedgerEvent:
+    return replace(event, payload=_freeze_ledger_value(event.payload))
+
+
+def load_verified_ledger_projection(
+    profile: dict[str, Any],
+    paths: RuntimePaths,
+    prerequisites: Prerequisites,
+) -> VerifiedLedgerProjection:
+    """Read and scientifically replay an existing ledger without modifying it.
+
+    The caller must first load the reviewed profile, runtime paths, and activation
+    prerequisites.  Missing and empty ledgers are rejected rather than initialized.
+    """
+
+    try:
+        ledger_stat = paths.ledger.stat()
+    except FileNotFoundError as exc:
+        raise LivePrerequisiteError("Live ledger does not exist") from exc
+    except OSError as exc:
+        raise LiveIntegrityError("Live ledger metadata cannot be read") from exc
+    if not stat.S_ISREG(ledger_stat.st_mode):
+        raise LiveIntegrityError("Live ledger path is not a regular file")
+    if ledger_stat.st_size == 0:
+        raise LiveIntegrityError("Live ledger file is empty")
+
+    ledger = _ReadOnlyAppendOnlyLedger(paths.ledger)
+    try:
+        events = ledger.read_events()
+    except LedgerError as exc:
+        raise LiveIntegrityError(
+            f"Append-only ledger failed read-only verification: {exc}"
+        ) from exc
+    if not events:
+        raise LiveIntegrityError("Live ledger has no epoch genesis event")
+    projection = _reconstruct_projection(events, profile, prerequisites)
+
+    immutable_events = tuple(_freeze_ledger_event(event) for event in events)
+    immutable_by_hash = {
+        event.entry_sha256: event for event in immutable_events
+    }
+
+    def immutable_event(event: LedgerEvent | None) -> LedgerEvent | None:
+        return None if event is None else immutable_by_hash[event.entry_sha256]
+
+    head = immutable_events[-1]
+    return VerifiedLedgerProjection(
+        epoch_id=projection.epoch_id,
+        states=MappingProxyType(dict(projection.states)),
+        last_finalized_date=projection.last_finalized_date,
+        latest_displacement_mm=MappingProxyType(
+            dict(projection.latest_displacement_mm)
+        ),
+        outstanding_target_date=projection.outstanding_target_date,
+        outstanding_issue_id=projection.outstanding_issue_id,
+        issue_events=MappingProxyType(
+            {
+                key: immutable_by_hash[event.entry_sha256]
+                for key, event in projection.issue_events.items()
+            }
+        ),
+        seal_event=immutable_event(projection.seal_event),
+        anchored_seal_hashes=_freeze_ledger_value(
+            projection.anchored_seal_hashes
+        ),
+        settled_events=MappingProxyType(
+            {
+                key: immutable_by_hash[event.entry_sha256]
+                for key, event in projection.settled_events.items()
+            }
+        ),
+        backfill_events=MappingProxyType(
+            {
+                key: immutable_by_hash[event.entry_sha256]
+                for key, event in projection.backfill_events.items()
+            }
+        ),
+        revision_ids=_freeze_ledger_value(projection.revision_ids),
+        latest_actuals_by_date=_freeze_ledger_value(
+            projection.latest_actuals_by_date
+        ),
+        blind_settled_count=projection.blind_settled_count,
+        engineering_blind_candidate_count=(
+            projection.engineering_blind_candidate_count
+        ),
+        backfill_count=projection.backfill_count,
+        ledger_events=immutable_events,
+        ledger_event_count=len(immutable_events),
+        ledger_terminal_sequence_id=head.sequence_id,
+        ledger_terminal_sha256=head.entry_sha256,
+    )
+
+
 def _issue_batch_id(epoch_id: str, target: date) -> str:
     return _canonical_sha256(
         {"live_epoch_id": epoch_id, "target_date": target.isoformat(), "horizon": "P1D"}
@@ -3189,12 +3356,14 @@ __all__ = [
     "Prerequisites",
     "RuntimePaths",
     "SourceSnapshot",
+    "VerifiedLedgerProjection",
     "load_config",
     "load_issue_batch",
     "load_model_bundle",
     "load_outcome_batch",
     "load_prerequisites",
     "load_source_snapshot",
+    "load_verified_ledger_projection",
     "poll_live_runner",
     "runtime_paths",
 ]

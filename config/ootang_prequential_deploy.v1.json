@@ -1,0 +1,159 @@
+{
+  "schema_version": "ootang_prequential_deploy_profile_v1",
+  "profile_id": "ootang-prequential-deploy-v1",
+  "profile_version": "1.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "e2b_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "live_profile": {
+    "path": "config/ootang_prequential_live.v1.json",
+    "expected_sha256": "bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00"
+  },
+  "runtime": {
+    "root": "runtime/ootang_prequential_live_v1",
+    "incoming_feed": "incoming/daily_finalized_feed.json",
+    "source_status": "source_ingest_status.json",
+    "bundle_status": "model_bundle_status.json",
+    "issue_status": "issue_producer_status.json",
+    "current_source_pointer": "source_current.json",
+    "activation_source_manifest": "source_snapshot/manifest.json",
+    "model_manifest": "model_bundle/manifest.json",
+    "issue_inbox": "issue_inbox",
+    "issue_receipts": "issue_receipts",
+    "objects": "objects/sha256",
+    "deploy_lock": "deploy_cycle.lock"
+  },
+  "historical_base": {
+    "path": "data/monitoring_data.csv",
+    "sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "last_date": "2020-06-30",
+    "rows": 1461,
+    "role": "legacy_model_training_context_not_blind_live_evidence"
+  },
+  "station_geometry": {
+    "path": "data/station_coords.csv",
+    "sha256": "17dac7c5985891f27905e7056b45626a0d6f4dbf34f336534c17bb76ecd32f09"
+  },
+  "source_feed": {
+    "schema_version": "ootang_daily_finalized_feed_v1",
+    "record_schema_version": "ootang_daily_finalized_record_v1",
+    "date_timezone": "Asia/Shanghai",
+    "recorded_time_timezone": "UTC",
+    "expected_frequency": "P1D",
+    "require_contiguous_extension": true,
+    "require_all_records_finalized": true,
+    "require_revision_id": true,
+    "require_finalized_before_next_natural_day": true,
+    "station_order_live": [
+      "ATU1",
+      "ATU2",
+      "ATU3",
+      "ATU4",
+      "ATU5",
+      "MJ1",
+      "MJ3",
+      "MJ9"
+    ],
+    "station_order_model": [
+      "MJ9",
+      "MJ1",
+      "MJ3",
+      "ATU1",
+      "ATU2",
+      "ATU3",
+      "ATU4",
+      "ATU5"
+    ],
+    "raw_fields": {
+      "rainfall": "rainfall_mm",
+      "reservoir_water_level": "reservoir_water_level_m",
+      "displacement": "displacement_mm"
+    },
+    "units": {
+      "rainfall": "mm_per_natural_day",
+      "reservoir_water_level": "m",
+      "displacement": "mm"
+    },
+    "derived_features": {
+      "rwl_rate": "elapsed_day_first_difference",
+      "rain_windows_days": [7, 15, 30],
+      "derive_inside_trusted_code": true,
+      "accept_external_derived_columns": false
+    }
+  },
+  "model": {
+    "bundle_schema_version": "ootang_live_five_seed_model_bundle_v1",
+    "training_manifest_schema_version": "ootang_five_seed_training_manifest_v1",
+    "checkpoint_schema_version": "ootang_convlstm_safe_checkpoint_v1",
+    "checkpoint_format": "pytorch_weights_only_tensor_bundle_v1",
+    "model_version_prefix": "ootang-convlstm-five-seed-v1",
+    "seeds": [0, 1, 2, 3, 4],
+    "best_seed_selected": false,
+    "fit_policy": "all_as_of_windows_fixed_epochs_no_holdout_selection",
+    "online_calibration_policy": "cold_start_prequential_core_not_checkpoint_calibration",
+    "device": "cpu",
+    "deterministic_algorithms": true,
+    "torch_threads": 1,
+    "lookback_days": 7,
+    "horizon_days": 1,
+    "input_schema": "displacement_elevation_exog_v1",
+    "input_channels": 7,
+    "displacement_columns": [
+      "MJ9_disp",
+      "MJ1_disp",
+      "MJ3_disp",
+      "ATU1_disp",
+      "ATU2_disp",
+      "ATU3_disp",
+      "ATU4_disp",
+      "ATU5_disp"
+    ],
+    "exogenous_columns": [
+      "RWL",
+      "RWL_rate",
+      "Rain_cum7",
+      "Rain_cum15",
+      "Rain_cum30"
+    ],
+    "static_spatial_columns": ["elev_m"],
+    "quantiles": [0.1, 0.5, 0.9],
+    "hidden_channels": 16,
+    "kernel_size": 3,
+    "epochs": 120,
+    "learning_rate": 0.001,
+    "minimum_training_windows": 365,
+    "delta_scale_floor_mm": 0.05
+  },
+  "issue": {
+    "schema_version": "ootang_live_issue_batch_v1",
+    "input_manifest_schema_version": "ootang_issue_input_manifest_v1",
+    "target_rule": "ledger_next_target_equals_current_source_watermark_plus_one",
+    "require_no_outstanding_issue": true,
+    "require_generated_before_target_start": true,
+    "expert_order": [
+      "persistence",
+      "seed0_p50",
+      "seed1_p50",
+      "seed2_p50",
+      "seed3_p50",
+      "seed4_p50"
+    ],
+    "same_target_same_semantics": "idempotent_preserve_first_generation_time",
+    "same_target_changed_semantics": "blocked_integrity",
+    "atomic_write": true
+  },
+  "engineering_capabilities": {
+    "source_manifest_semantic_validator_implemented": true,
+    "safe_checkpoint_loader_implemented": true,
+    "producer_checkpoint_inference_replay_implemented": true,
+    "runner_independent_checkpoint_inference_replayed": false,
+    "trusted_anchor_receipt_verified": false,
+    "automatic_epoch_rotation_implemented": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false
+  }
+}

@@ -3,11 +3,84 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline:** `b4c04aa feat: add autonomous ootang monitoring safeguards`
-**State:** the numerical audit, G1--G4 fail-closed preflight, and machine-only E1
-prequential monitor are committed. E2-A engineering infrastructure is implemented,
-fully verified, and forms the next commit boundary; nothing from this continuation
-has been pushed.
+**Committed baseline:** `a4e7de2 feat: add autonomous prequential live ledger`
+**State:** the numerical audit, G1--G4 fail-closed preflight, machine-only E1 monitor,
+and E2-A ledger are committed. E2-B1 source/bundle/issue engineering is implemented
+and verified in the current continuation; nothing has been pushed.
+
+## 2026-08-26 E2-B1 machine deployment continuation
+
+Three explicit-only stages now precede E2-A:
+
+```text
+ootang-live-source
+  -> ootang-production-bundle
+  -> ootang-issue-producer
+  -> ootang-prequential-live
+```
+
+They implement the first fully machine-operated source-to-issue path without daily
+human date selection, manual freezing, best-seed selection, or manual issuance:
+
+- strict daily finalized JSON ingest after 2020-06-30, trusted derivation of
+  `RWL_rate` and 7/15/30-day rainfall sums, content-addressed objects, advancing
+  current source, and one-time immutable activation source;
+- seeds 0--4 all-as-of fixed-120-epoch CPU training from activation source only,
+  tensor/primitive checkpoints loaded with `weights_only=True`, recursive source/
+  preprocessing/state validation, and implementation/dependency-lock provenance;
+- internal five-checkpoint P50 replay from the last seven as-of rows, explicit
+  model/live station mapping, ledger-aware next-target/no-skip gating,
+  content-addressed input semantics, atomic issue publication, and stable-semantics
+  idempotency.
+
+The no-skip gate holds E2-A's runner lock and uses the public read-only verified
+projection API to validate/replay the actual SQLite ledger before comparing every
+scientific status field. First issue bytes are registered in a content-addressed
+exact object plus an atomic no-replace producer receipt before inbox publication;
+later mutation of a time field, receipt, object, or inbox is blocked. Unexpected
+source I/O failures replace stale ready state with best-effort
+`blocked_integrity`, and bundle lock contention is non-blocking `busy/exit 3`.
+The input scientific digest also binds the deploy profile, issue-producer bytes,
+dependency locks, and Python/NumPy/pandas/PyTorch versions.
+
+The final adversarial audit additionally closed runtime-root/symlink traversal,
+forged activation-pointer injection, checkpoint hash/load TOCTOU, stale entry-clock
+publication, same-watermark revision/persistence divergence, and the receipt-to-inbox
+crash window. Checkpoints are hashed and safely loaded from the same bounded byte
+snapshot; bundle/issue commit barriers resample UTC before and after persistence;
+the issue producer requires current displacement to equal the verified ledger (or
+pre-genesis activation) state before inference. A crossed-boundary issue is removed
+from the inbox while the runner lock is still held, and a committed receipt restores
+its registered first bytes before a changed retry is reported as a conflict. Bundle
+training does not hold the runner lock, but the final write/post-check/revoke window
+does, so a crossed-boundary manifest is never visible to E2-A.
+
+The profile distinguishes an implemented capability from an operation exercised in
+the current poll. Waiting statuses therefore report source semantics, safe loading,
+and checkpoint replay as false until they actually happen. The profile and all three
+loaders reject attempts to claim runner-independent replay, trusted anchor receipt,
+automatic epoch rotation, E2 evidence, or real activation.
+
+The real four-stage no-feed poll returned, in order,
+`waiting_for_daily_finalized_feed`,
+`waiting_for_semantically_validated_source`, `waiting_for_source_or_model`, and
+`waiting_for_production_bundle_or_source_snapshot`. It created no current/activation
+source, model manifest, issue, or ledger. No real 120-epoch model was trained without
+an activation source. Focused source/bundle/issue/E2-A/main tests pass 136/136 and
+the full repository passes 505/505; Ruff, compileall, diff-check, and the 23/23
+formal-v5 fail-closed tests pass. The real waiting statuses bind deploy profile SHA
+`60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940`.
+E1 output hashes and the 97-path protected aggregate remain unchanged; exact values
+are recorded in `docs/progress.md` and
+`docs/ootang_prequential_deploy_engineering.md`.
+
+The next concrete implementation is a machine-only outcome materializer and cycle
+orchestrator: only after a sealed issue may a per-date observation with immutable
+availability/finalization provenance become an E2-A outcome. It must then trigger
+reveal/update before source advancement and the next issue. Runner-independent
+checkpoint/input replay, pinned cryptographic time verification, immutable epoch
+registry/automatic rotation, fault injection, and long-lived replay optimization
+remain separate gates. Do not substitute manual freezes or manual signatures.
 
 ## 2026-08-26 E2-A append-only live engineering continuation
 
@@ -28,11 +101,12 @@ day cannot be retroactively issued. Outcome files are not loaded until all eight
 station issues are durably sealed and an automatic anchor attempt has been
 recorded.
 
-E2-A does **not** yet generate the five predictions from checkpoint bytes, validate
-the semantic contents of the external issue input manifest, cryptographically
-verify a pinned time-stamp provider, or rotate immutable epochs automatically.
-Those four facts are machine-readable in the profile and status. Consequently an
-arbitrary HTTPS JSON receipt can be, at most, an
+E2-A itself does **not** independently generate the five predictions from checkpoint
+bytes or validate the semantic contents of the issue input manifest. E2-B1 now does
+both in the producer, but the runner-side independent replay gate remains false.
+E2-A also does not cryptographically verify a pinned time-stamp provider or rotate
+immutable epochs automatically. Consequently an arbitrary HTTPS JSON receipt can be,
+at most, an
 `engineering_blind_time_order_candidate`; v1 hard-codes
 `trusted_anchor_receipt_verified=false`, `e2_live_evidence_eligible=false`, and
 `real_activation_ready=false`.
@@ -48,12 +122,12 @@ Primary E2-A files:
 - `tests/test_ootang_prequential_live.py`;
 - `docs/ootang_prequential_live_engineering.md`.
 
-The next implementation target is not manual live-data freezing. It is an
-automatic content-addressed five-seed deployment/issue producer with verified
-input semantics, checkpoint inference replay, immutable per-epoch registry and
-safe machine epoch rotation. A trusted cryptographic time-receipt verifier is a
-separate activation gate. Until those exist, the correct runtime state is an
-automatic wait or fail-closed block, not fabricated live evidence.
+The next implementation target is not manual live-data freezing. E2-B1 has supplied
+the content-addressed five-seed deployment/issue producer; the next target is its
+machine outcome/cycle counterpart, followed by runner-independent replay, immutable
+per-epoch registry and safe machine rotation. A trusted cryptographic time-receipt
+verifier remains a separate activation gate. Until those exist, the correct runtime
+state is an automatic wait or fail-closed block, not fabricated live evidence.
 
 Final E2-A verification: 64 targeted tests, 23 frozen gate tests, and 414/414
 full-suite tests passed. Ruff and compileall passed; the real missing-prerequisite
@@ -520,6 +594,25 @@ New machine-prequential files and outputs:
 - `docs/ootang_prequential_monitor_results.md`
 - `figures/prequential_anomaly_ootang_v1/`
 
+E2-A/E2-B machine-live files:
+
+- `config/ootang_prequential_live.v1.json`
+- `config/ootang_prequential_deploy.v1.json`
+- `code/monitoring/prequential_core.py`
+- `code/monitoring/ootang_live_ledger.py`
+- `code/monitoring/ootang_prequential_live.py`
+- `code/monitoring/ootang_live_source.py`
+- `code/convlstm/ootang_production_bundle.py`
+- `code/monitoring/ootang_issue_producer.py`
+- `tests/test_prequential_core.py`
+- `tests/test_ootang_live_ledger.py`
+- `tests/test_ootang_prequential_live.py`
+- `tests/test_ootang_live_source.py`
+- `tests/test_ootang_production_bundle.py`
+- `tests/test_ootang_issue_producer.py`
+- `docs/ootang_prequential_live_engineering.md`
+- `docs/ootang_prequential_deploy_engineering.md`
+
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
 - `data/vajont_fig5a_curves_2_3_4_5_58_mm_velocity.xlsx`
@@ -541,29 +634,32 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    xargs shasum -a 256 < docs/v5_v0_protected_paths.txt | shasum -a 256
    ```
 
-3. Continue with E2-B activation prerequisites: build a content-addressed
-   five-seed production bundle and issue producer that replay checkpoint
-   inference, validate the input-manifest semantics, retain immutable per-epoch
-   artifacts, and rotate epochs by machine policy. Do not use historical OOF CSV
-   rows as future predictions and do not select a best seed.
-4. Add a pinned, cryptographically verified time-receipt adapter before any
+3. Continue with E2-B2: implement a machine-only outcome materializer and one-cycle
+   orchestrator. It must require a sealed issue, extract only the matching finalized
+   date from immutable source provenance, publish atomically/idempotently, run E2-A
+   reveal/update, and only then permit source advancement and the next issue. Include
+   crash recovery and fault injection; do not add a human freeze/approval step.
+4. Add runner-independent checkpoint/input replay, then an immutable epoch registry
+   with prebuild and safe automatic rotation. Do not use historical OOF CSV rows as
+   future predictions, select a best seed, or backdate a missed target.
+5. Add a pinned, cryptographically verified time-receipt adapter before any
    `engineering_blind_time_order_candidate` can become E2 evidence. Keep operation
    machine-only. No new data means
    `waiting_for_new_data`; schema/hash/state conflict means
    `blocked_integrity`; neither state should trigger a human date-selection
    workflow or fabricated backfill.
-5. If improving interval calibration, create a separately versioned,
+6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already
    viewed replay and then report the same folds as confirmation.
-6. Keep the formal-v5 path separate. Its read-only preflight must still show G0
+7. Keep the formal-v5 path separate. Its read-only preflight must still show G0
    PASS, G1--G4 BLOCKED, and G5a unauthorized; do not edit the v1 gate register
    or run NGBoost/fusion to manufacture missing evidence. E3 requires an
    independent machine-readable outcome source, not monitor-derived labels.
-7. If changing any current producer, regenerate its explicit outputs and rerun
+8. If changing any current producer, regenerate its explicit outputs and rerun
    targeted tests, the full suite, static checks, deterministic replay, and the
    97-path comparison.
-8. Commit or push only when the user explicitly requests it. Keep
+9. Commit or push only when the user explicitly requests it. Keep
    implementation, tests, artifacts, and documentation in the same non-`test:`
    commit; do not create a pull request.
 

@@ -287,6 +287,114 @@ class _LiveFixture:
         return anchor
 
 
+class VerifiedLedgerProjectionTests(unittest.TestCase):
+    def test_missing_and_zero_byte_ledgers_are_rejected_without_creation(self):
+        with _LiveFixture() as fixture:
+            fixture.install_prerequisites()
+            prerequisites = live.load_prerequisites(fixture.profile, fixture.paths)
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+
+            with self.assertRaises(live.LivePrerequisiteError):
+                live.load_verified_ledger_projection(
+                    fixture.profile, fixture.paths, prerequisites
+                )
+            self.assertFalse(fixture.paths.ledger.exists())
+            self.assertFalse(fixture.paths.status.exists())
+
+            fixture.paths.ledger.parent.mkdir(parents=True, exist_ok=True)
+            fixture.paths.ledger.write_bytes(b"")
+            with self.assertRaises(live.LiveIntegrityError):
+                live.load_verified_ledger_projection(
+                    fixture.profile, fixture.paths, prerequisites
+                )
+            self.assertEqual(fixture.paths.ledger.read_bytes(), b"")
+            self.assertFalse(fixture.paths.status.exists())
+
+    def test_initialized_but_eventless_ledger_is_rejected_read_only(self):
+        with _LiveFixture() as fixture:
+            fixture.install_prerequisites()
+            prerequisites = live.load_prerequisites(fixture.profile, fixture.paths)
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+            AppendOnlyLedger(fixture.paths.ledger)
+            ledger_before = fixture.paths.ledger.read_bytes()
+
+            with self.assertRaises(live.LiveIntegrityError):
+                live.load_verified_ledger_projection(
+                    fixture.profile, fixture.paths, prerequisites
+                )
+
+            self.assertEqual(fixture.paths.ledger.read_bytes(), ledger_before)
+            self.assertFalse(fixture.paths.status.exists())
+
+    def test_verified_projection_is_deeply_read_only_and_preserves_runtime_bytes(self):
+        with _LiveFixture() as fixture, mock.patch.dict(os.environ, {}, clear=True):
+            fixture.install_prerequisites()
+            fixture.poll()
+            prerequisites = live.load_prerequisites(fixture.profile, fixture.paths)
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+            events = fixture.events()
+            ledger_before = fixture.paths.ledger.read_bytes()
+            status_before = fixture.paths.status.read_bytes()
+
+            snapshot = live.load_verified_ledger_projection(
+                fixture.profile, fixture.paths, prerequisites
+            )
+
+            head = events[-1]
+            self.assertEqual(snapshot.epoch_id, events[0].payload["live_epoch_id"])
+            self.assertEqual(snapshot.last_finalized_date, WATERMARK)
+            self.assertIsNone(snapshot.outstanding_target_date)
+            self.assertEqual(snapshot.ledger_event_count, len(events))
+            self.assertEqual(snapshot.ledger_terminal_sequence_id, head.sequence_id)
+            self.assertEqual(snapshot.ledger_terminal_sha256, head.entry_sha256)
+            self.assertEqual(snapshot.ledger_events[-1].entry_sha256, head.entry_sha256)
+            with self.assertRaises(TypeError):
+                snapshot.latest_displacement_mm[fixture.stations[0]] = -1.0
+            with self.assertRaises(TypeError):
+                snapshot.ledger_events[0].payload["live_epoch_id"] = "changed"
+            self.assertEqual(fixture.paths.ledger.read_bytes(), ledger_before)
+            self.assertEqual(fixture.paths.status.read_bytes(), status_before)
+
+    def test_schema_and_hash_chain_damage_fail_closed_without_status_write(self):
+        for damage in ("schema", "hash_chain"):
+            with self.subTest(damage=damage), _LiveFixture() as fixture, mock.patch.dict(
+                os.environ, {}, clear=True
+            ):
+                fixture.install_prerequisites()
+                fixture.poll()
+                prerequisites = live.load_prerequisites(
+                    fixture.profile, fixture.paths
+                )
+                self.assertIsNotNone(prerequisites)
+                assert prerequisites is not None
+
+                connection = sqlite3.connect(fixture.paths.ledger)
+                try:
+                    connection.execute("DROP TRIGGER events_no_update")
+                    if damage == "hash_chain":
+                        connection.execute(
+                            "UPDATE events SET payload_json = ? WHERE sequence_id = 1",
+                            ('{"tampered":true}',),
+                        )
+                        connection.execute(ledger_module._NO_UPDATE_TRIGGER_SQL)  # noqa: SLF001
+                    connection.commit()
+                finally:
+                    connection.close()
+                ledger_before = fixture.paths.ledger.read_bytes()
+                status_before = fixture.paths.status.read_bytes()
+
+                with self.assertRaises(live.LiveIntegrityError):
+                    live.load_verified_ledger_projection(
+                        fixture.profile, fixture.paths, prerequisites
+                    )
+
+                self.assertEqual(fixture.paths.ledger.read_bytes(), ledger_before)
+                self.assertEqual(fixture.paths.status.read_bytes(), status_before)
+
+
 class OotangPrequentialLiveTests(unittest.TestCase):
     """Exercise the full file-loader, lifecycle, ledger, and status boundary."""
 

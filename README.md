@@ -14,9 +14,12 @@
   科研监测器，不是灾害真值、风险概率或正式预警。
 - 显式阶段 `ootang-prequential-live` 已实现 E2-A 单次机器 poll、issue/outcome
   隔离、SQLite append-only ledger、等待/回填/恢复/修订、数学全重放与外部锚
-  接口。它仍固定为 engineering-only：未从五 checkpoint 内部重放预测、未验证
-  input-manifest 语义、未验证可信密码学时间回执，也未自动轮换 epoch，因此不会
-  计入 E2 live evidence 或输出正式预警。
+  接口。E2-B1 又增加 `ootang-live-source → ootang-production-bundle →
+  ootang-issue-producer`：严格 finalized feed、内容寻址 source、固定 5-seed 安全
+  checkpoint 及内部推理签发均由机器完成；runtime 路径、activation 指针、checkpoint
+  单次字节加载、ledger persistence 和发布前后时间屏障均 fail closed。runner 独立推理复核、可信密码学时间
+  回执、outcome materializer 和自动 epoch 轮换仍未完成，因此整条链固定为
+  engineering-only，不计入 E2 live evidence，也不输出正式预警。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -51,6 +54,7 @@ uv run python main.py --stage ootang-ngboost-interval-proxy-horizon-sensitivity
 uv run python main.py --stage ootang-ngboost-interval-proxy-feature-ablation
 uv run python main.py --stage ootang-auto-v0-direct-bai-perron --stage ootang-v5-candidate-display
 uv run python main.py --stage ootang-prequential-monitor
+uv run python main.py --stage ootang-live-source --stage ootang-production-bundle --stage ootang-issue-producer --stage ootang-prequential-live
 uv run python main.py --stage ootang-prequential-live
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
@@ -76,7 +80,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（15 个可选阶段）
+main.py                         # 当前管线入口（18 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -107,6 +111,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_autonomous_research_protocol.md`](docs/ootang_autonomous_research_protocol.md) | 不依赖逐日人工操作的 E0--E3 机器闭环协议及科学边界 |
 | [`docs/ootang_prequential_monitor_results.md`](docs/ootang_prequential_monitor_results.md) | E1 三折回放结果、确定性/因果校验、产物哈希与当前限制 |
 | [`docs/ootang_prequential_live_engineering.md`](docs/ootang_prequential_live_engineering.md) | E2-A ledger/runner 实现、验证、状态语义和 E2-B 激活门禁 |
+| [`docs/ootang_prequential_deploy_engineering.md`](docs/ootang_prequential_deploy_engineering.md) | E2-B1 finalized source、五种子安全 bundle、机器 issue producer 与剩余闭环门禁 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -114,10 +119,11 @@ docs/                           # 当前方法、结果边界和研究计划
 
 ## 尚未完成的关键事项
 
-1. 实现 E2-B 自动部署与 issue producer：content-addressed 五种子 checkpoint
-   bundle、严格 input-manifest 语义、checkpoint inference replay、immutable epoch
-   registry/安全自动轮换，以及 pinned cryptographic time verifier。E2-A 已负责
-   ledger/等待/恢复，但在这些门关闭前保持 `real_activation_ready=false`。
+1. 实现 E2-B2 machine-only outcome materializer 与单周期 orchestrator：只在 sealed
+   issue 后从 immutable per-date provenance 生成 outcome，完成 crash recovery 与故障
+   注入；随后增加 runner 独立 checkpoint/input 重放、immutable epoch registry/
+   自动轮换，以及 pinned cryptographic time verifier。E2-B1 已完成 source、五种子
+   bundle 和 issue producer，但在这些门关闭前保持 `real_activation_ready=false`。
 2. 当前 E1 区间覆盖随 fold 下降，后续应以新版本预声明比较 SPCI/AgACI 等
    challenger，不能在已经查看的回放输出上反复调参并回写 v1。
 3. 正式灾害效能仍需与模型输出相互独立、机器可读且带可见时间的结局源。

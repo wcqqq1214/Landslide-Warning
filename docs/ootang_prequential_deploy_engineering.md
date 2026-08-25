@@ -1,0 +1,263 @@
+# 藕塘 E2-B 机器部署与签发工程说明
+
+> 建立日期：2026-08-26
+> 状态：`e2b_engineering_only_not_live_evidence`
+> 配置：`config/ootang_prequential_deploy.v1.json`
+> 配置 SHA-256：`60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940`
+> 正式预警输出：`false`
+
+## 1. 当前完成范围
+
+E2-B 第一增量已经把 E2-A 之前缺少的三项机器能力接到同一显式管线：
+
+1. 校验每日 finalized feed，在可信代码内生成模型特征并物化内容寻址 source；
+2. 从 immutable activation source 训练固定 seeds `0..4` 的生产 checkpoint bundle；
+3. 从五个 checkpoint 内部重放 P50，自动签发 ledger 要求的下一自然日 issue。
+
+这条路径没有人工挑日期、人工冻结样本、人工选 seed、人工批准模型或人工签发。
+每个脚本执行一次 poll 后退出，可由系统调度器或数据到达事件重复调用。缺少输入
+是可观测等待态；存在但不符合合同的输入是 fail-closed 错误，系统不会用历史 OOF
+行、旧 `models/convlstm.pt`、常数或 persistence-only 结果冒充五种子预测。
+
+E2-B1 仍是工程基础设施，不是 E2 live evidence，也不是正式预警。以下门保持关闭：
+
+```json
+{
+  "runner_independent_checkpoint_inference_replayed": false,
+  "trusted_anchor_receipt_verified": false,
+  "automatic_epoch_rotation_implemented": false,
+  "e2_live_evidence_eligible": false,
+  "real_activation_ready": false
+}
+```
+
+配置中的 `*_implemented=true` 只表示代码能力存在。运行状态另用
+`source_manifest_semantics_verified_by_producer`、
+`safe_checkpoint_loading_exercised` 和
+`producer_checkpoint_inference_replayed` 表示该次 poll 是否实际执行成功；等待态
+不得把“已实现”误写成“已完成”。
+
+## 2. 机器数据流
+
+```text
+incoming/daily_finalized_feed.json
+  -> ootang-live-source
+  -> immutable content objects
+  -> source_current.json + one-time activation source
+
+activation source
+  -> ootang-production-bundle
+  -> five safe checkpoints + training manifest
+  -> model_bundle/manifest.json
+
+source_current + activation source + model bundle + E2-A ledger status
+  -> ootang-issue-producer
+  -> exact issue object + issue_receipts/YYYY-MM-DD.json
+  -> issue_inbox/YYYY-MM-DD.json
+
+issue inbox + outcome inbox
+  -> ootang-prequential-live
+  -> append-only ledger + online state/status
+```
+
+显式运行命令为：
+
+```bash
+uv run python main.py \
+  --stage ootang-live-source \
+  --stage ootang-production-bundle \
+  --stage ootang-issue-producer \
+  --stage ootang-prequential-live
+```
+
+这四个阶段不属于默认链。默认链仍严格是
+`features → convlstm → ootang-operational-v4`。
+
+## 3. finalized feed 合同
+
+feed 是 2020-06-30 之后的严格日连续 JSON 扩展。`records` 必须从 2020-07-01
+开始逐日覆盖到本次 watermark，不能只发送最新一天。它只接受原始日降雨、水库
+水位和八站累计位移；不接受外部提供的 `RWL_rate` 或雨量窗口。下面是单条记录的
+字段示意；生产 feed 必须把相同结构连续填满 `2020-07-01..watermark`：
+
+```json
+{
+  "schema_version": "ootang_daily_finalized_feed_v1",
+  "outcome_source_id": "machine-readable-source-id",
+  "exported_at_utc": "2020-07-01T15:00:00Z",
+  "records": [
+    {
+      "schema_version": "ootang_daily_finalized_record_v1",
+      "date": "2020-07-01",
+      "revision_id": "upstream-immutable-revision-id",
+      "observed_at_utc": "2020-07-01T04:00:00Z",
+      "available_at_utc": "2020-07-01T05:00:00Z",
+      "finalized_at_utc": "2020-07-01T06:00:00Z",
+      "finalized": true,
+      "rainfall_mm": 0.0,
+      "reservoir_water_level_m": 150.0,
+      "displacement_mm": {
+        "ATU1": 0.0,
+        "ATU2": 0.0,
+        "ATU3": 0.0,
+        "ATU4": 0.0,
+        "ATU5": 0.0,
+        "MJ1": 0.0,
+        "MJ3": 0.0,
+        "MJ9": 0.0
+      }
+    }
+  ]
+}
+```
+
+producer 拒绝 duplicate JSON keys、NaN/Infinity、缺站、额外站、重复或断裂日期、
+负降雨、非有限观测、时间倒序、未 finalized 记录和在对应下一自然日开始之后才
+finalized 的记录。它把每日 revision 与 observed/available/finalized 时间一并写入
+不可变 feed object，并在可信代码内重算：
+
+- `RWL_rate`：按真实相邻日间隔的一阶差分；
+- `Rain_cum7/15/30`：包含当日的滚动和；
+- 模型位移列：严格按 `MJ9,MJ1,MJ3,ATU1..ATU5` 排列。
+
+历史底座固定为 `data/monitoring_data.csv` 的 1,461 行和 SHA-256；station geometry、
+E2-A profile、部署 profile 与派生 schema 同样受哈希或精确字段合同约束。
+
+`source_current.json` 可以随新 finalized 日推进；
+`source_snapshot/manifest.json` 是该 epoch 第一次合法 ingest 时的 immutable activation
+快照，只允许原子创建一次，绝不被后续 feed 覆盖。语义完全相同而只有 export 时间
+变化的重复投递保持原 pointer 和 manifest 字节不变。
+
+source ingest 遇到配置内错误时写 `blocked_integrity`；未预期的 I/O、pandas/CSV 或
+竞态异常会被规范化为 `SourceIntegrityError`，并 best-effort 原子刷新 blocked
+状态，避免旧 `ready` 在失败后继续误导机器调度器。
+
+除 `runtime.root` 外的运行路径必须是受 root 约束的相对路径；解析后的目标及其
+symlink 父路径都不能逃逸 runtime root。`source_current.json` 中引用的 activation
+还必须与配置位置上的不可变 activation 在 path、SHA、size 和完整 source 语义上
+一致，不能通过伪造 pointer 注入另一份自洽但错误的 activation。
+
+## 4. 五种子生产 bundle
+
+模型只从 immutable activation source 训练，不从后来推进的 `source_current` 重训。
+固定合同为：
+
+- seeds `0,1,2,3,4` 全部保留，不选择 best seed；
+- 7 日 lookback、1 日 horizon、7 通道、P10/P50/P90、120 epochs；
+- 使用 activation watermark 之前所有可用窗口，不用 holdout 选择 epoch 或 seed；
+- CPU、单线程、确定性算法、MKLDNN disabled；
+- checkpoint 只含 tensor 和 primitive，加载固定使用
+  `torch.load(..., weights_only=True)`；loader 只读取 checkpoint 一次，对同一份受限
+  bytes 同时做 size/SHA 校验和 `BytesIO` 反序列化，路径替换不能制造 hash/model
+  不一致；
+- normalization、elevation、IDW/readout、网络 state、source bindings、schema 和形状
+  均递归验证；
+- training manifest 绑定 deploy profile、基础模型、bundle producer、`pyproject.toml`、
+  `uv.lock`、PyTorch 与 NumPy 版本；
+- checkpoint、training manifest 和 outer bundle 都使用内容寻址和原子 no-clobber
+  发布；同语义复跑幂等，冲突语义拒绝。
+
+保存前后的 tensor 必须精确一致。由于 CPU 卷积后端在“训练后内存模型”和
+“从 checkpoint 重建模型”的完整 source 推理上观察到亚微米级数值路径差异，
+manifest 显式保存并验证 `1e-6 mm` 的 reload-inference 绝对容差；这不是预测精度
+容差，也不能放宽 tensor、hash 或 schema 的精确校验。
+
+模型创建时间必须不早于 activation capture、不晚于机器当前时间，并严格早于首个
+目标自然日开始。若五个 120-epoch 拟合无法在该窗口内完成，当前实现会 fail closed，
+不会回填过去目标；解决方式是后续机器 epoch manager 的预构建/原子轮换，不是人工
+改时间或手工冻结。outer manifest 提交前和原子持久化后都会重新读取机器 UTC；跨越
+首个目标日起点的构建不能宣布成功。
+
+最终 outer manifest 的“提交前时钟 → 原子 link → 提交后时钟 → 必要撤销”短窗口
+额外持有 E2-A `runner.lock`；120-epoch 训练本身不占用该锁。这样即使 post-write
+时钟判定越界，runner 也不可能在撤销前读到短暂出现的 manifest。锁竞争采用非阻塞
+busy，锁顺序固定为 deploy 后 runner。
+
+source、bundle 和 issue 共用非阻塞 `deploy_cycle.lock`。竞争时返回 `busy/exit 3`，
+不覆盖已有状态或创建半成品；bundle 不再无限等待另一进程释放锁。
+
+## 5. 自动 issue producer
+
+producer 每次递归重载 current source、activation source、outer model manifest、
+training manifest 和五个 checkpoint，再用 current source 的最后 7 行内部推理。
+模型站点顺序与 live 顺序的映射显式固定；issue 专家顺序为 persistence 后接
+seed0--4 P50。
+
+目标日期不是由人选择。ledger 存在时，producer 先持有 E2-A 的 `runner.lock`，通过
+公开只读 `load_verified_ledger_projection()` 以 SQLite `mode=ro/query_only` 完整
+验证 schema、哈希链并重放科学状态，再逐字段核对 status 的 event count、terminal
+sequence/hash、epoch、last/next/outstanding、source 与 model；锁一直持有到 issue 和
+producer status 完成发布。损坏 ledger、伪造/陈旧 status 或并发 runner 都不能通过。
+
+日期规则为：
+
+- 无 ledger 时只能签发 `activation_watermark + 1`，且 current watermark 不能已经
+  越过 activation watermark；
+- 有 ledger 时只能签发 `status.next_target_date`，它必须严格等于
+  `current_source_watermark + 1`；
+- current watermark 最后一行八站位移必须逐站精确等于 ledger verified projection
+  的 latest displacement；无 ledger 时则必须等于 immutable activation 的 latest。
+  同 watermark revision 尚未先进入 ledger 时自动等待，不能生成 consumer 必拒的
+  persistence；
+- 已有 outstanding issue 时等待，不能跳日或并行签发第二天；
+- source as-of、机器生成时间必须早于目标日开始，且 source as-of 不能在机器未来。
+
+签发前生成内容寻址 input manifest，绑定 canonical dataset、source semantic
+manifest、activation source、outer/training manifests、五 checkpoint、七行模型输入、
+站点映射及预测值；还把 deploy profile、issue producer、`pyproject.toml`、`uv.lock`
+以及 Python/NumPy/pandas/PyTorch 版本纳入科学语义。实现或环境变化因此会触发
+same-target semantic conflict，而不会静默继承旧签发。首次 canonical issue 字节先写入
+`runtime.objects` 内容寻址对象，
+再以 atomic no-replace 登记 `issue_receipts/YYYY-MM-DD.json`，最后发布 inbox，并立即
+通过 E2-A consumer 合同重读。相同目标且科学语义相同的复跑只能恢复/保留 receipt
+绑定的首次精确字节和时间；issue、receipt、exact object、时间字段或嵌套 artifact
+任一篡改，以及相同目标科学语义变化或 outcome 污染，均 fail closed。
+
+receipt 是首发 commit point：若进程在 receipt 与 inbox 之间崩溃，下一 poll 会先从
+已验证 receipt/object 恢复首发精确 bytes，再单独报告任何新候选冲突。推理完成后、
+inbox 原子发布前以及发布后均重新采机器 UTC；若发布跨越目标日起点，producer 在仍
+持有 E2-A runner lock 时移除该不可消费 inbox 并写 blocked 状态，不会把早期采样时间
+冒充实际持久化时间。
+
+## 6. 当前实机等待演练
+
+仓库当前没有配置的未来 daily finalized feed。真实四阶段 poll 的结果为：
+
+- source：`waiting_for_daily_finalized_feed`；
+- bundle：`waiting_for_semantically_validated_source`；
+- issue：`waiting_for_source_or_model`；
+- E2-A：`waiting_for_production_bundle_or_source_snapshot`，ledger events `0`。
+
+演练没有生成 `source_current.json`、activation manifest、model manifest、issue 文件
+或 `ledger.sqlite3`。这正是缺输入时的正确机器行为；没有用历史数据伪造“未来运行”。
+测试中的 reduced-epoch bundle 只通过私有且显式的测试开关可用，生产 loader 必须
+接受配置锁定的 120 epochs。真实 120-epoch bundle 因没有 activation source 而未运行。
+source/bundle/issue/E2-A/main 联合定向测试为 136/136，完整仓库回归为 505/505；
+Ruff、compileall 与 `git diff --check` 通过。正式 v5 fail-closed preflight 测试
+23/23 通过，G0 仍 PASS、G1--G4 仍 BLOCKED、G5a 未授权。E1 manifest/metrics/site/
+station SHA-256 分别保持 `2e680d06a6e04e02562bb31ec53b885acecafc068015417525dee115de97f253`、
+`9d790ecb4550ee849001cf6e21873b3047598212508c1c86c6fc6c188e4eab96`、
+`d35822d7dc198f859308b1d46071d8df128e9bff4203458ccadfd1aa86e3a6fd`、
+`805951dcf77aa19e7d5021fa53a51bfa2067663b7fda0e5dd0fcc483ad2a7bfe`；
+97 条保护路径聚合仍为
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+
+## 7. 下一机器闭环
+
+E2-B1 后的首要实现不是人工冻结，而是 machine-only outcome materializer 与周期
+编排：从同一 immutable per-date feed provenance 中只抽取已经存在 sealed issue 的
+目标日观测，原子生成 `outcome_inbox/YYYY-MM-DD.json`，再触发 E2-A reveal/update，
+随后才允许 source/current 推进和下一日 issue。
+
+仍需完成：
+
+1. outcome materializer、单周期 orchestrator、崩溃恢复和故障注入测试；
+2. runner 独立于 producer 的 checkpoint/input 重放；
+3. pinned provider 的可信密码学时间回执验证；
+4. immutable epoch registry、预构建与安全自动轮换；
+5. E2-A 当前 O(D·N) 全量重放的长期运行性能优化；
+6. 验证上游能否在下一自然日边界前稳定 finalization，并为错过窗口定义纯机器
+   rollover/abstain 策略。
+
+这些工程门关闭前，E2 证据与真实激活保持 false。正式 v5 的 G1--G4 状态也完全
+独立，不得由这条位移预测工程支路绕过。

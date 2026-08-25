@@ -60,20 +60,26 @@ automatic V0 candidates + raw kinematics + raw ConvLSTM intervals
        └─ figures/prequential_anomaly_ootang_v1/*
 
 machine source/model manifests + separated issue/outcome inboxes
+  ├─ monitoring/ootang_live_source.py
+  ├─ convlstm/ootang_production_bundle.py
+  ├─ monitoring/ootang_issue_producer.py
   └─ monitoring/ootang_prequential_live.py
        ├─ prequential_core.py (pure issue/reveal/site mathematics)
        ├─ ootang_live_ledger.py (SQLite WAL append-only hash chain)
-       └─ runtime/ootang_prequential_live_v1/{status,ledger,inboxes,anchors}
+       └─ runtime/ootang_prequential_live_v1/
+            ├─ source_snapshot + source_current + model_bundle
+            ├─ objects + issue_receipts + issue/outcome inboxes
+            └─ status + ledger + anchors
 
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains fifteen independently selectable stages. Its no-argument chain is exactly
+`main.py` contains eighteen independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
-the prequential monitor, NGBoost proxy experiments, automatic V0, and the v5 candidate display
-all require `--stage`.
+the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
+candidate display all require `--stage`.
 
 ## 模块职责
 
@@ -86,7 +92,10 @@ all require `--stage`.
 | `code/monitoring/ootang_prequential_monitor.py` | 对 5-seed 严格时序 OOF + persistence 做同日先 issue 后 reveal 的机器在线组合、校准、漂移和连续空间聚合 | 物化 E1 回顾性 replay；不逐日人工选样本/阈值，不输出颜色、灾害概率或正式预警 |
 | `code/monitoring/prequential_core.py` | 提供不可变 StationState 及 issue/reveal/site 纯数学 | 与 E1 v1 数学逐字段等价；不访问文件、时钟或网络 |
 | `code/monitoring/ootang_live_ledger.py` | 提供 SQLite WAL 追加式事务、自然键幂等、schema trigger 和完整哈希链验证 | SHA-256 证明内部内容一致性，不证明作者身份或可信时间 |
-| `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | engineering-only；checkpoint inference、input-manifest 语义、可信时间 verifier 与自动 epoch rotation 未实现，E2 evidence 固定 false |
+| `code/monitoring/ootang_live_source.py` | 严格 ingest finalized 日 feed，在可信代码内派生特征并物化 content-addressed current/activation source | activation 只创建一次；缺 feed 自动等待，时间/站点/schema/hash 冲突 fail closed |
+| `code/convlstm/ootang_production_bundle.py` | 从 immutable activation source 构建固定 5-seed 全 as-of bundle，并安全重载 checkpoint | 不选 best seed；`weights_only=True`，精确绑定预处理、source、实现与依赖；低 epoch 仅测试路径 |
+| `code/monitoring/ootang_issue_producer.py` | 按 verified ledger next-target 从五 checkpoint 内部推理并原子发布下一自然日 issue | runner lock 内只读全链重放；只用 watermark 前最后 7 行；exact-byte object + 首发 receipt；不跳日、不回填过去 issue、同语义幂等、异语义拒绝 |
+| `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | engineering-only；runner 独立 checkpoint 重放、可信时间 verifier、outcome materializer 与自动 epoch rotation 未实现，E2 evidence 固定 false |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -154,12 +163,21 @@ issue/outcome 隔离、完整八站事务、自动等待/回填/恢复/修订和
 聚合；本地回执文件可从账本恢复，链或 schema 漂移会 fail closed。历史 outcome
 只能记为 `backfill_not_blind`，目标当日及更早日期禁止事后 issue。
 
-E2-A 的 source/model/issue 文件只建立结构和哈希合同，尚未验证 issue input
-manifest 的科学语义，也没有从五个 checkpoint 重放外部预计算的预测。时间锚
-接口也没有 pinned provider/密码学回执验证；实现或模型变化暂时阻断旧 epoch，
-尚未自动创建 immutable 新 epoch。因此它只输出工程时序候选，固定
-`e2_live_evidence_eligible=false`。E2-B 将实现生产 bundle/issue producer、可信
-时间 verifier 和机器 epoch registry/rotation；不得用人工逐日冻结代替。
+E2-B1 已在 E2-A 前增加严格 finalized source ingest、内容寻址 activation/current
+source、固定 5-seed 安全 checkpoint bundle、input-manifest 科学语义和内部 checkpoint
+推理 issue producer。producer 在 runner lock 内用公开 read-only API 完整验证/重放
+ledger，再核对 status；issue 首发 exact bytes 由内容寻址 object 与不可覆盖 receipt
+锁定。runtime path/symlink confinement、activation pointer 交叉绑定、checkpoint
+同一 bytes 的校验/加载、ledger latest persistence 门禁和提交前后新鲜 UTC 屏障均
+fail closed。能力字段区分“代码已实现”和“本次运行已执行”，所以无 feed 时三个 producer
+与 E2-A 只写等待态，不产生 source、model、issue 或 ledger。
+
+当前 E2-A runner 仍未独立重放 producer 的 checkpoint/input，尚无从 sealed issue
+自动物化 outcome 的机器组件；时间锚接口也没有 pinned provider/密码学回执验证，
+实现或模型变化暂时阻断旧 epoch，尚未自动创建 immutable 新 epoch。因此它仍只
+输出工程时序候选，固定 `e2_live_evidence_eligible=false`。下一增量是 outcome
+materializer + cycle orchestrator，再实现 runner 独立复核、可信时间 verifier 和
+机器 epoch registry/rotation；不得用人工逐日冻结代替。
 
 ## 版本化与清理原则
 

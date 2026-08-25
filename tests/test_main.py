@@ -392,13 +392,72 @@ class PipelineTests(unittest.TestCase):
             )
         )
 
-    def test_prequential_live_is_explicit_engineering_after_monitor(self):
+    def test_e2b_engineering_stages_are_explicit_and_ordered_before_live(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        expected = (
+            (
+                "ootang-live-source",
+                "code/monitoring/ootang_live_source.py",
+                "runtime/ootang_prequential_live_v1/source_ingest_status.json",
+                ("data/monitoring_data.csv",),
+            ),
+            (
+                "ootang-production-bundle",
+                "code/convlstm/ootang_production_bundle.py",
+                "runtime/ootang_prequential_live_v1/model_bundle_status.json",
+                (
+                    "data/monitoring_data.csv",
+                    "data/station_coords.csv",
+                    "pyproject.toml",
+                    "uv.lock",
+                ),
+            ),
+            (
+                "ootang-issue-producer",
+                "code/monitoring/ootang_issue_producer.py",
+                "runtime/ootang_prequential_live_v1/issue_producer_status.json",
+                (
+                    "data/monitoring_data.csv",
+                    "data/station_coords.csv",
+                    "pyproject.toml",
+                    "uv.lock",
+                ),
+            ),
+        )
+
+        self.assertEqual(
+            names.index("ootang-live-source"),
+            names.index("ootang-prequential-monitor") + 1,
+        )
+        for (name, script, output, static_inputs), next_name in zip(
+            expected,
+            ("ootang-production-bundle", "ootang-issue-producer", "ootang-prequential-live"),
+        ):
+            stage = pipeline.STAGE_BY_NAME[name]
+            self.assertEqual(names.index(next_name), names.index(name) + 1)
+            self.assertFalse(stage.enabled_by_default)
+            self.assertFalse(stage.formal_warning_output)
+            self.assertEqual(
+                stage.warning_artifact_scope,
+                "live_prequential_deployment_engineering",
+            )
+            self.assertEqual(stage.script, script)
+            self.assertEqual(stage.outputs, (output,))
+            self.assertEqual(
+                stage.arguments,
+                ("--config", "config/ootang_prequential_deploy.v1.json"),
+            )
+            self.assertIn("config/ootang_prequential_deploy.v1.json", stage.inputs)
+            for static_input in static_inputs:
+                self.assertIn(static_input, stage.inputs)
+
+    def test_prequential_live_is_explicit_engineering_after_issue_producer(self):
         names = [stage.name for stage in pipeline.STAGES]
         stage = pipeline.STAGE_BY_NAME["ootang-prequential-live"]
 
         self.assertEqual(
             names.index(stage.name),
-            names.index("ootang-prequential-monitor") + 1,
+            names.index("ootang-issue-producer") + 1,
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)

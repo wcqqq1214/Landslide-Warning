@@ -5,6 +5,70 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 E2-B1 机器 source、bundle 与 issue producer
+
+- E2-A 已提交为 `a4e7de2 feat: add autonomous prequential live ledger`。在其后新增
+  三个显式且非默认阶段：`ootang-live-source`、`ootang-production-bundle`、
+  `ootang-issue-producer`；默认链仍严格保持
+  `features → convlstm → ootang-operational-v4`。
+- source producer 严格接收 2020-06-30 之后的日连续 finalized JSON，只允许原始
+  rainfall/RWL/八站 displacement，拒绝 duplicate keys、非有限值、负降雨、缺站、
+  时间倒序、迟于下一自然日的 finalization 和日期缺口。在可信代码内重算
+  `RWL_rate` 与 7/15/30 日雨量和，并物化 immutable content objects、推进式
+  `source_current` 和 one-time no-clobber activation source。
+- bundle producer 只从 immutable activation source 做 seeds 0--4 的全 as-of 固定
+  120-epoch CPU 拟合，不选 best seed。checkpoint 是 tensor/primitive-only，使用
+  `weights_only=True` 重载并递归核验 normalization、elevation、IDW/readout、state、
+  source、schema、shape；training manifest 还绑定 deploy/base/producer、
+  `pyproject.toml`、`uv.lock`、PyTorch 与 NumPy。保存/重载 tensor 精确一致，完整
+  source 推理另显式固定并持久化 `1e-6 mm` reload tolerance。
+- issue producer 递归复核 current/activation/model artifacts，只取 watermark 之前最后
+  7 行，用五 checkpoint 内部生成 P50，并显式映射 model/live station order。目标
+  必须是 E2-A ledger next target 且等于 current watermark + 1；有 outstanding issue、
+  pre-genesis source 已越过 activation 或目标已进入当前自然日时均自动等待，不能
+  跳日或回填。input manifest 与 issue 均内容寻址/原子发布；同科学语义复跑保留
+  首次字节，冲突语义、篡改或 outcome 污染 fail closed。
+- ledger 存在时 issue producer 不再信任可变 `status.json`：它在 E2-A runner lock
+  内调用只读 verified projection API，完整验证 SQLite schema/hash chain 并科学重放，
+  再核对 status 的 count/head/epoch/date/source/model，锁持有到发布结束。首次 issue
+  还先写内容寻址 exact-byte object 和 atomic no-replace producer receipt；时间字段、
+  receipt、object 或 inbox 任一篡改都拒绝，丢失 inbox 只能恢复首次登记字节。input
+  manifest 同时绑定 deploy profile、issue producer、依赖锁与 Python/NumPy/pandas/
+  PyTorch 版本，环境或实现变化不会被同目标幂等吞掉。
+- source 非预期 I/O/CSV/竞态异常会规范化为 `SourceIntegrityError` 并 best-effort
+  刷新 `blocked_integrity`，避免遗留旧 ready；source/bundle/issue 的 deploy lock 与
+  E2-A runner lock 均采用非阻塞 busy 语义，bundle 不再无限等待锁。
+- 最终对抗审计又收紧三条生产边界：source/bundle 的所有 runtime 子路径做 root 与
+  symlink confinement，current pointer 必须精确绑定真实 immutable activation；
+  checkpoint 从同一受限 bytes 同时完成 SHA 校验与 `weights_only` 加载，关闭路径替换
+  TOCTOU；issue 在预测前要求 current latest displacement 与 ledger/activation 权威
+  状态逐站一致，并在发布前后重采时钟。跨目标日起点的 issue 会在 runner lock 内撤出
+  inbox，bundle 最终 manifest 的 write/post-check/revoke 窗口也持有 runner lock；
+  receipt 崩溃恢复则先恢复已提交首发 bytes、再报告候选冲突。
+- 配置只用 `*_implemented` 声明代码能力；状态只在真实操作成功后把
+  `source_manifest_semantics_verified_by_producer`、
+  `safe_checkpoint_loading_exercised`、
+  `producer_checkpoint_inference_replayed` 设为 true。对能力边界的篡改由三个 loader
+  分别拒绝。
+- source/bundle/issue/E2-A/main 定向 136/136、完整仓库 505/505、正式 v5
+  fail-closed preflight 23/23 通过；Ruff、compileall 与 diff-check 通过。显式四阶段
+  dry-run 与真实空输入 poll 均通过；真实状态依次为 `waiting_for_daily_finalized_feed`、
+  `waiting_for_semantically_validated_source`、`waiting_for_source_or_model` 和
+  `waiting_for_production_bundle_or_source_snapshot`，未生成 source pointer、activation、
+  model、issue 或 ledger；三项 E2-B 状态均绑定当前 deploy profile SHA
+  `60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940`，等待态的
+  semantics/loading/replay 实际执行字段均为 false。没有运行不存在前提的真实
+  120-epoch bundle。
+- E1 manifest/metrics/site/station 四项 SHA 与既有记录完全一致，97 条保护路径聚合仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`；正式 v5
+  仍为 G0 PASS、G1--G4 BLOCKED、G5a 未授权。
+- E2-B1 仍固定 `e2_live_evidence_eligible=false`、`real_activation_ready=false`。
+  下一增量是 machine-only outcome materializer 与 cycle orchestrator，然后完成
+  runner 独立 checkpoint/input replay、可信密码学时间 verifier、immutable epoch
+  registry/自动轮换和长期 replay 性能优化；不得退回人工日冻结或人工签发。
+- 设计、合同、feed 示例、运行命令与边界详见
+  `docs/ootang_prequential_deploy_engineering.md`。
+
 ## 2026-08-26 E2-A 追加式 live 工程基础
 
 - 新增显式阶段 `ootang-prequential-live`；默认链仍严格保持
@@ -35,11 +99,10 @@
   dry-run 和真实缺前提 poll 均通过。真实 poll 自动等待且不创建 ledger。E1 四项
   输出与 97 路径聚合哈希保持不变；完整命令和哈希见
   `docs/ootang_prequential_live_engineering.md`。
-- 下一步是机器生成的 content-addressed 五种子部署 bundle 与 issue producer：固定
-  seeds 0--4、不选 best seed，绑定输入 schema、checkpoint 推理、可见时间与不可变
-  epoch 目录，并实现安全自动轮换。随后再接 pinned cryptographic time verifier。
-  这两步都不得退回人工日冻结。长寿命部署前还需把当前全量科学重放从
-  O(D·N) 优化为单次 O(N) 扫描。
+- 后续 E2-B1 已完成机器生成的 content-addressed 五种子部署 bundle 与 issue
+  producer；仍缺 outcome materializer、runner 独立推理复核、安全自动 epoch 轮换
+  和 pinned cryptographic time verifier。这些步骤都不得退回人工日冻结。长寿命
+  部署前还需把当前全量科学重放从 O(D·N) 优化为单次 O(N) 扫描。
 
 ## 2026-08-26 全自动 prequential 机器闭环首版
 
