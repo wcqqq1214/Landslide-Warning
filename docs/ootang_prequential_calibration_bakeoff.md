@@ -177,18 +177,21 @@ G0 PASS、G1--G4 BLOCKED、G5a 未授权。E1 四产物哈希未变，97 条保�
 仍为 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
 最终只读 P0/P1 审计无开放问题。
 
-## 7. 下一道机器门禁
+## 7. E2 shadow 已实现与下一道机器门禁
 
-下一步应建立新的、版本化的 E2 calibration shadow 协议，而不是人工冻结：
+上述后续协议现已由 `ootang-prequential-calibration-shadow-v1` 和 cycle v2 实现：
+三套状态从 verified live issue 读取同一固定 point forecast，在任何同目标 actual
+之前原子写入独立 issue-only 链；actual 公开后才由机器 reveal/update，漏签、修订、
+epoch 变化和重放冲突分别自动排除、重评分、冷启动或 fail closed。coverage gap、
+interval score、availability、30 日 rolling 和至少 180 个共同未来目标日的门槛已在
+首个 shadow outcome 前版本化预声明，全程不需要人工选日、冻结或批准。
 
-1. 让 ACI、AgACI-EWA 和 SPCI 三套状态都从同一真实 E2 issue 读取固定 point
-   forecast，并在 outcome seal 前写入独立 issue-only hash chain；
-2. outcome materializer 公开 actual 后再由机器更新三套状态，任何缺失、修订、
-   epoch 变化或重放不一致都自动等待或 fail closed；
-3. 在看到 E2 结果前冻结 coverage gap、interval score、availability、rolling
-   stability、最低支持量和 promotion/non-inferiority 判据；
-4. 只有前瞻 E2 达到预声明门槛，且 runner-independent replay 等工程门禁关闭后，
-   才允许创建新的校准版本；绝不改写当前 live v1 或历史 E1。
+当前 shadow 仍是 engineering-only：激活时已有 issue、backfill 和 revision 不计未来
+支持，任何 gate 达标也不会选择或自动晋升。下一道机器门禁是 runner-independent
+checkpoint/input replay；其后还需可信密码学时间、immutable epoch registry/自动
+轮换和长链扫描优化。只有这些门禁与未来支持同时满足，才可创建新的校准协议版本；
+绝不改写当前 live v1、shadow v1 或历史 E1。完整合同见
+`docs/ootang_prequential_calibration_shadow_engineering.md`。
 
 ## 8. 主要论文来源
 

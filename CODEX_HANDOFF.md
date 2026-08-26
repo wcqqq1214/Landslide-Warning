@@ -3,10 +3,98 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `90497f9 feat: add autonomous outcome cycle`
-**State:** the E1 calibration bakeoff is implemented and fully verified; E2-B2 remains
-the committed machine outcome/fixed-point baseline. Nothing in this continuation has
-been pushed.
+**Committed baseline before this increment:** `fd6f919 feat: add prequential calibration bakeoff`
+**State:** E2 calibration shadow v1 and additive cycle v2 are implemented and fully
+verified on top of the committed E1 bakeoff/E2-B2 baseline. Nothing in this
+continuation has been pushed.
+
+## 2026-08-26 E2 calibration shadow and cycle v2 continuation
+
+Two explicit-only stages were added:
+
+```text
+ootang-prequential-calibration-shadow
+ootang-prequential-cycle-v2
+```
+
+`main.py` now exposes 23 selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The shadow stage is a separate
+runtime, configuration, runner and SQLite application id. It consumes only the fully
+verified E2-A live projection and never edits live/deploy/cycle v1, the fixed
+calibration core, E1 outputs, v4/v5 or Vajont.
+
+The fixed candidates are `aci_v1_control`, `agaci_ewa_variant_v1` and
+`spci_qrf_v1`, with eight independent station states each. For every target, one
+transaction durably records opened + 24 candidate issues + sealed before any matching
+actual can be read. A verified live settlement then produces opened + 24 reveals +
+24 state updates + settled. Activation-outstanding issues are explicitly not future
+support; missed settlements become ineligible backfills without fabricated issues or
+state changes; revisions append 24 retrospective rescores with identical before/after
+state. Live drift resets all three methods automatically.
+
+The independent ledger uses SQLite STRICT, WAL/FULL, canonical finite JSON, exact
+schema, transaction digests, a global SHA chain, an issue-only scientific chain,
+update/delete triggers and a conflicting insert/replace guard. Public reads and writes
+verify all history and mathematically replay every candidate state from genesis.
+Exact retries keep the first event/time; partial retries, changed semantics, chain or
+state drift, hostile schema, foreign databases and deep/non-finite payloads fail closed.
+Shadow epoch changes close and cold-start automatically only when no issue is
+outstanding.
+
+Backlog actions are merged by live source sequence across issue seals, settlements,
+backfills and revisions. This closed an independently reproduced cursor defect where a
+later backfill could otherwise skip an earlier revision. One call handles at most 512
+actions and returns `work_remaining/exit 0` for scheduler continuation. The deterministic
+progress token excludes status/poll times, ledger recorded times, raw SQLite bytes and
+anchor-only churn. Two runs with different shadow timestamps produced identical tokens
+after genesis, issue, settlement and revision.
+
+Cycle v2 binds the unchanged cycle-v1 profile and adds four shadow barriers around the
+existing source/outcome/issue transitions, giving this exact 11-stage order:
+
+```text
+shadow_before_source -> source_ingest -> bundle_ensure
+-> live_reconcile_before_outcome -> shadow_after_live_before_outcome
+-> outcome_materialize -> live_reconcile_after_outcome -> shadow_after_outcome
+-> issue_produce -> live_seal_issue -> shadow_after_issue
+```
+
+It reuses the v1 outer lock, keeps live/shadow runtime roots separate, fences a shadow
+snapshot with base-token before/after reads, and treats `work_remaining` plus an
+unchanged scientific token as an integrity contradiction rather than convergence.
+Busy remains exit 3; integrity/config errors remain exit 2. No operator date, freeze,
+approve, backdate, force or promotion control was introduced.
+
+The predeclared evaluation contract requires common support, at least 180 joint future
+target dates and 180 observations per station/method, a 30-day rolling window,
+absolute coverage gap <=0.05, challenger-vs-ACI coverage-gap margin <=0.02, interval
+score ratio <=1.0, availability >=0.95, and all stations passing. It computes only
+engineering readiness. Selection, promotion, E2 live evidence, real activation and
+formal warning are hard false even if a gate later passes.
+
+Configuration SHA-256 values:
+
+- calibration shadow: `28c02510f81e1832220913d4bfde69bc8abe9a2269aa8279aabc297f60113857`;
+- cycle v2: `875daa95416e58e3c80a4a68f59874047daa1bbb5b395878f6a9265605279242`;
+- unchanged base cycle v1: `2e4a0da22034a3063f612a723f007bf20b600c1dbdb7c62761368aa7a37810ef`.
+
+Final verification is ledger/runner/cycle-v2 14/13/23 (50/50), pipeline 29/29,
+combined prequential/deployment/shadow 269/269, and full repository 635/635 in
+330.833 seconds. Ruff, compileall, JSON validation and diff-check passed. A real empty
+runtime completed one exact 11-stage iteration as `converged_waiting`; shadow status was
+`waiting_for_live_prerequisites`, with evidence and promotion false. Formal-v5
+preflight remains 23/23 with G0 PASS, G1--G4 BLOCKED and G5a unauthorized. The eight E1
+artifact hashes and 97-path aggregate remain unchanged. Final independent review found
+P0/P1/P2 = 0/0/0.
+
+The next machine-only gate is runner-independent checkpoint/input replay. After that,
+trusted cryptographic time, immutable automatic epoch registry/rotation, scheduling
+entrypoint authorization and O(N^2) long-chain scan removal remain. The existing live
+v1 ledger is still a trusted-writer hash chain, not externally authenticated storage;
+do not claim tamper-proof E2 evidence. Never substitute manual dates, freezing,
+approval, signatures or fabricated backfill. The user-owned untracked
+`data/vajont_fig5a_curves_2_3_4_5_58_mm_velocity.xlsx` and `review.md` were not read,
+modified or staged.
 
 ## 2026-08-26 E1 calibration bakeoff continuation
 
@@ -69,6 +157,8 @@ stability and minimum-support gates. It must issue all shadow candidates before 
 outcome seal and update them only after machine materialization. It must not manually
 freeze dates, rewrite E1/live v1, or promote a method from this viewed replay. Full
 details are in `docs/ootang_prequential_calibration_bakeoff.md`.
+That next step is now implemented by the E2 shadow/cycle-v2 section above; this
+paragraph is retained as the historical E1 decision boundary.
 
 Final independent P0/P1 review closed two defects before those hashes were recorded:
 the issue phase now materializes an issue-only column whitelist and constructs the

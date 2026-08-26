@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 21)
+        self.assertEqual(len(pipeline.STAGES), 23)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -552,6 +552,54 @@ class PipelineTests(unittest.TestCase):
             self.assertIn("config/ootang_prequential_cycle.v1.json", stage.inputs)
             self.assertIn("config/ootang_prequential_deploy.v1.json", stage.inputs)
             self.assertIn("config/ootang_prequential_live.v1.json", stage.inputs)
+
+    def test_calibration_shadow_and_cycle_v2_are_explicit_machine_only_stages(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        shadow = pipeline.STAGE_BY_NAME[
+            "ootang-prequential-calibration-shadow"
+        ]
+        cycle_v2 = pipeline.STAGE_BY_NAME["ootang-prequential-cycle-v2"]
+
+        self.assertEqual(
+            names.index(shadow.name),
+            names.index("ootang-prequential-cycle") + 1,
+        )
+        self.assertEqual(names.index(cycle_v2.name), names.index(shadow.name) + 1)
+        self.assertEqual(
+            shadow.script,
+            "code/monitoring/ootang_prequential_calibration_shadow.py",
+        )
+        self.assertEqual(
+            shadow.outputs,
+            ("runtime/ootang_prequential_calibration_shadow_v1/status.json",),
+        )
+        self.assertEqual(
+            shadow.arguments,
+            (
+                "--config",
+                "config/ootang_prequential_calibration_shadow.v1.json",
+            ),
+        )
+        self.assertEqual(
+            cycle_v2.script,
+            "code/monitoring/ootang_prequential_cycle_v2.py",
+        )
+        self.assertEqual(
+            cycle_v2.outputs,
+            ("runtime/ootang_prequential_live_v1/cycle_v2_status.json",),
+        )
+        self.assertEqual(
+            cycle_v2.arguments,
+            ("--config", "config/ootang_prequential_cycle.v2.json"),
+        )
+        for stage in (shadow, cycle_v2):
+            self.assertFalse(stage.enabled_by_default)
+            self.assertFalse(stage.formal_warning_output)
+        self.assertIn(
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            cycle_v2.inputs,
+        )
+        self.assertIn("config/ootang_prequential_cycle.v1.json", cycle_v2.inputs)
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):
         names = [stage.name for stage in pipeline.STAGES]

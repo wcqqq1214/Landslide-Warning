@@ -82,12 +82,19 @@ machine source/model manifests + separated issue/outcome inboxes
        ├─ issue/outcome receipts + active pointers + inboxes
        └─ cycle/status + ledger + anchors + locks
 
+verified E2-A live projection + fixed calibration contract
+  ├─ monitoring/ootang_calibration_shadow_ledger.py
+  ├─ monitoring/ootang_prequential_calibration_shadow.py
+  ├─ monitoring/ootang_prequential_cycle_v2.py
+  └─ runtime/ootang_prequential_calibration_shadow_v1/
+       └─ independent ledger + replayable status + runner lock
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains twenty-one independently selectable stages. Its no-argument chain is exactly
+`main.py` contains twenty-three independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -111,6 +118,9 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_outcome_materializer.py` | 从已验证 immutable source provenance 按 revision 优先、sealed outstanding、连续 backfill 的固定规则机器物化 outcome | per-target revision receipt 链、唯一 tip、active pointer 与 inbox 支持崩溃恢复；activation watermark 及更早修订进入 `waiting_epoch_rotation_required`，不人工冻结或回写 epoch |
 | `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | engineering-only；runner 独立 checkpoint/input 重放、可信时间 verifier 与自动 epoch registry/rotation 仍未实现，E2 evidence 固定 false |
 | `code/monitoring/ootang_prequential_cycle.py` | 以固定七步顺序反复调用 source/bundle/live/outcome/issue，直到验证科学状态达到固定点 | 时间戳、raw ledger head 和失败 anchor retry 不影响 progress token；有界 continuation、跨调用振荡检测、非阻塞锁、严格状态复验；无人工日期/冻结/批准字段 |
+| `code/monitoring/ootang_calibration_shadow_ledger.py` | 为三种固定校准器提供独立 SQLite STRICT 追加账本、事务摘要、全局链和完整 schema/chain 重放 | 与 live v1 application id 和事件类型隔离；冲突 insert/replace、update/delete 与同键异语义均拒绝；hash chain 不证明作者身份或可信时间 |
+| `code/monitoring/ootang_prequential_calibration_shadow.py` | 从 verified live projection 按 source sequence 自动执行 24 项 issue、reveal、状态更新、backfill 排除、revision rescore、drift reset 与 shadow epoch 冷启动 | activation 时已有 issue 不计未来支持；漏签 settlement 不补 issue；revision 不改在线状态；只计算 engineering readiness，不选择或晋升 |
+| `code/monitoring/ootang_prequential_cycle_v2.py` | 在 v1 七步闭环周围插入四个 shadow reconcile，形成 11 阶段机器 fixed point | 复用同一 outer lock；live/shadow runtime 分离；`work_remaining` 有界续跑，稳定 token 与未完成工作冲突时 fail closed；无人工日期/冻结/批准字段 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -205,6 +215,20 @@ active pointer 和 inbox 组成崩溃可恢复提交；早于或等于 activatio
 ensure → live reconcile → outcome materialize → live reconcile → issue produce →
 live seal 固定顺序自动收敛；可恢复的 pre-genesis 空 ledger 不会在子阶段前
 被阻断。缺输入是正常 waiting，不会转成人工冻结、日期或批准工作流。
+
+E2 calibration shadow v1 在不修改 live/deploy/cycle v1 和校准 core 的前提下，
+把 ACI、AgACI-EWA 与 SPCI-QRF 的 24 套 station-local 状态接到 verified live
+projection。独立 ledger 先持久化同目标全部 candidate issue，随后才消费匹配的
+settlement；漏签目标只记 backfill-ineligible，revision 只追加重评分且不更新在线
+状态。runner 将 issue、settlement、backfill 和 revision 按 live sequence 统一合并，
+避免长时间离线追赶时游标越过较早事件。cycle v2 在 source/outcome/issue 边界前后
+自动对账，崩溃后从两条完整重放链恢复，不需要人工逐日冻结或批准。
+
+预声明评估固定使用共同支持、至少 180 个未来目标日、逐站 coverage gap、相对 ACI
+interval score、availability 和 30 日 rolling gate。状态可自动给出 engineering
+readiness，但 schema 和配置固定 `selection_performed=false`、
+`promotion_performed=false`、`e2_live_evidence_eligible=false`；达到工程门也不会
+自动改写生产校准器。
 
 当前 E2-A runner 仍未独立重放 producer 的 checkpoint/input；时间锚接口也没有
 pinned provider/密码学回执验证，实现或模型变化尚未自动创建 immutable 新

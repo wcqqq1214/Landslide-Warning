@@ -1,0 +1,52 @@
+{
+  "schema_version": "ootang_prequential_cycle_profile_v2",
+  "profile_id": "ootang-prequential-cycle-v2",
+  "profile_version": "2.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "e2_calibration_shadow_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "base_cycle_profile": {
+    "path": "config/ootang_prequential_cycle.v1.json",
+    "expected_sha256": "2e4a0da22034a3063f612a723f007bf20b600c1dbdb7c62761368aa7a37810ef"
+  },
+  "calibration_shadow_profile": {
+    "path": "config/ootang_prequential_calibration_shadow.v1.json",
+    "expected_sha256": "28c02510f81e1832220913d4bfde69bc8abe9a2269aa8279aabc297f60113857"
+  },
+  "runtime": {
+    "cycle_status": "cycle_v2_status.json"
+  },
+  "cycle": {
+    "stage_order": [
+      "shadow_before_source",
+      "source_ingest",
+      "bundle_ensure",
+      "live_reconcile_before_outcome",
+      "shadow_after_live_before_outcome",
+      "outcome_materialize",
+      "live_reconcile_after_outcome",
+      "shadow_after_outcome",
+      "issue_produce",
+      "live_seal_issue",
+      "shadow_after_issue"
+    ],
+    "max_iterations": 64,
+    "stable_iterations_to_stop": 1,
+    "progress_token_schema_version": "ootang_prequential_cycle_progress_v2",
+    "busy_exit_code": 3,
+    "blocked_exit_code": 2
+  },
+  "engineering_capabilities": {
+    "calibration_shadow_orchestration_implemented": true,
+    "runner_independent_checkpoint_inference_replayed": false,
+    "trusted_anchor_receipt_verified": false,
+    "automatic_epoch_rotation_implemented": false,
+    "automatic_calibration_promotion_implemented": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false
+  }
+}

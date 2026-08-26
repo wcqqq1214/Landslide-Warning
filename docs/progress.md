@@ -5,6 +5,53 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 E2 calibration shadow 与 cycle v2
+
+- 本增量基于 `fd6f919 feat: add prequential calibration bakeoff`，新增显式非默认
+  阶段 `ootang-prequential-calibration-shadow` 和 `ootang-prequential-cycle-v2`；
+  当前共 23 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。全程没有人工选日、冻结、批准、
+  补签或自动 promotion 入口。
+- shadow 配置 SHA-256 为
+  `28c02510f81e1832220913d4bfde69bc8abe9a2269aa8279aabc297f60113857`，精确绑定
+  live/deploy/bakeoff v1、不可变 calibration core、`pyproject.toml` 和 `uv.lock`；
+  cycle v2 配置 SHA-256 为
+  `875daa95416e58e3c80a4a68f59874047daa1bbb5b395878f6a9265605279242`，精确绑定
+  cycle v1 与 shadow v1。
+- ACI v1 control、AgACI-EWA variant 和 SPCI-QRF 分别维护 8 个 station-local
+  状态。每个目标先在单个事务中写 `opened + 24 candidate issue + sealed`，匹配的
+  live settlement 到达后才写 `opened + 24 reveal + 24 state update + settled`。
+  激活时已存在的 outstanding issue 固定不计未来支持；漏签 settlement 只记
+  backfill-ineligible，不补造 issue 或更新状态；revision 只追加 24 条 rescore，
+  state-before/state-after 相同且不进入原始充分统计。live drift 自动同时重置三方法。
+- 独立 SQLite STRICT shadow ledger 使用不同 application id、WAL/FULL、canonical
+  finite JSON、事务摘要、全局链、issue-only 链、conflicting insert/replace guard
+  和 update/delete trigger。每次公开读写都从 genesis 完整验证并数学重放；完整
+  同语义重试保留首次事件/时间，部分事务、同键异语义、schema/chain/state 漂移均
+  fail closed。上游 epoch 在无 outstanding 时由机器 close+cold-start，有 outstanding
+  时拒绝跨 epoch。
+- runner 把 issue seal、settlement、backfill 和 revision 按 live source sequence
+  统一合并，关闭了长时间离线时较晚 source 推过较早 revision 的游标缺陷。单次最多
+  512 个动作，合法积压返回 `work_remaining/exit 0`；确定性 progress token 排除
+  poll/status 时间、shadow recorded time、raw SQLite bytes 和无科学变化的 anchor
+  churn。cycle v2 在 v1 七步周围插入四次 shadow reconcile，共 11 个固定阶段；
+  `work_remaining` 与稳定 token 的矛盾会 fail closed，不能误报收敛。
+- 评估合同在首个 shadow outcome 前预声明：共同支持、至少 180 个共同未来目标日和
+  每站每方法 180 个样本、30 日 rolling、coverage absolute gap `≤0.05`、challenger
+  相对 ACI coverage-gap margin `≤0.02`、interval-score ratio `≤1.0`、availability
+  `≥0.95`，并要求逐站通过。它只自动计算 engineering readiness；selection、
+  promotion、E2 live evidence、real activation 和 formal warning 始终为 false。
+- 最终验证：shadow ledger/runner/cycle v2 为 `14/13/23`，合计 `50/50`；pipeline
+  `29/29`；prequential/deploy/shadow 联合回归 `269/269`；全仓 `635/635`
+  （330.833 秒，0 failure / 0 error）。Ruff、compileall、JSON 校验和
+  `git diff --check` 全部通过。真实空 runtime 精确执行 11 阶段，一轮返回
+  `converged_waiting`，shadow 为 `waiting_for_live_prerequisites`，evidence/promotion
+  均为 false。独立最终审查为 P0/P1/P2 `0/0/0`。
+- 正式 v5 fail-closed preflight 仍为 `23/23`，G0 PASS、G1--G4 BLOCKED、G5a
+  未授权；E1 与 97 条保护路径哈希保持不变。下一道机器门禁是 runner-independent
+  checkpoint/input replay；其后仍需可信密码学时间、immutable epoch registry/自动
+  rotation、调度入口权限边界和长链 O(N²) 扫描优化。不得用人工冻结或批准替代。
+
 ## 2026-08-26 E1 prequential 校准 bakeoff
 
 - 新增显式且非默认阶段 `ootang-prequential-calibration-bakeoff`，当前共 21 个

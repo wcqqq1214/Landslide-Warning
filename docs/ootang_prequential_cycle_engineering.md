@@ -127,6 +127,19 @@ runtime root 外逃、root 内部指向科学 object 的 mutable symlink alias�
 blocked/exit 2。无论 waiting、busy 或 blocked，cycle status 中
 `e2_live_evidence_eligible`、`real_activation_ready` 及其他 evidence 标志始终为 false。
 
+### calibration shadow 的 additive cycle v2
+
+E2 calibration shadow 后续通过独立 `config/ootang_prequential_cycle.v2.json`
+扩展本节 v1 orchestrator，而不修改 v1 配置或七步语义。v2 复用同一个 outer
+`cycle_lock`，在 source 前、outcome 物化前、outcome 后和 live issue seal 后插入
+四次 shadow reconcile，共形成 11 个固定阶段。live 与 shadow runtime root 分离，
+组合 progress token 只绑定 verified v1 scientific token 和确定性 shadow projection。
+
+shadow runner 报告 `work_remaining` 时，v2 只有在组合科学 token 实际推进后才可继续；
+若 stage 声称仍有工作但 token 稳定，会按合同矛盾 fail closed，不能误报收敛。完整
+issue-before-reveal、积压顺序、预声明评估门和非晋升边界见
+`docs/ootang_prequential_calibration_shadow_engineering.md`。
+
 ## 6. 验证记录
 
 当前 focused 验证已通过：
@@ -147,7 +160,7 @@ cycle/deploy/live SHA 也与页首及绑定合同一致。独立对抗复审修�
 
 ## 7. 剩余门禁
 
-E2-B2 闭环编排完成后仍有四个独立门禁：
+E2-B2 与 additive calibration-shadow cycle v2 完成后仍有四个独立门禁：
 
 1. runner-independent checkpoint/input replay，不仅信任 producer 结果；
 2. pinned provider 与可验证签名的可信密码学时间；

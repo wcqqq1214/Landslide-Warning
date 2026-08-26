@@ -40,6 +40,9 @@ E2-B1 仍是工程基础设施，不是 E2 live evidence，也不是正式预警
 后续 E2-B2 已增加 source pointer v2/receipt 链加固、machine-only outcome
 materializer 和 fixed-point cycle。它们完成机器物化与调度，但不改变上述
 evidence/activation 门禁；详见 `docs/ootang_prequential_cycle_engineering.md`。
+其后的 calibration shadow v1/cycle v2 已把三种固定校准器接入独立机器
+issue/reveal 账本；同样不改变这些门禁，详见
+`docs/ootang_prequential_calibration_shadow_engineering.md`。
 
 ## 2. 机器数据流
 
@@ -287,6 +290,11 @@ anchor retry。空输入是一轮 `converged_waiting`；64 轮合法单调进展
 最终回归为相关联合 197/197、全仓 566/566；outcome/cycle focused 分别为 31/31
 和 23/23，独立对抗复审最终无 P0/P1。本文第 6 节 136/136 与 505/505 仍只是
 E2-B1 历史记录。
+
+后续 calibration shadow v1 已用独立 ledger 前瞻运行 ACI、AgACI-EWA 与 SPCI，
+cycle v2 在本节闭环的 source/outcome/issue 边界插入四个因果对账点。该增量不修改
+本文件的 source/model/issue 合同；其 `50/50` focused、`269/269` 联合和
+`635/635` 全仓验证记录见 shadow 工程文档。
 
 仍需完成：
 
