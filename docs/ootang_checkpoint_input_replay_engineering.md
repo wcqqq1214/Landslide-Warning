@@ -179,3 +179,9 @@ scheduler entry authorization 和长链 O(N²) 扫描优化。
 推荐下一提交只实现可信密码学时间适配层：固定 provider/trust root/签名算法、canonical
 request、最大偏差、离线/回滚策略和 immutable receipt；先以 additive shadow 验证，
 不得直接把 `trusted_anchor_receipt_verified`、E2 evidence 或 real activation 置为 true。
+
+> 后续状态（2026-08-26）：上述 additive RFC 3161 shadow 已由
+> `ootang-trusted-time-shadow-v1` 实现，未改写本节历史验收数字，也未接入 cycle v3
+> 或提升任何 E2/activation/formal 标志。当前下一门禁是 immutable epoch registry、
+> 自动 rotation 与新版 designated cycle；详见
+> `docs/ootang_trusted_time_shadow_engineering.md`。

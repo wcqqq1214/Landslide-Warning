@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 26)
+        self.assertEqual(len(pipeline.STAGES), 27)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -646,6 +646,61 @@ class PipelineTests(unittest.TestCase):
         self.assertIn(
             "config/ootang_prequential_calibration_shadow.v1.json",
             cycle_v3.inputs,
+        )
+
+    def test_trusted_time_shadow_is_explicit_machine_only_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-trusted-time-shadow"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-prequential-cycle-v3") + 1,
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "live_prequential_trusted_time_shadow_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_trusted_time_shadow.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_trusted_time_shadow.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            (
+                "runtime/ootang_prequential_live_v1/"
+                "trusted_time_shadow_status.json",
+            ),
+        )
+        for required in (
+            "config/ootang_trusted_time_shadow.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/trust/sigstore_tsa_2025_manifest.v1.json",
+            "config/trust/sigstore_tsa_2025_leaf.pem",
+            "config/trust/sigstore_tsa_2025_root.pem",
+            "code/monitoring/ootang_trusted_time_shadow_core.py",
+            "tools/ootang_trusted_time_runtime/pyproject.toml",
+            "tools/ootang_trusted_time_runtime/uv.lock",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            ["ootang-trusted-time-shadow", "ootang-prequential-cycle-v3"]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            ["ootang-prequential-cycle-v3", "ootang-trusted-time-shadow"],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

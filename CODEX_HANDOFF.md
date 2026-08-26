@@ -3,10 +3,83 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `9a69725 feat: add autonomous calibration shadow`
-**State:** runner-independent checkpoint/input replay v1、verified-live v1 与 additive
-cycle v3 已在上述 calibration-shadow baseline 上实现，正在做最终全仓复跑与提交；
-本 continuation 尚未 push。
+**Committed baseline before this increment:** `bace358 feat: add independent issue replay gate`
+**State:** standalone RFC 3161 trusted-time shadow v1 已在上述 replay-gate baseline 上
+实现并完成最终验证，将作为本 continuation 的独立本地 commit；尚未 push。该能力仍
+未进入 E2 资格或不可绕过 cycle，所有 activation/formal 字段保持 false。
+
+## 2026-08-26 RFC 3161 trusted-time shadow continuation
+
+One explicit-only stage was added without changing the default pipeline:
+
+```text
+ootang-trusted-time-shadow
+```
+
+`main.py` now exposes 27 selectable stages; its no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The stage timestamps only a
+replay-gated verified-live completion and its exact live issue seal. It is standalone,
+additive, absent from cycle v3, reads no outcome, and has no operator date/freeze/
+approval/backdate/signing interface.
+
+The v1 protocol fixes the Sigstore production RFC 3161 endpoint, policy OID
+`1.3.6.1.4.1.57264.2`, SHA-256 message imprint, a machine-generated 256-bit nonce,
+`certReq=true`, exact GRANTED status, mandatory accuracy at most one second, and a
+versioned `Asia/Shanghai = UTC+08:00` target boundary. Trust is pinned to
+`sigstore/root-signing@ba3066c420970c13772ba0625f09f1ec97193116`. Manifest, leaf-DER
+and root-DER hashes are respectively `33d22cc6dbdf8bf016b0cb96e291ca4538109ffb5d22a639edb34d2f42c80eef`,
+`85f927bc07ab62cac3b44356c10efc81b2c6883fda7ab9e6d870d9d13acd05b7`, and
+`2aca8fea5d3ce48b01cc77076293c280e6c23ffe44034757ee7833ca9f45d633`. Core constants
+reject a coordinated config/manifest/self-signed trust swap.
+
+The historical root `pyproject.toml` and `uv.lock` remain byte-identical at
+`bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0` and
+`f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c`. A stdlib
+launcher verifies its core/subproject/lock bootstrap hashes, checks `uv 0.12.5`, clears
+`PYTHON*`, `UV_*` and `VIRTUAL_ENV`, and executes an `--isolated --frozen` environment
+under exact CPython 3.10.20 with `python -I`. Launcher/core/subproject/sub-lock hashes
+are `92a0a755881f549b272bfbd09d11b2590e06e9ecb06409421f6bd18e261b1f1b`,
+`797cedbc1e24fac6e4cbf042f48981786b662ce8b0fa913b988bce12818023c7`,
+`236606b46ed945fbbce46868a1a8ab5aac9a1131f39352f324e95a6001b59625`, and
+`aebfc5d498735f694572ee8b53c328da5fa66a84da05d202605a2500e8b78f93`.
+
+Request JSON/TSQ, content-addressed raw TSR, target link and receipt are create-only.
+Every public reload reconstructs the target envelope from the fully replayed live ledger
+and verified-live intent/completion history before redoing message, nonce, policy,
+pinned leaf, leaf/root signature relation, TSA DirectoryName, CMS signature/chain,
+accuracy and time-boundary checks. It does not trust receipt booleans. Canonical-byte,
+symlink, inode replacement, nonregular lock, relocated object, fabricated envelope,
+coordinated trust swap, dependency/module injection and crash-recovery tests fail closed.
+HTTP 408/425/429/5xx are retryable waiting; deterministic protocol/integrity drift is
+exit 2; lock contention is exit 3. The full runtime namespace and shared lock path are
+core constants. A process-level total transport deadline prevents slow-drip HTTP reads
+from holding the global lock indefinitely; an unavailable signal-mask inspection or an
+inherited blocked `SIGALRM` fails closed before any request is sent.
+
+The versioned public dummy production probe has TSQ/TSR SHA-256
+`bdc94a42cd34ba1a947c521b19553edea9a7699c621c8ff66ba4458382acbfa3` and
+`4535d7ddc291159db625a9b68b403d5db14a8544c3be102604377a4a7d317afc`; it is
+interoperability evidence, not Ootang science. Focused verification is currently core
+`22/22` and launcher+pipeline `39/39`. The final full repository is `724/724` in
+345.293 seconds (0 failure / 0 error). Ruff, format, compileall, strict JSON `3/3`,
+diff-check, root/isolated lock checks and the formal-v5 `23/23` preflight pass; G0
+remains PASS, G1--G4 BLOCKED and G5a unauthorized. All 97 protected paths remain
+unchanged at aggregate
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+Independent read-only review is P0/P1/P2 `0/0/1`; the sole P2 is the documented
+ESSCertIDv2 limitation.
+
+`trusted_anchor_receipt_verified`, `e2_live_evidence_eligible`,
+`real_activation_ready`, and `formal_warning_output` remain false even for a valid
+receipt. A CMS signature proves the pinned TSA's signed time claim, not objective UTC
+correctness. The implementation does not separately parse the RFC 5816 ESSCertIDv2
+signed attribute; exact embedded-leaf pinning and CMS verification narrow that residual
+risk, which remains documented rather than overstated.
+
+The next machine-only gate is an immutable epoch registry with bundle prebuild and safe
+automatic rotation. Then add cycle v4 trusted-time qualification and scheduler entry
+authorization; later optimize O(N^2) full-chain scans. Never replace these gates with
+manual dates, freezes, approvals, signatures or fabricated backfill.
 
 ## 2026-08-26 designated replay gate and cycle v3 continuation
 
@@ -977,20 +1050,20 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    xargs shasum -a 256 < docs/v5_v0_protected_paths.txt | shasum -a 256
    ```
 
-3. Treat the designated checkpoint/input replay gate as implemented and keep its
-   public true-forward/source-lineage reload, causal-time fences, semantic progress
-   projection and adversarial tests intact. Do not weaken it into producer self-report.
-4. Add a pinned, cryptographically verified time-receipt adapter before any
-   `engineering_blind_time_order_candidate` can become E2 evidence. Keep operation
-   machine-only. No new data means
-   `waiting_for_new_data`; schema/hash/state conflict means
-   `blocked_integrity`; neither state should trigger a human date-selection
-   workflow or fabricated backfill.
-5. Add an immutable automatic epoch registry with prebuild and safe rotation, then
-   scheduler entry authorization that prevents old live/cycle CLI bypass. Optimize
-   repeated receipt/ledger full scans so long-lived operation does not grow as
-   O(N^2). Do not use historical OOF CSV rows as future predictions, select a best
-   seed, or backdate a missed target.
+3. Treat both the designated checkpoint/input replay gate and standalone RFC 3161
+   shadow as implemented. Keep public live/guard-envelope reconstruction, true forward,
+   pinned trust, isolated runtime, causal-time and adversarial tests intact. Do not
+   weaken either gate into producer or receipt self-report.
+4. Implement a machine-only immutable epoch registry with bundle prebuild and safe
+   automatic rotation. Code/model/profile/trust/runtime changes must atomically close
+   the old epoch and cold-start a fully verified new one; failure waits or blocks and
+   must never invoke human date selection, freezing, approval or fabricated backfill.
+5. After the registry exists, add a separately versioned cycle v4 that makes the
+   trusted-time receipt an explicit qualification input, then enforce scheduler entry
+   authorization so old live/cycle CLIs cannot bypass it. Optimize repeated receipt/
+   ledger full scans so long-lived operation does not grow as O(N^2). Do not use
+   historical OOF rows as future predictions, select a best seed, or backdate a missed
+   target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already

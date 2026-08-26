@@ -445,6 +445,37 @@ STAGES = (
         enabled_by_default=False,
     ),
     Stage(
+        "ootang-trusted-time-shadow",
+        "code/monitoring/ootang_trusted_time_shadow.py",
+        "为 replay-gated issue seal 获取并离线复验 RFC 3161 可信时间回执（影子工程门，非正式）",
+        inputs=(
+            "config/ootang_trusted_time_shadow.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/trust/sigstore_tsa_2025_manifest.v1.json",
+            "config/trust/sigstore_tsa_2025_leaf.pem",
+            "config/trust/sigstore_tsa_2025_root.pem",
+            "code/monitoring/ootang_trusted_time_shadow_core.py",
+            "tools/ootang_trusted_time_runtime/pyproject.toml",
+            "tools/ootang_trusted_time_runtime/uv.lock",
+        ),
+        outputs=(
+            "runtime/ootang_prequential_live_v1/"
+            "trusted_time_shadow_status.json",
+        ),
+        arguments=(
+            "--config",
+            "config/ootang_trusted_time_shadow.v1.json",
+        ),
+        warning_artifact_scope=(
+            "live_prequential_trusted_time_shadow_engineering"
+        ),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
         "ootang-operational-v4",
         "code/warning/operational_run_v4.py",
         "运行藕塘 v4 严格逐点加速度四指标/双轴空间实施版（非正式）",

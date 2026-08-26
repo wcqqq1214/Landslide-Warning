@@ -155,12 +155,13 @@ E2 ledger 必须 append-only：原 issue、首次接受的 outcome、后续修�
 
 E2 只评价位移预测、区间覆盖、残差新颖性、漂移和拒绝行为。它仍然不是 E3。
 
-当前 E2-A 的可执行边界是：严格加载结构化 source/model/issue/outcome 文件、
-追加和完整重放账本、自动等待/回填/修订及外部锚接口。它不解析 issue 引用的
-input manifest 语义，也不从五个 checkpoint 重放预测；HTTPS 回执没有 pinned
-provider 或密码学 verifier；模型/源码/环境变化会 fail closed，尚未由机器自动
-建立新的 immutable epoch。因此所有 E2-A settlement 固定
-`e2_live_evidence_eligible=false`，即使时间顺序可形成工程候选也不得升格。
+当前原始 E2-A v1 入口仍只负责结构化 source/model/issue/outcome、追加账本、自动
+等待/回填/修订和非密码学外部锚接口。additive designated entry 已独立重放 issue
+引用的 input manifest 与五个 checkpoint，并有 standalone RFC 3161 shadow 对固定
+provider/policy/leaf/root 的签名回执做离线复验；但旧 E2-A/cycle CLI 尚可绕过，可信
+时间也尚未进入新的不可绕过 cycle/epoch 合同。模型/源码/环境变化仍会 fail closed，
+尚未由机器自动建立 immutable epoch。因此所有 E2-A settlement 固定
+`e2_live_evidence_eligible=false`，即使 shadow 时间顺序验证成功也不得升格。
 
 ### 3.4 E3：独立灾害结局
 
@@ -601,9 +602,10 @@ validate_contract
 3. E2-A 工程（已实现）：append-only event ledger、幂等恢复、outcome revision、
    issue/outcome 隔离、自动等待和不可信外部锚接口；
 4. E2-B 机器工程（部分门禁已实现）：content-addressed 五种子模型、input-manifest
-   语义、机器 outcome/cycle，以及指定入口的 checkpoint inference replay 已实现；
-   pinned cryptographic time verifier、immutable epoch registry/自动轮换、scheduler
-   entry authorization 与长链性能门仍待实现；
+   语义、机器 outcome/cycle、指定入口 checkpoint inference replay，以及 standalone
+   pinned RFC 3161 cryptographic-time shadow 已实现；immutable epoch registry/自动
+   轮换、将可信时间接入新版 designated cycle、scheduler entry authorization 与长链
+   性能门仍待实现；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
@@ -627,6 +629,11 @@ validate_contract
 10. [Nava 等，位移残差揭示滑坡 regime shift](https://doi.org/10.1007/s10346-024-02353-2)：以预测残差识别相对既有动力学的异常偏离，并关注正向低估和多测点群体行为，为单侧 residual monitoring 提供直接领域动机；其站点、频率、模型与阈值不能移植为藕塘结论。
 11. [Tang 等（2026），单质心 K-means + EVT 自适应无监督阈值](https://doi.org/10.1016/j.jrmge.2026.01.049)：提出随数据更新的无监督基线和 EVT 概率阈值，用位移、速度、加速度及降雨识别蠕动偏离；它可作为后续 challenger，但不能用自身异常阈值替代独立结局。
 12. [Liu 与 Paparrizos（2024），TSB-AD](https://proceedings.neurips.cc/paper_files/paper/2024/hash/c3f3c690b7a99fba16d0efd35cb83b2c-Abstract-Datasets_and_Benchmarks_Track.html)：指出时间序列异常检测常受数据缺陷、偏置指标和不一致 benchmark 影响，并发现简单统计方法/架构常有竞争力；这要求本项目保留 persistence、统一时序评价且不使用有利的事后评分修饰。
+13. [RFC 3161](https://www.rfc-editor.org/rfc/rfc3161.html) 与
+    [RFC 5816](https://www.rfc-editor.org/rfc/rfc5816.html)：规定消息摘要、策略、
+    nonce、TSA 签名、证书标识、`genTime` 与 accuracy 的时间戳请求/验证合同；它们
+    支持自动 proof-of-existence 工程门，但不独立证明 TSA 的上游 UTC 时源绝对正确，
+    也不把工程回执变成预测精度或灾害效能证据。
 
 其中 Nava 的 residual regime-shift 路线和 Tang 的自适应无监督 EVT 路线都是近年
 领域方法，当前不能称为高引共识或通用行业标准；本项目只能把它们作为可检验的
@@ -636,10 +643,11 @@ validate_contract
 ## 14. 本协议的最终边界
 
 在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay，以及 E2-A 的
-live 状态机、append-only ledger、等待/恢复/修订和数学全重放。E2-A 仍是工程
-基础，不是 live 证据：只有 E2-B 关闭 checkpoint 推理、输入语义、可信时间和
-自动 epoch 四项门禁，并真实签发未来日期后，才可能开始积累 append-only 盲态
-运动学证据。
+live 状态机、append-only ledger、等待/恢复/修订、数学全重放和独立 RFC 3161
+回执影子复验。E2-A 仍是工程基础，不是 live 证据：可信时间 capability 尚未成为
+不可绕过的新版 designated cycle/epoch 门。只有 E2-B 进一步完成 immutable epoch
+registry/自动轮换和 scheduler authorization，并真实签发未来日期后，才可能开始
+积累 append-only 盲态运动学证据。
 
 E3 仍然 `BLOCKED`。在独立灾害结局不存在时，最科学的机器行为不是生成五级
 颜色或给 anomaly score 起一个“风险概率”的名字，而是持续预测、诚实量化不

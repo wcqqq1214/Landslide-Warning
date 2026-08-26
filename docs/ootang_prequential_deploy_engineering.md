@@ -317,10 +317,12 @@ cycle v2 在本节闭环的 source/outcome/issue 边界插入四个因果对账�
 `635/635` 全仓验证记录见 shadow 工程文档。
 
 指定入口的 runner-independent checkpoint/input replay 已由 replay/verified-live/
-cycle-v3 实现，但旧 live/cycle CLI 尚未被系统权限禁用。仍需完成：
+cycle-v3 实现，但旧 live/cycle CLI 尚未被系统权限禁用。standalone RFC 3161
+pinned-provider shadow 也已实现并保持 E2/activation false；其离线复验和恢复合同见
+`docs/ootang_trusted_time_shadow_engineering.md`。仍需完成：
 
-1. pinned provider 与可验证签名的可信密码学时间；
-2. immutable epoch registry、预构建与安全自动 rotation；
+1. immutable epoch registry、预构建与安全自动 rotation；
+2. 把可信时间 shadow 接入新的 designated cycle/epoch 资格门；
 3. scheduler entry authorization，禁止绕过指定 replay-gated 入口；
 4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 

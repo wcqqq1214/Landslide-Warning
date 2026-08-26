@@ -5,6 +5,58 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 RFC 3161 可信时间影子门
+
+- 本增量基于 `bace358 feat: add independent issue replay gate`，新增显式、非默认
+  阶段 `ootang-trusted-time-shadow`；当前共 27 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。阶段只对 replay-gated verified-live
+  completion 对应的 issue seal 建立外部 proof-of-existence，不读 outcome，不提供
+  target-date、freeze、approve、force、backdate 或人工签名入口。
+- v1 固定 Sigstore production RFC 3161 endpoint、policy OID
+  `1.3.6.1.4.1.57264.2`、SHA-256 imprint、256-bit nonce、`certReq=true`、仅
+  `PKIStatus=granted`、必须存在且不超过 1 秒的 accuracy，以及冻结的
+  `Asia/Shanghai = UTC+08:00` 目标日边界。trust source 固定到
+  `sigstore/root-signing@ba3066c420970c13772ba0625f09f1ec97193116`；manifest、leaf
+  DER、root DER SHA-256 分别为 `33d22cc6dbdf8bf016b0cb96e291ca4538109ffb5d22a639edb34d2f42c80eef`、
+  `85f927bc07ab62cac3b44356c10efc81b2c6883fda7ab9e6d870d9d13acd05b7`、
+  `2aca8fea5d3ce48b01cc77076293c280e6c23ffe44034757ee7833ca9f45d633`；这些值也在
+  core 中硬固定，不能通过同时替换 config、manifest 和自签证书改变 trust root。
+- 根 `pyproject.toml`/`uv.lock` 保持原字节和
+  `bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0`/
+  `f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c`，避免破坏旧
+  replay/shadow 配置绑定。stdlib launcher 改用 `uv 0.12.5 --isolated --frozen`、精确
+  CPython `3.10.20`、`python -I` 与清理后的子进程环境启动独立子项目；launcher、
+  core、子项目、子锁 SHA-256 分别为
+  `92a0a755881f549b272bfbd09d11b2590e06e9ecb06409421f6bd18e261b1f1b`、
+  `797cedbc1e24fac6e4cbf042f48981786b662ce8b0fa913b988bce12818023c7`、
+  `236606b46ed945fbbce46868a1a8ab5aac9a1131f39352f324e95a6001b59625`、
+  `aebfc5d498735f694572ee8b53c328da5fa66a84da05d202605a2500e8b78f93`。
+- 请求 JSON/TSQ 先 create-only 持久化，原始 TSR 进入 content-addressed object，随后
+  建 target link、receipt 和 status；每次公开 load 都从完整 live ledger 与
+  verified-live guard history 重建科学 envelope，再复验 canonical bytes、路径、
+  nonce、policy、message、单 signer、精确 leaf、leaf→root/root self 签名、TSA name、
+  CMS 签名/证书链、`genTime+accuracy` 和目标日前因果条件。锁 inode 被替换、symlink、
+  非规范 JSON、协调 trust swap、伪造 envelope、对象 relocation、模块注入及崩溃恢复
+  均有对抗测试；联网前若无法读取 signal mask 或发现 `SIGALRM` 被继承屏蔽则立即
+  fail closed，408/425/429/5xx 自动等待重试，确定性篡改则 exit 2，锁忙 exit 3。
+- 公共 production dummy fixture 的 TSQ/TSR SHA-256 为
+  `bdc94a42cd34ba1a947c521b19553edea9a7699c621c8ff66ba4458382acbfa3`/
+  `4535d7ddc291159db625a9b68b403d5db14a8544c3be102604377a4a7d317afc`，已真实联网取得并
+  在隔离环境离线复验；它不是藕塘科学证据。当前 focused 验证为 core `22/22`、
+  launcher+pipeline `39/39`、全仓 `724/724`（345.293 秒，0 failure / 0 error）；Ruff、
+  format、compileall、strict JSON `3/3`、diff-check、根/隔离 lock 检查均通过。正式 v5
+  preflight 为 `23/23`，仍是 G0 PASS、G1--G4 BLOCKED、G5a 未授权；97 个保护路径保持
+  `97/97`，聚合哈希仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。最终独立只读
+  审计为 P0/P1/P2 `0/0/1`，唯一 P2 是下述 ESSCertIDv2 显式解析边界。
+- 即使密码学回执有效，`trusted_anchor_receipt_verified`、
+  `e2_live_evidence_eligible`、`real_activation_ready` 与 `formal_warning_output` 仍全部
+  为 false。CMS 证明的是固定 TSA 签署的时间声明，不独立证明其上游 UTC 时源绝对
+  正确；当前还没有多运营方 quorum，也未单独解析 RFC 5816 ESSCertIDv2 signed
+  attribute。下一道 machine-only 门禁是 immutable epoch registry、bundle prebuild
+  与安全自动 rotation；随后把 trusted-time 接入 cycle v4 并实施 scheduler entry
+  authorization，不能以人工冻结或批准替代。
+
 ## 2026-08-26 指定入口 checkpoint/input replay 与 cycle v3
 
 - 本增量基于 `9a69725 feat: add autonomous calibration shadow`，新增显式非默认

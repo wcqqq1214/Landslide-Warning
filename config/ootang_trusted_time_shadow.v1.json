@@ -1,0 +1,101 @@
+{
+  "schema_version": "ootang_trusted_time_shadow_profile_v1",
+  "profile_id": "ootang-trusted-time-shadow-v1",
+  "profile_version": "1.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "rfc3161_trusted_time_shadow_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "live_profile": {
+    "path": "config/ootang_prequential_live.v1.json",
+    "expected_sha256": "bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00"
+  },
+  "verified_live_profile": {
+    "path": "config/ootang_verified_live.v1.json",
+    "expected_sha256": "081af2dfd4b95f28b750d915a2ff74d508381e62f5d539aaaaa62b8add44992b"
+  },
+  "implementation": {
+    "launcher_path": "code/monitoring/ootang_trusted_time_shadow.py",
+    "launcher_sha256": "92a0a755881f549b272bfbd09d11b2590e06e9ecb06409421f6bd18e261b1f1b",
+    "core_path": "code/monitoring/ootang_trusted_time_shadow_core.py",
+    "core_sha256": "797cedbc1e24fac6e4cbf042f48981786b662ce8b0fa913b988bce12818023c7",
+    "runtime_project_path": "tools/ootang_trusted_time_runtime/pyproject.toml",
+    "runtime_project_sha256": "236606b46ed945fbbce46868a1a8ab5aac9a1131f39352f324e95a6001b59625",
+    "runtime_lock_path": "tools/ootang_trusted_time_runtime/uv.lock",
+    "runtime_lock_sha256": "aebfc5d498735f694572ee8b53c328da5fa66a84da05d202605a2500e8b78f93",
+    "required_uv_version": "0.12.5",
+    "required_python_version": "3.10.20"
+  },
+  "trust_manifest": {
+    "path": "config/trust/sigstore_tsa_2025_manifest.v1.json",
+    "expected_sha256": "33d22cc6dbdf8bf016b0cb96e291ca4538109ffb5d22a639edb34d2f42c80eef"
+  },
+  "trust": {
+    "leaf_path": "config/trust/sigstore_tsa_2025_leaf.pem",
+    "leaf_pem_sha256": "366bf80f560983b54049de0329485edda59c1c92606fbe507529355f194f2bdf",
+    "leaf_der_sha256": "85f927bc07ab62cac3b44356c10efc81b2c6883fda7ab9e6d870d9d13acd05b7",
+    "root_path": "config/trust/sigstore_tsa_2025_root.pem",
+    "root_pem_sha256": "bf6960b216d500905b7f71129be406a60a38a3dd34eea82fad5b36cc22dbb03f",
+    "root_der_sha256": "2aca8fea5d3ce48b01cc77076293c280e6c23ffe44034757ee7833ca9f45d633"
+  },
+  "rfc3161": {
+    "provider": "sigstore-production-tsa",
+    "endpoint": "https://timestamp.sigstore.dev/api/v1/timestamp",
+    "request_media_type": "application/timestamp-query",
+    "response_media_type": "application/timestamp-reply",
+    "policy_oid": "1.3.6.1.4.1.57264.2",
+    "message_imprint_algorithm_oid": "2.16.840.1.101.3.4.2.1",
+    "message_imprint_algorithm": "sha256",
+    "nonce_bits": 256,
+    "cert_req": true,
+    "accepted_pki_status": 0,
+    "provider_epoch_not_before_utc": "2025-07-04T00:00:00Z",
+    "target_timezone": "Asia/Shanghai",
+    "target_utc_offset": "+08:00",
+    "maximum_accuracy_seconds": 1.0,
+    "maximum_network_round_trip_seconds": 10.0,
+    "network_timeout_seconds": 10.0,
+    "maximum_response_bytes": 65536,
+    "wall_clock_advisory_limit_seconds": 300.0,
+    "redirects_allowed": false,
+    "compressed_responses_allowed": false,
+    "required_dependency": "rfc3161-client",
+    "required_dependency_version": "1.0.8"
+  },
+  "runtime": {
+    "root": "runtime/ootang_prequential_live_v1",
+    "status": "trusted_time_shadow_status.json",
+    "requests": "trusted_time_shadow_requests",
+    "request_der": "trusted_time_shadow_request_der",
+    "objects": "trusted_time_shadow_objects/sha256",
+    "response_links": "trusted_time_shadow_response_links",
+    "receipts": "trusted_time_shadow_receipts",
+    "runner_lock": "runner.lock"
+  },
+  "protocol": {
+    "status_schema_version": "ootang_trusted_time_shadow_status_v1",
+    "request_schema_version": "ootang_trusted_time_shadow_request_v1",
+    "response_link_schema_version": "ootang_trusted_time_shadow_response_link_v1",
+    "receipt_schema_version": "ootang_trusted_time_shadow_receipt_v1",
+    "evidence_envelope_schema_version": "ootang_trusted_time_evidence_envelope_v1",
+    "domain_separator": "org.ootang.landslide-warning/trusted-time-shadow/rfc3161/v1",
+    "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
+    "same_target_same_semantics": "idempotent_preserve_first_bytes",
+    "same_target_changed_semantics": "blocked_integrity",
+    "require_verified_live_completion_for_outstanding_issue": true,
+    "outcome_read": false,
+    "activation_integration": "not_implemented_additive_shadow_only"
+  },
+  "engineering_capabilities": {
+    "rfc3161_request_and_cryptographic_verification_implemented": true,
+    "cryptographic_time_shadow_verified_by_receipt_only": true,
+    "trusted_anchor_receipt_verified": false,
+    "automatic_epoch_rotation_implemented": false,
+    "automatic_calibration_promotion_implemented": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false
+  }
+}

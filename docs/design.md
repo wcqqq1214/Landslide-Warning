@@ -102,12 +102,22 @@ current source + exact issue/input + fixed five-seed bundle
        ├─ issue_replay_receipts + replay status/lock
        └─ verified_live_intents + verified_live_completions + status
 
+verified replay completion + pinned RFC 3161 trust bundle
+  ├─ monitoring/ootang_trusted_time_shadow.py
+  │    └─ stdlib bootstrap verifier -> isolated/frozen exact Python runtime
+  ├─ monitoring/ootang_trusted_time_shadow_core.py
+  │    └─ canonical request -> TSA response -> live/guard-bound cryptographic replay
+  ├─ tools/ootang_trusted_time_runtime/{pyproject.toml,uv.lock}
+  ├─ config/trust/sigstore_tsa_2025_{manifest.v1.json,leaf.pem,root.pem}
+  └─ runtime/ootang_prequential_live_v1/
+       └─ trusted-time request/response/object/receipt + shadow status
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains twenty-six independently selectable stages. Its no-argument chain is exactly
+`main.py` contains twenty-seven independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -137,6 +147,7 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_issue_replay.py` | 从递归验证的 current source 尾七日和五个 checkpoint 独立重建 IDW、7-channel preprocessing、ConvLSTM forward、readout 与 P50 | persistence 精确核对；40 个 P50 只用 `rtol=0, atol=1e-6 mm`；create-only per-target receipt；不读取同日 outcome，不调用 producer/bundle 核心预测实现 |
 | `code/monitoring/ootang_verified_live.py` | 持有 live-v1 runner lock，按 replay receipt → seal intent → live issue transaction → completion link 推进至多一个科学 transition | intent 后/append 前崩溃可安全重试；append 后/completion 前先恢复链接再允许 outcome；无 intent 的直接 v1 seal 永不事后追认；旧 v1 入口仍可绕过，待 scheduler authorization |
 | `code/monitoring/ootang_prequential_cycle_v3.py` | 在 shadow cycle 上加入前置/签发后 replay，并将全部 live transition 改走 verified-live，形成 13 阶段机器 fixed point | progress token 绑定 replay/intent/completion 科学身份；保留 64 轮、continuation、振荡检测、busy/blocked 语义；仍无人工日期/冻结/批准字段 |
+| `code/monitoring/ootang_trusted_time_shadow.py` + `ootang_trusted_time_shadow_core.py` | stdlib launcher 在精确 CPython/隔离冻结依赖中，为已完成的 replay-gated issue seal 生成固定 policy、256-bit nonce 的 RFC 3161 请求；公开 reload 从 live/guard history 重建 envelope，再从 raw TSR 复验 CMS、固定 leaf/root、消息、nonce、accuracy 与 UTC+08:00 目标日前因果条件 | standalone additive shadow；core 硬固定 Sigstore trust，bootstrap 拒绝代码/锁/环境注入；不读 outcome、不改旧 anchor、不进入 cycle v3，所有 E2/activation/formal 标志为 false；ESSCertIDv2 未单独解析 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -247,13 +258,15 @@ readiness，但 schema 和配置固定 `selection_performed=false`、
 自动改写生产校准器。
 
 additive replay/verified-live/cycle-v3 已对指定机器入口独立重放 producer 的
-checkpoint/input，并把 pre-seal intent 与 live seal completion 交叉链接；原 E2-A
-live-v1 CLI 仍保持不变且可被直接调用，所以这不是系统级不可绕过授权。时间锚接口
-也没有 pinned provider/密码学回执验证，实现或模型变化尚未自动创建 immutable 新
-epoch。receipt/ledger registry 的长链全量验证也需避免 O(N²) 反复扫描。因此它仍只
-输出工程时序候选，固定 `e2_live_evidence_eligible=false`。后续门禁是可信密码学
-时间、自动 epoch registry/rotation、scheduler entry authorization 和长链扫描优化；
-不得用人工逐日冻结代替。
+checkpoint/input，并把 pre-seal intent 与 live seal completion 交叉链接；standalone
+RFC 3161 shadow 进一步用固定 provider/policy/leaf/root 签名回执验证该完成语义的
+外部 proof-of-existence。它不改旧 JSON anchor，也尚未进入 cycle v3。原 E2-A
+live-v1 CLI 仍可被直接调用，所以这不是系统级不可绕过授权；实现或模型变化也尚未
+自动创建 immutable 新 epoch。receipt/ledger registry 的长链全量验证仍需避免
+O(N²) 反复扫描。因此全部能力仍只输出工程时序候选，固定
+`e2_live_evidence_eligible=false`。后续门禁是自动 epoch registry/rotation、将可信
+时间接入新版 designated cycle、scheduler entry authorization 和长链扫描优化；不得
+用人工逐日冻结代替。
 
 ## 版本化与清理原则
 

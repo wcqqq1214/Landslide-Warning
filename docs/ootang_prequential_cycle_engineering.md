@@ -189,13 +189,16 @@ verified-live 联合为 `79/79`；最终全仓为 `715/715`。
 
 ## 7. 剩余门禁
 
-指定入口 replay 与 additive cycle v3 完成后仍有四个独立门禁：
+指定入口 replay 与 additive cycle v3 完成后原有四个独立门禁；其中第 1 项现已有
+standalone shadow capability，但尚未接入不可绕过的新 cycle/epoch 合同：
 
-1. pinned provider 与可验证签名的可信密码学时间；
+1. 已实现 standalone RFC 3161 pinned-provider 回执验证；仍需接入新版 designated
+   cycle/epoch 后才能成为资格门；
 2. immutable epoch registry、预构建与安全自动 rotation；
 3. scheduler entry authorization，禁止旧 cycle/live CLI 绕过指定入口；
 4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 
 当前 input manifest 精确绑定实现与依赖，因此代码或环境变化会 fail closed，必须由
-第 3 项的新 epoch 协议接管，不能原地假装兼容。所有门禁都不能用人工日期、冻结、
+第 2 项的新 epoch 协议接管，不能原地假装兼容。可信时间 shadow 的完整合同见
+`docs/ootang_trusted_time_shadow_engineering.md`。所有门禁都不能用人工日期、冻结、
 批准、签名或伪造 outcome/backfill 绕过。

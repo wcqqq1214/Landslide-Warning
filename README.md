@@ -111,7 +111,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（26 个可选阶段）
+main.py                         # 当前管线入口（27 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -147,6 +147,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_prequential_cycle_engineering.md`](docs/ootang_prequential_cycle_engineering.md) | E2-B2 source receipt 加固、机器 outcome 物化、固定点 cycle 与恢复边界 |
 | [`docs/ootang_prequential_calibration_shadow_engineering.md`](docs/ootang_prequential_calibration_shadow_engineering.md) | E2 三校准器独立 shadow ledger、预声明评估门、cycle v2 因果屏障与非晋升边界 |
 | [`docs/ootang_checkpoint_input_replay_engineering.md`](docs/ootang_checkpoint_input_replay_engineering.md) | 五 checkpoint/input 独立重放、verified-live intent/completion 与 cycle v3 指定入口门禁 |
+| [`docs/ootang_trusted_time_shadow_engineering.md`](docs/ootang_trusted_time_shadow_engineering.md) | RFC 3161 固定 TSA/策略/证书、隔离冻结运行时的自动可信时间影子请求、live/guard-bound 离线复验、崩溃恢复与非激活边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -154,12 +155,12 @@ docs/                           # 当前方法、结果边界和研究计划
 
 ## 尚未完成的关键事项
 
-1. E2-B2、calibration shadow v1 与指定入口的 runner-independent
-   checkpoint/input replay 已实现 machine-only outcome、独立 issue/reveal 账本、
-   replay/intent/completion 链和有界 cycle v3。下一道机器门禁是可信密码学时间；
-   其后仍需 immutable epoch registry/自动轮换、scheduler entry authorization，
-   以及避免长链 receipt/ledger 重复扫描的 O(N²) 性能优化。在这些门
-   关闭前保持 `real_activation_ready=false`。
+1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay 和
+   RFC 3161 可信时间能力均已有 machine-only additive 实现。可信时间仍是未接入
+   cycle v3、不可赋予 E2 资格的独立 shadow；旧入口也尚可绕过。下一道机器门禁是
+   immutable epoch registry/自动轮换，其后仍需 scheduler entry authorization 和
+   避免长链 receipt/ledger 重复扫描的 O(N²) 性能优化。在这些门关闭前保持
+   `real_activation_ready=false`。
 2. ACI、AgACI-EWA 与 SPCI 已按预声明合同进入未来 E2 shadow；最少需要 180 个
    共同可用未来目标日并通过逐站 coverage/score/availability/rolling gate，才可
    报告 engineering readiness。当前不会自动选择或晋升，E1 回顾性结果也不得

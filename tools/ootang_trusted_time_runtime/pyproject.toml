@@ -1,0 +1,11 @@
+[project]
+name = "ootang-trusted-time-runtime"
+version = "0.1.0"
+description = "Isolated cryptographic runtime for the Ootang RFC 3161 shadow gate"
+requires-python = "==3.10.20"
+dependencies = [
+    "rfc3161-client==1.0.8",
+]
+
+[tool.uv]
+package = false

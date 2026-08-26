@@ -415,9 +415,11 @@ engineering-only 机器路径实现；其余门禁关闭前仍不能讨论真实
    未来预测，也禁止事后挑 best seed。
 3. **不可变发布单元**：把 runner/core/ledger、依赖锁、模型和 schema 发布为
    content-addressed bundle；部署进程实际执行的字节必须与 ledger 绑定的实现一致。
-4. **可信时间回执验证器**：预声明 provider allowlist、pinned public key / trust
-   root、签名算法、canonical request、最大时钟偏差和失败策略；本地验证签名、
-   sealed root 与时间，且在 outcome 可见前 durable，不能信任任意 HTTPS JSON。
+4. **standalone capability 已实现，资格集成未完成——可信时间回执验证器**：
+   `ootang-trusted-time-shadow-v1` 已预声明 provider/policy、pinned leaf/root、
+   canonical request、256-bit nonce、accuracy 上界和失败策略，并从 raw TSR 离线重做
+   签名与消息验证；它尚未进入不可绕过的新版 cycle/epoch，所以不提升 E2 资格。旧
+   任意 HTTPS JSON anchor 永远不是该密码学回执。
 5. **自动 epoch manager**：前提变化时机器原子关闭旧 epoch，保存不可变 registry，
    校验候选 bundle，按预声明规则冷启动新 epoch，并保证旧 issue/outcome/revision
    仍能路由到原 epoch；失败只能等待或阻断，不能回退到人工挑选。
@@ -430,7 +432,7 @@ engineering-only 机器路径实现；其余门禁关闭前仍不能讨论真实
    snapshot 加尾部重放，同时保留周期性全链审计。优化必须证明与从 genesis 全量
    重放得到相同 terminal state，不能以缓存跳过完整性验证。
 8. **证据资格验收**：新版本只有在 checkpoint inference、input semantics、可信
-   回执和自动 epoch 四项机器字段均由真实执行路径验证为 true 后，才允许对新签发
+   回执和自动 epoch 四项机器字段均由不可绕过真实路径验证为 true 后，才允许对新签发
    日期计算 E2 eligibility；不得追溯提升 E2-A 已有记录。
 
 即使 E2-B 全部通过，系统获得的仍只是未来盲态的运动学预测/校准证据。独立灾害
