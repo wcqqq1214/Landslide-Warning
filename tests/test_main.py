@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 23)
+        self.assertEqual(len(pipeline.STAGES), 26)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -600,6 +600,53 @@ class PipelineTests(unittest.TestCase):
             cycle_v2.inputs,
         )
         self.assertIn("config/ootang_prequential_cycle.v1.json", cycle_v2.inputs)
+
+    def test_replay_guard_and_cycle_v3_are_explicit_machine_only_stages(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        replay = pipeline.STAGE_BY_NAME["ootang-issue-replay"]
+        verified = pipeline.STAGE_BY_NAME["ootang-verified-live"]
+        cycle_v3 = pipeline.STAGE_BY_NAME["ootang-prequential-cycle-v3"]
+
+        self.assertEqual(
+            names.index(replay.name),
+            names.index("ootang-prequential-cycle-v2") + 1,
+        )
+        self.assertEqual(names.index(verified.name), names.index(replay.name) + 1)
+        self.assertEqual(names.index(cycle_v3.name), names.index(verified.name) + 1)
+        expected = (
+            (
+                replay,
+                "code/monitoring/ootang_issue_replay.py",
+                "config/ootang_issue_replay.v1.json",
+                "runtime/ootang_prequential_live_v1/issue_replay_status.json",
+            ),
+            (
+                verified,
+                "code/monitoring/ootang_verified_live.py",
+                "config/ootang_verified_live.v1.json",
+                "runtime/ootang_prequential_live_v1/verified_live_status.json",
+            ),
+            (
+                cycle_v3,
+                "code/monitoring/ootang_prequential_cycle_v3.py",
+                "config/ootang_prequential_cycle.v3.json",
+                "runtime/ootang_prequential_live_v1/cycle_v3_status.json",
+            ),
+        )
+        for stage, script, config, output in expected:
+            self.assertFalse(stage.enabled_by_default)
+            self.assertFalse(stage.formal_warning_output)
+            self.assertEqual(stage.script, script)
+            self.assertEqual(stage.outputs, (output,))
+            self.assertEqual(stage.arguments, ("--config", config))
+            self.assertIn(config, stage.inputs)
+        self.assertIn("config/ootang_prequential_cycle.v2.json", cycle_v3.inputs)
+        self.assertIn("config/ootang_issue_replay.v1.json", cycle_v3.inputs)
+        self.assertIn("config/ootang_verified_live.v1.json", cycle_v3.inputs)
+        self.assertIn(
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            cycle_v3.inputs,
+        )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):
         names = [stage.name for stage in pipeline.STAGES]

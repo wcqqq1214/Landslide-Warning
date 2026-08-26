@@ -25,10 +25,30 @@ source ingest
   -> repeat until scientific progress token is stable
 ```
 
-所有现有科学边界保持不变：runner-independent checkpoint/input replay、可信
-密码学时间、自动 epoch registry/rotation、E2 evidence 与 real activation 仍为
-false；正式 v5 的 G1--G4 也不受本模块影响。cycle 配置还必须精确绑定
+本 v1 cycle 的科学边界保持不变：它自身没有 runner-independent checkpoint/input
+replay；可信密码学时间、自动 epoch registry/rotation、E2 evidence 与 real
+activation 仍为 false。后续 additive cycle v3 已为指定入口加入独立重放，但没有
+改写本 v1 合同；正式 v5 的 G1--G4 也不受这些模块影响。cycle 配置还必须精确绑定
 deploy/live profile 的版本化 SHA，不允许一部分旧合同与一部分新合同混跑。
+
+## 1.1 Additive cycle v3
+
+`ootang-prequential-cycle-v3` 精确绑定 cycle v2、issue replay v1 与 verified-live v1，
+按以下 13 阶段形成当前指定的机器-only fixed point：
+
+```text
+issue_replay_before_source -> shadow_before_source -> source_ingest
+-> bundle_ensure -> verified_live_reconcile_before_outcome
+-> shadow_after_live_before_outcome -> outcome_materialize
+-> verified_live_reconcile_after_outcome -> shadow_after_outcome
+-> issue_produce -> issue_replay_after_issue -> verified_live_seal_issue
+-> shadow_after_issue
+```
+
+它保留 64 轮上限、continuation、振荡检测、busy=3、blocked=2 和科学 progress
+token 语义，但把所有 live transition 改走 verified-live wrapper。空 runtime 会完整
+执行 13 阶段后自动收敛到 waiting，不需要人工日期、冻结或批准。旧 cycle v1/v2 和
+live-v1 CLI 仍存在，所以 scheduler entry authorization 仍是后续门禁。
 
 ## 2. source pointer v2 与 snapshot receipt
 
@@ -142,7 +162,7 @@ issue-before-reveal、积压顺序、预声明评估门和非晋升边界见
 
 ## 6. 验证记录
 
-当前 focused 验证已通过：
+cycle v1 的历史 focused 验证已通过：
 
 - outcome materializer 31/31；
 - cycle 23/23；
@@ -158,13 +178,22 @@ E1 manifest/metrics/site/station 四项 SHA 与既有记录一致，97 条保护
 cycle/deploy/live SHA 也与页首及绑定合同一致。独立对抗复审修复 invocation 级时钟
 回退后最终无 P0/P1。本文件仍不声称 E2 live evidence 或真实激活已经成立。
 
+当前 additive cycle v3 另完成真实空 runtime 的 13 阶段单轮
+`converged_waiting`、指定 stage status 路径/schema/binding 复验、final symlink 与
+pathname 稳定性、64 轮 continuation、跨调用振荡、busy lock、stage crash、
+`work_remaining`/科学 token 矛盾，以及 replay/guard 跨 runtime 时间、路径和
+anchor-only churn 不变性验收。最终定向及全仓计数统一记录在
+`docs/ootang_checkpoint_input_replay_engineering.md` 与 `docs/progress.md`，不能用上面的
+cycle-v1 历史 `566/566` 冒充当前结果。当前 cycle-v3 自身为 `16/16`，与 replay/
+verified-live 联合为 `79/79`；最终全仓为 `715/715`。
+
 ## 7. 剩余门禁
 
-E2-B2 与 additive calibration-shadow cycle v2 完成后仍有四个独立门禁：
+指定入口 replay 与 additive cycle v3 完成后仍有四个独立门禁：
 
-1. runner-independent checkpoint/input replay，不仅信任 producer 结果；
-2. pinned provider 与可验证签名的可信密码学时间；
-3. immutable epoch registry、预构建与安全自动 rotation；
+1. pinned provider 与可验证签名的可信密码学时间；
+2. immutable epoch registry、预构建与安全自动 rotation；
+3. scheduler entry authorization，禁止旧 cycle/live CLI 绕过指定入口；
 4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 
 当前 input manifest 精确绑定实现与依赖，因此代码或环境变化会 fail closed，必须由

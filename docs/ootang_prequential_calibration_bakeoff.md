@@ -187,9 +187,10 @@ interval score、availability、30 日 rolling 和至少 180 个共同未来目�
 首个 shadow outcome 前版本化预声明，全程不需要人工选日、冻结或批准。
 
 当前 shadow 仍是 engineering-only：激活时已有 issue、backfill 和 revision 不计未来
-支持，任何 gate 达标也不会选择或自动晋升。下一道机器门禁是 runner-independent
-checkpoint/input replay；其后还需可信密码学时间、immutable epoch registry/自动
-轮换和长链扫描优化。只有这些门禁与未来支持同时满足，才可创建新的校准协议版本；
+支持，任何 gate 达标也不会选择或自动晋升。该节原定的 runner-independent
+checkpoint/input replay 现已由 additive cycle-v3 指定入口实现；下一道机器门禁是可信
+密码学时间，其后还需 immutable epoch registry/自动轮换、scheduler entry
+authorization 和长链扫描优化。只有这些门禁与未来支持同时满足，才可创建新的校准协议版本；
 绝不改写当前 live v1、shadow v1 或历史 E1。完整合同见
 `docs/ootang_prequential_calibration_shadow_engineering.md`。
 

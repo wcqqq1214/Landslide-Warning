@@ -44,6 +44,15 @@ evidence/activation 门禁；详见 `docs/ootang_prequential_cycle_engineering.m
 issue/reveal 账本；同样不改变这些门禁，详见
 `docs/ootang_prequential_calibration_shadow_engineering.md`。
 
+再后的 additive replay gate 已为**指定机器入口**关闭 producer 自证问题：独立
+verifier 从 immutable activation dataset 重算五组 normalization，从 current source
+尾七日重建 7 通道输入，并用独立 checkpoint loader、ConvLSTM forward、IDW 和
+readout 核对全部 `8 x 5 = 40` 个 P50；verified-live 再把 receipt、pre-seal intent、
+本 v1 live transaction 和 completion 交叉链接。上面的 deploy-v1 配置与状态字段
+保留历史语义，不能据此把 deploy-v1 本身误写成 runner-independent。cycle v3 是当前
+指定自动入口；旧 live-v1 CLI 仍可绕过，可信时间、自动 epoch rotation 和 E2 evidence
+继续为 false。详见 `docs/ootang_checkpoint_input_replay_engineering.md`。
+
 ## 2. 机器数据流
 
 ```text
@@ -75,6 +84,13 @@ verified current source + ledger projection
 all producers/runner above
   -> ootang-prequential-cycle
   -> bounded fixed-point scheduling + continuation status
+
+exact issue + current/activation source + five checkpoints
+  -> ootang-issue-replay
+  -> immutable replay receipt
+  -> ootang-verified-live
+  -> pre-seal intent + live-v1 issue transaction + completion
+  -> ootang-prequential-cycle-v3 (13-stage designated machine entrypoint)
 ```
 
 显式运行命令为：
@@ -87,6 +103,10 @@ uv run python main.py \
   --stage ootang-prequential-live
 
 uv run python main.py --stage ootang-prequential-cycle
+
+uv run python main.py --stage ootang-issue-replay
+uv run python main.py --stage ootang-verified-live
+uv run python main.py --stage ootang-prequential-cycle-v3
 ```
 
 这些机器阶段不属于默认链。默认链仍严格是
@@ -296,11 +316,12 @@ cycle v2 在本节闭环的 source/outcome/issue 边界插入四个因果对账�
 本文件的 source/model/issue 合同；其 `50/50` focused、`269/269` 联合和
 `635/635` 全仓验证记录见 shadow 工程文档。
 
-仍需完成：
+指定入口的 runner-independent checkpoint/input replay 已由 replay/verified-live/
+cycle-v3 实现，但旧 live/cycle CLI 尚未被系统权限禁用。仍需完成：
 
-1. runner 独立于 producer 的 checkpoint/input 重放；
-2. pinned provider 与可验证签名的可信密码学时间；
-3. immutable epoch registry、预构建与安全自动 rotation；
+1. pinned provider 与可验证签名的可信密码学时间；
+2. immutable epoch registry、预构建与安全自动 rotation；
+3. scheduler entry authorization，禁止绕过指定 replay-gated 入口；
 4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 
 这些工程门关闭前，E2 证据与真实激活保持 false。正式 v5 的 G1--G4 状态也完全

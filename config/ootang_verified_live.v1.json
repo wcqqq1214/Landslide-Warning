@@ -1,0 +1,55 @@
+{
+  "schema_version": "ootang_verified_live_profile_v1",
+  "profile_id": "ootang-verified-live-v1",
+  "profile_version": "1.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "e2_verified_live_entrypoint_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "live_profile": {
+    "path": "config/ootang_prequential_live.v1.json",
+    "expected_sha256": "bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00"
+  },
+  "replay_profile": {
+    "path": "config/ootang_issue_replay.v1.json",
+    "expected_sha256": "c42a56a547691654f9281f44b94e5d79ef66a8ff0064b255a59d67c6939e6fd5"
+  },
+  "runtime": {
+    "root": "runtime/ootang_prequential_live_v1",
+    "status": "verified_live_status.json",
+    "intents": "verified_live_intents",
+    "completions": "verified_live_completions"
+  },
+  "protocol": {
+    "status_schema_version": "ootang_verified_live_status_v1",
+    "intent_schema_version": "ootang_verified_live_intent_v1",
+    "completion_schema_version": "ootang_verified_live_completion_v1",
+    "progress_schema_version": "ootang_verified_live_progress_v1",
+    "transition_policy": "at_most_one_scientific_transition_per_poll",
+    "issue_commit_order": [
+      "independent_replay_receipt",
+      "verified_live_intent",
+      "live_issue_batch",
+      "verified_live_completion"
+    ],
+    "require_completion_before_any_outcome_read_for_outstanding_issue": true,
+    "direct_live_v1_issue_policy": "blocked_never_retroactively_authorized",
+    "same_target_same_semantics": "idempotent_preserve_first_bytes",
+    "same_target_changed_semantics": "blocked_integrity",
+    "old_live_v1_entrypoint_disabled": false,
+    "scheduler_entrypoint_authorization_implemented": false
+  },
+  "engineering_capabilities": {
+    "designated_entrypoint_replay_gate_implemented": true,
+    "runner_independent_checkpoint_inference_replayed": true,
+    "cross_ledger_commit_is_single_database_atomic": false,
+    "trusted_anchor_receipt_verified": false,
+    "automatic_epoch_rotation_implemented": false,
+    "automatic_calibration_promotion_implemented": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false
+  }
+}

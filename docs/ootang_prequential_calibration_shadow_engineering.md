@@ -15,8 +15,8 @@
 | candidates | `aci_v1_control`、`agaci_ewa_variant_v1`、`spci_qrf_v1` |
 | state origin | 每个 live epoch 对 24 套状态冷启动，不转移 E1 终态 |
 | persistence | 独立 SQLite STRICT append-only ledger、事务摘要、全局链和 issue-only 链 |
-| automation | standalone shadow poll + interleaved fixed-point cycle v2，无人工选日/冻结/批准 |
-| status | engineering-only；可信时间、runner-independent replay 和上游 epoch registry 仍未闭门 |
+| automation | standalone shadow poll + cycle v2；指定入口另有 replay-gated cycle v3，无人工选日/冻结/批准 |
+| status | engineering-only；指定入口 replay 已实现，可信时间、系统级入口授权和上游 epoch registry 仍未闭门 |
 | protected boundary | live/deploy/cycle v1、校准 core、E1 bundle 和正式 v5 均不改写 |
 
 ## 1. 为什么是独立 shadow，而不是修改 live v1
@@ -29,6 +29,11 @@ Shadow 使用新的配置、runner、runtime 和 SQLite application id。它不�
 ledger 的硬编码事件白名单加入新类型，也不改变 `calibration_challengers.py`；因此
 既有 E1 manifest 和 E2-A 事件中的实现身份仍保持原版本。shadow 只消费
 `load_verified_ledger_projection()` 完整数学重放后的不可变事件。
+
+后续 cycle v3 没有改变候选、阈值、shadow ledger 或 readiness 结论，只在 cycle v2
+外围加入 issue replay 屏障，并把所有 live transition 路由到 verified-live 指定入口。
+因此它增强的是签发来源完整性与崩溃可恢复因果链，不会改善或重新估计 ACI、
+AgACI-EWA、SPCI-QRF 的覆盖率、区间宽度或预测精度。
 
 ## 2. 固定候选与预声明评估合同
 
@@ -148,10 +153,12 @@ waiting / reconciled / work_remaining 状态 `exit 0` 返回。runner 或 shadow
 hash、cursor、事务、epoch或数学重放冲突是 blocked / `exit 2`。任何状态都不请求人
 指定日期或补签。
 
-本协议仍固定以下声明为 false：独立标签、确认性外部验证、可信 anchor 回执、
-runner-independent checkpoint/input replay、E2 live evidence、real activation、
-selection、promotion 和 formal warning。它解决的是三校准器未来 issue-before-reveal
-的机器执行和审计问题，不证明覆盖保证、滑坡事件识别、FAR/recall 或安全认证。
+shadow-v1/cycle-v2 自身仍不提供 runner-independent checkpoint/input replay；通过
+additive cycle-v3 指定入口运行时，这一门由 wrapper 在 live seal 前提供。独立标签、
+确认性外部验证、可信 anchor 回执、E2 live evidence、real activation、selection、
+promotion 和 formal warning 在两条路径中都固定为 false。本协议解决的是三校准器
+未来 issue-before-reveal 的机器执行和审计问题，不证明覆盖保证、滑坡事件识别、
+FAR/recall 或安全认证。
 
 ## 7. 复现入口
 
@@ -166,7 +173,8 @@ uv run python -m unittest tests.test_ootang_prequential_cycle_v2
 固定配置 SHA-256 为：shadow
 `28c02510f81e1832220913d4bfde69bc8abe9a2269aa8279aabc297f60113857`，cycle v2
 `875daa95416e58e3c80a4a68f59874047daa1bbb5b395878f6a9265605279242`。
-最终 ledger/runner/cycle-v2 为 `14/13/23`（`50/50`），pipeline `29/29`，E2
+shadow-v1/cycle-v2 的历史验收为 ledger/runner/cycle-v2
+`14/13/23`（`50/50`），pipeline `29/29`，E2
 联合回归 `269/269`，全仓 `635/635`（330.833 秒）；Ruff、compileall、JSON 和
 diff-check 通过。空 runtime 精确执行 11 阶段并在一轮返回 `converged_waiting`；
 shadow 为 `waiting_for_live_prerequisites`，evidence/promotion 均为 false。独立最终

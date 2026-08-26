@@ -32,6 +32,15 @@ E2-A **永远不产生 E2 live evidence**。它当前不能从已绑定的五个
 也不输出颜色、灾害概率、event recall、FAR、AUROC 或 AUPRC。E2-A 的价值是
 把严格时序和失败恢复做成可执行工程基础，而不是把工程时序候选包装成科学证据。
 
+后续没有改写本 v1 runner 或账本合同，而是增加了 additive
+`ootang-issue-replay`、`ootang-verified-live` 和 cycle v3 指定入口。该入口在同一
+`runner.lock` 内先独立重放 source 尾七日、activation normalization、五个安全
+checkpoint、IDW/ConvLSTM/readout 与 40 个 P50，再按 immutable replay receipt →
+seal intent → 本 v1 issue transaction → completion 提交。若 v1 已直接 seal 且没有
+预先存在的 intent，wrapper 会 fail closed，绝不事后追认；但旧 v1 CLI 尚未被系统级
+权限禁用，因此这里的“独立重放已实现”只适用于指定入口，不是不可绕过的部署授权。
+完整合同见 `docs/ootang_checkpoint_input_replay_engineering.md`。
+
 ## 2. 架构与运行目录
 
 核心文件如下：
@@ -391,17 +400,18 @@ uv run python -c 'import sys; sys.path.insert(0,"code"); from monitoring.ootang_
 真正激活时，implementation composite、environment、source/model/input manifests
 及状态链哈希会进入 genesis 和每个事件；本节的静态表不能代替运行时 ledger。
 
-## 11. E2-B：下一步机器化部署门禁
+## 11. E2-B：机器化部署门禁与当前状态
 
-下一步不是人工冻结数据，而是把目前的外部信任边界继续收进机器闭环。E2-B
-至少必须同时完成以下门禁，之后才能新建版本并讨论真实 E2 证据：
+E2-B 不是人工冻结数据，而是把外部信任边界继续收进机器闭环。前两项已作为
+engineering-only 机器路径实现；其余门禁关闭前仍不能讨论真实 E2 证据：
 
-1. **内容寻址的自动 ingest 与语义验证**：机器从源系统生成不可变 snapshot /
+1. **已实现——内容寻址的自动 ingest 与语义验证**：机器从源系统生成不可变 snapshot /
    per-issue input manifest，验证站点、自然键、单位、缺失、finalization、as-of
    可见性、特征预处理和 input schema，而不只验证路径与字节哈希。
-2. **五 seed deployment bundle 与 checkpoint 推理重放**：按 genesis watermark
+2. **指定入口已实现——五 seed deployment bundle 与 checkpoint 推理重放**：按 genesis watermark
    生成固定 seed `0..4` 的不可变 checkpoint、训练 manifest、环境和推理图；issue
-   producer 必须从这些字节实际推理并由 runner 独立重放，禁止使用 OOF CSV 充当
+   producer 从这些字节实际推理，additive verified-live wrapper 在 seal 前独立重放。
+   旧 live-v1 CLI 尚可绕过，仍需 scheduler authorization；禁止使用 OOF CSV 充当
    未来预测，也禁止事后挑 best seed。
 3. **不可变发布单元**：把 runner/core/ledger、依赖锁、模型和 schema 发布为
    content-addressed bundle；部署进程实际执行的字节必须与 ledger 绑定的实现一致。

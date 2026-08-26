@@ -3,10 +3,79 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `fd6f919 feat: add prequential calibration bakeoff`
-**State:** E2 calibration shadow v1 and additive cycle v2 are implemented and fully
-verified on top of the committed E1 bakeoff/E2-B2 baseline. Nothing in this
-continuation has been pushed.
+**Committed baseline before this increment:** `9a69725 feat: add autonomous calibration shadow`
+**State:** runner-independent checkpoint/input replay v1、verified-live v1 与 additive
+cycle v3 已在上述 calibration-shadow baseline 上实现，正在做最终全仓复跑与提交；
+本 continuation 尚未 push。
+
+## 2026-08-26 designated replay gate and cycle v3 continuation
+
+Three explicit-only stages were added without changing the default pipeline:
+
+```text
+ootang-issue-replay
+ootang-verified-live
+ootang-prequential-cycle-v3
+```
+
+`main.py` now exposes 26 selectable stages; its no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. Replay profile SHA-256 is
+`c42a56a547691654f9281f44b94e5d79ef66a8ff0064b255a59d67c6939e6fd5`, verified-live
+is `081af2dfd4b95f28b750d915a2ff74d508381e62f5d539aaaaa62b8add44992b`, and cycle-v3
+is `6852876db121027e82aedfb2b65c9cb1d9b40106b19c7068ba8764b317e1db24`. The old
+live/cycle v1/v2 contracts and default stages are unchanged.
+
+The independent verifier recursively reconstructs both current and activation source
+lineage through the shared source authority, then independently implements all five
+normalization arrays, IDW, the seven-channel input, ConvLSTM cell/head forward,
+station readout and inverse normalization. Eight persistence values must be exact;
+all 40 five-seed P50 values use `rtol=0, atol=1e-6 mm`. The public receipt loader
+does the same true five-checkpoint forward again, so a self-consistent forged receipt
+or comparison digest is not accepted.
+
+The verified-live wrapper owns the original live-v1 runner lock and commits only
+`replay receipt -> pre-seal intent -> live issue transaction -> completion`. Crash
+recovery always restores completion before outcome/revision reads. Pre-existing direct
+v1 seals without an intent are never retroactively authorized. Machine-time fences
+cover replay publication, pre-intent, pre-append and post-append completion; rollback
+cannot leave a create-only invalid completion. Runtime final components use stable
+regular-file snapshots with `O_NOFOLLOW` and pathname-inode checks, while strict
+machine cleanup handles only exact crash-temp names and rejects lookalike pollution.
+
+Cycle v3 runs exactly 13 stages: replay before source; the four cycle-v2 shadow
+barriers; source, bundle, outcome and issue producers; three verified-live polls; and
+replay again after issue production. Raw ledgers/records are still fully verified, but
+the progress token projects timestamp/path/sequence/entry-hash-independent science and
+filters anchor-only bookkeeping. Legitimate time, storage-path and failed-anchor churn
+therefore converges; changed issue/seal science still changes the token. Exact status
+keysets and claims, final symlinks, pathname swaps, oscillation, continuation, crash
+windows and clock causality fail closed.
+
+Final replay/verified-live/cycle-v3 tests are `36/27/16`, combined `79/79`; with
+pipeline they are `109/109`. The full repository is `715/715` in 727.081 seconds.
+Ruff, compileall, strict JSON validation and diff-check pass. Formal-v5 preflight is
+`23/23` with G0 PASS, G1--G4 BLOCKED and G5a unauthorized; the 97-path aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`. A real empty
+runtime executed all 13 stages once and returned `converged_waiting`, with formal
+warning, E2 evidence, real activation and promotion false. Independent final audit is
+P0/P1 `0/0`.
+
+This increment does not retrain, tune, select a seed, change a calibration threshold,
+or re-estimate any predictive metric. It improves provenance and causal integrity
+only. Formal warning, E2 evidence, real activation, selection and promotion remain
+false.
+
+The next machine-only gate is a pinned-provider cryptographically verified time
+receipt. After that: immutable epoch registry/prebuild/automatic rotation, scheduler
+entry authorization that disables bypass through old live/cycle CLIs, and removal of
+O(N^2) repeated full-chain scans. The local ledger remains a trusted-writer chain and
+intermediate-directory replacement by a malicious local writer remains outside this
+increment's trust boundary. Do not replace any remaining gate with manual dates,
+freezing, approval, signing or fabricated backfill.
+Additional audited P2s—narrow SIGKILL commit windows, future code/model epoch
+incompatibility, checkpoint expansion memory pressure, and a short unlocked guard
+progress staleness window while bypass CLIs exist—are recorded in section 8 of
+`docs/ootang_checkpoint_input_replay_engineering.md`.
 
 ## 2026-08-26 E2 calibration shadow and cycle v2 continuation
 
@@ -87,9 +156,11 @@ preflight remains 23/23 with G0 PASS, G1--G4 BLOCKED and G5a unauthorized. The e
 artifact hashes and 97-path aggregate remain unchanged. Final independent review found
 P0/P1/P2 = 0/0/0.
 
-The next machine-only gate is runner-independent checkpoint/input replay. After that,
-trusted cryptographic time, immutable automatic epoch registry/rotation, scheduling
-entrypoint authorization and O(N^2) long-chain scan removal remain. The existing live
+At the end of that historical increment, the next machine-only gate was
+runner-independent checkpoint/input replay; the designated-entrypoint version is now
+implemented in the section above. Trusted cryptographic time, immutable automatic
+epoch registry/rotation, scheduling entrypoint authorization and O(N^2) long-chain scan
+removal remain. The existing live
 v1 ledger is still a trusted-writer hash chain, not externally authenticated storage;
 do not claim tamper-proof E2 evidence. Never substitute manual dates, freezing,
 approval, signatures or fabricated backfill. The user-owned untracked
@@ -263,9 +334,11 @@ Current bound configuration SHA-256 values are:
 - deploy: `60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940`;
 - live: `bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00`.
 
-Remaining activation gates are runner-independent checkpoint/input replay, trusted
+At that historical point the remaining gates included runner-independent replay; the
+designated-entrypoint version is now implemented at the top of this handoff. Trusted
 cryptographic time verification, an immutable automatic epoch registry/rotation,
-and removal of repeated receipt/ledger full scans that can grow as O(N^2). None may
+scheduler authorization, and removal of repeated receipt/ledger full scans that can
+grow as O(N^2) remain. None may
 be replaced by manual date selection, freezing, approval, signing, or fabricated
 backfill. The detailed contract is in
 `docs/ootang_prequential_cycle_engineering.md`.
@@ -338,8 +411,9 @@ are recorded in `docs/progress.md` and
 
 The subsequent E2-B2 increment now supplies the machine-only outcome materializer,
 receipt/pointer/inbox crash recovery, source pointer v2, and fixed-point cycle described
-above. Runner-independent checkpoint/input replay, pinned cryptographic time
-verification, immutable automatic epoch registry/rotation, and O(N^2) long-chain scan
+above. At that point runner-independent replay was still pending; the designated
+version is now implemented at the top. Pinned cryptographic time, immutable automatic
+epoch registry/rotation, scheduler authorization, and O(N^2) long-chain scan
 optimization remain separate gates. Do not substitute manual freezes or signatures.
 
 ## 2026-08-26 E2-A append-only live engineering continuation
@@ -384,9 +458,10 @@ Primary E2-A files:
 
 The next implementation target is not manual live-data freezing. E2-B1 supplied the
 content-addressed five-seed deployment/issue producer and E2-B2 has now supplied its
-machine outcome/cycle counterpart. Remaining targets are runner-independent replay,
-an immutable per-epoch registry with safe automatic rotation, trusted cryptographic
-time verification, and O(N^2) scan removal. Until those exist, the correct runtime
+machine outcome/cycle counterpart. The designated replay target is now implemented as
+described at the top; remaining targets are an immutable per-epoch registry with safe
+automatic rotation, trusted cryptographic time verification, scheduler authorization,
+and O(N^2) scan removal. Until those exist, the correct runtime
 state is an automatic wait or fail-closed block, not fabricated live evidence.
 
 Final E2-A verification: 64 targeted tests, 23 frozen gate tests, and 414/414
@@ -813,9 +888,11 @@ The full unittest output includes expected argparse usage text and mocked pipeli
 - 17-page contact sheet was visually inspected; candidate figure is legible on page 16
 - categorical figure colors `#2a78d6,#1baf7a,#eb6834,#4a3aa7` passed the dataviz palette validator; the green line had a contrast warning, mitigated by direct panel titles/axis labels and the CSV/table view
 
-## 4. Current git state
+## 4. Historical git snapshot before the machine-prequential increments
 
-No commit or push was performed.
+The lists below are retained only as the original v5 handoff snapshot. They are not the
+current working tree; the current increment and baseline are recorded at the top of
+this document. No push was performed for the current continuation.
 
 Tracked files modified:
 
@@ -900,19 +977,20 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    xargs shasum -a 256 < docs/v5_v0_protected_paths.txt | shasum -a 256
    ```
 
-3. Add runner-independent checkpoint/input replay without trusting only the producer's
-   declared result. Keep its scientific projection and failure states deterministic,
-   and do not add a human freeze/approval/date interface.
-4. Add an immutable automatic epoch
-   registry with prebuild and safe rotation. Optimize repeated receipt/ledger full
-   scans so long-lived operation does not grow as O(N^2). Do not use historical OOF
-   CSV rows as future predictions, select a best seed, or backdate a missed target.
-5. Add a pinned, cryptographically verified time-receipt adapter before any
+3. Treat the designated checkpoint/input replay gate as implemented and keep its
+   public true-forward/source-lineage reload, causal-time fences, semantic progress
+   projection and adversarial tests intact. Do not weaken it into producer self-report.
+4. Add a pinned, cryptographically verified time-receipt adapter before any
    `engineering_blind_time_order_candidate` can become E2 evidence. Keep operation
    machine-only. No new data means
    `waiting_for_new_data`; schema/hash/state conflict means
    `blocked_integrity`; neither state should trigger a human date-selection
    workflow or fabricated backfill.
+5. Add an immutable automatic epoch registry with prebuild and safe rotation, then
+   scheduler entry authorization that prevents old live/cycle CLI bypass. Optimize
+   repeated receipt/ledger full scans so long-lived operation does not grow as
+   O(N^2). Do not use historical OOF CSV rows as future predictions, select a best
+   seed, or backdate a missed target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already
@@ -924,9 +1002,9 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
 8. If changing any current producer, regenerate its explicit outputs and rerun
    targeted tests, the full suite, static checks, deterministic replay, and the
    97-path comparison.
-9. Commit or push only when the user explicitly requests it. Keep
-   implementation, tests, artifacts, and documentation in the same non-`test:`
-   commit; do not create a pull request.
+9. The user has authorized committing this increment. Keep implementation, tests and
+   documentation in the same non-`test:` commit. Do not push unless separately asked,
+   and do not create a pull request.
 
 ## 6. Known non-blocking follow-ups
 

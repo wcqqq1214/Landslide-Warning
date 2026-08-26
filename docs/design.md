@@ -1,6 +1,8 @@
 # 当前代码设计
 
-本文件只描述当前工作树中可执行的藕塘原型。旧 30 日 `V0` 标签、旧预警融合、旧 v2/v3 运行入口及其测试已于 2026-08-13 从当前树移除；若需复现，使用 Git 历史而不是当前默认或显式管线。
+本文件只描述当前工作树中可执行的藕塘原型。旧 30 日 `V0` 标签及旧预警融合
+v1/v2/v3 运行入口与测试已于 2026-08-13 从当前树移除；这不指当前
+machine-prequential cycle v1/v2/v3。若需复现旧预警，使用 Git 历史而不是当前默认或显式管线。
 
 所有藕塘规则产物都是研究原型：`formal_warning_output=false`、`vajont_used=false`。当前发布物化序列无法恢复原始 GNSS 和完整生成血缘，故允许工程初跑（`prototype_run_gate=allowed`），但确认性证据与正式预警仍被阻断（`confirmatory_evidence_gate=blocked`）。
 
@@ -89,12 +91,23 @@ verified E2-A live projection + fixed calibration contract
   └─ runtime/ootang_prequential_calibration_shadow_v1/
        └─ independent ledger + replayable status + runner lock
 
+current source + exact issue/input + fixed five-seed bundle
+  ├─ monitoring/ootang_issue_replay.py
+  │    └─ independent strict checkpoint/input replay receipt
+  ├─ monitoring/ootang_verified_live.py
+  │    └─ runner-lock guarded intent -> live append -> completion link
+  ├─ monitoring/ootang_prequential_cycle_v3.py
+  │    └─ 13-stage replay-gated calibration-shadow fixed point
+  └─ runtime/ootang_prequential_live_v1/
+       ├─ issue_replay_receipts + replay status/lock
+       └─ verified_live_intents + verified_live_completions + status
+
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains twenty-three independently selectable stages. Its no-argument chain is exactly
+`main.py` contains twenty-six independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -116,11 +129,14 @@ candidate display all require `--stage`.
 | `code/convlstm/ootang_production_bundle.py` | 从 immutable activation source 构建固定 5-seed 全 as-of bundle，并安全重载 checkpoint | 不选 best seed；`weights_only=True`，精确绑定预处理、source、实现与依赖；低 epoch 仅测试路径 |
 | `code/monitoring/ootang_issue_producer.py` | 按 verified ledger next-target 从五 checkpoint 内部推理并原子发布下一自然日 issue | runner lock 内只读全链重放；只用 watermark 前最后 7 行；exact-byte object + 首发 receipt；不跳日、不回填过去 issue、同语义幂等、异语义拒绝 |
 | `code/monitoring/ootang_outcome_materializer.py` | 从已验证 immutable source provenance 按 revision 优先、sealed outstanding、连续 backfill 的固定规则机器物化 outcome | per-target revision receipt 链、唯一 tip、active pointer 与 inbox 支持崩溃恢复；activation watermark 及更早修订进入 `waiting_epoch_rotation_required`，不人工冻结或回写 epoch |
-| `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | engineering-only；runner 独立 checkpoint/input 重放、可信时间 verifier 与自动 epoch registry/rotation 仍未实现，E2 evidence 固定 false |
+| `code/monitoring/ootang_prequential_live.py` | 执行 E2-A 单次机器 poll、冷启动、等待、回填、issue/seal、anchor 接口、outcome/update、修订和全重放 | 原 v1 保持不变且自身仍不重放 checkpoint；指定 replay-gated 入口由 additive wrapper 提供，旧 CLI 尚未系统级禁用，E2 evidence 固定 false |
 | `code/monitoring/ootang_prequential_cycle.py` | 以固定七步顺序反复调用 source/bundle/live/outcome/issue，直到验证科学状态达到固定点 | 时间戳、raw ledger head 和失败 anchor retry 不影响 progress token；有界 continuation、跨调用振荡检测、非阻塞锁、严格状态复验；无人工日期/冻结/批准字段 |
 | `code/monitoring/ootang_calibration_shadow_ledger.py` | 为三种固定校准器提供独立 SQLite STRICT 追加账本、事务摘要、全局链和完整 schema/chain 重放 | 与 live v1 application id 和事件类型隔离；冲突 insert/replace、update/delete 与同键异语义均拒绝；hash chain 不证明作者身份或可信时间 |
 | `code/monitoring/ootang_prequential_calibration_shadow.py` | 从 verified live projection 按 source sequence 自动执行 24 项 issue、reveal、状态更新、backfill 排除、revision rescore、drift reset 与 shadow epoch 冷启动 | activation 时已有 issue 不计未来支持；漏签 settlement 不补 issue；revision 不改在线状态；只计算 engineering readiness，不选择或晋升 |
 | `code/monitoring/ootang_prequential_cycle_v2.py` | 在 v1 七步闭环周围插入四个 shadow reconcile，形成 11 阶段机器 fixed point | 复用同一 outer lock；live/shadow runtime 分离；`work_remaining` 有界续跑，稳定 token 与未完成工作冲突时 fail closed；无人工日期/冻结/批准字段 |
+| `code/monitoring/ootang_issue_replay.py` | 从递归验证的 current source 尾七日和五个 checkpoint 独立重建 IDW、7-channel preprocessing、ConvLSTM forward、readout 与 P50 | persistence 精确核对；40 个 P50 只用 `rtol=0, atol=1e-6 mm`；create-only per-target receipt；不读取同日 outcome，不调用 producer/bundle 核心预测实现 |
+| `code/monitoring/ootang_verified_live.py` | 持有 live-v1 runner lock，按 replay receipt → seal intent → live issue transaction → completion link 推进至多一个科学 transition | intent 后/append 前崩溃可安全重试；append 后/completion 前先恢复链接再允许 outcome；无 intent 的直接 v1 seal 永不事后追认；旧 v1 入口仍可绕过，待 scheduler authorization |
+| `code/monitoring/ootang_prequential_cycle_v3.py` | 在 shadow cycle 上加入前置/签发后 replay，并将全部 live transition 改走 verified-live，形成 13 阶段机器 fixed point | progress token 绑定 replay/intent/completion 科学身份；保留 64 轮、continuation、振荡检测、busy/blocked 语义；仍无人工日期/冻结/批准字段 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -230,16 +246,18 @@ readiness，但 schema 和配置固定 `selection_performed=false`、
 `promotion_performed=false`、`e2_live_evidence_eligible=false`；达到工程门也不会
 自动改写生产校准器。
 
-当前 E2-A runner 仍未独立重放 producer 的 checkpoint/input；时间锚接口也没有
-pinned provider/密码学回执验证，实现或模型变化尚未自动创建 immutable 新
+additive replay/verified-live/cycle-v3 已对指定机器入口独立重放 producer 的
+checkpoint/input，并把 pre-seal intent 与 live seal completion 交叉链接；原 E2-A
+live-v1 CLI 仍保持不变且可被直接调用，所以这不是系统级不可绕过授权。时间锚接口
+也没有 pinned provider/密码学回执验证，实现或模型变化尚未自动创建 immutable 新
 epoch。receipt/ledger registry 的长链全量验证也需避免 O(N²) 反复扫描。因此它仍只
-输出工程时序候选，固定 `e2_live_evidence_eligible=false`。后续门禁是 runner 独立
-checkpoint/input replay、可信密码学时间、自动 epoch registry/rotation 和长链扫描
-优化；不得用人工逐日冻结代替。
+输出工程时序候选，固定 `e2_live_evidence_eligible=false`。后续门禁是可信密码学
+时间、自动 epoch registry/rotation、scheduler entry authorization 和长链扫描优化；
+不得用人工逐日冻结代替。
 
 ## 版本化与清理原则
 
-1. 当前默认预警阶段只运行 v4；历史脚本、旧运行入口和对应单元测试从工作树删除，保留在 Git 历史。
-2. 历史 v1/v2/v3 CSV、配置和文档中的结果描述可以作为已发生实验的溯源快照，但不再是当前可执行方法。
-3. 当前 v4 的共享空间融合已使用中性模块名；历史 v1/v2/v3 的代码只保留在 Git 历史，不在工作树中提供运行入口。
+1. 当前默认预警阶段只运行 v4；历史预警脚本、旧运行入口和对应单元测试从工作树删除，保留在 Git 历史。
+2. 历史预警 v1/v2/v3 CSV、配置和文档中的结果描述可以作为已发生实验的溯源快照，但不再是当前可执行预警方法。
+3. 当前 v4 的共享空间融合已使用中性模块名；历史预警 v1/v2/v3 的代码只保留在 Git 历史，不在工作树中提供运行入口。当前 machine-prequential cycle v1/v2/v3 不属于这组退役代码。
 4. 任何正式 NGBoost 预警模型必须以独立结局标签训练和验证，不能把同一四指标透明规则生成的标签再包装成正式预警验证。

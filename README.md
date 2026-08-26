@@ -27,10 +27,7 @@
   再增加机器 outcome materializer 与 fixed-point cycle：source pointer v2 由每日
   revision receipt 和全局 snapshot receipt 链锁定，outcome 以 receipt 链、active
   pointer 和 inbox 分层发布并可自动恢复，cycle 依固定顺序运行直到科学
-  状态不再变化。它不提供人工日期、冻结、批准或补签入口。runner 独立
-  checkpoint/input 重放、可信密码学时间、自动 epoch registry/rotation 与
-  长链扫描优化仍是门禁，因此整条链固定为 engineering-only，不计入 E2
-  live evidence，也不输出正式预警。
+  状态不再变化。它不提供人工日期、冻结、批准或补签入口。
 - 显式阶段 `ootang-prequential-calibration-shadow` 将固定的 ACI、AgACI-EWA
   和 SPCI-QRF 接入独立 E2 shadow ledger；每个目标先原子持久化 24 个候选 issue，
   再允许 reveal、状态更新和预声明 readiness 计算。`ootang-prequential-cycle-v2`
@@ -38,6 +35,15 @@
   issue、settlement、backfill 与 revision；不补造漏签 issue，也不让 revision
   改写在线状态。该 shadow 只提供未来顺序的工程候选证据，选择、自动晋升、
   E2 live evidence 和正式预警仍固定为 false。
+- 新增显式 `ootang-issue-replay`、`ootang-verified-live` 与
+  `ootang-prequential-cycle-v3`：独立 runner 从递归验证的 source 尾七日和五个
+  checkpoint 重建 IDW、7 通道输入、ConvLSTM forward 与 readout，再核对 40 个
+  P50；指定 live 入口在同一 `runner.lock` 临界区按 replay receipt → seal intent →
+  live append → completion 提交，并由 13 阶段 fixed-point cycle 自动编排。旧
+  live-v1 CLI 尚未由系统级授权禁用，本地账本仍是 trusted-writer chain；可信
+  密码学时间、自动 epoch registry/rotation、scheduler entry authorization 与长链
+  扫描优化仍是门禁。因此这项能力只关闭指定机器入口的 checkpoint/input 重放门，
+  不计入 E2 live evidence，也不输出正式预警。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -78,6 +84,9 @@ uv run python main.py --stage ootang-outcome-materializer
 uv run python main.py --stage ootang-prequential-cycle
 uv run python main.py --stage ootang-prequential-calibration-shadow
 uv run python main.py --stage ootang-prequential-cycle-v2
+uv run python main.py --stage ootang-issue-replay
+uv run python main.py --stage ootang-verified-live
+uv run python main.py --stage ootang-prequential-cycle-v3
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -97,12 +106,12 @@ uv run ruff check code tests main.py
 .venv/bin/python -m compileall -q code main.py tests
 ```
 
-旧 30 日 `V0`、v1/v2/v3 运行入口和对应历史测试已从当前工作树移除；需要复现历史快照时，必须按提交从 Git 历史恢复，不应把旧产物当作当前 v4 接口或结果。
+旧 30 日 `V0`、旧预警融合 v1/v2/v3 运行入口和对应历史测试已从当前工作树移除；需要复现历史快照时，必须按提交从 Git 历史恢复，不应把旧产物当作当前 v4 接口或结果。这里不指当前 machine-prequential cycle v1/v2/v3。
 
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（23 个可选阶段）
+main.py                         # 当前管线入口（26 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -137,6 +146,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_prequential_deploy_engineering.md`](docs/ootang_prequential_deploy_engineering.md) | E2-B1 finalized source、五种子安全 bundle、机器 issue producer 与剩余闭环门禁 |
 | [`docs/ootang_prequential_cycle_engineering.md`](docs/ootang_prequential_cycle_engineering.md) | E2-B2 source receipt 加固、机器 outcome 物化、固定点 cycle 与恢复边界 |
 | [`docs/ootang_prequential_calibration_shadow_engineering.md`](docs/ootang_prequential_calibration_shadow_engineering.md) | E2 三校准器独立 shadow ledger、预声明评估门、cycle v2 因果屏障与非晋升边界 |
+| [`docs/ootang_checkpoint_input_replay_engineering.md`](docs/ootang_checkpoint_input_replay_engineering.md) | 五 checkpoint/input 独立重放、verified-live intent/completion 与 cycle v3 指定入口门禁 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -144,10 +154,11 @@ docs/                           # 当前方法、结果边界和研究计划
 
 ## 尚未完成的关键事项
 
-1. E2-B2 与 calibration shadow v1 已实现 machine-only outcome、独立
-   issue/reveal 账本和含因果屏障的有界 cycle v2。下一道机器门禁是 runner 独立
-   checkpoint/input 重放；其后仍需可信密码学时间、immutable epoch registry/
-   自动轮换，以及避免长链 receipt/ledger 重复扫描的 O(N²) 性能优化。在这些门
+1. E2-B2、calibration shadow v1 与指定入口的 runner-independent
+   checkpoint/input replay 已实现 machine-only outcome、独立 issue/reveal 账本、
+   replay/intent/completion 链和有界 cycle v3。下一道机器门禁是可信密码学时间；
+   其后仍需 immutable epoch registry/自动轮换、scheduler entry authorization，
+   以及避免长链 receipt/ledger 重复扫描的 O(N²) 性能优化。在这些门
    关闭前保持 `real_activation_ready=false`。
 2. ACI、AgACI-EWA 与 SPCI 已按预声明合同进入未来 E2 shadow；最少需要 180 个
    共同可用未来目标日并通过逐站 coverage/score/availability/rolling gate，才可

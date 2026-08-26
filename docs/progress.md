@@ -5,6 +5,54 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 指定入口 checkpoint/input replay 与 cycle v3
+
+- 本增量基于 `9a69725 feat: add autonomous calibration shadow`，新增显式非默认
+  阶段 `ootang-issue-replay`、`ootang-verified-live` 和
+  `ootang-prequential-cycle-v3`；当前共 26 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。没有 target-date、freeze、approve、
+  force、backdate、manual-signature 或人工清理入口。
+- replay/verified-live/cycle-v3 配置 SHA-256 分别为
+  `c42a56a547691654f9281f44b94e5d79ef66a8ff0064b255a59d67c6939e6fd5`、
+  `081af2dfd4b95f28b750d915a2ff74d508381e62f5d539aaaaa62b8add44992b`、
+  `6852876db121027e82aedfb2b65c9cb1d9b40106b19c7068ba8764b317e1db24`；旧
+  live/cycle v1/v2 配置和 ledger schema 均未改写。
+- independent verifier 递归使用共享 source authority 重建 historical base + daily
+  feed 的 current/activation canonical dataset，再独立复刻 producer 的五项
+  normalization、IDW、7-channel 输入、ConvLSTM cell/head、station readout 与
+  P50 反归一化；8 个 persistence 必须 exact，五 seed × 八站的 40 个 P50 固定
+  `rtol=0, atol=1e-6 mm`。公开 receipt reload 也重新加载五 checkpoint 做真实
+  forward，不信任 receipt 自报 digest。
+- verified-live 在原 live-v1 `runner.lock` 内固定执行 replay receipt → pre-seal
+  intent → live issue transaction → completion。intent 前、append 前、append 后和
+  receipt create 后均重新采样时钟；回退/跨目标日会在不可逆写入前阻断或精确撤销
+  本轮 receipt。append 后崩溃先恢复 completion，再允许读取 outcome；无预先 intent
+  的旧 v1 seal 永不事后追认。
+- cycle v3 以 13 个固定阶段把两次 replay、三次 verified-live、四次 shadow 与
+  source/bundle/outcome/issue 屏障组合成有界 fixed point。progress 先严格验证 raw
+  链，再仅投影科学语义，排除合法 clock、storage path、raw sequence/entry hash 和
+  anchor-only churn；issue/seal 科学 payload 的变化仍改变 token。稳定 token 与
+  `work_remaining` 矛盾、振荡、stage crash、锁竞争和 status schema/claim 漂移均
+  fail closed。
+- 对抗修复覆盖 source/current/activation 自洽篡改、五 normalization bit parity、
+  self-consistent forward/digest 篡改、final/intermediate symlink、pathname inode
+  replacement、read-once 同 inode 变化、create-only 冲突、崩溃临时文件自动恢复、
+  completion 时钟回退不落坏记录、declared source/model/issue/verification 因果时间，
+  以及不同 runtime 时钟/路径/anchor retry 下科学 token 一致。最终 replay/
+  verified-live/cycle-v3 为 `36/27/16`，三模块 `79/79`，加 pipeline `109/109`；全仓
+  `715/715`（727.081 秒，0 failure / 0 error）。Ruff、compileall、JSON 与
+  `git diff --check` 全部通过；v5 preflight `23/23`，G0 PASS、G1--G4 BLOCKED、
+  G5a 未授权；97 路径聚合仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。真实空
+  runtime 精确执行 13 阶段，一轮 `converged_waiting`，所有 evidence/activation/
+  promotion 标志为 false。最终独立审计 P0/P1 `0/0`。
+- 本增量不训练、不调参、不选择 seed、不改校准候选/阈值，也不重新估计 accuracy、
+  coverage、interval score、FAR 或 recall；它改善的是 issue 来源与提交因果的可验证
+  完整性，不是预测精度。旧 live-v1 CLI 仍可绕过指定入口，本地账本仍是
+  trusted-writer chain，可信密码学时间、immutable epoch registry/自动 rotation、
+  scheduler entry authorization 与 O(N²) 长链优化仍未实现。因此 formal warning、
+  E2 live evidence 和 real activation 继续为 false；下一道机器门禁是可信密码学时间。
+
 ## 2026-08-26 E2 calibration shadow 与 cycle v2
 
 - 本增量基于 `fd6f919 feat: add prequential calibration bakeoff`，新增显式非默认
@@ -48,9 +96,10 @@
   `converged_waiting`，shadow 为 `waiting_for_live_prerequisites`，evidence/promotion
   均为 false。独立最终审查为 P0/P1/P2 `0/0/0`。
 - 正式 v5 fail-closed preflight 仍为 `23/23`，G0 PASS、G1--G4 BLOCKED、G5a
-  未授权；E1 与 97 条保护路径哈希保持不变。下一道机器门禁是 runner-independent
-  checkpoint/input replay；其后仍需可信密码学时间、immutable epoch registry/自动
-  rotation、调度入口权限边界和长链 O(N²) 扫描优化。不得用人工冻结或批准替代。
+  未授权；E1 与 97 条保护路径哈希保持不变。在该历史增量结束时，下一道机器门禁是
+  runner-independent checkpoint/input replay；它现已由本文顶部的指定入口实现。
+  可信密码学时间、immutable epoch registry/自动 rotation、调度入口权限边界和长链
+  O(N²) 扫描优化仍待完成。不得用人工冻结或批准替代。
 
 ## 2026-08-26 E1 prequential 校准 bakeoff
 
@@ -147,10 +196,10 @@
   `2e4a0da22034a3063f612a723f007bf20b600c1dbdb7c62761368aa7a37810ef`、
   `60f17602998e976f06d590b7611dfb4480505c21d41a9b05420bd93cf831f940` 和
   `bf7c60a19e26e9a54fc4e1980b3556d6e6d1e3fec4b3a3a7f3de0dbb9b83cf00`。
-- 后续仍需 runner-independent checkpoint/input replay、可信密码学时间、
-  immutable automatic epoch registry/rotation，以及消除 receipt/ledger 链反复全扫的
-  O(N²) 瓶颈。这些门禁不得被人工日期、冻结、批准、补签或伪造 backfill
-  取代。
+- 该历史增量当时仍需 runner-independent checkpoint/input replay；它现已由顶部
+  指定入口实现。当前仍需可信密码学时间、immutable automatic epoch
+  registry/rotation、scheduler authorization，以及消除 receipt/ledger 链反复全扫的
+  O(N²) 瓶颈。这些门禁不得被人工日期、冻结、批准、补签或伪造 backfill 取代。
 
 ## 2026-08-26 E2-B1 机器 source、bundle 与 issue producer
 
@@ -210,9 +259,10 @@
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`；正式 v5
   仍为 G0 PASS、G1--G4 BLOCKED、G5a 未授权。
 - E2-B1 当时固定 `e2_live_evidence_eligible=false`、`real_activation_ready=false`。
-  后续 E2-B2 已完成 machine-only outcome materializer 与 cycle orchestrator；剩余为
-  runner 独立 checkpoint/input replay、可信密码学时间、immutable epoch
-  registry/自动轮换和 O(N²) 长链扫描优化；不得退回人工日冻结或人工签发。
+  后续 E2-B2 已完成 machine-only outcome materializer/cycle，顶部增量又完成指定入口
+  runner 独立 checkpoint/input replay；剩余为可信密码学时间、immutable epoch
+  registry/自动轮换、scheduler authorization 和 O(N²) 长链扫描优化；不得退回人工
+  日冻结或人工签发。
 - 设计、合同、feed 示例、运行命令与边界详见
   `docs/ootang_prequential_deploy_engineering.md`。
 
@@ -357,7 +407,7 @@
 
 ## 2026-08-13 当前代码树与解释支路同步
 
-- 当前可执行最小链严格为 `features → convlstm → ootang-operational-v4`；旧 30 日 `V0` 标签、旧融合以及 v1/v2/v3 运行入口和对应测试已从工作树移除，仅保留在 Git 历史。
+- 当前可执行最小链严格为 `features → convlstm → ootang-operational-v4`；旧 30 日 `V0` 标签、旧预警融合 v1/v2/v3 运行入口和对应测试已从工作树移除，仅保留在 Git 历史；这里不指后续新增的 machine-prequential cycle v1/v2/v3。
 - 独立解释支路改为 NGBoost 回归 + SHAP：目标是下一观测位移增量，输出候选模型依赖；它不是 ConvLSTM-SHAP、因果主控因素识别或正式五级预警分类。
 - v4 数值产物重跑后仍为 4,112 条测点记录、514 条滑坡体记录和 8 行阈值；加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`。代码清理只更新来源指纹和解释产物，不改这些 v4 数值。
 - 正式 NGBoost 未启动：缺少独立五级结局标签。不能把当前四指标规则输出作为标签，再以同一输入训练模型并称为正式验证。

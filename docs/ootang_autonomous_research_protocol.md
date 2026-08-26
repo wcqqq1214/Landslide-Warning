@@ -600,9 +600,10 @@ validate_contract
 2. E1 结果（已实现）：固化 manifest、局限声明和 machine-readable metrics；
 3. E2-A 工程（已实现）：append-only event ledger、幂等恢复、outcome revision、
    issue/outcome 隔离、自动等待和不可信外部锚接口；
-4. E2-B 部署（待实现）：content-addressed 五种子模型、input-manifest 语义、
-   checkpoint inference replay、pinned cryptographic time verifier 与 immutable
-   epoch registry/自动轮换；
+4. E2-B 机器工程（部分门禁已实现）：content-addressed 五种子模型、input-manifest
+   语义、机器 outcome/cycle，以及指定入口的 checkpoint inference replay 已实现；
+   pinned cryptographic time verifier、immutable epoch registry/自动轮换、scheduler
+   entry authorization 与长链性能门仍待实现；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
