@@ -159,8 +159,11 @@ E2 只评价位移预测、区间覆盖、残差新颖性、漂移和拒绝行�
 等待/回填/修订和非密码学外部锚接口。additive designated entry 已独立重放 issue
 引用的 input manifest 与五个 checkpoint，并有 standalone RFC 3161 shadow 对固定
 provider/policy/leaf/root 的签名回执做离线复验；但旧 E2-A/cycle CLI 尚可绕过，可信
-时间也尚未进入新的不可绕过 cycle/epoch 合同。模型/源码/环境变化仍会 fail closed，
-尚未由机器自动建立 immutable epoch。因此所有 E2-A settlement 固定
+时间也尚未进入新的不可绕过 cycle/epoch 合同。R1 immutable registry 已能在稳定
+per-epoch slot 中预构建 candidate，并复验其 runtime artifacts 与 archival byte
+capsule；该 capsule 尚不是可执行旧 epoch tree，也尚未 drain 旧 epoch 或切换 active。
+模型/源码/环境变化仍会 fail closed，不能把 candidate-ready 误写成 automatic
+rotation。因此所有 E2-A settlement 固定
 `e2_live_evidence_eligible=false`，即使 shadow 时间顺序验证成功也不得升格。
 
 ### 3.4 E3：独立灾害结局
@@ -603,9 +606,10 @@ validate_contract
    issue/outcome 隔离、自动等待和不可信外部锚接口；
 4. E2-B 机器工程（部分门禁已实现）：content-addressed 五种子模型、input-manifest
    语义、机器 outcome/cycle、指定入口 checkpoint inference replay，以及 standalone
-   pinned RFC 3161 cryptographic-time shadow 已实现；immutable epoch registry/自动
-   轮换、将可信时间接入新版 designated cycle、scheduler entry authorization 与长链
-   性能门仍待实现；
+   pinned RFC 3161 cryptographic-time shadow，以及 immutable epoch registry R1 的
+   stable-slot candidate prebuild/verified-ready chain 已实现；R2 drain/原子轮换、将
+   可信时间接入新版 designated cycle、scheduler entry authorization 与长链性能门
+   仍待实现；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
@@ -634,6 +638,10 @@ validate_contract
     nonce、TSA 签名、证书标识、`genTime` 与 accuracy 的时间戳请求/验证合同；它们
     支持自动 proof-of-existence 工程门，但不独立证明 TSA 的上游 UTC 时源绝对正确，
     也不把工程回执变成预测精度或灾害效能证据。
+14. [TUF v1.0.36](https://github.com/theupdateframework/specification/blob/v1.0.36/tuf-spec.md)：
+    逐版本 root update、rollback/freeze 检测与 consistent snapshot 支持本项目的
+    N→N+1 registry 和 content-addressed capsule 设计；本项目不照搬完整网络仓库，
+    也不把本地 SHA-256 链夸大为可抵抗单机 root 权限失陷。
 
 其中 Nava 的 residual regime-shift 路线和 Tang 的自适应无监督 EVT 路线都是近年
 领域方法，当前不能称为高引共识或通用行业标准；本项目只能把它们作为可检验的
@@ -644,10 +652,10 @@ validate_contract
 
 在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay，以及 E2-A 的
 live 状态机、append-only ledger、等待/恢复/修订、数学全重放和独立 RFC 3161
-回执影子复验。E2-A 仍是工程基础，不是 live 证据：可信时间 capability 尚未成为
-不可绕过的新版 designated cycle/epoch 门。只有 E2-B 进一步完成 immutable epoch
-registry/自动轮换和 scheduler authorization，并真实签发未来日期后，才可能开始
-积累 append-only 盲态运动学证据。
+回执影子复验，以及 R1 stable-slot candidate prebuild。E2-A 仍是工程基础，不是 live
+证据：可信时间 capability 与 candidate registry 尚未成为不可绕过的 active switch。
+只有 E2-B 进一步完成 R2 drain/原子轮换、cycle v4 和 scheduler authorization，并真实
+签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
 
 E3 仍然 `BLOCKED`。在独立灾害结局不存在时，最科学的机器行为不是生成五级
 颜色或给 anomaly score 起一个“风险概率”的名字，而是持续预测、诚实量化不

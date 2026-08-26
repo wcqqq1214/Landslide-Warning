@@ -193,12 +193,9 @@ STAGES = (
             "figures/prequential_anomaly_ootang_v1/manifest.json",
         ),
         outputs=(
-            "figures/prequential_calibration_bakeoff_ootang_v1/"
-            "candidate_timeline.csv",
-            "figures/prequential_calibration_bakeoff_ootang_v1/"
-            "candidate_metrics.csv",
-            "figures/prequential_calibration_bakeoff_ootang_v1/"
-            "pairwise_comparison.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/candidate_timeline.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/candidate_metrics.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/pairwise_comparison.csv",
             "figures/prequential_calibration_bakeoff_ootang_v1/manifest.json",
         ),
         arguments=(
@@ -218,9 +215,7 @@ STAGES = (
             "config/ootang_prequential_live.v1.json",
             "data/monitoring_data.csv",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/source_ingest_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/source_ingest_status.json",),
         arguments=("--config", "config/ootang_prequential_deploy.v1.json"),
         warning_artifact_scope="live_prequential_deployment_engineering",
         formal_warning_output=False,
@@ -238,9 +233,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/model_bundle_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/model_bundle_status.json",),
         arguments=("--config", "config/ootang_prequential_deploy.v1.json"),
         warning_artifact_scope="live_prequential_deployment_engineering",
         formal_warning_output=False,
@@ -258,9 +251,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/issue_producer_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/issue_producer_status.json",),
         arguments=("--config", "config/ootang_prequential_deploy.v1.json"),
         warning_artifact_scope="live_prequential_deployment_engineering",
         formal_warning_output=False,
@@ -314,9 +305,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/cycle_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/cycle_status.json",),
         arguments=("--config", "config/ootang_prequential_cycle.v1.json"),
         warning_artifact_scope="live_prequential_cycle_engineering",
         formal_warning_output=False,
@@ -335,9 +324,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_calibration_shadow_v1/status.json",
-        ),
+        outputs=("runtime/ootang_prequential_calibration_shadow_v1/status.json",),
         arguments=(
             "--config",
             "config/ootang_prequential_calibration_shadow.v1.json",
@@ -361,9 +348,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/cycle_v2_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/cycle_v2_status.json",),
         arguments=("--config", "config/ootang_prequential_cycle.v2.json"),
         warning_artifact_scope="live_prequential_calibration_cycle_engineering",
         formal_warning_output=False,
@@ -383,9 +368,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/issue_replay_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/issue_replay_status.json",),
         arguments=("--config", "config/ootang_issue_replay.v1.json"),
         warning_artifact_scope="live_prequential_issue_replay_engineering",
         formal_warning_output=False,
@@ -406,9 +389,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/verified_live_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/verified_live_status.json",),
         arguments=("--config", "config/ootang_verified_live.v1.json"),
         warning_artifact_scope="live_prequential_verified_entrypoint_engineering",
         formal_warning_output=False,
@@ -434,9 +415,7 @@ STAGES = (
             "pyproject.toml",
             "uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/cycle_v3_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/cycle_v3_status.json",),
         arguments=("--config", "config/ootang_prequential_cycle.v3.json"),
         warning_artifact_scope=(
             "live_prequential_replay_gated_calibration_cycle_engineering"
@@ -461,17 +440,42 @@ STAGES = (
             "tools/ootang_trusted_time_runtime/pyproject.toml",
             "tools/ootang_trusted_time_runtime/uv.lock",
         ),
-        outputs=(
-            "runtime/ootang_prequential_live_v1/"
-            "trusted_time_shadow_status.json",
-        ),
+        outputs=("runtime/ootang_prequential_live_v1/trusted_time_shadow_status.json",),
         arguments=(
             "--config",
             "config/ootang_trusted_time_shadow.v1.json",
         ),
-        warning_artifact_scope=(
-            "live_prequential_trusted_time_shadow_engineering"
+        warning_artifact_scope=("live_prequential_trusted_time_shadow_engineering"),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
+        "ootang-epoch-registry",
+        "code/monitoring/ootang_epoch_registry.py",
+        "在稳定 slot 中预构建并登记不可变 epoch candidate snapshots（R1 registry，非轮换/非正式）",
+        inputs=(
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "config/trust/sigstore_tsa_2025_manifest.v1.json",
+            "config/trust/sigstore_tsa_2025_leaf.pem",
+            "config/trust/sigstore_tsa_2025_root.pem",
+            "pyproject.toml",
+            "uv.lock",
+            "tools/ootang_trusted_time_runtime/pyproject.toml",
+            "tools/ootang_trusted_time_runtime/uv.lock",
         ),
+        outputs=("runtime/ootang_epoch_registry_v1/registry_status.json",),
+        arguments=(
+            "--config",
+            "config/ootang_epoch_registry.v1.json",
+        ),
+        warning_artifact_scope="epoch_candidate_registry_r1_engineering",
         formal_warning_output=False,
         enabled_by_default=False,
     ),
@@ -962,9 +966,7 @@ def main(
     args = build_parser().parse_args(argv)
     if args.list:
         for stage in STAGES:
-            selection_scope = (
-                "default" if stage.enabled_by_default else "explicit-only"
-            )
+            selection_scope = "default" if stage.enabled_by_default else "explicit-only"
             print(
                 f"{stage.name:24s} [{stage.warning_artifact_scope}; "
                 f"{selection_scope}] "

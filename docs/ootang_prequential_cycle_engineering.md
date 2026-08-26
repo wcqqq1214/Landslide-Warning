@@ -50,6 +50,10 @@ token 语义，但把所有 live transition 改走 verified-live wrapper。空 r
 执行 13 阶段后自动收敛到 waiting，不需要人工日期、冻结或批准。旧 cycle v1/v2 和
 live-v1 CLI 仍存在，所以 scheduler entry authorization 仍是后续门禁。
 
+后续 immutable epoch registry R1 已新增稳定 slot candidate prebuild 与 verified-ready
+链，但不进入本 cycle v3，也不停止旧签发或切换 active；R2 drain/原子 rotation 仍是
+cycle v4 之前的独立门禁。
+
 ## 2. source pointer v2 与 snapshot receipt
 
 source producer 的 current pointer 已升级为
@@ -194,7 +198,7 @@ standalone shadow capability，但尚未接入不可绕过的新 cycle/epoch 合
 
 1. 已实现 standalone RFC 3161 pinned-provider 回执验证；仍需接入新版 designated
    cycle/epoch 后才能成为资格门；
-2. immutable epoch registry、预构建与安全自动 rotation；
+2. registry R1/预构建已实现；仍需 R2 drain、可执行 capsule 与安全原子 rotation；
 3. scheduler entry authorization，禁止旧 cycle/live CLI 绕过指定入口；
 4. 避免 receipt/ledger registry 每次重复全链扫描导致 O(N²) 增长的性能优化。
 

@@ -41,6 +41,11 @@ seal intent → 本 v1 issue transaction → completion 提交。若 v1 已直�
 权限禁用，因此这里的“独立重放已实现”只适用于指定入口，不是不可绕过的部署授权。
 完整合同见 `docs/ootang_checkpoint_input_replay_engineering.md`。
 
+2026-08-26 后续状态：standalone RFC 3161 shadow 与 immutable epoch registry R1
+也已 additive 实现。R1 只在稳定 per-epoch slot 预构建 candidate、保存 archival byte
+capsule 并记录 verified-ready；尚未 materialize 可执行旧 epoch tree、drain 旧 issue 或
+切换 active。故本 v1 的 automatic-rotation/E2/activation 边界仍不变，下一步是 R2。
+
 ## 2. 架构与运行目录
 
 核心文件如下：
@@ -413,16 +418,19 @@ engineering-only 机器路径实现；其余门禁关闭前仍不能讨论真实
    producer 从这些字节实际推理，additive verified-live wrapper 在 seal 前独立重放。
    旧 live-v1 CLI 尚可绕过，仍需 scheduler authorization；禁止使用 OOF CSV 充当
    未来预测，也禁止事后挑 best seed。
-3. **不可变发布单元**：把 runner/core/ledger、依赖锁、模型和 schema 发布为
-   content-addressed bundle；部署进程实际执行的字节必须与 ledger 绑定的实现一致。
+3. **R1 已保存 archival bytes，执行 materialization 未完成——不可变发布单元**：
+   registry 已把固定 runner/config/trust/lock allowlist 保存为 content-addressed objects，
+   但 `materialized_executable_tree=false`；R2 仍须生成可隔离启动的旧/新 epoch tree，
+   并保证部署进程实际执行的字节与 ledger 绑定实现一致。
 4. **standalone capability 已实现，资格集成未完成——可信时间回执验证器**：
    `ootang-trusted-time-shadow-v1` 已预声明 provider/policy、pinned leaf/root、
    canonical request、256-bit nonce、accuracy 上界和失败策略，并从 raw TSR 离线重做
    签名与消息验证；它尚未进入不可绕过的新版 cycle/epoch，所以不提升 E2 资格。旧
    任意 HTTPS JSON anchor 永远不是该密码学回执。
-5. **自动 epoch manager**：前提变化时机器原子关闭旧 epoch，保存不可变 registry，
-   校验候选 bundle，按预声明规则冷启动新 epoch，并保证旧 issue/outcome/revision
-   仍能路由到原 epoch；失败只能等待或阻断，不能回退到人工挑选。
+5. **R1 candidate-ready 已实现、R2 active switch 未完成——自动 epoch manager**：
+   registry 已校验稳定 slot 候选；R2 才能在前提变化时机器原子关闭旧 epoch、按预声明
+   规则冷启动新 epoch，并保证旧 issue/outcome/revision 仍路由到原 epoch。失败只能等待
+   或阻断，不能回退到人工挑选。
 6. **自动监督与故障演练**：为 scheduler、单 writer、磁盘满、断电、半写、重复
    投递、乱序文件、锚超时、receipt 丢失和恢复建立机器告警与 fault-injection
    验收；发布门禁应验证真实运行路径而不只调用测试 fixture。

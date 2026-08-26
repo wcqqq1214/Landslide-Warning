@@ -1,9 +1,54 @@
 # 项目工作进度
 
-> 更新日期：2026-08-26。本文件记录工程与研究实现进度；正式 v5 门禁以
+> 更新日期：2026-08-27。本文件记录工程与研究实现进度；正式 v5 门禁以
 > `v5_validation_protocol.md` 为准，机器连续预测支路以
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-26--27 不可变 epoch registry R1
+
+- 本增量基于 `74ef8b9 feat: add cryptographic time shadow gate`，新增显式、非默认
+  阶段 `ootang-epoch-registry`；当前共 28 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。阶段不提供 target-date、freeze、
+  approve、force、backdate 或人工签名入口。
+- R1 从固定 finalized feed bytes 与冻结合同推导 stable slot id，直接在最终
+  `slots/<slot-id>/live` 路径运行 source materialization 和五 seed bundle prebuild；
+  已发布 manifest 含绝对 artifact path，因此禁止 build 后移动或以 symlink 切换。
+- source/model public loaders 通过后，机器要求 lineage 中的 daily-feed snapshot 精确等于
+  registry feed bytes，把固定代码、配置、根/隔离依赖锁和 RFC 3161 trust 保存为
+  content-addressed archival byte capsule，并把 feed 与全部声明的 runtime artifacts 另存
+  immutable snapshots；随后才向严格 N→N+1、previous-hash、create-only registry 链追加
+  `candidate_ready`。历史 replay 只依赖这些快照，不要求以后合法启用的 mutable slot 永久
+  空白。capsule 尚未 materialize 为可执行旧 epoch tree，其显式 allowlist 也不是
+  transitive import closure；mutable status/head 只是可由权威事件链恢复的 cache。
+- feed export 必须递增，source id 固定；修订可以前进，但任何已见 revision id/record bytes
+  的回退均在新 receipt/event 发布前 fail closed。完整 feed 合同通过后、长训练前，机器先
+  追加独立 create-only feed-observation chain 并刷新 tip witness；observation event 内含
+  精确 raw feed bytes，是单文件水位 commit，object 副本可由它恢复。所以 orphan receipt、
+  waiting build 或 object publication 前崩溃都不会遗忘更高水位，invalid/future feed 则
+  不会污染链。构建前后重新捕获
+  worktree capsule；默认 prebuilder 在真实动作边界重新采机器时间，测试
+  prebuilder/feed override 只允许 project production runtime tree 之外的 isolated runtime。
+  实现/profile SHA-256 分别为
+  `1418b754012b71b296c200539efa846cea63e5a4374e44d216bd656f8b047b9c`/
+  `c56004649689ee8aa4beeca6a7c61bbdd5529ec62706880ea8eac65a8ca18edd`。
+- 权威 event 仍名为 `candidate_ready`；status 使用更窄的
+  `immutable_candidate_record_ready`，避免把历史快照完整性误写成当前 mutable slot 的
+  activation readiness。production poll/CLI 不暴露 runtime、feed 或 prebuilder override。
+- R1 不修改旧 live v1/cycle v3，不创建 candidate ledger，不签发 issue、不读 outcome、
+  不切换 active。`automatic_epoch_rotation_implemented`、可信 anchor、E2 evidence、real
+  activation 和 formal warning 全部固定为 false。registry 定向 `40/40`、registry +
+  pipeline `72/72`、全仓 `765/765`（344.829 秒，0 failure / 0 error）；Ruff、scoped
+  format、compileall、strict JSON `27/27`、根/隔离 lock check、diff-check 均通过。
+  v5 preflight `23/23`，仍为 G0 PASS、G1--G4 BLOCKED、G5a 未授权；97 个保护路径无
+  diff，聚合 SHA-256 仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。两轮独立只读
+  审计均为 P0/P1 `0/0`；保留的 trusted-writer/掉电持久性、累计 replay O(N²) 与 R2
+  executable closure 是已显式记录的 P2 工程边界。
+- 下一道门禁是 R2：machine trigger 后停止旧 epoch 新签发，在既有 issue、guard、
+  trusted-time、outcome、revision 和 shadow 全部收口后，用单个权威 transition 原子
+  `SEALED(old)+ACTIVE(new)`；随后才实现 cycle v4 与 scheduler authorization。若 outcome
+  永不到达，机器只能等待，不能伪造结局或强制轮换。
 
 ## 2026-08-26 RFC 3161 可信时间影子门
 

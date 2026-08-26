@@ -25,7 +25,8 @@ formal_warning_output = false
 ```
 
 因此，即使 RFC 3161 回执验证成功，也不能自动解锁 E2、正式预警、方法选择或晋升。
-后续必须另行实现 immutable epoch registry/自动 rotation 和不可绕过的 scheduler entry
+后续 immutable epoch registry R1 已实现 stable-slot candidate-ready，但没有 drain 或
+active switch；仍须完成 R2 自动 rotation、cycle v4 与不可绕过的 scheduler entry
 authorization。
 
 ## 2. 为什么采用 RFC 3161
@@ -214,7 +215,7 @@ independent audit: P0/P1/P2 = 0/0/1
 最终独立只读审计确认无开放 P0/P1；唯一审计分级 P2 是未单独解析 ESSCertIDv2。
 其余仍未关闭的协议边界包括：单一 TSA 运营方的正确时源假设、
 签发后撤销状态的长期归档、
-旧 live/cycle CLI 可绕过 designated entry、代码/模型升级缺少自动 epoch rotation，
+旧 live/cycle CLI 可绕过 designated entry、R1 candidate-ready 尚缺 R2 自动 rotation，
 以及长链 O(N²) 重放成本。这些必须由后续独立机器协议处理。
 
 ## 9. 主要依据

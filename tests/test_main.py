@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 27)
+        self.assertEqual(len(pipeline.STAGES), 28)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -37,15 +37,15 @@ class PipelineTests(unittest.TestCase):
     def test_selected_stages_are_deduplicated_and_canonically_ordered(self):
         stages = pipeline.select_stages(["ngboost-shap", "features", "ngboost-shap"])
 
-        self.assertEqual(
-            [stage.name for stage in stages], ["features", "ngboost-shap"]
-        )
+        self.assertEqual([stage.name for stage in stages], ["features", "ngboost-shap"])
 
     def test_v4_is_the_only_registered_operational_stage(self):
         self.assertNotIn("ootang-operational", pipeline.STAGE_BY_NAME)
         self.assertNotIn("ootang-operational-v2", pipeline.STAGE_BY_NAME)
         self.assertNotIn("ootang-operational-v3", pipeline.STAGE_BY_NAME)
-        self.assertTrue(pipeline.STAGE_BY_NAME["ootang-operational-v4"].enabled_by_default)
+        self.assertTrue(
+            pipeline.STAGE_BY_NAME["ootang-operational-v4"].enabled_by_default
+        )
         self.assertEqual(
             pipeline.STAGE_BY_NAME["ootang-operational-v4"].script,
             "code/warning/operational_run_v4.py",
@@ -82,8 +82,7 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertTrue(
             all(
-                "vajont" not in path.lower()
-                for path in (*stage.inputs, *stage.outputs)
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
             )
         )
         protected_outputs = {
@@ -126,8 +125,7 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertTrue(
             all(
-                "vajont" not in path.lower()
-                for path in (*stage.inputs, *stage.outputs)
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
             )
         )
         existing_outputs = {
@@ -147,9 +145,7 @@ class PipelineTests(unittest.TestCase):
         sensitivity_stage = pipeline.STAGE_BY_NAME[
             "ootang-ngboost-interval-proxy-horizon-sensitivity"
         ]
-        stage = pipeline.STAGE_BY_NAME[
-            "ootang-ngboost-interval-proxy-feature-ablation"
-        ]
+        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-interval-proxy-feature-ablation"]
 
         self.assertFalse(stage.enabled_by_default)
         self.assertEqual(
@@ -178,8 +174,7 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertTrue(
             all(
-                "vajont" not in path.lower()
-                for path in (*stage.inputs, *stage.outputs)
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
             )
         )
         existing_outputs = {
@@ -205,7 +200,9 @@ class PipelineTests(unittest.TestCase):
         self.assertIn("config/ootang_auto_v0_direct_bai_perron.v1.json", stage.inputs)
         self.assertIn("data/ootang_kinematics_long.csv", stage.inputs)
         self.assertTrue(
-            all("vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs))
+            all(
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
+            )
         )
         existing_outputs = {
             path
@@ -246,8 +243,7 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertTrue(
             all(
-                "vajont" not in path.lower()
-                for path in (*stage.inputs, *stage.outputs)
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
             )
         )
         existing_outputs = {
@@ -273,8 +269,8 @@ class PipelineTests(unittest.TestCase):
         expected = [
             stage
             for stage in pipeline.STAGES
-                if stage.enabled_by_default
-                and stage.name not in {"ngboost-shap", "convlstm"}
+            if stage.enabled_by_default
+            and stage.name not in {"ngboost-shap", "convlstm"}
         ]
         self.assertEqual(stages, expected)
 
@@ -395,9 +391,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_prequential_calibration_bakeoff_is_explicit_and_uses_e1_bundle(self):
         names = [stage.name for stage in pipeline.STAGES]
-        stage = pipeline.STAGE_BY_NAME[
-            "ootang-prequential-calibration-bakeoff"
-        ]
+        stage = pipeline.STAGE_BY_NAME["ootang-prequential-calibration-bakeoff"]
 
         self.assertEqual(
             names.index(stage.name),
@@ -555,9 +549,7 @@ class PipelineTests(unittest.TestCase):
 
     def test_calibration_shadow_and_cycle_v2_are_explicit_machine_only_stages(self):
         names = [stage.name for stage in pipeline.STAGES]
-        shadow = pipeline.STAGE_BY_NAME[
-            "ootang-prequential-calibration-shadow"
-        ]
+        shadow = pipeline.STAGE_BY_NAME["ootang-prequential-calibration-shadow"]
         cycle_v2 = pipeline.STAGE_BY_NAME["ootang-prequential-cycle-v2"]
 
         self.assertEqual(
@@ -657,7 +649,7 @@ class PipelineTests(unittest.TestCase):
             names.index("ootang-prequential-cycle-v3") + 1,
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-registry"), names.index(stage.name) + 1
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -675,10 +667,7 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertEqual(
             stage.outputs,
-            (
-                "runtime/ootang_prequential_live_v1/"
-                "trusted_time_shadow_status.json",
-            ),
+            ("runtime/ootang_prequential_live_v1/trusted_time_shadow_status.json",),
         )
         for required in (
             "config/ootang_trusted_time_shadow.v1.json",
@@ -701,6 +690,62 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(
             [selected.name for selected in ordered],
             ["ootang-prequential-cycle-v3", "ootang-trusted-time-shadow"],
+        )
+
+    def test_epoch_registry_is_explicit_r1_prebuild_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-registry"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-trusted-time-shadow") + 1,
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "epoch_candidate_registry_r1_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_registry.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_epoch_registry.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/registry_status.json",),
+        )
+        for required in (
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "config/trust/sigstore_tsa_2025_manifest.v1.json",
+            "config/trust/sigstore_tsa_2025_leaf.pem",
+            "config/trust/sigstore_tsa_2025_root.pem",
+            "pyproject.toml",
+            "uv.lock",
+            "tools/ootang_trusted_time_runtime/pyproject.toml",
+            "tools/ootang_trusted_time_runtime/uv.lock",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            ["ootang-epoch-registry", "ootang-trusted-time-shadow"]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            ["ootang-trusted-time-shadow", "ootang-epoch-registry"],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

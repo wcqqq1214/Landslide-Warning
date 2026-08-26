@@ -1,12 +1,82 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
-**Prepared:** 2026-08-26
+**Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `bace358 feat: add independent issue replay gate`
-**State:** standalone RFC 3161 trusted-time shadow v1 已在上述 replay-gate baseline 上
-实现并完成最终验证，将作为本 continuation 的独立本地 commit；尚未 push。该能力仍
-未进入 E2 资格或不可绕过 cycle，所有 activation/formal 字段保持 false。
+**Committed baseline before this increment:** `74ef8b9 feat: add cryptographic time shadow gate`
+**State:** RFC 3161 trusted-time shadow 已提交；本增量已完成并验证 standalone immutable
+epoch registry R1 的 stable-slot candidate prebuild/verified-ready chain，尚未 push。R1
+不做 active switch，所有 rotation/E2/activation/formal 字段保持 false；下一步为 R2
+机器 drain、可执行 capsule materialization 与原子 epoch transition。
+
+## 2026-08-26--27 immutable epoch registry R1 continuation
+
+The new explicit-only stage is:
+
+```text
+ootang-epoch-registry
+```
+
+`main.py` now exposes 28 selectable stages; the default chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. R1 derives a stable slot from the
+fixed candidate feed and reviewed contract. Before any long build it independently
+checks the complete frozen Ootang feed/record schema, finalized/time/natural-day/
+contiguous-extension/numeric/eight-station contract and appends a create-only feed
+observation chain with a recoverable tip witness. Each observation event embeds and
+hashes the exact raw feed bytes, making the watermark a single-file durable commit;
+the content-addressed feed object is a recoverable derivative. Thus a newer feed remains the
+anti-rollback watermark even if its build waits, its receipt is orphaned, or the process
+crashes; invalid/future feeds never enter the chain. R1 then copies the feed create-only
+into the final slot, materializes the source and five-seed model bundle there, reloads
+the public source/model/prerequisite contracts, and only then records a candidate-ready
+receipt. There is no date/freeze/approve/force/backdate/manual-signature interface.
+
+The current live-v1 ledger cannot host a second genesis, and existing artifact
+manifests contain final absolute paths. Candidate build therefore uses a stable
+`slots/<slot-id>/live` namespace and is never moved. R1 adds no candidate ledger,
+issues or outcomes. Its content-addressed archival byte capsule binds the fixed
+code/config allowlist, root and isolated dependency locks and trusted-time trust
+material; the candidate receipt jointly binds source/model artifacts and the rederived
+live epoch identity. Feed and every declared candidate artifact are copied into the
+registry object store, so later legal slot mutation does not invalidate historical
+replay. The capsule is an explicit archival provenance allowlist, not a transitive or
+materialized executable old-epoch tree. Candidate-ready events form a strict create-only
+N-to-N+1 previous-hash chain; mutable heads/status are recoverable caches. The event is
+named `candidate_ready`, while status deliberately says
+`immutable_candidate_record_ready` rather than claiming current-slot activation
+readiness. Implementation/profile SHA-256 values are
+`1418b754012b71b296c200539efa846cea63e5a4374e44d216bd656f8b047b9c` and
+`c56004649689ee8aa4beeca6a7c61bbdd5529ec62706880ea8eac65a8ca18edd`.
+
+Production `poll_epoch_registry()`/CLI accepts no runtime/feed/prebuilder override. The
+private test entry rejects the project production runtime tree. Candidate commit
+rechecks current slot feed/artifacts and empty future namespaces immediately before
+event publication. Startup under the manager lock removes only exact regular crash-temp
+names (including hard-link aliases) and fsyncs `.tmp`; unknown entries fail closed.
+Historical capsule verification accepts the implementation object captured at that
+time, so a future registry implementation update cannot self-lock old events.
+
+All `automatic_epoch_rotation_implemented`, trusted-anchor, E2 evidence, real
+activation and formal-warning claims remain false. Historical replay verifies immutable
+feed/artifact/capsule objects, candidate/live identities and the two hash chains; it is
+not a persisted public-loader executable closure and does not rerun training or every
+scientific forward. Final verification is registry `40/40`, registry+pipeline `72/72`,
+and full repository `765/765` in 344.829 seconds with zero failures/errors. Ruff,
+scoped format, compileall, strict JSON `27/27`, root/isolated lock checks and diff check
+pass. v5 preflight is `23/23` and remains G0 PASS, G1--G4 BLOCKED and G5a unauthorized.
+The 97 protected paths have no diff and retain aggregate
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+Two independent read-only audits ended at P0/P1 `0/0`; trusted-writer/power-loss,
+cumulative O(N^2) replay and R2 executable-closure limits remain explicit P2 scope.
+
+Next is R2, not cycle v4 directly: a machine trigger must stop new old-epoch issue
+creation, drain every existing issue/guard/time/outcome/revision/shadow transaction,
+then machine-resolve and materialize the transitive local import/artifact closure,
+perform isolated `python -I` import/compile/replay smoke checks, and commit one
+authoritative `SEALED(old)+ACTIVE(new)` transition into a per-epoch runtime. Missing
+outcomes remain machine waiting; no forced rotation or fabricated settlement is
+allowed. Only after R2 should cycle v4 consume the registry tip and make trusted time an
+unavoidable qualification step.
 
 ## 2026-08-26 RFC 3161 trusted-time shadow continuation
 
