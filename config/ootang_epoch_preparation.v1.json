@@ -1,0 +1,121 @@
+{
+  "schema_version": "ootang_epoch_preparation_profile_v1",
+  "profile_id": "ootang-epoch-preparation-v1",
+  "profile_version": "1.0.0-engineering",
+  "case": "ootang",
+  "artifact_status": "immutable_epoch_executable_preparation_engineering_only_not_live_evidence",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "registry": {
+    "profile_path": "config/ootang_epoch_registry.v1.json",
+    "profile_sha256": "c56004649689ee8aa4beeca6a7c61bbdd5529ec62706880ea8eac65a8ca18edd",
+    "implementation_path": "code/monitoring/ootang_epoch_registry.py",
+    "implementation_sha256": "1418b754012b71b296c200539efa846cea63e5a4374e44d216bd656f8b047b9c"
+  },
+  "root_environment": {
+    "pyproject_path": "pyproject.toml",
+    "pyproject_sha256": "bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0",
+    "uv_lock_path": "uv.lock",
+    "uv_lock_sha256": "f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c",
+    "required_python_version": "3.10.20",
+    "required_uv_version": "0.12.5",
+    "required_uv_path": "/opt/homebrew/Cellar/uv/0.12.5/bin/uv",
+    "required_uv_sha256": "debc68c21b3bb1086e20d9889b53ff5ccf9ef343fda9a57dc2022212e3511125",
+    "root_smoke_domain": {
+      "distribution_count": 43,
+      "distribution_inventory_sha256": "007dc4fbca73360ff0ca20b744509d2a3b0fbd44711234e64c35715032ebc34e",
+      "python_executable_sha256": "694bcacb03f978975c57396caaec10a42d3fec62a789f82f8661197c9dd17a2e",
+      "python_soabi": "cpython-310-darwin",
+      "platform": "macOS-26.5.1-arm64-arm-64bit"
+    },
+    "trusted_time_smoke_domain": {
+      "distribution_count": 5,
+      "distribution_inventory_sha256": "622737b4a53f420c3e895e4d74205b456fd7efa15b0e4a9250e760c7c24264c5",
+      "python_executable_sha256": "694bcacb03f978975c57396caaec10a42d3fec62a789f82f8661197c9dd17a2e",
+      "python_soabi": "cpython-310-darwin",
+      "platform": "macOS-26.5.1-arm64-arm-64bit"
+    }
+  },
+  "runtime": {
+    "root": "runtime/ootang_epoch_registry_v1",
+    "manager_lock": "manager.lock",
+    "status": "preparation_status.json",
+    "head": "preparation_head.json",
+    "events": "preparation_events",
+    "objects": "objects/sha256",
+    "capsules": "executable_capsules",
+    "trees": "executable_trees",
+    "smoke_receipts": "executable_smoke_receipts/sha256"
+  },
+  "protocol": {
+    "event_schema_version": "ootang_epoch_preparation_event_v1",
+    "head_schema_version": "ootang_epoch_preparation_head_v1",
+    "status_schema_version": "ootang_epoch_preparation_status_v1",
+    "capsule_schema_version": "ootang_epoch_executable_capsule_v1",
+    "smoke_receipt_schema_version": "ootang_epoch_executable_smoke_receipt_v1",
+    "initial_previous_entry_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
+    "same_candidate_same_semantics": "idempotent_preserve_first_bytes",
+    "same_candidate_changed_semantics": "machine_revalidate_on_implementation_change",
+    "active_switch": "not_implemented_r2a_preparation_only"
+  },
+  "executable_capsule": {
+    "root_modules": [
+      "monitoring.ootang_prequential_cycle_v3",
+      "monitoring.ootang_trusted_time_shadow"
+    ],
+    "closure_seed_modules": [
+      "monitoring.ootang_prequential_cycle_v3",
+      "monitoring.ootang_trusted_time_shadow",
+      "monitoring.ootang_trusted_time_shadow_core"
+    ],
+    "local_packages": ["convlstm", "monitoring", "warning"],
+    "expected_local_module_count": 22,
+    "augmentation_files": [
+      {
+        "path": "code/convlstm/__init__.py",
+        "expected_sha256": "4b51a22e572727ec42d888387891d94bf8ffa0ef17245be9b453b9b56967f127"
+      },
+      {
+        "path": "code/monitoring/__init__.py",
+        "expected_sha256": "215064d50f1aa515312aeee43318de1231bcfb0ee6614811d1f3b2f83b5ff82a"
+      }
+    ],
+    "required_logical_paths": [
+      "code/monitoring/ootang_trusted_time_shadow_core.py",
+      "config/ootang_prequential_cycle.v3.json",
+      "config/ootang_trusted_time_shadow.v1.json",
+      "tools/ootang_trusted_time_runtime/pyproject.toml",
+      "tools/ootang_trusted_time_runtime/uv.lock"
+    ],
+    "isolated_smoke_timeout_seconds": 120,
+    "numerical_replay_absolute_tolerance_mm": 0.000001,
+    "reject_dynamic_local_imports": true,
+    "materialize_all_r1_capsule_artifacts": false,
+    "canonical_project_root_required": true,
+    "canonical_slot_root_required": true,
+    "relocatable": false,
+    "portable_offline_runtime": false
+  },
+  "engineering_capabilities": {
+    "immutable_candidate_registry_verified": true,
+    "transitive_local_import_closure_implemented": true,
+    "content_addressed_executable_materialization_implemented": true,
+    "same_origin_executable_preflight_implemented": true,
+    "portable_offline_runtime": false,
+    "isolated_import_compile_smoke_implemented": true,
+    "isolated_candidate_prerequisite_reload_smoke_implemented": true,
+    "five_seed_numerical_replay_smoke_implemented": true,
+    "trusted_time_isolated_domain_smoke_implemented": true,
+    "old_epoch_drain_implemented": false,
+    "active_epoch_switch_implemented": false,
+    "automatic_epoch_rotation_implemented": false,
+    "trusted_anchor_receipt_verified": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false,
+    "formal_warning_output": false
+  }
+}

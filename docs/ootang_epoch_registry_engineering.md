@@ -2,6 +2,7 @@
 
 > 日期：2026-08-26--27
 > 范围：candidate 预构建与 verified-ready registry；非 active switch、非 E2 激活
+> R1 提交：`3d6ce8f feat: add immutable epoch candidate registry`
 
 ## 1. 本切片解决什么
 
@@ -35,6 +36,12 @@ blob，不是可直接启动旧 verifier 的运行树。R2 必须补齐可执行
 启动，才能安全处理代码/依赖更新后的旧 outstanding；当前 allowlist 也是显式 provenance
 集合，不是自动解析得到的 transitive import closure，本文不提前宣称该能力。
 
+后续 R2a 已在不改写 R1 event/capsule 的前提下补齐这一切片：从 R1 immutable
+tip 解析 exact 22-module closure，仅捕获两个审核过的 augmentation，物化同源非可迁移
+树，并做根/可信时间双 frozen isolated 环境、prerequisite reload 与五种子 P50 烟测。
+详见 `docs/ootang_epoch_preparation_engineering.md`。R1 本身的
+`materialized_executable_tree=false` 仍是对历史 R1 capsule 的准确描述，不应被回写成 true。
+
 ## 2. 为什么先做 registry，而不是直接 cycle v4
 
 直接把 rotation 插入 cycle v3 会留下三个无法诚实处理的窗口：
@@ -47,13 +54,18 @@ blob，不是可直接启动旧 verifier 的运行树。R2 必须补齐可执行
 
 ```text
 R1: stable slot -> public prebuild/reload -> immutable snapshot verification -> candidate_ready
-R2: PREPARED -> DRAINING -> atomic SEALED/ACTIVE
+R2a: exact executable closure -> same-origin materialization -> isolated smoke -> PREPARED
+R2b: epoch_drain_started barrier/assessor -> DRAINING
+R2c: authoritative atomic SEALED/ACTIVE transition
 R3: cycle v4 + trusted-time qualification + scheduler authorization
 ```
 
-R2 必须保存旧 epoch 的可执行 capsule，并在旧 outstanding、guard、shadow 全部合法收口
-后，用单个权威 transition 同时 seal old / activate new。若 outcome 永不到达，机器只能
-持续等待，不能补 outcome、人工冻结或强制切换。
+R2a 已保存可执行 capsule/tree/smoke 证据，但没有 drain authority。R2b 必须先停止
+所有入口的旧 issue 新增能力，恢复 trusted-time 历史 request 与 orphan guard intent，
+并封锁旧 activation-prefix route 与 scheduler dispatch，才能声明 `epoch_drain_started`。只有旧
+outstanding/guard/time/outcome/revision/shadow 全部合法收口后，后续权威 transition 才可
+同时 seal old / activate new。若 outcome 永不到达，机器只能持续等待，不能补
+outcome、人工冻结/批准或强制切换。
 
 ## 3. 机器状态机
 
@@ -205,12 +217,22 @@ capsule reference size exact nonnegative-int 边界已修复并加入对抗测�
 完整掉电持久性未证明、observation 保存全 feed 且累计 replay 为 O(N²)，以及 R2 尚需
 materialize transitive executable closure；这些边界未被包装成已经解决。
 
-## 8. 下一步 R2
+## 8. R2a 后的 R2b
 
-R2 新增可恢复的 drain path 和单事件原子 switch：candidate ready 后先停止旧 epoch
-新签发，只允许恢复既有 issue、trusted-time、outcome、revision 和 shadow；当 old
-outstanding/guard/shadow 全部为空，且机器已解析旧/新本地 import/绑定 artifact 的
-transitive closure、materialize tree，并用 `python -I` 做 import/compile/replay smoke 后，
-才追加唯一
-`epoch_rotated` 事件并从 registry tip 恢复 active cache。closed epoch 的迟到 revision
-进入独立跨 epoch retrospective chain，不重开旧 online state。
+R2a 已完成 exact transitive local closure、same-origin tree materialization 与双域/五种子
+smoke，但没有因此产生 drain authority。下一切片 R2b 是可恢复的 machine
+`epoch_drain_started` barrier/assessor，而不是直接追加 `epoch_rotated`。
+
+R2b 在发布 barrier 前必须先关闭五个入口/恢复缺口：
+
+1. 全入口 issue fencing：任何旧 live/cycle/producer 路径都不能再生成旧 epoch issue；
+2. trusted-time historical request recovery：已发布请求必须可在 drain 期间继续机器收口；
+3. orphan guard intent 的唯一可恢复裁决，不得把中间态当作空 guard；
+4. 旧 activation-prefix route fencing，不让稳定 slot 之前的路径规则绕过 epoch authority；
+5. scheduler dispatch fencing，barrier 后调度器不能再启动任何旧签发入口。
+
+随后 assessor 才能只允许恢复已存 issue、guard、trusted-time、outcome、revision 和
+shadow，并机器判定它们全部收口。后续独立 transition 切片才可追加单个权威
+`SEALED(old)+ACTIVE(new)` 事件并从 registry tip 恢复 active cache。closed epoch 的迟到
+revision 需进入独立跨 epoch retrospective chain，不重开旧 online state。全程无人工
+日期、冻结、批准或 force；结局不到达时只能机器等待。

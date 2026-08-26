@@ -47,8 +47,15 @@
 - `ootang-epoch-registry` 在完整验证 feed 后先写 feed-observation/head 反回滚链，再在
   稳定最终 slot 中预构建并公开重载 source/五 seed bundle；feed、runtime artifacts 与
   显式 archival capsule 都进入内容寻址快照。它只追加 `candidate_ready` 记录，status
-  明确为 `immutable_candidate_record_ready`；尚无可执行 transitive capsule、drain 或
-  active switch，全部 E2/activation/formal claim 保持 false。
+  明确为 `immutable_candidate_record_ready`。R1 已在提交 `3d6ce8f` 固定。
+- 显式阶段 `ootang-epoch-preparation` 继续完成 R2a：从 R1 immutable tip 解析
+  exact 22-module closure，仅允许两个审核过的 package augmentation，将 R2a
+  profile/implementation 与候选文件一起内容寻址，在同一 canonical project/slot
+  物化非可迁移执行树。机器用两个 `uv --isolated --frozen` 环境重载 prerequisite，
+  并按 `atol=1e-6 mm` 复核五 seed `predict_p50` 与 `reload_replay`。每次 current
+  repoll、实现升级和 orphan receipt 恢复都会重跑当前烟测。该树固定
+  `portable_offline_runtime=false`；drain、active switch、rotation、trusted anchor、E2/
+  activation/formal claim 仍全部为 false。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -92,6 +99,8 @@ uv run python main.py --stage ootang-prequential-cycle-v2
 uv run python main.py --stage ootang-issue-replay
 uv run python main.py --stage ootang-verified-live
 uv run python main.py --stage ootang-prequential-cycle-v3
+uv run python main.py --stage ootang-trusted-time-shadow
+uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -116,7 +125,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（28 个可选阶段）
+main.py                         # 当前管线入口（29 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -154,6 +163,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_checkpoint_input_replay_engineering.md`](docs/ootang_checkpoint_input_replay_engineering.md) | 五 checkpoint/input 独立重放、verified-live intent/completion 与 cycle v3 指定入口门禁 |
 | [`docs/ootang_trusted_time_shadow_engineering.md`](docs/ootang_trusted_time_shadow_engineering.md) | RFC 3161 固定 TSA/策略/证书、隔离冻结运行时的自动可信时间影子请求、live/guard-bound 离线复验、崩溃恢复与非激活边界 |
 | [`docs/ootang_epoch_registry_engineering.md`](docs/ootang_epoch_registry_engineering.md) | 不可变 epoch registry R1：稳定 slot、content-addressed archival byte capsule、candidate verified-ready 全链与非轮换边界 |
+| [`docs/ootang_epoch_preparation_engineering.md`](docs/ootang_epoch_preparation_engineering.md) | R2a exact executable closure、同源物化树、双冻结隔离环境与五种子重放烟测 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -161,13 +171,14 @@ docs/                           # 当前方法、结果边界和研究计划
 
 ## 尚未完成的关键事项
 
-1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay 和
-   RFC 3161 可信时间能力均已有 machine-only additive 实现。可信时间仍是未接入
-   cycle v3、不可赋予 E2 资格的独立 shadow；旧入口也尚可绕过。immutable epoch
-   registry 的 R1 candidate prebuild/verified-ready 基础已实现，但尚未 drain 旧 epoch
-   或切换 active。下一道机器门禁是 R2 原子自动轮换，其后仍需 cycle v4、scheduler
-   entry authorization 和避免长链 receipt/ledger 重复扫描的 O(N²) 性能优化。在这些
-   门关闭前保持 `real_activation_ready=false`。
+1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay、RFC 3161
+   shadow、R1 immutable registry 与 R2a same-origin executable preparation 均已有
+   machine-only additive 实现。R2a 不是 portable runtime，也尚未 drain 旧 epoch 或
+   切换 active。下一道门禁是 R2b machine `epoch_drain_started` barrier/assessor；
+   实现前必须先解决全入口 issue fencing、trusted-time 历史 request 恢复、orphan
+   guard intent、旧 activation-prefix route 和 scheduler dispatch fencing。随后才能做原子
+   active transition、cycle v4 与长链 O(N²) 优化。不得添加人工日期、冻结、批准或
+   force；在这些门关闭前保持 `real_activation_ready=false`。
 2. ACI、AgACI-EWA 与 SPCI 已按预声明合同进入未来 E2 shadow；最少需要 180 个
    共同可用未来目标日并通过逐站 coverage/score/availability/rolling gate，才可
    报告 engineering readiness。当前不会自动选择或晋升，E1 回顾性结果也不得

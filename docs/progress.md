@@ -5,10 +5,76 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 epoch 可执行准备 R2a
+
+- R1 已在提交 `3d6ce8f feat: add immutable epoch candidate registry` 固定。在其上
+  新增显式、非默认阶段 `ootang-epoch-preparation`；当前共 29 个可选阶段，
+  无参数默认链仍严格为 `features → convlstm → ootang-operational-v4`。R2a profile/
+  module SHA-256 分别为
+  `c6ec0b1f340effd9e3fd5cd1a0ee67ebca9ffa4dc743a9cb36d701850dc875f9`/
+  `b03182accc3e8d482683eda29c7c07bdb66f7a316dfa99a41f29e1b99b3fe209`。
+- R2a 从 immutable R1 candidate tip 解析静态 local import closure，精确要求 22 个
+  `convlstm`/`monitoring` 模块；只允许从 canonical project 捕获已固定 SHA 的
+  `code/convlstm/__init__.py` 和 `code/monitoring/__init__.py` 两个 augmentation。
+  dynamic/wildcard local import、第三个补件、closure 数量/顺序漂移或自洽删除 root
+  module 均 fail closed。
+- executable capsule 将 R1 event/candidate/slot/live-epoch、exact closure/resource tree 与
+  R2a profile/implementation 精确 bytes 一起存入 content-addressed objects；capsule、smoke
+  receipt 与 preparation event 都交叉绑定 path/SHA/size。物化树只能在原 canonical
+  project 和 `slots/<slot-id>/live` 上使用，固定 `relocatable=false`、
+  `portable_offline_runtime=false`；它不包含 `.venv`、CPython/uv binary、OS 或 wheel cache。
+- 生产 smoke 固定 uv `0.12.5` 绝对路径及 SHA-256、CPython `3.10.20` 及
+  executable SHA-256、SOABI 与 `macOS-26.5.1-arm64-arm-64bit`。机器分别用根
+  43-distribution inventory 和 trusted-time 5-distribution inventory 的
+  `uv --no-config run --isolated --frozen ... python -I -B` 环境做双域烟测；任一
+  Python/distribution/platform 指纹漂移均阻断。
+- 根烟测编译 exact 22 Python files、从物化树 import cycle-v3/trusted-time shadow、
+  从 canonical slot 重载 source/model/live prerequisite 并复算 live epoch id。随后对 seeds
+  `0..4` 调用 bundle `predict_p50()`，与 training manifest `reload_replay` 按精确
+  station 集合/顺序、finite value、`rtol=0, atol=1e-6 mm` 逐项比较；trusted-time
+  域另从同一树 import core。
+- 已准备 candidate 的每次 current repoll 都重验 R1/capsule/tree/receipt 并重跑双域
+  smoke，不仅信任历史 status。同 R1 candidate 遇到 R2a implementation 升级时机器
+  重做 closure/materialization/smoke 并追加 `candidate_revalidated`；历史 event 仍依自身
+  内容寻址 implementation object 重放。smoke receipt 已提交但 event 未提交的 orphan
+  也必须重跑当前 smoke 并比较；环境漂移不得直接补 event。
+- event 最终 publish 前再复验 R1 receipt/current artifacts/空 future namespace、R1/R2a
+  profile/implementation bindings、capsule、tree 和 smoke receipt；追加后全链 replay 并确认
+  唯一 tip。R2a config file 或其 canonical project 父路径为 symlink 时即使 bytes/hash
+  相同也 fail closed。公开 API/CLI 不提供 runtime/candidate/date/freeze/approve/force/backdate/
+  smoke override；manager lock busy 为 exit 3。进入统一错误归一范围后的完整性冲突为
+  exit 2；少数 acquire-lock/profile 前置异常仍可能 traceback/exit 1，但同样 fail closed。
+- R2a 明确固定 `old_epoch_drain_implemented=false`、
+  `active_epoch_switch_implemented=false`、`automatic_epoch_rotation_implemented=false`、
+  `trusted_anchor_receipt_verified=false`、`e2_live_evidence_eligible=false`、
+  `real_activation_ready=false`、`formal_warning_output=false`。下一切片是 R2b machine
+  `epoch_drain_started` barrier/assessor；在它之前先关闭全入口 issue fencing、
+  trusted-time 历史 request 恢复、orphan guard intent、旧 activation-prefix route 和
+  scheduler dispatch fencing。全过程禁止人工日期、冻结、批准或 force。
+- epoch-preparation 独立终审为 `30/30`（590.587 秒），与 pipeline 最终组合为
+  `63/63`（597.651 秒），全仓回归为 `796/796`（3047.808 秒），均为 0 failure /
+  0 error。Ruff、compileall、R2a scoped format、diff-check、strict JSON `28/28`、
+  根/可信时间双 lock check、默认/显式 dry-run 与 29-stage list 均通过。v5 frozen
+  preflight 为 `23/23`，仍为 G0 PASS、G1--G4 BLOCKED、G5a 未评估/未授权、formal
+  warning false。97 条保护路径无相对 HEAD 漂移，聚合 SHA-256 实测仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+- 另以真实 R1 default prebuilder 启动正式五种子 × 120 epoch 隔离链，五个 checkpoint
+  均完成；R1 在 candidate 发布前因 `Bundle was not durable before the first target natural
+  day` 正确 fail closed。当前没有从 2020-07-01 连续到机器当前日的 finalized feed，故
+  未生成 R1 candidate、未进入 R2a default smoke。该结果不是 PASS，也不通过改系统时钟、
+  合成日期、人工 backdate 或 test-epoch override 绕过；真实 default smoke 继续作为 P2。
+- capsule/lifecycle 审计当前无新增 P0/P1。保留的非阻断 P2 包括有限 AST denylist、
+  smoke import 覆盖边界、name/version-only distribution inventory、同 UID 非协作 writer/
+  路径 TOCTOU/全历史重写、异常后的旧 status cache，以及部分 pre-lock/profile
+  `RegistryError` 尚未统一映射 CLI blocked；orphan capsule/tree 从不构成 authority，
+  freshness 必须依赖本次 poll 成功退出和 event replay。完整边界见工程文档。
+- 详细合同、exact module 列表和恢复边界见
+  `docs/ootang_epoch_preparation_engineering.md`。
+
 ## 2026-08-26--27 不可变 epoch registry R1
 
 - 本增量基于 `74ef8b9 feat: add cryptographic time shadow gate`，新增显式、非默认
-  阶段 `ootang-epoch-registry`；当前共 28 个可选阶段，无参数默认链仍严格为
+  阶段 `ootang-epoch-registry`；该 R1 基线当时共 28 个可选阶段，无参数默认链仍严格为
   `features → convlstm → ootang-operational-v4`。阶段不提供 target-date、freeze、
   approve、force、backdate 或人工签名入口。
 - R1 从固定 finalized feed bytes 与冻结合同推导 stable slot id，直接在最终
@@ -45,10 +111,12 @@
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。两轮独立只读
   审计均为 P0/P1 `0/0`；保留的 trusted-writer/掉电持久性、累计 replay O(N²) 与 R2
   executable closure 是已显式记录的 P2 工程边界。
-- 下一道门禁是 R2：machine trigger 后停止旧 epoch 新签发，在既有 issue、guard、
-  trusted-time、outcome、revision 和 shadow 全部收口后，用单个权威 transition 原子
-  `SEALED(old)+ACTIVE(new)`；随后才实现 cycle v4 与 scheduler authorization。若 outcome
-  永不到达，机器只能等待，不能伪造结局或强制轮换。
+- 后续 R2a 已在不修改 R1 链的前提下完成 exact executable closure、same-origin tree
+  materialization 和双域/五种子烟测。下一道门禁收窄为 R2b machine
+  `epoch_drain_started` barrier/assessor；必须先解决全入口 issue fencing、trusted-time
+  历史 request 恢复、orphan guard intent、旧 activation-prefix route 和 scheduler dispatch
+  fencing，才能对已存 issue/guard/time/outcome/revision/shadow 收口。若 outcome 永不到达，
+  机器只能等待，不能伪造结局、人工冻结/批准或强制轮换。
 
 ## 2026-08-26 RFC 3161 可信时间影子门
 

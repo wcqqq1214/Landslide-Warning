@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 28)
+        self.assertEqual(len(pipeline.STAGES), 29)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -701,7 +701,7 @@ class PipelineTests(unittest.TestCase):
             names.index("ootang-trusted-time-shadow") + 1,
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-preparation"), names.index(stage.name) + 1
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -746,6 +746,56 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(
             [selected.name for selected in ordered],
             ["ootang-trusted-time-shadow", "ootang-epoch-registry"],
+        )
+
+    def test_epoch_preparation_is_explicit_same_origin_r2a_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-preparation"]
+
+        self.assertEqual(
+            names.index(stage.name), names.index("ootang-epoch-registry") + 1
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "epoch_candidate_same_origin_preflight_r2a_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_preparation.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_epoch_preparation.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/preparation_status.json",),
+        )
+        for required in (
+            "config/ootang_epoch_preparation.v1.json",
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "code/convlstm/__init__.py",
+            "code/monitoring/__init__.py",
+            "pyproject.toml",
+            "uv.lock",
+            "tools/ootang_trusted_time_runtime/pyproject.toml",
+            "tools/ootang_trusted_time_runtime/uv.lock",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            ["ootang-epoch-preparation", "ootang-epoch-registry"]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            ["ootang-epoch-registry", "ootang-epoch-preparation"],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

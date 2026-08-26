@@ -159,11 +159,16 @@ E2 只评价位移预测、区间覆盖、残差新颖性、漂移和拒绝行�
 等待/回填/修订和非密码学外部锚接口。additive designated entry 已独立重放 issue
 引用的 input manifest 与五个 checkpoint，并有 standalone RFC 3161 shadow 对固定
 provider/policy/leaf/root 的签名回执做离线复验；但旧 E2-A/cycle CLI 尚可绕过，可信
-时间也尚未进入新的不可绕过 cycle/epoch 合同。R1 immutable registry 已能在稳定
+时间也尚未进入新的不可绕过 cycle/epoch 合同。R1 immutable registry 已在稳定
 per-epoch slot 中预构建 candidate，并复验其 runtime artifacts 与 archival byte
-capsule；该 capsule 尚不是可执行旧 epoch tree，也尚未 drain 旧 epoch 或切换 active。
-模型/源码/环境变化仍会 fail closed，不能把 candidate-ready 误写成 automatic
-rotation。因此所有 E2-A settlement 固定
+capsule；R2a 又解析 exact 22-module closure，只捕获两个审核 augmentation，内容寻址捕获
+R2a profile/implementation，并在 canonical project/slot 物化非可迁移树。根/可信时间
+两个 frozen isolated 环境进一步重载 prerequisite，将五 seed `predict_p50` 与
+`reload_replay` 以 `atol=1e-6 mm` 比较。它每次 current repoll 与 orphan 恢复都重跑
+烟测，实现升级会机器追加 `candidate_revalidated`。但该树固定
+`portable_offline_runtime=false`，R2a 也尚未 drain 旧 epoch 或切换 active。模型/源码/
+环境变化仍会 fail closed，不能把 candidate-prepared 误写成 automatic rotation。因此
+所有 E2-A settlement 固定
 `e2_live_evidence_eligible=false`，即使 shadow 时间顺序验证成功也不得升格。
 
 ### 3.4 E3：独立灾害结局
@@ -605,11 +610,13 @@ validate_contract
 3. E2-A 工程（已实现）：append-only event ledger、幂等恢复、outcome revision、
    issue/outcome 隔离、自动等待和不可信外部锚接口；
 4. E2-B 机器工程（部分门禁已实现）：content-addressed 五种子模型、input-manifest
-   语义、机器 outcome/cycle、指定入口 checkpoint inference replay，以及 standalone
-   pinned RFC 3161 cryptographic-time shadow，以及 immutable epoch registry R1 的
-   stable-slot candidate prebuild/verified-ready chain 已实现；R2 drain/原子轮换、将
-   可信时间接入新版 designated cycle、scheduler entry authorization 与长链性能门
-   仍待实现；
+   语义、机器 outcome/cycle、指定入口 checkpoint inference replay、standalone pinned
+   RFC 3161 cryptographic-time shadow、immutable epoch registry R1 的 stable-slot
+   candidate prebuild/verified-ready chain，以及 R2a exact executable closure/same-origin
+   materialization/双域五种子烟测已实现；R2b `epoch_drain_started` barrier/assessor 尚需
+   先关闭全入口 issue fencing、trusted-time 历史 request 恢复、orphan guard intent、
+   旧 activation-prefix route 与 scheduler dispatch fencing。之后的原子 active transition、将可信
+   时间接入新版 designated cycle 与长链性能门仍待实现；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
@@ -652,9 +659,11 @@ validate_contract
 
 在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay，以及 E2-A 的
 live 状态机、append-only ledger、等待/恢复/修订、数学全重放和独立 RFC 3161
-回执影子复验，以及 R1 stable-slot candidate prebuild。E2-A 仍是工程基础，不是 live
-证据：可信时间 capability 与 candidate registry 尚未成为不可绕过的 active switch。
-只有 E2-B 进一步完成 R2 drain/原子轮换、cycle v4 和 scheduler authorization，并真实
+回执影子复验、R1 stable-slot candidate prebuild，以及 R2a exact closure/same-origin
+tree/双 frozen isolated 烟测。E2-A 仍是工程基础，不是 live 证据：R2a
+`portable_offline_runtime=false`，可信时间 capability 与 candidate preparation 尚未成为不可
+绕过的 active switch。只有 E2-B 进一步完成 R2b 全入口 fencing/drain assessor、后续
+原子 active transition、cycle v4 和 scheduler authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
 
 E3 仍然 `BLOCKED`。在独立灾害结局不存在时，最科学的机器行为不是生成五级

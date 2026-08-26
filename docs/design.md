@@ -113,16 +113,20 @@ verified replay completion + pinned RFC 3161 trust bundle
        └─ trusted-time request/response/object/receipt + shadow status
 
 fixed finalized feed + reviewed execution contract
-  └─ monitoring/ootang_epoch_registry.py
-       └─ stable slot prebuild -> content-addressed archival byte capsule
-            -> create-only candidate-ready registry chain
+  ├─ monitoring/ootang_epoch_registry.py
+  │    └─ stable slot prebuild -> content-addressed archival byte capsule
+  │         -> create-only candidate-ready registry chain
+  └─ monitoring/ootang_epoch_preparation.py
+       └─ exact 22-module closure + two reviewed augmentations
+            -> same-origin executable tree + two frozen isolated smoke domains
+            -> candidate-prepared/revalidated chain
 
 future frozen protocol + independent outcome labels
   └─ warning/formal_warning.py
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains twenty-eight independently selectable stages. Its no-argument chain is exactly
+`main.py` contains twenty-nine independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -154,6 +158,7 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_prequential_cycle_v3.py` | 在 shadow cycle 上加入前置/签发后 replay，并将全部 live transition 改走 verified-live，形成 13 阶段机器 fixed point | progress token 绑定 replay/intent/completion 科学身份；保留 64 轮、continuation、振荡检测、busy/blocked 语义；仍无人工日期/冻结/批准字段 |
 | `code/monitoring/ootang_trusted_time_shadow.py` + `ootang_trusted_time_shadow_core.py` | stdlib launcher 在精确 CPython/隔离冻结依赖中，为已完成的 replay-gated issue seal 生成固定 policy、256-bit nonce 的 RFC 3161 请求；公开 reload 从 live/guard history 重建 envelope，再从 raw TSR 复验 CMS、固定 leaf/root、消息、nonce、accuracy 与 UTC+08:00 目标日前因果条件 | standalone additive shadow；core 硬固定 Sigstore trust，bootstrap 拒绝代码/锁/环境注入；不读 outcome、不改旧 anchor、不进入 cycle v3，所有 E2/activation/formal 标志为 false；ESSCertIDv2 未单独解析 |
 | `code/monitoring/ootang_epoch_registry.py` | 完整验证 finalized feed 后先写独立 observation/head 反回滚链，再派生稳定 slot、预构建 source/model；精确绑定 source-lineage feed，把固定代码/配置/锁/trust 与 runtime artifacts 保存为 content-addressed archival snapshots，最后追加严格 N→N+1 candidate-ready event | standalone R1；waiting/orphan 也保留 feed 水位，历史 replay 验证 immutable snapshots 而非以后可变的 slot；capsule allowlist 不是 executable transitive closure，不移动 slot、不创建 candidate ledger、不切 active、不读 outcome，automatic rotation/E2/activation/formal 均为 false；R2 另做 executable materialization、drain 与原子 switch |
+| `code/monitoring/ootang_epoch_preparation.py` | 从 R1 immutable tip 静态解析 exact 22-module closure，只捕获两个固定 augmentation；将 closure、R2a profile/implementation 和绑定资源内容寻址并物化为同源执行树，在根/可信时间双 `uv --isolated --frozen` 环境重载 prerequisite 与五 seed P50 | standalone R2a；只接受 canonical project/slot，`relocatable=false`、`portable_offline_runtime=false`；每次 current repoll 和 orphan recovery 都重烟测，实现升级追加 `candidate_revalidated`；drain/switch/rotation/trusted anchor/E2/activation/formal 全为 false |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -270,10 +275,17 @@ RFC 3161 shadow 进一步用固定 provider/policy/leaf/root 签名回执验证�
 live-v1 CLI 仍可被直接调用，所以这不是系统级不可绕过授权；实现或模型变化也尚未
 自动创建 immutable 新 epoch。receipt/ledger registry 的长链全量验证仍需避免
 O(N²) 反复扫描。因此全部能力仍只输出工程时序候选，固定
-`e2_live_evidence_eligible=false`。epoch registry R1 只关闭 candidate 的稳定 slot、
-预构建和 verified-ready 记录基础，尚未停止旧签发或切换 active。后续门禁是 R2
-drain/原子 rotation、将可信时间接入 cycle v4、scheduler entry authorization 和长链
-扫描优化；不得用人工逐日冻结代替。
+`e2_live_evidence_eligible=false`。epoch registry R1 关闭 candidate 的稳定 slot、预构建和
+verified-ready 记录基础；R2a 再物化 exact 22-module closure，内容寻址捕获自身
+profile/implementation，并在精确 uv/Python/依赖指纹下做双 frozen isolated 烟测与
+五种子 `predict_p50`/`reload_replay` 比较。该树必须保持原 project/slot，不是
+portable offline runtime，也尚未停止旧签发或切换 active。
+
+下一门禁是 R2b machine `epoch_drain_started` barrier/assessor。在任何 drain 声明前，
+必须先关闭全入口 issue fencing、trusted-time 历史 request 恢复、orphan guard intent、
+旧 activation-prefix route 与 scheduler dispatch 绕过；随后才能评估已存 issue/guard/time/
+outcome/revision/shadow 收口和原子 active transition。全程不得加入人工日期、冻结、
+批准或 force；cycle v4、scheduler authorization 与长链扫描优化仍在其后。
 
 ## 版本化与清理原则
 

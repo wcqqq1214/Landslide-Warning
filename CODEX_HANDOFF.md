@@ -3,11 +3,137 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `74ef8b9 feat: add cryptographic time shadow gate`
-**State:** RFC 3161 trusted-time shadow 已提交；本增量已完成并验证 standalone immutable
-epoch registry R1 的 stable-slot candidate prebuild/verified-ready chain，尚未 push。R1
-不做 active switch，所有 rotation/E2/activation/formal 字段保持 false；下一步为 R2
-机器 drain、可执行 capsule materialization 与原子 epoch transition。
+**Committed baseline before this increment:** `3d6ce8f feat: add immutable epoch candidate registry`
+**State:** immutable epoch registry R1 已提交；当前共享工作树已实现并完成验证 R2a
+same-origin executable preparation，提交时应显式排除两项用户未跟踪文件。R2a
+不做 drain 或 active switch，所有 rotation/trusted-anchor/E2/activation/formal 字段保持
+false；下一步是 R2b machine `epoch_drain_started` barrier/assessor。
+
+## 2026-08-27 epoch executable preparation R2a continuation
+
+The new explicit-only stage is:
+
+```text
+ootang-epoch-preparation
+```
+
+`main.py` now exposes 29 selectable stages. The no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The R2a profile and implementation
+SHA-256 values are respectively
+`c6ec0b1f340effd9e3fd5cd1a0ee67ebca9ffa4dc743a9cb36d701850dc875f9` and
+`b03182accc3e8d482683eda29c7c07bdb66f7a316dfa99a41f29e1b99b3fe209`.
+
+R2a consumes only the replayed immutable R1 tip. It resolves the exact static local
+import closure rooted at cycle-v3 and trusted-time shadow/core. The closure must be
+exactly 22 reviewed `convlstm`/`monitoring` modules. The only files it may capture
+from the current project because they were absent from the R1 capsule are the pinned
+`code/convlstm/__init__.py` and `code/monitoring/__init__.py` augmentations. Dynamic
+or wildcard local imports, a third augmentation, a changed module count/order, or a
+self-consistent capsule that drops a root module fail closed. The exact 22-module
+list is recorded in `docs/ootang_epoch_preparation_engineering.md`.
+
+The executable capsule binds the R1 profile/event/candidate/slot/live-epoch identity,
+the exact closure/resource tree and every logical artifact's SHA/size/source/role.
+R2a also captures its own profile bytes and implementation bytes into the shared
+content-addressed object store; capsule, smoke receipt and preparation event cross-bind
+those path/SHA/size references. Historical events continue to replay against their
+captured implementation object after a coordinator upgrade. The upgraded coordinator
+must rerun closure resolution, materialization and smoke for the same R1 candidate and
+append `candidate_revalidated`; it never overwrites `candidate_prepared`.
+
+This is deliberately a same-origin preflight. Existing source/model manifests bind
+the final absolute `slots/<slot-id>/live` path, so both canonical project root and
+canonical slot root are mandatory. The capsule says `relocatable=false` and
+`portable_offline_runtime=false`. Its exact materialized logical tree contains no
+`.venv`, CPython/uv binary, OS or wheel cache; it is not an air-gapped bundle or a
+cross-machine recovery image.
+
+The production smoke runner pins uv 0.12.5 at
+`/opt/homebrew/Cellar/uv/0.12.5/bin/uv` with SHA-256
+`debc68c21b3bb1086e20d9889b53ff5ccf9ef343fda9a57dc2022212e3511125`,
+CPython 3.10.20 with executable SHA-256
+`694bcacb03f978975c57396caaec10a42d3fec62a789f82f8661197c9dd17a2e`,
+SOABI `cpython-310-darwin` and platform `macOS-26.5.1-arm64-arm-64bit`.
+It runs two separate `uv --no-config run --isolated --frozen ... python -I -B`
+domains: the root 43-distribution inventory
+`007dc4fbca73360ff0ca20b744509d2a3b0fbd44711234e64c35715032ebc34e`
+and the trusted-time five-distribution inventory
+`622737b4a53f420c3e895e4d74205b456fd7efa15b0e4a9250e760c7c24264c5`.
+Both must match the pinned Python hash, SOABI and platform.
+
+The root smoke compiles all 22 Python files, imports cycle-v3/trusted-time shadow from
+the materialized tree, reloads live/source/model prerequisites from the canonical slot,
+and rederives the candidate live epoch id. It then calls the reloaded bundle's
+`predict_p50()` for seeds 0..4 and compares every value with training-manifest
+`reload_replay`: exact seed order, exact finite station set/order, `rtol=0`,
+`atol=1e-6 mm`. The second frozen domain imports trusted-time core from that same tree.
+
+Every current repoll revalidates the R1 receipt/current artifacts/empty future
+namespaces, capsule and exact tree, reruns both current smoke domains, and compares the
+result with the immutable smoke receipt. A receipt orphaned by a crash before event
+append is not promoted directly: current smoke is rerun and compared first; environment
+drift blocks recovery. Immediately before event publication R2a again verifies current
+R1/R2a profile and implementation bindings, R1 candidate, capsule, tree and smoke.
+It then replays the appended chain, requires the new event to be the unique tip, and
+rebuilds mutable head/status caches. The canonical config file itself and every existing
+parent from project root must be non-symlink even when aliased bytes would hash equally.
+
+R1/R2a share a non-blocking manager lock. Busy maps to exit 3. Contract/integrity
+failures inside the normalized R2a scope map to exit 2; a documented subset before
+lock/profile normalization can still traceback/exit 1 while failing closed. The production API
+accepts only reviewed config, and the CLI has no
+runtime/candidate/date/freeze/approve/force/backdate/smoke override. All of these remain
+false in capsule, receipt, event and status:
+
+```text
+old_epoch_drain_implemented
+active_epoch_switch_implemented
+automatic_epoch_rotation_implemented
+trusted_anchor_receipt_verified
+e2_live_evidence_eligible
+real_activation_ready
+formal_warning_output
+```
+
+Final verification is: epoch-preparation `30/30` in 590.587 seconds; preparation +
+pipeline `63/63` in 597.651 seconds; and full repository `796/796` in 3047.808 seconds,
+all with zero failures/errors. Ruff, compileall, R2a scoped format, diff-check, strict
+JSON `28/28`, both frozen lock checks, default/explicit dry-runs and the 29-stage list
+pass. Formal-v5 preflight is `23/23` and remains G0 PASS, G1--G4 BLOCKED, G5a not
+evaluated/unauthorized and formal warning false. All 97 protected paths have no diff
+against HEAD, and their measured aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+
+A separate isolated run used the real R1 default prebuilder with all five seeds and
+120 epochs, without a clock override or test-epoch shortcut. All five content-addressed
+checkpoints completed, after which R1 correctly failed closed before candidate publication:
+`Bundle was not durable before the first target natural day`. The repository does not
+contain a machine-finalized daily feed continuous from 2020-07-01 through 2026-08-27,
+so the one-record target was already historical. No R1 candidate or R2a default smoke was
+therefore published. This is not reported as an end-to-end pass and must not be bypassed
+with a changed system clock, synthetic date fill, manual backdating or a test-epoch override;
+the real default-smoke gap remains a documented P2 pending genuinely current feed.
+
+Current capsule/lifecycle review found no new P0/P1. Documented non-blocking P2
+boundaries remain: the finite AST denylist needs a stronger future allowlist; only the
+replayed event chain (never an orphan capsule/tree) is authority; root smoke compiles
+all 22 modules but imports only closure roots, while trusted smoke imports core rather
+than the launcher or an independent crypto self-test; same-UID noncooperating writers,
+path TOCTOU and full-history rewrites are not completely defeated by the manager lock
+and local hash chain; distribution inventories bind name/version rather than extension
+or system-library bytes; an exception may leave a stale status cache, so freshness
+requires this poll to exit successfully plus event replay; and some pre-lock/profile
+`RegistryError` paths are not yet normalized to R2a CLI blocked. These limitations do
+not change authority, `trusted_anchor_receipt_verified=false`, or
+`portable_offline_runtime=false`; details are in the R2a engineering document.
+
+Next is R2b, not an immediate active switch. It must first implement a machine
+`epoch_drain_started` barrier/assessor and close five prerequisites: fencing every
+old-epoch issue-creation entrypoint, recovering historical trusted-time requests,
+resolving orphan guard intents, fencing the old activation-prefix route, and fencing
+scheduler dispatch. Only then may the assessor drain existing issue/guard/time/outcome/
+revision/shadow work and a later slice authorize an atomic active transition. There is
+no human date, freeze, approval or force path.
 
 ## 2026-08-26--27 immutable epoch registry R1 continuation
 
@@ -17,7 +143,7 @@ The new explicit-only stage is:
 ootang-epoch-registry
 ```
 
-`main.py` now exposes 28 selectable stages; the default chain remains exactly
+At the R1 baseline, `main.py` exposed 28 selectable stages; the default chain remained exactly
 `features -> convlstm -> ootang-operational-v4`. R1 derives a stable slot from the
 fixed candidate feed and reviewed contract. Before any long build it independently
 checks the complete frozen Ootang feed/record schema, finalized/time/natural-day/
@@ -66,17 +192,20 @@ scoped format, compileall, strict JSON `27/27`, root/isolated lock checks and di
 pass. v5 preflight is `23/23` and remains G0 PASS, G1--G4 BLOCKED and G5a unauthorized.
 The 97 protected paths have no diff and retain aggregate
 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
-Two independent read-only audits ended at P0/P1 `0/0`; trusted-writer/power-loss,
-cumulative O(N^2) replay and R2 executable-closure limits remain explicit P2 scope.
+Two independent read-only R1 audits ended at P0/P1 `0/0`; trusted-writer/power-loss,
+cumulative O(N^2) replay and the then-missing executable closure were explicit P2
+scope. R2a now closes the exact same-origin closure/materialization/smoke slice without
+changing the R1 chain; its remaining P2 boundaries are recorded in the R2a engineering
+document.
 
-Next is R2, not cycle v4 directly: a machine trigger must stop new old-epoch issue
-creation, drain every existing issue/guard/time/outcome/revision/shadow transaction,
-then machine-resolve and materialize the transitive local import/artifact closure,
-perform isolated `python -I` import/compile/replay smoke checks, and commit one
-authoritative `SEALED(old)+ACTIVE(new)` transition into a per-epoch runtime. Missing
-outcomes remain machine waiting; no forced rotation or fabricated settlement is
-allowed. Only after R2 should cycle v4 consume the registry tip and make trusted time an
-unavoidable qualification step.
+Next is R2b, not cycle v4 or an immediate active switch. A machine
+`epoch_drain_started` barrier/assessor must first fence all old-epoch issue creation,
+recover historical trusted-time requests and orphan guard intents, reject the old
+activation-prefix route, and fence scheduler dispatch. It may then wait for existing
+issue/guard/time/outcome/revision/shadow transactions to close. Missing outcomes remain
+machine waiting; no forced rotation or fabricated settlement is allowed. Only a later
+transition slice may commit `SEALED(old)+ACTIVE(new)` and allow cycle v4 to consume the
+registry/preparation tip.
 
 ## 2026-08-26 RFC 3161 trusted-time shadow continuation
 
@@ -1099,6 +1228,15 @@ E2-A/E2-B machine-live files:
 - `docs/ootang_prequential_deploy_engineering.md`
 - `docs/ootang_prequential_cycle_engineering.md`
 
+Epoch registry/preparation files:
+
+- R1 is committed at `3d6ce8f` (`code/monitoring/ootang_epoch_registry.py`,
+  `config/ootang_epoch_registry.v1.json`, its tests and engineering document);
+- `code/monitoring/ootang_epoch_preparation.py`;
+- `config/ootang_epoch_preparation.v1.json`;
+- `tests/test_ootang_epoch_preparation.py`;
+- `docs/ootang_epoch_preparation_engineering.md`.
+
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
 - `data/vajont_fig5a_curves_2_3_4_5_58_mm_velocity.xlsx`
@@ -1124,16 +1262,17 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    shadow as implemented. Keep public live/guard-envelope reconstruction, true forward,
    pinned trust, isolated runtime, causal-time and adversarial tests intact. Do not
    weaken either gate into producer or receipt self-report.
-4. Implement a machine-only immutable epoch registry with bundle prebuild and safe
-   automatic rotation. Code/model/profile/trust/runtime changes must atomically close
-   the old epoch and cold-start a fully verified new one; failure waits or blocks and
-   must never invoke human date selection, freezing, approval or fabricated backfill.
-5. After the registry exists, add a separately versioned cycle v4 that makes the
-   trusted-time receipt an explicit qualification input, then enforce scheduler entry
-   authorization so old live/cycle CLIs cannot bypass it. Optimize repeated receipt/
-   ledger full scans so long-lived operation does not grow as O(N^2). Do not use
-   historical OOF rows as future predictions, select a best seed, or backdate a missed
-   target.
+4. Treat R1 registry and R2a same-origin executable preparation as implemented. Next
+   build the R2b machine `epoch_drain_started` barrier/assessor. Before it can declare
+   drain authority, fence every old-epoch issue entrypoint, recover historical
+   trusted-time requests and orphan guard intents, reject the old activation-prefix
+   route, and fence scheduler dispatch. Failure waits or blocks; never add human date
+   selection, freezing, approval, force or fabricated backfill.
+5. After R2b proves old work is drained, add a separate authoritative active-transition
+   slice, then cycle v4 with trusted-time qualification. Keep scheduler authorization
+   unavoidable and optimize repeated receipt/ledger scans so long-lived operation does
+   not grow as O(N^2). Do not use historical OOF rows as future predictions, select a
+   best seed, or backdate a missed target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already
