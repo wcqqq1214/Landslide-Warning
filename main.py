@@ -181,6 +181,35 @@ STAGES = (
         enabled_by_default=False,
     ),
     Stage(
+        "ootang-prequential-calibration-bakeoff",
+        "code/monitoring/ootang_prequential_calibration_bakeoff.py",
+        "比较藕塘 E1 prequential 校准候选方法（回顾性研究，非正式）",
+        inputs=(
+            "config/ootang_prequential_calibration_bakeoff.v1.json",
+            "config/ootang_prequential_monitor.v1.json",
+            "figures/prequential_anomaly_ootang_v1/station_timeline.csv",
+            "figures/prequential_anomaly_ootang_v1/site_timeline.csv",
+            "figures/prequential_anomaly_ootang_v1/prequential_metrics.csv",
+            "figures/prequential_anomaly_ootang_v1/manifest.json",
+        ),
+        outputs=(
+            "figures/prequential_calibration_bakeoff_ootang_v1/"
+            "candidate_timeline.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/"
+            "candidate_metrics.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/"
+            "pairwise_comparison.csv",
+            "figures/prequential_calibration_bakeoff_ootang_v1/manifest.json",
+        ),
+        arguments=(
+            "--config",
+            "config/ootang_prequential_calibration_bakeoff.v1.json",
+        ),
+        warning_artifact_scope="retrospective_prequential_calibration_bakeoff_research",
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
         "ootang-live-source",
         "code/monitoring/ootang_live_source.py",
         "校验并内容寻址物化藕塘 E2-B 机器源快照（工程基础设施，非正式）",

@@ -20,6 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
+        self.assertEqual(len(pipeline.STAGES), 21)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -392,6 +393,62 @@ class PipelineTests(unittest.TestCase):
             )
         )
 
+    def test_prequential_calibration_bakeoff_is_explicit_and_uses_e1_bundle(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME[
+            "ootang-prequential-calibration-bakeoff"
+        ]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-prequential-monitor") + 1,
+        )
+        self.assertEqual(
+            names.index("ootang-live-source"),
+            names.index(stage.name) + 1,
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "retrospective_prequential_calibration_bakeoff_research",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_prequential_calibration_bakeoff.py",
+        )
+        self.assertEqual(
+            stage.inputs,
+            (
+                "config/ootang_prequential_calibration_bakeoff.v1.json",
+                "config/ootang_prequential_monitor.v1.json",
+                "figures/prequential_anomaly_ootang_v1/station_timeline.csv",
+                "figures/prequential_anomaly_ootang_v1/site_timeline.csv",
+                "figures/prequential_anomaly_ootang_v1/prequential_metrics.csv",
+                "figures/prequential_anomaly_ootang_v1/manifest.json",
+            ),
+        )
+        self.assertNotIn("figures/convlstm/forecast_predictions.csv", stage.inputs)
+        self.assertEqual(
+            stage.outputs,
+            (
+                "figures/prequential_calibration_bakeoff_ootang_v1/"
+                "candidate_timeline.csv",
+                "figures/prequential_calibration_bakeoff_ootang_v1/"
+                "candidate_metrics.csv",
+                "figures/prequential_calibration_bakeoff_ootang_v1/"
+                "pairwise_comparison.csv",
+                "figures/prequential_calibration_bakeoff_ootang_v1/manifest.json",
+            ),
+        )
+        self.assertEqual(
+            stage.arguments,
+            (
+                "--config",
+                "config/ootang_prequential_calibration_bakeoff.v1.json",
+            ),
+        )
+
     def test_e2b_engineering_stages_are_explicit_and_ordered_before_live(self):
         names = [stage.name for stage in pipeline.STAGES]
         expected = (
@@ -427,7 +484,7 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(
             names.index("ootang-live-source"),
-            names.index("ootang-prequential-monitor") + 1,
+            names.index("ootang-prequential-calibration-bakeoff") + 1,
         )
         for (name, script, output, static_inputs), next_name in zip(
             expected,

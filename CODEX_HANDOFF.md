@@ -3,10 +3,85 @@
 **Prepared:** 2026-08-26
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `d191ad3 feat: add autonomous prequential deployment core`
-**State:** E2-B2 source-receipt hardening, machine outcome materialization, and the
-fixed-point cycle are implemented and fully verified. This handoff is part of the
-requested E2-B2 commit; nothing in this continuation has been pushed.
+**Committed baseline before this increment:** `90497f9 feat: add autonomous outcome cycle`
+**State:** the E1 calibration bakeoff is implemented and fully verified; E2-B2 remains
+the committed machine outcome/fixed-point baseline. Nothing in this continuation has
+been pushed.
+
+## 2026-08-26 E1 calibration bakeoff continuation
+
+An additional explicit-only stage is now implemented:
+
+```text
+ootang-prequential-calibration-bakeoff
+```
+
+`main.py` exposes 21 selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The new stage reads only the protected
+E1 monitor profile and its station/site/metrics/manifest bundle. All three methods
+reuse every E1 point forecast exactly and follow the same fold/drift reset schedule:
+
+- `aci_v1_control`: exact E1 alpha, interval, and warm-up parity;
+- `agaci_ewa_variant_v1`: seven fixed ACI gamma experts with separate lower/upper
+  exponential weighting on past normalized pinball loss; explicitly not the BOA plus
+  gradient-trick algorithm in the AgACI paper;
+- `spci_qrf_v1`: signed residuals, lag 10 ordered most-recent-to-oldest, 60 minimum
+  QRF pairs, fixed 180-row window and deterministic shallow ten-tree forest.
+
+For each fold-date, the runner constructs and hashes all 24 method/station issues before
+it reads any same-date outcome. A synthetic counterfactual changes one first-day actual
+by 50 mm: all 24 first-day issues and the candidate batch hash remain exact, while the
+three next-day state hashes and next batch hash change. Candidate state, settings, the
+source E1 issue hash, config, implementation, dependencies, inputs, and outputs are all
+content-bound. Staged `%.17g` CSV bytes are reloaded, metrics and pairwise tables are
+recomputed, and the entire candidate timeline is deterministically replayed from source
+by the same versioned runner/core before per-file atomic replacement. This is not an
+independent implementation replay or a bundle-wide SIGKILL-safe transaction.
+
+Overall fold 1/2/3 coverage is:
+
+```text
+ACI control        0.791192 / 0.695061 / 0.630746
+AgACI-EWA variant  0.848140 / 0.745884 / 0.657121
+SPCI-QRF           0.721186 / 0.622433 / 0.498736
+```
+
+The EWA variant narrows intervals and reduces interval score in all folds, and improves
+absolute coverage gap in folds 2/3, but worsens fold-1 coverage gap through overcoverage.
+The fixed SPCI configuration undercovers all folds. These are retrospective descriptive
+signals only: output schemas prohibit winner/rank/selection/promotion, and all E2,
+confirmatory, independent-label, real-activation and formal-warning claims remain false.
+
+Materialized outputs under `figures/prequential_calibration_bakeoff_ootang_v1/` are:
+
+- timeline: 20,664 rows, SHA-256
+  `8857e77a96cba8ad2ae011a822759c0c08cc65e0c6fdab684b3e3fc0334df91e`;
+- metrics: 108 rows, SHA-256
+  `dfc314041a2982456428b51dd4cd08c7b232706dea77ff77c200e3e76e620168`;
+- pairwise: 144 rows, SHA-256
+  `4e13a366bfe37b58d9692bdbefd23f4fa686ee731657460b21f04964662eccf8`;
+- manifest: SHA-256
+  `229a26f5ec2c5a7082b14d18b8af7d21d44ba42f3b5b5d365b765f6fead4422f`.
+
+Two complete final runs produced byte-identical hashes. The next research step is a new
+versioned E2 calibration shadow protocol with predeclared coverage/score/availability/
+stability and minimum-support gates. It must issue all shadow candidates before the
+outcome seal and update them only after machine materialization. It must not manually
+freeze dates, rewrite E1/live v1, or promote a method from this viewed replay. Full
+details are in `docs/ootang_prequential_calibration_bakeoff.md`.
+
+Final independent P0/P1 review closed two defects before those hashes were recorded:
+the issue phase now materializes an issue-only column whitelist and constructs the
+reveal lookup only after all 24 issues plus their batch hash; QRF weighted quantiles now
+drop zero-weight extremes, renormalize finite positive support, and handle probabilities
+zero and one on that conditional support. The latest review reports no open P0/P1.
+
+Final verification is calibration core 13/13, bakeoff runner 4/4, pipeline 28/28,
+and full repository 584/584 in 575.016 seconds with zero failures/errors. Ruff,
+compileall, and diff-check passed. The v5 preflight remains 23/23 with G0 PASS,
+G1--G4 BLOCKED and G5a unauthorized. E1 hashes and the 97-path aggregate
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`
+remain unchanged.
 
 ## 2026-08-26 E2-B2 machine outcome and fixed-point continuation
 

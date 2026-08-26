@@ -59,6 +59,14 @@ automatic V0 candidates + raw kinematics + raw ConvLSTM intervals
        ├─ O1/O2/O3 continuous spatial aggregation
        └─ figures/prequential_anomaly_ootang_v1/*
 
+protected E1 point forecasts + E1 fold/drift reset schedule
+  + versioned calibration bakeoff contract
+  └─ monitoring/ootang_prequential_calibration_bakeoff.py
+       ├─ exact ACI v1 control
+       ├─ AgACI-inspired EWA endpoint aggregation (explicitly not BOA)
+       ├─ signed-residual SPCI-QRF
+       └─ figures/prequential_calibration_bakeoff_ootang_v1/*
+
 machine source/model manifests + separated issue/outcome inboxes
   ├─ monitoring/ootang_live_source.py
   ├─ convlstm/ootang_production_bundle.py
@@ -79,7 +87,7 @@ future frozen protocol + independent outcome labels
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains twenty independently selectable stages. Its no-argument chain is exactly
+`main.py` contains twenty-one independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -93,6 +101,8 @@ candidate display all require `--stage`.
 | `code/convlstm/model.py` | 以 7 通道输入预测全部八测点位移 P10/P50/P90 | 输出训练/校准/测试分段图、预测 CSV、覆盖率和运行 manifest |
 | `code/convlstm/rolling_validation.py`、`seed_stability.py` | 固定 7 通道的滚动和多种子诊断 | 当前显式阶段；不将历史 6 通道结果当作 7 通道证据 |
 | `code/monitoring/ootang_prequential_monitor.py` | 对 5-seed 严格时序 OOF + persistence 做同日先 issue 后 reveal 的机器在线组合、校准、漂移和连续空间聚合 | 物化 E1 回顾性 replay；不逐日人工选样本/阈值，不输出颜色、灾害概率或正式预警 |
+| `code/monitoring/calibration_challengers.py` | 提供不可变 ACI、AgACI-EWA 与 SPCI-QRF station-local issue/reveal 数学及 canonical state hash | AgACI 是诚实命名的 EWA 变体而非 BOA 复现；SPCI 用 signed residual 与最新到最旧 lag；无文件或时钟依赖 |
+| `code/monitoring/ootang_prequential_calibration_bakeoff.py` | 在受保护 E1 point forecast 上先签发全部 24 个 candidate issue、后 reveal，输出 coverage/width/score 与配对比较 | 回顾性描述、禁止 ranking/selection/promotion；不修改 E1、live ledger、模型或正式预警 |
 | `code/monitoring/prequential_core.py` | 提供不可变 StationState 及 issue/reveal/site 纯数学 | 与 E1 v1 数学逐字段等价；不访问文件、时钟或网络 |
 | `code/monitoring/ootang_live_ledger.py` | 提供 SQLite WAL 追加式事务、自然键幂等、schema trigger 和完整哈希链验证 | SHA-256 证明内部内容一致性，不证明作者身份或可信时间 |
 | `code/monitoring/ootang_live_source.py` | 严格 ingest finalized 日 feed，在可信代码内派生特征并物化 content-addressed current/activation source | current pointer v2 绑定每日 revision receipt 链与全局 snapshot receipt 唯一 tip；已验证的缺失/陈旧 pointer 可恢复，回退、分支、孤儿或篡改 fail closed |
@@ -161,6 +171,14 @@ E1 实现是 retrospective replay：源文件会整体载入校验，但同日 `
 不进入 issue 载荷、issue-time 状态或 issue hash。三个 fold 的在线状态彼此重置，
 issue batch 则形成一条 run-wide 审计链。它不是 E2 实时追加账本，也没有证明
 灾害风险。
+
+独立显式 calibration bakeoff 复用 E1 的 6,888 个 point forecast、fold 和自动
+drift reset，但为 ACI 控制、AgACI-EWA 变体和 SPCI-QRF 分别维护不可变站点状态。
+每个日期必须先完成 3×8 个 issue 及 outcome-free batch hash，才允许读取同日
+actual；修改同日 actual 不改变当日 issue，但会改变下一日状态。控制 ACI 的
+alpha/区间逐 binary64 对齐 E1，其他方法不得改变 point forecast。产物只给出
+planned/common support 上的覆盖、宽度、统一 central-80 score 与稳定性，不含 winner、rank、
+selection 或 promotion 字段。当前结果只用于设计新的 E2 shadow 协议。
 
 E2-A 已用独立 namespace 实现 SQLite append-only ledger、真实文件级
 issue/outcome 隔离、完整八站事务、自动等待/回填/恢复/修订和时间锚接口。每次

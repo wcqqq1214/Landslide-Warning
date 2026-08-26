@@ -12,6 +12,12 @@
   连续空间聚合均只使用更早 outcome 更新。三折 MAE skill 均为正，但 RMSE
   优势不稳定，区间覆盖率由 `0.791` 降至 `0.695/0.631`，因此它是内部回顾性
   科研监测器，不是灾害真值、风险概率或正式预警。
+- 显式阶段 `ootang-prequential-calibration-bakeoff` 在完全相同的 E1 point
+  forecast 和自动 reset schedule 上，因果并列比较 ACI 控制、明确标注为非 BOA
+  的 AgACI-EWA 变体及 SPCI-QRF。AgACI-EWA 在 fold 2/3 缩小覆盖误差且三折区间
+  更窄，但 fold 1 过覆盖；固定 SPCI 配置三折均明显欠覆盖。本结果只支持把固定
+  三方法送入未来 E2 shadow 检验，其中 EWA 是改善信号；不执行回顾性排名或晋升，
+  也不改写 E1/E2 v1。
 - 显式阶段 `ootang-prequential-live` 已实现 E2-A 单次机器 poll、issue/outcome
   隔离、SQLite append-only ledger、等待/回填/恢复/修订、数学全重放与外部锚
   接口。E2-B1 又增加 `ootang-live-source → ootang-production-bundle →
@@ -59,6 +65,7 @@ uv run python main.py --stage ootang-ngboost-interval-proxy-horizon-sensitivity
 uv run python main.py --stage ootang-ngboost-interval-proxy-feature-ablation
 uv run python main.py --stage ootang-auto-v0-direct-bai-perron --stage ootang-v5-candidate-display
 uv run python main.py --stage ootang-prequential-monitor
+uv run python main.py --stage ootang-prequential-calibration-bakeoff
 uv run python main.py --stage ootang-live-source --stage ootang-production-bundle --stage ootang-issue-producer --stage ootang-prequential-live
 uv run python main.py --stage ootang-outcome-materializer
 uv run python main.py --stage ootang-prequential-cycle
@@ -86,7 +93,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（20 个可选阶段）
+main.py                         # 当前管线入口（21 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -116,6 +123,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/v5_validation_protocol.md`](docs/v5_validation_protocol.md) | 正式 v5 的标签、切分、指标、V0 unavailable 与融合决策门 |
 | [`docs/ootang_autonomous_research_protocol.md`](docs/ootang_autonomous_research_protocol.md) | 不依赖逐日人工操作的 E0--E3 机器闭环协议及科学边界 |
 | [`docs/ootang_prequential_monitor_results.md`](docs/ootang_prequential_monitor_results.md) | E1 三折回放结果、确定性/因果校验、产物哈希与当前限制 |
+| [`docs/ootang_prequential_calibration_bakeoff.md`](docs/ootang_prequential_calibration_bakeoff.md) | 固定 E1 点预测上的 ACI/AgACI-EWA/SPCI 非排名校准比较、论文边界与 E2 shadow 门禁 |
 | [`docs/ootang_prequential_live_engineering.md`](docs/ootang_prequential_live_engineering.md) | E2-A ledger/runner 实现、验证、状态语义和 E2-B 激活门禁 |
 | [`docs/ootang_prequential_deploy_engineering.md`](docs/ootang_prequential_deploy_engineering.md) | E2-B1 finalized source、五种子安全 bundle、机器 issue producer 与剩余闭环门禁 |
 | [`docs/ootang_prequential_cycle_engineering.md`](docs/ootang_prequential_cycle_engineering.md) | E2-B2 source receipt 加固、机器 outcome 物化、固定点 cycle 与恢复边界 |
@@ -131,8 +139,9 @@ docs/                           # 当前方法、结果边界和研究计划
    可信密码学时间、immutable epoch registry/自动轮换，以及避免长链
    receipt/ledger 重复扫描的 O(N²) 性能优化。在这些门关闭前保持
    `real_activation_ready=false`。
-2. 当前 E1 区间覆盖随 fold 下降，后续应以新版本预声明比较 SPCI/AgACI 等
-   challenger，不能在已经查看的回放输出上反复调参并回写 v1。
+2. E1 校准 bakeoff 已以新版本并列比较 ACI、AgACI-EWA 与 SPCI。下一步是在看到
+   新结果前冻结 E2 shadow 判据，把三套状态接入独立 issue/reveal 审计链；当前
+   回顾性结果不得直接选择生产校准器，也不得反复调参后回写 v1。
 3. 正式灾害效能仍需与模型输出相互独立、机器可读且带可见时间的结局源。
    自动化可以消除逐日人工操作，但不能从自身残差制造独立灾害真值。
 4. NGBoost 代理、自动 V0 和 v5 candidate display 仍是另一条非正式支路；其

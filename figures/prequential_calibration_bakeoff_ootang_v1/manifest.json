@@ -1,0 +1,456 @@
+{
+  "artifact_kind": "ootang_prequential_calibration_bakeoff",
+  "artifact_status": "retrospective_prequential_calibration_bakeoff_not_confirmatory",
+  "candidate_issue_hash_chain": {
+    "binds_source_issue_batch_sha256": true,
+    "initial_previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+    "outcome_fields_excluded": true,
+    "schema_version": "ootang_calibration_candidate_issue_batch_v1",
+    "terminal_hash": "d01de30964ed425303a7517a11688c5686830f47e44ee694f516ec7a6593b18c"
+  },
+  "candidates": {
+    "aci_v1_control": {
+      "gamma": 0.005555555555555556,
+      "initial_alpha": 0.2,
+      "interpretation": "project_clipped_windowed_reset_control_not_original_aci_guarantee",
+      "interval": "symmetric_two_sided",
+      "maximum_alpha": 0.5,
+      "minimum_alpha": 0.01,
+      "quantile": "finite_sample_higher_rank_ceil_n_plus_1_times_one_minus_alpha",
+      "residual": "absolute_actual_minus_fixed_point_forecast",
+      "update": "after_reveal_alpha_plus_gamma_times_target_miscoverage_minus_miss"
+    },
+    "agaci_ewa_variant_v1": {
+      "aggregation_rule": "separate_lower_upper_exponential_weights_on_past_normalized_pinball_loss",
+      "crossing_policy": "fail_closed",
+      "eta_rule": "sqrt_8_log_k_div_active_update_index",
+      "exact_paper_boa_reproduction": false,
+      "expert_alpha_update_phase": "after_reveal_for_next_issue",
+      "gamma_grid": [
+        0.0,
+        0.001388888888888889,
+        0.002777777777777778,
+        0.005555555555555556,
+        0.011111111111111112,
+        0.022222222222222223,
+        0.044444444444444446
+      ],
+      "gamma_grid_rule": "zero_plus_current_gamma_times_one_quarter_to_eight",
+      "gradient_trick": false,
+      "initial_alpha": 0.2,
+      "interpretation": "agaci_ewa_variant_not_boa_gradient_trick_agaci",
+      "loss_normalization": "divide_each_side_by_same_reveal_max_expert_side_loss",
+      "lower_pinball_tau": 0.1,
+      "maximum_alpha": 0.5,
+      "minimum_alpha": 0.01,
+      "paper_family": "zaffran_2022_agaci_algorithm_1_bound_aggregation",
+      "thresholding": "not_applied_all_project_expert_bounds_must_be_finite",
+      "upper_pinball_tau": 0.9,
+      "weight_update_phase": "after_reveal_for_next_issue"
+    },
+    "spci_qrf_v1": {
+      "beta_grid": [
+        0.0,
+        0.05,
+        0.1,
+        0.15,
+        0.2
+      ],
+      "beta_tie_break": "smallest_beta",
+      "bootstrap": true,
+      "conditional_quantile_model": "random_forest_leaf_weight_quantiles",
+      "crossing_policy": "fail_closed",
+      "interpretation": "finite_window_exploratory_spci_qrf_without_transferred_coverage_guarantee",
+      "lag_feature_order": "most_recent_to_oldest",
+      "max_depth": 2,
+      "max_features": 1.0,
+      "maximum_residual_history": 180,
+      "min_samples_leaf": 1,
+      "minimum_issue_history": 70,
+      "minimum_qrf_pairs": 60,
+      "n_estimators": 10,
+      "n_jobs": 1,
+      "paper_family": "xu_xie_2023_spci_algorithm_1_equations_10_to_13",
+      "qrf_failure_policy": "abort_without_replacing_previous_bundle",
+      "random_state": 20260826,
+      "residual": "signed_actual_minus_fixed_point_forecast",
+      "residual_lag": 10,
+      "target_miscoverage": 0.2
+    }
+  },
+  "case": "ootang",
+  "causality": {
+    "candidate_state_updates_after_reveal_only": true,
+    "current_actual_excluded_from_issue_hash": true,
+    "e1_reset_schedule_reused": true,
+    "fold_state_shared": false,
+    "future_actual_mutation_preserves_issue_prefix": true,
+    "same_date_issue_before_reveal": true,
+    "station_state_shared": false
+  },
+  "claims": {
+    "e2_live_evidence": false,
+    "not_claimed": [
+      "finite_sample_coverage_guarantee",
+      "conditional_coverage_guarantee",
+      "original_aci_long_run_guarantee_for_project_variant",
+      "exact_boa_gradient_trick_agaci_reproduction",
+      "warning_effectiveness",
+      "field_event_detection",
+      "safety_certification"
+    ],
+    "promotion_performed": false,
+    "real_activation_ready": false,
+    "selection_performed": false
+  },
+  "confirmatory_external_validation": false,
+  "cross_fold_diagnostics": {
+    "aci_v1_control": {
+      "descriptive_only": true,
+      "fold_coverage": [
+        0.7911921032649962,
+        0.6950608446671439,
+        0.6307460437076111
+      ],
+      "fold_coverage_standard_deviation": 0.06592971891808853,
+      "mean_interval_score_80_mm_by_fold": [
+        0.5888015187166002,
+        0.4892318950807751,
+        0.6760742396636138
+      ],
+      "worst_spatial_block_absolute_coverage_gap": 0.21726618705035972,
+      "worst_station_absolute_coverage_gap": 0.35140186915887855
+    },
+    "agaci_ewa_variant_v1": {
+      "descriptive_only": true,
+      "fold_coverage": [
+        0.8481397114654518,
+        0.7458840372226199,
+        0.6571213262999246
+      ],
+      "fold_coverage_standard_deviation": 0.07804775264502269,
+      "mean_interval_score_80_mm_by_fold": [
+        0.45562969541804993,
+        0.35444300634522075,
+        0.4557562763458162
+      ],
+      "worst_spatial_block_absolute_coverage_gap": 0.1656387665198238,
+      "worst_station_absolute_coverage_gap": 0.22990654205607486
+    },
+    "spci_qrf_v1": {
+      "descriptive_only": true,
+      "fold_coverage": [
+        0.7211864406779661,
+        0.6224328593996841,
+        0.4987363100252738
+      ],
+      "fold_coverage_standard_deviation": 0.09100498568138515,
+      "mean_interval_score_80_mm_by_fold": [
+        0.15759186135419437,
+        0.14678995003971249,
+        0.16337216569701546
+      ],
+      "worst_spatial_block_absolute_coverage_gap": 0.40797342192691033,
+      "worst_station_absolute_coverage_gap": 0.6051948051948053
+    }
+  },
+  "default_pipeline_member": false,
+  "design": {
+    "candidate_order": [
+      "aci_v1_control",
+      "agaci_ewa_variant_v1",
+      "spci_qrf_v1"
+    ],
+    "drift_policy": "reset_every_candidate_after_the_same_e1_reveal_driven_station_reset",
+    "fold_policy": "reset_every_candidate_before_first_issue_of_each_fold",
+    "hyperparameter_policy": "predeclared_engineering_defaults_not_selected_on_e1_results",
+    "maximum_residual_history": 180,
+    "minimum_aci_history": 60,
+    "outcome_policy": "current_actual_is_unavailable_until_all_same_date_candidate_issues_are_materialized",
+    "point_forecast_policy": "exact_e1_issue_point_forecast_reuse",
+    "selection_policy": "retrospective_descriptive_bakeoff_no_ranking_no_promotion",
+    "target_coverage": 0.8,
+    "target_miscoverage": 0.2
+  },
+  "evaluation": {
+    "automatic_promotion_prohibited": true,
+    "availability_is_reported_on_full_planned_population": true,
+    "future_e2_required_for_promotion": true,
+    "interval_score": "central_80_percent_interval_score",
+    "pairwise_control": "aci_v1_control",
+    "pairwise_support": [
+      "planned_population",
+      "common_interval_support"
+    ],
+    "pinball_taus": [
+      0.1,
+      0.9
+    ],
+    "point_forecast_parity": "exact_binary64_required",
+    "ranking_prohibited": true,
+    "rolling_coverage_window_dates": 30,
+    "scopes": [
+      "overall",
+      "station",
+      "spatial_block"
+    ],
+    "spatial_blocks": {
+      "O1": [
+        "MJ9",
+        "MJ1",
+        "MJ3"
+      ],
+      "O2": [
+        "ATU4",
+        "ATU5",
+        "ATU3"
+      ],
+      "O3": [
+        "ATU2",
+        "ATU1"
+      ]
+    },
+    "width_summaries": [
+      "mean",
+      "median",
+      "p90"
+    ]
+  },
+  "formal_warning_output": false,
+  "implementation": {
+    "atomic_promotion_helper": {
+      "path": "code/warning/draft_evidence.py",
+      "sha256": "04d6d294a778a5f90219a87be8aa125e56cfdb6d2b5efa6e34c802c5dbba6622"
+    },
+    "calibration_core": {
+      "path": "code/monitoring/calibration_challengers.py",
+      "sha256": "c7c09e1630dadb4fb69c9bc35174b81dad5c34e2290697aa37a661ade4abf2b5"
+    },
+    "dependency_lock": {
+      "path": "uv.lock",
+      "sha256": "f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c"
+    },
+    "e1_validator": {
+      "path": "code/monitoring/ootang_prequential_monitor.py",
+      "sha256": "8946be4b305cf5a71a336861fcda4db8d7ec320cb5a69b7a9a1f526f4f2cfc37"
+    },
+    "project": {
+      "path": "pyproject.toml",
+      "sha256": "bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0"
+    },
+    "runner": {
+      "path": "code/monitoring/ootang_prequential_calibration_bakeoff.py",
+      "sha256": "a2dcc49144d9d661eb1a213ac0a4ab9f8fe5291a3ef19ec23d782004d061a8c7"
+    }
+  },
+  "independent_label_used": false,
+  "materialized_validation": {
+    "bundle_wide_sigkill_transaction": false,
+    "candidate_timeline_deterministically_replayed_from_source": true,
+    "csv_float_format": "%.17g",
+    "csv_read_float_precision": "round_trip",
+    "independent_implementation_replay_performed": false,
+    "metrics_recomputed_from_reloaded_timeline": true,
+    "pairwise_recomputed_from_reloaded_timeline": true,
+    "promotion_performed": false,
+    "selection_performed": false,
+    "staged_csv_reloaded_before_promotion": true
+  },
+  "outputs": {
+    "candidate_metrics": {
+      "columns": [
+        "method",
+        "fold",
+        "scope",
+        "group",
+        "planned_rows",
+        "interval_rows",
+        "availability_rate",
+        "abstention_rate",
+        "empirical_coverage",
+        "coverage_minus_target",
+        "absolute_coverage_gap",
+        "lower_miss_rate",
+        "upper_miss_rate",
+        "mean_interval_width_mm",
+        "median_interval_width_mm",
+        "p90_interval_width_mm",
+        "mean_interval_score_80_mm",
+        "mean_lower_pinball_loss",
+        "mean_upper_pinball_loss",
+        "rolling_30_date_coverage_max_abs_gap",
+        "longest_station_miss_streak",
+        "reset_count",
+        "crossing_count",
+        "artifact_status",
+        "formal_warning_output",
+        "independent_label_used",
+        "confirmatory_external_validation",
+        "vajont_used"
+      ],
+      "path": "figures/prequential_calibration_bakeoff_ootang_v1/candidate_metrics.csv",
+      "rows": 108,
+      "sha256": "dfc314041a2982456428b51dd4cd08c7b232706dea77ff77c200e3e76e620168",
+      "size_bytes": 44979
+    },
+    "candidate_timeline": {
+      "columns": [
+        "method",
+        "fold",
+        "date",
+        "station",
+        "source_issue_batch_sha256",
+        "issue_state_reset_reason",
+        "issue_history_count",
+        "issue_calibration_state_before_sha256",
+        "issue_interval_available",
+        "issue_uncertainty_action",
+        "issue_point_forecast_mm",
+        "issue_interval_lower_mm",
+        "issue_interval_upper_mm",
+        "issue_aci_alpha",
+        "issue_agaci_effective_gamma_lower",
+        "issue_agaci_effective_gamma_upper",
+        "issue_agaci_lower_weight_entropy",
+        "issue_agaci_upper_weight_entropy",
+        "issue_agaci_crossing",
+        "issue_agaci_alpha_0",
+        "issue_agaci_alpha_1",
+        "issue_agaci_alpha_2",
+        "issue_agaci_alpha_3",
+        "issue_agaci_alpha_4",
+        "issue_agaci_alpha_5",
+        "issue_agaci_alpha_6",
+        "issue_agaci_lower_weight_0",
+        "issue_agaci_lower_weight_1",
+        "issue_agaci_lower_weight_2",
+        "issue_agaci_lower_weight_3",
+        "issue_agaci_lower_weight_4",
+        "issue_agaci_lower_weight_5",
+        "issue_agaci_lower_weight_6",
+        "issue_agaci_upper_weight_0",
+        "issue_agaci_upper_weight_1",
+        "issue_agaci_upper_weight_2",
+        "issue_agaci_upper_weight_3",
+        "issue_agaci_upper_weight_4",
+        "issue_agaci_upper_weight_5",
+        "issue_agaci_upper_weight_6",
+        "issue_spci_beta",
+        "issue_spci_training_pairs",
+        "issue_spci_qrf_status",
+        "previous_candidate_issue_batch_sha256",
+        "candidate_issue_batch_sha256",
+        "reveal_actual_mm",
+        "reveal_signed_residual_mm",
+        "reveal_interval_covered",
+        "reveal_lower_miss",
+        "reveal_upper_miss",
+        "reveal_interval_width_mm",
+        "reveal_interval_score_80_mm",
+        "reveal_lower_pinball_loss",
+        "reveal_upper_pinball_loss",
+        "reveal_reset_after_update",
+        "reveal_calibration_state_after_sha256",
+        "artifact_status",
+        "formal_warning_output",
+        "independent_label_used",
+        "confirmatory_external_validation",
+        "vajont_used"
+      ],
+      "path": "figures/prequential_calibration_bakeoff_ootang_v1/candidate_timeline.csv",
+      "rows": 20664,
+      "sha256": "8857e77a96cba8ad2ae011a822759c0c08cc65e0c6fdab684b3e3fc0334df91e",
+      "size_bytes": 17377310
+    },
+    "pairwise_comparison": {
+      "columns": [
+        "control_method",
+        "challenger_method",
+        "fold",
+        "scope",
+        "group",
+        "planned_rows",
+        "control_interval_rows",
+        "challenger_interval_rows",
+        "common_interval_rows",
+        "control_availability_rate",
+        "challenger_availability_rate",
+        "availability_rate_difference",
+        "comparison_status",
+        "artifact_status",
+        "formal_warning_output",
+        "independent_label_used",
+        "confirmatory_external_validation",
+        "vajont_used",
+        "support",
+        "control_empirical_coverage",
+        "challenger_empirical_coverage",
+        "coverage_difference",
+        "control_absolute_coverage_gap",
+        "challenger_absolute_coverage_gap",
+        "absolute_coverage_gap_difference",
+        "control_mean_interval_width_mm",
+        "challenger_mean_interval_width_mm",
+        "mean_interval_width_difference_mm",
+        "control_mean_interval_score_80_mm",
+        "challenger_mean_interval_score_80_mm",
+        "mean_interval_score_difference_mm",
+        "control_mean_total_pinball_loss",
+        "challenger_mean_total_pinball_loss",
+        "mean_total_pinball_loss_difference"
+      ],
+      "path": "figures/prequential_calibration_bakeoff_ootang_v1/pairwise_comparison.csv",
+      "rows": 144,
+      "sha256": "4e13a366bfe37b58d9692bdbefd23f4fa686ee731657460b21f04964662eccf8",
+      "size_bytes": 63380
+    }
+  },
+  "profile": {
+    "content_sha256": "4819c1d5fdb6db55f41528569ab12a7583ebed1b4354fa785121a4b05d68e774",
+    "file_sha256": "fb9db3e1e43a30d7d0b2becb3f1dee1e5bd474041ae2e7acdf51d2a8acf0a48b",
+    "id": "ootang-prequential-calibration-bakeoff-v1",
+    "path": "config/ootang_prequential_calibration_bakeoff.v1.json",
+    "version": "1.0.0"
+  },
+  "runtime": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "python": "3.10.20",
+    "scikit_learn": "1.7.2"
+  },
+  "schema_version": "ootang_prequential_calibration_bakeoff_manifest_v1",
+  "source": {
+    "artifacts": {
+      "manifest": {
+        "path": "figures/prequential_anomaly_ootang_v1/manifest.json",
+        "sha256": "2e680d06a6e04e02562bb31ec53b885acecafc068015417525dee115de97f253",
+        "size_bytes": 12176
+      },
+      "metrics": {
+        "path": "figures/prequential_anomaly_ootang_v1/prequential_metrics.csv",
+        "sha256": "9d790ecb4550ee849001cf6e21873b3047598212508c1c86c6fc6c188e4eab96",
+        "size_bytes": 15564
+      },
+      "monitor_profile": {
+        "path": "config/ootang_prequential_monitor.v1.json",
+        "sha256": "8ba37ffcafc0a696c805be56275de196d89a99ad58105ca79a06339f86b62ac5",
+        "size_bytes": 5354
+      },
+      "site_timeline": {
+        "path": "figures/prequential_anomaly_ootang_v1/site_timeline.csv",
+        "sha256": "d35822d7dc198f859308b1d46071d8df128e9bff4203458ccadfd1aa86e3a6fd",
+        "size_bytes": 265520
+      },
+      "station_timeline": {
+        "path": "figures/prequential_anomaly_ootang_v1/station_timeline.csv",
+        "sha256": "805951dcf77aa19e7d5021fa53a51bfa2067663b7fda0e5dd0fcc483ad2a7bfe",
+        "size_bytes": 7067144
+      }
+    },
+    "e1_issue_chain_terminal_sha256": "b89e98453a4d18c061291b60cf78d1f5badfc7a5a640a170c66b6010fb600ec6",
+    "kind": "fully_replayed_protected_e1_station_stream",
+    "point_forecast_parity_exact": true,
+    "point_forecast_rows": 6888
+  },
+  "vajont_used": false
+}

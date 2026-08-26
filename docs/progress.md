@@ -5,6 +5,46 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-26 E1 prequential 校准 bakeoff
+
+- 新增显式且非默认阶段 `ootang-prequential-calibration-bakeoff`，当前共 21 个
+  可选阶段；无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。阶段只消费受保护 E1 四产物，
+  三种方法逐 binary64 复用同一 6,888 行 point forecast，不修改模型、E1、E2
+  ledger、v4/v5 或 Vajont。
+- 固定并列方法为 E1 exact `aci_v1_control`、七个 gamma 专家的
+  `agaci_ewa_variant_v1` 和 signed-residual `spci_qrf_v1`。AgACI 名称明确标注该
+  实现不是论文的 BOA+gradient-trick 精确复现；SPCI 使用 lag=10、最新到最旧的
+  Eq.13 特征、60 个 QRF pair、180 日窗口和固定浅层 10-tree RF。任何理论保证
+  均不从论文直接转移到项目的 clipped/windowed/reset 变体。
+- 每个 fold-date 先生成 3×8=24 个 issue 和 outcome-free candidate batch hash，
+  再读取同日 actual 并更新下一日状态；fold 与 E1 drift schedule 自动 reset。反事实
+  测试确认首日 actual 改动不改变首日 24 issue/hash，但会改变三种方法的次日
+  state/hash。ACI alpha、interval 与 warmup 逐项对齐 E1。
+- fold 1/2/3 的 ACI coverage 为 `0.791192/0.695061/0.630746`；AgACI-EWA 为
+  `0.848140/0.745884/0.657121`，在 fold 2/3 缩小 coverage gap，三折平均宽度和
+  interval score 均下降，但 fold 1 从轻微欠覆盖变成过覆盖。SPCI 为
+  `0.721186/0.622433/0.498736`，三折均更欠覆盖，不能因区间窄或 score 低而晋级。
+- 产物为 timeline/metrics/pairwise/manifest `20,664/108/144/1`；SHA-256 分别为
+  `8857e77a96cba8ad2ae011a822759c0c08cc65e0c6fdab684b3e3fc0334df91e`、
+  `dfc314041a2982456428b51dd4cd08c7b232706dea77ff77c200e3e76e620168`、
+  `4e13a366bfe37b58d9692bdbefd23f4fa686ee731657460b21f04964662eccf8`、
+  `229a26f5ec2c5a7082b14d18b8af7d21d44ba42f3b5b5d365b765f6fead4422f`；
+  连续两次完整生成逐字节一致。
+- 输出合同禁止 winner/rank/selection/promotion，所有正式、独立标签、确认性、
+  Vajont 标志为 false。当前只支持把三种固定状态送入未来 E2 shadow 前瞻比较，
+  不能从已查看 E1 结果直接晋升或继续搜索后回写 v1。完整方法、论文边界、数值、
+  哈希与下一门禁见 `docs/ootang_prequential_calibration_bakeoff.md`。
+- 最终独立 P0/P1 审计关闭了两个问题：issue 阶段现以字段白名单结构性排除所有
+  reveal 数据，outcome lookup 只在 24 issue/hash 后构造；SPCI 加权分位数现排除
+  零权极值并只在正权有限支持上重归一化。修复后的连续两次完整重放仍逐字节一致，
+  最新审计无开放 P0/P1。
+- 最终 calibration core/runner/pipeline 定向测试为 `13/13`、`4/4`、`28/28`；
+  全仓 `584/584`（575.016 秒，0 failure / 0 error），Ruff、compileall、
+  `git diff --check` 全部通过。v5 preflight `23/23`，E1 四哈希和 97 路径聚合
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`
+  保持不变。
+
 ## 2026-08-26 E2-B2 机器 outcome 与 fixed-point cycle
 
 - 新增两个显式且非默认阶段 `ootang-outcome-materializer` 和
