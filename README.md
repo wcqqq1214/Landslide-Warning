@@ -94,6 +94,16 @@
   未来 R2b-2b v2，不能重解释 v1 bytes。
   状态只进入 `DRAINING`；candidate selection、drained、active switch、rotation、trusted
   anchor、E2 evidence、activation readiness 与正式预警声明全部为 false。
+- 显式阶段 `ootang-epoch-drain-eligibility` 实现 R2b-2a 的 machine-current
+  eligibility observation/stale detection。它从 persisted R2b event 恢复历史 R1/R2a
+  authority，在同一六锁内完整重放 fence/boundary/WAL/armed marker 与 archived old
+  runtime；deterministic 64 MiB CAS 不含 poll time 或 staged incoming。相同 clean state
+  字节级幂等，合法 settled extension 经二次 exact capture 后自动追加 previous-hash-linked
+  event，pending/capacity 状态只写 current=false 且不追加 event。crash `.tmp` 自动清理，
+  integrity failure 尽力写 `blocked_integrity/current=false` 并保留更强 rollback witness。
+  Observation/event 明确 `observation_authority_only=true`、lifecycle/transition authority
+  false；old drained、active/switch/rotation/trusted/E2/activation/formal 仍全部 false，未来
+  transition 必须在六锁下 exact recheck，不能读取 cache 直接晋升。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -138,7 +148,7 @@ uv run python main.py --stage ootang-issue-replay
 uv run python main.py --stage ootang-verified-live
 uv run python main.py --stage ootang-prequential-cycle-v3
 uv run python main.py --stage ootang-trusted-time-shadow
-uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain
+uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain --stage ootang-epoch-drain-eligibility
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -163,7 +173,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（30 个可选阶段）
+main.py                         # 当前管线入口（31 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -203,6 +213,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_epoch_registry_engineering.md`](docs/ootang_epoch_registry_engineering.md) | 不可变 epoch registry R1：稳定 slot、content-addressed archival byte capsule、candidate verified-ready 全链与非轮换边界 |
 | [`docs/ootang_epoch_preparation_engineering.md`](docs/ootang_epoch_preparation_engineering.md) | R2a exact executable closure、同源物化树、双冻结隔离环境与五种子重放烟测 |
 | [`docs/ootang_epoch_drain_engineering.md`](docs/ootang_epoch_drain_engineering.md) | R2b 首切片：全锁序、canonical route 原子 swap、full-clean boundary/event 与非切换边界 |
+| [`docs/ootang_epoch_drain_eligibility_engineering.md`](docs/ootang_epoch_drain_eligibility_engineering.md) | R2b-2a：machine-current eligibility observation、stale detection、capacity/witness fail-safe 与非 transition authority |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -211,11 +222,12 @@ docs/                           # 当前方法、结果边界和研究计划
 ## 尚未完成的关键事项
 
 1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay、RFC 3161
-   shadow、R1 immutable registry、R2a same-origin executable preparation 与 R2b
-   clean-start drain barrier 均已有 machine-only additive 实现。R2b 首切片只原子撤销
+   shadow、R1 immutable registry、R2a same-origin executable preparation、R2b
+   clean-start drain barrier 与 R2b-2a eligibility observation/stale detection 均已有
+   machine-only additive 实现。R2b 首切片只原子撤销
    canonical issue route，固定 full-clean boundary 并提交 `epoch_drain_started`；pending
-   工作会保持机器 waiting，尚未声明 drained 或切换 active。下一步是 R2b-2a
-   clean-start eligibility observation/stale detection（仍只 DRAINING），随后以不可重解释
+   工作会保持机器 waiting。R2b-2a 跨 poll 保存 publication-time observation、识别
+   stale 并自动吸收合法 settled extension，但仍未声明 drained 或切换 active。下一步以不可重解释
    v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes 的新 schema 实现
    R2b-2b v2 bounded-workset non-clean recovery，再做独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链

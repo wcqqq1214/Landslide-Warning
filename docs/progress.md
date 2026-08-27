@@ -5,10 +5,57 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 epoch drain eligibility R2b-2a
+
+- 本增量基于已提交的 `2eefceb feat: add atomic epoch drain barrier`，新增显式、非默认阶段
+  `ootang-epoch-drain-eligibility`；当前共 31 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。阶段位于 `ootang-epoch-drain` 之后、
+  operational v4 之前，但不会进入默认链。machine-readable mutable 输出为
+  `runtime/ootang_epoch_registry_v1/drain_eligibility_status.json`。
+- 当前候选 profile/module/test SHA-256 分别为
+  `2dbda86a747ef486bc06d5c4901e3356404c0079ec2b8aecf91eb61afc91413a`、
+  `46b036aa5e530d0dce50e87b6e4988d67eae1ba4ca67a2d4a09e990f4eaa29bc`、
+  `4e247497ca78a4449ae00769ad1c383c5b5279195c357edcf84e29af4e5754a4`；若代码或测试继续
+  修改，冻结前必须重算。本增量作为独立 R2b-2a 里程碑提交。
+- 观察器只从 persisted unique R2b event 恢复历史 R1/R2a selector，不调用 start/swap
+  写路径，也不偷换成 current registry tip。它按
+  `manager → cycle → deploy → runner → replay → shadow` 非阻塞取得全锁，完整重放
+  event/intent/capsule/exact pre-swap boundary/exchange WAL terminal/armed marker、canonical
+  fence 和 archived old runtime；拒绝 fence 后 outstanding issue，并要求 archived issue
+  inventory 精确不变。每个历史 observation 的 semantic/activation/snapshot source object
+  都按冻结 path/hash/size 重新解引用，不能只信 observation 内自洽 metadata。
+- clean state 先发布 deterministic 64 MiB content-addressed observation，再追加
+  previous-hash-linked event。Observation 不含 poll time 或 staged next-epoch incoming；同
+  state repoll 字节幂等，合法 settled extension 经二次 exact capture 后自动追加一条；
+  pending 或 prospective capacity 超限只返回 machine waiting/current=false，不写 event。
+  首条 event time 不得早于 R2b event，后续不得早于 terminal eligibility event；六锁后只
+  自动清理严格识别的 crash temp，unknown temp fail closed。
+- head/status 只是 repairable cache，status 明确 `cache_authority=false`。integrity failure
+  尽力写 `blocked_integrity/current=false`；只有 schema/profile/time/全部负声明合法且严格
+  ahead 的 cache 才保留为 rollback witness，at/behind replayed chain 的 tip 必须精确匹配
+  真实 entry。同 count 伪 tip 因此不会被固化成永久机器阻塞。event suffix 与所有 mutable
+  ahead witness 同时被外部删除仍是 v1 明示检测边界。
+- Observation/event 固定 `observation_authority_only=true`、
+  `lifecycle_authority=false`、`transition_authority=false`；old drained、candidate selected、
+  active switch/rotation、trusted anchor、E2、real activation、formal warning 全部保持 false。
+  future assessor/transition 必须重新取得同一锁集并 exact recheck machine-current state。
+- 验证已通过 eligibility public `20/20`、含真实 R2b authority integration 的 full
+  eligibility `21/21` 与 main `35/35`。本 scoped 增量不再重复全仓：已提交基线
+  `2eefceb` 已有 `809/809`；额外启动的 full discovery 在运行 `4184.67` 秒、进入与本增量
+  无关的 NGBoost horizon-sensitivity 用例时被主动中断，中断前没有 failure/error。该次不是
+  完整 suite 结果，不得写成 PASS，也不要由后续 agent 再次重复。已知工程债是逐锁/
+  逐 fsync fault matrix、冻结 R2b 私有 API
+  耦合、eligibility full-chain O(K²) 重放，以及上述 mutable-witness 同删边界。
+- 下一步固定为新 schema/version 的 **R2b-2b v2 bounded-workset non-clean recovery**，由
+  机器枚举并恢复 guard/trusted-time/shadow 等非 clean workset；不得重解释或覆写任何已
+  发布的 R2b/R2b-2a v1 bytes。其后才是独立 drain assessor、权威
+  `SEALED(old)+ACTIVE(new)` transition、cycle v4 与 scheduler authorization。
+- 详细合同见 `docs/ootang_epoch_drain_eligibility_engineering.md`。
+
 ## 2026-08-27 epoch drain-start barrier R2b 首切片
 
 - 本增量基于 `b53a238 feat: add executable epoch preparation`，新增显式、非默认阶段
-  `ootang-epoch-drain`；当前共 30 个可选阶段，无参数默认链仍严格为
+  `ootang-epoch-drain`；该 R2b 基线共 30 个可选阶段，无参数默认链仍严格为
   `features → convlstm → ootang-operational-v4`。R2b profile/module/test SHA-256 分别为
   `1da0056c8cbdc0fe30b8adca5b72cf52e211b679aae8b8981216e44c0f16d105`、
   `c4c226da087d354195fc3955ff60ff3b12af13f111d03cb59c5d64d0195a1602`、
@@ -91,9 +138,9 @@
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
   最终独立标准/规格审计为 P0/P1/P2 `0/0/0`；逐对象 publication-fsync 故障矩阵仅作为
   后续 coverage debt，不削弱本轮已验证的通用 durable-adoption 合同。
-- 下一步固定为 R2b-2a clean-start eligibility observation/stale detection：跨 poll 保存、
-  复验 observation 并自动吸收合法 settled extension，结果仍只可为 DRAINING。随后另建
-  R2b-2b v2 bounded-workset non-clean recovery，恢复 trusted-time/guard/shadow 等明确
+- 该历史 R2b 基线的下一步 R2b-2a clean-start eligibility observation/stale detection 已在
+  本文件顶部增量完成，结果仍只可为 DRAINING。当前下一步是另建 R2b-2b v2
+  bounded-workset non-clean recovery，恢复 trusted-time/guard/shadow 等明确
   workset；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
   armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立
   drain assessor 与权威 active transition；cycle v4、scheduler authorization 与长链

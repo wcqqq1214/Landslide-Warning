@@ -75,9 +75,12 @@ recovery 从 armed terminal 复用旧 boundary，只以 current 合法 extension
 boundary 只有 recovery authority，唯一 DRAINING lifecycle authority 仍是随后追加的
 `epoch_drain_started`。首版只接受无 outstanding/pending guard/trusted/shadow 的 clean start；
 否则机器等待。old work 可在两次 poll 间继续，合法 settled extension 由后续完整 replay
-自动纳入，不做人工 cleanup。下一步先建立 R2b-2a observation/stale detection，再用新 v2
-schema 建立 bounded-workset non-clean recovery；v2 不得重解释或覆写已发布的 v1
-fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes，
+自动纳入，不做人工 cleanup。R2b-2a observation/stale detection 已建立：它从 historical
+R2b binding 完整重放，在同一六锁下发布 deterministic clean observation 与 append-only
+event；同 state 幂等、合法 extension 自动刷新，pending/capacity 只机器等待，所有
+drained/active claims 仍 false。下一步用新 v2 schema 建立 bounded-workset non-clean
+recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
+exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes，
 历史增长需要的 chunk/Merkle 也只能由该新版本表达。
 后续 assessor 证明所有历史工作合法收口后，权威 transition 才可同时 seal old / activate
 new。若 outcome 永不到达，机器只能持续等待，不能补 outcome、人工冻结/批准或强制切换。
@@ -293,10 +296,11 @@ terminal+boundary → immediate Darwin swap；marker 随 inode 原子移动。�
 从 armed terminal 读取旧 boundary，current clean 只作合法 append-only extension gate，不能
 重建 boundary。suffix rollback、branch、gap、extra、symlink 或不精确 temp/ACL 均 fail closed。
 
-下一步是 R2b-2a clean-start eligibility observation/stale detection，跨 poll 保存和复验
-observation，结果仍只可为 DRAINING；随后以新 schema 做 R2b-2b v2 bounded-workset
-non-clean recovery，支持 trusted-time/guard/shadow 等明确 workset。v2 不得重解释、补字段或
-覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event
+R2b-2a clean-start eligibility observation/stale detection 已实现跨 poll deterministic
+observation、stale/extension 识别与 historical source-object 复验，结果仍只可为 DRAINING；
+下一步以新 schema 做 R2b-2b v2 bounded-workset non-clean recovery，支持 trusted-time/
+guard/shadow 等明确 workset。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
+capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event
 bytes；超 64 MiB 的历史 chunk/Merkle 设计也属于该未来 v2。再后的独立 assessor
 才能证明旧 namespace 已
 收口，独立 transition 切片才可追加单个权威 `SEALED(old)+ACTIVE(new)` 事件并从 registry

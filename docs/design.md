@@ -310,14 +310,17 @@ terminal。正常同 poll post-swap logical clean 必须 exact 等于 pre-swap�
 terminal 的旧 boundary，current clean 只作合法 append-only extension gate，不能重建 boundary。
 WAL suffix rollback/branch/gap/extra/symlink 一律 fail closed；WAL/marker/boundary 只有 recovery
 authority，唯一 DRAINING lifecycle authority 仍是 event。post-swap publisher 与 event append
-前仍完整自重放 boundary。任何历史增长的 chunk/Merkle 设计属于未来 R2b-2b v2；当前 event
-最多授权 DRAINING；
+前仍完整自重放 boundary。R2b-2a 已在同一六锁下加入 deterministic machine-current clean
+observation、previous-hash-linked event 与 stale detection：同 state 幂等，合法 settled
+extension 二次 capture 后追加，pending/capacity 只 waiting；历史 observation 每次 replay
+均重新解引用冻结 source artifacts。head/status 仍是非 authority cache，at/behind chain 的
+tip 必须精确匹配，只有完整合法且 strictly-ahead 的 cache 才保留 rollback witness。
+任何历史增长的 chunk/Merkle 设计属于未来 R2b-2b v2；当前 event 最多授权 DRAINING；
 candidate selection、drained、active switch/rotation、trusted anchor、E2 evidence、activation
-readiness 与 formal warning 全部保持 false。下一步是 R2b-2a clean-start eligibility
-observation/stale detection（仍 DRAINING），随后以新 v2 schema 实现 R2b-2b bounded-workset
-non-clean recovery，且不得重解释 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
-armed-marker/boundary/event
-bytes。之后才是独立 drain
+readiness 与 formal warning 全部保持 false。下一步以新 v2 schema 实现 R2b-2b
+bounded-workset non-clean recovery，且不得重解释 v1 fence-prepare/intent-prefix/capsule/
+intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes。
+之后才是独立 drain
 assessor、权威原子 active transition、cycle v4、scheduler authorization 和长链 O(N²) 优化。
 
 ## 版本化与清理原则

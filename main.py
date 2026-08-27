@@ -535,6 +535,36 @@ STAGES = (
         enabled_by_default=False,
     ),
     Stage(
+        "ootang-epoch-drain-eligibility",
+        "code/monitoring/ootang_epoch_drain_eligibility.py",
+        "持久化并复验旧 epoch 排空资格观察，自动识别过期观察（R2b-2a，仅 DRAINING/非切换/非正式）",
+        inputs=(
+            "config/ootang_epoch_drain_eligibility.v1.json",
+            "config/ootang_epoch_drain.v1.json",
+            "config/ootang_epoch_preparation.v1.json",
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_cycle.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "code/monitoring/ootang_epoch_drain.py",
+        ),
+        outputs=("runtime/ootang_epoch_registry_v1/drain_eligibility_status.json",),
+        arguments=(
+            "--config",
+            "config/ootang_epoch_drain_eligibility.v1.json",
+        ),
+        warning_artifact_scope=(
+            "epoch_drain_eligibility_observation_r2b_2a_engineering"
+        ),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
         "ootang-operational-v4",
         "code/warning/operational_run_v4.py",
         "运行藕塘 v4 严格逐点加速度四指标/双轴空间实施版（非正式）",

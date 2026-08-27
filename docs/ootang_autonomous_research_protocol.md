@@ -648,10 +648,12 @@ validate_contract
    armed marker、正常 same-poll exact-state gate、armed-old-boundary exchanged recovery、
    pre-event boundary self-replay 和六锁
    full-clean content-addressed boundary/`epoch_drain_started` 已实现；R2b 当前只进入
-   DRAINING。紧接着先做 R2b-2a clean-start eligibility observation/stale detection（仍只
-   DRAINING），再以新 schema 做 R2b-2b v2 bounded-workset non-clean recovery；v2 不得
-   重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/
-   boundary/event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
+   DRAINING。R2b-2a clean-start eligibility observation/stale detection 也已实现 historical
+   binding/full replay、deterministic observation、append-only event、stale extension 与
+   frozen source-object 复验，且仍只 DRAINING。下一步以新 schema 做 R2b-2b v2
+   bounded-workset non-clean recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
+   event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
    transition、将可信时间接入新版 designated cycle、scheduler authorization 与长链性能门
    仍待实现；
@@ -710,10 +712,11 @@ suffix rollback/branch/gap/extra/symlink 都 fail closed。E2-A
 `portable_offline_runtime=false`，R2b intent 只是 durable transaction lower-bound，
 `candidate_at_intent` 不是 activation selection，event 也只进入 DRAINING；所有 drained/
 active/rotation/trusted/E2/formal claim 仍为 false。可信时间 capability 与 candidate
-preparation 尚未成为不可绕过的 active switch。只有 E2-B 依次完成 R2b-2a clean-start
-eligibility observation/stale detection、不可重解释 v1 fence-prepare/intent-prefix/capsule/
-intent/exchange-attempt/armed-marker/boundary/event bytes（并承载未来 chunk/Merkle 历史）的
-R2b-2b v2 bounded-workset
+preparation 尚未成为不可绕过的 active switch。R2b-2a clean-start eligibility
+observation/stale detection 已完成，但没有增加 lifecycle/transition authority。只有 E2-B
+继续完成不可重解释 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+armed-marker/boundary/drain-event/eligibility-observation/event bytes（并承载未来
+chunk/Merkle 历史）的 R2b-2b v2 bounded-workset
 non-clean recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
 authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。

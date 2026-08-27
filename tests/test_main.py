@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 30)
+        self.assertEqual(len(pipeline.STAGES), 31)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -805,7 +805,8 @@ class PipelineTests(unittest.TestCase):
             names.index(stage.name), names.index("ootang-epoch-preparation") + 1
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-drain-eligibility"),
+            names.index(stage.name) + 1,
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -843,6 +844,60 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(
             [selected.name for selected in ordered],
             ["ootang-epoch-preparation", "ootang-epoch-drain"],
+        )
+
+    def test_epoch_drain_eligibility_is_explicit_machine_r2b_2a_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-drain-eligibility"]
+
+        self.assertEqual(names.index(stage.name), names.index("ootang-epoch-drain") + 1)
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "epoch_drain_eligibility_observation_r2b_2a_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_drain_eligibility.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            (
+                "--config",
+                "config/ootang_epoch_drain_eligibility.v1.json",
+            ),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/drain_eligibility_status.json",),
+        )
+        for required in (
+            "config/ootang_epoch_drain_eligibility.v1.json",
+            "config/ootang_epoch_drain.v1.json",
+            "config/ootang_epoch_preparation.v1.json",
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_cycle.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "code/monitoring/ootang_epoch_drain.py",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            ["ootang-epoch-drain-eligibility", "ootang-epoch-drain"]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            ["ootang-epoch-drain", "ootang-epoch-drain-eligibility"],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

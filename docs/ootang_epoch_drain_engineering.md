@@ -303,9 +303,11 @@ end-to-end PASS。该负结果必须保留；不能通过更改系统时钟、�
 
 ## 11. 后续门禁与验证记录
 
-下一步是 **R2b-2a clean-start eligibility observation/stale detection**：机器跨 poll 保存并
-复验 eligibility observation，识别 stale 观察，合法 settled extension 自动纳入新观察；其
-输出仍只能是 DRAINING，不能把 eligibility 写成 drained/active。随后才是
+**R2b-2a clean-start eligibility observation/stale detection** 已在后续增量实现：机器跨
+poll 保存并复验 deterministic eligibility observation，识别 stale 观察，合法 settled
+extension 经二次 capture 自动纳入新观察；历史 observation 的冻结 source objects 每次重放
+均重新解引用，head/status 不取得 transition authority。其输出仍只能是 DRAINING，不能把
+eligibility 写成 drained/active。当前下一步是
 **R2b-2b v2 bounded-workset non-clean recovery**，以新 schema/version 明确界定并恢复
 outstanding guard、trusted-time request、shadow 和其他已存事务。v2 不得重新解释、补字段
 或覆写已经发布的 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/

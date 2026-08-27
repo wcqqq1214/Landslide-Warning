@@ -3,10 +3,80 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `b53a238 feat: add executable epoch preparation`
-**State:** R1 immutable registry 与 R2a same-origin executable preparation 已提交；本增量
-已经实现并验证 R2b 首个 clean-start drain barrier。它最多进入 DRAINING，不声明
-drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+**Committed baseline before this increment:** `2eefceb feat: add atomic epoch drain barrier`
+**State:** R1/R2a/R2b 已提交；本增量实现、定向验证并独立提交 R2b-2a machine-current
+drain eligibility observation/stale detection。R2b-2a 仍只观察
+DRAINING，不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation
+或 formal warning。
+
+## 2026-08-27 drain eligibility observer R2b-2a continuation
+
+The new explicit-only stage is:
+
+```text
+ootang-epoch-drain-eligibility
+```
+
+`main.py` now exposes 31 selectable stages. The no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`; the new stage is immediately after
+`ootang-epoch-drain` and before operational v4, but is never selected by default. Its
+mutable machine-readable result is
+`runtime/ootang_epoch_registry_v1/drain_eligibility_status.json`.
+
+The frozen profile/module/test SHA-256 values are respectively
+`2dbda86a747ef486bc06d5c4901e3356404c0079ec2b8aecf91eb61afc91413a`,
+`46b036aa5e530d0dce50e87b6e4988d67eae1ba4ca67a2d4a09e990f4eaa29bc` and
+`4e247497ca78a4449ae00769ad1c383c5b5279195c357edcf84e29af4e5754a4`.
+Recompute these after any code/test edit before treating them as frozen.
+
+R2b-2a restores the historical R1/R2a selector from the persisted unique R2b event; it
+never calls the R2b start/swap path or substitutes the current registry tip. Under the
+same nonblocking six-lock order `manager -> cycle -> deploy -> runner -> replay ->
+shadow`, it fully replays the event, intent, capsule, exact pre-swap boundary,
+exchange-attempt WAL terminal, armed marker, canonical fence and archived old-runtime
+state. It rejects a post-fence outstanding issue and requires the archived issue
+inventory to remain exact. Every historical clean observation also dereferences and
+revalidates its frozen semantic/activation/snapshot source objects; self-consistent
+metadata alone is insufficient.
+
+The observer publishes a deterministic, content-addressed clean-state observation and
+then a previous-hash-linked eligibility event. Observation bytes contain neither poll
+time nor staged next-epoch incoming. Same-state repolls are byte-idempotent; a strict
+settled extension is double-captured and appends one new event; pending work or a
+prospective observation above 64 MiB produces machine waiting/current=false without an
+event. Event time cannot precede the R2b event or the prior eligibility tip. Crash temps
+are cleaned only after all locks; unknown temp entries fail closed.
+
+Head/status are repairable, explicitly non-authoritative caches. On integrity failure
+the machine best-effort writes `blocked_integrity/current=false`; a fully valid cache
+strictly ahead of the replayed chain is retained as a rollback witness, while any cache
+at or behind the replayed count must match the real chain entry exactly. Thus a forged
+same-count status tip is not promoted into a persistent authority. Simultaneously
+deleting an event suffix and every mutable ahead witness remains an explicitly
+documented v1 detection limit, not a solved property.
+
+Observation/event explicitly state `observation_authority_only=true`,
+`lifecycle_authority=false` and `transition_authority=false`. All old-drained,
+activation-selection, active-switch, rotation, trusted-anchor, E2, real-activation and
+formal-warning claims remain false. The event records only that the clean DRAINING state
+was current at publication; every future assessor or transition must reacquire the locks
+and exactly recheck machine-current state.
+
+Verification passes public eligibility `20/20`, full eligibility including real R2b
+authority integration `21/21` and main `35/35`. Do **not** rerun the whole repository for
+this scoped increment: committed baseline `2eefceb` already has `809/809`; an additional
+full-discovery run was intentionally interrupted after `4184.67` seconds while executing
+an unrelated NGBoost horizon-sensitivity test, with no failure/error reported before the
+interrupt. It is not a completed full-suite result and must not be cited as one.
+Remaining engineering debt includes per-lock/per-fsync
+fault matrices, inherited private R2b API coupling, full-chain O(K^2) replay, and the
+mutable-witness deletion boundary above.
+
+The immediate next slice is R2b-2b with a new, non-reinterpreting v2 schema for
+machine-only bounded-workset recovery of non-clean guard/trusted-time/shadow and other
+enumerated work. It must not overwrite or reinterpret any v1 R2b or R2b-2a bytes. Only
+after that comes an independent drain assessor, then an authoritative atomic
+`SEALED(old)+ACTIVE(new)` transition.
 
 ## 2026-08-27 epoch drain-start barrier R2b first slice
 
@@ -16,7 +86,7 @@ The new explicit-only stage is:
 ootang-epoch-drain
 ```
 
-`main.py` now exposes 30 selectable stages. The no-argument chain remains exactly
+At this historical R2b baseline, `main.py` exposed 30 selectable stages. The no-argument chain remained exactly
 `features -> convlstm -> ootang-operational-v4`. The frozen R2b profile, module and test
 SHA-256 values are respectively
 `1da0056c8cbdc0fe30b8adca5b72cf52e211b679aae8b8981216e44c0f16d105`,
@@ -143,9 +213,9 @@ v4 Bai--Perron source has no diff. Final independent standards/specification rev
 P0/P1/P2 `0/0/0`; the remaining per-object publication-fsync fault matrix is coverage
 debt rather than a known implementation defect.
 
-The immediate next slice is R2b-2a clean-start eligibility observation/stale detection.
-It will persist and recheck observations across polls and absorb legal settled
-extensions, while remaining only `DRAINING`. R2b-2b must then introduce a new v2 schema
+The next slice from this historical R2b baseline was R2b-2a clean-start eligibility
+observation/stale detection; it is implemented in the continuation section above.
+R2b-2b must now introduce a new v2 schema
 for bounded-workset non-clean recovery of guard/trusted-time/shadow and other enumerated
 work. V2 must not reinterpret, add fields to or overwrite published v1 fence-prepare/
 intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes. Only a later drain assessor and
@@ -1377,6 +1447,12 @@ Epoch registry/preparation/drain files:
 - `config/ootang_epoch_drain.v1.json`;
 - `tests/test_ootang_epoch_drain.py`;
 - `docs/ootang_epoch_drain_engineering.md`.
+- R2b-2a files delivered by this increment:
+  `code/monitoring/ootang_epoch_drain_eligibility.py`,
+  `config/ootang_epoch_drain_eligibility.v1.json`,
+  `tests/test_ootang_epoch_drain_eligibility.py` and
+  `docs/ootang_epoch_drain_eligibility_engineering.md`, plus the scoped
+  `main.py`, `tests/test_main.py`, README and cross-document edits.
 
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
@@ -1403,8 +1479,8 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    shadow as implemented. Keep public live/guard-envelope reconstruction, true forward,
    pinned trust, isolated runtime, causal-time and adversarial tests intact. Do not
    weaken either gate into producer or receipt self-report.
-4. Treat R1 registry, R2a same-origin executable preparation and the R2b clean-start
-   canonical route fence as implemented. Preserve the independent drain chain, fixed
+4. Treat R1 registry, R2a same-origin executable preparation, R2b clean-start canonical
+   route fence and R2b-2a observation/stale detection as implemented. Preserve the independent drain chain, fixed
    six-lock order, permanent pre-tombstone fence prepare, full intent-prefix and
    intent-as-lower-bound recovery, append-only `drain_exchange_attempts`, terminal
    armed-marker binding, content-addressed full-clean pre-swap boundary/pre-event replay,
@@ -1412,8 +1488,10 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    boundary→WAL-terminal→armed-marker→immediate-swap tail, ordinary same-poll exact-state equality, explicit 64 MiB manifest
    and 16 MiB staged-feed limits, and mandatory
    `renameatx_np(RENAME_SWAP)` semantics; never downgrade the exchange to ordinary
-   rename. Next implement R2b-2a clean-start eligibility observation/stale
-   detection, still only DRAINING. Then introduce an explicitly versioned R2b-2b v2
+   rename. Also preserve R2b-2a historical binding/full replay, deterministic
+   observation CAS, append-only event chain, exact same-count cache validation, stronger
+   strictly-ahead rollback witness, source-object revalidation, double capture and all
+   false authority claims. Next introduce an explicitly versioned R2b-2b v2
    bounded-workset recovery for non-clean trusted-time/guard/shadow work. V2 must not
    reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
    armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in
