@@ -268,7 +268,7 @@ next-epoch feed。staged feed 保存为独立内容寻址
 immediate swap 再算一次。post-swap publisher 与 pre-event self-replay 继续执行相同 64 MiB
 约束和完整语义复验；超过 staged-feed 16 MiB 或其他显式上限同样 fail closed。v1 不用
 chunking、Merkle root 或截断历史规避 64 MiB 合同；任何因历史增长需要 chunk/Merkle 的设计
-都属于未来 R2b-2b v2，必须新版本编码，不能重解释已发布 v1 bytes。
+都属于后续 R2b-2b v2 版本，必须新版本编码，不能重解释已发布 v1 bytes。
 
 ## 9. 当前否定性声明
 
@@ -307,9 +307,10 @@ end-to-end PASS。该负结果必须保留；不能通过更改系统时钟、�
 poll 保存并复验 deterministic eligibility observation，识别 stale 观察，合法 settled
 extension 经二次 capture 自动纳入新观察；历史 observation 的冻结 source objects 每次重放
 均重新解引用，head/status 不取得 transition authority。其输出仍只能是 DRAINING，不能把
-eligibility 写成 drained/active。当前下一步是
-**R2b-2b v2 bounded-workset non-clean recovery**，以新 schema/version 明确界定并恢复
-outstanding guard、trusted-time request、shadow 和其他已存事务。v2 不得重新解释、补字段
+eligibility 写成 drained/active。后续 R2b-2b-1 v2 已先实现 context-bound 首 blocker
+observation，但明确不构成完整枚举、reservation、admission fence 或 recovery。当前下一步是
+shared machine admission cut 与 closed-workset manifest，之后才以精确键恢复 outstanding
+guard、trusted-time request、shadow 和其他已存事务。v2 不得重新解释、补字段
 或覆写已经发布的 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/
 boundary/event bytes；历史 chunk/Merkle 表示也只能在该新版本中定义。
 

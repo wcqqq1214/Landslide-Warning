@@ -5,6 +5,38 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 epoch drain v2 first-blocker observation R2b-2b-1
+
+- 基于已提交 `895844e feat: add drain eligibility observation`，新增显式非默认阶段
+  `ootang-epoch-drain-v2-workset`。当前共 32 个可选阶段；默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。mutable 输出仅为
+  `runtime/ootang_epoch_registry_v1/drain_v2/status.json` liveness cache。
+- 状态机审计修正了原 roadmap 的不可达线性假设：v1 drain 只在入口 full-clean 时产生
+  authority，而 eligibility 又要求该 v1 authority，所以 non-clean 路径不能是 eligibility
+  的普通后继。本切片只在相同六锁下把冻结 v1 clean gate 的首 blocker 写为独立 v2
+  content-addressed observation。
+- Observation 绑定 R1/R2a event、candidate/slot、old live epoch id、live event count 和 ledger
+  terminal；event 重放必须精确解引用 observation 的 path/hash/size/schema/context/items。
+  同 context/blocker 重询字节幂等，变化后原 observation 只标 stale/inert。任一锁 busy 时
+  event/object/head/status 都不写。
+- v2 单向检测全部 v1 drain transaction/object witness，绝不采纳或改写。冻结 v1 不读取 v2，
+  因此本切片明确不声称互斥：后生 v1 authority 具有优先级，v2 observation inert。
+  head/status 只是 repairable cache，不提供 anti-rollback authority。
+- 当前只允许 `first_blocker_observation_implemented=true` 以及 R1/R2a/old-ledger context binding；
+  bounded reservation/recovery、complete enumeration、old-work admission fence、v1/v2 mutual
+  exclusion、anti-rollback、DRAINING event/route fence、drained/active/trusted/E2/formal 均 false。
+- profile/module/test SHA-256 分别为
+  `aa12082e32b9b94fc4ad4b08232ed586b49c8c1bf1d2ccdaf3587b096c047d17`、
+  `93a6463f514d73c4809287e1bbc8033984c82f550d5c55ce84c209475d7b604b`、
+  `d315d394b536eec4b1ea09c7a9683cfcbc0ebadc58a98758268f32d3329ed488`；v2+main
+  定向快测 `45/45`，静态/JSON/lock/dry-run 检查通过，97-path aggregate 保持
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。未重复 R2b、
+  真实长链或全仓长测。
+- 下一步先实现由旧 writer 和 v2 共同遵守的 machine admission cut，再完整枚举并内容寻址
+  closed workset；完成这两个前提后才写 manifest-keyed action adapters。不能把本观察直接
+  晋升为 reservation/recovery/drained/active。
+- 详细合同见 `docs/ootang_epoch_drain_v2_engineering.md`。
+
 ## 2026-08-27 epoch drain eligibility R2b-2a
 
 - 本增量基于已提交的 `2eefceb feat: add atomic epoch drain barrier`，新增显式、非默认阶段
@@ -46,9 +78,9 @@
   完整 suite 结果，不得写成 PASS，也不要由后续 agent 再次重复。已知工程债是逐锁/
   逐 fsync fault matrix、冻结 R2b 私有 API
   耦合、eligibility full-chain O(K²) 重放，以及上述 mutable-witness 同删边界。
-- 下一步固定为新 schema/version 的 **R2b-2b v2 bounded-workset non-clean recovery**，由
-  机器枚举并恢复 guard/trusted-time/shadow 等非 clean workset；不得重解释或覆写任何已
-  发布的 R2b/R2b-2a v1 bytes。其后才是独立 drain assessor、权威
+- 该条目的下一步已由上方 R2b-2b-1 首 blocker observation 开始，但尚未形成 closed
+  workset。当前仍需 machine admission cut、完整枚举和 manifest-keyed recovery；不得重解释
+  或覆写任何已发布 R2b/R2b-2a v1 bytes。其后才是独立 drain assessor、权威
   `SEALED(old)+ACTIVE(new)` transition、cycle v4 与 scheduler authorization。
 - 详细合同见 `docs/ootang_epoch_drain_eligibility_engineering.md`。
 
@@ -120,7 +152,7 @@
   已随 swap 移动的 armed marker 读取 terminal 的**旧 boundary**；current clean 只作其合法
   append-only extension gate，不能重建或替换 boundary。WAL suffix rollback、branch、gap、
   extra entry、symlink，或 marker/ACL/temp 不精确时一律 fail closed。64 MiB 超限仍在 swap
-  前返回 machine waiting；为历史增长引入 chunk/Merkle 属未来 R2b-2b v2，不得重解释 v1
+  前返回 machine waiting；为历史增长引入 chunk/Merkle 属后续 R2b-2b v2 版本，不得重解释 v1
   bytes。
 - R2a 已记录的真实默认链试跑结论保持不变：正式五种子训练后，R1 因仓库缺少从
   2020-07-01 连续到机器当前日的 finalized feed，在历史 feed causal gate 以
@@ -139,9 +171,9 @@
   最终独立标准/规格审计为 P0/P1/P2 `0/0/0`；逐对象 publication-fsync 故障矩阵仅作为
   后续 coverage debt，不削弱本轮已验证的通用 durable-adoption 合同。
 - 该历史 R2b 基线的下一步 R2b-2a clean-start eligibility observation/stale detection 已在
-  本文件顶部增量完成，结果仍只可为 DRAINING。当前下一步是另建 R2b-2b v2
-  bounded-workset non-clean recovery，恢复 trusted-time/guard/shadow 等明确
-  workset；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+  本文件顶部增量完成，结果仍只可为 DRAINING。后续 R2b-2b-1 v2 已实现首 blocker
+  observation，但不具 reservation/recovery authority。当前下一步是 shared admission cut、
+  完整 manifest 与 keyed trusted-time/guard/outcome/live/shadow recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
   armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立
   drain assessor 与权威 active transition；cycle v4、scheduler authorization 与长链
   O(N²) 扫描优化仍在更后。

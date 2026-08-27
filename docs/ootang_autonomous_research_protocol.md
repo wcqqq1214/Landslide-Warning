@@ -193,8 +193,8 @@ Darwin swap；正常同 poll post-swap logical clean 必须 exact 等于 pre-swa
 只自动恢复严格单一 marker-temp 和 exact/缺失 ACL crash state；exchanged recovery 必须读取
 随 fence 移动的 armed terminal 的旧 boundary，current clean 只作合法 append-only extension
 gate，禁止重建 boundary。suffix rollback/branch/gap/extra/symlink 均 fail closed。post-swap
-publisher 与 event 前 self-replay 继续复验；历史增长需要的 chunk/Merkle 属未来 R2b-2b
-v2，不能重解释 64 MiB v1 bytes。它尚未证明 drained 或切换 active。该执行树
+publisher 与 event 前 self-replay 继续复验；历史增长需要的 chunk/Merkle 只能进入未来
+R2b-2b v2 版本，不能重解释 64 MiB v1 bytes。它尚未证明 drained 或切换 active。该执行树
 仍固定 `portable_offline_runtime=false`。模型/源码/环境变化继续 fail closed，不能把
 candidate-prepared 或 drain-started 误写成 automatic rotation。因此所有 E2-A settlement 固定
 `e2_live_evidence_eligible=false`，即使 shadow 时间顺序验证成功也不得升格。
@@ -650,8 +650,10 @@ validate_contract
    full-clean content-addressed boundary/`epoch_drain_started` 已实现；R2b 当前只进入
    DRAINING。R2b-2a clean-start eligibility observation/stale detection 也已实现 historical
    binding/full replay、deterministic observation、append-only event、stale extension 与
-   frozen source-object 复验，且仍只 DRAINING。下一步以新 schema 做 R2b-2b v2
-   bounded-workset non-clean recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   frozen source-object 复验，且仍只 DRAINING。R2b-2b-1 v2 已新增 context-bound 首 blocker
+   observation，精确解引用 object，并明确 complete enumeration/reservation/admission fence/
+   recovery/mutual exclusion/anti-rollback 均未实现。下一步先做 shared machine admission cut
+   与 closed-workset manifest，再做 keyed recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
    capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
    event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
@@ -713,11 +715,11 @@ suffix rollback/branch/gap/extra/symlink 都 fail closed。E2-A
 `candidate_at_intent` 不是 activation selection，event 也只进入 DRAINING；所有 drained/
 active/rotation/trusted/E2/formal claim 仍为 false。可信时间 capability 与 candidate
 preparation 尚未成为不可绕过的 active switch。R2b-2a clean-start eligibility
-observation/stale detection 已完成，但没有增加 lifecycle/transition authority。只有 E2-B
-继续完成不可重解释 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
-armed-marker/boundary/drain-event/eligibility-observation/event bytes（并承载未来
-chunk/Merkle 历史）的 R2b-2b v2 bounded-workset
-non-clean recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
+observation/stale detection 已完成，但没有增加 lifecycle/transition authority；R2b-2b-1
+也只增加 context-bound 首 blocker observation。只有 E2-B 继续完成不可重解释 v1
+fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/
+eligibility-observation/event bytes 的 shared admission cut、完整 manifest、keyed non-clean
+recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
 authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
 

@@ -3,11 +3,63 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `2eefceb feat: add atomic epoch drain barrier`
-**State:** R1/R2a/R2b 已提交；本增量实现、定向验证并独立提交 R2b-2a machine-current
-drain eligibility observation/stale detection。R2b-2a 仍只观察
-DRAINING，不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation
-或 formal warning。
+**Committed baseline before this increment:** `895844e feat: add drain eligibility observation`
+**State:** R1/R2a/R2b/R2b-2a 已提交；当前增量实现 R2b-2b-1 v2 first-blocker
+observation foundation。它不是 workset reservation/recovery 或 DRAINING lifecycle authority，
+不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal
+warning。
+
+## 2026-08-27 drain v2 first-blocker observation R2b-2b-1 continuation
+
+The new explicit-only stage is `ootang-epoch-drain-v2-workset`. `main.py` exposes 32
+selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The stage is ordered after
+`ootang-epoch-drain-eligibility` and before operational v4, but is never selected by
+default. Its mutable liveness output is
+`runtime/ootang_epoch_registry_v1/drain_v2/status.json`.
+
+This increment corrects an unreachable roadmap assumption. V1 R2b publishes
+`epoch_drain_started` only from a full-clean start, while R2b-2a requires that unique v1
+authority. Non-clean R2b-2b therefore cannot be a normal linear successor of R2b-2a.
+The v2 foundation instead observes the first pending family returned by the frozen v1
+clean-state gate under the same nonblocking lock order
+`manager -> cycle -> deploy -> runner -> replay -> shadow`.
+
+The create-only, content-addressed observation binds the exact R1 and R2a event tips,
+candidate/slot, old live epoch id, live event count and live ledger terminal. It recognizes
+six closed family names (`issue_route_replay`, `live_outstanding`, `outcome_revision`,
+`guard`, `trusted_time`, `shadow`) but the production inspector records only the first v1
+gate blocker. Replay exact-validates the singleton event and dereferences the observation
+path/hash/size/schema/context/items before any v1-precedence decision. Same context/blocker
+repolls are byte-idempotent; a changed blocker/context makes the immutable observation
+stale and inert rather than silently reusing it.
+
+Any v1 fence/intent/WAL/armed marker/event/eligibility/capsule or v1-specific drain object
+prevents v2 adoption. If v1 authority appears after the observation, v1 has precedence and
+the v2 observation becomes inert. This is deliberately not mutual exclusion: frozen v1
+does not read the v2 namespace. Lock busy writes no v2 event/object/head/status. Head/status
+are repairable non-authority caches and provide no anti-rollback guarantee; deleting both
+durable event/object is outside this slice's detection boundary.
+
+Capabilities therefore state `first_blocker_observation_implemented=true` and bind the
+R1/R2a plus old-ledger context, while bounded workset reservation/recovery, complete
+enumeration, old-work admission fence, v1/v2 mutual exclusion, anti-rollback authority,
+`epoch_drain_started`, canonical route fence, drained/active/trusted/E2/formal claims all
+remain false. No public producer/recovery poll or network call is executed, and the CLI
+has no date/freeze/approval/cleanup/force/backdate control.
+
+Frozen profile/module/test SHA-256 values are respectively
+`aa12082e32b9b94fc4ad4b08232ed586b49c8c1bf1d2ccdaf3587b096c047d17`,
+`93a6463f514d73c4809287e1bbc8033984c82f550d5c55ce84c209475d7b604b` and
+`d315d394b536eec4b1ea09c7a9683cfcbc0ebadc58a98758268f32d3329ed488`.
+Targeted v2+main validation passes `45/45`; no R2b or repository-wide long suite was run.
+Ruff/format/compile/strict JSON, both lockfiles and default/explicit dry-runs pass; the
+97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3` and the shared v4
+Bai--Perron source has no diff.
+The next implementation step is a shared machine-enforced old-work admission cut plus
+complete manifest enumeration. Only then can a new version honestly reserve a closed
+workset and add manifest-keyed guard/trusted-time/outcome/live/shadow action adapters.
 
 ## 2026-08-27 drain eligibility observer R2b-2a continuation
 
@@ -72,11 +124,12 @@ Remaining engineering debt includes per-lock/per-fsync
 fault matrices, inherited private R2b API coupling, full-chain O(K^2) replay, and the
 mutable-witness deletion boundary above.
 
-The immediate next slice is R2b-2b with a new, non-reinterpreting v2 schema for
-machine-only bounded-workset recovery of non-clean guard/trusted-time/shadow and other
-enumerated work. It must not overwrite or reinterpret any v1 R2b or R2b-2a bytes. Only
-after that comes an independent drain assessor, then an authoritative atomic
-`SEALED(old)+ACTIVE(new)` transition.
+The next slice described at this R2b-2a point has started as the R2b-2b-1 observation
+section above. It has not yet reserved or recovered a closed workset. The current next
+step is a shared machine admission cut plus complete manifest enumeration, followed by
+manifest-keyed guard/trusted-time/outcome/live/shadow recovery. It must not overwrite or
+reinterpret any v1 R2b or R2b-2a bytes. Only after that comes an independent drain
+assessor, then an authoritative atomic `SEALED(old)+ACTIVE(new)` transition.
 
 ## 2026-08-27 epoch drain-start barrier R2b first slice
 
@@ -215,9 +268,10 @@ debt rather than a known implementation defect.
 
 The next slice from this historical R2b baseline was R2b-2a clean-start eligibility
 observation/stale detection; it is implemented in the continuation section above.
-R2b-2b must now introduce a new v2 schema
-for bounded-workset non-clean recovery of guard/trusted-time/shadow and other enumerated
-work. V2 must not reinterpret, add fields to or overwrite published v1 fence-prepare/
+The original roadmap next called for a new R2b-2b v2 recovery schema. The continuation
+above records the corrected first step: a non-authoritative first-blocker observation;
+shared admission cut, complete enumeration and keyed recovery remain. V2 must not
+reinterpret, add fields to or overwrite published v1 fence-prepare/
 intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes. Only a later drain assessor and
 authoritative transition may seal the old epoch and activate a candidate. Cycle v4,
 scheduler authorization and O(N^2)
@@ -1447,12 +1501,18 @@ Epoch registry/preparation/drain files:
 - `config/ootang_epoch_drain.v1.json`;
 - `tests/test_ootang_epoch_drain.py`;
 - `docs/ootang_epoch_drain_engineering.md`.
-- R2b-2a files delivered by this increment:
+- R2b-2a is committed at `895844e`:
   `code/monitoring/ootang_epoch_drain_eligibility.py`,
   `config/ootang_epoch_drain_eligibility.v1.json`,
   `tests/test_ootang_epoch_drain_eligibility.py` and
   `docs/ootang_epoch_drain_eligibility_engineering.md`, plus the scoped
   `main.py`, `tests/test_main.py`, README and cross-document edits.
+- Current R2b-2b-1 files are
+  `code/monitoring/ootang_epoch_drain_v2.py`,
+  `config/ootang_epoch_drain.v2.json`,
+  `tests/test_ootang_epoch_drain_v2.py` and
+  `docs/ootang_epoch_drain_v2_engineering.md`, plus the scoped pipeline and
+  cross-document updates listed by `git diff`.
 
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
@@ -1491,8 +1551,11 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    rename. Also preserve R2b-2a historical binding/full replay, deterministic
    observation CAS, append-only event chain, exact same-count cache validation, stronger
    strictly-ahead rollback witness, source-object revalidation, double capture and all
-   false authority claims. Next introduce an explicitly versioned R2b-2b v2
-   bounded-workset recovery for non-clean trusted-time/guard/shadow work. V2 must not
+   false authority claims. Preserve the R2b-2b-1 v2 first-blocker observation above:
+   exact R1/R2a/old-ledger context, object dereference, v1 precedence, no busy writes and
+   all reservation/recovery/enumeration/fence/mutual-exclusion/anti-rollback claims false.
+   Next implement a shared admission cut and complete manifest before any keyed
+   trusted-time/guard/outcome/live/shadow recovery. V2 must not
    reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
    armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in
    that new version. Failure waits or

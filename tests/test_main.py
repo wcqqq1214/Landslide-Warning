@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 31)
+        self.assertEqual(len(pipeline.STAGES), 32)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -852,7 +852,8 @@ class PipelineTests(unittest.TestCase):
 
         self.assertEqual(names.index(stage.name), names.index("ootang-epoch-drain") + 1)
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-drain-v2-workset"),
+            names.index(stage.name) + 1,
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -898,6 +899,78 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(
             [selected.name for selected in ordered],
             ["ootang-epoch-drain", "ootang-epoch-drain-eligibility"],
+        )
+
+    def test_epoch_drain_v2_workset_is_explicit_machine_r2b_2b_1_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-drain-v2-workset"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-epoch-drain-eligibility") + 1,
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.description,
+            "观察机器当前旧 epoch 首个排空阻塞项（R2b-2b-1，非 DRAINING authority/非切换/非正式）",
+        )
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "epoch_drain_first_blocker_observation_r2b_2b_1_v2_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_drain_v2.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_epoch_drain.v2.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/drain_v2/status.json",),
+        )
+        for required in (
+            "config/ootang_epoch_drain.v2.json",
+            "config/ootang_epoch_drain.v1.json",
+            "config/ootang_epoch_drain_eligibility.v1.json",
+            "config/ootang_epoch_preparation.v1.json",
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_prequential_deploy.v1.json",
+            "config/ootang_prequential_live.v1.json",
+            "config/ootang_prequential_cycle.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+            "config/ootang_issue_replay.v1.json",
+            "config/ootang_verified_live.v1.json",
+            "config/ootang_prequential_calibration_shadow.v1.json",
+            "config/ootang_trusted_time_shadow.v1.json",
+            "code/monitoring/ootang_epoch_drain.py",
+            "code/monitoring/ootang_epoch_drain_eligibility.py",
+            "code/monitoring/ootang_issue_replay.py",
+            "code/monitoring/ootang_verified_live.py",
+            "code/monitoring/ootang_prequential_calibration_shadow.py",
+            "code/monitoring/ootang_trusted_time_shadow_core.py",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            [
+                "ootang-operational-v4",
+                "ootang-epoch-drain-v2-workset",
+                "ootang-epoch-drain-eligibility",
+            ]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            [
+                "ootang-epoch-drain-eligibility",
+                "ootang-epoch-drain-v2-workset",
+                "ootang-operational-v4",
+            ],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

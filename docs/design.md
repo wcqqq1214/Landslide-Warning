@@ -163,6 +163,8 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_epoch_registry.py` | 完整验证 finalized feed 后先写独立 observation/head 反回滚链，再派生稳定 slot、预构建 source/model；精确绑定 source-lineage feed，把固定代码/配置/锁/trust 与 runtime artifacts 保存为 content-addressed archival snapshots，最后追加严格 N→N+1 candidate-ready event | standalone R1；waiting/orphan 也保留 feed 水位，历史 replay 验证 immutable snapshots 而非以后可变的 slot；capsule allowlist 不是 executable transitive closure，不移动 slot、不创建 candidate ledger、不切 active、不读 outcome，automatic rotation/E2/activation/formal 均为 false；R2 另做 executable materialization、drain 与原子 switch |
 | `code/monitoring/ootang_epoch_preparation.py` | 从 R1 immutable tip 静态解析 exact 22-module closure，只捕获两个固定 augmentation；将 closure、R2a profile/implementation 和绑定资源内容寻址并物化为同源执行树，在根/可信时间双 `uv --isolated --frozen` 环境重载 prerequisite 与五 seed P50 | standalone R2a；只接受 canonical project/slot，`relocatable=false`、`portable_offline_runtime=false`；每次 current repoll 和 orphan recovery 都重烟测，实现升级追加 `candidate_revalidated`；drain/switch/rotation/trusted anchor/E2/activation/formal 全为 false |
 | `code/monitoring/ootang_epoch_drain.py` | 六锁下复验 clean old epoch；发布 full intent-prefix/capsule 后，在 tombstone mkdir 前 create-only 写永久 singleton fence-prepare，再建立 ACL-fenced 0755 tombstone；swap 前 worst-case/actual boundary capacity 通过后，发布 exact pre-swap boundary、append/replay `drain_exchange_attempts` WAL，并以 fence 内 armed marker 绑定 terminal+boundary，再 `RENAME_SWAP` 原子交换 route | 超 64 MiB 机器 capacity-waiting、route 不交换；正常 same-poll post-swap state 必须 exact；prepared retry 只恢复严格 temp/ACL state，exchanged recovery 从 armed terminal 复用旧 boundary并以 current extension 作 gate；WAL/marker/boundary 只有 recovery authority，唯一 lifecycle authority 是 event；无人工 cleanup，只进入 DRAINING，其余 claim 全 false |
+| `code/monitoring/ootang_epoch_drain_eligibility.py` | 从唯一 v1 drain event 恢复 historical binding，在六锁下发布 machine-current clean observation 与 stale/extension event | 只观察 DRAINING；head/status 无 transition authority，drained/active/trusted/E2/formal 全 false |
+| `code/monitoring/ootang_epoch_drain_v2.py` | 在六锁下调用冻结 v1 clean gate，将首 pending family 与 R1/R2a、candidate/slot、old live epoch/ledger tip 写成独立 v2 observation | 只记录 first blocker；完整枚举、reservation、admission fence、recovery、v1/v2 互斥和 anti-rollback 均未实现；后生 v1 authority 优先且 observation inert |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -315,10 +317,12 @@ observation、previous-hash-linked event 与 stale detection：同 state 幂等�
 extension 二次 capture 后追加，pending/capacity 只 waiting；历史 observation 每次 replay
 均重新解引用冻结 source artifacts。head/status 仍是非 authority cache，at/behind chain 的
 tip 必须精确匹配，只有完整合法且 strictly-ahead 的 cache 才保留 rollback witness。
-任何历史增长的 chunk/Merkle 设计属于未来 R2b-2b v2；当前 event 最多授权 DRAINING；
+任何历史增长的 chunk/Merkle 设计只能进入新版本；当前 v1 event 最多授权 DRAINING；
 candidate selection、drained、active switch/rotation、trusted anchor、E2 evidence、activation
-readiness 与 formal warning 全部保持 false。下一步以新 v2 schema 实现 R2b-2b
-bounded-workset non-clean recovery，且不得重解释 v1 fence-prepare/intent-prefix/capsule/
+readiness 与 formal warning 全部保持 false。R2b-2b-1 v2 已实现 context-bound 首 blocker
+observation，但明确没有完整枚举、reservation、admission fence 或 recovery，也不与冻结 v1
+形成双向互斥。下一步先建立 shared machine admission cut 与 closed-workset manifest，再做
+manifest-keyed non-clean recovery；全程不得重解释 v1 fence-prepare/intent-prefix/capsule/
 intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes。
 之后才是独立 drain
 assessor、权威原子 active transition、cycle v4、scheduler authorization 和长链 O(N²) 优化。
