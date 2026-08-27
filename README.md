@@ -119,6 +119,15 @@
   restore/unfence/人工控制。event 只证明冻结 official entrypoint 被物理切断，complete
   manifest、reservation/recovery、泛化 admission fence、lifecycle/transition、drained/
   active/trusted/E2/formal 仍全部为 false。
+- 显式阶段 `ootang-epoch-workset-manifest` 实现 R2b-2b-2b 的 bounded closed-workset
+  reservation。它在 official writer cut 后完整重放 cut event/attempt/context，只取得仍开放的
+  `manager → cycle → replay → shadow` 四锁，并把 issue/replay、live outstanding、source+
+  outcome revision、guard、trusted-time 与 calibration shadow 六族及其传递义务写成确定排序、
+  内容寻址、create-only 的 manifest/event。unknown/orphan/duplicate/branch/overflow 或依赖不闭合
+  均整体 fail closed，不发布部分清单。该 event 是 exact-key recovery 的机器 reservation，
+  request-only TSA crash 可保留同 nonce 的 DER repair，过期/结果先到的 guard intent 自动转入
+  backfill supersede；历史 event 重放不重新要求已合法推进的 predecessor bytes 不变。
+  但 recovery、泛化 admission fence、lifecycle、drained/active/trusted/E2/formal 仍全部为 false。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -231,6 +240,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_epoch_drain_eligibility_engineering.md`](docs/ootang_epoch_drain_eligibility_engineering.md) | R2b-2a：machine-current eligibility observation、stale detection、capacity/witness fail-safe 与非 transition authority |
 | [`docs/ootang_epoch_drain_v2_engineering.md`](docs/ootang_epoch_drain_v2_engineering.md) | R2b-2b-1：context-bound 首阻塞项 observation、v1 precedence、精确对象重放与非 reservation/recovery 边界 |
 | [`docs/ootang_epoch_admission_cut_engineering.md`](docs/ootang_epoch_admission_cut_engineering.md) | R2b-2b-2a：冻结 writer 的 deploy/runner regular-file ACL 原子 lock-path cut、forward-only crash recovery 与非 manifest/lifecycle 边界 |
+| [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 closed-workset 的完整内容寻址枚举、singleton reservation event 与非 recovery/lifecycle 边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -248,8 +258,8 @@ docs/                           # 当前方法、结果边界和研究计划
    不可重解释 v1 bytes 的新 schema 实现 context-bound 首 blocker observation；它尚不是
    closed workset。R2b-2b-2a 已在不修改自绑定旧 writer 的前提下，用 deny-write regular-file
    sentinel 原子封闭 deploy/runner official lock pathname，但明确还不是完整 admission fence。
-   下一步在该稳定边界内完成 bounded closed-workset manifest 枚举，再做 manifest-keyed
-   non-clean recovery 和独立
+   R2b-2b-2b 已在该稳定边界内完成 bounded closed-workset manifest 枚举与 reservation；
+   下一步是 manifest-keyed non-clean recovery 和独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
    关闭前保持 `real_activation_ready=false`。

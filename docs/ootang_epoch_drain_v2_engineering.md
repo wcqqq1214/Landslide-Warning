@@ -135,9 +135,10 @@ formal_warning_output = false
 
 后续 R2b-2b-2a 已先补齐 frozen official writer 的 deploy/runner durable lock-path cut：它不
 修改自绑定旧 writer，只用 deny-write regular-file sentinel 与 Darwin atomic swap 封闭正式
-入口；该 event 仍明确不是泛化 admission fence 或 closed reservation。当前下一步是**完整**
-bounded manifest 枚举，使 first-blocker observation 升级为真正的 closed-workset reservation。其后的 R2b-2b-2
-才实现 manifest-keyed action adapters，并以 step receipt 证明每个旧工作向前收口；它不能
+入口；该 event 仍明确不是泛化 admission fence 或 closed reservation。后续 R2b-2b-2b 已用
+独立 schema 完成 bounded manifest 枚举与 closed-workset reservation，而没有重解释本文件的
+first-blocker bytes。下一阶段才实现 manifest-keyed action adapters，并以 step receipt 证明
+每个旧工作向前收口；它不能
 重新 selector 或持续追随新 tip。随后再做双 capture quiescence 与 v2 DRAINING lifecycle
 event。再后才是独立 assessor 和原子 active transition。
 每一阶段继续使用 synthetic 快环，只在里程碑末尾运行一次 gated real non-clean chain，禁止

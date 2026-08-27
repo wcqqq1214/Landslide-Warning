@@ -5,6 +5,43 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 closed-workset manifest reservation R2b-2b-2b
+
+- 基于已提交 `9d0c350 feat: add writer lock admission cut`，新增显式、非默认阶段
+  `ootang-epoch-workset-manifest`。当前共 34 个可选阶段；默认链仍严格为
+  `features → convlstm → ootang-operational-v4`，mutable 输出仅为
+  `runtime/ootang_epoch_registry_v1/workset_manifest_v1/status.json`。
+- 机器完整重放 admission-cut 的 prepare/intent/attempt/event 与两个 physical sentinel，从
+  terminal attempt 恢复 R1/R2a、candidate/slot、old epoch 和 frozen live upper tip。由于
+  deploy/runner official lock pathname 已封闭，本阶段不调用其旧 public poll，只按
+  `manager → cycle → replay → shadow` 获取仍开放的四锁。
+- 内容寻址 manifest 固定包含 issue/replay、live outstanding、source+outcome revision、guard、
+  trusted-time 与 shadow 六族 descriptor；每项保存 exact natural key、allowed successor、
+  dependency keys、contained path/hash/size refs 和 namespace digest。unknown/orphan/duplicate/
+  branch/overflow、依赖不闭合或引用不一致时整体 fail closed，不发布部分清单。
+- inventory 只读重放 terminal+pending namespace、live/shadow logical chain、shared-object/TSR
+  reachability、anchor 与逐 live-event shadow coverage。request-only crash 会保留相同 nonce/imprint
+  的 DER repair；target 已到或 outcome 已到而尚未 open/seal 的 guard intent 自动进入
+  `superseded_by_backfill`，不需要人工 cleanup。
+- create-only singleton event 精确绑定 manifest、cut event、terminal attempt 与 frozen context，
+  并记录 publisher path/hash/size；同状态 repoll 字节幂等。历史 authority replay 不重新读取
+  mutable predecessor，未来 adapter 按 exact key 单独做 predecessor CAS，因此第一项 recovery
+  不会使后续 reservation 失效。waiting/blocked status 的当前完成标志为 false，mutable status
+  不是 authority。
+- 本切片不执行 recovery，不生成 outcome/TSA request，不声明泛化 admission fence、lifecycle、
+  drained、active、trusted、E2 或 formal warning。下一步是 manifest-keyed recovery；全部 item
+  收口后仍须独立 drain assessor，不能直接切换 active。
+- profile/inventory/publisher/inventory-test/manifest-test SHA-256 依次为
+  `19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7`、
+  `cb4ce5c3e734aca6da1fccf8c07fca6e313cece177a096232626fea15011c982`、
+  `5e1e170473189d03d951b43a0e3258f4cf7d3cdff33c3dcb807206d1612d5e37`、
+  `37538d26f9db5f78ed40ae839dca7c9546d8340df0a5817eb8df9aa39e184e5a`、
+  `bee588aa54d881da1a97a0fbf4329770a1e0cc8ef44156b496979ed3c1b14a3b`。
+  新模块与相邻 admission-cut/drain-v2/main 快测 `66/66`；未跑全仓、训练、TSA 网络、大容量或
+  穷举 filesystem/crash 矩阵。Ruff/format/compile、JSON、dry-run 与 protected/frozen-writer
+  检查通过；最终短审计无剩余 P0/P1。
+- 详细合同见 `docs/ootang_epoch_workset_manifest_engineering.md`。
+
 ## 2026-08-27 official-writer lock-path admission cut R2b-2b-2a
 
 - 基于已提交 `efa45c9 feat: add drain blocker observation`，新增显式、非默认阶段
@@ -212,8 +249,9 @@
 - 该历史 R2b 基线的下一步 R2b-2a clean-start eligibility observation/stale detection 已在
   本文件顶部增量完成，结果仍只可为 DRAINING。后续 R2b-2b-1 v2 已实现首 blocker
   observation，但不具 reservation/recovery authority。后续 R2b-2b-2a 已完成 official-writer
-  lock-path cut；当前下一步是完整 manifest 与 keyed trusted-time/guard/outcome/live/shadow
-  recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+  lock-path cut；后续 R2b-2b-2b 已完成完整 manifest/reservation，当前下一步是 keyed
+  trusted-time/guard/outcome/live/shadow recovery；v2 不得重解释或覆写 v1
+  fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
   armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立
   drain assessor 与权威 active transition；cycle v4、scheduler authorization 与长链
   O(N²) 扫描优化仍在更后。

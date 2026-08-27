@@ -3,11 +3,77 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `efa45c9 feat: add drain blocker observation`
-**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1 已提交；当前增量实现 R2b-2b-2a
-official-writer lock-path admission cut。它不是 complete/closed workset、reservation、
-recovery 或 DRAINING lifecycle authority，不声明 drained、active switch、rotation、trusted
+**Committed baseline before this increment:** `9d0c350 feat: add writer lock admission cut`
+**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a 已提交；当前增量实现
+R2b-2b-2b bounded closed-workset manifest/reservation。它不是 recovery、泛化 admission
+fence 或 DRAINING lifecycle authority，不声明 drained、active switch、rotation、trusted
 anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-27 closed-workset manifest reservation R2b-2b-2b continuation
+
+The new explicit-only stage is `ootang-epoch-workset-manifest`. `main.py` exposes 34
+selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The stage follows
+`ootang-epoch-admission-cut` and publishes only its mutable status cache at
+`runtime/ootang_epoch_registry_v1/workset_manifest_v1/status.json`; immutable authority is
+the content-addressed manifest plus singleton reservation event.
+
+The machine first exact-replays the admission-cut prepare, intent, previous-hash-linked
+attempt chain, singleton event and both physical deny-write sentinels. It restores the
+frozen R1/R2a candidate/slot, old epoch and live upper tip from the terminal attempt. Since
+the deploy/runner canonical paths are already sealed regular files, this stage never calls
+their old public polls or attempts to acquire them. It takes only the still-open ordered
+locks `manager -> cycle -> replay -> shadow` before capturing the stable workset.
+
+The manifest always contains all six family descriptors: `issue_route_replay`,
+`live_outstanding`, `outcome_revision`, `guard`, `trusted_time` and `shadow`. Every item is
+deterministically ordered and binds an exact natural key, allowed successor, dependency
+keys, contained path/hash/size artifact references and a namespace digest. A family may be
+empty, but no descriptor may be omitted. Unknown/orphan/duplicate/branch/overflow,
+unresolved dependency, path escape or reference mismatch fails the entire capture closed;
+the publisher never truncates or emits a partial manifest.
+
+The manifest is canonical and content-addressed; poll time is excluded. The create-only
+singleton event binds its exact path/hash/size plus the admission-cut event, terminal
+attempt, authority context and publisher implementation provenance. Same-state repolls are
+byte-idempotent. Before the event exists, a changed/orphan enumeration blocks publication;
+after publication, replay verifies only immutable event/manifest bytes and internal digests,
+not mutable predecessor paths. Each future adapter must exact-CAS its own reserved key before
+acting, so completing item 1 cannot invalidate the authority needed for item 2. A second
+event or manifest/event/reference tamper still blocks. Status is cache only; waiting/blocked
+status never reports current enumeration/reservation as complete.
+
+The inventory is read-only and covers terminal plus pending namespaces. Live/shadow SQLite
+authority is the replayed logical chain rather than WAL-sensitive database-file bytes. Shared
+objects and TSR objects are scanned for exact reachability; missing/extra anchors, orphan
+objects, partial guard boundaries and shadow coverage gaps fail closed. A request-only TSA
+crash is reserved as deterministic DER repair with the same nonce/imprint. A guard intent
+whose target became historical or whose outcome arrived before open/seal is reserved as
+`superseded_by_backfill`, so neither case needs manual cleanup.
+
+This event sets only complete enumeration and bounded reservation capabilities true. It
+does not execute action adapters, create outcomes, mint a new TSA nonce/DER, or claim
+generic/direct-filesystem admission fencing, recovery, anti-rollback, lifecycle,
+transition, drained, active, trusted, E2 or formal-warning authority.
+
+Final SHA-256 values for profile, inventory helper, manifest publisher, inventory test and
+manifest test are respectively `19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7`,
+`cb4ce5c3e734aca6da1fccf8c07fca6e313cece177a096232626fea15011c982`,
+`5e1e170473189d03d951b43a0e3258f4cf7d3cdff33c3dcb807206d1612d5e37`,
+`37538d26f9db5f78ed40ae839dca7c9546d8340df0a5817eb8df9aa39e184e5a` and
+`bee588aa54d881da1a97a0fbf4329770a1e0cc8ef44156b496979ed3c1b14a3b`.
+The focused inventory/manifest plus adjacent admission-cut/drain-v2/main suite passes
+`66/66`; Ruff/format/compile, JSON, dry-runs and protected/frozen-writer checks are the only
+additional verification. Model training, TSA network, full repository, full capacity and
+exhaustive filesystem/crash matrices are intentionally not rerun. Final independent short
+audit reports no remaining P0/P1.
+
+The immediate next slice is manifest-keyed machine recovery. An adapter may act only on
+one exact reserved natural key and its declared successor, publishing a step receipt after
+replaying the same fence generation and dependency closure. Network trusted-time recovery
+must reuse the reserved request/nonce/DER (or deterministically repair its reserved DER) and
+exact-CAS after reacquiring the recovery lock.
+Only after every reserved item is settled may an independent assessor evaluate quiescence.
 
 ## 2026-08-27 official-writer lock-path admission cut R2b-2b-2a continuation
 
@@ -62,11 +128,11 @@ default/explicit dry-runs pass. The 97-path protected aggregate remains
 Bai--Perron source and all 11 frozen writer/orchestrator files have no diff.
 Final independent authority/standards audit is P0/P1/P2 `0/0/0`.
 
-The immediate next slice is a complete, bounded, content-addressed closed-workset manifest
-under the now-stable official-writer boundary. It must enumerate all six families and their
-transitive obligations with exact natural keys, path/hash/size, dependency and successor
-rules; unknown/orphan/branch/overflow states fail closed. Only after that manifest event may
-new exact-key action adapters recover old work.
+The complete, bounded, content-addressed closed-workset manifest described as this
+historical slice's next step is now implemented in the continuation above. It enumerates
+all six families and their transitive obligations under the stable official-writer boundary.
+The current next step is exact-key action adapters; no recovery may precede the singleton
+manifest reservation event.
 
 ## 2026-08-27 drain v2 first-blocker observation R2b-2b-1 continuation
 

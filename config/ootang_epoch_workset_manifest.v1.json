@@ -1,0 +1,126 @@
+{
+  "schema_version": "ootang_epoch_workset_manifest_profile_v1",
+  "profile_id": "ootang-epoch-workset-manifest-v1",
+  "profile_version": "1.0.0-closed-reservation",
+  "case": "ootang",
+  "artifact_status": "bounded_closed_workset_manifest_and_reservation_engineering_only_no_recovery_lifecycle_or_transition_authority",
+  "formal_warning_output": false,
+  "independent_label_used": false,
+  "confirmatory_external_validation": false,
+  "vajont_used": false,
+  "default_pipeline_member": false,
+  "upstream": {
+    "admission_cut_profile": {
+      "path": "config/ootang_epoch_admission_cut.v1.json",
+      "expected_sha256": "fe4e91768c8558d887a34465fa6c9f4e8c05f8c1a7cf07e061bc602733136c1c"
+    },
+    "admission_cut_implementation": {
+      "path": "code/monitoring/ootang_epoch_admission_cut.py",
+      "expected_sha256": "95b675b132c5051cbbc4d34041b9686d122a64c6368f04c0bff8d6dddf1effcf"
+    },
+    "inventory_implementation": {
+      "path": "code/monitoring/ootang_epoch_workset_inventory.py",
+      "expected_sha256": "cb4ce5c3e734aca6da1fccf8c07fca6e313cece177a096232626fea15011c982"
+    }
+  },
+  "runtime": {
+    "root": "runtime/ootang_epoch_registry_v1",
+    "namespace": "workset_manifest_v1",
+    "manager_lock": "manager.lock",
+    "manifests": "manifests/sha256",
+    "events": "events",
+    "status": "status.json",
+    "active_root": "runtime/ootang_prequential_live_v1",
+    "shadow_root": "runtime/ootang_prequential_calibration_shadow_v1",
+    "cycle_lock": "prequential_cycle.lock",
+    "replay_lock": "issue_replay.lock",
+    "shadow_lock": "runner.lock"
+  },
+  "protocol": {
+    "manifest_schema_version": "ootang_epoch_closed_workset_manifest_v1",
+    "event_schema_version": "ootang_epoch_closed_workset_reserved_event_v1",
+    "event_type": "epoch_closed_workset_reserved",
+    "maximum_items": 4096,
+    "maximum_artifacts": 16384,
+    "maximum_manifest_bytes": 4194304,
+    "maximum_artifact_bytes": 67108864,
+    "initial_previous_entry_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
+    "surviving_lock_order": [
+      "manager",
+      "cycle",
+      "replay",
+      "shadow"
+    ],
+    "workset_families": [
+      "issue_route_replay",
+      "live_outstanding",
+      "outcome_revision",
+      "guard",
+      "trusted_time",
+      "shadow"
+    ],
+    "allowed_successor_states": {
+      "issue_route_replay": [
+        "issue_replay_receipt_verified",
+        "issue_route_replay_consumed"
+      ],
+      "live_outstanding": [
+        "anchor_receipt_repaired",
+        "anchor_request_recorded",
+        "anchor_result_recorded",
+        "outcome_batch_settled"
+      ],
+      "outcome_revision": [
+        "source_snapshot_ingested",
+        "outcome_materialized",
+        "outcome_or_revision_consumed"
+      ],
+      "guard": [
+        "guard_completion_recorded",
+        "superseded_by_backfill"
+      ],
+      "trusted_time": [
+        "trusted_time_request_der_repaired",
+        "trusted_time_response_link_recorded",
+        "trusted_time_receipt_verified"
+      ],
+      "shadow": [
+        "shadow_outstanding_settled",
+        "shadow_live_event_classified",
+        "shadow_cursor_at_frozen_live_upper_tip"
+      ]
+    },
+    "manifest_policy": "complete_bounded_six_family_transitive_artifact_closure_no_truncation",
+    "reservation_policy": "singleton_event_exactly_reserves_manifest_natural_keys",
+    "cut_policy": "exact_admission_cut_event_attempt_context_and_physical_boundary_required",
+    "recovery_action": "not_implemented_manifest_only"
+  },
+  "engineering_capabilities": {
+    "machine_only": true,
+    "admission_cut_binding_verified": true,
+    "content_addressed_manifest_implemented": true,
+    "complete_workset_enumeration": true,
+    "bounded_workset_reservation_implemented": true,
+    "bounded_workset_recovery_implemented": false,
+    "old_work_admission_fence_implemented": false,
+    "canonical_old_issue_route_fence_implemented": false,
+    "direct_filesystem_writer_fence_implemented": false,
+    "v1_v2_mutual_exclusion_implemented": false,
+    "scheduler_entrypoint_authorization_implemented": false,
+    "anti_rollback_authority_implemented": false,
+    "epoch_drain_started_implemented": false,
+    "lifecycle_authority": false,
+    "transition_authority": false,
+    "drained_eligibility_current": false,
+    "old_epoch_drained": false,
+    "old_epoch_drain_implemented": false,
+    "activation_candidate_selected": false,
+    "active_epoch_switch_implemented": false,
+    "automatic_epoch_rotation_implemented": false,
+    "trusted_anchor_receipt_verified": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false,
+    "formal_warning_output": false
+  }
+}

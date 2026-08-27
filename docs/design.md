@@ -129,7 +129,7 @@ future frozen protocol + independent outcome labels
        └─ formal warning artifacts (not implemented; current gate rejects)
 ```
 
-`main.py` contains thirty independently selectable stages. Its no-argument chain is exactly
+`main.py` contains thirty-four independently selectable stages. Its no-argument chain is exactly
 `features → convlstm → ootang-operational-v4`; independent SHAP, ConvLSTM diagnostics,
 the prequential monitor/deployment stages, NGBoost proxy experiments, automatic V0, and the v5
 candidate display all require `--stage`.
@@ -166,6 +166,7 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_epoch_drain_eligibility.py` | 从唯一 v1 drain event 恢复 historical binding，在六锁下发布 machine-current clean observation 与 stale/extension event | 只观察 DRAINING；head/status 无 transition authority，drained/active/trusted/E2/formal 全 false |
 | `code/monitoring/ootang_epoch_drain_v2.py` | 在六锁下调用冻结 v1 clean gate，将首 pending family 与 R1/R2a、candidate/slot、old live epoch/ledger tip 写成独立 v2 observation | 只记录 first blocker；完整枚举、reservation、admission fence、recovery、v1/v2 互斥和 anti-rollback 均未实现；后生 v1 authority 优先且 observation inert |
 | `code/monitoring/ootang_epoch_admission_cut.py` | 不修改 11 个自绑定旧 writer，在六锁下用 exact ACL/`0444` regular-file sentinel 与 Darwin `RENAME_SWAP` 依序物理封闭 deploy/runner official lock pathname | prepare/intent/attempt/event 只具 forward-recovery/lock-cut 语义；complete manifest、reservation/recovery、泛化 admission fence、v1/v2 互斥、lifecycle/transition、drained/active 均未实现 |
+| `code/monitoring/ootang_epoch_workset_manifest.py` | 在 official writer cut 后完整重放物理边界与冻结 context，枚举六族旧工作及传递 artifact 闭包并发布内容寻址 singleton reservation event | complete enumeration 与 bounded reservation 成立；不执行 action，不生成 outcome/TSA nonce，不声明泛化 admission fence、recovery、lifecycle、drained 或 active |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -324,8 +325,9 @@ readiness 与 formal warning 全部保持 false。R2b-2b-1 v2 已实现 context-
 observation，但明确没有完整枚举、reservation、admission fence 或 recovery，也不与冻结 v1
 形成双向互斥。R2b-2b-2a 已进一步以原子 deploy/runner lock-path cut 封闭冻结 official
 writer 入口；它不修改自绑定 writer，也不把 physical cut event 冒充 closed manifest 或
-lifecycle authority。下一步在该稳定边界内完成 bounded closed-workset manifest，再做
-manifest-keyed non-clean recovery；全程不得重解释 v1 fence-prepare/intent-prefix/capsule/
+lifecycle authority。R2b-2b-2b 已在该稳定边界内完成 bounded closed-workset manifest 与
+reservation；下一步做 manifest-keyed non-clean recovery。全程不得重解释 v1
+fence-prepare/intent-prefix/capsule/
 intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes。
 之后才是独立 drain
 assessor、权威原子 active transition、cycle v4、scheduler authorization 和长链 O(N²) 优化。

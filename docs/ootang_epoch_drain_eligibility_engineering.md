@@ -157,9 +157,10 @@ observation，累计成本可能为 O(K²)，发布前双 capture 还会增加�
 
 后续 R2b-2b-1 v2 已实现 context-bound 首 blocker observation；R2b-2b-2a 又在不修改自绑定
 旧 writer 的前提下，原子封闭 frozen official writer 的 deploy/runner lock pathname。但
-complete enumeration、泛化 admission fence、reservation 与 recovery 仍为 false。下一阶段
-先建立 bounded closed-workset manifest，再按 manifest 精确键机器恢复 outstanding guard、
-trusted-time、shadow 等 workset。未来 checkpoint/chunk/Merkle
+在这两个历史切片自身的 capability 中，complete enumeration、泛化 admission fence、
+reservation 与 recovery 仍为 false。后续 R2b-2b-2b 已以独立 schema 建立 bounded
+closed-workset manifest 与 reservation；下一步按 manifest
+精确键机器恢复 outstanding guard、trusted-time、shadow 等 workset。未来 checkpoint/chunk/Merkle
 或 immutable commit receipt 也只能进入新版本；不得重解释、补字段或覆写已经发布的 v1
 fence-prepare、intent-prefix、capsule、intent、exchange-attempt、armed marker、boundary、
 drain event、eligibility observation/event bytes。之后才是独立 drain assessor，再之后才可能

@@ -135,14 +135,15 @@ status 检出，因此 anti-rollback authority 仍未实现。
 
 ## 6. 下一步
 
-下一步是在两个 lock pathname 已物理封闭、官方旧 writer 不再推进的稳定边界内，一次性完整
-枚举六 family 及传递义务：issue route/producer/replay、live outstanding、source+outcome
+后续 R2b-2b-2b 已在两个 lock pathname 已物理封闭、官方旧 writer 不再推进的稳定边界内，
+完整枚举六 family 及传递义务：issue route/producer/replay、live outstanding、source+outcome
 revision、guard、trusted-time request/DER/link/receipt、shadow cursor 到冻结 live upper tip。
-manifest 必须逐路径绑定 hash/size、namespace digest、自然键、依赖与允许的 successor state；
-超过上限、unknown/orphan/branch 或无法构成唯一键时 fail closed，不能截断。
+manifest 逐路径绑定 hash/size、namespace digest、自然键、依赖与允许的 successor state；
+超过上限、unknown/orphan/branch 或无法构成唯一键时整体 fail closed，不截断。
 
-只有 closed manifest event 成立后，才实现 manifest-keyed v2 action adapters。TSA 仅允许复用
-manifest 中已有 request 的相同 nonce/DER，网络阶段解锁后必须重获机器 recovery lock 并对同一
+该 closed manifest singleton event 只建立 bounded reservation。下一步才实现 manifest-keyed
+v2 action adapters。TSA 仅允许复用 manifest 中已有 request 的相同 nonce/DER，或按该
+request/nonce 确定性修复缺失 DER；网络阶段解锁后必须重获机器 recovery lock 并对同一
 fence generation + item 做 exact-CAS；不能重新运行会获取已封闭旧锁的 public poll。
 
 ## 7. 冻结与验证记录

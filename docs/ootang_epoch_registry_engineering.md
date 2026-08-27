@@ -85,7 +85,7 @@ drained/active claims 仍 false。R2b-2b-1 已用新 v2 schema 记录 context-bo
 anti-rollback 均明确 false。R2b-2b-2a 已在六锁下用 deny-write regular-file sentinel 与
 Darwin atomic swap 依序封闭 frozen official writer 的 deploy/runner lock pathname，并保持
 旧 writer bytes 不变；该 event 仍不是 complete admission fence、manifest 或 lifecycle
-authority。下一步建立完整 bounded manifest，再做 keyed non-clean recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
+authority。后续 R2b-2b-2b 已建立完整 bounded manifest/reservation；下一步做 keyed non-clean recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
 exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes，
 历史增长需要的 chunk/Merkle 也只能由该新版本表达。
 后续 assessor 证明所有历史工作合法收口后，权威 transition 才可同时 seal old / activate
@@ -308,7 +308,7 @@ R2b-2b-1 v2 首 blocker observation 也已实现：它绑定 R1/R2a 与 old ledg
 object，并在 v1 后生 authority 时 inert；它尚未枚举或恢复 trusted-time/guard/shadow workset。
 R2b-2b-2a 已进一步在六锁下原子封闭 frozen official writer 的 deploy/runner lock pathname，
 且不修改其自绑定实现；它仍不证明 direct filesystem writer、complete workset 或 recovery。
-下一步完成 bounded closed-workset manifest，再做 keyed recovery。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
+后续 R2b-2b-2b 已完成 bounded closed-workset manifest/reservation；下一步做 keyed recovery。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
 capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event
 bytes；超 64 MiB 的历史 chunk/Merkle 设计也属于该未来 v2。再后的独立 assessor
 才能证明旧 namespace 已
