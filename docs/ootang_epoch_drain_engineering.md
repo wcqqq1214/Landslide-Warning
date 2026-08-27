@@ -308,8 +308,9 @@ poll 保存并复验 deterministic eligibility observation，识别 stale 观察
 extension 经二次 capture 自动纳入新观察；历史 observation 的冻结 source objects 每次重放
 均重新解引用，head/status 不取得 transition authority。其输出仍只能是 DRAINING，不能把
 eligibility 写成 drained/active。后续 R2b-2b-1 v2 已先实现 context-bound 首 blocker
-observation，但明确不构成完整枚举、reservation、admission fence 或 recovery。当前下一步是
-shared machine admission cut 与 closed-workset manifest，之后才以精确键恢复 outstanding
+observation，但明确不构成完整枚举、reservation、admission fence 或 recovery。后续
+R2b-2b-2a 已完成 frozen official-writer lock-path cut；当前下一步是 closed-workset manifest，
+之后才以精确键恢复 outstanding
 guard、trusted-time request、shadow 和其他已存事务。v2 不得重新解释、补字段
 或覆写已经发布的 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/
 boundary/event bytes；历史 chunk/Merkle 表示也只能在该新版本中定义。

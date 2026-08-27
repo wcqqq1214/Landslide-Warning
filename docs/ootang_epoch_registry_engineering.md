@@ -58,7 +58,8 @@ R2a: exact executable closure -> same-origin materialization -> isolated smoke -
 R2b-1 v1 clean branch: clean-start route fence + epoch_drain_started -> DRAINING
 R2b-2a v1 clean branch: eligibility observation + stale detection -> still DRAINING
 R2b-2b-1 v2 non-clean foundation: context-bound first-blocker observation -> no lifecycle authority
-R2b-2b next: shared admission cut + complete manifest + keyed recovery -> later DRAINING
+R2b-2b-2a: frozen official-writer deploy/runner lock-path cut -> no lifecycle authority
+R2b-2b next: complete manifest + keyed recovery -> later DRAINING
 R2b-assessor: independently prove bounded work closed -> DRAINED eligibility
 R2c: authoritative atomic SEALED/ACTIVE transition
 R3: cycle v4 + trusted-time qualification + scheduler authorization
@@ -81,8 +82,10 @@ R2b binding 完整重放，在同一六锁下发布 deterministic clean observat
 event；同 state 幂等、合法 extension 自动刷新，pending/capacity 只机器等待，所有
 drained/active claims 仍 false。R2b-2b-1 已用新 v2 schema 记录 context-bound 首 blocker，
 但 complete enumeration、reservation、admission fence、recovery、v1/v2 mutual exclusion 与
-anti-rollback 均明确 false。下一步先建立 shared machine admission cut 与完整 manifest，
-再做 keyed non-clean recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
+anti-rollback 均明确 false。R2b-2b-2a 已在六锁下用 deny-write regular-file sentinel 与
+Darwin atomic swap 依序封闭 frozen official writer 的 deploy/runner lock pathname，并保持
+旧 writer bytes 不变；该 event 仍不是 complete admission fence、manifest 或 lifecycle
+authority。下一步建立完整 bounded manifest，再做 keyed non-clean recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
 exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes，
 历史增长需要的 chunk/Merkle 也只能由该新版本表达。
 后续 assessor 证明所有历史工作合法收口后，权威 transition 才可同时 seal old / activate
@@ -303,7 +306,9 @@ R2b-2a clean-start eligibility observation/stale detection 已实现跨 poll det
 observation、stale/extension 识别与 historical source-object 复验，结果仍只可为 DRAINING。
 R2b-2b-1 v2 首 blocker observation 也已实现：它绑定 R1/R2a 与 old ledger context、完整解引用
 object，并在 v1 后生 authority 时 inert；它尚未枚举或恢复 trusted-time/guard/shadow workset。
-下一步先做 shared admission cut 与完整 manifest，再做 keyed recovery。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
+R2b-2b-2a 已进一步在六锁下原子封闭 frozen official writer 的 deploy/runner lock pathname，
+且不修改其自绑定实现；它仍不证明 direct filesystem writer、complete workset 或 recovery。
+下一步完成 bounded closed-workset manifest，再做 keyed recovery。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
 capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event
 bytes；超 64 MiB 的历史 chunk/Merkle 设计也属于该未来 v2。再后的独立 assessor
 才能证明旧 namespace 已

@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 official-writer lock-path admission cut R2b-2b-2a
+
+- 基于已提交 `efa45c9 feat: add drain blocker observation`，新增显式、非默认阶段
+  `ootang-epoch-admission-cut`。当前共 33 个可选阶段；默认链仍严格为
+  `features → convlstm → ootang-operational-v4`，mutable 输出仅为
+  `runtime/ootang_epoch_registry_v1/admission_cut_v1/status.json`。
+- 旧 live/guard/replay/trusted/shadow/producer 记录会绑定当前实现哈希，因此本切片没有给
+  11 个旧 writer/orchestrator 植入新 marker。profile 逐字冻结并在每次执行前复验这些文件，
+  避免为了切断入口而让待排空旧 epoch 自身不可重放。
+- 机器按 `manager → cycle → deploy → runner → replay → shadow` 取得全锁，create-only 发布
+  prepare、exact `0444` + `everyone deny write` regular-file sentinels、inode-bound intent 和
+  previous-hash-linked current-context attempts；随后仅用 Darwin
+  `renameatx_np(RENAME_SWAP)` 先交换 canonical `deploy_cycle.lock`，再交换 `runner.lock`。
+  不存在普通 rename fallback、restore、unfence、cleanup、force、批准、人工日期或 backdate。
+- deploy-only crash 后，恢复不会重新 acquire/flock 已封闭 deploy pathname，而是锁定剩余
+  runner/replay/shadow，追加绑定最新 old-ledger tip 的第二个 attempt，再只向前完成 runner
+  cut；对封闭 pathname 唯一的 `O_RDWR` 是必须失败的 denial probe，成功即 integrity block。
+  runner cut 后只需 manager/cycle 即可精确重放并发布 singleton event。首次物理 cut 前
+  检出任何 v1 authority 时，v1 precedence，事务 inert 且锁路径保持开放。
+- Event 只证明冻结 official writer 的两个共享 lock pathname 已持续拒绝 write-open。
+  direct-filesystem/unknown writer 不在证明内；complete enumeration、reservation/recovery、
+  泛化 old-work admission fence、v1/v2 mutual exclusion、anti-rollback、DRAINING lifecycle、
+  drained/active/trusted/E2/formal 均保持 false，status 仍只是 cache。
+- profile/module/test 当前 SHA-256 分别为
+  `fe4e91768c8558d887a34465fa6c9f4e8c05f8c1a7cf07e061bc602733136c1c`、
+  `95b675b132c5051cbbc4d34041b9686d122a64c6368f04c0bff8d6dddf1effcf`、
+  `a26c7ebc476d0931ed0373f2b2fd5e6bc8255ed19ee9c3276a545a2a834ed8b3`。
+  真实 Darwin ACL/swap、7 个崩溃点、busy/v1 precedence、context extension 和篡改快测，
+  连同 main 合计 `45/45`，墙钟约 1 秒；Ruff/format/compile、strict JSON `32/32`、双 lock
+  check、33-stage list 与默认/显式 dry-run 通过。97-path aggregate 保持
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`，11 个 frozen writer
+  和共享 v4 Bai--Perron 无 diff；最终独立审计 P0/P1/P2 `0/0/0`。未运行 R2b、NGBoost、
+  真实 non-clean chain 或全仓长测。
+- 下一步是在两个 official writer lock pathname 已封闭的稳定边界内，完整、定界、内容寻址
+  枚举六 family 及传递义务，形成 closed-workset manifest event。只有 manifest 成立后才可
+  实现 exact-key action adapters；当前 cut event 不能晋升为 reservation/recovery/drained。
+- 详细合同见 `docs/ootang_epoch_admission_cut_engineering.md`。
+
 ## 2026-08-27 epoch drain v2 first-blocker observation R2b-2b-1
 
 - 基于已提交 `895844e feat: add drain eligibility observation`，新增显式非默认阶段
@@ -32,8 +70,8 @@
   定向快测 `45/45`，静态/JSON/lock/dry-run 检查通过，97-path aggregate 保持
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。未重复 R2b、
   真实长链或全仓长测。
-- 下一步先实现由旧 writer 和 v2 共同遵守的 machine admission cut，再完整枚举并内容寻址
-  closed workset；完成这两个前提后才写 manifest-keyed action adapters。不能把本观察直接
+- 后续 R2b-2b-2a 已完成 frozen official-writer lock-path cut；当前下一步是完整枚举并内容寻址
+  closed workset，之后才写 manifest-keyed action adapters。不能把本观察或 physical cut 直接
   晋升为 reservation/recovery/drained/active。
 - 详细合同见 `docs/ootang_epoch_drain_v2_engineering.md`。
 
@@ -79,7 +117,8 @@
   逐 fsync fault matrix、冻结 R2b 私有 API
   耦合、eligibility full-chain O(K²) 重放，以及上述 mutable-witness 同删边界。
 - 该条目的下一步已由上方 R2b-2b-1 首 blocker observation 开始，但尚未形成 closed
-  workset。当前仍需 machine admission cut、完整枚举和 manifest-keyed recovery；不得重解释
+  workset。后续 R2b-2b-2a 已完成 frozen official-writer lock-path cut；当前仍需完整枚举和
+  manifest-keyed recovery；不得重解释
   或覆写任何已发布 R2b/R2b-2a v1 bytes。其后才是独立 drain assessor、权威
   `SEALED(old)+ACTIVE(new)` transition、cycle v4 与 scheduler authorization。
 - 详细合同见 `docs/ootang_epoch_drain_eligibility_engineering.md`。
@@ -172,8 +211,9 @@
   后续 coverage debt，不削弱本轮已验证的通用 durable-adoption 合同。
 - 该历史 R2b 基线的下一步 R2b-2a clean-start eligibility observation/stale detection 已在
   本文件顶部增量完成，结果仍只可为 DRAINING。后续 R2b-2b-1 v2 已实现首 blocker
-  observation，但不具 reservation/recovery authority。当前下一步是 shared admission cut、
-  完整 manifest 与 keyed trusted-time/guard/outcome/live/shadow recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+  observation，但不具 reservation/recovery authority。后续 R2b-2b-2a 已完成 official-writer
+  lock-path cut；当前下一步是完整 manifest 与 keyed trusted-time/guard/outcome/live/shadow
+  recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
   armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立
   drain assessor 与权威 active transition；cycle v4、scheduler authorization 与长链
   O(N²) 扫描优化仍在更后。

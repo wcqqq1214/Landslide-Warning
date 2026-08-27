@@ -155,9 +155,10 @@ R1/R2a/R2b、live/shadow 和 receipt inventories；eligibility chain 若逐条�
 observation，累计成本可能为 O(K²)，发布前双 capture 还会增加常数成本。这是显式工程债，
 不能被描述成已优化。
 
-后续 R2b-2b-1 v2 已实现 context-bound 首 blocker observation，但 complete enumeration、
-reservation、admission fence 与 recovery 仍为 false。下一阶段先建立 shared machine
-admission cut 与 closed-workset manifest，再按 manifest 精确键机器恢复 outstanding guard、
+后续 R2b-2b-1 v2 已实现 context-bound 首 blocker observation；R2b-2b-2a 又在不修改自绑定
+旧 writer 的前提下，原子封闭 frozen official writer 的 deploy/runner lock pathname。但
+complete enumeration、泛化 admission fence、reservation 与 recovery 仍为 false。下一阶段
+先建立 bounded closed-workset manifest，再按 manifest 精确键机器恢复 outstanding guard、
 trusted-time、shadow 等 workset。未来 checkpoint/chunk/Merkle
 或 immutable commit receipt 也只能进入新版本；不得重解释、补字段或覆写已经发布的 v1
 fence-prepare、intent-prefix、capsule、intent、exchange-attempt、armed marker、boundary、

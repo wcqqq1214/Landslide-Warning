@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 32)
+        self.assertEqual(len(pipeline.STAGES), 33)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -910,7 +910,7 @@ class PipelineTests(unittest.TestCase):
             names.index("ootang-epoch-drain-eligibility") + 1,
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-admission-cut"), names.index(stage.name) + 1
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -960,6 +960,7 @@ class PipelineTests(unittest.TestCase):
         ordered = pipeline.select_stages(
             [
                 "ootang-operational-v4",
+                "ootang-epoch-admission-cut",
                 "ootang-epoch-drain-v2-workset",
                 "ootang-epoch-drain-eligibility",
             ]
@@ -969,6 +970,72 @@ class PipelineTests(unittest.TestCase):
             [
                 "ootang-epoch-drain-eligibility",
                 "ootang-epoch-drain-v2-workset",
+                "ootang-epoch-admission-cut",
+                "ootang-operational-v4",
+            ],
+        )
+
+    def test_epoch_admission_cut_is_explicit_machine_r2b_2b_2a_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-admission-cut"]
+
+        self.assertEqual(
+            names.index(stage.name),
+            names.index("ootang-epoch-drain-v2-workset") + 1,
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "epoch_admission_writer_lock_cut_r2b_2b_2a_engineering",
+        )
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_admission_cut.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_epoch_admission_cut.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/admission_cut_v1/status.json",),
+        )
+        for required in (
+            "config/ootang_epoch_admission_cut.v1.json",
+            "config/ootang_epoch_drain.v2.json",
+            "config/ootang_epoch_drain.v1.json",
+            "code/monitoring/ootang_epoch_drain_v2.py",
+            "code/monitoring/ootang_epoch_drain.py",
+            "code/monitoring/ootang_live_source.py",
+            "code/monitoring/ootang_issue_producer.py",
+            "code/monitoring/ootang_outcome_materializer.py",
+            "code/monitoring/ootang_prequential_live.py",
+            "code/monitoring/ootang_verified_live.py",
+            "code/monitoring/ootang_issue_replay.py",
+            "code/monitoring/ootang_trusted_time_shadow_core.py",
+            "code/monitoring/ootang_prequential_calibration_shadow.py",
+            "code/monitoring/ootang_prequential_cycle.py",
+            "code/monitoring/ootang_prequential_cycle_v2.py",
+            "code/monitoring/ootang_prequential_cycle_v3.py",
+        ):
+            self.assertIn(required, stage.inputs)
+
+        ordered = pipeline.select_stages(
+            [
+                "ootang-operational-v4",
+                "ootang-epoch-admission-cut",
+                "ootang-epoch-drain-v2-workset",
+            ]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            [
+                "ootang-epoch-drain-v2-workset",
+                "ootang-epoch-admission-cut",
                 "ootang-operational-v4",
             ],
         )

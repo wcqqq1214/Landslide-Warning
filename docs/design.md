@@ -165,6 +165,7 @@ candidate display all require `--stage`.
 | `code/monitoring/ootang_epoch_drain.py` | 六锁下复验 clean old epoch；发布 full intent-prefix/capsule 后，在 tombstone mkdir 前 create-only 写永久 singleton fence-prepare，再建立 ACL-fenced 0755 tombstone；swap 前 worst-case/actual boundary capacity 通过后，发布 exact pre-swap boundary、append/replay `drain_exchange_attempts` WAL，并以 fence 内 armed marker 绑定 terminal+boundary，再 `RENAME_SWAP` 原子交换 route | 超 64 MiB 机器 capacity-waiting、route 不交换；正常 same-poll post-swap state 必须 exact；prepared retry 只恢复严格 temp/ACL state，exchanged recovery 从 armed terminal 复用旧 boundary并以 current extension 作 gate；WAL/marker/boundary 只有 recovery authority，唯一 lifecycle authority 是 event；无人工 cleanup，只进入 DRAINING，其余 claim 全 false |
 | `code/monitoring/ootang_epoch_drain_eligibility.py` | 从唯一 v1 drain event 恢复 historical binding，在六锁下发布 machine-current clean observation 与 stale/extension event | 只观察 DRAINING；head/status 无 transition authority，drained/active/trusted/E2/formal 全 false |
 | `code/monitoring/ootang_epoch_drain_v2.py` | 在六锁下调用冻结 v1 clean gate，将首 pending family 与 R1/R2a、candidate/slot、old live epoch/ledger tip 写成独立 v2 observation | 只记录 first blocker；完整枚举、reservation、admission fence、recovery、v1/v2 互斥和 anti-rollback 均未实现；后生 v1 authority 优先且 observation inert |
+| `code/monitoring/ootang_epoch_admission_cut.py` | 不修改 11 个自绑定旧 writer，在六锁下用 exact ACL/`0444` regular-file sentinel 与 Darwin `RENAME_SWAP` 依序物理封闭 deploy/runner official lock pathname | prepare/intent/attempt/event 只具 forward-recovery/lock-cut 语义；complete manifest、reservation/recovery、泛化 admission fence、v1/v2 互斥、lifecycle/transition、drained/active 均未实现 |
 | `code/explainability/ngboost_shap.py` | 独立 NGBoost 回归及 permutation SHAP | 解释的是 `U_t-U_{t-1}` 模型依赖；当前只运行单一冻结时序留出，不解释 ConvLSTM、不推断物理因果、不输出预警分类。若需跨折稳定性，须另行冻结协议和计算预算 |
 | `code/warning/ootang_ngboost_interval_proxy_pilot.py` | 用四项连续指标训练固定 NGBoost 五分类 pilot，预测下一日原始区间偏离状态 | 仅显式运行；标签是代理状态，当前结果未超过持续性基线，不替换 ConvLSTM/v4，也不读取其他案例 |
 | `code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py` | 在同一模型/输入/训练策略下并列运行 h=1/3/7 | 只报告非排名敏感性；不选择 horizon，所有提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过持续基线 |
@@ -321,7 +322,9 @@ tip 必须精确匹配，只有完整合法且 strictly-ahead 的 cache 才保�
 candidate selection、drained、active switch/rotation、trusted anchor、E2 evidence、activation
 readiness 与 formal warning 全部保持 false。R2b-2b-1 v2 已实现 context-bound 首 blocker
 observation，但明确没有完整枚举、reservation、admission fence 或 recovery，也不与冻结 v1
-形成双向互斥。下一步先建立 shared machine admission cut 与 closed-workset manifest，再做
+形成双向互斥。R2b-2b-2a 已进一步以原子 deploy/runner lock-path cut 封闭冻结 official
+writer 入口；它不修改自绑定 writer，也不把 physical cut event 冒充 closed manifest 或
+lifecycle authority。下一步在该稳定边界内完成 bounded closed-workset manifest，再做
 manifest-keyed non-clean recovery；全程不得重解释 v1 fence-prepare/intent-prefix/capsule/
 intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes。
 之后才是独立 drain

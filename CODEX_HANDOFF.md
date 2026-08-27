@@ -3,11 +3,70 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `895844e feat: add drain eligibility observation`
-**State:** R1/R2a/R2b/R2b-2a 已提交；当前增量实现 R2b-2b-1 v2 first-blocker
-observation foundation。它不是 workset reservation/recovery 或 DRAINING lifecycle authority，
-不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal
-warning。
+**Committed baseline before this increment:** `efa45c9 feat: add drain blocker observation`
+**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1 已提交；当前增量实现 R2b-2b-2a
+official-writer lock-path admission cut。它不是 complete/closed workset、reservation、
+recovery 或 DRAINING lifecycle authority，不声明 drained、active switch、rotation、trusted
+anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-27 official-writer lock-path admission cut R2b-2b-2a continuation
+
+The new explicit-only stage is `ootang-epoch-admission-cut`. `main.py` exposes 33
+selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The stage follows
+`ootang-epoch-drain-v2-workset` and publishes only the mutable cache
+`runtime/ootang_epoch_registry_v1/admission_cut_v1/status.json`.
+
+The implementation deliberately does not patch the 11 frozen writer/orchestrator files.
+Those files are self-bound by the live ledger, verified-live intents, replay receipts,
+trusted-time/shadow records and producer provenance, so changing them would make the old
+epoch being drained unverifiable. The reviewed profile binds and rechecks every frozen
+SHA-256 before doing anything.
+
+Instead, the machine takes the globally ordered locks
+`manager -> cycle -> deploy -> runner -> replay -> shadow`, prepares two regular-file
+sentinels with exact mode `0444` and the reviewed `everyone deny write` ACL, then records
+create-only prepare, inode-bound intent and previous-hash-linked machine-current attempts.
+Darwin `renameatx_np(RENAME_SWAP)` exchanges canonical `deploy_cycle.lock` first and
+`runner.lock` second with their sentinels; ordinary rename has no fallback. The first cut
+closes source/issue/outcome admission, and the second closes live/guard/replay/trusted-time/
+shadow admission for the frozen official entrypoints.
+
+Recovery is forward-only. Before the first physical cut, any v1 authority wins and the
+transaction remains inert. After a deploy-only crash, the next poll never acquires/flocks
+the sealed deploy path: it only performs a denial probe whose success is an integrity error,
+acquires the remaining locks, and captures a fresh monotone context in a
+second attempt, cuts runner and publishes the singleton event. After runner is cut, only
+manager/cycle are needed to exact-replay and finish the event. There is no restore,
+unfence, cleanup, force, approval, target date or backdate interface.
+
+The event proves only that the two official writer lock pathnames are physically cut.
+Direct filesystem bypass and unknown writers are outside this slice; complete enumeration,
+reservation/recovery, generic old-work admission fence, v1/v2 mutual exclusion,
+anti-rollback, lifecycle/transition, drained/active/trusted/E2/formal claims all remain
+false. Mutable status is cache only.
+
+Frozen candidate profile/module/test SHA-256 values are respectively
+`fe4e91768c8558d887a34465fa6c9f4e8c05f8c1a7cf07e061bc602733136c1c`,
+`95b675b132c5051cbbc4d34041b9686d122a64c6368f04c0bff8d6dddf1effcf` and
+`a26c7ebc476d0931ed0373f2b2fd5e6bc8255ed19ee9c3276a545a2a834ed8b3`.
+
+Fast Darwin tests cover real ACL/regular-file exchange and byte-idempotence, all seven
+transaction crash points, deploy-only context extension, manager/runner busy zero-write,
+v1 precedence, prepare/sentinel/intent/attempt/event tamper and the machine-only CLI.
+The scoped admission-cut plus main suite passes `45/45` in about one second; no R2b,
+NGBoost, real non-clean chain or repository-wide long suite was rerun.
+Ruff/format/compile, strict JSON `32/32`, both lock checks, the 33-stage list and
+default/explicit dry-runs pass. The 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`; the shared v4
+Bai--Perron source and all 11 frozen writer/orchestrator files have no diff.
+Final independent authority/standards audit is P0/P1/P2 `0/0/0`.
+
+The immediate next slice is a complete, bounded, content-addressed closed-workset manifest
+under the now-stable official-writer boundary. It must enumerate all six families and their
+transitive obligations with exact natural keys, path/hash/size, dependency and successor
+rules; unknown/orphan/branch/overflow states fail closed. Only after that manifest event may
+new exact-key action adapters recover old work.
 
 ## 2026-08-27 drain v2 first-blocker observation R2b-2b-1 continuation
 
@@ -125,8 +184,9 @@ fault matrices, inherited private R2b API coupling, full-chain O(K^2) replay, an
 mutable-witness deletion boundary above.
 
 The next slice described at this R2b-2a point has started as the R2b-2b-1 observation
-section above. It has not yet reserved or recovered a closed workset. The current next
-step is a shared machine admission cut plus complete manifest enumeration, followed by
+section above. It has not yet reserved or recovered a closed workset. R2b-2b-2a has now
+completed the frozen official-writer lock-path cut; the current next step is complete
+bounded manifest enumeration, followed by
 manifest-keyed guard/trusted-time/outcome/live/shadow recovery. It must not overwrite or
 reinterpret any v1 R2b or R2b-2a bytes. Only after that comes an independent drain
 assessor, then an authoritative atomic `SEALED(old)+ACTIVE(new)` transition.
@@ -269,8 +329,9 @@ debt rather than a known implementation defect.
 The next slice from this historical R2b baseline was R2b-2a clean-start eligibility
 observation/stale detection; it is implemented in the continuation section above.
 The original roadmap next called for a new R2b-2b v2 recovery schema. The continuation
-above records the corrected first step: a non-authoritative first-blocker observation;
-shared admission cut, complete enumeration and keyed recovery remain. V2 must not
+above records the corrected first step: a non-authoritative first-blocker observation.
+The admission cut is now implemented in R2b-2b-2a; complete enumeration and keyed recovery
+remain. V2 must not
 reinterpret, add fields to or overwrite published v1 fence-prepare/
 intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes. Only a later drain assessor and
 authoritative transition may seal the old epoch and activate a candidate. Cycle v4,
@@ -1554,7 +1615,8 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    false authority claims. Preserve the R2b-2b-1 v2 first-blocker observation above:
    exact R1/R2a/old-ledger context, object dereference, v1 precedence, no busy writes and
    all reservation/recovery/enumeration/fence/mutual-exclusion/anti-rollback claims false.
-   Next implement a shared admission cut and complete manifest before any keyed
+   Preserve the later R2b-2b-2a official-writer lock-path cut above. Next implement the
+   complete bounded manifest before any keyed
    trusted-time/guard/outcome/live/shadow recovery. V2 must not
    reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
    armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in

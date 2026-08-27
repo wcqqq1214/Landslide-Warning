@@ -652,8 +652,10 @@ validate_contract
    binding/full replay、deterministic observation、append-only event、stale extension 与
    frozen source-object 复验，且仍只 DRAINING。R2b-2b-1 v2 已新增 context-bound 首 blocker
    observation，精确解引用 object，并明确 complete enumeration/reservation/admission fence/
-   recovery/mutual exclusion/anti-rollback 均未实现。下一步先做 shared machine admission cut
-   与 closed-workset manifest，再做 keyed recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   recovery/mutual exclusion/anti-rollback 均未实现。R2b-2b-2a 已在不修改 11 个自绑定旧
+   writer 的前提下，以 deny-write regular-file sentinel 和 Darwin atomic swap 依序封闭
+   deploy/runner official lock pathname；该 event 仍不是 closed manifest 或 lifecycle
+   authority。下一步完成 bounded closed-workset manifest，再做 keyed recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
    capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
    event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
@@ -716,9 +718,11 @@ suffix rollback/branch/gap/extra/symlink 都 fail closed。E2-A
 active/rotation/trusted/E2/formal claim 仍为 false。可信时间 capability 与 candidate
 preparation 尚未成为不可绕过的 active switch。R2b-2a clean-start eligibility
 observation/stale detection 已完成，但没有增加 lifecycle/transition authority；R2b-2b-1
-也只增加 context-bound 首 blocker observation。只有 E2-B 继续完成不可重解释 v1
+也只增加 context-bound 首 blocker observation。R2b-2b-2a 已物理封闭 frozen official
+writer 的 deploy/runner lock pathname，但 direct-filesystem/unknown writer、complete manifest
+和 recovery 仍未解决。只有 E2-B 继续完成不可重解释 v1
 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/
-eligibility-observation/event bytes 的 shared admission cut、完整 manifest、keyed non-clean
+eligibility-observation/event bytes 的完整 manifest、keyed non-clean
 recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
 authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
