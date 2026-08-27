@@ -8,6 +8,7 @@ import hashlib
 import io
 import json
 from pathlib import Path
+import sqlite3
 import sys
 import tempfile
 from types import SimpleNamespace
@@ -23,10 +24,15 @@ if str(CODE_DIR) not in sys.path:
 from monitoring import ootang_epoch_registry as registry  # noqa: E402
 from monitoring import ootang_epoch_workset_manifest as manifest  # noqa: E402
 from monitoring import ootang_epoch_workset_recovery as recovery  # noqa: E402
+from monitoring import ootang_live_ledger as live_ledger  # noqa: E402
 from monitoring import ootang_trusted_time_shadow_core as trusted  # noqa: E402
 
 
 NOW = datetime(2031, 2, 3, 4, 5, tzinfo=timezone.utc)
+
+
+def _digest(name: str) -> str:
+    return hashlib.sha256(name.encode()).hexdigest()
 
 
 class WorksetRecoveryTests(unittest.TestCase):
@@ -131,9 +137,9 @@ class WorksetRecoveryTests(unittest.TestCase):
         payload = {
             "workset_keyset_sha256": "b" * 64,
             "frozen_live_upper_tip": {
-                "epoch_id": "old-epoch",
-                "event_count": 1,
-                "terminal_entry_sha256": "c" * 64,
+                "old_live_epoch_id": "old-epoch",
+                "live_event_count": 1,
+                "live_terminal_sha256": "c" * 64,
             },
             "items": items,
         }
@@ -416,6 +422,434 @@ class WorksetRecoveryTests(unittest.TestCase):
             self.active_root / "replay.lock",
             self.shadow_root / "runner.lock",
         )
+
+    @staticmethod
+    def _synthetic_live_spec(
+        event_key: str,
+        *,
+        event_type: str,
+        target: str | None,
+        issue_id: str | None,
+        payload: dict[str, object],
+        input_manifest_sha256: str,
+        state_sha256: str,
+    ) -> live_ledger.EventSpec:
+        return live_ledger.EventSpec(
+            event_key=event_key,
+            event_type=event_type,
+            target_date=target,
+            station=None,
+            issue_id=issue_id,
+            protocol_config_sha256=_digest("synthetic-live-protocol"),
+            code_sha256=_digest("synthetic-live-code"),
+            environment_sha256=_digest("synthetic-live-environment"),
+            input_manifest_sha256=input_manifest_sha256,
+            model_manifest_sha256=_digest("synthetic-live-model"),
+            state_before_sha256=(
+                live_ledger.ZERO_HASH if event_type == "epoch_genesis" else state_sha256
+            ),
+            state_after_sha256=state_sha256,
+            payload=payload,
+        )
+
+    def _anchor_request_fixture(self, *, completed_attempts: int = 0):
+        epoch_id = "synthetic-live-epoch-anchor-request"
+        target = "2031-02-04"
+        issue_id = "synthetic-issue-batch"
+        input_manifest_sha256 = _digest("synthetic-issue-input-manifest")
+        state_sha256 = _digest("synthetic-station-state")
+        ledger_path = self.active_root / "live-ledger.sqlite3"
+        ledger = live_ledger.AppendOnlyLedger(ledger_path)
+        ledger.append_transaction(
+            [
+                self._synthetic_live_spec(
+                    f"{epoch_id}:epoch_genesis",
+                    event_type="epoch_genesis",
+                    target=None,
+                    issue_id=None,
+                    payload={"live_epoch_id": epoch_id},
+                    input_manifest_sha256=input_manifest_sha256,
+                    state_sha256=state_sha256,
+                )
+            ]
+        )[0]
+        seal = ledger.append_transaction(
+            [
+                self._synthetic_live_spec(
+                    f"{epoch_id}:{target}:issue_batch_sealed",
+                    event_type="issue_batch_sealed",
+                    target=target,
+                    issue_id=issue_id,
+                    payload={"issue_batch_sha256": _digest("synthetic-issue-batch")},
+                    input_manifest_sha256=input_manifest_sha256,
+                    state_sha256=state_sha256,
+                )
+            ]
+        )[0]
+        for attempt in range(1, completed_attempts + 1):
+            request_payload = {
+                "live_epoch_id": epoch_id,
+                "target_date": target,
+                "sealed_sequence_id": seal.sequence_id,
+                "sealed_entry_sha256": seal.entry_sha256,
+                "attempt": attempt,
+            }
+            prefix = f"{epoch_id}:{target}:anchor:{attempt}"
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        f"{prefix}:requested",
+                        event_type="anchor_requested",
+                        target=target,
+                        issue_id=issue_id,
+                        payload=request_payload,
+                        input_manifest_sha256=input_manifest_sha256,
+                        state_sha256=state_sha256,
+                    )
+                ]
+            )
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        f"{prefix}:failed",
+                        event_type="anchor_failed",
+                        target=target,
+                        issue_id=issue_id,
+                        payload={
+                            **request_payload,
+                            "reason_code": "endpoint_not_configured",
+                            "retry_policy": (
+                                "automatic_when_endpoint_becomes_available"
+                            ),
+                        },
+                        input_manifest_sha256=input_manifest_sha256,
+                        state_sha256=state_sha256,
+                    )
+                ]
+            )
+        frozen_events = ledger.read_events()
+        frozen_head = frozen_events[-1]
+        prerequisites = SimpleNamespace(
+            implementation_sha256=_digest("synthetic-live-code"),
+            environment_sha256=_digest("synthetic-live-environment"),
+            model=SimpleNamespace(sha256=_digest("synthetic-live-model")),
+        )
+        projection = SimpleNamespace(
+            epoch_id=epoch_id,
+            outstanding_target_date=date.fromisoformat(target),
+            outstanding_issue_id=issue_id,
+            seal_event=seal,
+        )
+        expected_pre_head = recovery.live_cas.LiveLedgerPreHeadV1(
+            epoch_id=epoch_id,
+            event_count=len(frozen_events),
+            sequence_id=len(frozen_events),
+            entry_sha256=frozen_head.entry_sha256,
+        )
+        live_paths = SimpleNamespace(ledger=ledger_path)
+
+        def load_frozen(_reservation):  # type: ignore[no-untyped-def]
+            return recovery.FrozenLivePrefix(
+                profile={},
+                paths=live_paths,
+                prerequisites=prerequisites,
+                projection=projection,
+                frozen_events=frozen_events,
+                current_events=ledger.read_events(),
+                expected_pre_head=expected_pre_head,
+            )
+
+        reservation = self._reservation(
+            [("anchor-live", "anchor_request_recorded", [])]
+        )
+        reservation.manifest["frozen_live_upper_tip"] = {
+            "old_live_epoch_id": epoch_id,
+            "live_event_count": len(frozen_events),
+            "live_terminal_sha256": frozen_head.entry_sha256,
+        }
+        item = {
+            "family": "live_outstanding",
+            "natural_key": "anchor-live",
+            "canonical_successor_state": "anchor_request_recorded",
+            "dependency_keys": [],
+            "namespace_digest": _digest("anchor-live"),
+            "authority": {
+                "record_type": "outstanding_live_lifecycle",
+                "target_date": target,
+                "old_live_epoch_id": epoch_id,
+                "issue_id": issue_id,
+                "issue_sha256": _digest("synthetic-live-issue-file"),
+                "input_manifest_sha256": input_manifest_sha256,
+                "seal_event": {
+                    "sequence_id": seal.sequence_id,
+                    "entry_sha256": seal.entry_sha256,
+                    "event_type": seal.event_type,
+                    "target_date": seal.target_date,
+                    "issue_id": seal.issue_id,
+                },
+                "anchor_confirmed_event": None,
+                "frozen_live_upper_tip": frozen_head.entry_sha256,
+                "terminal": False,
+                "action": "anchor_request_recorded",
+            },
+        }
+        return ledger, reservation, item, load_frozen, seal
+
+    def test_anchor_request_fresh_cas_rebuilds_exact_event_without_network(
+        self,
+    ) -> None:
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture()
+        network = mock.Mock(side_effect=AssertionError("network must stay unreachable"))
+
+        with (
+            mock.patch.object(recovery, "_frozen_live_prefix", side_effect=load_frozen),
+            mock.patch.object(recovery.live, "_default_anchor_client", network),
+        ):
+            contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            output = recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, contract
+            )
+
+        network.assert_not_called()
+        events = ledger.read_events()
+        self.assertEqual(len(events), 3)
+        request = events[-1]
+        self.assertEqual(request.sequence_id, seal.sequence_id + 1)
+        self.assertEqual(request.previous_entry_sha256, seal.entry_sha256)
+        self.assertEqual(
+            request.event_key,
+            ("synthetic-live-epoch-anchor-request:2031-02-04:anchor:1:requested"),
+        )
+        self.assertEqual(
+            request.payload,
+            {
+                "live_epoch_id": "synthetic-live-epoch-anchor-request",
+                "target_date": "2031-02-04",
+                "sealed_sequence_id": seal.sequence_id,
+                "sealed_entry_sha256": seal.entry_sha256,
+                "attempt": 1,
+            },
+        )
+        self.assertEqual(request.issue_id, seal.issue_id)
+        self.assertEqual(request.input_manifest_sha256, seal.input_manifest_sha256)
+        self.assertEqual(request.state_before_sha256, seal.state_after_sha256)
+        self.assertEqual(request.state_after_sha256, seal.state_after_sha256)
+        self.assertIsNone(output.reference)
+        self.assertTrue(output.semantics["live_ledger_event_recorded"])
+        self.assertFalse(output.semantics["network_action_performed"])
+        self.assertNotIn("created", output.semantics)
+
+    def test_anchor_request_commit_before_receipt_adopts_the_same_event(self) -> None:
+        ledger, reservation, item, load_frozen, _ = self._anchor_request_fixture()
+
+        with mock.patch.object(
+            recovery, "_frozen_live_prefix", side_effect=load_frozen
+        ):
+            contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            first = recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, contract
+            )
+            stored = ledger.read_events()[-1]
+            adopted = recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, contract
+            )
+
+        self.assertEqual(adopted, first)
+        self.assertEqual(len(ledger.read_events()), 3)
+        self.assertEqual(ledger.read_events()[-1], stored)
+
+    def test_anchor_request_stale_head_fails_without_appending(self) -> None:
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture()
+        with mock.patch.object(
+            recovery, "_frozen_live_prefix", side_effect=load_frozen
+        ):
+            contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        "foreign-live-ledger-suffix",
+                        event_type="integrity_blocked",
+                        target=seal.target_date,
+                        issue_id=seal.issue_id,
+                        payload={"foreign": True},
+                        input_manifest_sha256=seal.input_manifest_sha256,
+                        state_sha256=seal.state_after_sha256,
+                    )
+                ]
+            )
+            before = ledger.read_events()
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError,
+                "Anchor request CAS failed",
+            ):
+                recovery._anchor_request_action(  # noqa: SLF001
+                    item, reservation, contract
+                )
+
+        self.assertEqual(ledger.read_events(), before)
+        self.assertNotIn(
+            contract["event_spec"]["event_key"],
+            [event.event_key for event in ledger.read_events()],
+        )
+
+    def test_anchor_request_attempt_comes_only_from_balanced_frozen_prefix(
+        self,
+    ) -> None:
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture(
+            completed_attempts=1
+        )
+
+        with mock.patch.object(
+            recovery, "_frozen_live_prefix", side_effect=load_frozen
+        ):
+            contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            output = recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, contract
+            )
+
+        self.assertEqual(contract["attempt"], 2)
+        self.assertEqual(
+            contract["event_spec"]["event_key"],
+            ("synthetic-live-epoch-anchor-request:2031-02-04:anchor:2:requested"),
+        )
+        request = ledger.read_events()[-1]
+        self.assertEqual(request.payload["attempt"], 2)
+        self.assertEqual(request.payload["sealed_entry_sha256"], seal.entry_sha256)
+        self.assertEqual(output.semantics["attempt"], 2)
+
+    def test_anchor_request_historical_receipt_survives_a_later_suffix(self) -> None:
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture()
+
+        with mock.patch.object(
+            recovery, "_frozen_live_prefix", side_effect=load_frozen
+        ):
+            contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            output = recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, contract
+            )
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        "later-reviewed-live-suffix",
+                        event_type="anchor_failed",
+                        target=seal.target_date,
+                        issue_id=seal.issue_id,
+                        payload={
+                            **ledger.read_events()[-1].payload,
+                            "reason_code": "request_or_receipt_validation_failed",
+                            "error_type": "SyntheticFailure",
+                            "retry_policy": "automatic_next_poll",
+                        },
+                        input_manifest_sha256=seal.input_manifest_sha256,
+                        state_sha256=seal.state_after_sha256,
+                    )
+                ]
+            )
+            recorded = {
+                "action": "anchor_request_recorded",
+                "action_output_kind": output.kind,
+                "action_output": output.reference,
+                "action_semantics": dict(output.semantics),
+            }
+            recovery._verify_recorded_action_contract(  # noqa: SLF001
+                item,
+                recorded,
+                self.paths,
+                reservation=reservation,
+                item_intent={"action_contract": contract},
+            )
+            tampered = {
+                **recorded,
+                "action_semantics": {**output.semantics, "attempt": 99},
+            }
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError, "immutable replay"
+            ):
+                recovery._verify_recorded_action_contract(  # noqa: SLF001
+                    item,
+                    tampered,
+                    self.paths,
+                    reservation=reservation,
+                    item_intent={"action_contract": contract},
+                )
+
+        self.assertEqual(len(ledger.read_events()), 4)
+
+    def test_frozen_live_prefix_accepts_suffix_but_rejects_tip_drift(self) -> None:
+        ledger, reservation, _, _, seal = self._anchor_request_fixture()
+        projection = SimpleNamespace(epoch_id="synthetic-live-epoch-anchor-request")
+        prerequisites = SimpleNamespace()
+        live_paths = SimpleNamespace(ledger=ledger.path)
+        ledger.append_transaction(
+            [
+                self._synthetic_live_spec(
+                    "post-freeze-live-suffix",
+                    event_type="integrity_blocked",
+                    target=seal.target_date,
+                    issue_id=seal.issue_id,
+                    payload={"post_freeze": True},
+                    input_manifest_sha256=seal.input_manifest_sha256,
+                    state_sha256=seal.state_after_sha256,
+                )
+            ]
+        )
+
+        with (
+            mock.patch.object(recovery.live, "load_config", return_value={}),
+            mock.patch.object(recovery.live, "runtime_paths", return_value=live_paths),
+            mock.patch.object(
+                recovery.live, "load_prerequisites", return_value=prerequisites
+            ),
+            mock.patch.object(
+                recovery.live, "_reconstruct_projection", return_value=projection
+            ),
+        ):
+            frozen = recovery._frozen_live_prefix(reservation)  # noqa: SLF001
+            self.assertEqual(len(frozen.frozen_events), 2)
+            self.assertEqual(len(frozen.current_events), 3)
+            reservation.manifest["frozen_live_upper_tip"]["live_terminal_sha256"] = (
+                "f" * 64
+            )
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError,
+                "prefix tip changed",
+            ):
+                recovery._frozen_live_prefix(reservation)  # noqa: SLF001
+
+    def test_frozen_live_prefix_lock_is_reported_as_busy(self) -> None:
+        _, reservation, _, _, _ = self._anchor_request_fixture()
+        locked = sqlite3.OperationalError("database is locked")
+        failure = live_ledger.LedgerSchemaError("cannot open ledger database safely")
+        failure.__cause__ = locked
+        reader = mock.Mock()
+        reader.read_events.side_effect = failure
+
+        with (
+            mock.patch.object(recovery.live, "load_config", return_value={}),
+            mock.patch.object(
+                recovery.live,
+                "runtime_paths",
+                return_value=SimpleNamespace(ledger=self.active_root / "live.sqlite3"),
+            ),
+            mock.patch.object(
+                recovery.live, "load_prerequisites", return_value=SimpleNamespace()
+            ),
+            mock.patch.object(
+                recovery.live, "_ReadOnlyAppendOnlyLedger", return_value=reader
+            ),
+            self.assertRaises(recovery.WorksetRecoveryBusyError),
+        ):
+            recovery._frozen_live_prefix(reservation)  # noqa: SLF001
 
     def test_unsupported_item_waits_and_never_claims_bounded_recovery(self) -> None:
         reservation = self._reservation(

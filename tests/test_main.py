@@ -1110,7 +1110,7 @@ class PipelineTests(unittest.TestCase):
             ],
         )
 
-    def test_epoch_workset_recovery_is_explicit_machine_r2b_2b_2c_stage(self):
+    def test_epoch_workset_recovery_is_explicit_machine_r2b_2b_2d_stage(self):
         names = [stage.name for stage in pipeline.STAGES]
         stage = pipeline.STAGE_BY_NAME["ootang-epoch-workset-recovery"]
 
@@ -1124,7 +1124,7 @@ class PipelineTests(unittest.TestCase):
         self.assertFalse(stage.formal_warning_output)
         self.assertEqual(
             stage.warning_artifact_scope,
-            "epoch_manifest_keyed_deterministic_local_recovery_r2b_2b_2c_engineering",
+            "epoch_anchor_request_event_recovery_r2b_2b_2d_engineering",
         )
         self.assertEqual(
             stage.script,

@@ -673,7 +673,7 @@ STAGES = (
     Stage(
         "ootang-epoch-workset-recovery",
         "code/monitoring/ootang_epoch_workset_recovery.py",
-        "按 transition plan 单步推进旧 epoch 确定性本地恢复，含 live pre-head CAS 原语（R2b-2b-2c，尚无 ledger adapter/非切换/非正式）",
+        "按 transition plan 单步推进旧 epoch 确定性本地恢复，含 machine-only 单事件 anchor request ledger adapter（R2b-2b-2d，零网络/非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_recovery.v1.json",
             "config/ootang_epoch_workset_manifest.v1.json",
@@ -700,7 +700,7 @@ STAGES = (
             "config/ootang_epoch_workset_recovery.v1.json",
         ),
         warning_artifact_scope=(
-            "epoch_manifest_keyed_deterministic_local_recovery_r2b_2b_2c_engineering"
+            "epoch_anchor_request_event_recovery_r2b_2b_2d_engineering"
         ),
         formal_warning_output=False,
         enabled_by_default=False,

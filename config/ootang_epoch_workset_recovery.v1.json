@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.2.0-live-ledger-pre-head-cas",
+  "profile_version": "1.3.0-anchor-request-recovery",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_live_pre_head_cas_primitive_no_ledger_adapter_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_single_event_live_anchor_request_adapter_no_network_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
@@ -29,7 +29,7 @@
     },
     "live_ledger_cas_implementation": {
       "path": "code/monitoring/ootang_live_ledger_cas_v1.py",
-      "expected_sha256": "23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4"
+      "expected_sha256": "b443da5fd92eb2e48e33918c3e6090be0e53fe2182584f6bb0ccee050dfb327e"
     },
     "guard_implementation": {
       "path": "code/monitoring/ootang_verified_live.py",
@@ -52,11 +52,11 @@
     "shadow_lock": "runner.lock"
   },
   "protocol": {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v2",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v2",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v2",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v3",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v3",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v3",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v2",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v3",
     "event_type": "epoch_workset_transition_step_recorded",
     "transition_contract_schema_version": "ootang_epoch_workset_transition_contract_v1",
     "transition_contract_sha256": "c7ecf9e5e553d54b90017f32aeab1546a7ee7f5d42dbc54e263fc0be1cd152d0",
@@ -66,6 +66,7 @@
     "supported_successors": [
       "trusted_time_request_der_repaired",
       "anchor_receipt_repaired",
+      "anchor_request_recorded",
       "superseded_by_backfill"
     ],
     "maximum_items": 4096,
@@ -82,6 +83,8 @@
     "step_receipt_chain_implemented": true,
     "terminal_receipt_dependency_gate_implemented": true,
     "live_ledger_expected_pre_head_cas_implemented": true,
+    "live_anchor_request_adapter_implemented": true,
+    "ledger_mutation_recovery_implemented": true,
     "bounded_workset_recovery_implemented": false,
     "all_reserved_items_settled": false,
     "all_reserved_successors_supported": false,
@@ -89,9 +92,7 @@
     "derived_future_work_reservation_implemented": false,
     "all_transition_branches_supported": false,
     "network_recovery_implemented": false,
-    "ledger_mutation_recovery_implemented": false,
     "network_action_performed": false,
-    "live_ledger_mutated": false,
     "legacy_guard_completion_created": false,
     "old_work_admission_fence_implemented": false,
     "direct_filesystem_writer_fence_implemented": false,

@@ -13,7 +13,7 @@ dependent、reservation 时尚不存在的后续 work。因此，恢复器现在
 plan，并使用 step intent/step receipt 链推进，不能再把“首个 successor 已写入”误报为“该 key 已
 终结”。
 
-当前可执行 adapter 仍只有三类既有本地确定性 action：
+当前可执行 adapter 有四类 machine-only action：
 
 1. `anchor_receipt_repaired`：由已进入 live logical ledger 的唯一 `anchor_confirmed` event 与对应
    seal 重建相同 stored anchor receipt；
@@ -21,17 +21,22 @@ plan，并使用 step intent/step receipt 链推进，不能再把“首个 succ
    policy OID 与 evidence envelope 重建相同 RFC 3161 DER，不创建新 nonce；
 3. `superseded_by_backfill`：当 guard intent 没有 live open/seal 边界，且冻结 ledger 中已有唯一
    backfill/settlement 持久证据时，记录该 key 的 recovery disposition。
+4. `anchor_request_recorded`：只从 manifest frozen prefix 重建唯一 seal、attempt 与完整
+   canonical EventSpec，再以 expected-pre-head CAS 记录一个 `anchor_requested` event。
 
 其中 `trusted_time_request_der_repaired` 明确是非 terminal step：它的 receipt 只允许下一步
 `trusted_time_response_link_recorded`，不会完成 trusted-time key，也不会解锁依赖该 key 的其他
-item。当前切片不执行网络请求，不写 live/shadow/issue-replay logical ledger，不物化 outcome，不生成
-guard completion，也不关闭、创建或切换 epoch。
+item。`anchor_request_recorded` 同样是非 terminal step：它只能转向尚未实现的
+`anchor_result_recorded`。当前切片不执行网络请求，不写 shadow/issue-replay ledger，不物化
+outcome，不生成 guard completion，也不关闭、创建或切换 epoch。live ledger mutation 只限这一个
+受审单事件 anchor-request adapter。
 
 恢复 profile 现已额外绑定一个独立、versioned 的 live-ledger expected-pre-head CAS 原语。该原语在
 同一个 `BEGIN IMMEDIATE` 内验证 epoch、完整链和冻结 head，再执行 append 或 exact crash-forward
-adoption；它尚未接入任何 production recovery adapter，因此不会改变上述“三类 adapter”范围，也
-不能被解释成已实现 ledger mutation recovery。详细合同见
-`docs/ootang_live_ledger_cas_v1_engineering.md`。
+adoption。它现已接入 `anchor_request_recorded`，但这只证明一个受审 ledger action 的
+mutation recovery 实现，不能被解释成全 ledger transition 或完整 workset recovery。详细合同见
+`docs/ootang_live_ledger_cas_v1_engineering.md` 与
+`docs/ootang_anchor_request_recovery_engineering.md`。
 
 这些更改只涉及旧 epoch 恢复控制面，不修改数据划分、指标、阈值、训练结论或 ConvLSTM 主模型与
 默认预测链。
@@ -97,9 +102,11 @@ replay global intent and verified prior step-receipt chains
   → append one step-indexed recovery event
 ```
 
-step intent 固定 key、step index、action、transition-plan hash、previous-step-receipt reference、
-dependency terminal receipt refs 与 adapter provenance；read/write policy 通过 transition-plan hash
-间接绑定。step receipt 再绑定 intent hash、action output kind/reference/semantics、`next_actions` 与
+step intent 固定 key、step index、action、action-specific contract、transition-plan hash、
+previous-step-receipt reference、dependency terminal receipt refs 与 adapter provenance；read/write policy 通过
+transition-plan hash 间接绑定。对 anchor request，action contract 在 mutation 前直接绑定
+expected pre-head、attempt、完整 EventSpec 与其 digest。step receipt 再绑定 intent hash、action
+output kind/reference/semantics、`next_actions` 与
 `terminal_for_key`。是否新写入或采用 already-present exact bytes 由 action-specific create-only
 adapter 的可重复后置条件决定，不依赖 status cache 自报。
 
@@ -140,7 +147,7 @@ receipt、完成状态或 dependency gate 吞掉。`terminal_transition_closure_
 `derived_future_work_reservation_implemented=false` 和 `all_transition_branches_supported=false` 是当前
 设计边界，不是待人工确认的开关。
 
-## 5. 三类 deterministic local adapter
+## 5. 四类 machine-only adapter
 
 ### 5.1 Live anchor receipt repair
 
@@ -175,14 +182,31 @@ evidence。
 event；不得伪造 `guard_completion_recorded`，不得向 guard completion namespace 写入自创格式，
 也不得把该 receipt 解释成 live ledger terminal event。
 
+### 5.4 Single-event anchor request
+
+该 adapter 只接受 action 为 `anchor_request_recorded` 的 `live_outstanding` item。它先完整验证
+current live chain，再从 manifest 指定的 old epoch/count/hash 切出 frozen prefix；合法 current
+suffix 可以存在，但不参与 attempt 计算。唯一 outstanding seal、request/result 数量、
+attempt、event key 与 EventSpec 必须与冻结 live writer 原合同完全一致。
+
+CAS 只允许在 exact frozen pre-head 后追加该单事件，或接管已在同一位置持久的原事件。
+ActionOutput 使用 `reference=null`，由 semantics 绑定 event identity、pre/entry hash、seal、
+attempt 与 EventSpec digest。Receipt 不记录瞬时 `created/adopted`，确保 mutation-before-receipt 崩溃
+后的 exact adoption 仍生成相同 authority。历史 verifier 允许后续合法 suffix，但要求原事件
+恰好位于 `frozen_event_count + 1`。
+
+该 adapter 不读取 endpoint 配置、不发出 HTTP/TSA 请求、不生成 result、不验证回执。
+其 receipt 为非 terminal，只把同一 key 留在 `anchor_result_recorded`。
+
 ## 6. 明确不支持的 mutation 与 capability
 
 以下 action 即使出现在 transition plan 中，也只能由机器报告 waiting/unsupported/blocked，不得
 跳过、重分类或要求人工操作：
 
 - TSA HTTP 请求、response object/link 获取及 cryptographic receipt 验证；
-- live、shadow 或 issue-replay ledger append；
-- anchor request/result、outcome settle/materialize/consume、source snapshot ingest；
+- 除单事件 `anchor_request_recorded` 之外的 live ledger append，以及任何 shadow 或
+  issue-replay ledger append；
+- anchor result、outcome settle/materialize/consume、source snapshot ingest；
 - issue replay receipt 生成或 route consume；
 - guard completion 写入；
 - shadow settlement、classification、rotation 或 cursor 推进；
@@ -193,8 +217,11 @@ mutation 必须先具备 transaction 内 expected-pre-head CAS、序列号/previ
 durability 与 mutation-before-receipt adoption，不能由 generic 文件写 adapter 代替。
 
 当前可以声明 `transition_plan_binding_implemented`、`step_receipt_chain_implemented`、
-`terminal_receipt_dependency_gate_implemented` 与 storage-level
-`live_ledger_expected_pre_head_cas_implemented`；但至少以下能力继续为 false：
+`terminal_receipt_dependency_gate_implemented`、storage-level
+`live_ledger_expected_pre_head_cas_implemented`，以及窄化的
+`live_anchor_request_adapter_implemented` 和 `ledger_mutation_recovery_implemented`；后一项仅表示
+这一单事件路径已实现。通用静态 occurrence claim `live_ledger_mutated` 不再使用，真实持久
+效果由 action semantics 记录。但至少以下能力继续为 false：
 
 ```text
 bounded_workset_recovery_implemented
@@ -204,7 +231,6 @@ terminal_transition_closure_implemented
 derived_future_work_reservation_implemented
 all_transition_branches_supported
 network_recovery_implemented
-ledger_mutation_recovery_implemented
 old_work_admission_fence_implemented
 direct_filesystem_writer_fence_implemented
 anti_rollback_authority_implemented
@@ -229,27 +255,30 @@ receipt 经深度复验且 `terminal_for_key=true` 时，该 key 才算完成；
 
 定向快测应覆盖：immutable event/manifest replay；transition plan hash 绑定；step index、previous
 receipt 与合法 edge；terminal-only dependency gate；DER repair 非 terminal；unresolved derived work
-非 terminal；predecessor/pre-head CAS 漂移；global/step intent create-only adoption；三个 adapter 的
+非 terminal；predecessor/pre-head CAS 漂移；global/step intent create-only adoption；四个 adapter 的
 pending、already-applied 和 conflict；intent 后崩溃、mutation 后 receipt 前崩溃、receipt 后 event
 前崩溃；orphan/branch/unknown entry；waiting/busy/unsupported/blocked false claims；四锁逆序释放；
-TSA 网络函数与真实 runtime ledger mutation adapter 在本切片不可达。CAS 的独立快测只覆盖 exact
+TSA 网络函数不可达；anchor-request action contract、frozen-prefix-only attempt、CAS busy/conflict
+映射、commit-before-receipt adoption 和 later-suffix 历史 receipt 验证。CAS 的独立快测只覆盖 exact
 pre-head commit、stale rollback、exact adoption（含合法 suffix）、partial/changed conflict 与错误
 epoch/position；不把 storage-level placement proof 当作 transition authority。
 
 本阶段不需要穷举所有容量边界、所有 symlink/fsync 排列，也不运行模型训练、NGBoost、SHAP、
-ConvLSTM、真实 TSA 网络、真实 runtime ledger mutation、全仓长测或穷举 filesystem/crash 矩阵。
+ConvLSTM、真实 TSA 网络、全仓长测或穷举 filesystem/crash 矩阵。
 最终测试计数和 profile/implementation/test SHA-256 应在实现稳定并完成定向验证后写入交接文档；
 本说明不固化开发中间态 hash 或已过期计数。
 
 ## 8. 下一阶段
 
-live ledger 的 transaction-internal expected-pre-head CAS 已作为 recovery-only 加法原语完成；shadow
-因逐 item pre-head、rotation/empty-genesis 与 transaction-boundary 合同尚不完整而暂缓。下一步首个
-窄 ledger adapter 选择 `anchor_request_recorded`：只追加一个确定性 event，不访问网络。它必须从
-完整验证链切出 manifest 冻结 prefix 来确定 seal、attempt、event key 与完整 EventSpec，不能复用
-要求“当前 head 仍等于 frozen tip”的 `_live_projection()`，否则 event commit 后、receipt 前崩溃
-无法被机器采用。step intent 必须绑定 expected pre-head 与 EventSpec digest；CAS 返回事件验证后才
-可发布 step receipt，且不得调用会重入现有四锁的 public poll。
+live ledger 的 transaction-internal expected-pre-head CAS 已作为 recovery-only 加法原语完成，
+且 `anchor_request_recorded` 已从完整验证链切出 manifest frozen prefix，绑定 expected
+pre-head/EventSpec digest 并安全调用该 CAS。shadow 因逐 item pre-head、rotation/empty-genesis 与
+transaction-boundary 合同尚不完整而暂缓。
+
+下一步是 `anchor_result_recorded`。该 action 包含外部副作用，必须另设外部请求 intent、
+释放四锁前后的 fence generation/head CAS、幂等 response object adoption、回执验证和严格
+request/result 配对。在该合同完成前，机器应在 request 非终态 receipt 后稳定 waiting，
+不转人工操作。
 
 TSA 网络 action 应另设外部请求 intent、释放锁前后的 fence-generation CAS、幂等 response object
 adoption 和加密验证。只有所有冻结 key 都由各自受审 transition chain 收口，并由独立 assessor

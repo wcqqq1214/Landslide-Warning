@@ -9,6 +9,7 @@ import sqlite3
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -238,6 +239,23 @@ class LiveLedgerCasV1Tests(unittest.TestCase):
                         expected_pre_head=expected,
                         specs=[_spec(f"anchor/request/wrong/{index}")],
                     )
+
+        self.assertEqual(self.ledger.read_events(), (self.genesis,))
+
+    def test_connection_lock_is_reported_as_busy(self) -> None:
+        locked = sqlite3.OperationalError("database is locked")
+        failure = live.LedgerSchemaError("cannot open ledger database safely")
+        failure.__cause__ = locked
+
+        with (
+            mock.patch.object(self.ledger, "_connect", side_effect=failure),
+            self.assertRaises(cas.LiveLedgerCasBusyErrorV1),
+        ):
+            cas.append_transaction_at_pre_head_v1(
+                self.ledger,
+                expected_pre_head=self.expected,
+                specs=[_spec("anchor/request/locked")],
+            )
 
         self.assertEqual(self.ledger.read_events(), (self.genesis,))
 

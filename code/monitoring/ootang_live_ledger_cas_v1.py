@@ -19,6 +19,10 @@ class LiveLedgerCasErrorV1(live.LedgerError):
     """Base error for expected-pre-head CAS transaction failures."""
 
 
+class LiveLedgerCasBusyErrorV1(LiveLedgerCasErrorV1):
+    """Raised when SQLite cannot acquire the CAS write lock yet."""
+
+
 class LiveLedgerCasValidationErrorV1(live.LedgerValidationError):
     """Raised when the expected pre-head contract is malformed."""
 
@@ -43,6 +47,23 @@ class LiveLedgerCasAppendResultV1:
 
     events: tuple[live.LedgerEvent, ...]
     created: bool
+
+
+def _is_sqlite_busy(exc: BaseException) -> bool:
+    current: BaseException | None = exc
+    visited: set[int] = set()
+    while current is not None and id(current) not in visited:
+        visited.add(id(current))
+        error_code = getattr(current, "sqlite_errorcode", None)
+        if isinstance(error_code, int) and (error_code & 0xFF) in {
+            sqlite3.SQLITE_BUSY,
+            sqlite3.SQLITE_LOCKED,
+        }:
+            return True
+        if "locked" in str(current).lower() or "busy" in str(current).lower():
+            return True
+        current = current.__cause__ or current.__context__
+    return False
 
 
 def _validate_pre_head(expected: LiveLedgerPreHeadV1) -> None:
@@ -127,7 +148,14 @@ def append_transaction_at_pre_head_v1(
             "CAS append batch contains duplicate event_key"
         )
 
-    connection = ledger._connect()  # noqa: SLF001
+    try:
+        connection = ledger._connect()  # noqa: SLF001
+    except live.LedgerError as exc:
+        if _is_sqlite_busy(exc):
+            raise LiveLedgerCasBusyErrorV1(
+                "expected-pre-head CAS write lock is busy"
+            ) from exc
+        raise
     try:
         connection.execute("BEGIN IMMEDIATE")
         ledger._verify_schema(connection)  # noqa: SLF001
@@ -213,6 +241,10 @@ def append_transaction_at_pre_head_v1(
         raise
     except sqlite3.Error as exc:
         connection.rollback()
+        if _is_sqlite_busy(exc):
+            raise LiveLedgerCasBusyErrorV1(
+                "expected-pre-head CAS write lock is busy"
+            ) from exc
         raise LiveLedgerCasErrorV1("atomic expected-pre-head CAS failed") from exc
     finally:
         connection.close()
@@ -220,6 +252,7 @@ def append_transaction_at_pre_head_v1(
 
 __all__ = [
     "LiveLedgerCasAppendResultV1",
+    "LiveLedgerCasBusyErrorV1",
     "LiveLedgerCasConflictErrorV1",
     "LiveLedgerCasErrorV1",
     "LiveLedgerCasValidationErrorV1",

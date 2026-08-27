@@ -10,9 +10,11 @@ TOCTOU 问题：恢复器不能先在连接外检查 ledger head，再调用旧 
 
 该模块是加法实现，不修改 byte-frozen 的 `ootang_live_ledger.py` 或
 `ootang_prequential_live.py`，因此不改变旧 live epoch 的 implementation digest、epoch identity、
-schema 或正式 writer 行为。当前 recovery stage 只把 CAS 原语作为受 profile SHA 绑定的可用能力，
-尚未调用它写入真实 runtime ledger；`ledger_mutation_recovery_implemented=false` 与
-`live_ledger_mutated=false` 继续成立。
+schema 或正式 writer 行为。当前 recovery stage 已通过受 profile SHA 绑定的单事件
+`anchor_request_recorded` adapter 调用该原语。因此可声称窄化的
+`ledger_mutation_recovery_implemented=true`，但只覆盖这一个受审 transition，不是完整
+ledger/workset recovery。通用 occurrence claim `live_ledger_mutated` 不再静态写入所有 authority；
+单步持久效果由 receipt action semantics 记录。
 
 本切片不修改 ConvLSTM、v4 默认链、数据划分、指标、阈值、训练结果或实验结论，也不引入人工
 freeze、cleanup、approval、force 或 backdate。无参数默认链仍是
@@ -74,50 +76,46 @@ slice，却不能从 schema 单独证明这些行历史上由同一个 SQLite tr
 - `created=true`：本次 transaction 新追加；
 - `created=false`：目标事件此前已经以相同内容紧邻同一 frozen pre-head 持久存在。
 
-未来 step receipt 应至少绑定 intent hash、EventSpec digest、event key/sequence/entry hash、pre/post
-head 与 `created/adopted` disposition，不绑定会因 WAL/checkpoint 改变的 SQLite 文件 SHA。SQLite
-busy/locked 应成为 transient machine waiting，不生成成功 receipt，也不得自动换用新 head 重算。
+已接入的 step receipt 绑定 intent action contract、EventSpec digest、event key/sequence/entry hash 与
+pre-head，不绑定会因 WAL/checkpoint 改变的 SQLite 文件 SHA。它也不绑定瞬时
+`created/adopted` disposition：二者对同一持久事件必须生成相同 authority，否则
+commit-before-receipt 崩溃会改变 receipt bytes。SQLite busy/locked 是 transient machine waiting，
+不生成成功 receipt，也不得自动换用新 head 重算。
 
 ## 5. 定向验证
 
-新增的 6 个快速单元测试覆盖：
+独立 CAS 快速测试覆盖：
 
 1. exact pre-head 首次提交；
 2. stale head 且 key 不存在时零写入；
 3. exact retry 保留原始 stored row 并返回 `created=false`；
 4. exact retry 后已有完整合法 suffix 时采用原事件；
 5. partial batch 与 changed content retry fail closed；
-6. wrong epoch/hash/position 拒绝。
+6. wrong epoch/hash/position 拒绝；
+7. SQLite connect/transaction busy 被分类为可重试 busy，而不是成功或普通 conflict。
 
 这里不运行耗时并发、fsync 故障矩阵、全仓训练或模型实验。既有 ledger 的 WAL、FULL synchronous、
 schema trigger、完整 chain 与并发写锁合同继续由 frozen module 的既有测试负责。
 
-稳定实现的 SHA-256 为：
+本接入切片稳定验证时的关键 SHA-256 为：
 
 | artifact | SHA-256 |
 | --- | --- |
-| recovery profile | `246dbf18bbc24cdecb7c85d289cdf4edd069fe5e47cbcbbbfb9e27e438a4ee04` |
-| live CAS module | `23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4` |
-| live CAS test | `788b0bb17636c60fffdec13f971e9719d58fa8b600a091873875a07b2392fefe` |
-| recovery coordinator | `9899fea20203b1e4e097b80ee714a59c7abd93d7eb26dd4fccc5ce541950f346` |
-| recovery test | `d7417554b928a8afb51e4db0c21ff40d2f0a2f209c82476cfc905bea0f5490a4` |
+| recovery profile | `beb5ff9c3e34f60451ee933bfd3dbcc3dcb5d398f575a24cfbd0ea811ac4a3f2` |
+| live CAS module | `b443da5fd92eb2e48e33918c3e6090be0e53fe2182584f6bb0ccee050dfb327e` |
+| transition contract | `c7ecf9e5e553d54b90017f32aeab1546a7ee7f5d42dbc54e263fc0be1cd152d0` |
 
-CAS、frozen live ledger、recovery、manifest、admission-cut、drain-v2 与 main 的聚焦组合测试为
-`93/93`（unittest 1.018 s）。Ruff、format、compile、strict JSON `34/34`、35-stage list、默认与
-显式 pipeline dry-run 均通过；97-path aggregate 保持
-`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`，11 个 frozen writer
-哈希一致，独立只读实现审计无 P0/P1。
+本 adapter 与 CAS 的精准组合测试为 `26/26`（0.178 s），Ruff check 与 format 均通过。
+独立审计无剩余 P0/P1；真实 live fixture 额外贯通验证了 frozen prefix 中已有一次失败
+request 时重建 `attempt=2`、只新增一条 `anchor_requested`，且追加后完整科学链重放成功。
+本精准计数不覆写已提交 CAS 增量的历史 `93/93` 聚合记录。
 
-## 6. 下一步：单事件 anchor request adapter
+## 6. 已接入 anchor request 与下一步
 
-下一切片只接 `live_outstanding -> anchor_request_recorded`，不访问 TSA 网络。一个关键 crash-forward
-约束是：不能复用 recovery 当前 `_live_projection()` 的“当前 terminal head 必须仍等于 manifest
-tip”门。若 event 已提交但 receipt 尚未发布，该门会在 CAS adoption 前拒绝；若从当前 head 重算，
-又会错误生成 `attempt + 1`。
-
-正确做法是完整验证当前链后，按 manifest 的 `event_count` 与 `terminal_entry_sha256` 切出并重放
-冻结 prefix；从该 prefix 的唯一 seal 及既有 anchor-request 计数确定同一个 attempt，并在 step
-intent 中直接绑定：
+`live_outstanding -> anchor_request_recorded` 已按原设计接入，且不访问 TSA 网络。
+实现完整验证 current chain 后，按 manifest 的 event count 和 terminal SHA-256 切出并重放
+frozen prefix；从该 prefix 的唯一 seal 及既有 anchor-request 计数确定同一 attempt，并在
+step intent 中直接绑定：
 
 - expected pre-head 与 frozen live epoch；
 - seal sequence/hash、target、issue id；
@@ -125,9 +123,14 @@ intent 中直接绑定：
 - protocol/code/environment/model/input-manifest/state hashes；
 - adapter、旧 ledger、CAS helper 与旧 live writer 的 provenance。
 
-随后调用本 CAS 原语，验证返回事件，再发布 create-only receipt/event。任何 foreign position、字段
+随后调用本 CAS 原语，验证持久事件，再发布 create-only receipt/event。任何 foreign position、字段
 漂移、错误 predecessor 或与 transition plan 不相容的 suffix 都必须阻断，禁止按新 head 自动重算
 另一个 request。
+
+下一步为 `anchor_result_recorded`。它需要另设外部 request intent、释放内部锁前后的
+generation/head fence、幂等 response-object adoption、回执验证和严格 request/result 配对。
+本地单事件 CAS 不能自动授权这类外部副作用；在对应合同完成前，机器稳定
+waiting，不转人工操作。
 
 shadow CAS 暂缓：shadow item 尚未逐项冻结 step pre-head，rotation 的 close→genesis 是两个事务，
 空库 genesis、prior-step receipt head 传递、transaction digest/position/size 与多种 batch shape 仍需

@@ -9,6 +9,7 @@ from datetime import date, datetime, timezone
 import hashlib
 import json
 from pathlib import Path
+import sqlite3
 import sys
 from typing import Any, BinaryIO
 
@@ -21,6 +22,8 @@ if str(CODE_DIR) not in sys.path:
 from monitoring import ootang_epoch_drain as drain  # noqa: E402
 from monitoring import ootang_epoch_registry as registry  # noqa: E402
 from monitoring import ootang_epoch_workset_manifest as manifest  # noqa: E402
+from monitoring import ootang_live_ledger as live_ledger  # noqa: E402
+from monitoring import ootang_live_ledger_cas_v1 as live_cas  # noqa: E402
 from monitoring import ootang_prequential_live as live  # noqa: E402
 from monitoring import ootang_trusted_time_shadow_core as trusted  # noqa: E402
 from monitoring import ootang_verified_live as guard  # noqa: E402
@@ -28,7 +31,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "246dbf18bbc24cdecb7c85d289cdf4edd069fe5e47cbcbbbfb9e27e438a4ee04"
+    "beb5ff9c3e34f60451ee933bfd3dbcc3dcb5d398f575a24cfbd0ea811ac4a3f2"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -36,8 +39,11 @@ LOCK_ORDER = ("manager", "cycle", "replay", "shadow")
 SUPPORTED_SUCCESSORS = (
     "trusted_time_request_der_repaired",
     "anchor_receipt_repaired",
+    "anchor_request_recorded",
     "superseded_by_backfill",
 )
+ANCHOR_REQUEST_CONTRACT_SCHEMA = "ootang_live_anchor_request_action_contract_v1"
+LIVE_LEDGER_CAS_TIMEOUT_SECONDS = 0.25
 TRANSITION_CONTRACT = {
     "schema_version": "ootang_epoch_workset_transition_contract_v1",
     "families": {
@@ -143,6 +149,8 @@ TRUE_CAPABILITIES = (
     "step_receipt_chain_implemented",
     "terminal_receipt_dependency_gate_implemented",
     "live_ledger_expected_pre_head_cas_implemented",
+    "live_anchor_request_adapter_implemented",
+    "ledger_mutation_recovery_implemented",
 )
 FALSE_CLAIMS = (
     "bounded_workset_recovery_implemented",
@@ -152,9 +160,7 @@ FALSE_CLAIMS = (
     "derived_future_work_reservation_implemented",
     "all_transition_branches_supported",
     "network_recovery_implemented",
-    "ledger_mutation_recovery_implemented",
     "network_action_performed",
-    "live_ledger_mutated",
     "legacy_guard_completion_created",
     "old_work_admission_fence_implemented",
     "direct_filesystem_writer_fence_implemented",
@@ -194,7 +200,7 @@ EXPECTED_UPSTREAM = {
     },
     "live_ledger_cas_implementation": {
         "path": "code/monitoring/ootang_live_ledger_cas_v1.py",
-        "expected_sha256": "23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4",
+        "expected_sha256": "b443da5fd92eb2e48e33918c3e6090be0e53fe2182584f6bb0ccee050dfb327e",
     },
     "guard_implementation": {
         "path": "code/monitoring/ootang_verified_live.py",
@@ -217,11 +223,11 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v2",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v2",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v2",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v3",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v3",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v3",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v2",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v3",
     "event_type": "epoch_workset_transition_step_recorded",
     "transition_contract_schema_version": TRANSITION_CONTRACT["schema_version"],
     "transition_contract_sha256": TRANSITION_CONTRACT_SHA256,
@@ -298,6 +304,17 @@ class ActionOutput:
     kind: str
     reference: Mapping[str, object] | None
     semantics: Mapping[str, object]
+
+
+@dataclass(frozen=True)
+class FrozenLivePrefix:
+    profile: dict[str, Any]
+    paths: live.RuntimePaths
+    prerequisites: live.Prerequisites
+    projection: live.LiveProjection
+    frozen_events: tuple[live_ledger.LedgerEvent, ...]
+    current_events: tuple[live_ledger.LedgerEvent, ...]
+    expected_pre_head: live_cas.LiveLedgerPreHeadV1
 
 
 ActionHook = Callable[[Mapping[str, Any], Reservation, RecoveryPaths], ActionOutput]
@@ -877,6 +894,289 @@ def _cas_item_artifacts(item: Mapping[str, Any], reservation: Reservation) -> se
     return paths
 
 
+def _hash_text(value: object, *, name: str) -> str:
+    if (
+        not isinstance(value, str)
+        or len(value) != 64
+        or any(character not in "0123456789abcdef" for character in value)
+    ):
+        raise WorksetRecoveryIntegrityError(f"{name} is not a lowercase SHA-256")
+    return value
+
+
+def _frozen_live_prefix(reservation: Reservation) -> FrozenLivePrefix:
+    tip = _exact(
+        reservation.manifest.get("frozen_live_upper_tip"),
+        {"old_live_epoch_id", "live_event_count", "live_terminal_sha256"},
+        name="frozen live upper tip",
+    )
+    epoch_id = tip["old_live_epoch_id"]
+    count = tip["live_event_count"]
+    terminal = _hash_text(tip["live_terminal_sha256"], name="frozen live terminal")
+    if not isinstance(epoch_id, str) or not epoch_id or epoch_id.strip() != epoch_id:
+        raise WorksetRecoveryIntegrityError("Frozen live epoch id changed")
+    if not isinstance(count, int) or isinstance(count, bool) or count < 1:
+        raise WorksetRecoveryIntegrityError("Frozen live event count changed")
+
+    try:
+        profile = live.load_config()
+        paths = live.runtime_paths(profile, runtime_root=reservation.paths.active_root)
+        prerequisites = live.load_prerequisites(profile, paths)
+        if prerequisites is None:
+            raise WorksetRecoveryIntegrityError("Frozen live prerequisites disappeared")
+        events = live._ReadOnlyAppendOnlyLedger(paths.ledger).read_events()  # noqa: SLF001
+        if len(events) < count:
+            raise WorksetRecoveryIntegrityError(
+                "Current live chain is shorter than its frozen prefix"
+            )
+        frozen_events = events[:count]
+        frozen_head = frozen_events[-1]
+        if frozen_head.sequence_id != count or frozen_head.entry_sha256 != terminal:
+            raise WorksetRecoveryIntegrityError(
+                "Frozen live prefix tip changed at its original position"
+            )
+        live._reconstruct_projection(events, profile, prerequisites)  # noqa: SLF001
+        projection = live._reconstruct_projection(  # noqa: SLF001
+            frozen_events, profile, prerequisites
+        )
+    except WorksetRecoveryError:
+        raise
+    except Exception as exc:
+        if _is_sqlite_busy(exc):
+            raise WorksetRecoveryBusyError(
+                "Live ledger verification lock is busy"
+            ) from exc
+        raise WorksetRecoveryIntegrityError(
+            f"Frozen live prefix replay failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if projection.epoch_id != epoch_id:
+        raise WorksetRecoveryIntegrityError("Frozen live prefix epoch changed")
+    return FrozenLivePrefix(
+        profile=profile,
+        paths=paths,
+        prerequisites=prerequisites,
+        projection=projection,
+        frozen_events=tuple(frozen_events),
+        current_events=tuple(events),
+        expected_pre_head=live_cas.LiveLedgerPreHeadV1(
+            epoch_id=epoch_id,
+            event_count=count,
+            sequence_id=count,
+            entry_sha256=terminal,
+        ),
+    )
+
+
+_EVENT_SPEC_KEYS = {
+    "event_key",
+    "event_type",
+    "target_date",
+    "station",
+    "issue_id",
+    "protocol_config_sha256",
+    "code_sha256",
+    "environment_sha256",
+    "input_manifest_sha256",
+    "model_manifest_sha256",
+    "state_before_sha256",
+    "state_after_sha256",
+    "payload",
+}
+
+
+def _event_spec_payload(spec: live_ledger.EventSpec) -> dict[str, object]:
+    return {
+        "event_key": spec.event_key,
+        "event_type": spec.event_type,
+        "target_date": spec.target_date,
+        "station": spec.station,
+        "issue_id": spec.issue_id,
+        "protocol_config_sha256": spec.protocol_config_sha256,
+        "code_sha256": spec.code_sha256,
+        "environment_sha256": spec.environment_sha256,
+        "input_manifest_sha256": spec.input_manifest_sha256,
+        "model_manifest_sha256": spec.model_manifest_sha256,
+        "state_before_sha256": spec.state_before_sha256,
+        "state_after_sha256": spec.state_after_sha256,
+        "payload": dict(spec.payload),
+    }
+
+
+def _event_spec_from_contract(
+    contract: Mapping[str, Any],
+) -> tuple[live_ledger.EventSpec, live_cas.LiveLedgerPreHeadV1]:
+    checked = _exact(
+        contract,
+        {
+            "schema_version",
+            "expected_pre_head",
+            "attempt",
+            "event_spec",
+            "event_spec_sha256",
+        },
+        name="anchor request action contract",
+    )
+    if checked["schema_version"] != ANCHOR_REQUEST_CONTRACT_SCHEMA:
+        raise WorksetRecoveryIntegrityError("Anchor request contract version changed")
+    pre_head = _exact(
+        checked["expected_pre_head"],
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="anchor request expected pre-head",
+    )
+    spec_payload = _exact(
+        checked["event_spec"], _EVENT_SPEC_KEYS, name="anchor request EventSpec"
+    )
+    if not isinstance(spec_payload["payload"], dict):
+        raise WorksetRecoveryIntegrityError("Anchor request payload changed type")
+    spec = live_ledger.EventSpec(**spec_payload)
+    try:
+        live_ledger._prepare_spec(spec)  # noqa: SLF001
+        expected = live_cas.LiveLedgerPreHeadV1(**pre_head)
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except live_ledger.LedgerError as exc:
+        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    attempt = checked["attempt"]
+    if (
+        not isinstance(attempt, int)
+        or isinstance(attempt, bool)
+        or attempt < 1
+        or spec.payload.get("attempt") != attempt
+        or spec.payload.get("live_epoch_id") != expected.epoch_id
+        or checked["event_spec_sha256"] != _sha256(_canonical_bytes(spec_payload))
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor request contract digest changed")
+    return spec, expected
+
+
+def _anchor_request_contract(
+    item: Mapping[str, Any], reservation: Reservation
+) -> dict[str, object]:
+    if item.get("family") != "live_outstanding":
+        raise WorksetRecoveryIntegrityError("Anchor request item family changed")
+    authority = _exact(
+        item.get("authority"),
+        {
+            "record_type",
+            "target_date",
+            "old_live_epoch_id",
+            "issue_id",
+            "issue_sha256",
+            "input_manifest_sha256",
+            "seal_event",
+            "anchor_confirmed_event",
+            "frozen_live_upper_tip",
+            "terminal",
+            "action",
+        },
+        name="anchor request authority",
+    )
+    if (
+        authority["record_type"] != "outstanding_live_lifecycle"
+        or authority["action"] != "anchor_request_recorded"
+        or authority["anchor_confirmed_event"] is not None
+        or authority["terminal"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor request authority state changed")
+    frozen = _frozen_live_prefix(reservation)
+    projection = frozen.projection
+    seal = projection.seal_event
+    target_text = authority["target_date"]
+    issue_id = authority["issue_id"]
+    try:
+        target = date.fromisoformat(target_text)
+    except (TypeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor request target date changed"
+        ) from exc
+    if target.isoformat() != target_text:
+        raise WorksetRecoveryIntegrityError("Anchor request target is not canonical")
+    if (
+        seal is None
+        or projection.outstanding_target_date != target
+        or projection.outstanding_issue_id != issue_id
+        or authority["old_live_epoch_id"] != projection.epoch_id
+        or authority["frozen_live_upper_tip"] != frozen.expected_pre_head.entry_sha256
+        or authority["input_manifest_sha256"] != seal.input_manifest_sha256
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor request frozen lifecycle changed")
+    _hash_text(authority["issue_sha256"], name="anchor request issue")
+    _hash_text(authority["input_manifest_sha256"], name="anchor request input manifest")
+    seal_record = _exact(
+        authority["seal_event"],
+        {"sequence_id", "entry_sha256", "event_type", "target_date", "issue_id"},
+        name="anchor request seal record",
+    )
+    expected_seal_record = {
+        "sequence_id": seal.sequence_id,
+        "entry_sha256": seal.entry_sha256,
+        "event_type": seal.event_type,
+        "target_date": seal.target_date,
+        "issue_id": seal.issue_id,
+    }
+    if seal_record != expected_seal_record or seal.event_type != "issue_batch_sealed":
+        raise WorksetRecoveryIntegrityError("Anchor request seal binding changed")
+    lifecycle = [
+        event
+        for event in frozen.frozen_events
+        if event.event_type in {"anchor_requested", "anchor_failed", "anchor_confirmed"}
+        and event.payload.get("sealed_entry_sha256") == seal.entry_sha256
+    ]
+    requested = sum(event.event_type == "anchor_requested" for event in lifecycle)
+    results = sum(
+        event.event_type in {"anchor_failed", "anchor_confirmed"} for event in lifecycle
+    )
+    if requested != results or any(
+        event.event_type == "anchor_confirmed" for event in lifecycle
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Frozen anchor lifecycle does not permit a new request"
+        )
+    attempt = requested + 1
+    request_payload = {
+        "live_epoch_id": projection.epoch_id,
+        "target_date": seal.target_date,
+        "sealed_sequence_id": seal.sequence_id,
+        "sealed_entry_sha256": seal.entry_sha256,
+        "attempt": attempt,
+    }
+    spec = live._event_spec(  # noqa: SLF001
+        event_key=(
+            f"{projection.epoch_id}:{seal.target_date}:anchor:{attempt}:requested"
+        ),
+        event_type="anchor_requested",
+        prerequisites=frozen.prerequisites,
+        payload=request_payload,
+        target_date_value=target,
+        issue_id=seal.issue_id,
+        input_manifest_sha256=seal.input_manifest_sha256,
+        state_before_sha256=seal.state_after_sha256,
+        state_after_sha256=seal.state_after_sha256,
+    )
+    spec_payload = _event_spec_payload(spec)
+    contract: dict[str, object] = {
+        "schema_version": ANCHOR_REQUEST_CONTRACT_SCHEMA,
+        "expected_pre_head": {
+            "epoch_id": frozen.expected_pre_head.epoch_id,
+            "event_count": frozen.expected_pre_head.event_count,
+            "sequence_id": frozen.expected_pre_head.sequence_id,
+            "entry_sha256": frozen.expected_pre_head.entry_sha256,
+        },
+        "attempt": attempt,
+        "event_spec": spec_payload,
+        "event_spec_sha256": _sha256(_canonical_bytes(spec_payload)),
+    }
+    _event_spec_from_contract(contract)
+    return contract
+
+
+def _action_contract(
+    item: Mapping[str, Any], reservation: Reservation, action: str
+) -> dict[str, object] | None:
+    if action == "anchor_request_recorded":
+        return _anchor_request_contract(item, reservation)
+    return None
+
+
 def _ensure_item_intent(
     profile: Mapping[str, Any],
     paths: RecoveryPaths,
@@ -888,6 +1188,7 @@ def _ensure_item_intent(
     *,
     step_index: int,
     action: str,
+    action_contract: Mapping[str, object] | None,
     now: datetime,
 ) -> registry.ArtifactSnapshot:
     step_id = _step_id(item["key_id"], step_index, action)
@@ -903,6 +1204,7 @@ def _ensure_item_intent(
         "natural_key": item["natural_key"],
         "namespace_digest": item["namespace_digest"],
         "action": action,
+        "action_contract": action_contract,
         "transition_plan_sha256": plan["plan_sha256"],
         "previous_step_receipt": (
             _reference(previous_step_receipt, paths.root)
@@ -935,27 +1237,8 @@ def _ensure_item_intent(
 def _live_projection(
     reservation: Reservation,
 ) -> tuple[Mapping[str, Any], Any, tuple[Any, ...]]:
-    profile = live.load_config()
-    paths = live.runtime_paths(profile, runtime_root=reservation.paths.active_root)
-    prerequisites = live.load_prerequisites(profile, paths)
-    if prerequisites is None:
-        raise WorksetRecoveryIntegrityError("Frozen live prerequisites disappeared")
-    try:
-        projection = live.load_verified_ledger_projection(profile, paths, prerequisites)
-        events = projection.ledger_events
-    except Exception as exc:
-        raise WorksetRecoveryIntegrityError(
-            f"Frozen live replay failed:{type(exc).__name__}:{exc}"
-        ) from exc
-    tip = reservation.manifest["frozen_live_upper_tip"]
-    if (
-        not events
-        or projection.ledger_event_count != tip["live_event_count"]
-        or projection.ledger_terminal_sha256 != tip["live_terminal_sha256"]
-        or projection.epoch_id != tip["old_live_epoch_id"]
-    ):
-        raise WorksetRecoveryIntegrityError("Frozen live upper tip changed")
-    return profile, paths, events
+    frozen = _frozen_live_prefix(reservation)
+    return frozen.profile, frozen.paths, frozen.current_events
 
 
 def _publish_additive(
@@ -1097,6 +1380,118 @@ def _anchor_action(
     )
 
 
+def _event_matches_spec(
+    event: live_ledger.LedgerEvent, spec: live_ledger.EventSpec
+) -> bool:
+    return all(
+        (
+            event.event_key == spec.event_key,
+            event.event_type == spec.event_type,
+            event.target_date == spec.target_date,
+            event.station == spec.station,
+            event.issue_id == spec.issue_id,
+            event.protocol_config_sha256 == spec.protocol_config_sha256,
+            event.code_sha256 == spec.code_sha256,
+            event.environment_sha256 == spec.environment_sha256,
+            event.input_manifest_sha256 == spec.input_manifest_sha256,
+            event.model_manifest_sha256 == spec.model_manifest_sha256,
+            event.state_before_sha256 == spec.state_before_sha256,
+            event.state_after_sha256 == spec.state_after_sha256,
+            event.payload == dict(spec.payload),
+        )
+    )
+
+
+def _anchor_request_output(
+    contract: Mapping[str, Any], event: live_ledger.LedgerEvent
+) -> ActionOutput:
+    spec, expected = _event_spec_from_contract(contract)
+    if (
+        event.sequence_id != expected.sequence_id + 1
+        or event.previous_entry_sha256 != expected.entry_sha256
+        or not _event_matches_spec(event, spec)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor request ledger event changed at its frozen position"
+        )
+    return ActionOutput(
+        "live_anchor_request_event",
+        None,
+        {
+            "schema_version": "ootang_live_anchor_request_action_output_v1",
+            "live_epoch_id": expected.epoch_id,
+            "event_key": event.event_key,
+            "event_type": event.event_type,
+            "sequence_id": event.sequence_id,
+            "previous_entry_sha256": event.previous_entry_sha256,
+            "entry_sha256": event.entry_sha256,
+            "sealed_entry_sha256": spec.payload["sealed_entry_sha256"],
+            "attempt": contract["attempt"],
+            "event_spec_sha256": contract["event_spec_sha256"],
+            "live_ledger_event_recorded": True,
+            "network_action_performed": False,
+        },
+    )
+
+
+def _is_sqlite_busy(exc: BaseException) -> bool:
+    current: BaseException | None = exc
+    visited: set[int] = set()
+    while current is not None and id(current) not in visited:
+        visited.add(id(current))
+        code = getattr(current, "sqlite_errorcode", None)
+        if isinstance(code, int) and (code & 0xFF) in {
+            sqlite3.SQLITE_BUSY,
+            sqlite3.SQLITE_LOCKED,
+        }:
+            return True
+        if "locked" in str(current).lower() or "busy" in str(current).lower():
+            return True
+        current = current.__cause__ or current.__context__
+    return False
+
+
+def _anchor_request_action(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    action_contract: Mapping[str, object] | None,
+) -> ActionOutput:
+    if action_contract is None:
+        raise WorksetRecoveryIntegrityError("Anchor request intent lost its contract")
+    rebuilt = _anchor_request_contract(item, reservation)
+    if action_contract != rebuilt:
+        raise WorksetRecoveryIntegrityError("Anchor request intent contract changed")
+    spec, expected = _event_spec_from_contract(action_contract)
+    frozen = _frozen_live_prefix(reservation)
+    if frozen.expected_pre_head != expected:
+        raise WorksetRecoveryIntegrityError("Anchor request expected pre-head changed")
+    try:
+        ledger = live_ledger.AppendOnlyLedger(
+            frozen.paths.ledger,
+            timeout_seconds=LIVE_LEDGER_CAS_TIMEOUT_SECONDS,
+        )
+        live_cas.append_transaction_at_pre_head_v1(
+            ledger,
+            expected_pre_head=expected,
+            specs=[spec],
+        )
+    except live_cas.LiveLedgerCasBusyErrorV1 as exc:
+        raise WorksetRecoveryBusyError(str(exc)) from exc
+    except live_ledger.LedgerError as exc:
+        if _is_sqlite_busy(exc):
+            raise WorksetRecoveryBusyError(
+                "Live ledger CAS write lock is busy"
+            ) from exc
+        raise WorksetRecoveryIntegrityError(
+            f"Anchor request CAS failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    verified = _frozen_live_prefix(reservation)
+    position = expected.event_count
+    if len(verified.current_events) <= position:
+        raise WorksetRecoveryIntegrityError("Anchor request CAS event disappeared")
+    return _anchor_request_output(action_contract, verified.current_events[position])
+
+
 def _guard_action(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -1156,6 +1551,7 @@ def _perform_action(
     hook: ActionHook | None,
     *,
     action: str | None = None,
+    action_contract: Mapping[str, object] | None = None,
 ) -> ActionOutput:
     if hook is not None:
         hooked_item = dict(item)
@@ -1167,6 +1563,8 @@ def _perform_action(
             return _trusted_der_action(item, reservation, paths, inputs)
         if successor == "anchor_receipt_repaired":
             return _anchor_action(item, reservation, paths, inputs)
+        if successor == "anchor_request_recorded":
+            return _anchor_request_action(item, reservation, action_contract)
         if successor == "superseded_by_backfill":
             return _guard_action(item, reservation, paths, inputs)
         raise WorksetRecoveryIntegrityError("Unsupported successor was dispatched")
@@ -1179,7 +1577,12 @@ def _perform_action(
 
 
 def _verify_recorded_action_contract(
-    item: Mapping[str, Any], payload: Mapping[str, Any], paths: RecoveryPaths
+    item: Mapping[str, Any],
+    payload: Mapping[str, Any],
+    paths: RecoveryPaths,
+    *,
+    reservation: Reservation | None = None,
+    item_intent: Mapping[str, Any] | None = None,
 ) -> None:
     """Verify immutable step evidence without replaying obsolete preconditions."""
 
@@ -1188,7 +1591,27 @@ def _verify_recorded_action_contract(
     authority = item.get("authority")
     if not isinstance(authority, Mapping):
         raise WorksetRecoveryIntegrityError("Recovery action authority changed")
-    if action == "trusted_time_request_der_repaired":
+    if action == "anchor_request_recorded":
+        if reservation is None or item_intent is None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor request lost its frozen intent authority"
+            )
+        contract = item_intent.get("action_contract")
+        if not isinstance(contract, Mapping) or contract != _anchor_request_contract(
+            item, reservation
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor request contract changed"
+            )
+        frozen = _frozen_live_prefix(reservation)
+        _, expected_pre_head = _event_spec_from_contract(contract)
+        position = expected_pre_head.event_count
+        if len(frozen.current_events) <= position:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor request event disappeared"
+            )
+        expected = _anchor_request_output(contract, frozen.current_events[position])
+    elif action == "trusted_time_request_der_repaired":
         target = authority.get("target_date")
         try:
             trusted_paths = trusted.trusted_time_paths(
@@ -1539,6 +1962,7 @@ def _load_receipts(
                 "natural_key",
                 "namespace_digest",
                 "action",
+                "action_contract",
                 "transition_plan_sha256",
                 "previous_step_receipt",
                 "dependency_keys",
@@ -1588,6 +2012,8 @@ def _load_receipts(
             or filename_step_id != _step_id(key_id, step_index, action)
             or intent_payload.get("natural_key") != item["natural_key"]
             or intent_payload.get("namespace_digest") != item["namespace_digest"]
+            or intent_payload.get("action_contract")
+            != _action_contract(item, reservation, action)
             or intent_payload.get("transition_plan_sha256") != plan["plan_sha256"]
             or intent_payload.get("previous_step_receipt") != expected_previous
             or intent_payload.get("dependency_keys") != item["dependency_keys"]
@@ -1644,7 +2070,13 @@ def _load_receipts(
                 )
         if probe_actions:
             item = items[payload["key_id"]]
-            _verify_recorded_action_contract(item, payload, paths)
+            _verify_recorded_action_contract(
+                item,
+                payload,
+                paths,
+                reservation=reservation,
+                item_intent=intent_record[0],
+            )
     return result
 
 
@@ -1986,6 +2418,7 @@ def _coordinate_epoch_workset_recovery(
                     "Ready key lost a deep-verified terminal dependency receipt"
                 )
             dependency_snapshots.append(dependency_rows[-1][1])
+        action_contract = _action_contract(item, reservation, transition_action)
         item_intent = _ensure_item_intent(
             profile,
             paths,
@@ -1996,6 +2429,7 @@ def _coordinate_epoch_workset_recovery(
             previous_step_receipt,
             step_index=step_index,
             action=transition_action,
+            action_contract=action_contract,
             now=now,
         )
         action = _perform_action(
@@ -2005,6 +2439,7 @@ def _coordinate_epoch_workset_recovery(
             inputs,
             action_hook,
             action=transition_action,
+            action_contract=action_contract,
         )
         receipt_payload, receipt_snapshot = _ensure_receipt(
             profile,

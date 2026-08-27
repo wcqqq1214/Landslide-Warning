@@ -3,13 +3,77 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `7b728a1 fix: gate recovery on terminal steps`
+**Committed baseline before this increment:** `232d4ca feat: add live ledger head cas`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
-transition-chain correction 已提交；本增量新增 recovery-only live-ledger
-expected-pre-head CAS v1 原语。它尚未接入真实 recovery adapter 或 ledger mutation，也不是完整
-recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority，
+expected-pre-head CAS 已提交并 push；本增量把它接入单事件 machine-only
+`live_outstanding -> anchor_request_recorded` adapter。该 step 零网络、非 terminal，不是
+完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority，
 不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal
 warning。
+
+## 2026-08-28 single-event anchor request recovery continuation
+
+The recovery coordinator now supports exactly one additional transition action:
+`live_outstanding -> anchor_request_recorded`. It reconstructs the unique outstanding seal,
+attempt number, event key and complete canonical `EventSpec` only from the manifest-bound frozen
+live prefix. The current full ledger is independently replayed and may contain a valid suffix, but
+the adapter never derives a new attempt from that mutable suffix. A create-only step intent binds a
+versioned action contract containing the exact expected pre-head, attempt, full EventSpec and its
+canonical digest before any ledger mutation.
+
+The adapter then calls the recovery-only transaction-internal CAS for one `anchor_requested`
+event. Fresh execution requires the terminal head to equal the frozen pre-head; a crash-forward
+retry adopts only the identical event at `frozen_event_count + 1`, with the frozen tip as its
+predecessor. SQLite busy/locked is transient machine busy. Wrong epoch/head/position, changed
+content, schema drift or chain-integrity failure blocks closed; the machine never changes the head
+or attempt to make a conflict pass.
+
+Its ActionOutput is a ledger-event fact rather than a filesystem reference, so
+`action_output=null`. Receipt semantics bind event key/type/sequence, predecessor/entry hash,
+epoch, seal, attempt and EventSpec digest, with `live_ledger_event_recorded=true` and
+`network_action_performed=false`. The transient CAS `created/adopted` branch is deliberately not
+part of receipt authority: a commit-before-receipt retry must reproduce the same receipt. Historical
+receipt verification replays the immutable frozen action contract and exact ledger position while
+allowing later valid suffixes; receipt-before-recovery-event crashes therefore append only the
+missing recovery event.
+
+The profile may now state `live_anchor_request_adapter_implemented=true`,
+`ledger_mutation_recovery_implemented=true` and
+`live_ledger_expected_pre_head_cas_implemented=true`. This is narrow implementation coverage, not a
+claim that all ledger transitions or reserved keys are recovered. The misleading global occurrence
+claim `live_ledger_mutated=false` is removed; the durable effect is recorded per action in receipt
+semantics. Full workset recovery, all-transition support, derived-work closure, network recovery,
+shadow mutation, drained/active/rotation/trusted/E2/formal authority remain false.
+
+The necessary intent/receipt/status authority changes use schema v3 while retaining the
+`workset_recovery_v1` runtime namespace. This is not an in-place migration: if immutable v2
+authority already exists in that namespace, the new profile fails closed and does not overwrite,
+convert or reinterpret those bytes.
+
+No TSA/HTTP endpoint is read or called, no response/receipt is fabricated, and no manual fallback
+is added. ConvLSTM, v4, frozen splits, metrics, thresholds, training conclusions and all frozen live
+writer/ledger bytes remain unchanged. The default chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. Recovery profile/module/test SHA-256 values are
+`beb5ff9c3e34f60451ee933bfd3dbcc3dcb5d398f575a24cfbd0ea811ac4a3f2`,
+`3f7ccfd8bcfd85046b91ca4a210b9511ee8718e504eda939c2fcef63a26ce566` and
+`6e6bc2ca87da55f4ddf923dacc9239618f469bda4bff992d656564c14898a507`;
+CAS module/test values are
+`b443da5fd92eb2e48e33918c3e6090be0e53fe2182584f6bb0ccee050dfb327e` and
+`e040528d021e15d2b4e5dd5f41ce75a1a0027b8b3db244d5fce91106b501931d`.
+The focused adapter/CAS suite passes 26/26 in 0.178 s, and the adjacent
+CAS/live-ledger/recovery/manifest/admission-cut/drain-v2/main regression passes 101/101 in 1.098 s.
+Ruff/format, strict JSON 35/35, the 35-stage list and default/explicit recovery dry-runs pass. The
+97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`, frozen writers match
+11/11, and independent audit found P0/P1 0. A real live fixture also verifies `attempt=2`, exactly
+one new `anchor_requested`, and successful complete scientific replay after the append. The detailed contract is
+`docs/ootang_anchor_request_recovery_engineering.md`.
+
+The next narrow transition is `anchor_result_recorded`. It requires a separately reviewed external
+request-intent and lock-release fence, idempotent response-object adoption, response verification and
+request/result pairing. Until that exists, the key remains machine-waiting after its nonterminal
+request receipt; no human completion path is permitted. Broad issue/outcome/shadow recovery remains
+deferred.
 
 ## 2026-08-28 live-ledger expected-pre-head CAS v1 continuation
 
@@ -49,13 +113,9 @@ hashes match, and independent CAS review found P0/P1 0. This does not overwrite 
 transition-chain 75/75 record below. The detailed contract is
 `docs/ootang_live_ledger_cas_v1_engineering.md`.
 
-The immediate next slice is only the single-event machine
-`live_outstanding -> anchor_request_recorded` adapter. It must reconstruct the exact seal,
-attempt and canonical `EventSpec` from the manifest frozen prefix, bind the expected pre-head and
-event digest in its create-only step intent, then verify the CAS result before publishing its
-receipt/event. It must not reuse `_live_projection()`, whose current-head-equals-frozen-tip gate
-would reject legitimate commit-before-receipt adoption, and it must never recalculate an attempt
-from the current head. No TSA network call belongs in that slice.
+The single-event machine `live_outstanding -> anchor_request_recorded` adapter described here is
+implemented by the continuation above. This paragraph remains the historical pre-adapter boundary
+of the committed CAS increment.
 
 ## 2026-08-28 manifest-keyed deterministic local recovery R2b-2b-2c continuation
 

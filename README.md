@@ -141,10 +141,26 @@
 - R2b-2b-2c 现另有 recovery-only live-ledger expected-pre-head CAS v1。它不改 frozen live
   writer/ledger，在同一 `BEGIN IMMEDIATE` 中验证 epoch、完整 chain 与 frozen position，只允许
   fresh exact append 或 expected pre-head 后 exact contiguous event 的 crash-forward adoption。
-  adoption 后可有合法 suffix，但未来 adapter 必须另验 manifest/transition authority；CAS 成功不
-  等于 key terminal。当前只有
-  `live_ledger_expected_pre_head_cas_implemented=true`，真实 recovery adapter 尚未调用，
-  `ledger_mutation_recovery_implemented/live_ledger_mutated` 仍为 false，shadow CAS 暂缓。
+  adoption 后可有合法 suffix，但 adapter 必须另验 manifest/transition authority；CAS 成功不
+  等于 key terminal。当前已有第一个真实调用者：单事件 machine-only
+  `live_outstanding -> anchor_request_recorded` adapter。它完整验证 current chain，但只从
+  manifest frozen prefix 重建 seal、attempt、event key 和完整 EventSpec，并在 mutation 前用
+  create-only step intent 绑定 expected pre-head 与 EventSpec digest。
+- anchor-request adapter 不访问 TSA/HTTP endpoint，只记录一个 `anchor_requested` event。CAS
+  commit 后、receipt 前崩溃时，下一 poll 采用 frozen tip 后原位置的 exact event，不按
+  current head 增加 attempt；receipt 后、recovery event 前崩溃时，只读验证原事件并补索引
+  event。Receipt 不绑定瞬时 `created/adopted` 分支，因此两条路径生成相同 authority。
+  SQLite busy/locked 只报 machine busy；foreign head/position/content/schema/chain 则 fail closed。
+- 当前可声称 `live_anchor_request_adapter_implemented=true`、
+  `ledger_mutation_recovery_implemented=true` 与
+  `live_ledger_expected_pre_head_cas_implemented=true`，但仅代表这一受审单事件路径。该 step
+  为 nonterminal，下一 action 是尚未实现的 `anchor_result_recorded`。全 workset recovery、
+  all-transition/derived-work closure、network/shadow mutation 与 drained/active/trusted/E2/formal 仍为
+  false；shadow CAS 暂缓。intent/receipt/status authority 升为 v3 但仍使用
+  `workset_recovery_v1` namespace；已存在 v2 immutable authority 时 fail closed，不就地迁移。
+  精准测试 `26/26`，相邻回归 `101/101`，protected aggregate 与 11 个 frozen writer 保持
+  一致，独立审计 P0/P1=0。详细合同见
+  `docs/ootang_anchor_request_recovery_engineering.md`。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -281,10 +297,11 @@ docs/                           # 当前方法、结果边界和研究计划
    seed 与 reservation，但没有 terminal/transitive closure 或 derived-future-work reservation；
    R2b-2b-2c 已增加 item-specific transition plan、逐 step authority chain、terminal receipt
    dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；
-   recovery-only expected-pre-head CAS 已实现但尚未接入真实 mutation adapter，网络、ledger
-   mutation recovery 及其余 transition adapter 仍未实现。下一步只实现单事件 machine-only
-   `anchor_request_recorded` adapter；它必须从 manifest frozen prefix 重建 seal/attempt/EventSpec，
-   不能复用 current-head-equals-frozen-tip 的 `_live_projection()`；其后才讨论其他 adapter、独立
+   recovery-only expected-pre-head CAS 已实现，且单事件 machine-only
+   `anchor_request_recorded` adapter 已从 manifest frozen prefix 重建 seal/attempt/EventSpec 并调用该 CAS。
+   该 step 零网络且非 terminal，机器现稳定等待尚未实现的
+   `anchor_result_recorded`。下一切片必须先设计外部 request intent、释锁 fence、幂等
+   response adoption 和 result validation；其后才讨论其他 adapter、独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
    关闭前保持 `real_activation_ready=false`。
