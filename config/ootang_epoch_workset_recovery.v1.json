@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.1.0-transition-step-chain",
+  "profile_version": "1.2.0-live-ledger-pre-head-cas",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_local_adapters_only_no_full_recovery_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_live_pre_head_cas_primitive_no_ledger_adapter_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
@@ -22,6 +22,14 @@
     "live_implementation": {
       "path": "code/monitoring/ootang_prequential_live.py",
       "expected_sha256": "086638e87ded39eed9b84311fa8a49898bf1c34d48327b41ac6e1d4633f843d8"
+    },
+    "live_ledger_implementation": {
+      "path": "code/monitoring/ootang_live_ledger.py",
+      "expected_sha256": "087356f33e43996411d3524ec99256d4b5c390f09dd0dbfca083cc7a63245b14"
+    },
+    "live_ledger_cas_implementation": {
+      "path": "code/monitoring/ootang_live_ledger_cas_v1.py",
+      "expected_sha256": "23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4"
     },
     "guard_implementation": {
       "path": "code/monitoring/ootang_verified_live.py",
@@ -73,6 +81,7 @@
     "transition_plan_binding_implemented": true,
     "step_receipt_chain_implemented": true,
     "terminal_receipt_dependency_gate_implemented": true,
+    "live_ledger_expected_pre_head_cas_implemented": true,
     "bounded_workset_recovery_implemented": false,
     "all_reserved_items_settled": false,
     "all_reserved_successors_supported": false,

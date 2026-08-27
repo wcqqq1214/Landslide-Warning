@@ -138,6 +138,13 @@
   legacy guard completion。DER repair 是非终态，等待机器 response-link adapter；单纯时间越界
   不能冒充 backfill。完整 workset recovery、terminal closure、drained、
   lifecycle/active/trusted/E2/formal 仍全部为 false。
+- R2b-2b-2c 现另有 recovery-only live-ledger expected-pre-head CAS v1。它不改 frozen live
+  writer/ledger，在同一 `BEGIN IMMEDIATE` 中验证 epoch、完整 chain 与 frozen position，只允许
+  fresh exact append 或 expected pre-head 后 exact contiguous event 的 crash-forward adoption。
+  adoption 后可有合法 suffix，但未来 adapter 必须另验 manifest/transition authority；CAS 成功不
+  等于 key terminal。当前只有
+  `live_ledger_expected_pre_head_cas_implemented=true`，真实 recovery adapter 尚未调用，
+  `ledger_mutation_recovery_implemented/live_ledger_mutated` 仍为 false，shadow CAS 暂缓。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -252,6 +259,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_epoch_admission_cut_engineering.md`](docs/ootang_epoch_admission_cut_engineering.md) | R2b-2b-2a：冻结 writer 的 deploy/runner regular-file ACL 原子 lock-path cut、forward-only crash recovery 与非 manifest/lifecycle 边界 |
 | [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 frozen-observation 枚举、transition seed、singleton reservation event 与非 terminal/recovery/lifecycle 边界 |
 | [`docs/ootang_epoch_workset_recovery_engineering.md`](docs/ootang_epoch_workset_recovery_engineering.md) | R2b-2b-2c：item transition plan、create-only step intent/receipt/event、terminal dependency gate 与非完整 recovery/lifecycle 边界 |
+| [`docs/ootang_live_ledger_cas_v1_engineering.md`](docs/ootang_live_ledger_cas_v1_engineering.md) | Recovery-only live-ledger expected-pre-head CAS v1：同事务 frozen-position append/adoption 与非 transition authority 边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -272,9 +280,11 @@ docs/                           # 当前方法、结果边界和研究计划
    R2b-2b-2b 已在该稳定边界内完成单次 frozen observation 的六族 manifest 枚举、transition
    seed 与 reservation，但没有 terminal/transitive closure 或 derived-future-work reservation；
    R2b-2b-2c 已增加 item-specific transition plan、逐 step authority chain、terminal receipt
-   dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；网络、
-   ledger mutation 及其余 transition adapter 仍未实现。下一步先实现 expected-pre-head CAS，再
-   实现窄化的 machine-only `anchor_request_recorded` adapter；其后才讨论其他 adapter、独立
+   dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；
+   recovery-only expected-pre-head CAS 已实现但尚未接入真实 mutation adapter，网络、ledger
+   mutation recovery 及其余 transition adapter 仍未实现。下一步只实现单事件 machine-only
+   `anchor_request_recorded` adapter；它必须从 manifest frozen prefix 重建 seal/attempt/EventSpec，
+   不能复用 current-head-equals-frozen-tip 的 `_live_projection()`；其后才讨论其他 adapter、独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
    关闭前保持 `real_activation_ready=false`。

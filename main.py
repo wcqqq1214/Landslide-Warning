@@ -673,7 +673,7 @@ STAGES = (
     Stage(
         "ootang-epoch-workset-recovery",
         "code/monitoring/ootang_epoch_workset_recovery.py",
-        "按 transition plan 单步推进旧 epoch 确定性本地恢复（R2b-2b-2c，非完整 recovery/非切换/非正式）",
+        "按 transition plan 单步推进旧 epoch 确定性本地恢复，含 live pre-head CAS 原语（R2b-2b-2c，尚无 ledger adapter/非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_recovery.v1.json",
             "config/ootang_epoch_workset_manifest.v1.json",
@@ -689,6 +689,8 @@ STAGES = (
             "code/monitoring/ootang_epoch_drain_v2.py",
             "code/monitoring/ootang_epoch_registry.py",
             "code/monitoring/ootang_prequential_live.py",
+            "code/monitoring/ootang_live_ledger.py",
+            "code/monitoring/ootang_live_ledger_cas_v1.py",
             "code/monitoring/ootang_verified_live.py",
             "code/monitoring/ootang_trusted_time_shadow_core.py",
         ),

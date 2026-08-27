@@ -5,7 +5,40 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
-## 2026-08-28 transition-plan step-chain correction R2b-2b-2c（未提交）
+## 2026-08-28 live-ledger expected-pre-head CAS v1（本增量）
+
+- 当前 committed baseline 是 `7b728a1 fix: gate recovery on terminal steps`。新增 recovery-only
+  `code/monitoring/ootang_live_ledger_cas_v1.py`；旧 `ootang_live_ledger.py`、live writer、ledger
+  schema/epoch identity 与 frozen implementation bytes 均未修改。
+- CAS 在同一 SQLite `BEGIN IMMEDIATE` 内验证 schema、genesis epoch、完整 hash chain 和 frozen
+  `event_count/sequence/hash` 位置。fresh path 只允许 current terminal head 精确等于 expected
+  pre-head 时连续 append；crash-forward path 只采用 expected pre-head 后内容、顺序、位置和
+  predecessor 全部一致的 exact contiguous event slice。partial/changed/stale/wrong-epoch 或 chain
+  drift 均 rollback、零新增行。
+- exact slice 之后允许存在完整合法 suffix，但这只是 storage-level event identity/position
+  adoption。未来 adapter 必须另行重放 manifest、transition plan、锁和 suffix transition
+  authority；CAS 成功不能直接生成 terminal receipt，也不能重算到 current head。
+- recovery profile 只新增
+  `live_ledger_expected_pre_head_cas_implemented=true`；真实 adapter 尚未调用该原语，
+  `ledger_mutation_recovery_implemented=false`、`live_ledger_mutated=false`，full recovery、
+  all-transition、drained/active/lifecycle/trusted/E2/formal 仍为 false。无网络、真实 runtime
+  mutation、人工 freeze/cleanup/approval/force/backdate；shadow CAS 暂缓。
+- CAS module SHA-256 为
+  `23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4`，recovery profile SHA-256
+  为 `246dbf18bbc24cdecb7c85d289cdf4edd069fe5e47cbcbbbfb9e27e438a4ee04`。CAS 独立测试
+  6/6；CAS + frozen live ledger + recovery + manifest + admission-cut + drain-v2 + main 聚焦测试
+  93/93（unittest 1.018 s）；Ruff/format/compile、strict JSON 34/34、35-stage list 与默认/显式
+  dry-run 均通过；97-path aggregate 保持
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`，11 个 frozen writer
+  哈希一致，独立 CAS 审计 P0/P1 为 0。历史 transition-chain 75/75 结果保留在下节，不由本增量
+  覆盖。详细合同见 `docs/ootang_live_ledger_cas_v1_engineering.md`。
+- 下一步只实现单事件 machine-only `live_outstanding -> anchor_request_recorded` adapter。它必须从
+  manifest frozen prefix 重建唯一 seal、attempt 与完整 canonical `EventSpec`，在 create-only step
+  intent 中绑定 expected pre-head/EventSpec digest，再验证 CAS 返回事件后发布 receipt/event；不能
+  复用要求 current head 等于 frozen tip 的 `_live_projection()`，也不能按 current head 重算 attempt。
+  本切片不访问 TSA 网络。
+
+## 2026-08-28 transition-plan step-chain correction R2b-2b-2c（已提交 `7b728a1`）
 
 - 当前 committed baseline 是 `8f6a9f7 feat: add keyed local recovery`。本增量只修正其
   completion 语义：R2b-2b-2b manifest 完整覆盖单次 frozen observation 下可见的六 family，
@@ -41,9 +74,9 @@
   committed baseline。详细合同见
   `docs/ootang_epoch_workset_recovery_engineering.md` 与
   `docs/ootang_epoch_workset_manifest_engineering.md`。
-- 立即下一步先实现 ledger transaction 的 expected-pre-head CAS；验证该原语后，再只实现窄化的
-  machine-only `anchor_request_recorded` adapter。当前切片不执行 network/ledger mutation，也不
-  并行扩张到 issue/outcome/shadow adapter 或 drain assessor。
+- 本节当时规划的 expected-pre-head CAS 已由上节实现，但尚无真实 adapter 调用。当前下一步只
+  实现窄化的 machine-only `anchor_request_recorded` adapter，不并行扩张到
+  issue/outcome/shadow adapter、网络恢复或 drain assessor。
 
 ## 2026-08-27 closed-workset manifest reservation R2b-2b-2b
 
@@ -148,8 +181,8 @@
   `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。未重复 R2b、
   真实长链或全仓长测。
 - 后续 R2b-2b-2a 已完成 frozen official-writer lock-path cut，R2b-2b-2b/R2b-2b-2c 又推进到
-  frozen-observation reservation、item transition plan 与首批本地 adapter；当前下一步已变为
-  expected-pre-head CAS，再实现窄化的 machine-only `anchor_request_recorded` adapter。不能把本
+  frozen-observation reservation、item transition plan、首批本地 adapter 与 recovery-only
+  expected-pre-head CAS；当前下一步是窄化的 machine-only `anchor_request_recorded` adapter。不能把本
   历史观察、physical cut 或非终态 receipt 直接晋升为 recovery/drained/active。
 - 详细合同见 `docs/ootang_epoch_drain_v2_engineering.md`。
 
@@ -196,8 +229,8 @@
   耦合、eligibility full-chain O(K²) 重放，以及上述 mutable-witness 同删边界。
 - 该条目的下一步已由上方 R2b-2b-1 首 blocker observation 开始；后续 R2b-2b-2a 完成
   frozen official-writer lock-path cut，R2b-2b-2b/R2b-2b-2c 又推进到 frozen-observation
-  reservation、item transition plan 与首批本地 adapter。当前下一步是 expected-pre-head CAS，
-  再实现窄化的 machine-only `anchor_request_recorded` adapter；不得重解释或覆写任何已发布
+  reservation、item transition plan、首批本地 adapter 与 recovery-only expected-pre-head CAS。
+  当前下一步是窄化的 machine-only `anchor_request_recorded` adapter；不得重解释或覆写任何已发布
   R2b/R2b-2a v1 bytes。terminal/derived-work closure 解决后才是独立 drain assessor、权威
   `SEALED(old)+ACTIVE(new)` transition、cycle v4 与 scheduler authorization。
 - 详细合同见 `docs/ootang_epoch_drain_eligibility_engineering.md`。
@@ -292,8 +325,8 @@
   本文件顶部增量完成，结果仍只可为 DRAINING。后续 R2b-2b-1 v2 已实现首 blocker
   observation，但不具 reservation/recovery authority。后续 R2b-2b-2a 已完成 official-writer
   lock-path cut；后续 R2b-2b-2b 已完成 frozen-observation 六族 manifest/transition seed
-  reservation，R2b-2b-2c 已增加 item transition plan、逐 step authority chain 和首批本地
-  adapter。当前下一步是 expected-pre-head CAS，再实现窄化的 machine-only
+  reservation，R2b-2b-2c 已增加 item transition plan、逐 step authority chain、首批本地
+  adapter 与 recovery-only expected-pre-head CAS。当前下一步是窄化的 machine-only
   `anchor_request_recorded` adapter；v2 不得重解释或覆写 v1
   fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
   armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立

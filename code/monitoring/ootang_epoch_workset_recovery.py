@@ -28,7 +28,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "2b956d96d3aa3049a7901e21a250743aaa90701e41a814fe98e5c91936fdcf5a"
+    "246dbf18bbc24cdecb7c85d289cdf4edd069fe5e47cbcbbbfb9e27e438a4ee04"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -142,6 +142,7 @@ TRUE_CAPABILITIES = (
     "transition_plan_binding_implemented",
     "step_receipt_chain_implemented",
     "terminal_receipt_dependency_gate_implemented",
+    "live_ledger_expected_pre_head_cas_implemented",
 )
 FALSE_CLAIMS = (
     "bounded_workset_recovery_implemented",
@@ -186,6 +187,14 @@ EXPECTED_UPSTREAM = {
     "live_implementation": {
         "path": "code/monitoring/ootang_prequential_live.py",
         "expected_sha256": "086638e87ded39eed9b84311fa8a49898bf1c34d48327b41ac6e1d4633f843d8",
+    },
+    "live_ledger_implementation": {
+        "path": "code/monitoring/ootang_live_ledger.py",
+        "expected_sha256": "087356f33e43996411d3524ec99256d4b5c390f09dd0dbfca083cc7a63245b14",
+    },
+    "live_ledger_cas_implementation": {
+        "path": "code/monitoring/ootang_live_ledger_cas_v1.py",
+        "expected_sha256": "23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4",
     },
     "guard_implementation": {
         "path": "code/monitoring/ootang_verified_live.py",

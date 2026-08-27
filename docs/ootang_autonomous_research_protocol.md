@@ -661,9 +661,14 @@ validate_contract
    每个 action 使用 create-only step intent/receipt/event；只有 `terminal_for_key=true` 的 receipt
    才能解锁 dependency，unresolved derived work 永远不能计为 complete。既有 DER/anchor/有持久
    证据的 guard supersession 三类确定性本地 adapter 不变，其中 DER repair 明确是非终态，必须
-   等待机器 response-link adapter。当前仍不执行网络或 ledger mutation，也不等于完整 recovery。
-   下一步先实现 expected-pre-head CAS，再实现窄化的 machine-only
-   `anchor_request_recorded` adapter；之后才由独立 assessor 核验完整 terminal keyset。v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   等待机器 response-link adapter。现已增加 recovery-only live-ledger expected-pre-head CAS v1：
+   它在同一 `BEGIN IMMEDIATE` 内验证 frozen epoch/full chain/position，支持 fresh exact append 或
+   exact contiguous crash-forward adoption；合法 suffix 只构成 storage evidence，未来 adapter 必须
+   另验 transition authority。当前真实 adapter 尚未调用该原语，仍不执行网络或 ledger mutation，
+   也不等于完整 recovery；shadow CAS 暂缓。下一步只实现单事件 machine-only
+   `anchor_request_recorded` adapter，并从 manifest frozen prefix 重建 seal/attempt/EventSpec，不能
+   复用 current-head-equals-frozen-tip 的 `_live_projection()`；之后才由独立 assessor 核验完整
+   terminal keyset。v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
    capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
    event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
@@ -731,9 +736,11 @@ observation/stale detection 已完成，但没有增加 lifecycle/transition aut
 writer 的 deploy/runner lock pathname；R2b-2b-2b 已预留单次 frozen observation 下可见六族
 workset 与 transition seeds，但不具 terminal/transitive closure；R2b-2b-2c 已增加 item-specific
 transition plans、逐 step authority chain、terminal receipt dependency gate 和三个既有本地
-adapter。direct-filesystem/unknown writer、derived-future-work reservation 和完整 recovery 仍未
-解决。当前先实现 expected-pre-head CAS，再实现窄化的 machine-only
-`anchor_request_recorded` adapter。只有 E2-B 继续完成不可重解释 v1
+adapter；recovery-only live-ledger expected-pre-head CAS 也已实现 fresh exact append/exact slice
+adoption，但尚无真实 adapter 或 ledger mutation。direct-filesystem/unknown writer、shadow CAS、
+derived-future-work reservation 和完整 recovery 仍未解决。当前只实现单事件 machine-only
+`anchor_request_recorded` adapter，并以 manifest frozen prefix 而非 current head 重建同一
+seal/attempt/EventSpec。只有 E2-B 继续完成不可重解释 v1
 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/
 eligibility-observation/event bytes 的 terminal/derived-work closure、keyed non-clean recovery、
 drain assessor、权威原子 active transition、cycle v4 和 scheduler

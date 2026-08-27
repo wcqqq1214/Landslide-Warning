@@ -3,12 +3,59 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `8f6a9f7 feat: add keyed local recovery`
+**Committed baseline before this increment:** `7b728a1 fix: gate recovery on terminal steps`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
-本地 recovery 基线已提交；当前未提交增量修正 manifest 与 recovery 的 transition-chain
-语义。它不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING
-lifecycle authority，不声明 drained、active switch、rotation、trusted anchor、E2 evidence、
-activation 或 formal warning。
+transition-chain correction 已提交；本增量新增 recovery-only live-ledger
+expected-pre-head CAS v1 原语。它尚未接入真实 recovery adapter 或 ledger mutation，也不是完整
+recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority，
+不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal
+warning。
+
+## 2026-08-28 live-ledger expected-pre-head CAS v1 continuation
+
+The additive recovery-only module is
+`code/monitoring/ootang_live_ledger_cas_v1.py`. It leaves the frozen live writer and ledger
+bytes unchanged and executes schema validation, full-chain replay, frozen epoch/position/hash
+verification, append or adoption, and final chain verification inside the same SQLite
+`BEGIN IMMEDIATE` transaction. A fresh append is allowed only when the terminal head exactly
+equals the expected frozen pre-head. A crash-forward retry is adopted only when every requested
+event already exists with identical stable fields as the exact contiguous slice immediately
+after that pre-head.
+
+Storage-level adoption may accept a valid later suffix after that exact slice. This proves the
+stored event's identity and chain position only; a future recovery adapter must separately replay
+manifest authority, the item transition plan, locks and suffix semantics before publishing a
+step receipt. CAS success is never by itself terminal transition evidence. Partial batches,
+changed content/order/predecessor, wrong epoch/position, stale fresh append, schema drift or an
+invalid chain fail closed and add no row.
+
+The recovery profile binds the frozen ledger implementation and this new CAS module. Its only
+new true capability is `live_ledger_expected_pre_head_cas_implemented=true`.
+`ledger_mutation_recovery_implemented`, `live_ledger_mutated`, all-transition/full-recovery and
+lifecycle claims remain false. No real recovery adapter calls the primitive yet; no runtime
+ledger or network action was performed. ConvLSTM, v4, frozen splits, metrics, thresholds and the
+frozen writer/ledger implementations were not modified, and no manual freeze, cleanup, approval,
+force or backdate path was added. Shadow CAS is deliberately deferred.
+
+Current SHA-256 values are
+`23ca29356ef23483a0846e701376850745400082e607a16e2479c1057b6befa4` for the CAS module and
+`246dbf18bbc24cdecb7c85d289cdf4edd069fe5e47cbcbbbfb9e27e438a4ee04` for the recovery profile.
+The standalone CAS suite passes 6/6. The focused CAS, frozen live ledger, recovery, manifest,
+admission-cut, drain-v2 and main suite passes 93/93 in unittest's reported 1.018 seconds;
+Ruff/format/compile, strict JSON 34/34, the 35-stage list and default/explicit dry-runs pass.
+The 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`, all 11 frozen writer
+hashes match, and independent CAS review found P0/P1 0. This does not overwrite the committed
+transition-chain 75/75 record below. The detailed contract is
+`docs/ootang_live_ledger_cas_v1_engineering.md`.
+
+The immediate next slice is only the single-event machine
+`live_outstanding -> anchor_request_recorded` adapter. It must reconstruct the exact seal,
+attempt and canonical `EventSpec` from the manifest frozen prefix, bind the expected pre-head and
+event digest in its create-only step intent, then verify the CAS result before publishing its
+receipt/event. It must not reuse `_live_projection()`, whose current-head-equals-frozen-tip gate
+would reject legitimate commit-before-receipt adoption, and it must never recalculate an attempt
+from the current head. No TSA network call belongs in that slice.
 
 ## 2026-08-28 manifest-keyed deterministic local recovery R2b-2b-2c continuation
 
@@ -86,10 +133,10 @@ writer/orchestrator hashes match, and final independent review found no remainin
 No model training, TSA network, real runtime mutation, network/ledger recovery action, full
 repository suite, capacity run or exhaustive filesystem/crash matrix was run.
 
-The immediate next slice is an expected-pre-head CAS primitive for ledger transactions. After
-that primitive is reviewed, add only the narrow machine-only `anchor_request_recorded` adapter;
-do not start broad issue/outcome/shadow or network recovery in the same slice. Network and ledger
-mutation remain unexecuted here. Only terminal receipts plus explicitly resolved derived work may
+The expected-pre-head CAS primitive described as this correction's next slice is now implemented
+in the continuation above without invoking a real adapter. The current next slice is only the
+single-event machine `anchor_request_recorded` adapter; broad issue/outcome/shadow or network
+recovery remains deferred. Only terminal receipts plus explicitly resolved derived work may
 eventually let an independent post-recovery assessor consider current quiescence; it still cannot
 infer active transition directly.
 
@@ -215,10 +262,10 @@ Final independent authority/standards audit is P0/P1/P2 `0/0/0`.
 The content-addressed manifest described as this historical slice's next step is now
 implemented in the continuation above. The corrected scope is complete enumeration of the six
 families visible at one frozen observation plus transition seeds under the stable
-official-writer boundary; it is not a transitive or terminal closure. The current next step is
-expected-pre-head ledger CAS, followed by the narrow machine-only
-`anchor_request_recorded` adapter. No recovery may precede the singleton manifest reservation
-event or bypass an item transition plan.
+official-writer boundary; it is not a transitive or terminal closure. The recovery-only
+expected-pre-head ledger CAS is now implemented without a real adapter. The current next step is
+the narrow machine-only `anchor_request_recorded` adapter. No recovery may precede the singleton
+manifest reservation event or bypass an item transition plan.
 
 ## 2026-08-27 drain v2 first-blocker observation R2b-2b-1 continuation
 
@@ -338,9 +385,9 @@ mutable-witness deletion boundary above.
 The next slice described at this R2b-2a point started as the R2b-2b-1 observation section
 above. R2b-2b-2a later completed the frozen official-writer lock-path cut; R2b-2b-2b then
 reserved the six-family frozen observation and transition seeds, and R2b-2b-2c added the first
-keyed local adapters plus the current step-chain correction. The current next step is
-expected-pre-head ledger CAS, followed by the narrow machine-only
-`anchor_request_recorded` adapter. These later versions must not overwrite or reinterpret any
+keyed local adapters plus the current step-chain correction. The recovery-only expected-pre-head
+ledger CAS is now implemented without a real adapter; the current next step is the narrow
+machine-only `anchor_request_recorded` adapter. These later versions must not overwrite or reinterpret any
 v1 R2b or R2b-2a bytes. Only after terminal closure and derived work are explicitly resolved may
 an independent drain assessor run; an authoritative atomic `SEALED(old)+ACTIVE(new)` transition
 comes later still.
@@ -1773,8 +1820,8 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    frozen-observation reservation/transition seeds, and the R2b-2b-2c item transition plans,
    create-only step chains and terminal-receipt dependency gate. Do not reinterpret the
    manifest as terminal/transitive closure, and do not count unresolved derived work as
-   complete. Next implement expected-pre-head ledger CAS; after it is reviewed, add only the
-   narrow machine-only `anchor_request_recorded` adapter. V2 must not
+   complete. Preserve the recovery-only expected-pre-head CAS and its storage/transition-authority
+   boundary; next add only the narrow machine-only `anchor_request_recorded` adapter. V2 must not
    reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
    armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in
    that new version. Failure waits or

@@ -454,6 +454,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertTrue(claims["machine_only"])
         self.assertTrue(claims["step_receipt_chain_implemented"])
         self.assertTrue(claims["terminal_receipt_dependency_gate_implemented"])
+        self.assertTrue(claims["live_ledger_expected_pre_head_cas_implemented"])
         self.assertFalse(claims["bounded_workset_recovery_implemented"])
         self.assertFalse(claims["terminal_transition_closure_implemented"])
         result = recovery.RecoveryResult("waiting", "no authority", Path("status"))

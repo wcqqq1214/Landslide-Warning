@@ -1153,6 +1153,8 @@ class PipelineTests(unittest.TestCase):
             "code/monitoring/ootang_epoch_drain_v2.py",
             "code/monitoring/ootang_epoch_registry.py",
             "code/monitoring/ootang_prequential_live.py",
+            "code/monitoring/ootang_live_ledger.py",
+            "code/monitoring/ootang_live_ledger_cas_v1.py",
             "code/monitoring/ootang_verified_live.py",
             "code/monitoring/ootang_trusted_time_shadow_core.py",
         ):

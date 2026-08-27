@@ -27,6 +27,12 @@ plan，并使用 step intent/step receipt 链推进，不能再把“首个 succ
 item。当前切片不执行网络请求，不写 live/shadow/issue-replay logical ledger，不物化 outcome，不生成
 guard completion，也不关闭、创建或切换 epoch。
 
+恢复 profile 现已额外绑定一个独立、versioned 的 live-ledger expected-pre-head CAS 原语。该原语在
+同一个 `BEGIN IMMEDIATE` 内验证 epoch、完整链和冻结 head，再执行 append 或 exact crash-forward
+adoption；它尚未接入任何 production recovery adapter，因此不会改变上述“三类 adapter”范围，也
+不能被解释成已实现 ledger mutation recovery。详细合同见
+`docs/ootang_live_ledger_cas_v1_engineering.md`。
+
 这些更改只涉及旧 epoch 恢复控制面，不修改数据划分、指标、阈值、训练结论或 ConvLSTM 主模型与
 默认预测链。
 
@@ -186,8 +192,9 @@ event；不得伪造 `guard_completion_recorded`，不得向 guard completion na
 mutation 必须先具备 transaction 内 expected-pre-head CAS、序列号/previous-hash 校验、SQLite
 durability 与 mutation-before-receipt adoption，不能由 generic 文件写 adapter 代替。
 
-当前可以声明 `transition_plan_binding_implemented`、`step_receipt_chain_implemented` 和
-`terminal_receipt_dependency_gate_implemented`；但至少以下能力继续为 false：
+当前可以声明 `transition_plan_binding_implemented`、`step_receipt_chain_implemented`、
+`terminal_receipt_dependency_gate_implemented` 与 storage-level
+`live_ledger_expected_pre_head_cas_implemented`；但至少以下能力继续为 false：
 
 ```text
 bounded_workset_recovery_implemented
@@ -225,7 +232,9 @@ receipt 与合法 edge；terminal-only dependency gate；DER repair 非 terminal
 非 terminal；predecessor/pre-head CAS 漂移；global/step intent create-only adoption；三个 adapter 的
 pending、already-applied 和 conflict；intent 后崩溃、mutation 后 receipt 前崩溃、receipt 后 event
 前崩溃；orphan/branch/unknown entry；waiting/busy/unsupported/blocked false claims；四锁逆序释放；
-TSA 网络函数与 ledger writer 在本切片不可达。
+TSA 网络函数与真实 runtime ledger mutation adapter 在本切片不可达。CAS 的独立快测只覆盖 exact
+pre-head commit、stale rollback、exact adoption（含合法 suffix）、partial/changed conflict 与错误
+epoch/position；不把 storage-level placement proof 当作 transition authority。
 
 本阶段不需要穷举所有容量边界、所有 symlink/fsync 排列，也不运行模型训练、NGBoost、SHAP、
 ConvLSTM、真实 TSA 网络、真实 runtime ledger mutation、全仓长测或穷举 filesystem/crash 矩阵。
@@ -234,11 +243,13 @@ ConvLSTM、真实 TSA 网络、真实 runtime ledger mutation、全仓长测或�
 
 ## 8. 下一阶段
 
-下一步先为 live/shadow append primitive 增加 transaction 内 expected-pre-head CAS，使 stale reader
-不能在 head 漂移后提交 ledger event，并验证 mutation 后 receipt 前的机器自动 adoption。完成该
-基础原语后，首个窄 ledger adapter 应选择 `anchor_request_recorded`：只追加一个确定性 event，不
-访问网络；它必须绑定 action-specific read/write set、sequence/previous-hash、step intent 与
-step receipt，且不得调用会重入现有四锁的 public poll。
+live ledger 的 transaction-internal expected-pre-head CAS 已作为 recovery-only 加法原语完成；shadow
+因逐 item pre-head、rotation/empty-genesis 与 transaction-boundary 合同尚不完整而暂缓。下一步首个
+窄 ledger adapter 选择 `anchor_request_recorded`：只追加一个确定性 event，不访问网络。它必须从
+完整验证链切出 manifest 冻结 prefix 来确定 seal、attempt、event key 与完整 EventSpec，不能复用
+要求“当前 head 仍等于 frozen tip”的 `_live_projection()`，否则 event commit 后、receipt 前崩溃
+无法被机器采用。step intent 必须绑定 expected pre-head 与 EventSpec digest；CAS 返回事件验证后才
+可发布 step receipt，且不得调用会重入现有四锁的 public poll。
 
 TSA 网络 action 应另设外部请求 intent、释放锁前后的 fence-generation CAS、幂等 response object
 adoption 和加密验证。只有所有冻结 key 都由各自受审 transition chain 收口，并由独立 assessor
