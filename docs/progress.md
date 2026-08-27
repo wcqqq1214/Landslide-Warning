@@ -5,10 +5,105 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-27 epoch drain-start barrier R2b 首切片
+
+- 本增量基于 `b53a238 feat: add executable epoch preparation`，新增显式、非默认阶段
+  `ootang-epoch-drain`；当前共 30 个可选阶段，无参数默认链仍严格为
+  `features → convlstm → ootang-operational-v4`。R2b profile/module/test SHA-256 分别为
+  `1da0056c8cbdc0fe30b8adca5b72cf52e211b679aae8b8981216e44c0f16d105`、
+  `c4c226da087d354195fc3955ff60ff3b12af13f111d03cb59c5d64d0195a1602`、
+  `b79d132562891a3134d55073a282b351533e525b0661cd47914698e323612d68`。
+- R2b 使用独立 `drain_events`、head/status、`drain_fence_prepares`、intent、capsule、
+  append-only `drain_exchange_attempts` WAL 与 overlay namespace，并在 shared
+  content-addressed objects 中保存完整 intent-prefix、staged feed 和 full-clean boundary；它只引用并复验 R1 registry
+  和 R2a preparation tip，不改写两条历史链、candidate capsule 或 smoke receipt。mutable
+  head/status 不是 authority。intent 是 durable transaction reservation/lower-bound，其中
+  `candidate_at_intent` 只记录创建 intent 时绑定的 candidate，明确不是 activation
+  selection。WAL、armed marker 与 boundary 只有 recovery authority；orphan
+  fence-prepare/intent-prefix/intent/capsule/staged-feed/attempt/boundary object 本身均无
+  lifecycle authority，唯一 DRAINING lifecycle authority 仍是 `epoch_drain_started` event。
+- drain-start 临界区严格按 `manager → cycle → deploy → runner → replay → shadow` 取得
+  全锁，避免任何已知 issue producer、cycle、live runner、checkpoint replay 或 calibration
+  shadow 与 route fencing 并发。任一锁 busy 时不部分推进。
+- 首版只接受 clean start：旧 epoch 不得有 outstanding issue，也不得存在 pending
+  guard、trusted-time 或 shadow 工作。若任一未收口，机器返回 waiting，不追加 authority
+  event、不撤销 route；已有 intent 只保留为 lower-bound，不改写为最终快照。机器也不借助
+  人工日期、冻结、批准、force、backdate 或伪造 outcome 清空状态。
+  old work 可在两次 scheduler poll 间继续；下一次 poll 仍 pending 就继续机器等待，合法
+  append-only settled extension 会被完整重放并自动纳入新的 clean-state，不要求人工 cleanup。
+- 通过 clean-start 检查后，机器先捕获 old-route identity，并在任何 tombstone `mkdir` 前
+  create-only 发布唯一 `fence_prepare`，绑定历史 R1/R2a、capsule/完整 intent-prefix、
+  old-route device/inode/mode、tombstone path 与 ACL/swap policy。crash 或 current tip 推进后
+  仍从该永久 marker 机器恢复同一历史 transaction，marker 自身不产生 lifecycle authority。
+  marker 落盘后才准备 mode 精确为 `0755` 的空 tombstone，安装并 exact-readback extended
+  ACL `everyone deny write`，且实际 add-file 拒写探针通过；随后持久化 intent，并在全锁下
+  复验全部绑定。机器完成下述 capacity/boundary/WAL/armed-marker 序列后再调用
+  macOS `renameatx_np(RENAME_SWAP)`，跨父目录交换 canonical old `issue_inbox` 与 overlay
+  tombstone；ACL 随 inode 交换后立即围栏 canonical route，再原位 chmod 为
+  exact `0555` 并复验 ACL/拒写。swap→chmod 崩溃恢复只能向前完成加固，绝不 swap back。
+  该原语/ACL 不可用或失败时 fail closed，禁止以普通 rename、move 或复制删除降级。
+- R2b 区分两个边界：物理 issue-admission boundary 是 Darwin swap 成功的瞬间；权威
+  state-snapshot boundary 是六锁下 full-clean replay 形成的 content-addressed **pre-swap**
+  boundary object，再由唯一 `epoch_drain_started` 精确引用。该对象绑定 live/issue/guard/trusted/
+  outcome/shadow/source inventories 与 staged next-epoch incoming；staged incoming 不是旧
+  source authority，未被 event 引用的 orphan object 也没有 authority。event 当前只进入
+  `DRAINING`；`activation_candidate_selected`、drained、`SEALED(old)`、`ACTIVE(new)`、
+  automatic rotation、trusted anchor、E2 evidence、real activation 与 formal warning
+  声明全部为 false。
+- capsule 精确引用内容寻址 full `intent-prefix` manifest；它保存 live/shadow 全部 entry
+  hashes 与 issue/outcome/guard/trusted/source inventories。每次 poll 都验证 start→current
+  的 append-only/prefix extension，合法 settled extension 自动进入最终 boundary。manifest
+  上限显式为 64 MiB，staged next-epoch feed 上限为 16 MiB；feed 独立内容寻址、boundary
+  只存 reference，因此合同内的大 feed 不会因 control-object 上限而自锁。event append 前
+  还必须完整自重放 boundary 及其全部引用，重建 state 精确一致后才写唯一 event。
+- swap 前先以最大 16 MiB staged CAS reference 对完整 boundary 做 worst-case capacity
+  preflight。若 canonical boundary 超过 64 MiB，机器返回
+  `waiting_for_drain_boundary_capacity`，canonical route 保持未交换且不写 event，也不要求
+  人工 cleanup。通过后不可逆尾部固定为 final fence verify → actual staged queue 稳定双读/
+  CAS → actual capacity → publish exact pre-swap full boundary → append/replay
+  `drain_exchange_attempts` terminal → 在 fence operand 内写入直接绑定 terminal+boundary 的
+  `.epoch-drain-armed-attempt.v1.json` → immediate Darwin swap；marker 随 fence inode 原子
+  移到 canonical route，post-swap publisher/self-replay 仍复验。
+  正常同 poll 的 post-swap logical clean 必须与 pre-swap state 精确相等；只有已经 exchanged
+  的 crash recovery 才允许从 immutable start-prefix 到 recovery-current 的合法 append-only
+  extension。
+- 每个 WAL attempt 都精确引用一个完整 pre-swap boundary，并由连续 sequence/previous hash
+  组成 append-only chain；只可武装 unique terminal。prepared retry 可自动收敛严格的单一
+  marker temp 与 exact/缺失 ACL crash state，不允许人工 cleanup。exchanged recovery 必须从
+  已随 swap 移动的 armed marker 读取 terminal 的**旧 boundary**；current clean 只作其合法
+  append-only extension gate，不能重建或替换 boundary。WAL suffix rollback、branch、gap、
+  extra entry、symlink，或 marker/ACL/temp 不精确时一律 fail closed。64 MiB 超限仍在 swap
+  前返回 machine waiting；为历史增长引入 chunk/Merkle 属未来 R2b-2b v2，不得重解释 v1
+  bytes。
+- R2a 已记录的真实默认链试跑结论保持不变：正式五种子训练后，R1 因仓库缺少从
+  2020-07-01 连续到机器当前日的 finalized feed，在历史 feed causal gate 以
+  `Bundle was not durable before the first target natural day` 正确 fail closed；未生成
+  R1 candidate，也没有真实 R2a/R2b 端到端 PASS。不得通过改时钟、合成日期、人工
+  backdate 或 test override 伪造通过。
+- 最终验证：R2b focused 为 `12/12`（runner `1008.486` 秒，墙钟 `1025.68` 秒）；
+  R1+R2a+R2b+main 组合为 `116/116`（runner `2361.831` 秒，墙钟 `2393.77` 秒）；
+  全仓为 `809/809`（runner `5568.360` 秒，墙钟 `5642.18` 秒），均为 0 failure /
+  0 error。main 为 `34/34`，正式 v5 preflight 为 `23/23`，报告仍为 G0 PASS、
+  G1--G4 BLOCKED、G5a 未评估/未授权、formal warning false。Ruff check、scoped
+  format、compileall、`git diff --check`、strict JSON `30/30`、根/可信时间双
+  `uv lock --check`、30-stage list、默认/显式 dry-run 与共享 v4 Bai--Perron diff
+  均通过。97 条保护路径聚合 SHA-256 仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+  最终独立标准/规格审计为 P0/P1/P2 `0/0/0`；逐对象 publication-fsync 故障矩阵仅作为
+  后续 coverage debt，不削弱本轮已验证的通用 durable-adoption 合同。
+- 下一步固定为 R2b-2a clean-start eligibility observation/stale detection：跨 poll 保存、
+  复验 observation 并自动吸收合法 settled extension，结果仍只可为 DRAINING。随后另建
+  R2b-2b v2 bounded-workset non-clean recovery，恢复 trusted-time/guard/shadow 等明确
+  workset；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+  armed-marker/boundary/event bytes；历史 chunk/Merkle 也只能由该新版本表达。其后才是独立
+  drain assessor 与权威 active transition；cycle v4、scheduler authorization 与长链
+  O(N²) 扫描优化仍在更后。
+- 详细锁、swap、intent 与非声明边界见 `docs/ootang_epoch_drain_engineering.md`。
+
 ## 2026-08-27 epoch 可执行准备 R2a
 
 - R1 已在提交 `3d6ce8f feat: add immutable epoch candidate registry` 固定。在其上
-  新增显式、非默认阶段 `ootang-epoch-preparation`；当前共 29 个可选阶段，
+  新增显式、非默认阶段 `ootang-epoch-preparation`；该 R2a 基线共 29 个可选阶段，
   无参数默认链仍严格为 `features → convlstm → ootang-operational-v4`。R2a profile/
   module SHA-256 分别为
   `c6ec0b1f340effd9e3fd5cd1a0ee67ebca9ffa4dc743a9cb36d701850dc875f9`/
@@ -47,10 +142,10 @@
 - R2a 明确固定 `old_epoch_drain_implemented=false`、
   `active_epoch_switch_implemented=false`、`automatic_epoch_rotation_implemented=false`、
   `trusted_anchor_receipt_verified=false`、`e2_live_evidence_eligible=false`、
-  `real_activation_ready=false`、`formal_warning_output=false`。下一切片是 R2b machine
-  `epoch_drain_started` barrier/assessor；在它之前先关闭全入口 issue fencing、
-  trusted-time 历史 request 恢复、orphan guard intent、旧 activation-prefix route 和
-  scheduler dispatch fencing。全过程禁止人工日期、冻结、批准或 force。
+  `real_activation_ready=false`、`formal_warning_output=false`。后续 R2b 首切片现已完成
+  clean-start canonical route fence 与 `epoch_drain_started`，但只进入 DRAINING；非
+  clean-start trusted-time/guard/shadow 恢复和 drain assessor 仍待完成。全过程禁止人工
+  日期、冻结、批准或 force。
 - epoch-preparation 独立终审为 `30/30`（590.587 秒），与 pipeline 最终组合为
   `63/63`（597.651 秒），全仓回归为 `796/796`（3047.808 秒），均为 0 failure /
   0 error。Ruff、compileall、R2a scoped format、diff-check、strict JSON `28/28`、
@@ -112,11 +207,10 @@
   审计均为 P0/P1 `0/0`；保留的 trusted-writer/掉电持久性、累计 replay O(N²) 与 R2
   executable closure 是已显式记录的 P2 工程边界。
 - 后续 R2a 已在不修改 R1 链的前提下完成 exact executable closure、same-origin tree
-  materialization 和双域/五种子烟测。下一道门禁收窄为 R2b machine
-  `epoch_drain_started` barrier/assessor；必须先解决全入口 issue fencing、trusted-time
-  历史 request 恢复、orphan guard intent、旧 activation-prefix route 和 scheduler dispatch
-  fencing，才能对已存 issue/guard/time/outcome/revision/shadow 收口。若 outcome 永不到达，
-  机器只能等待，不能伪造结局、人工冻结/批准或强制轮换。
+  materialization 和双域/五种子烟测；R2b 首切片又完成 clean-start canonical route
+  原子 fencing 与 `epoch_drain_started`。当前仍只到 DRAINING，非 clean-start
+  trusted-time/guard/shadow 恢复、drain assessor 与 active transition 尚未实现。若 outcome
+  永不到达，机器只能等待，不能伪造结局、人工冻结/批准或强制轮换。
 
 ## 2026-08-26 RFC 3161 可信时间影子门
 

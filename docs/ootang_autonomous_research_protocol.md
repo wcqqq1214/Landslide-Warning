@@ -165,10 +165,38 @@ capsule；R2a 又解析 exact 22-module closure，只捕获两个审核 augmenta
 R2a profile/implementation，并在 canonical project/slot 物化非可迁移树。根/可信时间
 两个 frozen isolated 环境进一步重载 prerequisite，将五 seed `predict_p50` 与
 `reload_replay` 以 `atol=1e-6 mm` 比较。它每次 current repoll 与 orphan 恢复都重跑
-烟测，实现升级会机器追加 `candidate_revalidated`。但该树固定
-`portable_offline_runtime=false`，R2a 也尚未 drain 旧 epoch 或切换 active。模型/源码/
-环境变化仍会 fail closed，不能把 candidate-prepared 误写成 automatic rotation。因此
-所有 E2-A settlement 固定
+烟测，实现升级会机器追加 `candidate_revalidated`。R2b 首切片先发布包含 live/shadow 全
+entry hashes 与 issue/outcome/guard/trusted/source inventories 的内容寻址 full intent-prefix/
+capsule；每 poll 只接受 start→current append-only extension。随后在任何 tombstone `mkdir`
+前 create-only 发布永久 singleton `fence_prepare`，绑定历史 R1/R2a、capsule/prefix、old-route
+identity 与 ACL/swap policy。crash 或 current tip 推进后机器恢复同一历史 transaction；marker
+本身不产生 lifecycle authority。之后才在全锁下给 `0755` 空 tombstone 安装并实测 Darwin
+extended ACL `everyone deny write`，经下述 capacity/boundary/WAL/armed-marker 序列后再用不可降级的
+macOS `RENAME_SWAP` 跨父目录原子撤销 clean old epoch 的 canonical issue route；ACL 随
+inode 即时围栏，随后原位 chmod exact `0555`。swap→chmod 崩溃只能向前加固、不能交换
+回去。intent 是 durable transaction reservation/lower-bound，`candidate_at_intent` 不表示
+activation selection。物理 issue-admission boundary 是 swap 成功的瞬间；六锁下完整重放
+live/issue/guard/trusted/outcome/shadow/source 与 staged next-epoch incoming inventories 后，
+机器在 swap 前另存 content-addressed full-clean boundary，并向 append-only
+`drain_exchange_attempts` WAL 追加精确引用它的 attempt；fence operand 内
+`.epoch-drain-armed-attempt.v1.json` 直接绑定 unique terminal attempt+boundary，随后随
+Darwin swap 原子移动，再由唯一 `epoch_drain_started` 精确引用。WAL、marker 与 boundary
+只有 recovery authority；orphan object 没有 lifecycle authority，唯一 DRAINING lifecycle
+authority 是 event。它仅进入 DRAINING；pending guard/trusted-time 或 shadow
+工作会跨 poll 机器 waiting，合法 settled extension 自动纳入新边界，不依赖人工 freeze/
+cleanup/backdate。manifest/staged-feed 上限分别为 64 MiB / 16 MiB；feed 独立内容寻址，合同内的
+大 feed 不会自锁。swap 前 worst-case boundary 超 64 MiB 时机器返回
+`waiting_for_drain_boundary_capacity`，route 保持未交换且无 event/人工 cleanup。通过后
+不可逆尾部固定 final fence verify → actual staged queue 稳定 capture/CAS → actual capacity
+→ publish exact pre-swap boundary → append/replay WAL terminal → arm marker → immediate
+Darwin swap；正常同 poll post-swap logical clean 必须 exact 等于 pre-swap。prepared retry
+只自动恢复严格单一 marker-temp 和 exact/缺失 ACL crash state；exchanged recovery 必须读取
+随 fence 移动的 armed terminal 的旧 boundary，current clean 只作合法 append-only extension
+gate，禁止重建 boundary。suffix rollback/branch/gap/extra/symlink 均 fail closed。post-swap
+publisher 与 event 前 self-replay 继续复验；历史增长需要的 chunk/Merkle 属未来 R2b-2b
+v2，不能重解释 64 MiB v1 bytes。它尚未证明 drained 或切换 active。该执行树
+仍固定 `portable_offline_runtime=false`。模型/源码/环境变化继续 fail closed，不能把
+candidate-prepared 或 drain-started 误写成 automatic rotation。因此所有 E2-A settlement 固定
 `e2_live_evidence_eligible=false`，即使 shadow 时间顺序验证成功也不得升格。
 
 ### 3.4 E3：独立灾害结局
@@ -612,11 +640,21 @@ validate_contract
 4. E2-B 机器工程（部分门禁已实现）：content-addressed 五种子模型、input-manifest
    语义、机器 outcome/cycle、指定入口 checkpoint inference replay、standalone pinned
    RFC 3161 cryptographic-time shadow、immutable epoch registry R1 的 stable-slot
-   candidate prebuild/verified-ready chain，以及 R2a exact executable closure/same-origin
-   materialization/双域五种子烟测已实现；R2b `epoch_drain_started` barrier/assessor 尚需
-   先关闭全入口 issue fencing、trusted-time 历史 request 恢复、orphan guard intent、
-   旧 activation-prefix route 与 scheduler dispatch fencing。之后的原子 active transition、将可信
-   时间接入新版 designated cycle 与长链性能门仍待实现；
+   candidate prebuild/verified-ready chain、R2a exact executable closure/same-origin
+   materialization/双域五种子烟测，以及 R2b pre-tombstone create-only fence-prepare、full
+   intent-prefix/start→current append-only 验证、clean-start canonical issue-route 原子
+   fencing、64 MiB / 16 MiB manifest/staged-feed 上限、worst-case/actual pre-swap capacity、
+   exact pre-swap boundary、append-only `drain_exchange_attempts`、随 swap 移动的 terminal
+   armed marker、正常 same-poll exact-state gate、armed-old-boundary exchanged recovery、
+   pre-event boundary self-replay 和六锁
+   full-clean content-addressed boundary/`epoch_drain_started` 已实现；R2b 当前只进入
+   DRAINING。紧接着先做 R2b-2a clean-start eligibility observation/stale detection（仍只
+   DRAINING），再以新 schema 做 R2b-2b v2 bounded-workset non-clean recovery；v2 不得
+   重解释或覆写 v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/
+   boundary/event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
+   assessor、之后的原子 active
+   transition、将可信时间接入新版 designated cycle、scheduler authorization 与长链性能门
+   仍待实现；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
@@ -659,11 +697,25 @@ validate_contract
 
 在当前资料下，本项目已经可以完全自动地完成 E1 历史 replay，以及 E2-A 的
 live 状态机、append-only ledger、等待/恢复/修订、数学全重放和独立 RFC 3161
-回执影子复验、R1 stable-slot candidate prebuild，以及 R2a exact closure/same-origin
-tree/双 frozen isolated 烟测。E2-A 仍是工程基础，不是 live 证据：R2a
-`portable_offline_runtime=false`，可信时间 capability 与 candidate preparation 尚未成为不可
-绕过的 active switch。只有 E2-B 进一步完成 R2b 全入口 fencing/drain assessor、后续
-原子 active transition、cycle v4 和 scheduler authorization，并真实
+回执影子复验、R1 stable-slot candidate prebuild、R2a exact closure/same-origin
+tree/双 frozen isolated 烟测，以及 R2b pre-tombstone fence-prepare、full intent-prefix 的
+start→current append-only 证明、clean-start route fence、合法大 staged-feed 分离存储、
+worst-case/actual pre-swap capacity、exact pre-swap full boundary、append-only exchange-attempt
+WAL、随 swap 移动的 armed terminal marker、正常 same-poll exact-state gate/复用旧 boundary
+的 exchanged recovery、pre-event self-replay 和由 event 引用的六锁 full-clean
+content-addressed boundary。WAL/marker/boundary 仅具 recovery authority，唯一 DRAINING
+lifecycle authority 仍是 event；prepared retry 只自动收敛严格 temp/ACL crash state，任何
+suffix rollback/branch/gap/extra/symlink 都 fail closed。E2-A
+仍是工程基础，不是 live 证据：R2a
+`portable_offline_runtime=false`，R2b intent 只是 durable transaction lower-bound，
+`candidate_at_intent` 不是 activation selection，event 也只进入 DRAINING；所有 drained/
+active/rotation/trusted/E2/formal claim 仍为 false。可信时间 capability 与 candidate
+preparation 尚未成为不可绕过的 active switch。只有 E2-B 依次完成 R2b-2a clean-start
+eligibility observation/stale detection、不可重解释 v1 fence-prepare/intent-prefix/capsule/
+intent/exchange-attempt/armed-marker/boundary/event bytes（并承载未来 chunk/Merkle 历史）的
+R2b-2b v2 bounded-workset
+non-clean recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
+authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
 
 E3 仍然 `BLOCKED`。在独立灾害结局不存在时，最科学的机器行为不是生成五级

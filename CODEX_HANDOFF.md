@@ -3,11 +3,155 @@
 **Prepared:** 2026-08-27
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `3d6ce8f feat: add immutable epoch candidate registry`
-**State:** immutable epoch registry R1 已提交；当前共享工作树已实现并完成验证 R2a
-same-origin executable preparation，提交时应显式排除两项用户未跟踪文件。R2a
-不做 drain 或 active switch，所有 rotation/trusted-anchor/E2/activation/formal 字段保持
-false；下一步是 R2b machine `epoch_drain_started` barrier/assessor。
+**Committed baseline before this increment:** `b53a238 feat: add executable epoch preparation`
+**State:** R1 immutable registry 与 R2a same-origin executable preparation 已提交；本增量
+已经实现并验证 R2b 首个 clean-start drain barrier。它最多进入 DRAINING，不声明
+drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-27 epoch drain-start barrier R2b first slice
+
+The new explicit-only stage is:
+
+```text
+ootang-epoch-drain
+```
+
+`main.py` now exposes 30 selectable stages. The no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. The frozen R2b profile, module and test
+SHA-256 values are respectively
+`1da0056c8cbdc0fe30b8adca5b72cf52e211b679aae8b8981216e44c0f16d105`,
+`c4c226da087d354195fc3955ff60ff3b12af13f111d03cb59c5d64d0195a1602` and
+`b79d132562891a3134d55073a282b351533e525b0661cd47914698e323612d68`.
+
+This first R2b slice owns a separate drain lifecycle namespace: drain events, replayed
+head/status caches, create-only singleton fence prepares, intents, capsules, append-only
+`drain_exchange_attempts` WAL and an overlay, plus content-addressed full intent-prefix,
+staged-feed and full-clean boundary objects in the shared object store. It references and revalidates the immutable R1
+registry and R2a preparation tips but does not rewrite their events, capsule, objects,
+materialized tree or smoke receipts. Mutable drain head/status are cache only. A drain
+intent is a durable transaction reservation/lower-bound; `candidate_at_intent` records
+which R1/R2a candidate that transaction bound and is explicitly not activation
+selection. The WAL, armed marker and boundary have recovery authority only; an orphan
+fence prepare, intent-prefix, intent, capsule, staged-feed, attempt or boundary object
+has no lifecycle authority. The sole DRAINING lifecycle authority remains the
+`epoch_drain_started` event.
+
+The fencing critical section acquires every participating lock in one fixed order:
+
+```text
+manager -> cycle -> deploy -> runner -> replay -> shadow
+```
+
+This prevents the known producer, cycle, live runner, checkpoint replay and calibration
+shadow entrypoints from crossing the route transition. Failure to acquire any lock is a
+busy outcome, never a partially acquired drain transition.
+
+Version one deliberately accepts only a clean start. There must be no outstanding old-
+epoch issue and no pending guard, trusted-time or shadow work. If any work remains, the
+machine waits without changing the canonical route. Old-epoch work may continue between
+scheduler polls: the next poll still waits if it remains pending, while a legal append-
+only settled extension is replayed and automatically included in the next clean-state
+boundary. There is no operator target date, freeze, approval, force, backdate, fabricated
+outcome or manual cleanup path.
+
+After the clean-start checks, the machine captures the exact unfenced old-route identity
+and, before any tombstone `mkdir`, create-only publishes the unique
+`drain_fence_prepares/<candidate_id>.json`. This permanent marker binds the historical
+R1/R2a entries, drain capsule and its full intent-prefix, old-route identity, tombstone
+path, ACL digest/mode and mandatory swap policy. After a crash, or if the current R1/R2a
+tip advances, the machine must resume the same historical transaction from this marker;
+the marker itself is not lifecycle authority and is never activation selection.
+
+Only after that marker is durable does the machine prepare an empty mode-`0755`
+tombstone, install and exactly read back a Darwin extended ACL denying `everyone` write,
+and prove the fence with a real add-file denial probe. It then persists the bound drain
+intent and, under the complete lock set, revalidates the epoch/R1/R2a/route/empty-state/
+ACL facts. After the capacity, exact-boundary, WAL and armed-marker sequence described
+below, macOS `renameatx_np(RENAME_SWAP)` atomically exchanges
+that inode with the canonical old-epoch `issue_inbox` across their parent directories, so
+the ACL follows the inode and fences the canonical route immediately. The machine then
+hardens that route in place to exact mode `0555` and rechecks both ACL and denial probe.
+A crash between swap and chmod can only resume forward hardening and must never swap the
+directories back. There is no fallback to ordinary renames, move/copy/delete or any
+non-atomic/unfenced emulation.
+
+R2b keeps two boundaries distinct. The physical issue-admission boundary is the instant
+Darwin `RENAME_SWAP` succeeds and moves the deny-write inode onto canonical
+`issue_inbox`. The authoritative state-snapshot boundary is the content-addressed object
+created from a full-clean pre-swap replay under all six locks and then referenced by the unique
+`epoch_drain_started` event. It binds the live ledger, issue route/producer receipts,
+verified guard, trusted-time, outcome registry, calibration shadow, current source
+authority and staged next-epoch incoming inventories. Staged incoming is observed but is
+not old-epoch source authority; an unreferenced boundary object is only an orphan.
+
+The capsule references a content-addressed full intent-prefix manifest containing every
+live/shadow entry hash and the issue/outcome/guard/trusted-time/source inventories. Each
+poll proves that current state is an append-only extension of that start prefix; legal
+settled extensions are included in the final boundary. Manifest reads have an explicit
+64 MiB maximum and staged next-epoch feeds an explicit 16 MiB maximum. A staged feed is
+its own content-addressed object and the boundary stores only its reference, so a legal
+large feed cannot self-lock event replay behind the smaller control-object limit. Before
+event publication, the machine fully self-replays the boundary and all references and
+requires an exact reconstruction of the state being committed.
+
+Before swap, a worst-case capacity preflight serializes the full boundary with a
+maximum-16-MiB staged-feed CAS reference. If that boundary exceeds 64 MiB, the machine
+returns `waiting_for_drain_boundary_capacity`: canonical `issue_inbox` remains on its
+original inode, no event is written and no manual cleanup is requested. After that
+preflight, the irreversible tail is exactly final fence verification → stable two-read
+capture/CAS of the actual staged queue → actual boundary-capacity check → publish the
+exact pre-swap full boundary → append/replay its `drain_exchange_attempts` WAL terminal →
+write `.epoch-drain-armed-attempt.v1.json` inside the fence operand to bind that terminal
+and boundary → immediate Darwin swap. The marker moves atomically with the fence inode.
+The ordinary same-poll post-swap logical clean state must exactly equal the
+pre-swap state, and the post-swap publisher/self-replay repeats the checks. Only recovery
+from an already-exchanged crash may accept a proven append-only extension from the
+immutable start prefix to recovery-current.
+
+Every exchange attempt is previous-hash-linked and references one exact pre-swap full
+boundary; only the unique WAL terminal may be armed. A prepared retry can automatically
+recover the strictly recognized single marker-temp and exact/missing ACL crash states,
+without operator cleanup. After exchange, recovery must select the terminal from the
+marker that moved with the fence and reuse that terminal's **old boundary**. The current
+clean state is only an append-only-extension gate; recovery must not rebuild or replace
+the boundary. WAL suffix rollback, branch, sequence gap, extra entry, symlink, nonterminal
+marker or unknown temp/ACL state fails closed. Growth beyond the 64 MiB v1 boundary limit
+waits before swap; any historical chunk/Merkle scheme belongs to a future R2b-2b v2 and
+must not reinterpret v1 bytes.
+
+The resulting lifecycle state is only `DRAINING`. `activation_candidate_selected`, all
+drained/active/rotation/trusted-anchor/E2/real-activation/formal-warning claims remain
+false. The event does not claim `SEALED(old)` or `ACTIVE(new)`.
+
+The real-default R2a attempt already recorded below remains a required negative result.
+Five full checkpoints were built, but R1 correctly rejected the historical one-record
+feed at its causal publication gate with `Bundle was not durable before the first target
+natural day`. The repository lacks a finalized feed continuous from 2020-07-01 through
+the machine-current date, so no R1 candidate and no real R2a/R2b end-to-end PASS exists.
+Do not change the clock, synthesize dates, manually backdate or use a test override to
+turn that evidence into a green run.
+
+Final R2b verification is: focused `12/12` in 1008.486 seconds (1025.68 wall),
+R1+R2a+R2b+main `116/116` in 2361.831 seconds (2393.77 wall), and the full repository
+`809/809` in 5568.360 seconds (5642.18 wall), all with zero failures/errors. Main is
+`34/34`; the frozen v5 preflight is `23/23` and remains G0 PASS, G1--G4 BLOCKED,
+G5a not evaluated/authorized and formal warning false. Ruff, scoped format, compileall,
+diff-check, strict JSON `30/30`, both uv lock checks, the 30-stage list and default/
+explicit dry-runs pass. The 97 protected paths retain aggregate
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`, and the shared
+v4 Bai--Perron source has no diff. Final independent standards/specification review is
+P0/P1/P2 `0/0/0`; the remaining per-object publication-fsync fault matrix is coverage
+debt rather than a known implementation defect.
+
+The immediate next slice is R2b-2a clean-start eligibility observation/stale detection.
+It will persist and recheck observations across polls and absorb legal settled
+extensions, while remaining only `DRAINING`. R2b-2b must then introduce a new v2 schema
+for bounded-workset non-clean recovery of guard/trusted-time/shadow and other enumerated
+work. V2 must not reinterpret, add fields to or overwrite published v1 fence-prepare/
+intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes. Only a later drain assessor and
+authoritative transition may seal the old epoch and activate a candidate. Cycle v4,
+scheduler authorization and O(N^2)
+long-chain scan optimization remain later gates.
 
 ## 2026-08-27 epoch executable preparation R2a continuation
 
@@ -17,7 +161,7 @@ The new explicit-only stage is:
 ootang-epoch-preparation
 ```
 
-`main.py` now exposes 29 selectable stages. The no-argument chain remains exactly
+At the R2a baseline, `main.py` exposed 29 selectable stages. The no-argument chain remained exactly
 `features -> convlstm -> ootang-operational-v4`. The R2a profile and implementation
 SHA-256 values are respectively
 `c6ec0b1f340effd9e3fd5cd1a0ee67ebca9ffa4dc743a9cb36d701850dc875f9` and
@@ -127,13 +271,10 @@ requires this poll to exit successfully plus event replay; and some pre-lock/pro
 not change authority, `trusted_anchor_receipt_verified=false`, or
 `portable_offline_runtime=false`; details are in the R2a engineering document.
 
-Next is R2b, not an immediate active switch. It must first implement a machine
-`epoch_drain_started` barrier/assessor and close five prerequisites: fencing every
-old-epoch issue-creation entrypoint, recovering historical trusted-time requests,
-resolving orphan guard intents, fencing the old activation-prefix route, and fencing
-scheduler dispatch. Only then may the assessor drain existing issue/guard/time/outcome/
-revision/shadow work and a later slice authorize an atomic active transition. There is
-no human date, freeze, approval or force path.
+The subsequent R2b first slice now implements the clean-start canonical route fence and
+`epoch_drain_started`, but deliberately stops at DRAINING. Non-clean historical trusted-
+time/guard/shadow recovery and the drain assessor remain before any atomic active
+transition. There is no human date, freeze, approval or force path.
 
 ## 2026-08-26--27 immutable epoch registry R1 continuation
 
@@ -198,14 +339,12 @@ scope. R2a now closes the exact same-origin closure/materialization/smoke slice 
 changing the R1 chain; its remaining P2 boundaries are recorded in the R2a engineering
 document.
 
-Next is R2b, not cycle v4 or an immediate active switch. A machine
-`epoch_drain_started` barrier/assessor must first fence all old-epoch issue creation,
-recover historical trusted-time requests and orphan guard intents, reject the old
-activation-prefix route, and fence scheduler dispatch. It may then wait for existing
-issue/guard/time/outcome/revision/shadow transactions to close. Missing outcomes remain
-machine waiting; no forced rotation or fabricated settlement is allowed. Only a later
-transition slice may commit `SEALED(old)+ACTIVE(new)` and allow cycle v4 to consume the
-registry/preparation tip.
+R2a and the subsequent R2b clean-start route fence now close the executable-preparation
+and drain-start slices without changing this R1 history. R2b still needs non-clean
+trusted-time/guard/shadow recovery and an assessor for existing transactions. Missing
+outcomes remain machine waiting; no forced rotation or fabricated settlement is
+allowed. Only a later transition slice may commit `SEALED(old)+ACTIVE(new)` and allow
+cycle v4 to consume the registry/preparation tip.
 
 ## 2026-08-26 RFC 3161 trusted-time shadow continuation
 
@@ -1228,14 +1367,16 @@ E2-A/E2-B machine-live files:
 - `docs/ootang_prequential_deploy_engineering.md`
 - `docs/ootang_prequential_cycle_engineering.md`
 
-Epoch registry/preparation files:
+Epoch registry/preparation/drain files:
 
 - R1 is committed at `3d6ce8f` (`code/monitoring/ootang_epoch_registry.py`,
   `config/ootang_epoch_registry.v1.json`, its tests and engineering document);
-- `code/monitoring/ootang_epoch_preparation.py`;
-- `config/ootang_epoch_preparation.v1.json`;
-- `tests/test_ootang_epoch_preparation.py`;
-- `docs/ootang_epoch_preparation_engineering.md`.
+- R2a is committed at `b53a238` (`code/monitoring/ootang_epoch_preparation.py`,
+  `config/ootang_epoch_preparation.v1.json`, its tests and engineering document);
+- `code/monitoring/ootang_epoch_drain.py`;
+- `config/ootang_epoch_drain.v1.json`;
+- `tests/test_ootang_epoch_drain.py`;
+- `docs/ootang_epoch_drain_engineering.md`.
 
 Pre-existing untracked files that are outside this task and must not be staged or modified without an explicit decision:
 
@@ -1262,17 +1403,28 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    shadow as implemented. Keep public live/guard-envelope reconstruction, true forward,
    pinned trust, isolated runtime, causal-time and adversarial tests intact. Do not
    weaken either gate into producer or receipt self-report.
-4. Treat R1 registry and R2a same-origin executable preparation as implemented. Next
-   build the R2b machine `epoch_drain_started` barrier/assessor. Before it can declare
-   drain authority, fence every old-epoch issue entrypoint, recover historical
-   trusted-time requests and orphan guard intents, reject the old activation-prefix
-   route, and fence scheduler dispatch. Failure waits or blocks; never add human date
-   selection, freezing, approval, force or fabricated backfill.
-5. After R2b proves old work is drained, add a separate authoritative active-transition
-   slice, then cycle v4 with trusted-time qualification. Keep scheduler authorization
-   unavoidable and optimize repeated receipt/ledger scans so long-lived operation does
-   not grow as O(N^2). Do not use historical OOF rows as future predictions, select a
-   best seed, or backdate a missed target.
+4. Treat R1 registry, R2a same-origin executable preparation and the R2b clean-start
+   canonical route fence as implemented. Preserve the independent drain chain, fixed
+   six-lock order, permanent pre-tombstone fence prepare, full intent-prefix and
+   intent-as-lower-bound recovery, append-only `drain_exchange_attempts`, terminal
+   armed-marker binding, content-addressed full-clean pre-swap boundary/pre-event replay,
+   worst-case/actual pre-swap capacity checks, the exact final-fence→stable-CAS→capacity→
+   boundary→WAL-terminal→armed-marker→immediate-swap tail, ordinary same-poll exact-state equality, explicit 64 MiB manifest
+   and 16 MiB staged-feed limits, and mandatory
+   `renameatx_np(RENAME_SWAP)` semantics; never downgrade the exchange to ordinary
+   rename. Next implement R2b-2a clean-start eligibility observation/stale
+   detection, still only DRAINING. Then introduce an explicitly versioned R2b-2b v2
+   bounded-workset recovery for non-clean trusted-time/guard/shadow work. V2 must not
+   reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
+   armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in
+   that new version. Failure waits or
+   blocks; never add human date selection, freezing, cleanup, approval, force or
+   fabricated backfill.
+5. Only after a separate assessor proves the bounded old work is drained, add an
+   authoritative active-transition slice, then cycle v4 with trusted-time qualification.
+   Keep broader scheduler authorization unavoidable and optimize repeated receipt/ledger
+   scans so long-lived operation does not grow as O(N^2). Do not use historical OOF rows
+   as future predictions, select a best seed, or backdate a missed target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already

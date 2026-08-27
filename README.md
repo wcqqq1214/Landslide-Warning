@@ -56,6 +56,44 @@
   repoll、实现升级和 orphan receipt 恢复都会重跑当前烟测。该树固定
   `portable_offline_runtime=false`；drain、active switch、rotation、trusted anchor、E2/
   activation/formal claim 仍全部为 false。
+- 显式阶段 `ootang-epoch-drain` 实现 R2b 的首个 machine-only drain-start barrier：
+  它在独立 `drain_events/head/status/drain_fence_prepares/intents/capsules/drain_exchange_attempts/overlay` namespace 中
+  引用但不改写 R1/R2a。capsule 引用内容寻址 full intent-prefix（live/shadow 全 hashes 与
+  issue/outcome/guard/trusted/source inventories）；每 poll 证明 start→current append-only。
+  intent 是 durable transaction reservation/lower-bound，`candidate_at_intent` 不是
+  activation selection。append-only attempt WAL、armed marker 与 boundary 只有 recovery authority；
+  orphan prepare/prefix/intent/capsule/attempt/boundary object 没有 lifecycle
+  authority，唯一 DRAINING authority 仍是 `epoch_drain_started` event。
+  按 `manager → cycle → deploy → runner → replay → shadow` 取得全锁，并只允许没有
+  outstanding issue 或 pending guard/trusted-time/shadow 工作的 clean start。任何 tombstone
+  `mkdir` 前，机器先 create-only 发布永久 singleton `fence_prepare`，绑定历史 R1/R2a、
+  capsule/prefix、旧 route identity 与 ACL/swap policy；crash 或 tip 推进后恢复同一 transaction，
+  marker 自身无 lifecycle authority。随后才为 `0755` 空 tombstone 安装并精确复验 extended
+  ACL `everyone deny write`，且真实
+  add-file 拒写探针必须通过；随后保存 intent、复验全部绑定，并完成下述 capacity/boundary/
+  WAL/armed-marker 序列后再用 macOS
+  `renameatx_np(RENAME_SWAP)` 将旧 epoch canonical `issue_inbox` 与 tombstone 原子交换。ACL 随
+  inode 跨父目录交换后立即围栏 canonical route，再原位收紧为 exact `0555` 并复验
+  ACL/拒写。若崩溃发生在 swap→chmod 窗口，恢复只能向前加固，绝不交换回去；平台
+  不支持时也禁止退化为普通 rename。
+  物理 issue-admission boundary 是 Darwin swap 成功的瞬间；权威 state-snapshot boundary
+  则是六锁下 full-clean pre-swap replay 后由唯一 `epoch_drain_started` 引用的内容寻址对象，绑定
+  live/issue/guard/trusted/outcome/shadow/source inventories 与 staged next-epoch incoming。
+  pending 时机器跨 poll 等待，合法 settled extension 自动纳入下一边界，不做人工 freeze/
+  cleanup/backdate。manifest/staged-feed 上限分别固定 64 MiB / 16 MiB，feed 独立内容寻址，合法
+  大 feed 不会自锁。swap 前 worst-case boundary 超过 64 MiB 时返回
+  `waiting_for_drain_boundary_capacity`，route 不交换、无 event、无人工 cleanup；通过后顺序
+  固定为 final fence verify → actual queue 稳定 capture/CAS → actual capacity → publish exact
+  pre-swap full boundary → append/replay `drain_exchange_attempts` terminal → 在 fence operand
+  写入直接绑定 terminal+boundary 的 `.epoch-drain-armed-attempt.v1.json` → immediate Darwin
+  swap；marker 随 inode 原子移动。正常同 poll post-swap logical clean 必须与 pre-swap 精确
+  相等；prepared retry 只自动恢复严格单一 temp/ACL crash state。exchanged recovery 必须从
+  armed terminal 读取旧 boundary，current clean 只作合法 append-only extension gate，禁止
+  重建 boundary。WAL suffix rollback/branch/gap/extra/symlink 均 fail closed。publisher 与 event
+  前 self-replay 继续复验；超 64 MiB 仍在 swap 前机器 waiting，历史 chunk/Merkle 只能进入
+  未来 R2b-2b v2，不能重解释 v1 bytes。
+  状态只进入 `DRAINING`；candidate selection、drained、active switch、rotation、trusted
+  anchor、E2 evidence、activation readiness 与正式预警声明全部为 false。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -100,7 +138,7 @@ uv run python main.py --stage ootang-issue-replay
 uv run python main.py --stage ootang-verified-live
 uv run python main.py --stage ootang-prequential-cycle-v3
 uv run python main.py --stage ootang-trusted-time-shadow
-uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation
+uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -125,7 +163,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（29 个可选阶段）
+main.py                         # 当前管线入口（30 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -164,6 +202,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_trusted_time_shadow_engineering.md`](docs/ootang_trusted_time_shadow_engineering.md) | RFC 3161 固定 TSA/策略/证书、隔离冻结运行时的自动可信时间影子请求、live/guard-bound 离线复验、崩溃恢复与非激活边界 |
 | [`docs/ootang_epoch_registry_engineering.md`](docs/ootang_epoch_registry_engineering.md) | 不可变 epoch registry R1：稳定 slot、content-addressed archival byte capsule、candidate verified-ready 全链与非轮换边界 |
 | [`docs/ootang_epoch_preparation_engineering.md`](docs/ootang_epoch_preparation_engineering.md) | R2a exact executable closure、同源物化树、双冻结隔离环境与五种子重放烟测 |
+| [`docs/ootang_epoch_drain_engineering.md`](docs/ootang_epoch_drain_engineering.md) | R2b 首切片：全锁序、canonical route 原子 swap、full-clean boundary/event 与非切换边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -172,13 +211,16 @@ docs/                           # 当前方法、结果边界和研究计划
 ## 尚未完成的关键事项
 
 1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay、RFC 3161
-   shadow、R1 immutable registry 与 R2a same-origin executable preparation 均已有
-   machine-only additive 实现。R2a 不是 portable runtime，也尚未 drain 旧 epoch 或
-   切换 active。下一道门禁是 R2b machine `epoch_drain_started` barrier/assessor；
-   实现前必须先解决全入口 issue fencing、trusted-time 历史 request 恢复、orphan
-   guard intent、旧 activation-prefix route 和 scheduler dispatch fencing。随后才能做原子
-   active transition、cycle v4 与长链 O(N²) 优化。不得添加人工日期、冻结、批准或
-   force；在这些门关闭前保持 `real_activation_ready=false`。
+   shadow、R1 immutable registry、R2a same-origin executable preparation 与 R2b
+   clean-start drain barrier 均已有 machine-only additive 实现。R2b 首切片只原子撤销
+   canonical issue route，固定 full-clean boundary 并提交 `epoch_drain_started`；pending
+   工作会保持机器 waiting，尚未声明 drained 或切换 active。下一步是 R2b-2a
+   clean-start eligibility observation/stale detection（仍只 DRAINING），随后以不可重解释
+   v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/event bytes 的新 schema 实现
+   R2b-2b v2 bounded-workset non-clean recovery，再做独立
+   drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
+   O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
+   关闭前保持 `real_activation_ready=false`。
 2. ACI、AgACI-EWA 与 SPCI 已按预声明合同进入未来 E2 shadow；最少需要 180 个
    共同可用未来目标日并通过逐站 coverage/score/availability/rolling gate，才可
    报告 engineering readiness。当前不会自动选择或晋升，E1 回顾性结果也不得
