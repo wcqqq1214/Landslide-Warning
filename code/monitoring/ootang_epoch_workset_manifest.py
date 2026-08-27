@@ -1,8 +1,11 @@
-"""Reserve the complete bounded old-epoch workset after the writer cut.
+"""Reserve the complete frozen-observation old-epoch workset after the cut.
 
 This explicit engineering stage only publishes a content-addressed manifest and
-one create-only reservation event.  It never runs an old writer, creates an
-outcome or RFC 3161 nonce, performs recovery, or advances lifecycle state.
+one create-only reservation event with transition seeds for the work visible at
+that observation.  It does not enumerate a terminal transition closure or
+reserve work derived by future transitions.  It never runs an old writer,
+creates an outcome or RFC 3161 nonce, performs recovery, or advances lifecycle
+state.
 """
 
 from __future__ import annotations
@@ -33,7 +36,7 @@ from monitoring import ootang_epoch_registry as registry  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_manifest.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7"
+    "ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -82,6 +85,8 @@ TRUE_CAPABILITIES = (
     "bounded_workset_reservation_implemented",
 )
 FALSE_CLAIMS = (
+    "terminal_transition_closure_enumerated",
+    "derived_future_work_reservation_implemented",
     "bounded_workset_recovery_implemented",
     "old_work_admission_fence_implemented",
     "canonical_old_issue_route_fence_implemented",
@@ -135,9 +140,9 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "manifest_schema_version": "ootang_epoch_closed_workset_manifest_v1",
-    "event_schema_version": "ootang_epoch_closed_workset_reserved_event_v1",
-    "event_type": "epoch_closed_workset_reserved",
+    "manifest_schema_version": "ootang_epoch_frozen_observation_workset_manifest_v2",
+    "event_schema_version": "ootang_epoch_frozen_observation_workset_reserved_event_v2",
+    "event_type": "epoch_frozen_observation_workset_reserved",
     "maximum_items": 4096,
     "maximum_artifacts": 16384,
     "maximum_manifest_bytes": MAX_CONTROL_BYTES,
@@ -150,7 +155,7 @@ EXPECTED_PROTOCOL = {
         family: list(states) for family, states in ALLOWED_SUCCESSORS.items()
     },
     "manifest_policy": (
-        "complete_bounded_six_family_transitive_artifact_closure_no_truncation"
+        "complete_frozen_observation_six_family_workset_with_transition_seeds_no_truncation"
     ),
     "reservation_policy": ("singleton_event_exactly_reserves_manifest_natural_keys"),
     "cut_policy": (
@@ -161,7 +166,7 @@ EXPECTED_PROTOCOL = {
 
 
 class WorksetManifestError(RuntimeError):
-    """Base failure for closed-workset reservation."""
+    """Base failure for frozen-observation workset reservation."""
 
 
 class WorksetManifestConfigError(WorksetManifestError):
@@ -360,9 +365,9 @@ def load_workset_manifest_profile(
     expected_identity = (
         "ootang_epoch_workset_manifest_profile_v1",
         "ootang-epoch-workset-manifest-v1",
-        "1.0.0-closed-reservation",
+        "1.1.0-frozen-observation-transition-seed",
         "ootang",
-        "bounded_closed_workset_manifest_and_reservation_engineering_only_no_recovery_lifecycle_or_transition_authority",
+        "bounded_frozen_observation_workset_and_transition_seed_reservation_only_no_terminal_closure_recovery_lifecycle_or_transition_authority",
     )
     if identity != expected_identity:
         raise WorksetManifestConfigError("Workset-manifest identity changed")
@@ -809,7 +814,9 @@ def _normalize_inspection(
             if dependency == natural_key:
                 raise WorksetManifestIntegrityError("Item depends on itself")
         if not item.artifacts:
-            raise WorksetManifestIntegrityError("Workset item has no artifact closure")
+            raise WorksetManifestIntegrityError(
+                "Workset item has no frozen-observation artifact seed"
+            )
         ordered_artifacts = tuple(
             sorted(
                 item.artifacts, key=lambda value: (value.root, value.path, value.role)
@@ -1026,7 +1033,9 @@ def _manifest_payload(
         "schema_version": profile["protocol"]["manifest_schema_version"],
         "profile_id": profile["profile_id"],
         "profile_sha256": profile["_profile_sha256"],
-        "manifest_role": "complete_bounded_closed_workset_reservation_only",
+        "manifest_role": (
+            "complete_frozen_observation_workset_and_transition_seed_reservation_only"
+        ),
         "publisher_implementation": publisher,
         "admission_cut": _binding_payload(binding),
         "frozen_live_upper_tip": {
@@ -1101,7 +1110,7 @@ def _load_manifest_reference(
         raise WorksetManifestIntegrityError("Manifest reference changed")
     payload, snapshot = _read_json(
         paths.root / expected_path,
-        name="closed-workset manifest",
+        name="frozen-observation workset manifest",
         maximum_bytes=profile["protocol"]["maximum_manifest_bytes"],
     )
     if snapshot.sha256 != digest or snapshot.size_bytes != size:
@@ -1124,13 +1133,13 @@ def _load_manifest_reference(
         *TRUE_CAPABILITIES,
         *FALSE_CLAIMS,
     }
-    _exact(payload, expected_keys, name="closed-workset manifest")
+    _exact(payload, expected_keys, name="frozen-observation workset manifest")
     if (
         payload["schema_version"] != profile["protocol"]["manifest_schema_version"]
         or payload["profile_id"] != profile["profile_id"]
         or payload["profile_sha256"] != profile["_profile_sha256"]
         or payload["manifest_role"]
-        != "complete_bounded_closed_workset_reservation_only"
+        != ("complete_frozen_observation_workset_and_transition_seed_reservation_only")
         or payload["admission_cut"] != _binding_payload(binding)
         or any(payload.get(name) is not True for name in TRUE_CAPABILITIES)
         or any(payload.get(name) is not False for name in FALSE_CLAIMS)
@@ -1155,7 +1164,7 @@ def _load_manifest_reference(
         publisher_implementation=publisher,
     )
     if payload != expected:
-        raise WorksetManifestIntegrityError("Manifest closure changed")
+        raise WorksetManifestIntegrityError("Manifest frozen observation changed")
     return payload, snapshot
 
 
@@ -1176,7 +1185,9 @@ def _event_payload(
         "previous_entry_sha256": ZERO_HASH,
         "event_type": profile["protocol"]["event_type"],
         "recorded_at_utc": recorded_at,
-        "event_role": "singleton_bounded_closed_workset_reservation_only",
+        "event_role": (
+            "singleton_frozen_observation_workset_and_transition_seed_reservation_only"
+        ),
         "publisher_implementation": _publisher_from_payload(publisher_implementation),
         "admission_cut": _binding_payload(binding),
         "manifest": {
@@ -1195,7 +1206,9 @@ def _load_existing_event(
     binding: AdmissionCutBinding,
 ) -> tuple[dict[str, Any], registry.ArtifactSnapshot, registry.ArtifactSnapshot] | None:
     events = _strict_entries(paths.events, name="workset reservation events")
-    manifests = _strict_entries(paths.manifests, name="closed-workset manifests")
+    manifests = _strict_entries(
+        paths.manifests, name="frozen-observation workset manifests"
+    )
     if not events:
         if manifests:
             raise WorksetManifestIntegrityError(
@@ -1238,7 +1251,8 @@ def _load_existing_event(
         or payload["sequence_id"] != 1
         or payload["previous_entry_sha256"] != ZERO_HASH
         or payload["event_type"] != profile["protocol"]["event_type"]
-        or payload["event_role"] != "singleton_bounded_closed_workset_reservation_only"
+        or payload["event_role"]
+        != ("singleton_frozen_observation_workset_and_transition_seed_reservation_only")
         or payload["admission_cut"] != _binding_payload(binding)
         or any(payload.get(name) is not True for name in TRUE_CAPABILITIES)
         or any(payload.get(name) is not False for name in FALSE_CLAIMS)
@@ -1409,7 +1423,7 @@ def _write_status(
         else ("absent" if status == "waiting_for_admission_cut" else "unknown")
     )
     payload = {
-        "schema_version": "ootang_epoch_workset_manifest_status_v1",
+        "schema_version": "ootang_epoch_workset_manifest_status_v2",
         "profile_id": profile["profile_id"],
         "profile_sha256": profile["_profile_sha256"],
         "checked_at_utc": checked_at,
@@ -1480,7 +1494,9 @@ def _publish_reservation(
         )
 
     event_entries = _strict_entries(paths.events, name="workset reservation events")
-    manifest_entries = _strict_entries(paths.manifests, name="closed-workset manifests")
+    manifest_entries = _strict_entries(
+        paths.manifests, name="frozen-observation workset manifests"
+    )
     if event_entries:
         existing = _load_existing_event(profile, paths, binding)
         if existing is None:
@@ -1489,11 +1505,11 @@ def _publish_reservation(
     if manifest_entries:
         if len(manifest_entries) != 1 or manifest_entries[0] != manifest_path:
             raise WorksetManifestIntegrityError(
-                "Orphan manifest does not match the current complete workset"
+                "Orphan manifest does not match the current frozen observation"
             )
         payload, manifest = _read_json(
             manifest_path,
-            name="recoverable orphan closed-workset manifest",
+            name="recoverable orphan frozen-observation workset manifest",
             maximum_bytes=profile["protocol"]["maximum_manifest_bytes"],
         )
         if manifest.raw != raw or payload != _manifest_payload(
@@ -1511,7 +1527,10 @@ def _publish_reservation(
     try:
         if manifest is None:
             manifest = drain._publish_once_durable(  # noqa: SLF001
-                manifest_path, raw, root=paths.root, name="closed-workset manifest"
+                manifest_path,
+                raw,
+                root=paths.root,
+                name="frozen-observation workset manifest",
             )
         event = _event_payload(
             profile,
@@ -1612,7 +1631,7 @@ def _coordinate_epoch_workset_manifest(
                 )
             event, event_snapshot, manifest_snapshot = existing
             reason = (
-                "immutable closed-workset reservation replayed; predecessor bytes "
+                "immutable frozen-observation workset reservation replayed; predecessor bytes "
                 "are checked only by exact-key recovery CAS"
             )
             _write_status(
@@ -1654,8 +1673,9 @@ def _coordinate_epoch_workset_manifest(
             else "closed_workset_reservation_idempotent"
         )
         reason = (
-            "all six families and transitive artifacts are bounded and reserved; "
-            "no recovery, lifecycle, drained, active, trusted, E2, or formal authority"
+            "all six frozen-observation families and their transition seeds are "
+            "bounded and reserved; no terminal/derived-future closure, recovery, "
+            "lifecycle, drained, active, trusted, E2, or formal authority"
         )
         _write_status(
             profile,
@@ -1703,7 +1723,7 @@ def _coordinate_epoch_workset_manifest(
 def coordinate_epoch_workset_manifest(
     *, config_path: Path = DEFAULT_CONFIG_PATH
 ) -> WorksetManifestResult:
-    """Run the reviewed machine-only closed-workset reservation poll."""
+    """Run the reviewed machine-only frozen-observation reservation poll."""
 
     return _coordinate_epoch_workset_manifest(config_path=config_path)
 

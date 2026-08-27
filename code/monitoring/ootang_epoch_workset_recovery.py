@@ -28,7 +28,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "c958a407cd5903c4fdff5e1e22e79af3c6669194506b136b0e44948a88a4bb3e"
+    "2b956d96d3aa3049a7901e21a250743aaa90701e41a814fe98e5c91936fdcf5a"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -38,16 +38,118 @@ SUPPORTED_SUCCESSORS = (
     "anchor_receipt_repaired",
     "superseded_by_backfill",
 )
+TRANSITION_CONTRACT = {
+    "schema_version": "ootang_epoch_workset_transition_contract_v1",
+    "families": {
+        "issue_route_replay": {
+            "mutation_lanes": ["issue_replay_registry", "live_ledger"],
+            "edges": {
+                "issue_replay_receipt_verified": ["issue_route_replay_consumed"],
+                "issue_route_replay_consumed": [],
+                "derived_live_outstanding_required": [],
+            },
+            "terminal_actions": ["issue_route_replay_consumed"],
+        },
+        "live_outstanding": {
+            "mutation_lanes": ["live_ledger", "trusted_time_outbox"],
+            "edges": {
+                "anchor_receipt_repaired": [],
+                "anchor_request_recorded": ["anchor_result_recorded"],
+                "anchor_result_recorded": [
+                    "anchor_request_recorded",
+                    "outcome_batch_settled",
+                ],
+                "outcome_batch_settled": [],
+            },
+            "terminal_actions": [
+                "anchor_receipt_repaired",
+                "outcome_batch_settled",
+            ],
+        },
+        "outcome_revision": {
+            "mutation_lanes": ["source_registry", "outcome_registry", "live_ledger"],
+            "edges": {
+                "source_snapshot_ingested": ["derived_outcome_items_required"],
+                "derived_outcome_items_required": [],
+                "outcome_materialized": ["outcome_or_revision_consumed"],
+                "outcome_or_revision_consumed": [],
+            },
+            "terminal_actions": ["outcome_or_revision_consumed"],
+        },
+        "guard": {
+            "mutation_lanes": ["guard_registry"],
+            "edges": {
+                "guard_completion_recorded": [],
+                "superseded_by_backfill": [],
+            },
+            "terminal_actions": [
+                "guard_completion_recorded",
+                "superseded_by_backfill",
+            ],
+        },
+        "trusted_time": {
+            "mutation_lanes": ["trusted_time_outbox"],
+            "edges": {
+                "trusted_time_request_der_repaired": [
+                    "trusted_time_response_link_recorded"
+                ],
+                "trusted_time_response_link_recorded": [
+                    "trusted_time_receipt_verified"
+                ],
+                "trusted_time_receipt_verified": [],
+            },
+            "terminal_actions": ["trusted_time_receipt_verified"],
+        },
+        "shadow": {
+            "mutation_lanes": ["shadow_ledger"],
+            "edges": {
+                "shadow_epoch_closed": ["shadow_epoch_genesis_created"],
+                "shadow_epoch_genesis_created": ["shadow_live_event_classified"],
+                "shadow_live_event_classified": [],
+                "derived_shadow_outstanding_required": ["shadow_outstanding_settled"],
+                "shadow_outstanding_settled": [],
+                "shadow_cursor_at_frozen_live_upper_tip": [],
+            },
+            "terminal_actions": [
+                "shadow_live_event_classified",
+                "shadow_outstanding_settled",
+                "shadow_cursor_at_frozen_live_upper_tip",
+            ],
+        },
+    },
+    "dependency_policy": "only_terminal_step_receipts_satisfy_dependencies",
+    "receipt_policy": "one_create_only_receipt_per_transition_step",
+    "branch_policy": "branch_selection_requires_reviewed_evidence_adapter",
+    "derived_work_policy": "unresolved_derived_work_never_counts_as_terminal",
+}
+TRANSITION_CONTRACT_SHA256 = hashlib.sha256(
+    (
+        json.dumps(
+            TRANSITION_CONTRACT,
+            ensure_ascii=False,
+            allow_nan=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        + "\n"
+    ).encode("utf-8")
+).hexdigest()
 TRUE_CAPABILITIES = (
     "machine_only",
     "manifest_keyed_dispatcher_implemented",
     "deterministic_local_adapters_implemented",
     "crash_forward_adoption_implemented",
+    "transition_plan_binding_implemented",
+    "step_receipt_chain_implemented",
+    "terminal_receipt_dependency_gate_implemented",
 )
 FALSE_CLAIMS = (
     "bounded_workset_recovery_implemented",
     "all_reserved_items_settled",
     "all_reserved_successors_supported",
+    "terminal_transition_closure_implemented",
+    "derived_future_work_reservation_implemented",
+    "all_transition_branches_supported",
     "network_recovery_implemented",
     "ledger_mutation_recovery_implemented",
     "network_action_performed",
@@ -71,11 +173,11 @@ FALSE_CLAIMS = (
 EXPECTED_UPSTREAM = {
     "manifest_profile": {
         "path": "config/ootang_epoch_workset_manifest.v1.json",
-        "expected_sha256": "19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7",
+        "expected_sha256": "ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc",
     },
     "manifest_implementation": {
         "path": "code/monitoring/ootang_epoch_workset_manifest.py",
-        "expected_sha256": "5e1e170473189d03d951b43a0e3258f4cf7d3cdff33c3dcb807206d1612d5e37",
+        "expected_sha256": "8868075715188effe708fe353bf18cbefdee9060abd90f92ede8120cf5313ef2",
     },
     "trusted_implementation": {
         "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
@@ -106,12 +208,15 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v1",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_item_intent_v1",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_receipt_v1",
-    "event_schema_version": "ootang_epoch_workset_recovery_event_v1",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v1",
-    "event_type": "epoch_workset_item_recovered",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v2",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v2",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v2",
+    "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v2",
+    "event_type": "epoch_workset_transition_step_recorded",
+    "transition_contract_schema_version": TRANSITION_CONTRACT["schema_version"],
+    "transition_contract_sha256": TRANSITION_CONTRACT_SHA256,
+    "terminal_completion_policy": ("only_terminal_step_receipts_satisfy_dependencies"),
     "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
     "surviving_lock_order": list(LOCK_ORDER),
     "supported_successors": list(SUPPORTED_SUCCESSORS),
@@ -468,6 +573,110 @@ def _dag(reservation: Reservation) -> tuple[list[dict[str, Any]], dict[str, str]
     return ready, ids, _sha256(_canonical_bytes(graph))
 
 
+def _transition_plan(item: Mapping[str, Any]) -> dict[str, object]:
+    family = item.get("family")
+    if not isinstance(family, str) or family not in TRANSITION_CONTRACT["families"]:
+        raise WorksetRecoveryIntegrityError("Recovery item has no transition contract")
+    family_contract = TRANSITION_CONTRACT["families"][family]
+    edges = {
+        action: list(next_actions)
+        for action, next_actions in family_contract["edges"].items()
+    }
+    terminal_actions = list(family_contract["terminal_actions"])
+    initial_action = item.get("canonical_successor_state")
+    if not isinstance(initial_action, str) or initial_action not in edges:
+        raise WorksetRecoveryIntegrityError(
+            "Recovery item successor has no transition edge"
+        )
+    authority = item.get("authority")
+    if not isinstance(authority, Mapping):
+        raise WorksetRecoveryIntegrityError("Recovery item authority changed type")
+
+    closure_resolved = True
+    unresolved_reason: str | None = None
+    if family == "issue_route_replay" and authority.get("seal_event") is None:
+        edges["issue_route_replay_consumed"] = ["derived_live_outstanding_required"]
+        terminal_actions = []
+        closure_resolved = False
+        unresolved_reason = "route consumption creates unreserved live outstanding work"
+    elif family == "outcome_revision" and initial_action == "source_snapshot_ingested":
+        terminal_actions = []
+        closure_resolved = False
+        unresolved_reason = (
+            "source ingestion may create multiple content-dependent outcome obligations"
+        )
+    elif family == "shadow":
+        action_variant = authority.get("action")
+        record_type = authority.get("record_type")
+        if action_variant == "create_shadow_epoch_genesis":
+            initial_action = "shadow_epoch_genesis_created"
+            terminal_actions = []
+            closure_resolved = False
+            unresolved_reason = (
+                "shadow genesis can create an unreserved outstanding classification"
+            )
+        elif action_variant == "close_or_open_shadow_epoch":
+            initial_action = "shadow_epoch_closed"
+            terminal_actions = []
+            closure_resolved = False
+            unresolved_reason = (
+                "shadow rotation requires close and genesis transactions"
+            )
+        elif record_type == "unclassified_live_issue":
+            edges["shadow_live_event_classified"] = [
+                "derived_shadow_outstanding_required"
+            ]
+            terminal_actions = []
+            closure_resolved = False
+            unresolved_reason = (
+                "shadow issue classification creates an unreserved outstanding target"
+            )
+
+    body: dict[str, object] = {
+        "schema_version": "ootang_epoch_workset_item_transition_plan_v1",
+        "key_id": item["key_id"],
+        "family": family,
+        "natural_key": item["natural_key"],
+        "initial_action": initial_action,
+        "edges": [
+            {"action": action, "next_actions": next_actions}
+            for action, next_actions in edges.items()
+        ],
+        "terminal_actions": terminal_actions,
+        "closure_resolved": closure_resolved,
+        "unresolved_reason": unresolved_reason,
+        "mutation_lanes": list(family_contract["mutation_lanes"]),
+        "read_set_namespace_digest": item["namespace_digest"],
+        "write_set_policy": "action_specific_create_only_or_head_cas_required",
+    }
+    return {**body, "plan_sha256": _sha256(_canonical_bytes(body))}
+
+
+def _plan_edges(plan: Mapping[str, Any]) -> dict[str, list[str]]:
+    raw = plan.get("edges")
+    if not isinstance(raw, list):
+        raise WorksetRecoveryIntegrityError("Transition plan edges changed type")
+    result: dict[str, list[str]] = {}
+    for edge in raw:
+        if (
+            not isinstance(edge, dict)
+            or set(edge) != {"action", "next_actions"}
+            or not isinstance(edge.get("action"), str)
+            or not isinstance(edge.get("next_actions"), list)
+            or not all(isinstance(value, str) for value in edge["next_actions"])
+            or edge["action"] in result
+        ):
+            raise WorksetRecoveryIntegrityError("Transition plan edge changed")
+        result[edge["action"]] = list(edge["next_actions"])
+    return result
+
+
+def _step_id(key_id: str, step_index: int, action: str) -> str:
+    return _sha256(
+        _canonical_bytes({"key_id": key_id, "step_index": step_index, "action": action})
+    )
+
+
 def _reference(snapshot: registry.ArtifactSnapshot, root: Path) -> dict[str, object]:
     return {
         "path": snapshot.path.relative_to(root).as_posix(),
@@ -492,11 +701,11 @@ def _provenance() -> dict[str, object]:
     }
 
 
-def _item_adapter_supported(item: Mapping[str, Any]) -> bool:
-    successor = item.get("canonical_successor_state")
-    if successor not in SUPPORTED_SUCCESSORS:
+def _item_adapter_supported(item: Mapping[str, Any], action: str | None = None) -> bool:
+    selected = action or item.get("canonical_successor_state")
+    if selected not in SUPPORTED_SUCCESSORS:
         return False
-    if successor != "superseded_by_backfill":
+    if selected != "superseded_by_backfill":
         return True
     authority = item.get("authority")
     return isinstance(authority, Mapping) and isinstance(
@@ -512,10 +721,14 @@ def _global_intent_payload(
     *,
     created_at: str,
 ) -> dict[str, object]:
-    unsupported = [
-        {"key_id": item["key_id"], "successor": item["canonical_successor_state"]}
-        for item in ordered
-        if not _item_adapter_supported(item)
+    plans = [_transition_plan(item) for item in ordered]
+    unsupported_initial_steps = [
+        {
+            "key_id": item["key_id"],
+            "action": plan["initial_action"],
+        }
+        for item, plan in zip(ordered, plans, strict=True)
+        if not _item_adapter_supported(item, str(plan["initial_action"]))
     ]
     return {
         "schema_version": profile["protocol"]["intent_schema_version"],
@@ -528,11 +741,17 @@ def _global_intent_payload(
         "manifest": _reference(reservation.manifest_snapshot, reservation.paths.root),
         "workset_keyset_sha256": reservation.manifest["workset_keyset_sha256"],
         "dependency_graph_sha256": graph_digest,
+        "transition_contract_schema_version": TRANSITION_CONTRACT["schema_version"],
+        "transition_contract_sha256": TRANSITION_CONTRACT_SHA256,
+        "transition_plans": plans,
+        "transition_plans_sha256": _sha256(_canonical_bytes(plans)),
         "ordered_key_ids": [item["key_id"] for item in ordered],
-        "supported_key_ids": [
-            item["key_id"] for item in ordered if _item_adapter_supported(item)
+        "initial_step_supported_key_ids": [
+            item["key_id"]
+            for item, plan in zip(ordered, plans, strict=True)
+            if _item_adapter_supported(item, str(plan["initial_action"]))
         ],
-        "unsupported": unsupported,
+        "unsupported_initial_steps": unsupported_initial_steps,
         "adapter_provenance": _provenance(),
         **_claims(),
     }
@@ -656,18 +875,31 @@ def _ensure_item_intent(
     global_snapshot: registry.ArtifactSnapshot,
     item: Mapping[str, Any],
     dependency_receipts: Sequence[registry.ArtifactSnapshot],
+    previous_step_receipt: registry.ArtifactSnapshot | None,
     *,
+    step_index: int,
+    action: str,
     now: datetime,
 ) -> registry.ArtifactSnapshot:
-    path = paths.item_intents / f"{item['key_id']}.json"
+    step_id = _step_id(item["key_id"], step_index, action)
+    path = paths.item_intents / f"{step_id}.json"
+    plan = _transition_plan(item)
     stable = {
         "schema_version": profile["protocol"]["item_intent_schema_version"],
         "profile_id": profile["profile_id"],
         "profile_sha256": profile["_profile_sha256"],
+        "step_id": step_id,
+        "step_index": step_index,
         "key_id": item["key_id"],
         "natural_key": item["natural_key"],
         "namespace_digest": item["namespace_digest"],
-        "successor": item["canonical_successor_state"],
+        "action": action,
+        "transition_plan_sha256": plan["plan_sha256"],
+        "previous_step_receipt": (
+            _reference(previous_step_receipt, paths.root)
+            if previous_step_receipt is not None
+            else None
+        ),
         "dependency_keys": item["dependency_keys"],
         "dependency_receipts": [
             _reference(snapshot, paths.root) for snapshot in dependency_receipts
@@ -913,10 +1145,14 @@ def _perform_action(
     paths: RecoveryPaths,
     inputs: set[Path],
     hook: ActionHook | None,
+    *,
+    action: str | None = None,
 ) -> ActionOutput:
     if hook is not None:
-        return hook(item, reservation, paths)
-    successor = item["canonical_successor_state"]
+        hooked_item = dict(item)
+        hooked_item["transition_action"] = action or item["canonical_successor_state"]
+        return hook(hooked_item, reservation, paths)
+    successor = action or item["canonical_successor_state"]
     try:
         if successor == "trusted_time_request_der_repaired":
             return _trusted_der_action(item, reservation, paths, inputs)
@@ -933,6 +1169,113 @@ def _perform_action(
         ) from exc
 
 
+def _verify_recorded_action_contract(
+    item: Mapping[str, Any], payload: Mapping[str, Any], paths: RecoveryPaths
+) -> None:
+    """Verify immutable step evidence without replaying obsolete preconditions."""
+
+    action = payload.get("action")
+    output = payload.get("action_output")
+    authority = item.get("authority")
+    if not isinstance(authority, Mapping):
+        raise WorksetRecoveryIntegrityError("Recovery action authority changed")
+    if action == "trusted_time_request_der_repaired":
+        target = authority.get("target_date")
+        try:
+            trusted_paths = trusted.trusted_time_paths(
+                trusted.load_trusted_time_profile(), runtime_root=paths.active_root
+            )
+            canonical_path = (
+                (trusted_paths.request_der / f"{date.fromisoformat(target)}.tsq")
+                .relative_to(paths.active_root)
+                .as_posix()
+            )
+        except Exception as exc:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded trusted-time DER identity changed"
+            ) from exc
+        expected = ActionOutput(
+            "trusted_time_request_der",
+            output if isinstance(output, Mapping) else None,
+            {
+                "new_nonce_created": False,
+                "network_action_performed": False,
+                "message_imprint_sha256": authority.get("message_imprint_sha256"),
+            },
+        )
+        if (
+            not isinstance(output, Mapping)
+            or output.get("path") != canonical_path
+            or output.get("sha256") != authority.get("request_der_sha256")
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded trusted-time DER evidence changed"
+            )
+    elif action == "anchor_receipt_repaired":
+        confirmed = authority.get("confirmed_event")
+        if not isinstance(confirmed, Mapping) or not isinstance(output, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor repair evidence changed"
+            )
+        target = authority.get("target_date")
+        seal_sha = authority.get("seal_entry_sha256")
+        try:
+            live_paths = live.runtime_paths(
+                live.load_config(), runtime_root=paths.active_root
+            )
+            canonical_path = (
+                (live_paths.anchors / f"{target}_{seal_sha}.json")
+                .relative_to(paths.active_root)
+                .as_posix()
+            )
+        except Exception as exc:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor repair identity changed"
+            ) from exc
+        if output.get("path") != canonical_path:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor repair output path changed"
+            )
+        expected = ActionOutput(
+            "live_anchor_receipt",
+            output,
+            {
+                "seal_entry_sha256": authority.get("seal_entry_sha256"),
+                "confirmed_entry_sha256": confirmed.get("entry_sha256"),
+                "trusted_anchor_receipt_verified": False,
+            },
+        )
+    elif action == "superseded_by_backfill":
+        superseding = authority.get("superseding_live_event")
+        if not isinstance(superseding, Mapping) or output is not None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded guard supersession evidence changed"
+            )
+        expected = ActionOutput(
+            "recovery_receipt_only",
+            None,
+            {
+                "superseding_event_type": superseding.get("event_type"),
+                "superseding_entry_sha256": superseding.get("entry_sha256"),
+                "legacy_guard_completion_created": False,
+                "guarded_issue_completed": False,
+                "superseded_for_old_epoch_recovery": True,
+            },
+        )
+    else:
+        raise WorksetRecoveryIntegrityError(
+            "Recorded recovery action has no postcondition verifier"
+        )
+    if (
+        payload.get("action_output_kind") != expected.kind
+        or payload.get("action_output") != expected.reference
+        or payload.get("action_semantics") != dict(expected.semantics)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recovery action evidence failed immutable replay"
+        )
+
+
 def _receipt_payload(
     profile: Mapping[str, Any],
     paths: RecoveryPaths,
@@ -941,17 +1284,39 @@ def _receipt_payload(
     item_intent: registry.ArtifactSnapshot,
     action: ActionOutput,
     *,
+    step_index: int,
+    transition_action: str,
+    previous_step_receipt: registry.ArtifactSnapshot | None,
     completed_at: str,
 ) -> dict[str, object]:
+    plan = _transition_plan(item)
+    edges = _plan_edges(plan)
+    if transition_action not in edges:
+        raise WorksetRecoveryIntegrityError("Transition action is outside its plan")
+    next_actions = edges[transition_action]
+    terminal = bool(plan["closure_resolved"]) and transition_action in set(
+        plan["terminal_actions"]
+    )
+    step_id = _step_id(item["key_id"], step_index, transition_action)
     return {
         "schema_version": profile["protocol"]["receipt_schema_version"],
         "profile_id": profile["profile_id"],
         "profile_sha256": profile["_profile_sha256"],
         "completed_at_utc": completed_at,
+        "step_id": step_id,
+        "step_index": step_index,
         "key_id": item["key_id"],
         "natural_key": item["natural_key"],
         "namespace_digest": item["namespace_digest"],
-        "successor": item["canonical_successor_state"],
+        "action": transition_action,
+        "transition_plan_sha256": plan["plan_sha256"],
+        "previous_step_receipt": (
+            _reference(previous_step_receipt, paths.root)
+            if previous_step_receipt is not None
+            else None
+        ),
+        "next_actions": next_actions,
+        "terminal_for_key": terminal,
         "item_intent": _reference(item_intent, paths.root),
         "manifest": _reference(reservation.manifest_snapshot, reservation.paths.root),
         "action_output_kind": action.kind,
@@ -969,11 +1334,24 @@ def _ensure_receipt(
     item_intent: registry.ArtifactSnapshot,
     action: ActionOutput,
     *,
+    step_index: int,
+    transition_action: str,
+    previous_step_receipt: registry.ArtifactSnapshot | None,
     now: datetime,
 ) -> tuple[dict[str, Any], registry.ArtifactSnapshot]:
-    path = paths.receipts / f"{item['key_id']}.json"
+    step_id = _step_id(item["key_id"], step_index, transition_action)
+    path = paths.receipts / f"{step_id}.json"
     stable = _receipt_payload(
-        profile, paths, reservation, item, item_intent, action, completed_at=""
+        profile,
+        paths,
+        reservation,
+        item,
+        item_intent,
+        action,
+        step_index=step_index,
+        transition_action=transition_action,
+        previous_step_receipt=previous_step_receipt,
+        completed_at="",
     )
     if path.exists():
         payload, snapshot = _strict_json(path, name="recovery receipt")
@@ -987,6 +1365,9 @@ def _ensure_receipt(
         item,
         item_intent,
         action,
+        step_index=step_index,
+        transition_action=transition_action,
+        previous_step_receipt=previous_step_receipt,
         completed_at=_utc_text(now),
     )
     snapshot = _publish(
@@ -1006,82 +1387,15 @@ def _load_receipts(
     probe_actions: bool = True,
 ) -> dict[str, tuple[dict[str, Any], registry.ArtifactSnapshot]]:
     records = _strict_named_json(
-        paths.receipts, suffix=".json", name="recovery receipts"
+        paths.receipts, suffix=".json", name="recovery step receipts"
     )
     loaded = {
-        key_id: _strict_json(path, name="recovery receipt")
-        for key_id, path in records.items()
+        step_id: _strict_json(path, name="recovery step receipt")
+        for step_id, path in records.items()
     }
     natural_to_id = {item["natural_key"]: key_id for key_id, item in items.items()}
-    intent_records: dict[str, tuple[dict[str, Any], registry.ArtifactSnapshot]] = {}
-    for key_id, intent_path in intents.items():
-        item = items.get(key_id)
-        if item is None:
-            raise WorksetRecoveryIntegrityError("Recovery item intent is orphaned")
-        intent_payload, intent_snapshot = _strict_json(
-            intent_path, name="recovery item intent"
-        )
-        _exact(
-            intent_payload,
-            {
-                "schema_version",
-                "profile_id",
-                "profile_sha256",
-                "key_id",
-                "natural_key",
-                "namespace_digest",
-                "successor",
-                "dependency_keys",
-                "dependency_receipts",
-                "global_intent",
-                "manifest",
-                "adapter_provenance",
-                "created_at_utc",
-            },
-            name="recovery item intent",
-        )
-        expected_dependencies = []
-        for natural_key in item["dependency_keys"]:
-            dependency_id = natural_to_id[natural_key]
-            dependency = loaded.get(dependency_id)
-            if dependency is None:
-                raise WorksetRecoveryIntegrityError(
-                    "Recovery item intent dependency is absent"
-                )
-            expected_dependencies.append(_reference(dependency[1], paths.root))
-        if (
-            intent_payload["schema_version"]
-            != profile["protocol"]["item_intent_schema_version"]
-            or intent_payload["profile_id"] != profile["profile_id"]
-            or intent_payload["profile_sha256"] != profile["_profile_sha256"]
-            or intent_payload["key_id"] != key_id
-            or intent_payload["natural_key"] != item["natural_key"]
-            or intent_payload["namespace_digest"] != item["namespace_digest"]
-            or intent_payload["successor"] != item["canonical_successor_state"]
-            or intent_payload["dependency_keys"] != item["dependency_keys"]
-            or intent_payload["dependency_receipts"] != expected_dependencies
-            or intent_payload["global_intent"]
-            != _reference(global_snapshot, paths.root)
-            or intent_payload["manifest"]
-            != _reference(reservation.manifest_snapshot, reservation.paths.root)
-            or intent_payload["adapter_provenance"] != _provenance()
-        ):
-            raise WorksetRecoveryIntegrityError(
-                "Recovery item intent semantics changed"
-            )
-        registry._utc_timestamp(  # noqa: SLF001
-            intent_payload["created_at_utc"], name="recovery item intent time"
-        )
-        intent_records[key_id] = (intent_payload, intent_snapshot)
-
-    result = {}
-    for key_id, path in records.items():
-        item = items.get(key_id)
-        intent_record = intent_records.get(key_id)
-        if item is None or intent_record is None:
-            raise WorksetRecoveryIntegrityError("Recovery receipt is orphaned")
-        intent_payload, intent_snapshot = intent_record
-        payload, snapshot = loaded[key_id]
+    groups: dict[str, list[tuple[str, dict[str, Any], registry.ArtifactSnapshot]]] = {}
+    for filename_step_id, (payload, snapshot) in loaded.items():
         _exact(
             payload,
             {
@@ -1089,10 +1403,16 @@ def _load_receipts(
                 "profile_id",
                 "profile_sha256",
                 "completed_at_utc",
+                "step_id",
+                "step_index",
                 "key_id",
                 "natural_key",
                 "namespace_digest",
-                "successor",
+                "action",
+                "transition_plan_sha256",
+                "previous_step_receipt",
+                "next_actions",
+                "terminal_for_key",
                 "item_intent",
                 "manifest",
                 "action_output_kind",
@@ -1101,36 +1421,195 @@ def _load_receipts(
                 *TRUE_CAPABILITIES,
                 *FALSE_CLAIMS,
             },
-            name="recovery receipt",
+            name="recovery step receipt",
         )
-        expected_dependencies = []
-        for natural_key in item["dependency_keys"]:
-            dependency_id = natural_to_id[natural_key]
-            dependency = loaded.get(dependency_id)
-            if dependency is None:
-                raise WorksetRecoveryIntegrityError(
-                    "Recovery receipt dependency is absent"
-                )
-            expected_dependencies.append(_reference(dependency[1], paths.root))
+        key_id = payload.get("key_id")
+        item = items.get(key_id) if isinstance(key_id, str) else None
+        step_index = payload.get("step_index")
+        action = payload.get("action")
         if (
-            payload.get("schema_version")
+            item is None
+            or not isinstance(step_index, int)
+            or isinstance(step_index, bool)
+            or step_index < 0
+            or not isinstance(action, str)
+            or payload.get("schema_version")
             != profile["protocol"]["receipt_schema_version"]
             or payload.get("profile_id") != profile["profile_id"]
             or payload.get("profile_sha256") != profile["_profile_sha256"]
-            or payload.get("key_id") != key_id
+            or payload.get("step_id") != filename_step_id
             or payload.get("natural_key") != item["natural_key"]
             or payload.get("namespace_digest") != item["namespace_digest"]
-            or payload.get("successor") != item["canonical_successor_state"]
-            or payload.get("item_intent") != _reference(intent_snapshot, paths.root)
             or payload.get("manifest")
             != _reference(reservation.manifest_snapshot, reservation.paths.root)
             or any(payload.get(name) is not True for name in TRUE_CAPABILITIES)
             or any(payload.get(name) is not False for name in FALSE_CLAIMS)
-            or intent_payload.get("key_id") != key_id
-            or intent_payload.get("dependency_receipts") != expected_dependencies
         ):
-            raise WorksetRecoveryIntegrityError("Recovery receipt semantics changed")
-        _parse_utc(payload["completed_at_utc"], name="recovery receipt time")
+            raise WorksetRecoveryIntegrityError(
+                "Recovery step receipt semantics changed"
+            )
+        _parse_utc(payload["completed_at_utc"], name="recovery step receipt time")
+        groups.setdefault(key_id, []).append((filename_step_id, payload, snapshot))
+
+    result: dict[str, tuple[dict[str, Any], registry.ArtifactSnapshot]] = {}
+    for key_id, rows in groups.items():
+        item = items[key_id]
+        plan = _transition_plan(item)
+        edges = _plan_edges(plan)
+        ordered_rows = sorted(rows, key=lambda row: row[1].get("step_index", -1))
+        previous: tuple[dict[str, Any], registry.ArtifactSnapshot] | None = None
+        for expected_index, (step_id, payload, snapshot) in enumerate(ordered_rows):
+            action = payload.get("action")
+            index = payload.get("step_index")
+            allowed = (
+                action == plan["initial_action"]
+                if expected_index == 0
+                else previous is not None and action in previous[0]["next_actions"]
+            )
+            expected_next = edges.get(action) if isinstance(action, str) else None
+            expected_terminal = bool(plan["closure_resolved"]) and action in set(
+                plan["terminal_actions"]
+            )
+            expected_previous = (
+                _reference(previous[1], paths.root) if previous is not None else None
+            )
+            if (
+                not isinstance(index, int)
+                or isinstance(index, bool)
+                or index != expected_index
+                or not isinstance(action, str)
+                or not allowed
+                or expected_next is None
+                or step_id != _step_id(key_id, expected_index, action)
+                or payload.get("transition_plan_sha256") != plan["plan_sha256"]
+                or payload.get("previous_step_receipt") != expected_previous
+                or payload.get("next_actions") != expected_next
+                or payload.get("terminal_for_key") is not expected_terminal
+                or (previous is not None and previous[0]["terminal_for_key"] is True)
+            ):
+                raise WorksetRecoveryIntegrityError(
+                    "Recovery step receipt chain changed"
+                )
+            result[step_id] = (payload, snapshot)
+            previous = (payload, snapshot)
+
+    terminal_by_key: dict[str, tuple[dict[str, Any], registry.ArtifactSnapshot]] = {}
+    for key_id, rows in groups.items():
+        latest = max(rows, key=lambda row: row[1]["step_index"])
+        if latest[1]["terminal_for_key"] is True:
+            terminal_by_key[key_id] = (latest[1], latest[2])
+
+    def dependency_references(item: Mapping[str, Any]) -> list[dict[str, object]]:
+        expected = []
+        for natural_key in item["dependency_keys"]:
+            dependency_id = natural_to_id[natural_key]
+            dependency = terminal_by_key.get(dependency_id)
+            if dependency is None:
+                raise WorksetRecoveryIntegrityError(
+                    "Recovery step dependency lacks a terminal receipt"
+                )
+            expected.append(_reference(dependency[1], paths.root))
+        return expected
+
+    intent_records: dict[str, tuple[dict[str, Any], registry.ArtifactSnapshot]] = {}
+    intent_positions: set[tuple[str, int]] = set()
+    pending_intents = 0
+    for filename_step_id, intent_path in intents.items():
+        intent_payload, intent_snapshot = _strict_json(
+            intent_path, name="recovery step intent"
+        )
+        _exact(
+            intent_payload,
+            {
+                "schema_version",
+                "profile_id",
+                "profile_sha256",
+                "step_id",
+                "step_index",
+                "key_id",
+                "natural_key",
+                "namespace_digest",
+                "action",
+                "transition_plan_sha256",
+                "previous_step_receipt",
+                "dependency_keys",
+                "dependency_receipts",
+                "global_intent",
+                "manifest",
+                "adapter_provenance",
+                "created_at_utc",
+            },
+            name="recovery step intent",
+        )
+        key_id = intent_payload.get("key_id")
+        item = items.get(key_id) if isinstance(key_id, str) else None
+        step_index = intent_payload.get("step_index")
+        action = intent_payload.get("action")
+        if (
+            item is None
+            or not isinstance(step_index, int)
+            or isinstance(step_index, bool)
+            or step_index < 0
+            or not isinstance(action, str)
+        ):
+            raise WorksetRecoveryIntegrityError("Recovery step intent is orphaned")
+        plan = _transition_plan(item)
+        rows = sorted(groups.get(key_id, []), key=lambda row: row[1]["step_index"])
+        previous = (
+            rows[step_index - 1] if step_index > 0 and step_index <= len(rows) else None
+        )
+        allowed = (
+            action == plan["initial_action"]
+            if step_index == 0
+            else previous is not None and action in previous[1]["next_actions"]
+        )
+        expected_previous = (
+            _reference(previous[2], paths.root) if previous is not None else None
+        )
+        position = (key_id, step_index)
+        if (
+            position in intent_positions
+            or not allowed
+            or step_index > len(rows)
+            or intent_payload.get("schema_version")
+            != profile["protocol"]["item_intent_schema_version"]
+            or intent_payload.get("profile_id") != profile["profile_id"]
+            or intent_payload.get("profile_sha256") != profile["_profile_sha256"]
+            or intent_payload.get("step_id") != filename_step_id
+            or filename_step_id != _step_id(key_id, step_index, action)
+            or intent_payload.get("natural_key") != item["natural_key"]
+            or intent_payload.get("namespace_digest") != item["namespace_digest"]
+            or intent_payload.get("transition_plan_sha256") != plan["plan_sha256"]
+            or intent_payload.get("previous_step_receipt") != expected_previous
+            or intent_payload.get("dependency_keys") != item["dependency_keys"]
+            or intent_payload.get("dependency_receipts") != dependency_references(item)
+            or intent_payload.get("global_intent")
+            != _reference(global_snapshot, paths.root)
+            or intent_payload.get("manifest")
+            != _reference(reservation.manifest_snapshot, reservation.paths.root)
+            or intent_payload.get("adapter_provenance") != _provenance()
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Recovery step intent semantics changed"
+            )
+        _parse_utc(intent_payload["created_at_utc"], name="recovery step intent time")
+        if step_index == len(rows):
+            pending_intents += 1
+        intent_positions.add(position)
+        intent_records[filename_step_id] = (intent_payload, intent_snapshot)
+
+    if pending_intents > 1:
+        raise WorksetRecoveryIntegrityError(
+            "Recovery has branched pending step intents"
+        )
+
+    for step_id, (payload, _) in result.items():
+        intent_record = intent_records.get(step_id)
+        if intent_record is None:
+            raise WorksetRecoveryIntegrityError("Recovery step receipt is orphaned")
+        _, intent_snapshot = intent_record
+        if payload.get("item_intent") != _reference(intent_snapshot, paths.root):
+            raise WorksetRecoveryIntegrityError("Recovery receipt intent changed")
         output = payload["action_output"]
         if output is not None:
             reference = _exact(
@@ -1155,17 +1634,19 @@ def _load_receipts(
                     "Recovery action output failed replay"
                 )
         if probe_actions:
-            inputs = _cas_item_artifacts(item, reservation)
-            replayed = _perform_action(item, reservation, paths, inputs, None)
-            if (
-                payload["action_output_kind"] != replayed.kind
-                or payload["action_output"] != replayed.reference
-                or payload["action_semantics"] != dict(replayed.semantics)
-            ):
-                raise WorksetRecoveryIntegrityError(
-                    "Recovery action evidence failed semantic replay"
-                )
-        result[key_id] = (payload, snapshot)
+            item = items[payload["key_id"]]
+            _verify_recorded_action_contract(item, payload, paths)
+    return result
+
+
+def _receipt_chains(
+    receipts: Mapping[str, tuple[dict[str, Any], registry.ArtifactSnapshot]],
+) -> dict[str, list[tuple[dict[str, Any], registry.ArtifactSnapshot]]]:
+    result: dict[str, list[tuple[dict[str, Any], registry.ArtifactSnapshot]]] = {}
+    for payload, snapshot in receipts.values():
+        result.setdefault(payload["key_id"], []).append((payload, snapshot))
+    for rows in result.values():
+        rows.sort(key=lambda row: row[0]["step_index"])
     return result
 
 
@@ -1174,12 +1655,17 @@ def _load_events(
     paths: RecoveryPaths,
     receipts: Mapping[str, tuple[dict[str, Any], registry.ArtifactSnapshot]],
 ) -> tuple[list[dict[str, Any]], str]:
-    if not paths.events.exists():
-        return [], ZERO_HASH
-    try:
-        entries = manifest._strict_entries(paths.events, name="recovery events")  # noqa: SLF001
-    except manifest.WorksetManifestError as exc:
-        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    if paths.events.is_symlink():
+        raise WorksetRecoveryIntegrityError("Recovery events path is a symlink")
+    if paths.events.exists():
+        try:
+            entries = manifest._strict_entries(  # noqa: SLF001
+                paths.events, name="recovery events"
+            )
+        except manifest.WorksetManifestError as exc:
+            raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    else:
+        entries = ()
     events: list[dict[str, Any]] = []
     previous = ZERO_HASH
     seen: set[str] = set()
@@ -1187,8 +1673,8 @@ def _load_events(
         payload, _ = _strict_json(path, name="recovery event")
         body = dict(payload)
         entry = body.pop("entry_sha256", None)
-        key_id = payload.get("key_id")
-        receipt = receipts.get(key_id) if isinstance(key_id, str) else None
+        step_id = payload.get("step_id")
+        receipt = receipts.get(step_id) if isinstance(step_id, str) else None
         if (
             set(payload)
             != {
@@ -1199,6 +1685,7 @@ def _load_events(
                 "previous_entry_sha256",
                 "event_type",
                 "recorded_at_utc",
+                "step_id",
                 "key_id",
                 "receipt",
                 "entry_sha256",
@@ -1214,11 +1701,12 @@ def _load_events(
             or path.name != f"{sequence:020d}-{entry}.json"
             or receipt is None
             or payload.get("receipt") != _reference(receipt[1], paths.root)
-            or key_id in seen
+            or step_id in seen
+            or payload.get("key_id") != receipt[0].get("key_id")
         ):
             raise WorksetRecoveryIntegrityError("Recovery event chain changed")
         _parse_utc(payload["recorded_at_utc"], name="recovery event time")
-        seen.add(key_id)
+        seen.add(step_id)
         previous = entry
         events.append(payload)
     if seen != set(receipts):
@@ -1231,6 +1719,7 @@ def _load_events(
 def _append_event(
     profile: Mapping[str, Any],
     paths: RecoveryPaths,
+    step_id: str,
     key_id: str,
     receipt: registry.ArtifactSnapshot,
     events: Sequence[Mapping[str, Any]],
@@ -1247,6 +1736,7 @@ def _append_event(
         "previous_entry_sha256": previous,
         "event_type": profile["protocol"]["event_type"],
         "recorded_at_utc": _utc_text(now),
+        "step_id": step_id,
         "key_id": key_id,
         "receipt": _reference(receipt, paths.root),
     }
@@ -1367,8 +1857,6 @@ def _coordinate_epoch_workset_recovery(
         intents = _strict_named_json(
             paths.item_intents, suffix=".json", name="recovery item intents"
         )
-        if set(intents) - set(item_by_id):
-            raise WorksetRecoveryIntegrityError("Recovery item intent is orphaned")
         receipts = _load_receipts(
             profile,
             paths,
@@ -1378,13 +1866,23 @@ def _coordinate_epoch_workset_recovery(
             intents,
             probe_actions=action_hook is None,
         )
+        chains = _receipt_chains(receipts)
         events, previous = _load_events(profile, paths, receipts)
-        event_keys = {event["key_id"] for event in events}
+        event_keys = {event["step_id"] for event in events}
         missing_event = set(receipts) - event_keys
         if missing_event:
-            key_id = next(iter(missing_event))
+            step_id = next(iter(missing_event))
+            receipt_payload, receipt_snapshot = receipts[step_id]
+            key_id = receipt_payload["key_id"]
             event, event_snapshot = _append_event(
-                profile, paths, key_id, receipts[key_id][1], events, previous, now=now
+                profile,
+                paths,
+                step_id,
+                key_id,
+                receipt_snapshot,
+                events,
+                previous,
+                now=now,
             )
             reason = "exact recovery receipt forward-adopted into the event chain"
             _write_status(
@@ -1394,7 +1892,7 @@ def _coordinate_epoch_workset_recovery(
                 status="recovery_event_forward_adopted",
                 reason=reason,
                 key_id=key_id,
-                receipt=receipts[key_id][1].path,
+                receipt=receipt_snapshot.path,
                 event=event_snapshot.path,
             )
             return RecoveryResult(
@@ -1402,19 +1900,52 @@ def _coordinate_epoch_workset_recovery(
                 reason,
                 paths.status,
                 key_id,
-                receipts[key_id][1].path,
+                receipt_snapshot.path,
                 event_snapshot.path,
             )
-        completed_natural = {item_by_id[key]["natural_key"] for key in receipts}
-        ready = [
-            item
-            for item in ordered
-            if item["key_id"] not in receipts
-            and set(item["dependency_keys"]) <= completed_natural
-        ]
-        supported = [item for item in ready if _item_adapter_supported(item)]
+        completed_natural = {
+            item_by_id[key_id]["natural_key"]
+            for key_id, rows in chains.items()
+            if rows[-1][0]["terminal_for_key"] is True
+        }
+        candidates: list[
+            tuple[
+                Mapping[str, Any],
+                int,
+                str,
+                registry.ArtifactSnapshot | None,
+            ]
+        ] = []
+        for item in ordered:
+            if not set(item["dependency_keys"]) <= completed_natural:
+                continue
+            rows = chains.get(item["key_id"], [])
+            if rows and rows[-1][0]["terminal_for_key"] is True:
+                continue
+            plan = _transition_plan(item)
+            if not rows:
+                next_actions = [plan["initial_action"]]
+            else:
+                next_actions = rows[-1][0]["next_actions"]
+            if len(next_actions) != 1:
+                continue
+            transition_action = next_actions[0]
+            if not _item_adapter_supported(item, transition_action):
+                continue
+            candidates.append(
+                (
+                    item,
+                    len(rows),
+                    transition_action,
+                    rows[-1][1] if rows else None,
+                )
+            )
+        supported = candidates
         if not supported:
-            reason = "no ready key has a reviewed deterministic local adapter"
+            reason = (
+                "no dependency-ready transition step has one reviewed deterministic "
+                "adapter and unambiguous next edge"
+            )
             _write_status(
                 profile,
                 paths,
@@ -1428,7 +1959,7 @@ def _coordinate_epoch_workset_recovery(
             return RecoveryResult(
                 "waiting_for_supported_ready_key", reason, paths.status
             )
-        item = supported[0]
+        item, step_index, transition_action, previous_step_receipt = supported[0]
         inputs = _cas_item_artifacts(item, reservation)
         dependency_snapshots: list[registry.ArtifactSnapshot] = []
         for dependency in item["dependency_keys"]:
@@ -1437,11 +1968,15 @@ def _coordinate_epoch_workset_recovery(
                 for candidate in ordered
                 if candidate["natural_key"] == dependency
             )
-            if dependency_item["key_id"] not in receipts:
+            dependency_rows = chains.get(dependency_item["key_id"], [])
+            if (
+                not dependency_rows
+                or dependency_rows[-1][0]["terminal_for_key"] is not True
+            ):
                 raise WorksetRecoveryIntegrityError(
-                    "Ready key lost a deep-verified dependency receipt"
+                    "Ready key lost a deep-verified terminal dependency receipt"
                 )
-            dependency_snapshots.append(receipts[dependency_item["key_id"]][1])
+            dependency_snapshots.append(dependency_rows[-1][1])
         item_intent = _ensure_item_intent(
             profile,
             paths,
@@ -1449,30 +1984,62 @@ def _coordinate_epoch_workset_recovery(
             global_snapshot,
             item,
             dependency_snapshots,
+            previous_step_receipt,
+            step_index=step_index,
+            action=transition_action,
             now=now,
         )
-        action = _perform_action(item, reservation, paths, inputs, action_hook)
+        action = _perform_action(
+            item,
+            reservation,
+            paths,
+            inputs,
+            action_hook,
+            action=transition_action,
+        )
         receipt_payload, receipt_snapshot = _ensure_receipt(
-            profile, paths, reservation, item, item_intent, action, now=now
+            profile,
+            paths,
+            reservation,
+            item,
+            item_intent,
+            action,
+            step_index=step_index,
+            transition_action=transition_action,
+            previous_step_receipt=previous_step_receipt,
+            now=now,
         )
         if receipt_payload["key_id"] != item["key_id"]:
             raise WorksetRecoveryIntegrityError("Recovery receipt key changed")
         event, event_snapshot = _append_event(
-            profile, paths, item["key_id"], receipt_snapshot, events, previous, now=now
+            profile,
+            paths,
+            receipt_payload["step_id"],
+            item["key_id"],
+            receipt_snapshot,
+            events,
+            previous,
+            now=now,
         )
-        reason = "one manifest-keyed deterministic local recovery action completed"
+        terminal = receipt_payload["terminal_for_key"] is True
+        reason = (
+            "one manifest-keyed terminal recovery step completed"
+            if terminal
+            else "one manifest-keyed nonterminal transition step completed"
+        )
+        status = "recovery_item_completed" if terminal else "recovery_step_completed"
         _write_status(
             profile,
             paths,
             now=now,
-            status="recovery_item_completed",
+            status=status,
             reason=reason,
             key_id=item["key_id"],
             receipt=receipt_snapshot.path,
             event=event_snapshot.path,
         )
         return RecoveryResult(
-            "recovery_item_completed",
+            status,
             reason,
             paths.status,
             item["key_id"],

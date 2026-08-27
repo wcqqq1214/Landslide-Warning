@@ -1,19 +1,19 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.0.0-local-foundation",
+  "profile_version": "1.1.0-transition-step-chain",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_local_recovery_foundation_only_no_full_recovery_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_local_adapters_only_no_full_recovery_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
     "manifest_profile": {
       "path": "config/ootang_epoch_workset_manifest.v1.json",
-      "expected_sha256": "19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7"
+      "expected_sha256": "ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc"
     },
     "manifest_implementation": {
       "path": "code/monitoring/ootang_epoch_workset_manifest.py",
-      "expected_sha256": "5e1e170473189d03d951b43a0e3258f4cf7d3cdff33c3dcb807206d1612d5e37"
+      "expected_sha256": "8868075715188effe708fe353bf18cbefdee9060abd90f92ede8120cf5313ef2"
     },
     "trusted_implementation": {
       "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
@@ -44,12 +44,15 @@
     "shadow_lock": "runner.lock"
   },
   "protocol": {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v1",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_item_intent_v1",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_receipt_v1",
-    "event_schema_version": "ootang_epoch_workset_recovery_event_v1",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v1",
-    "event_type": "epoch_workset_item_recovered",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v2",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v2",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v2",
+    "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v2",
+    "event_type": "epoch_workset_transition_step_recorded",
+    "transition_contract_schema_version": "ootang_epoch_workset_transition_contract_v1",
+    "transition_contract_sha256": "c7ecf9e5e553d54b90017f32aeab1546a7ee7f5d42dbc54e263fc0be1cd152d0",
+    "terminal_completion_policy": "only_terminal_step_receipts_satisfy_dependencies",
     "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
     "surviving_lock_order": ["manager", "cycle", "replay", "shadow"],
     "supported_successors": [
@@ -67,9 +70,15 @@
     "manifest_keyed_dispatcher_implemented": true,
     "deterministic_local_adapters_implemented": true,
     "crash_forward_adoption_implemented": true,
+    "transition_plan_binding_implemented": true,
+    "step_receipt_chain_implemented": true,
+    "terminal_receipt_dependency_gate_implemented": true,
     "bounded_workset_recovery_implemented": false,
     "all_reserved_items_settled": false,
     "all_reserved_successors_supported": false,
+    "terminal_transition_closure_implemented": false,
+    "derived_future_work_reservation_implemented": false,
+    "all_transition_branches_supported": false,
     "network_recovery_implemented": false,
     "ledger_mutation_recovery_implemented": false,
     "network_action_performed": false,

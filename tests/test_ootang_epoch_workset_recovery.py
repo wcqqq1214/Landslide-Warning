@@ -58,12 +58,12 @@ class WorksetRecoveryTests(unittest.TestCase):
             "profile_id": "synthetic-recovery-v1",
             "_profile_sha256": "a" * 64,
             "protocol": {
-                "intent_schema_version": "intent-v1",
-                "item_intent_schema_version": "item-intent-v1",
-                "receipt_schema_version": "receipt-v1",
-                "event_schema_version": "event-v1",
-                "status_schema_version": "status-v1",
-                "event_type": "epoch_workset_item_recovered",
+                "intent_schema_version": "intent-v2",
+                "item_intent_schema_version": "step-intent-v2",
+                "receipt_schema_version": "step-receipt-v2",
+                "event_schema_version": "step-event-v2",
+                "status_schema_version": "status-v2",
+                "event_type": "epoch_workset_transition_step_recorded",
             },
         }
 
@@ -83,7 +83,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         event_path.write_bytes(b'{"reservation":true}\n')
         items = []
         for index, (natural, successor, dependencies) in enumerate(
-            specs or [("natural-a", "trusted_time_request_der_repaired", [])]
+            specs or [("natural-a", "anchor_receipt_repaired", [])]
         ):
             predecessor = self.active_root / f"inputs/{index}.json"
             predecessor.parent.mkdir(parents=True, exist_ok=True)
@@ -91,7 +91,25 @@ class WorksetRecoveryTests(unittest.TestCase):
             raw = predecessor.read_bytes()
             items.append(
                 {
-                    "family": "trusted_time",
+                    "family": {
+                        "issue_replay_receipt_verified": "issue_route_replay",
+                        "issue_route_replay_consumed": "issue_route_replay",
+                        "anchor_receipt_repaired": "live_outstanding",
+                        "anchor_request_recorded": "live_outstanding",
+                        "anchor_result_recorded": "live_outstanding",
+                        "outcome_batch_settled": "live_outstanding",
+                        "source_snapshot_ingested": "outcome_revision",
+                        "outcome_materialized": "outcome_revision",
+                        "outcome_or_revision_consumed": "outcome_revision",
+                        "guard_completion_recorded": "guard",
+                        "superseded_by_backfill": "guard",
+                        "trusted_time_request_der_repaired": "trusted_time",
+                        "trusted_time_response_link_recorded": "trusted_time",
+                        "trusted_time_receipt_verified": "trusted_time",
+                        "shadow_outstanding_settled": "shadow",
+                        "shadow_live_event_classified": "shadow",
+                        "shadow_cursor_at_frozen_live_upper_tip": "shadow",
+                    }[successor],
                     "natural_key": natural,
                     "canonical_successor_state": successor,
                     "dependency_keys": dependencies,
@@ -204,7 +222,11 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertEqual(calls, ["natural-a"])
         self.assertTrue(first.receipt_path.is_file())  # type: ignore[union-attr]
         self.assertTrue(first.event_path.is_file())  # type: ignore[union-attr]
-        self.assertTrue((self.paths.item_intents / f"{first.key_id}.json").is_file())
+        receipt = json.loads(first.receipt_path.read_bytes())  # type: ignore[union-attr]
+        self.assertTrue(
+            (self.paths.item_intents / f"{receipt['step_id']}.json").is_file()
+        )
+        self.assertTrue(receipt["terminal_for_key"])
 
         second = self._run(reservation, hook)
         self.assertEqual(second.status, "waiting_for_supported_ready_key")
@@ -215,7 +237,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         reservation = self._reservation(
             [
                 ("natural-b", "anchor_receipt_repaired", ["natural-a"]),
-                ("natural-a", "trusted_time_request_der_repaired", []),
+                ("natural-a", "anchor_receipt_repaired", []),
             ]
         )
         calls: list[str] = []
@@ -229,6 +251,37 @@ class WorksetRecoveryTests(unittest.TestCase):
         self._run(reservation, hook)
         self.assertEqual(calls, ["natural-a", "natural-b"])
         self.assertEqual(len(list(self.paths.events.iterdir())), 2)
+
+    def test_nonterminal_step_does_not_unlock_a_dependent_key(self) -> None:
+        reservation = self._reservation(
+            [
+                ("natural-b", "anchor_receipt_repaired", ["natural-a"]),
+                ("natural-a", "trusted_time_request_der_repaired", []),
+            ]
+        )
+        calls: list[str] = []
+
+        def hook(item, reserved, paths):  # type: ignore[no-untyped-def]
+            calls.append(item["natural_key"])
+            return self._hook(item, reserved, paths)
+
+        first = self._run(reservation, hook)
+        self.assertEqual(first.status, "recovery_step_completed")
+        receipt = json.loads(first.receipt_path.read_bytes())  # type: ignore[union-attr]
+        self.assertFalse(receipt["terminal_for_key"])
+        self.assertEqual(receipt["action"], "trusted_time_request_der_repaired")
+        self.assertEqual(
+            receipt["next_actions"], ["trusted_time_response_link_recorded"]
+        )
+        global_intent = json.loads(self.paths.global_intent.read_bytes())
+        self.assertNotIn("supported_key_ids", global_intent)
+        self.assertIn(first.key_id, global_intent["initial_step_supported_key_ids"])
+        self.assertFalse(global_intent["terminal_transition_closure_implemented"])
+
+        second = self._run(reservation, hook)
+        self.assertEqual(second.status, "waiting_for_supported_ready_key")
+        self.assertEqual(calls, ["natural-a"])
+        self.assertEqual(len(list(self.paths.events.iterdir())), 1)
 
     def test_output_after_action_crash_is_forward_adopted(self) -> None:
         reservation = self._reservation()
@@ -257,6 +310,53 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertEqual(attempts, 2)
         self.assertEqual(output.read_bytes(), b"deterministic-output")
 
+    def test_receipt_before_event_crash_is_forward_adopted_without_reexecution(
+        self,
+    ) -> None:
+        reservation = self._reservation()
+        calls = 0
+
+        def hook(item, reserved, paths):  # type: ignore[no-untyped-def]
+            nonlocal calls
+            calls += 1
+            return self._hook(item, reserved, paths)
+
+        with (
+            mock.patch.object(
+                recovery,
+                "_append_event",
+                side_effect=RuntimeError("synthetic crash before event"),
+            ),
+            self.assertRaisesRegex(RuntimeError, "synthetic crash before event"),
+        ):
+            self._run(reservation, hook)
+        self.assertEqual(calls, 1)
+        self.assertEqual(len(list(self.paths.receipts.iterdir())), 1)
+        self.assertFalse(self.paths.events.exists())
+
+        result = self._run(reservation, hook)
+        self.assertEqual(result.status, "recovery_event_forward_adopted")
+        self.assertEqual(calls, 1)
+        self.assertEqual(len(list(self.paths.events.iterdir())), 1)
+
+    def test_multiple_receipts_without_events_are_rejected_as_a_branch(self) -> None:
+        authority = self.registry_root / "authority.json"
+        authority.parent.mkdir(parents=True, exist_ok=True)
+        authority.write_bytes(b"{}\n")
+        snapshot = self._snapshot(authority)
+        receipts = {
+            "a" * 64: ({"key_id": "key-a"}, snapshot),
+            "b" * 64: ({"key_id": "key-b"}, snapshot),
+        }
+
+        with self.assertRaisesRegex(
+            recovery.WorksetRecoveryIntegrityError,
+            "receipts/events branched",
+        ):
+            recovery._load_events(  # noqa: SLF001
+                self.profile, self.paths, receipts
+            )
+
     def test_predecessor_receipt_and_event_tampering_fail_closed(self) -> None:
         reservation = self._reservation()
         reservation.paths.active_root.joinpath("inputs/0.json").write_bytes(b"tampered")
@@ -275,12 +375,12 @@ class WorksetRecoveryTests(unittest.TestCase):
         self._use_fresh_namespace()
         reservation = self._reservation()
         first = self._run(reservation, self._hook)
-        intent_path = self.paths.item_intents / f"{first.key_id}.json"
+        intent_path = next(self.paths.item_intents.glob("*.json"))
         intent = json.loads(intent_path.read_bytes())
-        intent["successor"] = "tampered-successor"
+        intent["action"] = "tampered-action"
         intent_path.write_bytes(recovery._canonical_bytes(intent))  # noqa: SLF001
         with self.assertRaisesRegex(
-            recovery.WorksetRecoveryIntegrityError, "item intent semantics"
+            recovery.WorksetRecoveryIntegrityError, "intent semantics"
         ):
             self._run(reservation, self._hook)
 
@@ -352,7 +452,10 @@ class WorksetRecoveryTests(unittest.TestCase):
     def test_machine_only_cli_boundary_and_der_builder_are_deterministic(self) -> None:
         claims = recovery._claims()  # noqa: SLF001
         self.assertTrue(claims["machine_only"])
+        self.assertTrue(claims["step_receipt_chain_implemented"])
+        self.assertTrue(claims["terminal_receipt_dependency_gate_implemented"])
         self.assertFalse(claims["bounded_workset_recovery_implemented"])
+        self.assertFalse(claims["terminal_transition_closure_implemented"])
         result = recovery.RecoveryResult("waiting", "no authority", Path("status"))
         output = io.StringIO()
         with (
@@ -421,6 +524,39 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertEqual(der_path.read_bytes(), der)
         self.assertEqual(first_der, second_der)
 
+        trusted_paths.response_links.mkdir(parents=True, exist_ok=True)
+        trusted_paths.response_links.joinpath(f"{target}.json").write_bytes(
+            b'{"later_step":true}\n'
+        )
+        recovery._verify_recorded_action_contract(  # noqa: SLF001
+            {
+                "authority": trusted_item["authority"],
+            },
+            {
+                "action": "trusted_time_request_der_repaired",
+                "action_output_kind": first_der.kind,
+                "action_output": first_der.reference,
+                "action_semantics": dict(first_der.semantics),
+            },
+            self.paths,
+        )
+        wrong_output = dict(first_der.reference)  # type: ignore[arg-type]
+        wrong_output["path"] = "unrelated/output.tsq"
+        with self.assertRaisesRegex(
+            recovery.WorksetRecoveryIntegrityError,
+            "DER evidence changed",
+        ):
+            recovery._verify_recorded_action_contract(  # noqa: SLF001
+                {"authority": trusted_item["authority"]},
+                {
+                    "action": "trusted_time_request_der_repaired",
+                    "action_output_kind": first_der.kind,
+                    "action_output": wrong_output,
+                    "action_semantics": dict(first_der.semantics),
+                },
+                self.paths,
+            )
+
         seal_sha = "d" * 64
         confirmed_sha = "e" * 64
         anchor_target = "2031-02-05"
@@ -465,6 +601,27 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertEqual(first_anchor, second_anchor)
         stored_anchor = live_paths.anchors / f"{anchor_target}_{seal_sha}.json"
         self.assertEqual(json.loads(stored_anchor.read_bytes()), anchor_payload)
+        anchor_receipt = {
+            "action": "anchor_receipt_repaired",
+            "action_output_kind": first_anchor.kind,
+            "action_output": first_anchor.reference,
+            "action_semantics": dict(first_anchor.semantics),
+        }
+        recovery._verify_recorded_action_contract(  # noqa: SLF001
+            anchor_item, anchor_receipt, self.paths
+        )
+        wrong_anchor_receipt = dict(anchor_receipt)
+        wrong_anchor_receipt["action_output"] = {
+            **first_anchor.reference,  # type: ignore[misc]
+            "path": "unrelated/anchor.json",
+        }
+        with self.assertRaisesRegex(
+            recovery.WorksetRecoveryIntegrityError,
+            "anchor repair output path changed",
+        ):
+            recovery._verify_recorded_action_contract(  # noqa: SLF001
+                anchor_item, wrong_anchor_receipt, self.paths
+            )
 
         guard_item = {
             "authority": {

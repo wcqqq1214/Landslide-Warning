@@ -119,21 +119,24 @@
   restore/unfence/人工控制。event 只证明冻结 official entrypoint 被物理切断，complete
   manifest、reservation/recovery、泛化 admission fence、lifecycle/transition、drained/
   active/trusted/E2/formal 仍全部为 false。
-- 显式阶段 `ootang-epoch-workset-manifest` 实现 R2b-2b-2b 的 bounded closed-workset
+- 显式阶段 `ootang-epoch-workset-manifest` 实现 R2b-2b-2b 的 frozen-observation workset
   reservation。它在 official writer cut 后完整重放 cut event/attempt/context，只取得仍开放的
-  `manager → cycle → replay → shadow` 四锁，并把 issue/replay、live outstanding、source+
-  outcome revision、guard、trusted-time 与 calibration shadow 六族及其传递义务写成确定排序、
-  内容寻址、create-only 的 manifest/event。unknown/orphan/duplicate/branch/overflow 或依赖不闭合
-  均整体 fail closed，不发布部分清单。该 event 是 exact-key recovery 的机器 reservation，
+  `manager → cycle → replay → shadow` 四锁，并把该冻结观测时点可见的 issue/replay、live
+  outstanding、source+outcome revision、guard、trusted-time 与 calibration shadow 六族及其
+  transition seed 写成确定排序、内容寻址、create-only 的 manifest/event。它不声称已枚举
+  terminal/transitive closure，也不预留未来 transition 才派生的 key；unknown/orphan/duplicate/
+  branch/overflow 或冻结观测依赖不闭合均整体 fail closed，不发布部分清单。该 event 是 exact-key recovery 的机器 reservation，
   request-only TSA crash 可保留同 nonce 的 DER repair，过期/结果先到的 guard intent 自动转入
   backfill supersede；历史 event 重放不重新要求已合法推进的 predecessor bytes 不变。
   但 recovery、泛化 admission fence、lifecycle、drained/active/trusted/E2/formal 仍全部为 false。
 - 显式阶段 `ootang-epoch-workset-recovery` 实现 R2b-2b-2c 的 manifest-keyed 确定性本地
-  recovery 基础。机器只重放 immutable reservation，不重新枚举 workset；先提交全局/逐 key
-  create-only intent，再按依赖顺序每次最多推进一个 key，最后以 receipt 和 previous-hash event
-  向前收口。首批 adapter 只处理同 nonce 的 TSA DER、ledger 可重建的 anchor receipt，以及具有
+  recovery 基础。机器只重放 immutable reservation，不重新枚举 workset；global intent 固定
+  每个 key 的 transition plan，每个 action 分别提交 create-only step intent/receipt/
+  previous-hash event。只有 `terminal_for_key=true` 的 receipt 能解锁 dependency；未解决的
+  derived work 不能计为 complete。首批 adapter 仍只处理同 nonce 的 TSA DER、ledger 可重建的 anchor receipt，以及具有
   durable backfill/settlement 证据的 guard supersession；不执行 TSA 网络、旧 ledger mutation 或
-  legacy guard completion。单纯时间越界不能冒充 backfill。完整 workset recovery、drained、
+  legacy guard completion。DER repair 是非终态，等待机器 response-link adapter；单纯时间越界
+  不能冒充 backfill。完整 workset recovery、terminal closure、drained、
   lifecycle/active/trusted/E2/formal 仍全部为 false。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
@@ -247,8 +250,8 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_epoch_drain_eligibility_engineering.md`](docs/ootang_epoch_drain_eligibility_engineering.md) | R2b-2a：machine-current eligibility observation、stale detection、capacity/witness fail-safe 与非 transition authority |
 | [`docs/ootang_epoch_drain_v2_engineering.md`](docs/ootang_epoch_drain_v2_engineering.md) | R2b-2b-1：context-bound 首阻塞项 observation、v1 precedence、精确对象重放与非 reservation/recovery 边界 |
 | [`docs/ootang_epoch_admission_cut_engineering.md`](docs/ootang_epoch_admission_cut_engineering.md) | R2b-2b-2a：冻结 writer 的 deploy/runner regular-file ACL 原子 lock-path cut、forward-only crash recovery 与非 manifest/lifecycle 边界 |
-| [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 closed-workset 的完整内容寻址枚举、singleton reservation event 与非 recovery/lifecycle 边界 |
-| [`docs/ootang_epoch_workset_recovery_engineering.md`](docs/ootang_epoch_workset_recovery_engineering.md) | R2b-2b-2c：manifest-keyed intent/receipt/event、确定性本地 crash-forward adapter 与非完整 recovery/lifecycle 边界 |
+| [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 frozen-observation 枚举、transition seed、singleton reservation event 与非 terminal/recovery/lifecycle 边界 |
+| [`docs/ootang_epoch_workset_recovery_engineering.md`](docs/ootang_epoch_workset_recovery_engineering.md) | R2b-2b-2c：item transition plan、create-only step intent/receipt/event、terminal dependency gate 与非完整 recovery/lifecycle 边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
 | [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
@@ -266,9 +269,12 @@ docs/                           # 当前方法、结果边界和研究计划
    不可重解释 v1 bytes 的新 schema 实现 context-bound 首 blocker observation；它尚不是
    closed workset。R2b-2b-2a 已在不修改自绑定旧 writer 的前提下，用 deny-write regular-file
    sentinel 原子封闭 deploy/runner official lock pathname，但明确还不是完整 admission fence。
-   R2b-2b-2b 已在该稳定边界内完成 bounded closed-workset manifest 枚举与 reservation；
-   R2b-2b-2c 已增加 manifest-keyed dispatcher 和首批确定性本地 crash-forward adapter，但
-   网络、ledger mutation 及其余 successor 仍未实现。下一步是补齐 reserved successor adapter 和独立
+   R2b-2b-2b 已在该稳定边界内完成单次 frozen observation 的六族 manifest 枚举、transition
+   seed 与 reservation，但没有 terminal/transitive closure 或 derived-future-work reservation；
+   R2b-2b-2c 已增加 item-specific transition plan、逐 step authority chain、terminal receipt
+   dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；网络、
+   ledger mutation 及其余 transition adapter 仍未实现。下一步先实现 expected-pre-head CAS，再
+   实现窄化的 machine-only `anchor_request_recorded` adapter；其后才讨论其他 adapter、独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
    关闭前保持 `real_activation_ready=false`。

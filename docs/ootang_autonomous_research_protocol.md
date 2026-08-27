@@ -655,15 +655,21 @@ validate_contract
    recovery/mutual exclusion/anti-rollback 均未实现。R2b-2b-2a 已在不修改 11 个自绑定旧
    writer 的前提下，以 deny-write regular-file sentinel 和 Darwin atomic swap 依序封闭
    deploy/runner official lock pathname；该 event 仍不是 closed manifest 或 lifecycle
-   authority。后续 R2b-2b-2b 已完成 bounded closed-workset manifest/reservation；
-   R2b-2b-2c 仅增加 keyed dispatcher、逐 key intent/receipt/event 与 DER/anchor/有持久证据的
-   guard supersession 三类确定性本地 adapter，仍不等于完整 recovery。下一步补齐网络和 ledger
-   mutation successor，并由独立 assessor 核验完整 keyset；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   authority。后续 R2b-2b-2b 完成的是单次 frozen observation 下可见六族 workset 的完整
+   枚举、transition seed 与 reservation，不是 terminal/transitive closure，也没有预留未来
+   transition 派生的新 key。R2b-2b-2c 的 global intent 进一步绑定逐 item transition plan，
+   每个 action 使用 create-only step intent/receipt/event；只有 `terminal_for_key=true` 的 receipt
+   才能解锁 dependency，unresolved derived work 永远不能计为 complete。既有 DER/anchor/有持久
+   证据的 guard supersession 三类确定性本地 adapter 不变，其中 DER repair 明确是非终态，必须
+   等待机器 response-link adapter。当前仍不执行网络或 ledger mutation，也不等于完整 recovery。
+   下一步先实现 expected-pre-head CAS，再实现窄化的 machine-only
+   `anchor_request_recorded` adapter；之后才由独立 assessor 核验完整 terminal keyset。v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
    capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
    event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
    transition、将可信时间接入新版 designated cycle、scheduler authorization 与长链性能门
-   仍待实现；
+   仍待实现。本语义修正不改变 ConvLSTM、v4、冻结 splits、metrics 或 thresholds，也不增加人工
+   freeze/cleanup/approval/force/backdate；
 5. E2-B 门禁关闭后初始化独立 live epoch，由机器等待并处理自然到达的新数据；
 6. 仅在独立结局源可用时，另开协议版本接入 E3。
 
@@ -722,11 +728,15 @@ active/rotation/trusted/E2/formal claim 仍为 false。可信时间 capability �
 preparation 尚未成为不可绕过的 active switch。R2b-2a clean-start eligibility
 observation/stale detection 已完成，但没有增加 lifecycle/transition authority；R2b-2b-1
 也只增加 context-bound 首 blocker observation。R2b-2b-2a 已物理封闭 frozen official
-writer 的 deploy/runner lock pathname，但 direct-filesystem/unknown writer、complete manifest
-和 recovery 仍未解决。只有 E2-B 继续完成不可重解释 v1
+writer 的 deploy/runner lock pathname；R2b-2b-2b 已预留单次 frozen observation 下可见六族
+workset 与 transition seeds，但不具 terminal/transitive closure；R2b-2b-2c 已增加 item-specific
+transition plans、逐 step authority chain、terminal receipt dependency gate 和三个既有本地
+adapter。direct-filesystem/unknown writer、derived-future-work reservation 和完整 recovery 仍未
+解决。当前先实现 expected-pre-head CAS，再实现窄化的 machine-only
+`anchor_request_recorded` adapter。只有 E2-B 继续完成不可重解释 v1
 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/
-eligibility-observation/event bytes 的完整 manifest、keyed non-clean
-recovery、drain assessor、权威原子 active transition、cycle v4 和 scheduler
+eligibility-observation/event bytes 的 terminal/derived-work closure、keyed non-clean recovery、
+drain assessor、权威原子 active transition、cycle v4 和 scheduler
 authorization，并真实
 签发未来日期后，才可能开始积累 append-only 盲态运动学证据。
 

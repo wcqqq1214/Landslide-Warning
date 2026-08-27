@@ -636,7 +636,7 @@ STAGES = (
     Stage(
         "ootang-epoch-workset-manifest",
         "code/monitoring/ootang_epoch_workset_manifest.py",
-        "完整枚举并预留旧 epoch 六类 closed workset（R2b-2b-2b，非 recovery/非切换/非正式）",
+        "预留旧 epoch 冻结观测六族 workset 与 transition seed（R2b-2b-2b，非终态闭包/非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_manifest.v1.json",
             "config/ootang_epoch_admission_cut.v1.json",
@@ -673,7 +673,7 @@ STAGES = (
     Stage(
         "ootang-epoch-workset-recovery",
         "code/monitoring/ootang_epoch_workset_recovery.py",
-        "按 manifest 精确键推进旧 epoch 确定性本地恢复（R2b-2b-2c，非完整 recovery/非切换/非正式）",
+        "按 transition plan 单步推进旧 epoch 确定性本地恢复（R2b-2b-2c，非完整 recovery/非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_recovery.v1.json",
             "config/ootang_epoch_workset_manifest.v1.json",

@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_manifest_profile_v1",
   "profile_id": "ootang-epoch-workset-manifest-v1",
-  "profile_version": "1.0.0-closed-reservation",
+  "profile_version": "1.1.0-frozen-observation-transition-seed",
   "case": "ootang",
-  "artifact_status": "bounded_closed_workset_manifest_and_reservation_engineering_only_no_recovery_lifecycle_or_transition_authority",
+  "artifact_status": "bounded_frozen_observation_workset_and_transition_seed_reservation_only_no_terminal_closure_recovery_lifecycle_or_transition_authority",
   "formal_warning_output": false,
   "independent_label_used": false,
   "confirmatory_external_validation": false,
@@ -37,9 +37,9 @@
     "shadow_lock": "runner.lock"
   },
   "protocol": {
-    "manifest_schema_version": "ootang_epoch_closed_workset_manifest_v1",
-    "event_schema_version": "ootang_epoch_closed_workset_reserved_event_v1",
-    "event_type": "epoch_closed_workset_reserved",
+    "manifest_schema_version": "ootang_epoch_frozen_observation_workset_manifest_v2",
+    "event_schema_version": "ootang_epoch_frozen_observation_workset_reserved_event_v2",
+    "event_type": "epoch_frozen_observation_workset_reserved",
     "maximum_items": 4096,
     "maximum_artifacts": 16384,
     "maximum_manifest_bytes": 4194304,
@@ -91,7 +91,7 @@
         "shadow_cursor_at_frozen_live_upper_tip"
       ]
     },
-    "manifest_policy": "complete_bounded_six_family_transitive_artifact_closure_no_truncation",
+    "manifest_policy": "complete_frozen_observation_six_family_workset_with_transition_seeds_no_truncation",
     "reservation_policy": "singleton_event_exactly_reserves_manifest_natural_keys",
     "cut_policy": "exact_admission_cut_event_attempt_context_and_physical_boundary_required",
     "recovery_action": "not_implemented_manifest_only"
@@ -102,6 +102,8 @@
     "content_addressed_manifest_implemented": true,
     "complete_workset_enumeration": true,
     "bounded_workset_reservation_implemented": true,
+    "terminal_transition_closure_enumerated": false,
+    "derived_future_work_reservation_implemented": false,
     "bounded_workset_recovery_implemented": false,
     "old_work_admission_fence_implemented": false,
     "canonical_old_issue_route_fence_implemented": false,

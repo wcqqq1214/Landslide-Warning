@@ -1,11 +1,19 @@
-# 藕塘旧 epoch closed-workset manifest R2b-2b-2b 工程说明
+# 藕塘旧 epoch 冻结观测 workset manifest R2b-2b-2b 工程说明
 
 ## 1. 结论与范围
 
 本切片新增显式、非默认、仅机器运行的 `ootang-epoch-workset-manifest`。它以已经完成的
 R2b-2b-2a official-writer lock-path cut 为唯一前置 authority，在冻结的官方旧 writer 不再
-推进后，一次性枚举旧 epoch 六个 work family 及其传递 artifact 义务，并发布内容寻址
-manifest 与 create-only singleton reservation event。
+推进后，完整枚举该冻结观测时点由现有 inventory adapter 可见的六族 workset，并为每个
+natural key 保存已知 successor、依赖与 artifact evidence，作为后续 transition seed。随后发布
+内容寻址 manifest 与 create-only singleton reservation event。
+
+这里的 `complete_workset_enumeration=true` 只表示：在 admission cut 与四把 surviving lock
+共同定义的单次冻结观测中，六族当前可见记录没有被截断或部分发布。它不表示已经枚举每个
+item 经过一次或多次 transition 后才会派生的未来工作，也不表示 old epoch 的 terminal
+transition closure 已闭合。对应的
+`terminal_transition_closure_enumerated=false` 与
+`derived_future_work_reservation_implemented=false` 是 manifest/event/profile 的强制声明。
 
 该 event 只授权后续 adapter 对 manifest 中的 exact natural key 做机器恢复。它不执行
 recovery action，不生成 outcome，不创建或替换 RFC 3161 nonce/DER，不关闭 epoch，也不选择
@@ -27,11 +35,11 @@ event 和两个 canonical sentinel 的 inode/mode/ACL/bytes。它从 terminal at
 admission cut 未成立时机器保持 waiting；任一锁 busy 时不得写 manifest/event。该锁边界只覆盖
 profile 中冻结的官方 writer，不能扩大解释为阻止同 UID 直接文件写或未知外部 writer。
 
-## 3. 六个 family 与闭包
+## 3. 六个 family、冻结观测与 transition seed
 
 manifest 固定包含六个 family descriptor，即使某族当前为零 item 也不能省略：
 
-| family | natural key / 传递义务 | 合法 successor |
+| family | natural key / 冻结观测 evidence seed | 合法 successor seed |
 | --- | --- | --- |
 | `issue_route_replay` | old epoch + target + issue id；issue、producer receipt/object、input manifest、replay receipt 与 opened/sealed/settled binding | `issue_replay_receipt_verified` / `issue_route_replay_consumed` |
 | `live_outstanding` | old epoch + target + issue/seal；outstanding lifecycle、guard/outcome dependency 与 `anchors/` receipt namespace | anchor receipt/request/result repair 或 `outcome_batch_settled` |
@@ -42,9 +50,11 @@ manifest 固定包含六个 family descriptor，即使某族当前为零 item �
 
 每个 item 使用确定排序并包含 exact natural key、固定 successor、dependency keys、contained
 relative artifact reference（path/SHA-256/size）和 namespace digest。dependency key 必须解析到
-同一 manifest 的唯一 item 或明确的 frozen context；不能用自由文本暗示闭包。
+同一 manifest 的唯一 item；frozen context 只能通过结构化 authority 字段绑定。successor 与
+dependency 描述的是当前已知 transition seed，不能据此声称 terminal/transitive closure。
 
-以下任一情况整体 fail closed，且不能发布部分 manifest：unknown/hidden/non-regular entry、
+以下任一情况会破坏本次冻结观测的完整性，必须整体 fail closed，且不能发布部分 manifest：
+unknown/hidden/non-regular entry、
 orphan、重复 natural key、ledger/receipt branch 或 gap、active pointer 与 chain tip 不一致、依赖
 缺失、路径逃逸、hash/size 不符、同键异语义、family/item/byte 上限溢出。
 
@@ -69,7 +79,7 @@ runtime/ootang_epoch_registry_v1/workset_manifest_v1/
 
 singleton event 精确引用 manifest 的相对 path、SHA-256 和 size，并绑定 admission-cut event、
 terminal attempt 和 authority context。相同稳定状态重复 poll 必须字节幂等；已有 event 与当前
-完整枚举不同、manifest/event/reference 被篡改或出现第二个 event 时全部阻断，不能悄悄另开
+冻结观测枚举不同、manifest/event/reference 被篡改或出现第二个 event 时全部阻断，不能悄悄另开
 reservation。`status.json` 只是可修复 cache，不参与 authority。
 
 历史 reservation 重放与 action predecessor 检查被刻意分开：重放只验证 immutable
@@ -78,6 +88,10 @@ ledger、route 或 active pointer 仍保持 capture 时的 bytes。否则第一�
 item 永久不可达。未来每个 exact-key adapter 必须在执行该 key 前单独做 predecessor exact-CAS，
 并由 step receipt 证明 successor。waiting/blocked status 的“当前完成/当前预留”字段保持 false，
 不会把 profile 的实现能力误报成当前 authority。
+
+reservation 只覆盖 manifest 中实际列出的 natural keys。它不会因为某个 item 声明了 successor，
+就自动授权该 transition 之后新生成的 key；这类 derived future work 需要单独、可验证且版本化的
+reservation/closure 机制。
 
 本切片只允许以下新增能力为 true：
 
@@ -89,9 +103,14 @@ complete_workset_enumeration
 bounded_workset_reservation_implemented
 ```
 
+其中 `complete_workset_enumeration` 的作用域严格限定为 frozen observation，不可单独作为
+terminal closure、drained eligibility 或 lifecycle transition 的证据。
+
 至少以下声明继续为 false：
 
 ```text
+terminal_transition_closure_enumerated
+derived_future_work_reservation_implemented
 bounded_workset_recovery_implemented
 old_work_admission_fence_implemented
 direct_filesystem_writer_fence_implemented
@@ -127,9 +146,13 @@ adapter 只能接收 reservation 中存在的 exact key，先重放 manifest/con
 repair、ledger 可重建 anchor receipt 和具有持久 superseding evidence 的 guard disposition。
 trusted-time 网络阶段只能复用 manifest 已绑定的 request/nonce/DER，或按已保留 request
 确定性修复同一 DER；释放锁执行外部请求后，
-必须重获 recovery lock 并对同一 fence generation 和 item 做 exact-CAS。任何新发现的旧工作
-都表示 manifest 不完整，应阻断而不是临时追加或人工清理。
+必须重获 recovery lock 并对同一 fence generation 和 item 做 exact-CAS。若对同一 frozen
+observation 的确定性重放发现当时已经存在却未被列出的 natural key，则说明本次观测枚举不完整，
+必须阻断而不能临时追加或人工清理。若新 key 是 recovery transition 后才派生的 future work，
+则它不在当前 reservation authority 内；dispatcher 同样必须阻断，等待后续明确实现的
+derived-work reservation，而不能把 transition seed 当成隐式授权。
 
-只有所有 reserved item 都由独立 assessor 证明合法收口，后续生命周期切片才可讨论
-`SEALED(old)+ACTIVE(new)`。本切片不运行 R2b、NGBoost、ConvLSTM 或全仓长测；真实 non-clean
-链留到 manifest + keyed recovery 里程碑末尾只运行一次。
+即使所有当前 reserved item 都由独立 assessor 证明合法收口，也不能仅凭本 manifest 推导
+`SEALED(old)+ACTIVE(new)`。后续生命周期切片还必须先实现并验证 terminal transition closure
+与 derived future work reservation。本切片不运行 R2b、NGBoost、ConvLSTM 或全仓长测；真实
+non-clean 链留到 manifest + keyed recovery 里程碑末尾只运行一次。

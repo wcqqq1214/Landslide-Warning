@@ -1,4 +1,4 @@
-"""Fast contracts for bounded closed-workset reservation publication."""
+"""Fast contracts for bounded frozen-observation reservation publication."""
 
 from __future__ import annotations
 
@@ -179,8 +179,21 @@ class WorksetManifestSyntheticTests(unittest.TestCase):
         )
         self.assertEqual(payload["family_count"], 6)
         self.assertEqual(payload["item_count"], 6)
+        self.assertEqual(
+            payload["manifest_role"],
+            "complete_frozen_observation_workset_and_transition_seed_reservation_only",
+        )
         self.assertTrue(payload["complete_workset_enumeration"])
+        self.assertFalse(payload["terminal_transition_closure_enumerated"])
+        self.assertFalse(payload["derived_future_work_reservation_implemented"])
         self.assertFalse(payload["bounded_workset_recovery_implemented"])
+        event = json.loads(event_raw)
+        self.assertEqual(
+            event["event_role"],
+            "singleton_frozen_observation_workset_and_transition_seed_reservation_only",
+        )
+        self.assertFalse(event["terminal_transition_closure_enumerated"])
+        self.assertFalse(event["derived_future_work_reservation_implemented"])
 
         second = self._run(
             inspection, binding=binding, now=FIXED_NOW + timedelta(minutes=1)
@@ -372,6 +385,20 @@ class WorksetManifestSyntheticTests(unittest.TestCase):
         )
         self.assertTrue(
             profile["engineering_capabilities"]["complete_workset_enumeration"]
+        )
+        self.assertEqual(
+            profile["protocol"]["manifest_policy"],
+            "complete_frozen_observation_six_family_workset_with_transition_seeds_no_truncation",
+        )
+        self.assertFalse(
+            profile["engineering_capabilities"][
+                "terminal_transition_closure_enumerated"
+            ]
+        )
+        self.assertFalse(
+            profile["engineering_capabilities"][
+                "derived_future_work_reservation_implemented"
+            ]
         )
         self.assertFalse(profile["engineering_capabilities"]["lifecycle_authority"])
         with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit):

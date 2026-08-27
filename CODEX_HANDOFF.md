@@ -3,11 +3,12 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `30c3bb5 feat: add closed workset reservation`
-**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b 已提交；当前增量实现
-R2b-2b-2c manifest-keyed deterministic local recovery foundation。它不是完整 recovery、
-泛化 admission fence 或 DRAINING lifecycle authority，不声明 drained、active switch、
-rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+**Committed baseline before this increment:** `8f6a9f7 feat: add keyed local recovery`
+**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
+本地 recovery 基线已提交；当前未提交增量修正 manifest 与 recovery 的 transition-chain
+语义。它不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING
+lifecycle authority，不声明 drained、active switch、rotation、trusted anchor、E2 evidence、
+activation 或 formal warning。
 
 ## 2026-08-28 manifest-keyed deterministic local recovery R2b-2b-2c continuation
 
@@ -16,55 +17,81 @@ selectable stages; the no-argument chain remains exactly
 `features -> convlstm -> ootang-operational-v4`. Its only declared mutable output is
 `runtime/ootang_epoch_registry_v1/workset_recovery_v1/status.json`; global intent, per-key
 intents, receipts and previous-hash-linked events are immutable authority beneath the same
-namespace.
+namespace. In this correction those per-key records become create-only per-step records.
 
 Every poll acquires only the surviving ordered locks
 `manager -> cycle -> replay -> shadow`, exact-replays the physical admission cut plus the
 singleton reservation event/content-addressed manifest, and never re-runs inventory or opens
-the sealed deploy/runner locks. A canonical DAG and global intent bind the complete frozen
-keyset, dependency graph, supported/unsupported adapter set and publisher provenance. The
-machine advances at most one dependency-ready supported key per poll, using a SHA-256 key id,
-create-only item intent, exact per-key predecessor CAS, deterministic action, create-only
-receipt and one append-only event.
+the sealed deploy/runner locks. A canonical DAG and global intent bind the frozen keyset,
+dependency graph, initial-step adapter coverage, publisher provenance and item-specific transition
+plans. Each plan binds its initial action, allowed edges, terminal actions, mutation
+lanes, frozen read set and whether derived-work closure is resolved. The machine advances at
+most one dependency-ready supported transition step per poll, using a SHA-256 step id,
+create-only step intent, exact per-key predecessor CAS, deterministic action, create-only step
+receipt and one append-only step event. A receipt with `terminal_for_key=false` can only lead to
+the next allowed action for that same key; only `terminal_for_key=true` may satisfy another
+key's dependency.
 
-The first adapter set is deliberately local and deterministic: reconstruct the exact RFC 3161
-request DER from the reserved request/nonce/imprint without network or a new nonce; reconstruct
-the legacy anchor receipt from the frozen verified ledger's unique seal/confirmation; and emit
-a recovery-only guard supersession receipt only when the frozen ledger contains unique durable
-backfill/settlement evidence. A guard item selected by clock expiry alone remains unsupported/
-waiting and never masquerades as backfill. Guard recovery never writes a legacy completion.
+The existing adapter set is unchanged and remains deliberately local and deterministic:
+reconstruct the exact RFC 3161 request DER from the reserved request/nonce/imprint without
+network or a new nonce; reconstruct the legacy anchor receipt from the frozen verified ledger's
+unique seal/confirmation; and emit a recovery-only guard supersession receipt only when the
+frozen ledger contains unique durable backfill/settlement evidence. DER repair is now explicitly
+nonterminal: it must wait for a reviewed machine
+`trusted_time_response_link_recorded` adapter before the same key can continue toward
+`trusted_time_receipt_verified`. A guard item selected by clock expiry alone remains
+unsupported/waiting and never masquerades as backfill. Guard recovery never writes a legacy
+completion.
 
 Crash-forward replay covers global/item intent adoption, exact output after mutation-before-
 receipt, and receipt-before-event. Every existing item intent is fully revalidated against the
-current global intent, manifest, dependency receipts and implementation provenance. Production
-receipt replay re-CASes the reserved predecessor and recomputes the exact adapter output kind,
-path/hash/size and semantics; DER/anchor output tamper and guard evidence drift fail closed.
+current global intent, manifest, dependency receipts and implementation provenance. A missing
+receipt causes the action-specific create-only adapter to probe/adopt its exact output; an existing
+historical receipt is instead checked with a read-only immutable postcondition verifier, so later
+valid transitions do not re-run obsolete preconditions. Canonical DER/anchor output path/hash/size,
+recorded semantics, receipt chain and event reference are verified; tamper or drift fails closed.
 Core/parser errors are normalized to machine-readable recovery integrity failures, and
 integrity failures refresh only a non-authoritative blocked status cache.
 
-The profile explicitly leaves full workset recovery, all-successor support, network recovery,
-ledger mutation, generic/direct-filesystem fencing, anti-rollback, external implementation
-trust anchor, lifecycle/transition, drained/active/rotation/trusted/E2/formal authority false.
+The manifest is complete only for the six-family workset visible at the single frozen
+observation and stores transition seeds; it does not claim terminal or transitive transition
+closure and does not reserve keys derived by future transitions. Issue consumption that would
+derive unreserved live work, source ingestion that may derive content-dependent outcomes, and
+shadow genesis/rotation/classification that may derive unreserved work therefore cannot count
+as terminal. The profile explicitly leaves full workset recovery, all-transition support,
+derived-future-work reservation, network recovery, ledger mutation, generic/direct-filesystem
+fencing, anti-rollback, external implementation trust anchor, lifecycle/transition,
+drained/active/rotation/trusted/E2/formal authority false.
 The first-use implementation review root remains the versioned Git checkout; once global intent
 exists, its implementation hash prevents silent code drift. ConvLSTM, v4, frozen splits,
 metrics, thresholds and all 11 frozen writer/orchestrator modules were not modified.
 
-Final profile/module/test SHA-256 values are
-`c958a407cd5903c4fdff5e1e22e79af3c6669194506b136b0e44948a88a4bb3e`,
-`7ac9e8c63d38b80a193b3a7c10bf10204c11987511fe120e369ee25f928e8652` and
-`9c20a4ecc029b7d0ba4c58f9e4801313100b4748a1cf03c6c559956e1ddc6c4d`. The focused
-recovery/manifest/admission-cut/drain-v2/main suite passes 76/76 in 0.998 s;
-Ruff/format/compile, strict JSON, list/default/explicit dry-runs,
-protected-path and frozen-writer checks pass. No model training, TSA network, real runtime
-mutation, full repository suite, capacity run or exhaustive filesystem/crash matrix was run.
-Final independent short audit reports no remaining P0/P1 within the declared local-recovery
-scope.
+Committed baseline `8f6a9f7` had the previously recorded 76/76 focused result. For this
+transition-plan correction, manifest profile/module/test SHA-256 values are
+`ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc`,
+`8868075715188effe708fe353bf18cbefdee9060abd90f92ede8120cf5313ef2` and
+`6155d557055d6492287b89d269680ad6910f1f4afe4a4cf927be3e6f23320442`;
+recovery profile/module/test values are
+`2b956d96d3aa3049a7901e21a250743aaa90701e41a814fe98e5c91936fdcf5a`,
+`d2492750062ce0151f05856fbff4af9ca53b357279a3141679e90cc75af18911` and
+`caa2b61943227046e0359a11a8cd6fb9d54c59bab69c5103a4af675db34e30cb`.
+The transition-contract SHA-256 is
+`c7ecf9e5e553d54b90017f32aeab1546a7ee7f5d42dbc54e263fc0be1cd152d0`.
+The focused recovery/manifest/admission-cut/drain-v2/main suite passes 75/75 in 1.015 s.
+Ruff/format/compile, strict JSON, diff check, stage list and default/explicit dry-runs pass;
+the default remains exactly `features -> convlstm -> ootang-operational-v4`. The 97-path
+protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`, all 11 frozen
+writer/orchestrator hashes match, and final independent review found no remaining P0/P1.
+No model training, TSA network, real runtime mutation, network/ledger recovery action, full
+repository suite, capacity run or exhaustive filesystem/crash matrix was run.
 
-The immediate next slice is versioned ledger-native recovery transactions for the remaining
-issue/live/outcome/shadow successors, followed separately by a network trusted-time intent/
-response-adoption protocol. Only after every reserved successor has a reviewed adapter may an
-independent post-recovery assessor consider current quiescence; it still cannot infer active
-transition directly.
+The immediate next slice is an expected-pre-head CAS primitive for ledger transactions. After
+that primitive is reviewed, add only the narrow machine-only `anchor_request_recorded` adapter;
+do not start broad issue/outcome/shadow or network recovery in the same slice. Network and ledger
+mutation remain unexecuted here. Only terminal receipts plus explicitly resolved derived work may
+eventually let an independent post-recovery assessor consider current quiescence; it still cannot
+infer active transition directly.
 
 ## 2026-08-27 closed-workset manifest reservation R2b-2b-2b continuation
 
@@ -185,11 +212,13 @@ default/explicit dry-runs pass. The 97-path protected aggregate remains
 Bai--Perron source and all 11 frozen writer/orchestrator files have no diff.
 Final independent authority/standards audit is P0/P1/P2 `0/0/0`.
 
-The complete, bounded, content-addressed closed-workset manifest described as this
-historical slice's next step is now implemented in the continuation above. It enumerates
-all six families and their transitive obligations under the stable official-writer boundary.
-The current next step is exact-key action adapters; no recovery may precede the singleton
-manifest reservation event.
+The content-addressed manifest described as this historical slice's next step is now
+implemented in the continuation above. The corrected scope is complete enumeration of the six
+families visible at one frozen observation plus transition seeds under the stable
+official-writer boundary; it is not a transitive or terminal closure. The current next step is
+expected-pre-head ledger CAS, followed by the narrow machine-only
+`anchor_request_recorded` adapter. No recovery may precede the singleton manifest reservation
+event or bypass an item transition plan.
 
 ## 2026-08-27 drain v2 first-blocker observation R2b-2b-1 continuation
 
@@ -306,13 +335,15 @@ Remaining engineering debt includes per-lock/per-fsync
 fault matrices, inherited private R2b API coupling, full-chain O(K^2) replay, and the
 mutable-witness deletion boundary above.
 
-The next slice described at this R2b-2a point has started as the R2b-2b-1 observation
-section above. It has not yet reserved or recovered a closed workset. R2b-2b-2a has now
-completed the frozen official-writer lock-path cut; the current next step is complete
-bounded manifest enumeration, followed by
-manifest-keyed guard/trusted-time/outcome/live/shadow recovery. It must not overwrite or
-reinterpret any v1 R2b or R2b-2a bytes. Only after that comes an independent drain
-assessor, then an authoritative atomic `SEALED(old)+ACTIVE(new)` transition.
+The next slice described at this R2b-2a point started as the R2b-2b-1 observation section
+above. R2b-2b-2a later completed the frozen official-writer lock-path cut; R2b-2b-2b then
+reserved the six-family frozen observation and transition seeds, and R2b-2b-2c added the first
+keyed local adapters plus the current step-chain correction. The current next step is
+expected-pre-head ledger CAS, followed by the narrow machine-only
+`anchor_request_recorded` adapter. These later versions must not overwrite or reinterpret any
+v1 R2b or R2b-2a bytes. Only after terminal closure and derived work are explicitly resolved may
+an independent drain assessor run; an authoritative atomic `SEALED(old)+ACTIVE(new)` transition
+comes later still.
 
 ## 2026-08-27 epoch drain-start barrier R2b first slice
 
@@ -1738,15 +1769,19 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    false authority claims. Preserve the R2b-2b-1 v2 first-blocker observation above:
    exact R1/R2a/old-ledger context, object dereference, v1 precedence, no busy writes and
    all reservation/recovery/enumeration/fence/mutual-exclusion/anti-rollback claims false.
-   Preserve the later R2b-2b-2a official-writer lock-path cut above. Next implement the
-   complete bounded manifest before any keyed
-   trusted-time/guard/outcome/live/shadow recovery. V2 must not
+   Preserve the later R2b-2b-2a official-writer lock-path cut, the R2b-2b-2b six-family
+   frozen-observation reservation/transition seeds, and the R2b-2b-2c item transition plans,
+   create-only step chains and terminal-receipt dependency gate. Do not reinterpret the
+   manifest as terminal/transitive closure, and do not count unresolved derived work as
+   complete. Next implement expected-pre-head ledger CAS; after it is reviewed, add only the
+   narrow machine-only `anchor_request_recorded` adapter. V2 must not
    reinterpret or overwrite v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/
    armed-marker/boundary/event bytes; any chunk/Merkle history representation belongs in
    that new version. Failure waits or
    blocks; never add human date selection, freezing, cleanup, approval, force or
    fabricated backfill.
-5. Only after a separate assessor proves the bounded old work is drained, add an
+5. Only after terminal receipts and explicit derived-work closure let a separate assessor prove
+   the bounded old work is drained, add an
    authoritative active-transition slice, then cycle v4 with trusted-time qualification.
    Keep broader scheduler authorization unavoidable and optimize repeated receipt/ledger
    scans so long-lived operation does not grow as O(N^2). Do not use historical OOF rows
