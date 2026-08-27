@@ -1,0 +1,93 @@
+{
+  "schema_version": "ootang_epoch_workset_recovery_profile_v1",
+  "profile_id": "ootang-epoch-workset-recovery-v1",
+  "profile_version": "1.0.0-local-foundation",
+  "case": "ootang",
+  "artifact_status": "manifest_keyed_local_recovery_foundation_only_no_full_recovery_or_lifecycle_authority",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "upstream": {
+    "manifest_profile": {
+      "path": "config/ootang_epoch_workset_manifest.v1.json",
+      "expected_sha256": "19ddf6091ecf348bc609796a672734b67b91d1e4d8b6275604a03c7fba2a56b7"
+    },
+    "manifest_implementation": {
+      "path": "code/monitoring/ootang_epoch_workset_manifest.py",
+      "expected_sha256": "5e1e170473189d03d951b43a0e3258f4cf7d3cdff33c3dcb807206d1612d5e37"
+    },
+    "trusted_implementation": {
+      "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
+      "expected_sha256": "797cedbc1e24fac6e4cbf042f48981786b662ce8b0fa913b988bce12818023c7"
+    },
+    "live_implementation": {
+      "path": "code/monitoring/ootang_prequential_live.py",
+      "expected_sha256": "086638e87ded39eed9b84311fa8a49898bf1c34d48327b41ac6e1d4633f843d8"
+    },
+    "guard_implementation": {
+      "path": "code/monitoring/ootang_verified_live.py",
+      "expected_sha256": "e8fc8264c291294207f35416b921940edb8324fdd3f526b9bacacde0988e5979"
+    }
+  },
+  "runtime": {
+    "registry_root": "runtime/ootang_epoch_registry_v1",
+    "namespace": "workset_recovery_v1",
+    "global_intent": "intent.json",
+    "item_intents": "item_intents",
+    "receipts": "receipts",
+    "events": "events",
+    "status": "status.json",
+    "manager_lock": "manager.lock",
+    "active_root": "runtime/ootang_prequential_live_v1",
+    "shadow_root": "runtime/ootang_prequential_calibration_shadow_v1",
+    "cycle_lock": "prequential_cycle.lock",
+    "replay_lock": "issue_replay.lock",
+    "shadow_lock": "runner.lock"
+  },
+  "protocol": {
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v1",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_item_intent_v1",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_receipt_v1",
+    "event_schema_version": "ootang_epoch_workset_recovery_event_v1",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v1",
+    "event_type": "epoch_workset_item_recovered",
+    "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
+    "surviving_lock_order": ["manager", "cycle", "replay", "shadow"],
+    "supported_successors": [
+      "trusted_time_request_der_repaired",
+      "anchor_receipt_repaired",
+      "superseded_by_backfill"
+    ],
+    "maximum_items": 4096,
+    "maximum_control_bytes": 4194304,
+    "initial_previous_entry_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "poll_policy": "advance_at_most_one_ready_supported_key"
+  },
+  "engineering_capabilities": {
+    "machine_only": true,
+    "manifest_keyed_dispatcher_implemented": true,
+    "deterministic_local_adapters_implemented": true,
+    "crash_forward_adoption_implemented": true,
+    "bounded_workset_recovery_implemented": false,
+    "all_reserved_items_settled": false,
+    "all_reserved_successors_supported": false,
+    "network_recovery_implemented": false,
+    "ledger_mutation_recovery_implemented": false,
+    "network_action_performed": false,
+    "live_ledger_mutated": false,
+    "legacy_guard_completion_created": false,
+    "old_work_admission_fence_implemented": false,
+    "direct_filesystem_writer_fence_implemented": false,
+    "anti_rollback_authority_implemented": false,
+    "external_implementation_trust_anchor_implemented": false,
+    "lifecycle_authority": false,
+    "transition_authority": false,
+    "drained_eligibility_current": false,
+    "old_epoch_drained": false,
+    "active_epoch_switch_implemented": false,
+    "automatic_epoch_rotation_implemented": false,
+    "trusted_anchor_receipt_verified": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false,
+    "formal_warning_output": false
+  }
+}

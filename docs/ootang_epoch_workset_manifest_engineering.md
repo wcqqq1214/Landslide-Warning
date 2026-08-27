@@ -121,8 +121,10 @@ NGBoost/SHAP、TSA 网络请求、真实大规模 4096/16384 容量或完整 sym
 
 ## 6. 下一步
 
-下一切片为 manifest-keyed action adapters。每个 adapter 只能接收 reservation 中存在的 exact
-key，先重放 manifest/context，再把该 item 向预声明 successor 前推，并发布 step receipt。
+后续 R2b-2b-2c 已实现 manifest-keyed dispatcher 与首批确定性本地 action adapters。每个
+adapter 只能接收 reservation 中存在的 exact key，先重放 manifest/context，再把该 item 向
+预声明 successor 前推，并发布 intent/step receipt/hash-linked event；当前仅覆盖同 nonce DER
+repair、ledger 可重建 anchor receipt 和具有持久 superseding evidence 的 guard disposition。
 trusted-time 网络阶段只能复用 manifest 已绑定的 request/nonce/DER，或按已保留 request
 确定性修复同一 DER；释放锁执行外部请求后，
 必须重获 recovery lock 并对同一 fence generation 和 item 做 exact-CAS。任何新发现的旧工作

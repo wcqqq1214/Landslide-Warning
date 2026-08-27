@@ -1,9 +1,43 @@
 # 项目工作进度
 
-> 更新日期：2026-08-27。本文件记录工程与研究实现进度；正式 v5 门禁以
+> 更新日期：2026-08-28。本文件记录工程与研究实现进度；正式 v5 门禁以
 > `v5_validation_protocol.md` 为准，机器连续预测支路以
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-28 manifest-keyed deterministic local recovery R2b-2b-2c
+
+- 基于已提交 `30c3bb5 feat: add closed workset reservation`，新增显式、非默认阶段
+  `ootang-epoch-workset-recovery`。当前共 35 个可选阶段；默认链仍严格为
+  `features → convlstm → ootang-operational-v4`，mutable 输出仅为
+  `runtime/ootang_epoch_registry_v1/workset_recovery_v1/status.json`。
+- 机器只按 `manager → cycle → replay → shadow` 获取存活锁，精确重放 admission cut 与
+  immutable reservation/manifest，不重跑 inventory、不打开已经 cut 的 deploy/runner lock。
+  canonical DAG/global intent 固定完整 keyset、依赖图、adapter 覆盖范围和实现 provenance；每次
+  poll 最多推进一个 ready key，并按 global intent → item intent → exact predecessor CAS →
+  deterministic action → receipt → hash-linked event 向前恢复。
+- 首批仅支持三个本地确定性 successor：同 nonce/imprint 的 RFC 3161 DER repair；由 frozen
+  verified ledger 唯一 seal+confirmation 重建 anchor receipt；仅在唯一 durable backfill/
+  settlement 事件存在时发布 guard recovery disposition。纯时间越界 guard 保持 unsupported/
+  waiting，不写 legacy completion；TSA 网络、live/shadow/issue/outcome ledger mutation 均不可达。
+- crash-forward 可接管 mutation-before-receipt 和 receipt-before-event。所有既有 item intent、
+  dependency receipt、action output 与 adapter semantics 都会深度重放；生产 adapter 的 core/
+  parser 异常统一转换为机器可判定 integrity failure，blocked 状态仍只是 cache。
+- full bounded recovery、all-successor support、network/ledger recovery、generic/direct filesystem
+  fence、anti-rollback、external implementation trust anchor、lifecycle、drained/active/rotation/
+  trusted/E2/formal 全部保持 false。首次运行前以版本化 Git checkout 为代码审查根；global
+  intent 发布后冻结实现 SHA。ConvLSTM、v4、冻结 split/metrics/threshold 和 11 个旧 writer 均未改。
+- profile/module/test SHA-256 依次为
+  `c958a407cd5903c4fdff5e1e22e79af3c6669194506b136b0e44948a88a4bb3e`、
+  `7ac9e8c63d38b80a193b3a7c10bf10204c11987511fe120e369ee25f928e8652`、
+  `9c20a4ecc029b7d0ba4c58f9e4801313100b4748a1cf03c6c559956e1ddc6c4d`。定向
+  recovery/manifest/admission-cut/drain-v2/main 快测 76/76（0.998 s）；静态、JSON、dry-run、
+  protected/frozen checks 通过。未运行训练、TSA
+  网络、真实 runtime mutation、全仓、大容量或穷举 filesystem/crash 矩阵；最终短审计无剩余
+  P0/P1。详细合同见 `docs/ootang_epoch_workset_recovery_engineering.md`。
+- 下一步是为 issue/live/outcome/shadow 补充 versioned ledger-native transaction adapter，并另建
+  network trusted-time intent/response adoption；全部 reserved successor 收口后才新增独立
+  post-recovery assessor，不能直接声明 active transition。
 
 ## 2026-08-27 closed-workset manifest reservation R2b-2b-2b
 

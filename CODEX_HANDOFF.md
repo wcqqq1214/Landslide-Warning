@@ -1,13 +1,70 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
-**Prepared:** 2026-08-27
+**Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `9d0c350 feat: add writer lock admission cut`
-**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a 已提交；当前增量实现
-R2b-2b-2b bounded closed-workset manifest/reservation。它不是 recovery、泛化 admission
-fence 或 DRAINING lifecycle authority，不声明 drained、active switch、rotation、trusted
-anchor、E2 evidence、activation 或 formal warning。
+**Committed baseline before this increment:** `30c3bb5 feat: add closed workset reservation`
+**State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b 已提交；当前增量实现
+R2b-2b-2c manifest-keyed deterministic local recovery foundation。它不是完整 recovery、
+泛化 admission fence 或 DRAINING lifecycle authority，不声明 drained、active switch、
+rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-28 manifest-keyed deterministic local recovery R2b-2b-2c continuation
+
+The new explicit-only stage is `ootang-epoch-workset-recovery`. `main.py` exposes 35
+selectable stages; the no-argument chain remains exactly
+`features -> convlstm -> ootang-operational-v4`. Its only declared mutable output is
+`runtime/ootang_epoch_registry_v1/workset_recovery_v1/status.json`; global intent, per-key
+intents, receipts and previous-hash-linked events are immutable authority beneath the same
+namespace.
+
+Every poll acquires only the surviving ordered locks
+`manager -> cycle -> replay -> shadow`, exact-replays the physical admission cut plus the
+singleton reservation event/content-addressed manifest, and never re-runs inventory or opens
+the sealed deploy/runner locks. A canonical DAG and global intent bind the complete frozen
+keyset, dependency graph, supported/unsupported adapter set and publisher provenance. The
+machine advances at most one dependency-ready supported key per poll, using a SHA-256 key id,
+create-only item intent, exact per-key predecessor CAS, deterministic action, create-only
+receipt and one append-only event.
+
+The first adapter set is deliberately local and deterministic: reconstruct the exact RFC 3161
+request DER from the reserved request/nonce/imprint without network or a new nonce; reconstruct
+the legacy anchor receipt from the frozen verified ledger's unique seal/confirmation; and emit
+a recovery-only guard supersession receipt only when the frozen ledger contains unique durable
+backfill/settlement evidence. A guard item selected by clock expiry alone remains unsupported/
+waiting and never masquerades as backfill. Guard recovery never writes a legacy completion.
+
+Crash-forward replay covers global/item intent adoption, exact output after mutation-before-
+receipt, and receipt-before-event. Every existing item intent is fully revalidated against the
+current global intent, manifest, dependency receipts and implementation provenance. Production
+receipt replay re-CASes the reserved predecessor and recomputes the exact adapter output kind,
+path/hash/size and semantics; DER/anchor output tamper and guard evidence drift fail closed.
+Core/parser errors are normalized to machine-readable recovery integrity failures, and
+integrity failures refresh only a non-authoritative blocked status cache.
+
+The profile explicitly leaves full workset recovery, all-successor support, network recovery,
+ledger mutation, generic/direct-filesystem fencing, anti-rollback, external implementation
+trust anchor, lifecycle/transition, drained/active/rotation/trusted/E2/formal authority false.
+The first-use implementation review root remains the versioned Git checkout; once global intent
+exists, its implementation hash prevents silent code drift. ConvLSTM, v4, frozen splits,
+metrics, thresholds and all 11 frozen writer/orchestrator modules were not modified.
+
+Final profile/module/test SHA-256 values are
+`c958a407cd5903c4fdff5e1e22e79af3c6669194506b136b0e44948a88a4bb3e`,
+`7ac9e8c63d38b80a193b3a7c10bf10204c11987511fe120e369ee25f928e8652` and
+`9c20a4ecc029b7d0ba4c58f9e4801313100b4748a1cf03c6c559956e1ddc6c4d`. The focused
+recovery/manifest/admission-cut/drain-v2/main suite passes 76/76 in 0.998 s;
+Ruff/format/compile, strict JSON, list/default/explicit dry-runs,
+protected-path and frozen-writer checks pass. No model training, TSA network, real runtime
+mutation, full repository suite, capacity run or exhaustive filesystem/crash matrix was run.
+Final independent short audit reports no remaining P0/P1 within the declared local-recovery
+scope.
+
+The immediate next slice is versioned ledger-native recovery transactions for the remaining
+issue/live/outcome/shadow successors, followed separately by a network trusted-time intent/
+response-adoption protocol. Only after every reserved successor has a reviewed adapter may an
+independent post-recovery assessor consider current quiescence; it still cannot infer active
+transition directly.
 
 ## 2026-08-27 closed-workset manifest reservation R2b-2b-2b continuation
 

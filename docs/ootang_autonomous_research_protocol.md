@@ -655,8 +655,10 @@ validate_contract
    recovery/mutual exclusion/anti-rollback 均未实现。R2b-2b-2a 已在不修改 11 个自绑定旧
    writer 的前提下，以 deny-write regular-file sentinel 和 Darwin atomic swap 依序封闭
    deploy/runner official lock pathname；该 event 仍不是 closed manifest 或 lifecycle
-   authority。后续 R2b-2b-2b 已完成 bounded closed-workset manifest/reservation；下一步做
-   keyed recovery；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
+   authority。后续 R2b-2b-2b 已完成 bounded closed-workset manifest/reservation；
+   R2b-2b-2c 仅增加 keyed dispatcher、逐 key intent/receipt/event 与 DER/anchor/有持久证据的
+   guard supersession 三类确定性本地 adapter，仍不等于完整 recovery。下一步补齐网络和 ledger
+   mutation successor，并由独立 assessor 核验完整 keyset；v2 不得重解释或覆写 v1 fence-prepare/intent-prefix/
    capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/
    event bytes，历史 chunk/Merkle 也只能进入该 v2。drain
    assessor、之后的原子 active
