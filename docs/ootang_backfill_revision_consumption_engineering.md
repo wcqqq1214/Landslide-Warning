@@ -88,15 +88,22 @@ fresh transaction 只允许在 persisted contract 绑定的 exact expected pre-h
 合同同时保留 `preexisting_backfill_revision_adoption` 分支，用于 freeze 时 ledger 已含完整
 canonical transaction 的零新增采用；它不能被用于容忍不完整或移动过的 slice。
 
-## 6. 明确边界与下一步
+## 6. 明确边界与后续状态
 
-本增量只闭合“已有 first backfill 的直接 revision”消费。它没有实现 first-backfill writer，
-也不扩大 full workset、all-successor、derived future reservation、terminal/transitive closure、
-epoch lifecycle、trusted anchor、E2 或 formal-warning authority。
+本增量自身只闭合“已有 first backfill 的直接 revision”消费。后继增量现已用独立
+`ootang_live_first_backfill_consumption_action_contract_v1` 实现 first-backfill writer：在目标
+精确为 `last_finalized_date + 1 day`、不存在 outstanding issue/seal 且没有任何既有 target
+authority 时，从 immutable materialized outcome authority 生成 canonical 单事件
+`backfill_not_blind` transaction。它没有与本增量的 revision 合同混用。
 
-下一窄增量是 first-backfill writer：在目标日期尚无 settled/backfill original 时，从 immutable
-materialized outcome authority 生成 canonical 首次 `backfill_not_blind` transaction，并沿用
-expected-pre-head CAS 与 crash-forward adoption。该工作必须继续与本增量的 revision 合同分离。
+到此 materialized outcome 的 outstanding、settled revision、backfill revision 与 first
+backfill 四条 writer 均已闭合，但这仍不扩大 full workset、all-successor、cross-freeze derived
+future work、step-level dependency reservation、terminal/transitive closure、epoch lifecycle、
+trusted anchor、E2 或 formal-warning authority。
+
+当前下一窄增量转向 cross-freeze derived work：先建立 versioned step-level dependency
+reservation，再据此推进 closure。first-backfill 的 authority、CAS 与后置状态合同见
+`docs/ootang_first_backfill_consumption_engineering.md`。
 
 ## 7. 当前有界验证记录
 

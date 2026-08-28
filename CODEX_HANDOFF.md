@@ -3,18 +3,69 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `c54c279 feat: consume settled outcome revisions`
+**Committed baseline before this increment:** `8fc8c5c feat: consume backfill outcome revisions`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
 loop、manifest-reserved outcome settlement adoption 与 published outstanding 43-event
 writer/crash-forward adoption、receipt-tip repair/machine-selected outcome materialization、下一
 poll 的 outstanding consumption 桥、revision predecessor authority、settled-date canonical
-16-event revision consumption 与 crash-forward adoption 已提交；当前工作树实现 backfill
-revision 的 canonical 8-event 自动消费、fresh CAS 与 post-CAS receipt adoption。
+16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
+crash-forward adoption 已提交；当前工作树实现 first-backfill canonical 单事件自动消费、
+fresh CAS 与 post-CAS receipt adoption。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-29 first-backfill outcome consumption
+
+The recovery coordinator now consumes a terminal materialized `selection_kind=backfill` root
+through the live core's canonical `_append_backfill` writer. Both predecessor fields must be null,
+the target must equal the current `last_finalized_date + 1 day`, and the exact current prefix must
+have no outstanding target, issue events, seal, or existing backfill/settled/revision/latest-actual
+authority for that target. Any disagreement fails closed.
+
+The path uses the independent persisted schema
+`ootang_live_first_backfill_consumption_action_contract_v1`. It binds the exact pre-head, previous
+last-finalized date, immutable materializer receipt/exact outcome/source manifest, online-state
+digest, projection counts, and the exact single EventSpec. Existing outstanding v2, settled
+revision v1, and backfill revision v1 persisted contracts, recorded verifiers, transaction
+classifiers, receipts and outputs remain compatible.
+
+The canonical writer emits one aggregate-state `backfill_not_blind` event with no station or issue.
+Postconditions require online states, settled mapping, anchored seals and blind counts to remain
+unchanged. The machine advances last-finalized to the target, adds the backfill registry entry and
+count, registers the exact source revision/outcome, updates latest actuals, and installs those
+actuals as the next persistence baseline. The event is not blind-metric eligible and does not
+rewrite online state.
+
+Fresh work appends only through CAS at the exact expected pre-head. If CAS commits before the
+terminal recovery receipt is durable, the next poll rebuilds the single canonical EventSpec and
+adopts only an exact event at the fixed position without a second CAS. Displaced, partial-authority
+or mismatched states fail closed.
+
+Results are targeted `2/2` (1.400 s), full recovery `57/57` (5.606 s), and adjacent
+recovery/materializer/live-ledger/CAS/epoch-gates/main `221/221` (13.756 s). Ruff format/check,
+Python compile, strict profile load and diff check pass. Two independent read-only reviews report
+P0=0/P1=0. Temporary-runtime checks also verified two frozen dependent backfills using successive
+current prefixes, consumed-at-freeze repair with zero-CAS adoption, and historical read-only replay
+after a legal issue suffix and unrelated mutable pointer change.
+
+Current recovery module/profile/test, increment document and protected `main.py` SHA-256 values are
+`b9f25133eef9cb94fb255bab588edcd573f0fa792ef82c4ddb9068d0a44a6c51`,
+`5c50d168d389c286d0940a00884369ae8f65fc399f8726f0f64300999dd2de01`,
+`4227941e51697f21f5897da5f51c218ca4f1819e489cb852760178fe16036076`,
+`6679837dd26b6974789532c3423f65743e52d6e79210fa528120ef1893f03083` and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+No training or real network work is included; ConvLSTM, v4, frozen splits, metrics, thresholds,
+model parameters and scientific conclusions are unchanged. Detailed semantics are in
+`docs/ootang_first_backfill_consumption_engineering.md`.
+
+All four materialized-outcome consumption writers are now present: outstanding, settled revision,
+backfill revision, and first backfill. This does not establish full-workset, successor, closure or
+lifecycle authority. The next narrow increment is versioned cross-freeze derived-work/step-level
+dependency reservation, followed by evidence-backed terminal/transitive closure. Those claims
+must remain false until their end-to-end contracts and tests exist.
 
 ## 2026-08-29 backfill outcome revision consumption
 

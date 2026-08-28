@@ -5,6 +5,41 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 first-backfill outcome 自动消费（本增量）
+
+- recovery coordinator 新增独立
+  `ootang_live_first_backfill_consumption_action_contract_v1`。分支只接受
+  `selection_kind=backfill` 的 root outcome，要求 predecessor revision/outcome 均为空、target
+  精确为 `last_finalized_date + 1 day`，且 current exact prefix 没有 outstanding target、issue、
+  seal 或该 target 的既有 backfill/settled/revision/latest-actual authority。
+- writer 复用 canonical `_append_backfill`，只追加一个 aggregate-state
+  `backfill_not_blind` event。online states、settled mapping、anchored seals 与 blind counts 不变；
+  `last_finalized_date` 推进到 target，backfill registry/count、revision registry、latest actual 与
+  下一日 persistence baseline 由机器精确更新。
+- fresh path 仅在 exact expected pre-head 上 CAS。CAS 已提交但 recovery receipt 未落盘时，
+  下一 poll 从 persisted contract 重建单个 EventSpec，exact 匹配固定位置后仅补 receipt、不再
+  调用 CAS；displaced、partial-authority 或 mismatched transaction fail closed。
+- outstanding v2、settled revision v1 与 backfill revision v1 三类既有 schema 保持兼容。
+  到此 materialized outcome 的 outstanding、settled revision、backfill revision 与 first
+  backfill 四条 writer 已闭合，但 full workset、derived future reservation、terminal/transitive
+  closure 与 lifecycle authority 仍保持 false。
+- 定向 `2/2`（1.400 s）、完整 recovery `57/57`（5.606 s）、相邻
+  recovery/materializer/live-ledger/CAS/epoch-gates/main `221/221`（13.756 s）均通过；
+  Ruff format/check、Python compile、strict profile load 与 diff check 通过。两路独立只读
+  复审均为 P0=0、P1=0；临时运行时另验证同一 frozen manifest 的 day1/day2 串行、
+  consumed-at-freeze repair 后零 CAS adoption，以及合法 suffix/mutable pointer 无关的历史只读
+  复验。未运行训练或真实网络，也未修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、
+  模型参数或实验结论。
+- recovery module/profile/test、本增量工程文档与受保护 `main.py` SHA-256 分别为
+  `b9f25133eef9cb94fb255bab588edcd573f0fa792ef82c4ddb9068d0a44a6c51`、
+  `5c50d168d389c286d0940a00884369ae8f65fc399f8726f0f64300999dd2de01`、
+  `4227941e51697f21f5897da5f51c218ca4f1819e489cb852760178fe16036076`、
+  `6679837dd26b6974789532c3423f65743e52d6e79210fa528120ef1893f03083`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 下一窄增量转向 cross-freeze derived work/step-level dependency reservation，再基于该
+  versioned authority 推进 closure；在端到端证据完成前不声明 full workset、drained 或
+  lifecycle。详细合同见 `docs/ootang_first_backfill_consumption_engineering.md`。
+
 ## 2026-08-29 backfill outcome revision 自动消费（本增量）
 
 - recovery coordinator 现在对 `selection_kind=revision` 重放 current projection，并要求
