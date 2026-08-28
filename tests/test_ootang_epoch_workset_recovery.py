@@ -349,6 +349,17 @@ class WorksetRecoveryTests(unittest.TestCase):
         ):
             self._run(None, self._hook)
 
+    def test_empty_anchor_result_object_directory_is_not_authority(self) -> None:
+        empty_step = self.paths.anchor_result_response_objects / _digest("empty-step")
+        empty_step.mkdir(parents=True)
+
+        result = self._run(None, self._hook)
+
+        self.assertEqual(result.status, "waiting_for_workset_reservation")
+        self.assertFalse(self.paths.global_intent.exists())
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
     def test_supported_key_progresses_intent_output_receipt_event_idempotently(
         self,
     ) -> None:
@@ -739,6 +750,66 @@ class WorksetRecoveryTests(unittest.TestCase):
             },
         }
         return ledger, reservation, item, load_frozen, seal
+
+    def _anchor_result_coordinator_fixture(self):
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture()
+        reserved_item = reservation.manifest["items"][0]
+        reserved_item.update(
+            {
+                "family": item["family"],
+                "natural_key": item["natural_key"],
+                "canonical_successor_state": item["canonical_successor_state"],
+                "dependency_keys": item["dependency_keys"],
+                "namespace_digest": item["namespace_digest"],
+                "authority": item["authority"],
+            }
+        )
+
+        def load_external(reserved):  # type: ignore[no-untyped-def]
+            frozen = load_frozen(reserved)
+            return recovery.FrozenLivePrefix(
+                profile={"external_anchor": _external_anchor_profile()},
+                paths=frozen.paths,
+                prerequisites=frozen.prerequisites,
+                projection=frozen.projection,
+                frozen_events=frozen.frozen_events,
+                current_events=frozen.current_events,
+                expected_pre_head=frozen.expected_pre_head,
+            )
+
+        return ledger, reservation, load_external, seal
+
+    def _prepare_linked_anchor_result(
+        self,
+        reservation: recovery.Reservation,
+        *,
+        deterministic_failure: bool,
+    ) -> recovery.AnchorResultDispatchPlan:
+        first = self._run(reservation)
+        self.assertEqual(first.status, "recovery_step_completed")
+        plan = self._run(reservation)
+        self.assertIsInstance(plan, recovery.AnchorResultDispatchPlan)
+        assert isinstance(plan, recovery.AnchorResultDispatchPlan)
+        response = self._anchor_result_success_response(plan)
+        if deterministic_failure:
+            response = recovery.AnchorResultTransportResponse(
+                body=response.body.replace(
+                    plan.action_contract["request_body"][
+                        "sealed_entry_sha256"
+                    ].encode(),
+                    b"f" * 64,
+                ),
+                status_code=response.status_code,
+                media_type=response.media_type,
+                charset=response.charset,
+                content_encoding=response.content_encoding,
+                final_url=response.final_url,
+            )
+        observation = recovery._anchor_result_observation_payload(  # noqa: SLF001
+            plan, response, token=None
+        )
+        recovery._publish_anchor_result_observation(plan, observation)  # noqa: SLF001
+        return plan
 
     def test_anchor_request_fresh_cas_rebuilds_exact_event_without_network(
         self,
@@ -1173,7 +1244,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         )
 
         self.assertEqual(first.status, "external_anchor_response_observed")
-        self.assertEqual(second.status, "waiting_for_anchor_result_adapter")
+        self.assertEqual(second.status, "waiting_for_locked_anchor_result_consumption")
         self.assertFalse(second.network_action_performed)
         self.assertEqual(
             second.external_anchor_response_observation_path,
@@ -1227,17 +1298,29 @@ class WorksetRecoveryTests(unittest.TestCase):
                 clock=lambda: NOW,
             )
         link_path = self.paths.anchor_result_response_links / f"{plan.step_id}.json"
+        object_path = next(
+            (self.paths.anchor_result_response_objects / plan.step_id).glob("*.json")
+        )
         link_path.unlink()
         network = mock.Mock(side_effect=AssertionError("orphan object must be adopted"))
 
-        adopted = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
-            plan, transport=network, clock=lambda: NOW
-        )
+        with mock.patch.object(
+            recovery, "_publish", wraps=recovery._publish
+        ) as durable_publish:
+            adopted = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan, transport=network, clock=lambda: NOW
+            )
 
         self.assertEqual(adopted.status, "external_anchor_response_forward_adopted")
         self.assertFalse(adopted.network_action_performed)
         self.assertEqual(adopted.external_anchor_response_observation_path, link_path)
         self.assertTrue(link_path.is_file())
+        adopted_paths = [
+            call.args[0]
+            for call in durable_publish.call_args_list
+            if call.args[0] in {object_path, link_path}
+        ]
+        self.assertEqual(adopted_paths, [object_path, link_path])
         network.assert_not_called()
 
     def test_anchor_result_retryable_transport_persists_no_observation(self) -> None:
@@ -1306,6 +1389,304 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertFalse(self.paths.anchor_result_response_links.exists())
         self.assertFalse(self.paths.receipts.exists())
         self.assertFalse(self.paths.events.exists())
+
+    def test_linked_anchor_result_consumes_exact_branch_without_network(self) -> None:
+        for deterministic_failure in (False, True):
+            with self.subTest(deterministic_failure=deterministic_failure):
+                self._use_fresh_namespace()
+                ledger, reservation, load_external, _ = (
+                    self._anchor_result_coordinator_fixture()
+                )
+                network = mock.Mock(
+                    side_effect=AssertionError(
+                        "locked consumption must be zero-network"
+                    )
+                )
+                with (
+                    mock.patch.object(
+                        recovery, "_frozen_live_prefix", side_effect=load_external
+                    ),
+                    mock.patch.object(
+                        recovery, "_default_anchor_result_transport", network
+                    ),
+                    mock.patch.dict(
+                        os.environ,
+                        {
+                            "OOTANG_TIME_ANCHOR_URL": (
+                                "https://anchor.invalid/v1/receipts"
+                            )
+                        },
+                        clear=False,
+                    ),
+                ):
+                    plan = self._prepare_linked_anchor_result(
+                        reservation,
+                        deterministic_failure=deterministic_failure,
+                    )
+                    result = self._run(reservation)
+                    follow_up = self._run(reservation)
+                    retry_plan = (
+                        self._run(reservation) if deterministic_failure else None
+                    )
+
+                network.assert_not_called()
+                self.assertEqual(result.status, "recovery_step_completed")
+                events = ledger.read_events()
+                request, recorded = (
+                    events[-3:-1] if deterministic_failure else events[-2:]
+                )
+                self.assertEqual(recorded.sequence_id, request.sequence_id + 1)
+                self.assertEqual(recorded.previous_entry_sha256, request.entry_sha256)
+                receipt = json.loads(result.receipt_path.read_bytes())  # type: ignore[union-attr]
+                semantics = receipt["action_semantics"]
+                self.assertIsNone(receipt["action_output"])
+                self.assertFalse(semantics["network_action_performed"])
+                self.assertTrue(semantics["live_ledger_event_recorded"])
+                self.assertNotIn("created", semantics)
+                self.assertEqual(
+                    semantics["response_observation_link"]["path"],
+                    plan.paths.anchor_result_response_links.joinpath(
+                        f"{plan.step_id}.json"
+                    )
+                    .relative_to(plan.paths.root)
+                    .as_posix(),
+                )
+                if deterministic_failure:
+                    self.assertEqual(len(events), 5)
+                    self.assertEqual(follow_up.status, "recovery_step_completed")
+                    self.assertIsInstance(retry_plan, recovery.AnchorResultDispatchPlan)
+                    self.assertEqual(recorded.event_type, "anchor_failed")
+                    self.assertEqual(
+                        recorded.event_key,
+                        request.event_key.removesuffix(":requested") + ":failed",
+                    )
+                    self.assertEqual(
+                        recorded.payload,
+                        {
+                            **request.payload,
+                            "reason_code": ("request_or_receipt_validation_failed"),
+                            "error_type": "AnchorResultProtocolFailure",
+                            "retry_policy": "automatic_next_poll",
+                        },
+                    )
+                    self.assertEqual(
+                        receipt["next_actions"], ["anchor_request_recorded"]
+                    )
+                    retry_request = events[-1]
+                    self.assertEqual(retry_request.event_type, "anchor_requested")
+                    self.assertEqual(retry_request.payload["attempt"], 2)
+                    self.assertEqual(
+                        retry_request.previous_entry_sha256, recorded.entry_sha256
+                    )
+                    retry_receipt = json.loads(  # type: ignore[union-attr]
+                        follow_up.receipt_path.read_bytes()
+                    )
+                    assert result.receipt_path is not None
+                    self.assertEqual(
+                        retry_receipt["previous_step_receipt"],
+                        recovery._reference(  # noqa: SLF001
+                            self._snapshot(result.receipt_path),
+                            self.paths.root,
+                        ),
+                    )
+                    self.assertEqual(
+                        retry_receipt["next_actions"], ["anchor_result_recorded"]
+                    )
+                    assert isinstance(retry_plan, recovery.AnchorResultDispatchPlan)
+                    self.assertEqual(
+                        retry_plan.action_contract["request_body"]["attempt"], 2
+                    )
+                    self.assertEqual(
+                        retry_plan.action_contract["expected_result_pre_head"][
+                            "entry_sha256"
+                        ],
+                        retry_request.entry_sha256,
+                    )
+                else:
+                    self.assertEqual(len(events), 4)
+                    self.assertEqual(
+                        follow_up.status, "waiting_for_supported_ready_key"
+                    )
+                    self.assertEqual(recorded.event_type, "anchor_confirmed")
+                    self.assertEqual(
+                        recorded.event_key,
+                        request.event_key.removesuffix(":requested") + ":confirmed",
+                    )
+                    self.assertEqual(recorded.payload["provider"], "synthetic-provider")
+                    self.assertEqual(receipt["next_actions"], ["outcome_batch_settled"])
+
+    def test_anchor_result_commit_before_receipt_is_exactly_adopted(self) -> None:
+        self._use_fresh_namespace()
+        ledger, reservation, load_external, _ = (
+            self._anchor_result_coordinator_fixture()
+        )
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.dict(
+                os.environ,
+                {"OOTANG_TIME_ANCHOR_URL": "https://anchor.invalid/v1/receipts"},
+                clear=False,
+            ),
+        ):
+            self._prepare_linked_anchor_result(reservation, deterministic_failure=False)
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_ensure_receipt",
+                    side_effect=RuntimeError("synthetic post-CAS crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "post-CAS crash"),
+            ):
+                self._run(reservation)
+            committed = ledger.read_events()[-1]
+            self.assertEqual(committed.event_type, "anchor_confirmed")
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 1)
+
+            result = self._run(reservation)
+
+        self.assertEqual(result.status, "recovery_step_completed")
+        self.assertEqual(len(ledger.read_events()), 4)
+        self.assertEqual(ledger.read_events()[-1], committed)
+        self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 2)
+        self.assertEqual(len(list(self.paths.events.glob("*.json"))), 2)
+
+    def test_linked_anchor_result_waits_for_dispatch_link_durability(self) -> None:
+        self._use_fresh_namespace()
+        ledger, reservation, load_external, _ = (
+            self._anchor_result_coordinator_fixture()
+        )
+        network = mock.Mock(
+            side_effect=AssertionError("durability fencing must be zero-network")
+        )
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.object(recovery, "_default_anchor_result_transport", network),
+            mock.patch.dict(
+                os.environ,
+                {"OOTANG_TIME_ANCHOR_URL": "https://anchor.invalid/v1/receipts"},
+                clear=False,
+            ),
+        ):
+            plan = self._prepare_linked_anchor_result(
+                reservation, deterministic_failure=False
+            )
+            object_path = next(
+                (self.paths.anchor_result_response_objects / plan.step_id).glob(
+                    "*.json"
+                )
+            )
+            link_path = self.paths.anchor_result_response_links / f"{plan.step_id}.json"
+            before = ledger.read_events()
+            handle = recovery.drain._acquire_lock(  # noqa: SLF001
+                self.paths.anchor_result_dispatch_lock,
+                label="synthetic anchor response publisher",
+            )
+            try:
+                waiting = self._run(reservation)
+            finally:
+                recovery.drain._release_locks([handle])  # noqa: SLF001
+
+            self.assertEqual(ledger.read_events(), before)
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 1)
+            self.assertEqual(len(list(self.paths.events.glob("*.json"))), 1)
+            with mock.patch.object(
+                recovery, "_publish", wraps=recovery._publish
+            ) as durable_publish:
+                consumed = self._run(reservation)
+
+        network.assert_not_called()
+        self.assertEqual(waiting.status, "waiting_for_anchor_result_link_durability")
+        self.assertEqual(before, ledger.read_events()[:-1])
+        self.assertEqual(consumed.status, "recovery_step_completed")
+        fenced_paths = [
+            call.args[0]
+            for call in durable_publish.call_args_list
+            if call.args[0] in {object_path, link_path}
+        ]
+        self.assertEqual(fenced_paths, [object_path, link_path])
+        self.assertEqual(ledger.read_events()[-1].event_type, "anchor_confirmed")
+        self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 2)
+        self.assertEqual(len(list(self.paths.events.glob("*.json"))), 2)
+
+    def test_anchor_result_receipt_before_event_is_forward_adopted(self) -> None:
+        self._use_fresh_namespace()
+        ledger, reservation, load_external, _ = (
+            self._anchor_result_coordinator_fixture()
+        )
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.dict(
+                os.environ,
+                {"OOTANG_TIME_ANCHOR_URL": "https://anchor.invalid/v1/receipts"},
+                clear=False,
+            ),
+        ):
+            self._prepare_linked_anchor_result(reservation, deterministic_failure=False)
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_append_event",
+                    side_effect=RuntimeError("synthetic post-receipt crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "post-receipt crash"),
+            ):
+                self._run(reservation)
+            committed = ledger.read_events()[-1]
+            action = mock.Mock(
+                side_effect=AssertionError(
+                    "result action must not replay after receipt"
+                )
+            )
+            with mock.patch.object(recovery, "_anchor_result_action", action):
+                result = self._run(reservation)
+
+        self.assertEqual(result.status, "recovery_event_forward_adopted")
+        self.assertEqual(ledger.read_events()[-1], committed)
+        self.assertEqual(len(ledger.read_events()), 4)
+        self.assertEqual(len(list(self.paths.events.glob("*.json"))), 2)
+        action.assert_not_called()
+
+    def test_anchor_result_pre_head_drift_fails_without_mutation(self) -> None:
+        self._use_fresh_namespace()
+        ledger, reservation, load_external, seal = (
+            self._anchor_result_coordinator_fixture()
+        )
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.dict(
+                os.environ,
+                {"OOTANG_TIME_ANCHOR_URL": "https://anchor.invalid/v1/receipts"},
+                clear=False,
+            ),
+        ):
+            self._prepare_linked_anchor_result(reservation, deterministic_failure=False)
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        "foreign-result-position",
+                        event_type="integrity_blocked",
+                        target=seal.target_date,
+                        issue_id=seal.issue_id,
+                        payload={"foreign": True},
+                        input_manifest_sha256=seal.input_manifest_sha256,
+                        state_sha256=seal.state_after_sha256,
+                    )
+                ]
+            )
+            before = ledger.read_events()
+            with self.assertRaises(recovery.WorksetRecoveryIntegrityError):
+                self._run(reservation)
+
+        self.assertEqual(ledger.read_events(), before)
+        self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 1)
 
     def test_frozen_live_prefix_accepts_suffix_but_rejects_tip_drift(self) -> None:
         ledger, reservation, _, _, seal = self._anchor_request_fixture()
@@ -1412,7 +1793,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertTrue(claims["terminal_receipt_dependency_gate_implemented"])
         self.assertTrue(claims["live_ledger_expected_pre_head_cas_implemented"])
         self.assertTrue(claims["live_anchor_result_request_intent_implemented"])
-        self.assertFalse(claims["live_anchor_result_adapter_implemented"])
+        self.assertTrue(claims["live_anchor_result_adapter_implemented"])
         self.assertFalse(claims["bounded_workset_recovery_implemented"])
         self.assertFalse(claims["terminal_transition_closure_implemented"])
         result = recovery.RecoveryResult("waiting", "no authority", Path("status"))

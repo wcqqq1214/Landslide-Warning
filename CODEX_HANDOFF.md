@@ -3,16 +3,76 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `e9120d9 feat: prepare anchor result requests`
+**Committed baseline before this increment:** `507b5a5 feat: observe anchor responses`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
-`anchor_result_recorded` create-only request intent 已提交；本增量实现四锁外 bounded HTTPS
-dispatch 和 create-only content-addressed response observation。它仍未执行 result ledger CAS、
-recovery receipt/event 或 branch transition，不是完整 recovery、terminal/transitive closure、泛化
-admission fence 或 DRAINING lifecycle authority；不声明 remote exactly-once、drained、active
-switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+`anchor_result_recorded` request intent/四锁外 response observation 已提交；本增量实现四锁内
+result expected-pre-head CAS、crash-forward adoption、branch-selected receipt/event 与 failure 后
+自动 `attempt + 1` request loop。
+它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
+authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
+evidence、activation 或 formal warning。
 
-## 2026-08-28 unlocked anchor-result response-observation continuation
+## 2026-08-28 locked anchor-result ledger-adapter and retry continuation
+
+The coordinator consumes an existing exact response link/object only after reacquiring the
+manager→cycle→replay→shadow locks. It never reads the bearer token or calls transport. Immediately
+before ledger mutation it performs one nonblocking external-dispatch-lock durability fence: if the
+publisher still owns the lock, the machine waits with zero ledger mutation; otherwise it exact
+re-adopts/fsyncs object then link, releases that lock and continues. An empty per-step object
+directory is harmless mkdir crash residue, while orphan links, unknown files and branched objects
+still fail closed. Object-only crash adoption uses the same order outside the four locks: it durably
+re-adopts the exact object before publishing the missing link, preventing a second crash from
+leaving a durable orphan link.
+
+The adapter rebuilds one frozen-writer-shaped EventSpec from the request action contract and the
+deep-verified observation. `candidate_confirmed` maps to `anchor_confirmed` with the normalized
+candidate. `deterministic_failure` maps to `anchor_failed` with stable
+`reason_code=request_or_receipt_validation_failed`, recovery-specific
+`error_type=AnchorResultProtocolFailure`, and `retry_policy=automatic_next_poll`; observation
+stage/code remain receipt evidence rather than extra live payload fields.
+
+The recovery-only expected-pre-head CAS appends only while the request is still the exact terminal
+head. A retry adopts only the identical result at the fixed position immediately after that request,
+and may tolerate a valid later suffix. CAS disposition is not persisted. Action semantics bind the
+exact response object/link, request/result identity and EventSpec digest with per-consumption
+`network_action_performed=false`; remote exactly-once and trusted/E2 remain false. The live ledger is
+the source of truth, so this narrow slice does not add the redundant anchor receipt cache file.
+
+The result receipt is nonterminal and narrows the graph using reviewed evidence:
+confirmed→`outcome_batch_settled`, deterministic failure→`anchor_request_recorded`. Historical
+receipt replay rebuilds the same observation/spec/event at its fixed ledger position. A crash after
+CAS but before receipt exact-adopts the result; a crash after receipt but before recovery event only
+adds the missing previous-hash event. Permanent observation artifacts are now valid for both pending
+and completed result steps.
+
+The deterministic-failure branch is now fully machine-driven. The next request contract must bind
+the exact failed-result receipt and `anchor_failed` ledger row, uses that row as expected pre-head,
+and builds only `attempt + 1`. Its CAS receipt then authorizes the next result intent, whose contract
+must bind the exact request receipt/event. Historical replay accepts the legitimate later suffix but
+cannot lose either predecessor. This loop never freezes, cleans up, approves, forces or backdates by
+hand.
+
+The confirmed branch still waits for a reviewed `outcome_batch_settled` recovery adapter; full
+workset/network recovery and other families remain deferred. Focused recovery tests pass 36/36 in
+about 0.45 seconds. The adjacent recovery, live-ledger/CAS, inventory, manifest, admission-cut,
+eligibility, drain-v2 and main suite passes 143/143 in about 7.67 seconds. No training, model rerun,
+real TSA/HTTP request, long concurrency or capacity matrix was run. ConvLSTM, v4, frozen splits,
+metrics, thresholds and conclusions remain unchanged. Full detail is in
+`docs/ootang_anchor_result_ledger_adapter_engineering.md`.
+
+Current recovery module/profile/test and `main.py` SHA-256 values are
+`51aa8c0eda8b4561a5873fceb3a36570c8e79e6eda3d33761b947153f00bb008`,
+`3157abe52b5357b565366e2a3026a53b087e40a19f01615ff274b9e3e68074da`,
+`407e10e9aa5a951305dd35a6074ddc463a80f10c54f5f08a1885b29921df92fc` and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+The 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+Final independent read-only review reports P0/P1=0. Its only P2 is intentionally bounded test
+coverage: the permanent suite stops after preparing the second-attempt result plan instead of
+repeating the already-covered response-consumption/CAS path for attempt 2.
+
+## 2026-08-28 unlocked anchor-result response-observation continuation (committed `507b5a5`)
 
 The coordinator now returns an `AnchorResultDispatchPlan` from either the newly prepared or the
 existing pending result-intent branch. Its existing `finally` releases the surviving

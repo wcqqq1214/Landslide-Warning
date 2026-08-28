@@ -38,7 +38,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "2fd37e48a5b3eeb8a321b559f9a4e162f0abb9de32f5e930bff9956b7e488177"
+    "3157abe52b5357b565366e2a3026a53b087e40a19f01615ff274b9e3e68074da"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -47,6 +47,7 @@ SUPPORTED_SUCCESSORS = (
     "trusted_time_request_der_repaired",
     "anchor_receipt_repaired",
     "anchor_request_recorded",
+    "anchor_result_recorded",
     "superseded_by_backfill",
 )
 INTENT_PREPARATION_SUCCESSORS = ("anchor_result_recorded",)
@@ -56,6 +57,18 @@ ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA = (
 )
 ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES = 1024 * 1024
 ANCHOR_RESULT_USER_AGENT = "ootang-workset-recovery/1"
+ANCHOR_RESULT_FAILURE_TAXONOMY = {
+    ("response_body", "response_too_large"),
+    ("http_status", "redirect_rejected"),
+    ("http_status", "request_rejected"),
+    ("http_status", "unexpected_http_status"),
+    ("transport", "final_url_changed"),
+    ("transport", "unexpected_content_encoding"),
+    ("transport", "unexpected_media_type"),
+    ("transport", "unexpected_charset"),
+    ("response_json", "invalid_strict_json"),
+    ("response_contract", "invalid_anchor_response"),
+}
 LIVE_LEDGER_CAS_TIMEOUT_SECONDS = 0.25
 TRANSITION_CONTRACT = {
     "schema_version": "ootang_epoch_workset_transition_contract_v1",
@@ -165,6 +178,7 @@ TRUE_CAPABILITIES = (
     "live_anchor_request_adapter_implemented",
     "live_anchor_result_request_intent_implemented",
     "live_anchor_result_response_observation_implemented",
+    "live_anchor_result_adapter_implemented",
     "ledger_mutation_recovery_implemented",
 )
 FALSE_CLAIMS = (
@@ -175,7 +189,6 @@ FALSE_CLAIMS = (
     "derived_future_work_reservation_implemented",
     "all_transition_branches_supported",
     "network_recovery_implemented",
-    "live_anchor_result_adapter_implemented",
     "legacy_guard_completion_created",
     "old_work_admission_fence_implemented",
     "direct_filesystem_writer_fence_implemented",
@@ -241,11 +254,11 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v5",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v5",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v5",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v6",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v6",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v6",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v5",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v6",
     "anchor_result_response_observation_schema_version": (
         "ootang_epoch_workset_anchor_result_response_observation_v1"
     ),
@@ -345,6 +358,14 @@ class AnchorResultDispatchPlan:
     step_id: str
     item_intent: registry.ArtifactSnapshot
     action_contract: Mapping[str, Any]
+
+
+@dataclass(frozen=True)
+class AnchorResultObservationEvidence:
+    plan: AnchorResultDispatchPlan
+    observation: Mapping[str, Any]
+    object_snapshot: registry.ArtifactSnapshot
+    link_snapshot: registry.ArtifactSnapshot | None
 
 
 @dataclass(frozen=True)
@@ -980,12 +1001,17 @@ def _anchor_result_observation_step_ids(
                 raise WorksetRecoveryIntegrityError(
                     "Anchor result response objects contain an unknown entry"
                 )
-            _strict_named_json(
+            objects = _strict_named_json(
                 directory,
                 suffix=".json",
                 name="anchor result response object set",
             )
-            object_steps.add(step_id)
+            # mkdir may become durable before the content-addressed object is
+            # published.  An empty per-step directory is therefore crash
+            # residue, not response authority.  A link for that empty step is
+            # still rejected below as an orphan.
+            if objects:
+                object_steps.add(step_id)
     except WorksetRecoveryError:
         raise
     except OSError as exc:
@@ -1209,8 +1235,12 @@ def _event_spec_from_contract(
 
 
 def _anchor_request_contract(
-    item: Mapping[str, Any], reservation: Reservation
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> dict[str, object]:
+    if previous_step_receipt is not None:
+        return _anchor_retry_request_contract(item, reservation, previous_step_receipt)
     if item.get("family") != "live_outstanding":
         raise WorksetRecoveryIntegrityError("Anchor request item family changed")
     authority = _exact(
@@ -1322,6 +1352,101 @@ def _anchor_request_contract(
             "entry_sha256": frozen.expected_pre_head.entry_sha256,
         },
         "attempt": attempt,
+        "event_spec": spec_payload,
+        "event_spec_sha256": _sha256(_canonical_bytes(spec_payload)),
+    }
+    _event_spec_from_contract(contract)
+    return contract
+
+
+def _anchor_retry_request_contract(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any],
+) -> dict[str, object]:
+    frozen, seal, _ = _anchor_result_context(item, reservation)
+    semantics = previous_step_receipt.get("action_semantics")
+    if (
+        previous_step_receipt.get("action") != "anchor_result_recorded"
+        or previous_step_receipt.get("action_output_kind") != "live_anchor_result_event"
+        or previous_step_receipt.get("action_output") is not None
+        or previous_step_receipt.get("next_actions") != ["anchor_request_recorded"]
+        or previous_step_receipt.get("terminal_for_key") is not False
+        or not isinstance(semantics, Mapping)
+        or semantics.get("schema_version")
+        != "ootang_live_anchor_result_action_output_v1"
+        or semantics.get("result_outcome") != "deterministic_failure"
+        or semantics.get("event_type") != "anchor_failed"
+        or semantics.get("selected_next_action") != "anchor_request_recorded"
+        or semantics.get("live_ledger_event_recorded") is not True
+        or semantics.get("network_action_performed") is not False
+        or semantics.get("external_response_network_action_performed") is not True
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor retry lost its failed-result receipt authority"
+        )
+    sequence_id = semantics.get("sequence_id")
+    attempt = semantics.get("attempt")
+    if (
+        not isinstance(sequence_id, int)
+        or isinstance(sequence_id, bool)
+        or sequence_id < 1
+        or not isinstance(attempt, int)
+        or isinstance(attempt, bool)
+        or attempt < 1
+        or len(frozen.current_events) < sequence_id
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor retry failed-result position changed"
+        )
+    failed = frozen.current_events[sequence_id - 1]
+    if (
+        failed.sequence_id != sequence_id
+        or failed.entry_sha256 != semantics.get("entry_sha256")
+        or failed.previous_entry_sha256 != semantics.get("previous_entry_sha256")
+        or failed.event_key != semantics.get("event_key")
+        or failed.event_type != "anchor_failed"
+        or failed.payload.get("attempt") != attempt
+        or failed.payload.get("sealed_entry_sha256") != seal.entry_sha256
+        or failed.payload.get("reason_code") != "request_or_receipt_validation_failed"
+        or failed.payload.get("error_type") != "AnchorResultProtocolFailure"
+        or failed.payload.get("retry_policy") != "automatic_next_poll"
+        or semantics.get("live_epoch_id") != frozen.projection.epoch_id
+        or semantics.get("sealed_entry_sha256") != seal.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor retry failed-result event changed")
+    next_attempt = attempt + 1
+    request_payload = {
+        "live_epoch_id": frozen.projection.epoch_id,
+        "target_date": seal.target_date,
+        "sealed_sequence_id": seal.sequence_id,
+        "sealed_entry_sha256": seal.entry_sha256,
+        "attempt": next_attempt,
+    }
+    spec = live._event_spec(  # noqa: SLF001
+        event_key=(
+            f"{frozen.projection.epoch_id}:{seal.target_date}:"
+            f"anchor:{next_attempt}:requested"
+        ),
+        event_type="anchor_requested",
+        prerequisites=frozen.prerequisites,
+        payload=request_payload,
+        target_date_value=date.fromisoformat(str(seal.target_date)),
+        issue_id=seal.issue_id,
+        input_manifest_sha256=seal.input_manifest_sha256,
+        state_before_sha256=seal.state_after_sha256,
+        state_after_sha256=seal.state_after_sha256,
+    )
+    spec_payload = _event_spec_payload(spec)
+    contract: dict[str, object] = {
+        "schema_version": ANCHOR_REQUEST_CONTRACT_SCHEMA,
+        "expected_pre_head": {
+            "epoch_id": frozen.projection.epoch_id,
+            "event_count": failed.sequence_id,
+            "sequence_id": failed.sequence_id,
+            "entry_sha256": failed.entry_sha256,
+        },
+        "attempt": next_attempt,
         "event_spec": spec_payload,
         "event_spec_sha256": _sha256(_canonical_bytes(spec_payload)),
     }
@@ -1538,8 +1663,42 @@ def _anchor_result_request_record(
     }
 
 
+def _verify_anchor_result_previous_request_receipt(
+    previous_step_receipt: Mapping[str, Any],
+    request_event: live_ledger.LedgerEvent,
+) -> None:
+    semantics = previous_step_receipt.get("action_semantics")
+    if (
+        previous_step_receipt.get("action") != "anchor_request_recorded"
+        or previous_step_receipt.get("action_output_kind")
+        != "live_anchor_request_event"
+        or previous_step_receipt.get("action_output") is not None
+        or previous_step_receipt.get("next_actions") != ["anchor_result_recorded"]
+        or previous_step_receipt.get("terminal_for_key") is not False
+        or not isinstance(semantics, Mapping)
+        or semantics.get("schema_version")
+        != "ootang_live_anchor_request_action_output_v1"
+        or semantics.get("live_epoch_id") != request_event.payload.get("live_epoch_id")
+        or semantics.get("event_key") != request_event.event_key
+        or semantics.get("event_type") != request_event.event_type
+        or semantics.get("sequence_id") != request_event.sequence_id
+        or semantics.get("entry_sha256") != request_event.entry_sha256
+        or semantics.get("previous_entry_sha256") != request_event.previous_entry_sha256
+        or semantics.get("sealed_entry_sha256")
+        != request_event.payload.get("sealed_entry_sha256")
+        or semantics.get("attempt") != request_event.payload.get("attempt")
+        or semantics.get("live_ledger_event_recorded") is not True
+        or semantics.get("network_action_performed") is not False
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result lost its preceding request receipt"
+        )
+
+
 def _anchor_result_request_contract(
-    item: Mapping[str, Any], reservation: Reservation
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> dict[str, object]:
     frozen, seal, authority = _anchor_result_context(item, reservation)
     lifecycle = [
@@ -1593,7 +1752,11 @@ def _anchor_result_request_contract(
     spec = _canonical_anchor_request_spec(frozen, seal, request_event.payload)
     if not _event_matches_spec(request_event, spec):
         raise WorksetRecoveryIntegrityError("Anchor result request event changed")
-    if authority["action"] == "anchor_result_recorded":
+    if previous_step_receipt is not None:
+        _verify_anchor_result_previous_request_receipt(
+            previous_step_receipt, request_event
+        )
+    elif authority["action"] == "anchor_result_recorded":
         if (
             request_event.sequence_id != frozen.expected_pre_head.event_count
             or request_event.entry_sha256 != frozen.expected_pre_head.entry_sha256
@@ -1652,7 +1815,12 @@ def _anchor_result_request_contract(
             "at_least_once_unless_provider_honors_idempotency_key"
         ),
     }
-    _verify_anchor_result_request_contract(item, reservation, contract)
+    _verify_anchor_result_request_contract(
+        item,
+        reservation,
+        contract,
+        previous_step_receipt=previous_step_receipt,
+    )
     return contract
 
 
@@ -1660,6 +1828,7 @@ def _verify_anchor_result_request_contract(
     item: Mapping[str, Any],
     reservation: Reservation,
     contract: Mapping[str, Any],
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> None:
     checked = _exact(
         contract,
@@ -1749,7 +1918,11 @@ def _verify_anchor_result_request_contract(
         or (allowlist and endpoint_host not in allowlist)
     ):
         raise WorksetRecoveryIntegrityError("Anchor result request contract changed")
-    if authority["action"] == "anchor_result_recorded":
+    if previous_step_receipt is not None:
+        _verify_anchor_result_previous_request_receipt(
+            previous_step_receipt, request_event
+        )
+    elif authority["action"] == "anchor_result_recorded":
         if (
             request_event.sequence_id != frozen.expected_pre_head.event_count
             or request_event.entry_sha256 != frozen.expected_pre_head.entry_sha256
@@ -1768,8 +1941,14 @@ def _verify_pending_anchor_result_head(
     item: Mapping[str, Any],
     reservation: Reservation,
     contract: Mapping[str, Any],
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> None:
-    _verify_anchor_result_request_contract(item, reservation, contract)
+    _verify_anchor_result_request_contract(
+        item,
+        reservation,
+        contract,
+        previous_step_receipt=previous_step_receipt,
+    )
     expected_record = _exact(
         contract["expected_result_pre_head"],
         {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
@@ -1786,13 +1965,176 @@ def _verify_pending_anchor_result_head(
         )
 
 
+def _anchor_result_expected_pre_head(
+    contract: Mapping[str, Any],
+) -> live_cas.LiveLedgerPreHeadV1:
+    record = _exact(
+        contract.get("expected_result_pre_head"),
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="anchor result expected pre-head",
+    )
+    try:
+        expected = live_cas.LiveLedgerPreHeadV1(**record)
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except (TypeError, live_ledger.LedgerError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result expected pre-head changed"
+        ) from exc
+    request = _exact(
+        contract.get("request_event"),
+        _ANCHOR_RESULT_REQUEST_EVENT_KEYS,
+        name="anchor result request event",
+    )
+    body = contract.get("request_body")
+    if (
+        not isinstance(body, Mapping)
+        or expected.epoch_id != body.get("live_epoch_id")
+        or expected.event_count != request.get("sequence_id")
+        or expected.sequence_id != request.get("sequence_id")
+        or expected.entry_sha256 != request.get("entry_sha256")
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result expected pre-head lost its request binding"
+        )
+    return expected
+
+
+def _anchor_result_event_spec(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+    observation: Mapping[str, Any],
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> tuple[live_ledger.EventSpec, live_cas.LiveLedgerPreHeadV1]:
+    """Rebuild the unique frozen-writer-shaped result event from linked evidence."""
+
+    _verify_anchor_result_request_contract(
+        item,
+        reservation,
+        contract,
+        previous_step_receipt=previous_step_receipt,
+    )
+    frozen, seal, _ = _anchor_result_context(item, reservation)
+    expected = _anchor_result_expected_pre_head(contract)
+    request = _exact(
+        contract.get("request_body"),
+        {
+            "live_epoch_id",
+            "target_date",
+            "sealed_sequence_id",
+            "sealed_entry_sha256",
+            "attempt",
+        },
+        name="anchor result request body",
+    )
+    request_event = _exact(
+        contract.get("request_event"),
+        _ANCHOR_RESULT_REQUEST_EVENT_KEYS,
+        name="anchor result request event",
+    )
+    event_key = request_event.get("event_key")
+    if (
+        not isinstance(event_key, str)
+        or not event_key.endswith(":requested")
+        or event_key.removesuffix(":requested") + ":requested" != event_key
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result request event key changed")
+    prefix = event_key.removesuffix(":requested")
+    outcome = observation.get("outcome")
+    if outcome == "candidate_confirmed":
+        candidate = _exact(
+            observation.get("validated_response"),
+            {
+                "provider",
+                "receipt_id",
+                "anchored_at_utc",
+                "sealed_entry_sha256",
+                "receipt",
+            },
+            name="anchor result validated response",
+        )
+        if observation.get("failure") is not None:
+            raise WorksetRecoveryIntegrityError(
+                "Confirmed anchor result retained failure evidence"
+            )
+        try:
+            stored = live._stored_anchor_payload(  # noqa: SLF001
+                dict(candidate), sealed_entry_sha256=seal.entry_sha256
+            )
+        except (live.LiveInputError, live.LiveIntegrityError) as exc:
+            raise WorksetRecoveryIntegrityError(
+                "Confirmed anchor result changed after observation"
+            ) from exc
+        if stored != candidate:
+            raise WorksetRecoveryIntegrityError(
+                "Confirmed anchor result normalization changed"
+            )
+        event_type = "anchor_confirmed"
+        suffix = "confirmed"
+        payload = {**request, **candidate}
+    elif outcome == "deterministic_failure":
+        failure = _exact(
+            observation.get("failure"),
+            {"stage", "code", "error_type", "retry_policy"},
+            name="anchor result deterministic failure",
+        )
+        if (
+            observation.get("validated_response") is not None
+            or (failure.get("stage"), failure.get("code"))
+            not in ANCHOR_RESULT_FAILURE_TAXONOMY
+            or failure.get("error_type") != "AnchorResultProtocolFailure"
+            or failure.get("retry_policy") != "record_failure_then_automatic_next_poll"
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result deterministic failure taxonomy changed"
+            )
+        event_type = "anchor_failed"
+        suffix = "failed"
+        payload = {
+            **request,
+            "reason_code": "request_or_receipt_validation_failed",
+            "error_type": failure["error_type"],
+            "retry_policy": "automatic_next_poll",
+        }
+    else:
+        raise WorksetRecoveryIntegrityError("Anchor result outcome changed")
+    try:
+        target = date.fromisoformat(str(seal.target_date))
+    except ValueError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result target date changed"
+        ) from exc
+    spec = live._event_spec(  # noqa: SLF001
+        event_key=f"{prefix}:{suffix}",
+        event_type=event_type,
+        prerequisites=frozen.prerequisites,
+        payload=payload,
+        target_date_value=target,
+        issue_id=seal.issue_id,
+        input_manifest_sha256=seal.input_manifest_sha256,
+        state_before_sha256=seal.state_after_sha256,
+        state_after_sha256=seal.state_after_sha256,
+    )
+    try:
+        live_ledger._prepare_spec(spec)  # noqa: SLF001
+    except live_ledger.LedgerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result EventSpec is invalid"
+        ) from exc
+    return spec, expected
+
+
 def _action_contract(
-    item: Mapping[str, Any], reservation: Reservation, action: str
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    action: str,
+    *,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> dict[str, object] | None:
     if action == "anchor_request_recorded":
-        return _anchor_request_contract(item, reservation)
+        return _anchor_request_contract(item, reservation, previous_step_receipt)
     if action == "anchor_result_recorded":
-        return _anchor_result_request_contract(item, reservation)
+        return _anchor_result_request_contract(item, reservation, previous_step_receipt)
     return None
 
 
@@ -1801,15 +2143,27 @@ def _verify_item_intent_action_contract(
     reservation: Reservation,
     action: str,
     contract: object,
+    *,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> None:
     if action == "anchor_result_recorded":
         if not isinstance(contract, Mapping):
             raise WorksetRecoveryIntegrityError(
                 "Anchor result item intent lost its request contract"
             )
-        _verify_anchor_result_request_contract(item, reservation, contract)
+        _verify_anchor_result_request_contract(
+            item,
+            reservation,
+            contract,
+            previous_step_receipt=previous_step_receipt,
+        )
         return
-    if contract != _action_contract(item, reservation, action):
+    if contract != _action_contract(
+        item,
+        reservation,
+        action,
+        previous_step_receipt=previous_step_receipt,
+    ):
         raise WorksetRecoveryIntegrityError("Recovery step intent contract changed")
 
 
@@ -2309,7 +2663,41 @@ def _anchor_result_link_payload(
     }
 
 
-def _verify_anchor_result_dispatch_plan(plan: AnchorResultDispatchPlan) -> None:
+def _anchor_result_plan_previous_receipt(
+    plan: AnchorResultDispatchPlan,
+    intent_payload: Mapping[str, Any],
+) -> Mapping[str, Any] | None:
+    reference = intent_payload.get("previous_step_receipt")
+    if reference is None:
+        return None
+    checked = _exact(
+        reference,
+        {"path", "sha256", "size_bytes"},
+        name="anchor result previous step receipt reference",
+    )
+    try:
+        path = registry._contained(  # noqa: SLF001
+            plan.paths.root,
+            checked["path"],
+            name="anchor result previous step receipt",
+        )
+    except registry.EpochRegistryError as exc:
+        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    if path.parent != plan.paths.receipts or path.suffix != ".json":
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result previous step receipt path changed"
+        )
+    payload, snapshot = _strict_json(path, name="anchor result previous step receipt")
+    if _reference(snapshot, plan.paths.root) != checked:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result previous step receipt reference changed"
+        )
+    return payload
+
+
+def _verify_anchor_result_dispatch_plan(
+    plan: AnchorResultDispatchPlan,
+) -> Mapping[str, Any] | None:
     expected_path = plan.paths.item_intents / f"{plan.step_id}.json"
     if plan.item_intent.path != expected_path:
         raise WorksetRecoveryIntegrityError(
@@ -2332,6 +2720,7 @@ def _verify_anchor_result_dispatch_plan(plan: AnchorResultDispatchPlan) -> None:
         )
     _anchor_result_request_identity(plan.action_contract)
     _anchor_result_sealed_entry_sha256(plan.action_contract)
+    return _anchor_result_plan_previous_receipt(plan, payload)
 
 
 def _verify_anchor_result_observation(
@@ -2412,6 +2801,16 @@ def _load_or_adopt_anchor_result_observation(
     observation, object_snapshot, link_snapshot = inspected
     if link_snapshot is not None:
         return observation, object_snapshot, link_snapshot, "linked"
+    adopted_object = _publish(
+        object_snapshot.path,
+        object_snapshot.raw,
+        root=plan.paths.root,
+        name="anchor result response object forward adoption",
+    )
+    if adopted_object != object_snapshot:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response object changed during forward adoption"
+        )
     link_path = plan.paths.anchor_result_response_links / f"{plan.step_id}.json"
     expected_link = _anchor_result_link_payload(plan, observation, object_snapshot)
     link_snapshot = _publish(
@@ -2423,6 +2822,71 @@ def _load_or_adopt_anchor_result_observation(
     return observation, object_snapshot, link_snapshot, "forward_adopted"
 
 
+def _durably_fence_anchor_result_link(
+    evidence: AnchorResultObservationEvidence,
+) -> bool:
+    """Confirm the exact response link after its publisher releases the lock."""
+
+    if evidence.link_snapshot is None:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result durability fence lost its response link"
+        )
+    handle: BinaryIO | None = None
+    try:
+        try:
+            handle = drain._acquire_lock(  # noqa: SLF001
+                evidence.plan.paths.anchor_result_dispatch_lock,
+                label="anchor result link durability",
+            )
+        except drain.EpochDrainBusyError:
+            return False
+        except drain.EpochDrainError as exc:
+            raise WorksetRecoveryIntegrityError(str(exc)) from exc
+
+        _verify_anchor_result_dispatch_plan(evidence.plan)
+        inspected = _inspect_anchor_result_observation(evidence.plan)
+        if inspected is None or inspected[2] is None:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response link disappeared before its durability fence"
+            )
+        observation, object_snapshot, link_snapshot = inspected
+        if (
+            observation != evidence.observation
+            or object_snapshot != evidence.object_snapshot
+            or link_snapshot != evidence.link_snapshot
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response evidence changed before its durability fence"
+            )
+        adopted_object = _publish(
+            object_snapshot.path,
+            object_snapshot.raw,
+            root=evidence.plan.paths.root,
+            name="anchor result response object durability fence",
+        )
+        if adopted_object != object_snapshot:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response object changed during its durability fence"
+            )
+        adopted_link = _publish(
+            link_snapshot.path,
+            link_snapshot.raw,
+            root=evidence.plan.paths.root,
+            name="anchor result response link durability fence",
+        )
+        if adopted_link != link_snapshot:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response link changed during its durability fence"
+            )
+        return True
+    finally:
+        if handle is not None:
+            try:
+                drain._release_locks([handle])  # noqa: SLF001
+            except drain.EpochDrainError as exc:
+                raise WorksetRecoveryIntegrityError(str(exc)) from exc
+
+
 def _deep_verify_locked_anchor_result_observations(
     profile: Mapping[str, Any],
     paths: RecoveryPaths,
@@ -2431,40 +2895,128 @@ def _deep_verify_locked_anchor_result_observations(
     intents: Mapping[str, Path],
     receipts: Mapping[str, tuple[dict[str, Any], registry.ArtifactSnapshot]],
     observation_steps: set[str],
-) -> None:
+) -> dict[str, AnchorResultObservationEvidence]:
     if not observation_steps:
-        return
+        return {}
     pending_steps = set(intents) - set(receipts)
-    if len(observation_steps) != 1 or pending_steps != observation_steps:
-        raise WorksetRecoveryIntegrityError(
-            "Anchor result response observation is not bound to one pending intent"
+    evidence_by_step: dict[str, AnchorResultObservationEvidence] = {}
+    for step_id in sorted(observation_steps):
+        intent_payload, intent_snapshot = _strict_json(
+            intents[step_id], name="observed anchor result item intent"
         )
-    step_id = next(iter(observation_steps))
-    intent_payload, intent_snapshot = _strict_json(
-        intents[step_id], name="observed anchor result item intent"
-    )
-    key_id = intent_payload.get("key_id")
-    item = items.get(key_id) if isinstance(key_id, str) else None
-    contract = intent_payload.get("action_contract")
-    if (
-        item is None
-        or intent_payload.get("action") != "anchor_result_recorded"
-        or not isinstance(contract, Mapping)
-    ):
-        raise WorksetRecoveryIntegrityError(
-            "Anchor result response observation intent changed"
+        key_id = intent_payload.get("key_id")
+        item = items.get(key_id) if isinstance(key_id, str) else None
+        contract = intent_payload.get("action_contract")
+        if (
+            item is None
+            or intent_payload.get("action") != "anchor_result_recorded"
+            or not isinstance(contract, Mapping)
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response observation intent changed"
+            )
+        plan = AnchorResultDispatchPlan(
+            profile=profile,
+            paths=paths,
+            key_id=key_id,
+            step_id=step_id,
+            item_intent=intent_snapshot,
+            action_contract=dict(contract),
         )
-    _verify_pending_anchor_result_head(item, reservation, contract)
-    plan = AnchorResultDispatchPlan(
-        profile=profile,
-        paths=paths,
-        key_id=key_id,
-        step_id=step_id,
-        item_intent=intent_snapshot,
-        action_contract=dict(contract),
+        previous_step_receipt = _verify_anchor_result_dispatch_plan(plan)
+        inspected = _inspect_anchor_result_observation(plan)
+        if inspected is None:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response observation disappeared"
+            )
+        observation, object_snapshot, link_snapshot = inspected
+        evidence = AnchorResultObservationEvidence(
+            plan,
+            observation,
+            object_snapshot,
+            link_snapshot,
+        )
+        if step_id in receipts:
+            if link_snapshot is None:
+                raise WorksetRecoveryIntegrityError(
+                    "Recorded anchor result lost its response link"
+                )
+            _verify_anchor_result_evidence_position(
+                item,
+                reservation,
+                evidence,
+                result_required=True,
+                previous_step_receipt=previous_step_receipt,
+            )
+        elif step_id in pending_steps:
+            if link_snapshot is None:
+                _verify_pending_anchor_result_head(
+                    item,
+                    reservation,
+                    contract,
+                    previous_step_receipt=previous_step_receipt,
+                )
+            else:
+                _verify_anchor_result_evidence_position(
+                    item,
+                    reservation,
+                    evidence,
+                    result_required=False,
+                    previous_step_receipt=previous_step_receipt,
+                )
+        else:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response observation is not bound to its step"
+            )
+        evidence_by_step[step_id] = evidence
+    return evidence_by_step
+
+
+def _verify_anchor_result_evidence_position(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    evidence: AnchorResultObservationEvidence,
+    *,
+    result_required: bool,
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> None:
+    if evidence.link_snapshot is None:
+        raise WorksetRecoveryIntegrityError("Anchor result response link is missing")
+    spec, expected = _anchor_result_event_spec(
+        item,
+        reservation,
+        evidence.plan.action_contract,
+        evidence.observation,
+        previous_step_receipt,
     )
-    _verify_anchor_result_dispatch_plan(plan)
-    _inspect_anchor_result_observation(plan)
+    frozen = _frozen_live_prefix(reservation)
+    position = expected.event_count
+    if len(frozen.current_events) == position:
+        if result_required:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result ledger event disappeared"
+            )
+        head = frozen.current_events[-1]
+        if (
+            head.sequence_id != expected.sequence_id
+            or head.entry_sha256 != expected.entry_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Pending anchor result pre-head changed"
+            )
+        return
+    if len(frozen.current_events) <= position:
+        raise WorksetRecoveryIntegrityError("Anchor result ledger position disappeared")
+    _anchor_result_output(
+        evidence.plan.action_contract,
+        evidence.observation,
+        evidence.object_snapshot,
+        evidence.link_snapshot,
+        frozen.current_events[position],
+        spec,
+        expected,
+        recovery_root=evidence.plan.paths.root,
+    )
 
 
 def _publish_anchor_result_observation(
@@ -2524,10 +3076,10 @@ def _dispatch_and_capture_anchor_result(
                     "forward-adopted without another network action"
                 )
             else:
-                status = "waiting_for_anchor_result_adapter"
+                status = "waiting_for_locked_anchor_result_consumption"
                 reason = (
                     "one exact anchor response observation already exists; "
-                    "live-ledger result CAS remains unimplemented"
+                    "the next coordinator poll will consume it under the four locks"
                 )
             _write_status(
                 plan.profile,
@@ -2858,6 +3410,71 @@ def _anchor_request_output(
     )
 
 
+def _anchor_result_output(
+    contract: Mapping[str, Any],
+    observation: Mapping[str, Any],
+    object_snapshot: registry.ArtifactSnapshot,
+    link_snapshot: registry.ArtifactSnapshot,
+    event: live_ledger.LedgerEvent,
+    spec: live_ledger.EventSpec,
+    expected: live_cas.LiveLedgerPreHeadV1,
+    *,
+    recovery_root: Path,
+) -> ActionOutput:
+    if (
+        event.sequence_id != expected.sequence_id + 1
+        or event.previous_entry_sha256 != expected.entry_sha256
+        or not _event_matches_spec(event, spec)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result ledger event changed at its frozen position"
+        )
+    outcome = observation.get("outcome")
+    selected_next = {
+        "candidate_confirmed": "outcome_batch_settled",
+        "deterministic_failure": "anchor_request_recorded",
+    }.get(outcome)
+    if selected_next is None:
+        raise WorksetRecoveryIntegrityError("Anchor result branch changed")
+    failure = observation.get("failure")
+    failure_stage = failure.get("stage") if isinstance(failure, Mapping) else None
+    failure_code = failure.get("code") if isinstance(failure, Mapping) else None
+    request = contract.get("request_body")
+    request_event = contract.get("request_event")
+    if not isinstance(request, Mapping) or not isinstance(request_event, Mapping):
+        raise WorksetRecoveryIntegrityError("Anchor result request identity changed")
+    return ActionOutput(
+        "live_anchor_result_event",
+        None,
+        {
+            "schema_version": "ootang_live_anchor_result_action_output_v1",
+            "live_epoch_id": expected.epoch_id,
+            "result_outcome": outcome,
+            "event_key": event.event_key,
+            "event_type": event.event_type,
+            "sequence_id": event.sequence_id,
+            "previous_entry_sha256": event.previous_entry_sha256,
+            "entry_sha256": event.entry_sha256,
+            "request_event_entry_sha256": request_event.get("entry_sha256"),
+            "sealed_entry_sha256": request.get("sealed_entry_sha256"),
+            "attempt": request.get("attempt"),
+            "idempotency_key": contract.get("idempotency_key"),
+            "event_spec_sha256": _sha256(_canonical_bytes(_event_spec_payload(spec))),
+            "response_observation": _reference(object_snapshot, recovery_root),
+            "response_observation_link": _reference(link_snapshot, recovery_root),
+            "failure_stage": failure_stage,
+            "failure_code": failure_code,
+            "selected_next_action": selected_next,
+            "live_ledger_event_recorded": True,
+            "network_action_performed": False,
+            "external_response_network_action_performed": True,
+            "remote_exactly_once": False,
+            "trusted_anchor_receipt_verified": False,
+            "e2_live_evidence_eligible": False,
+        },
+    )
+
+
 def _is_sqlite_busy(exc: BaseException) -> bool:
     current: BaseException | None = exc
     visited: set[int] = set()
@@ -2879,15 +3496,16 @@ def _anchor_request_action(
     item: Mapping[str, Any],
     reservation: Reservation,
     action_contract: Mapping[str, object] | None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> ActionOutput:
     if action_contract is None:
         raise WorksetRecoveryIntegrityError("Anchor request intent lost its contract")
-    rebuilt = _anchor_request_contract(item, reservation)
+    rebuilt = _anchor_request_contract(item, reservation, previous_step_receipt)
     if action_contract != rebuilt:
         raise WorksetRecoveryIntegrityError("Anchor request intent contract changed")
     spec, expected = _event_spec_from_contract(action_contract)
     frozen = _frozen_live_prefix(reservation)
-    if frozen.expected_pre_head != expected:
+    if previous_step_receipt is None and frozen.expected_pre_head != expected:
         raise WorksetRecoveryIntegrityError("Anchor request expected pre-head changed")
     try:
         ledger = live_ledger.AppendOnlyLedger(
@@ -2914,6 +3532,59 @@ def _anchor_request_action(
     if len(verified.current_events) <= position:
         raise WorksetRecoveryIntegrityError("Anchor request CAS event disappeared")
     return _anchor_request_output(action_contract, verified.current_events[position])
+
+
+def _anchor_result_action(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    evidence: AnchorResultObservationEvidence,
+) -> ActionOutput:
+    if evidence.link_snapshot is None:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result cannot consume an unlinked response observation"
+        )
+    previous_step_receipt = _verify_anchor_result_dispatch_plan(evidence.plan)
+    spec, expected = _anchor_result_event_spec(
+        item,
+        reservation,
+        evidence.plan.action_contract,
+        evidence.observation,
+        previous_step_receipt,
+    )
+    try:
+        ledger = live_ledger.AppendOnlyLedger(
+            _frozen_live_prefix(reservation).paths.ledger,
+            timeout_seconds=LIVE_LEDGER_CAS_TIMEOUT_SECONDS,
+        )
+        live_cas.append_transaction_at_pre_head_v1(
+            ledger,
+            expected_pre_head=expected,
+            specs=[spec],
+        )
+    except live_cas.LiveLedgerCasBusyErrorV1 as exc:
+        raise WorksetRecoveryBusyError(str(exc)) from exc
+    except live_ledger.LedgerError as exc:
+        if _is_sqlite_busy(exc):
+            raise WorksetRecoveryBusyError(
+                "Live ledger CAS write lock is busy"
+            ) from exc
+        raise WorksetRecoveryIntegrityError(
+            f"Anchor result CAS failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    verified = _frozen_live_prefix(reservation)
+    position = expected.event_count
+    if len(verified.current_events) <= position:
+        raise WorksetRecoveryIntegrityError("Anchor result CAS event disappeared")
+    return _anchor_result_output(
+        evidence.plan.action_contract,
+        evidence.observation,
+        evidence.object_snapshot,
+        evidence.link_snapshot,
+        verified.current_events[position],
+        spec,
+        expected,
+        recovery_root=evidence.plan.paths.root,
+    )
 
 
 def _guard_action(
@@ -2976,6 +3647,7 @@ def _perform_action(
     *,
     action: str | None = None,
     action_contract: Mapping[str, object] | None = None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> ActionOutput:
     if hook is not None:
         hooked_item = dict(item)
@@ -2988,7 +3660,12 @@ def _perform_action(
         if successor == "anchor_receipt_repaired":
             return _anchor_action(item, reservation, paths, inputs)
         if successor == "anchor_request_recorded":
-            return _anchor_request_action(item, reservation, action_contract)
+            return _anchor_request_action(
+                item,
+                reservation,
+                action_contract,
+                previous_step_receipt,
+            )
         if successor == "superseded_by_backfill":
             return _guard_action(item, reservation, paths, inputs)
         raise WorksetRecoveryIntegrityError("Unsupported successor was dispatched")
@@ -3007,6 +3684,8 @@ def _verify_recorded_action_contract(
     *,
     reservation: Reservation | None = None,
     item_intent: Mapping[str, Any] | None = None,
+    profile: Mapping[str, Any] | None = None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> None:
     """Verify immutable step evidence without replaying obsolete preconditions."""
 
@@ -3022,7 +3701,7 @@ def _verify_recorded_action_contract(
             )
         contract = item_intent.get("action_contract")
         if not isinstance(contract, Mapping) or contract != _anchor_request_contract(
-            item, reservation
+            item, reservation, previous_step_receipt
         ):
             raise WorksetRecoveryIntegrityError(
                 "Recorded anchor request contract changed"
@@ -3035,6 +3714,74 @@ def _verify_recorded_action_contract(
                 "Recorded anchor request event disappeared"
             )
         expected = _anchor_request_output(contract, frozen.current_events[position])
+    elif action == "anchor_result_recorded":
+        if reservation is None or item_intent is None or profile is None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result lost its frozen intent authority"
+            )
+        contract = item_intent.get("action_contract")
+        step_id = payload.get("step_id")
+        key_id = payload.get("key_id")
+        if (
+            not isinstance(contract, Mapping)
+            or not isinstance(step_id, str)
+            or not isinstance(key_id, str)
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result request contract changed"
+            )
+        _verify_anchor_result_request_contract(
+            item,
+            reservation,
+            contract,
+            previous_step_receipt=previous_step_receipt,
+        )
+        intent_path = paths.item_intents / f"{step_id}.json"
+        _, intent_snapshot = _strict_json(
+            intent_path, name="recorded anchor result item intent"
+        )
+        plan = AnchorResultDispatchPlan(
+            profile=profile,
+            paths=paths,
+            key_id=key_id,
+            step_id=step_id,
+            item_intent=intent_snapshot,
+            action_contract=dict(contract),
+        )
+        plan_previous_step_receipt = _verify_anchor_result_dispatch_plan(plan)
+        if plan_previous_step_receipt != previous_step_receipt:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result previous receipt changed"
+            )
+        inspected = _inspect_anchor_result_observation(plan)
+        if inspected is None or inspected[2] is None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result lost its linked response observation"
+            )
+        observation, object_snapshot, link_snapshot = inspected
+        spec, expected_pre_head = _anchor_result_event_spec(
+            item,
+            reservation,
+            contract,
+            observation,
+            previous_step_receipt,
+        )
+        frozen = _frozen_live_prefix(reservation)
+        position = expected_pre_head.event_count
+        if len(frozen.current_events) <= position:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded anchor result event disappeared"
+            )
+        expected = _anchor_result_output(
+            contract,
+            observation,
+            object_snapshot,
+            link_snapshot,
+            frozen.current_events[position],
+            spec,
+            expected_pre_head,
+            recovery_root=paths.root,
+        )
     elif action == "trusted_time_request_der_repaired":
         target = authority.get("target_date")
         try:
@@ -3132,6 +3879,32 @@ def _verify_recorded_action_contract(
         )
 
 
+def _branch_selected_next_actions(
+    plan: Mapping[str, Any],
+    transition_action: str,
+    semantics: object,
+) -> list[str]:
+    edges = _plan_edges(plan)
+    allowed = edges.get(transition_action)
+    if allowed is None:
+        raise WorksetRecoveryIntegrityError("Transition action is outside its plan")
+    if transition_action != "anchor_result_recorded":
+        return allowed
+    if not isinstance(semantics, Mapping):
+        raise WorksetRecoveryIntegrityError("Anchor result semantics changed type")
+    selected = {
+        "candidate_confirmed": "outcome_batch_settled",
+        "deterministic_failure": "anchor_request_recorded",
+    }.get(semantics.get("result_outcome"))
+    if (
+        selected is None
+        or semantics.get("selected_next_action") != selected
+        or selected not in allowed
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result branch selection changed")
+    return [selected]
+
+
 def _receipt_payload(
     profile: Mapping[str, Any],
     paths: RecoveryPaths,
@@ -3146,10 +3919,9 @@ def _receipt_payload(
     completed_at: str,
 ) -> dict[str, object]:
     plan = _transition_plan(item)
-    edges = _plan_edges(plan)
-    if transition_action not in edges:
-        raise WorksetRecoveryIntegrityError("Transition action is outside its plan")
-    next_actions = edges[transition_action]
+    next_actions = _branch_selected_next_actions(
+        plan, transition_action, action.semantics
+    )
     terminal = bool(plan["closure_resolved"]) and transition_action in set(
         plan["terminal_actions"]
     )
@@ -3322,7 +4094,13 @@ def _load_receipts(
                 if expected_index == 0
                 else previous is not None and action in previous[0]["next_actions"]
             )
-            expected_next = edges.get(action) if isinstance(action, str) else None
+            expected_next = (
+                _branch_selected_next_actions(
+                    plan, action, payload.get("action_semantics")
+                )
+                if isinstance(action, str) and action in edges
+                else None
+            )
             expected_terminal = bool(plan["closure_resolved"]) and action in set(
                 plan["terminal_actions"]
             )
@@ -3428,6 +4206,7 @@ def _load_receipts(
             reservation,
             action,
             intent_payload.get("action_contract"),
+            previous_step_receipt=(previous[1] if previous is not None else None),
         )
         position = (key_id, step_index)
         if (
@@ -3498,12 +4277,21 @@ def _load_receipts(
                 )
         if probe_actions:
             item = items[payload["key_id"]]
+            previous_payload = None
+            if payload["step_index"] > 0:
+                previous_payload = next(
+                    candidate_payload
+                    for _, candidate_payload, _ in groups[payload["key_id"]]
+                    if candidate_payload["step_index"] == payload["step_index"] - 1
+                )
             _verify_recorded_action_contract(
                 item,
                 payload,
                 paths,
                 reservation=reservation,
                 item_intent=intent_record[0],
+                profile=profile,
+                previous_step_receipt=previous_payload,
             )
     return result
 
@@ -3754,7 +4542,7 @@ def _coordinate_epoch_workset_recovery(
             intents,
             probe_actions=action_hook is None,
         )
-        _deep_verify_locked_anchor_result_observations(
+        anchor_result_evidence = _deep_verify_locked_anchor_result_observations(
             profile,
             paths,
             reservation,
@@ -3767,10 +4555,6 @@ def _coordinate_epoch_workset_recovery(
         events, previous = _load_events(profile, paths, receipts)
         event_keys = {event["step_id"] for event in events}
         missing_event = set(receipts) - event_keys
-        if observation_steps and missing_event:
-            raise WorksetRecoveryIntegrityError(
-                "Anchor result observation coexists with an unindexed recovery receipt"
-            )
         if missing_event:
             step_id = next(iter(missing_event))
             receipt_payload, receipt_snapshot = receipts[step_id]
@@ -3825,9 +4609,96 @@ def _coordinate_epoch_workset_recovery(
                     raise WorksetRecoveryIntegrityError(
                         "Pending anchor result intent lost its request contract"
                     )
-                _verify_pending_anchor_result_head(
-                    item_by_id[key_id], reservation, pending_contract
-                )
+                rows = chains.get(key_id, [])
+                previous_step_payload = rows[-1][0] if rows else None
+                evidence = anchor_result_evidence.get(pending_step_id)
+                if evidence is not None and evidence.link_snapshot is not None:
+                    item = item_by_id[key_id]
+                    step_index = pending_payload.get("step_index")
+                    if (
+                        not isinstance(step_index, int)
+                        or isinstance(step_index, bool)
+                        or step_index != len(rows)
+                    ):
+                        raise WorksetRecoveryIntegrityError(
+                            "Pending anchor result step position changed"
+                        )
+                    if not _durably_fence_anchor_result_link(evidence):
+                        reason = (
+                            "the exact anchor response link is still owned by its "
+                            "publisher; a later machine poll will durably fence and "
+                            "consume it"
+                        )
+                        _write_status(
+                            profile,
+                            paths,
+                            now=now,
+                            status="waiting_for_anchor_result_link_durability",
+                            reason=reason,
+                            key_id=key_id,
+                            receipt=None,
+                            event=None,
+                        )
+                        return RecoveryResult(
+                            "waiting_for_anchor_result_link_durability",
+                            reason,
+                            paths.status,
+                            key_id,
+                        )
+                    _cas_item_artifacts(item, reservation)
+                    action = _anchor_result_action(item, reservation, evidence)
+                    previous_step_receipt = rows[-1][1] if rows else None
+                    receipt_payload, receipt_snapshot = _ensure_receipt(
+                        profile,
+                        paths,
+                        reservation,
+                        item,
+                        pending_snapshot,
+                        action,
+                        step_index=step_index,
+                        transition_action="anchor_result_recorded",
+                        previous_step_receipt=previous_step_receipt,
+                        now=now,
+                    )
+                    event, event_snapshot = _append_event(
+                        profile,
+                        paths,
+                        receipt_payload["step_id"],
+                        key_id,
+                        receipt_snapshot,
+                        events,
+                        previous,
+                        now=now,
+                    )
+                    reason = (
+                        "one linked anchor response was committed through the "
+                        "expected-pre-head result CAS"
+                    )
+                    _write_status(
+                        profile,
+                        paths,
+                        now=now,
+                        status="recovery_step_completed",
+                        reason=reason,
+                        key_id=key_id,
+                        receipt=receipt_snapshot.path,
+                        event=event_snapshot.path,
+                    )
+                    return RecoveryResult(
+                        "recovery_step_completed",
+                        reason,
+                        paths.status,
+                        key_id,
+                        receipt_snapshot.path,
+                        event_snapshot.path,
+                    )
+                if evidence is None:
+                    _verify_pending_anchor_result_head(
+                        item_by_id[key_id],
+                        reservation,
+                        pending_contract,
+                        previous_step_payload,
+                    )
                 reason = (
                     "one immutable anchor-result request intent fences recovery; "
                     "the bounded transport will run after all four coordinator locks release"
@@ -3910,6 +4781,8 @@ def _coordinate_epoch_workset_recovery(
                 "waiting_for_supported_ready_key", reason, paths.status
             )
         item, step_index, transition_action, previous_step_receipt = supported[0]
+        item_rows = chains.get(item["key_id"], [])
+        previous_step_payload = item_rows[-1][0] if item_rows else None
         inputs = _cas_item_artifacts(item, reservation)
         dependency_snapshots: list[registry.ArtifactSnapshot] = []
         for dependency in item["dependency_keys"]:
@@ -3928,7 +4801,12 @@ def _coordinate_epoch_workset_recovery(
                 )
             dependency_snapshots.append(dependency_rows[-1][1])
         try:
-            action_contract = _action_contract(item, reservation, transition_action)
+            action_contract = _action_contract(
+                item,
+                reservation,
+                transition_action,
+                previous_step_receipt=previous_step_payload,
+            )
         except WorksetRecoveryExternalWait as exc:
             reason = str(exc)
             _write_status(
@@ -3965,7 +4843,12 @@ def _coordinate_epoch_workset_recovery(
                 raise WorksetRecoveryIntegrityError(
                     "Prepared anchor result intent lost its request contract"
                 )
-            _verify_pending_anchor_result_head(item, reservation, action_contract)
+            _verify_pending_anchor_result_head(
+                item,
+                reservation,
+                action_contract,
+                previous_step_payload,
+            )
             reason = (
                 "one immutable anchor-result request intent was prepared; "
                 "bounded dispatch will begin only after the four coordinator locks release"
@@ -3996,6 +4879,7 @@ def _coordinate_epoch_workset_recovery(
             action_hook,
             action=transition_action,
             action_contract=action_contract,
+            previous_step_receipt=previous_step_payload,
         )
         receipt_payload, receipt_snapshot = _ensure_receipt(
             profile,

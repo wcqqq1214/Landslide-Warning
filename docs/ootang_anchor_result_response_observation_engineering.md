@@ -1,5 +1,9 @@
 # 藕塘 machine-only anchor result response observation 工程说明
 
+> 历史阶段说明：本文记录 response-observation 增量的冻结边界。其后续 result CAS adapter 已实现，
+> 当前合同见 `docs/ootang_anchor_result_ledger_adapter_engineering.md`；本文中的“尚未实现/下一步”只描述
+> `507b5a5` 提交时点，不再代表仓库当前状态。
+
 ## 1. 范围与当前结论
 
 本增量为已冻结的 `anchor_result_recorded` item intent 增加四重 coordinator 锁外的 bounded
@@ -63,7 +67,7 @@ dispatch lock 与四重 coordinator 锁不重叠。DNS、TLS、socket write、re
 | `waiting_for_external_anchor_retry` | transport retryable 或 delivery ambiguous；没有 observation | 是 |
 | `external_anchor_response_observed` | 一个确定性 response observation 和 link 已 durable 发布 | 是 |
 | `external_anchor_response_forward_adopted` | crash 遗留 object 被验证并补建 link | 否 |
-| `waiting_for_anchor_result_adapter` | exact link/object 已存在，等待后续 result CAS adapter | 否 |
+| `waiting_for_locked_anchor_result_consumption` | exact link/object 已存在，等待下一次四锁内消费 | 否 |
 | `blocked_integrity` | intent、namespace、object、link、凭证反射或 artifact replay 发生不可接受漂移 | 视失败点而定 |
 
 `network_action_performed` 是单次返回值和 status cache 中的运行事实，不是静态全局 capability。
@@ -341,7 +345,7 @@ transport 的固定实现契约提供；本轮不把它们夸大为 provider 行
 独立只读复核的初始 2 个 P1、2 个 P2（locked deep replay、HTTPError body timeout、transport
 type boundary、alarm construction window）均已修正；最终复核为 P0/P1=0。
 
-## 10. 下一步：result CAS adapter
+## 10. 历史下一步：result CAS adapter（现已实现）
 
 下一增量应只消费已深验的 response link/object，不再次联网：
 
@@ -358,5 +362,6 @@ type boundary、alarm construction window）均已修正；最终复核为 P0/P1
    fail closed，不重发 network、不改接其他 attempt。
 
 `anchor_result_recorded` 的 transition graph 后仍存在
-`anchor_request_recorded` / `outcome_batch_settled` 两个 next actions。result receipt 不能自行猜测
-branch；后续还需要独立、reviewed evidence adapter 才能选择下一条边。
+`anchor_request_recorded` / `outcome_batch_settled` 两个允许 next actions。当前 result adapter 已按
+deep-verified outcome 收窄为唯一分支；自动 failure retry 与剩余 confirmed-settlement 边界见
+`docs/ootang_anchor_result_ledger_adapter_engineering.md`。

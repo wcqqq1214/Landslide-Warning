@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.5.0-anchor-result-response-observation",
+  "profile_version": "1.6.0-anchor-result-ledger-adapter",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_unlocked_bounded_anchor_response_observation_no_result_cas_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_locked_anchor_result_expected_pre_head_cas_no_terminal_closure_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
@@ -55,11 +55,11 @@
     "shadow_lock": "runner.lock"
   },
   "protocol": {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v5",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v5",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v5",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v6",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v6",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v6",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v5",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v6",
     "anchor_result_response_observation_schema_version": "ootang_epoch_workset_anchor_result_response_observation_v1",
     "anchor_result_response_link_schema_version": "ootang_epoch_workset_anchor_result_response_link_v1",
     "event_type": "epoch_workset_transition_step_recorded",
@@ -72,6 +72,7 @@
       "trusted_time_request_der_repaired",
       "anchor_receipt_repaired",
       "anchor_request_recorded",
+      "anchor_result_recorded",
       "superseded_by_backfill"
     ],
     "intent_preparation_successors": [
@@ -94,6 +95,7 @@
     "live_anchor_request_adapter_implemented": true,
     "live_anchor_result_request_intent_implemented": true,
     "live_anchor_result_response_observation_implemented": true,
+    "live_anchor_result_adapter_implemented": true,
     "ledger_mutation_recovery_implemented": true,
     "bounded_workset_recovery_implemented": false,
     "all_reserved_items_settled": false,
@@ -102,7 +104,6 @@
     "derived_future_work_reservation_implemented": false,
     "all_transition_branches_supported": false,
     "network_recovery_implemented": false,
-    "live_anchor_result_adapter_implemented": false,
     "legacy_guard_completion_created": false,
     "old_work_admission_fence_implemented": false,
     "direct_filesystem_writer_fence_implemented": false,

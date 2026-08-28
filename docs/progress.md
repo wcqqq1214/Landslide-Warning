@@ -5,6 +5,48 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-28 anchor-result result CAS、持久化 fence 与自动 retry（本增量）
+
+- 基于已提交的 `507b5a5 feat: observe anchor responses`，本增量只消费 linked response
+  observation。消费重新取得 `manager → cycle → replay → shadow` 四锁，不读取 token、不调用
+  transport；在 ledger mutation 前非阻塞取得 dispatch lock，按 object→link exact re-adopt/fsync 后
+  立即释放。publisher busy 时机器等待且 ledger/receipt/event 零新增；空 per-step object 目录作为
+  mkdir crash residue 忽略；object-only 接管也先 durable re-adopt object 再补 link，避免二次断电形成
+  orphan link。既有 orphan/branched/unknown artifacts 仍 fail closed。
+- 机器从 frozen item intent 重放 exact request event/body、seal 与 expected result pre-head。
+  `candidate_confirmed` 唯一构造 `anchor_confirmed`，`deterministic_failure` 唯一构造 frozen-shape
+  `anchor_failed`；后者只把受控 `AnchorResultProtocolFailure` 写入 `error_type`，stage/code 留在
+  recovery semantics。两类 EventSpec 均通过 recovery-only expected-pre-head CAS append/adopt。
+- fresh CAS 只接受 request 仍为 terminal head；commit-before-receipt crash 只采用 request 后固定位置
+  的 exact result，并允许其后合法 suffix。foreign head/position/content/chain fail closed 且零新增。
+  receipt-before-recovery-event crash 只补 event；永久 observation 可同时作为历史 result receipt
+  evidence，不再被误判为 pending 分支。
+- result `ActionOutput` 不绑定瞬时 created/adopted，`action_output=null`；semantics 绑定 exact
+  observation object/link、request/result identity 与 EventSpec digest。receipt 按已验证 outcome
+  收窄为 confirmed→`["outcome_batch_settled"]`、failure→`["anchor_request_recorded"]`，历史 loader
+  用同一纯函数重算。`network_action_performed=false` 属于本次消费；remote exactly-once、trusted/E2
+  仍为 false。
+- failure branch 已机器自动闭合到下一次 result intent：前一张 result receipt 必须绑定 exact
+  `anchor_failed` event，retry request 以该 event 为 expected pre-head，只生成 `attempt + 1`；随后
+  result contract 又逐字段绑定 request receipt/event。合法历史 suffix 可重放，但不能丢失前驱，且
+  不会回退采用第一次 request。全程无人工 freeze/cleanup/approval/force/backdate。
+- profile 升为 `1.6.0-anchor-result-ledger-adapter`，intent/item-intent/receipt/status authority 升为
+  v6，可声明 `live_anchor_result_adapter_implemented=true`；full workset/network recovery、all branch/
+  terminal closure、drained/active/trusted/E2/formal claims 继续为 false。
+- focused recovery 测试 `36/36`（约 0.45 s）；recovery、live-ledger/CAS、inventory/manifest、
+  admission-cut、eligibility、drain-v2 与 main 相邻回归 `143/143`（约 7.67 s）通过。未运行训练、
+  真实网络、长并发/容量或无关边界矩阵；ConvLSTM、v4、冻结 splits/metrics/thresholds 和实验结论
+  未改。下一窄增量是 confirmed→`outcome_batch_settled` adapter；详细合同见
+  `docs/ootang_anchor_result_ledger_adapter_engineering.md`。
+- recovery module/profile/test 与 `main.py` SHA-256 分别为
+  `51aa8c0eda8b4561a5873fceb3a36570c8e79e6eda3d33761b947153f00bb008`、
+  `3157abe52b5357b565366e2a3026a53b087e40a19f01615ff274b9e3e68074da`、
+  `407e10e9aa5a951305dd35a6074ddc463a80f10c54f5f08a1885b29921df92fc`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`；97-path protected
+  aggregate 保持 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。最终独立只读复审
+  P0/P1=0；唯一 P2 是永久测试止于 attempt-2 result plan，未重复已覆盖的第二轮 response CAS，按
+  本轮“避免无必要边界矩阵”的范围保留。
+
 ## 2026-08-28 四锁外 anchor-result response observation（本增量）
 
 - 在已提交的 `e9120d9 feat: prepare anchor result requests` 上继续窄化
