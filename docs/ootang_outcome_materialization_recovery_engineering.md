@@ -97,15 +97,17 @@ source selector 才会以相同 predecessor authority 生成 rev2/rev3 materiali
 
 ## 7. 明确边界与下一步
 
-本轮只完整闭合“新物化的 `selection_kind=outstanding` → 43-event 消费”。
-revision、backfill 和 first-backfill 可以按冻结 authority 物化，但它们的 live-ledger
-consumption writer 仍未实现。所以上节的 rev2 已安全物化，但不会被错当 outstanding
-追加到 ledger。
+本文档对应的当时增量只完整闭合了“新物化的
+`selection_kind=outstanding` → 43-event 消费”。其后的窄增量现已实现
+settled-date `selection_kind=revision` 的 canonical 16-event 消费、fresh CAS 与崩溃
+向前采用，详见 `docs/ootang_settled_revision_consumption_engineering.md`。原 outstanding
+v2 persisted contract 保持兼容。
 
-下一窄增量是 settled-date revision consumption writer，必须复用 immutable predecessor
-chain 与 expected-pre-head CAS/crash-forward 框架；之后再分别处理 backfill 与
-first-backfill。跨 manifest-freeze 的 derived-work/step-level dependency reservation 仍属更高层
-closure 工作。以下声明继续为 false：
+当前仍未实现 backfill revision consumption 与 first-backfill writer，不会把它们
+误当 settled revision 追加到 ledger。下一窄增量是 backfill revision
+consumption，之后再单独处理 first-backfill。跨 manifest-freeze 的
+derived-work/step-level dependency reservation 仍属更高层 closure 工作。以下声明
+继续为 false：
 
 ```text
 bounded_workset_recovery_implemented
@@ -117,6 +119,7 @@ active_epoch_switch_implemented
 automatic_epoch_rotation_implemented
 ```
 
-有界验证为 inventory+recovery focused `58/58`（3.71 s），含 materializer 及相邻
+以下数字是本文档对应的 materialization 增量历史记录：
+inventory+recovery focused `58/58`（3.71 s），含 materializer 及相邻
 recovery/live-ledger/CAS/inventory/manifest/admission/eligibility/drain/main 回归 `192/192`（11.06 s）。
 独立最终只读复审为 P0/P1=0。未运行训练、真实网络、长并发/容量矩阵或无关边界测试。

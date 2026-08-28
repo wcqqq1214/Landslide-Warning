@@ -3,17 +3,71 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `ddbdef1 feat: consume published outcome batches`
+**Committed baseline before this increment:** `476a0fc feat: materialize and consume reserved outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
 loop、manifest-reserved outcome settlement adoption 与 published outstanding 43-event
-writer/crash-forward adoption 已提交；本增量实现 receipt-tip repair/machine-selected
-outcome materialization、下一 poll 的 outstanding consumption 桥、revision predecessor authority
-与 consumed-at-freeze adoption。
+writer/crash-forward adoption、receipt-tip repair/machine-selected outcome materialization、下一
+poll 的 outstanding consumption 桥、revision predecessor authority 与 consumed-at-freeze adoption
+已提交；当前工作树实现 settled-date revision 的 canonical 16-event 自动消费、
+fresh CAS、post-CAS receipt adoption 与合法 live suffix 后的历史只读复验。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-29 settled-date outcome revision consumption
+
+The recovery coordinator now consumes a terminal materialized
+`selection_kind=revision` tip through the live core's canonical `_append_revision` writer. It
+replays the immutable materializer receipt, exact outcome and source input manifest, then requires
+their `previous_revision_id`/`previous_outcome_sha256` pair to equal the live ledger's latest
+registered revision for that settled date. The original settlement entry, issue/seal and frozen
+expected pre-head are bound before any mutation; mutable outcome pointers or current-source
+selection are not used as consumption authority.
+
+The writer emits the exact station-interleaved transaction
+`(outcome_revision, revision_rescore_recorded) x 8`, for 16 live-ledger events. Postconditions prove
+that the original settlement, all online states, `last_finalized_date` and
+`outstanding_target_date` remain unchanged. The new actual is registered only as a revised
+retrospective view: revision events do not rewrite online state, and revision rescores are not blind
+metric eligible.
+
+Fresh work appends only at the exact expected pre-head through CAS. If CAS commits before the
+recovery receipt is durable, the next poll rebuilds the 16 EventSpecs from the persisted contract
+and adopts only an exact contiguous slice, without calling CAS again. Partial, displaced or
+mismatched slices fail closed. Completed revision receipts are verified from immutable history, so
+a later legal live suffix does not replay the writer or mutate ledger/recovery artifacts.
+
+Revision consumption uses the separate persisted schema
+`ootang_live_settled_revision_consumption_action_contract_v1`. The existing outstanding
+`ootang_live_outcome_consumption_action_contract_v2` path and its historical contracts/receipts are
+preserved unchanged. Recovery profile `2.1.0-settled-revision-consumption` exposes only the new true
+capability `live_settled_revision_consumption_adapter_implemented`; backfill revision and
+first-backfill writers remain unsupported.
+
+Targeted coverage includes the real rev1 outstanding -> rev2 materialization -> canonical 16-event
+revision chain, CAS-commit-before-receipt exact adoption, and read-only verification after a legal
+live suffix. Results are targeted `2/2` (1.901 s), full recovery `53/53` (4.734 s), and adjacent
+recovery/materializer/live-ledger/CAS/epoch-gates/main `217/217` (12.694 s). Ruff format/check,
+Python compile, strict profile load and diff check pass. Two independent read-only reviews report
+P0=0/P1=0; extra temporary-runtime checks covered consumed-at-freeze zero-event revision adoption,
+backfill fail-wait and outstanding-v2 AST/contract compatibility.
+
+Current recovery module/profile/test, increment document and protected `main.py` SHA-256 values are
+`99884ad28de5ab851da4e2401e67ec90d81258f014971c54711c1ba7376e492c`,
+`ef601148860ef5d4781e934f5cafb046eb82e0bac447c3d3f41ae05c19613c37`,
+`688b395b07f11b7892e2f67918cfda3e3a253532797c479de80cb44ce8c71da6`,
+`7e40c68270c7a78dc50bc18ad66532e7dc8c068418aefae4eb286197df293d76` and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+No training or real network work is part of this increment. ConvLSTM, v4, frozen splits, metrics,
+thresholds, model parameters and scientific conclusions are unchanged. Detailed authority and
+crash semantics are in `docs/ootang_settled_revision_consumption_engineering.md`.
+
+The next narrow increment is backfill revision consumption, reusing immutable predecessor
+authority, the canonical writer and expected-pre-head CAS/crash-forward adoption. First-backfill
+follows as a separate writer. Cross-freeze derived-work/step-level dependency reservation remains a
+higher-level closure increment.
 
 ## 2026-08-29 outcome materialization and outstanding-consumption bridge
 
@@ -77,10 +131,10 @@ engineering document is
 Protected `main.py` remains
 `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
 
-The next narrow increment is the settled-date revision consumption writer, using the immutable
-predecessor chain and the existing expected-pre-head CAS/crash-forward framework. Backfill and
-first-backfill writers follow separately. Cross-freeze derived-work/step-level dependency
-reservation remains a higher-level closure increment.
+The settled-date revision writer planned by this historical entry is now implemented in the
+successor increment above. The current next narrow increment is backfill revision consumption;
+first-backfill follows separately. Cross-freeze derived-work/step-level dependency reservation
+remains a higher-level closure increment.
 
 ## 2026-08-28 published outstanding outcome consumption
 

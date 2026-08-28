@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 settled-date outcome revision 自动消费（本增量）
+
+- recovery coordinator 新增 `selection_kind=revision` 的 live-ledger 消费路径。它从
+  terminal materialization receipt 深验 immutable materializer receipt、exact outcome 与
+  source input manifest，再把 `previous_revision_id`/`previous_outcome_sha256` 精确绑定到
+  ledger 该日期的 latest registered revision，不重选 mutable pointer/current source。
+- writer 复用 live core canonical `_append_revision`，按八站点固定顺序追加
+  `(outcome_revision, revision_rescore_recorded) x 8 = 16` 个 events。合同及后置复验
+  证明原 settlement、online states、`last_finalized_date` 和
+  `outstanding_target_date` 不变；rescore 只属于 revised retrospective view，
+  `updates_live_state=false` 且 `blind_metric_eligible=false`。
+- fresh path 仅在 exact expected pre-head 上执行 CAS。CAS 已成功但 recovery receipt 未落盘
+  时，下一 poll 从 persisted contract 重建 16 个 EventSpecs，匹配 exact contiguous slice
+  后只补 receipt、不再调用 CAS；partial/displaced/mismatched slice fail closed。终态
+  revision receipt 在合法 live suffix 后仍按 immutable history 只读复验。
+- revision 使用独立
+  `ootang_live_settled_revision_consumption_action_contract_v1`；旧 outstanding
+  `ootang_live_outcome_consumption_action_contract_v2` persisted contract/receipt 保持兼容。
+  recovery profile 升为 `2.1.0-settled-revision-consumption`，仅新增已实现的
+  `live_settled_revision_consumption_adapter_implemented=true`。
+- 定向验证覆盖 rev1 outstanding 消费 → rev2 materialization → canonical 16-event
+  revision 消费、post-CAS receipt adoption 与合法 live suffix 后的历史只读路径。
+  定向 `2/2`（1.901 s）、完整 recovery `53/53`（4.734 s）、相邻
+  recovery/materializer/live-ledger/CAS/epoch-gates/main `217/217`（12.694 s）均通过；
+  Ruff format/check、Python compile、strict profile load 与 diff check 通过。两路独立
+  只读复审均为 P0=0、P1=0，并额外验证 consumed-at-freeze revision 零事件采用、
+  backfill fail-wait 与 outstanding v2 AST/contract 兼容。
+- recovery module/profile/test、本增量工程文档与受保护 `main.py` SHA-256 分别为
+  `99884ad28de5ab851da4e2401e67ec90d81258f014971c54711c1ba7376e492c`、
+  `ef601148860ef5d4781e934f5cafb046eb82e0bac447c3d3f41ae05c19613c37`、
+  `688b395b07f11b7892e2f67918cfda3e3a253532797c479de80cb44ce8c71da6`、
+  `7e40c68270c7a78dc50bc18ad66532e7dc8c068418aefae4eb286197df293d76`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量未运行训练或真实网络，也未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。backfill revision 与
+  first-backfill writer 仍未实现；下一窄增量是 backfill revision consumption，
+  详细合同见 `docs/ootang_settled_revision_consumption_engineering.md`。
+
 ## 2026-08-29 outcome materialization 与 outstanding 自动消费桥（本增量）
 
 - recovery coordinator 现在支持两类 manifest-bound `outcome_materialized`：未完整发布的
@@ -44,9 +82,10 @@
   `8a53cf5eb33c669d5a427f9e7fdb73bebcbcadc1382dda54ca40e911a6bb5855`、
   `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。详细合同见
   `docs/ootang_outcome_materialization_recovery_engineering.md`。
-- 下一窄增量是 settled-date revision consumption writer；随后分开实现 backfill 与
-  first-backfill writer。跨 freeze 的 derived-work/step-level dependency reservation 继续作为更高层
-  closure 问题处理。
+- 该历史条目规划的 settled-date revision consumption 已在上述后续增量实现。
+  当前下一窄增量是 backfill revision consumption，随后单独实现
+  first-backfill writer。跨 freeze 的 derived-work/step-level dependency reservation 继续作为
+  更高层 closure 问题处理。
 
 ## 2026-08-28 published outstanding outcome 自动消费（本增量）
 

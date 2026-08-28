@@ -2098,12 +2098,27 @@ class WorksetRecoveryTests(unittest.TestCase):
 
             consumed = self._run(reservation)
             after_consumption = tuple(fixture.events())
+            prerequisites = recovery.live.load_prerequisites(
+                fixture.profile, fixture.paths
+            )
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+            settled_projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+                after_consumption, fixture.profile, prerequisites
+            )
+            settled_state_hashes = {
+                station: recovery.live.station_state_sha256_v1(
+                    settled_projection.states[station]
+                )
+                for station in fixture.stations
+            }
             materialized = self._run(reservation)
+            after_materialization = tuple(fixture.events())
 
             self.assertEqual(consumed.status, "recovery_item_completed")
             self.assertEqual(len(after_consumption) - len(before), 43)
             self.assertEqual(materialized.status, "recovery_step_completed")
-            self.assertEqual(tuple(fixture.events()), after_consumption)
+            self.assertEqual(after_materialization, after_consumption)
             self.assertIsNotNone(materialized.receipt_path)
             assert materialized.receipt_path is not None
             materialization_receipt = json.loads(materialized.receipt_path.read_bytes())
@@ -2141,6 +2156,220 @@ class WorksetRecoveryTests(unittest.TestCase):
                 chain.tip.previous_receipt.sha256,
                 previous.receipt.sha256,
             )
+
+            revision_consumed = self._run(reservation)
+
+            after_revision = tuple(fixture.events())
+            revision_events = after_revision[len(after_materialization) :]
+            expected_types = tuple(
+                event_type
+                for _station in fixture.stations
+                for event_type in (
+                    "outcome_revision",
+                    "revision_rescore_recorded",
+                )
+            )
+            self.assertEqual(revision_consumed.status, "recovery_item_completed")
+            self.assertEqual(len(revision_events), 16)
+            self.assertEqual(
+                tuple(event.event_type for event in revision_events), expected_types
+            )
+            for index, station in enumerate(fixture.stations):
+                outcome_revision = revision_events[index * 2]
+                rescore = revision_events[index * 2 + 1]
+                self.assertEqual(outcome_revision.station, station)
+                self.assertEqual(rescore.station, station)
+                self.assertEqual(
+                    outcome_revision.payload["source_revision_id"],
+                    current_record.revision_id,
+                )
+                self.assertEqual(
+                    outcome_revision.payload["outcome_batch_sha256"],
+                    chain.tip.exact_object.sha256,
+                )
+                self.assertFalse(
+                    outcome_revision.payload["live_online_state_rewritten"]
+                )
+                self.assertFalse(rescore.payload["updates_live_state"])
+                self.assertFalse(rescore.payload["blind_metric_eligible"])
+                self.assertEqual(
+                    outcome_revision.state_before_sha256,
+                    outcome_revision.state_after_sha256,
+                )
+                self.assertEqual(
+                    rescore.state_before_sha256,
+                    rescore.state_after_sha256,
+                )
+            revised_projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+                after_revision, fixture.profile, prerequisites
+            )
+            self.assertEqual(
+                {
+                    station: recovery.live.station_state_sha256_v1(
+                        revised_projection.states[station]
+                    )
+                    for station in fixture.stations
+                },
+                settled_state_hashes,
+            )
+            self.assertIsNotNone(revision_consumed.receipt_path)
+            assert revision_consumed.receipt_path is not None
+            consumption_receipt = json.loads(
+                revision_consumed.receipt_path.read_bytes()
+            )
+            self.assertEqual(
+                consumption_receipt["action"], "outcome_or_revision_consumed"
+            )
+            self.assertEqual(
+                consumption_receipt["action_output_kind"],
+                "live_outcome_consumption_transaction",
+            )
+            self.assertTrue(consumption_receipt["terminal_for_key"])
+            self.assertEqual(consumption_receipt["next_actions"], [])
+            consumption_semantics = consumption_receipt["action_semantics"]
+            self.assertEqual(consumption_semantics["writer_branch"], "settled_revision")
+            self.assertEqual(consumption_semantics["event_count"], 16)
+            self.assertEqual(
+                consumption_semantics["source_revision_id"],
+                current_record.revision_id,
+            )
+            self.assertEqual(
+                consumption_semantics["previous_revision_id"],
+                previous.payload["source_revision_id"],
+            )
+            self.assertEqual(
+                consumption_semantics["previous_outcome_sha256"],
+                previous.exact_object.sha256,
+            )
+            self.assertEqual(
+                consumption_semantics["exact_outcome_sha256"],
+                chain.tip.exact_object.sha256,
+            )
+            self.assertTrue(consumption_semantics["live_ledger_events_recorded"])
+            self.assertTrue(consumption_semantics["canonical_frozen_writer_reused"])
+            self.assertTrue(consumption_semantics["contiguous_exact_slice_verified"])
+            self.assertTrue(consumption_semantics["revised_retrospective_view"])
+            self.assertFalse(consumption_semantics["live_online_state_rewritten"])
+            self.assertFalse(consumption_semantics["blind_metric_eligible"])
+            self.assertFalse(consumption_semantics["network_action_performed"])
+
+            fixture.write_issue(
+                target + timedelta(days=1),
+                persistence=current_record.displacement_mm,
+            )
+            fixture.poll(now=datetime(2020, 7, 2, 15, 45, tzinfo=timezone.utc))
+            with_suffix = tuple(fixture.events())
+            self.assertGreater(len(with_suffix), len(after_revision))
+            recovery_receipts_before = {
+                path.name: path.read_bytes()
+                for path in self.paths.receipts.glob("*.json")
+            }
+            recovery_events_before = {
+                path.name: path.read_bytes()
+                for path in self.paths.events.glob("*.json")
+            }
+            with mock.patch.object(
+                recovery,
+                "_outcome_consumption_action",
+                side_effect=AssertionError(
+                    "completed revision verification must be read-only"
+                ),
+            ) as action:
+                replayed = self._run(reservation)
+
+            action.assert_not_called()
+            self.assertEqual(replayed.status, "waiting_for_supported_ready_key")
+            self.assertEqual(tuple(fixture.events()), with_suffix)
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in self.paths.receipts.glob("*.json")
+                },
+                recovery_receipts_before,
+            )
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in self.paths.events.glob("*.json")
+                },
+                recovery_events_before,
+            )
+
+    def test_revision_consumption_commit_before_receipt_is_exactly_adopted(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, target, previous, source = (
+                self._pending_previous_revision_fixture(fixture)
+            )
+            current_record = next(
+                record for record in source.records if record.day == target
+            )
+            rev1_consumed = self._run(reservation)
+            materialized = self._run(reservation)
+            before_revision = tuple(fixture.events())
+            self.assertEqual(rev1_consumed.status, "recovery_item_completed")
+            self.assertEqual(materialized.status, "recovery_step_completed")
+            self.assertEqual(len(before_revision) - len(before), 43)
+
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_ensure_receipt",
+                    side_effect=RuntimeError("synthetic revision post-CAS crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "revision post-CAS crash"),
+            ):
+                self._run(reservation)
+
+            committed = tuple(fixture.events())
+            revision_events = committed[len(before_revision) :]
+            self.assertEqual(len(revision_events), 16)
+            self.assertEqual(
+                tuple(event.event_type for event in revision_events),
+                tuple(
+                    event_type
+                    for _station in fixture.stations
+                    for event_type in (
+                        "outcome_revision",
+                        "revision_rescore_recorded",
+                    )
+                ),
+            )
+            self.assertEqual(
+                {event.payload["source_revision_id"] for event in revision_events},
+                {current_record.revision_id},
+            )
+
+            with mock.patch.object(
+                recovery.live_cas,
+                "append_transaction_at_pre_head_v1",
+                side_effect=AssertionError(
+                    "committed revision intent must be receipt-only"
+                ),
+            ) as ledger_cas:
+                adopted = self._run(reservation)
+
+            ledger_cas.assert_not_called()
+            self.assertEqual(adopted.status, "recovery_item_completed")
+            self.assertEqual(tuple(fixture.events()), committed)
+            self.assertIsNotNone(adopted.receipt_path)
+            assert adopted.receipt_path is not None
+            receipt = json.loads(adopted.receipt_path.read_bytes())
+            self.assertTrue(receipt["terminal_for_key"])
+            self.assertEqual(receipt["next_actions"], [])
+            semantics = receipt["action_semantics"]
+            self.assertEqual(semantics["writer_branch"], "settled_revision")
+            self.assertEqual(semantics["event_count"], 16)
+            self.assertEqual(
+                semantics["previous_revision_id"],
+                previous.payload["source_revision_id"],
+            )
+            self.assertEqual(
+                semantics["previous_outcome_sha256"],
+                previous.exact_object.sha256,
+            )
+            self.assertTrue(semantics["contiguous_exact_slice_verified"])
 
     def test_materialization_crash_adopts_after_pointer_advances_then_consumes(
         self,
