@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.6.0-anchor-result-ledger-adapter",
+  "profile_version": "1.7.0-outcome-settlement-adoption",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_locked_anchor_result_expected_pre_head_cas_no_terminal_closure_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_full_outcome_settlement_replay_adoption_no_fresh_outcome_writer_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
@@ -73,6 +73,7 @@
       "anchor_receipt_repaired",
       "anchor_request_recorded",
       "anchor_result_recorded",
+      "outcome_batch_settled",
       "superseded_by_backfill"
     ],
     "intent_preparation_successors": [
@@ -96,6 +97,7 @@
     "live_anchor_result_request_intent_implemented": true,
     "live_anchor_result_response_observation_implemented": true,
     "live_anchor_result_adapter_implemented": true,
+    "live_outcome_settlement_adoption_implemented": true,
     "ledger_mutation_recovery_implemented": true,
     "bounded_workset_recovery_implemented": false,
     "all_reserved_items_settled": false,

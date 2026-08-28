@@ -3,15 +3,67 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `507b5a5 feat: observe anchor responses`
+**Committed baseline before this increment:** `8889df7 feat: recover anchor result events`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation 已提交；本增量实现四锁内
-result expected-pre-head CAS、crash-forward adoption、branch-selected receipt/event 与 failure 后
-自动 `attempt + 1` request loop。
+result expected-pre-head CAS、crash-forward adoption、failure 后自动 `attempt + 1` request loop，
+并为 manifest 预留且已 terminal-consumed 的 outcome dependency 增加完整 43-event settlement
+终态采用。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-28 manifest-reserved outcome settlement adoption
+
+The recovery coordinator now supports `live_outstanding -> outcome_batch_settled` only as a
+receipt-only adoption of an already-existing canonical live transaction. It does not read the
+mutable outcome inbox, select an outcome from current source, fabricate actuals or append live-ledger
+events. If the transaction is absent, the machine waits before creating a settlement item intent.
+
+The live item must name a manifest-reserved `outcome_revision` sibling dependency with matching old
+epoch, target and source revision. The existing dependency gate must first deep-verify that sibling's
+terminal `outcome_or_revision_consumed` receipt. A dynamically confirmed item whose frozen manifest
+contains no outcome dependency therefore remains machine-waiting; recovery never edits the frozen
+DAG after the fact.
+
+Confirmation authority may come from a frozen `anchor_confirmed_event` anywhere inside the frozen
+prefix or from the exact preceding candidate-confirmed result receipt. Confirmation is not assumed
+to be the settlement pre-head: canonical earlier-date outcome revisions may legally appear before
+the outstanding outcome. The adapter locates the unique settlement matching the reserved outcome,
+takes its real predecessor as pre-head, and verifies the contiguous 43-event transaction:
+1 opened, 8 reveals, 32 score/expert/conformal/drift updates, 1 site score and 1 settlement. Frozen
+live replay must validate both the pre-settlement outstanding projection and the settled projection.
+
+The create-only action contract/receipt bind the manifest sibling, confirmation, real transaction
+pre-head, ordered-entry digest, first/terminal events, outcome/source/revision/input-manifest
+identity and state hashes. The receipt is terminal only for this live key. Network, trusted-anchor,
+E2 and formal-warning claims remain false; full workset/derived-work/terminal closure and lifecycle
+authority remain false.
+
+Focused recovery tests pass `41/41` in under one second, including a real eight-station canonical
+chain with 8 legal revision events between confirmation and the 43-event batch. The bounded adjacent
+recovery/live-ledger/CAS/inventory/manifest/admission/eligibility/drain/main suite passes `148/148`
+in about 8.13 seconds. No training, model rerun, real network call or long edge/capacity matrix was
+run. ConvLSTM, v4, frozen splits, metrics, thresholds and conclusions remain unchanged. Initial
+independent review found two P1 authority/order defects; both were fixed, and final review reports
+P0/P1=0. Detailed authority and crash boundaries are in
+`docs/ootang_outcome_settlement_adoption_engineering.md`.
+
+Current recovery module/profile/test, `main.py` and increment engineering-document SHA-256 values
+are `89ada0819ed1d81cafe2e854cc86c54f3c57bbe2ef3a36a170327d5fcc7291d5`,
+`b114f8bdc646961a97808ce370db38727ef30f572a0a7262d06b31ed718343be`,
+`2dc8200396310995d9011d881bd35ab2a662fec3d8361f951e27184a8db6c499`,
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` and
+`a1ec3784e3d3d10acec03c76bc03ae51b4d87d3adc8617c1d362404508d8b269`.
+The 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+
+The next narrow slice is the fresh manifest-bound
+`outcome_revision -> outcome_or_revision_consumed` adapter. It must consume immutable materializer
+receipt/exact-object/source-manifest authority, reuse the frozen canonical writer to generate the
+complete EventSpecs, and append/adopt them through expected-pre-head CAS. `outcome_materialized`
+and future-version derived-work reservation remain separate unsupported work.
 
 ## 2026-08-28 locked anchor-result ledger-adapter and retry continuation
 

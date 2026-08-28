@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from contextlib import redirect_stdout
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from email.message import Message
 import hashlib
 import io
@@ -28,6 +28,14 @@ from monitoring import ootang_epoch_workset_manifest as manifest  # noqa: E402
 from monitoring import ootang_epoch_workset_recovery as recovery  # noqa: E402
 from monitoring import ootang_live_ledger as live_ledger  # noqa: E402
 from monitoring import ootang_trusted_time_shadow_core as trusted  # noqa: E402
+from tests.test_ootang_prequential_live import (  # noqa: E402
+    ANCHOR_URL,
+    FIRST_TARGET,
+    ISSUE_CLOCK,
+    OUTCOME_CLOCK,
+    SECOND_ISSUE_CLOCK,
+    _LiveFixture,
+)
 
 
 NOW = datetime(2031, 2, 3, 4, 5, tzinfo=timezone.utc)
@@ -779,6 +787,181 @@ class WorksetRecoveryTests(unittest.TestCase):
 
         return ledger, reservation, load_external, seal
 
+    def _outcome_settlement_fixture(
+        self,
+        fixture: _LiveFixture,
+        *,
+        write_outcome: bool,
+        intervening_revision: bool = False,
+    ) -> tuple[
+        recovery.Reservation,
+        dict[str, object],
+        recovery.FrozenLivePrefix,
+    ]:
+        fixture.install_prerequisites()
+        target = FIRST_TARGET
+        if intervening_revision:
+            fixture.write_outcome(
+                FIRST_TARGET,
+                revision_id="revision-1",
+                actual_offset=1.0,
+            )
+            fixture.poll(now=OUTCOME_CLOCK)
+            target = FIRST_TARGET + timedelta(days=1)
+            issue_path = fixture.write_issue(
+                target,
+                persistence={
+                    station: value + 1.0 for station, value in fixture.latest.items()
+                },
+            )
+            anchor_clock = SECOND_ISSUE_CLOCK
+        else:
+            issue_path = fixture.write_issue()
+            anchor_clock = ISSUE_CLOCK
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TIME_ANCHOR_URL": ANCHOR_URL}, clear=False
+        ):
+            fixture.poll(
+                now=anchor_clock,
+                anchor_client=fixture.anchor_client(),
+            )
+
+        frozen_events = tuple(fixture.events())
+        confirmed = frozen_events[-1]
+        self.assertEqual(confirmed.event_type, "anchor_confirmed")
+        prerequisites = recovery.live.load_prerequisites(fixture.profile, fixture.paths)
+        self.assertIsNotNone(prerequisites)
+        assert prerequisites is not None
+        projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+            frozen_events, fixture.profile, prerequisites
+        )
+        seal = projection.seal_event
+        self.assertIsNotNone(seal)
+        assert seal is not None
+
+        if write_outcome:
+            if intervening_revision:
+                fixture.write_outcome(
+                    FIRST_TARGET,
+                    revision_id="revision-2",
+                    actual_offset=2.0,
+                )
+                fixture.write_outcome(
+                    target,
+                    revision_id="revision-1",
+                    actual_offset=3.0,
+                )
+                outcome_clock = datetime(2030, 1, 3, 8, tzinfo=timezone.utc)
+            else:
+                fixture.write_outcome()
+                outcome_clock = OUTCOME_CLOCK
+            with mock.patch.dict(
+                os.environ, {"OOTANG_TIME_ANCHOR_URL": ANCHOR_URL}, clear=False
+            ):
+                fixture.poll(
+                    now=outcome_clock,
+                    anchor_client=fixture.anchor_client(),
+                )
+
+        current_events = tuple(fixture.events())
+        settlement = next(
+            (
+                event
+                for event in current_events
+                if event.event_type == "outcome_batch_settled"
+                and event.target_date == seal.target_date
+            ),
+            None,
+        )
+        reserved_batch_sha256 = (
+            settlement.payload["outcome_batch_sha256"]
+            if settlement is not None
+            else _digest("reserved-revision-1-outcome")
+        )
+        outcome_natural_key = "settle-outcome-revision-1"
+        reservation = self._reservation(
+            [
+                (
+                    "settle-live",
+                    "outcome_batch_settled",
+                    [outcome_natural_key],
+                ),
+                (
+                    outcome_natural_key,
+                    "outcome_or_revision_consumed",
+                    [],
+                ),
+            ]
+        )
+        reservation.manifest["frozen_live_upper_tip"] = {
+            "old_live_epoch_id": projection.epoch_id,
+            "live_event_count": len(frozen_events),
+            "live_terminal_sha256": confirmed.entry_sha256,
+        }
+        reservation.manifest["items"][1].update(
+            {
+                "family": "outcome_revision",
+                "canonical_successor_state": "outcome_or_revision_consumed",
+                "authority": {
+                    "record_type": "outcome_receipt_chain",
+                    "target_date": seal.target_date,
+                    "old_live_epoch_id": projection.epoch_id,
+                    "tip_source_revision_id": "revision-1",
+                    "tip_exact_outcome_sha256": reserved_batch_sha256,
+                    "tip_published": True,
+                    "tip_ledger_consumed": False,
+                    "terminal": False,
+                },
+            }
+        )
+        item = {
+            "family": "live_outstanding",
+            "natural_key": "settle-live",
+            "canonical_successor_state": "outcome_batch_settled",
+            "dependency_keys": [outcome_natural_key],
+            "namespace_digest": _digest("settle-live"),
+            "authority": {
+                "record_type": "outstanding_live_lifecycle",
+                "target_date": seal.target_date,
+                "old_live_epoch_id": projection.epoch_id,
+                "issue_id": seal.issue_id,
+                "issue_sha256": hashlib.sha256(issue_path.read_bytes()).hexdigest(),
+                "input_manifest_sha256": seal.input_manifest_sha256,
+                "seal_event": {
+                    "sequence_id": seal.sequence_id,
+                    "entry_sha256": seal.entry_sha256,
+                    "event_type": seal.event_type,
+                    "target_date": seal.target_date,
+                    "issue_id": seal.issue_id,
+                },
+                "anchor_confirmed_event": {
+                    "sequence_id": confirmed.sequence_id,
+                    "entry_sha256": confirmed.entry_sha256,
+                    "event_type": confirmed.event_type,
+                    "target_date": confirmed.target_date,
+                    "issue_id": confirmed.issue_id,
+                },
+                "frozen_live_upper_tip": confirmed.entry_sha256,
+                "terminal": False,
+                "action": "outcome_batch_settled",
+            },
+        }
+        frozen = recovery.FrozenLivePrefix(
+            profile=fixture.profile,
+            paths=fixture.paths,
+            prerequisites=prerequisites,
+            projection=projection,
+            frozen_events=frozen_events,
+            current_events=current_events,
+            expected_pre_head=recovery.live_cas.LiveLedgerPreHeadV1(
+                epoch_id=projection.epoch_id,
+                event_count=len(frozen_events),
+                sequence_id=confirmed.sequence_id,
+                entry_sha256=confirmed.entry_sha256,
+            ),
+        )
+        return reservation, item, frozen
+
     def _prepare_linked_anchor_result(
         self,
         reservation: recovery.Reservation,
@@ -810,6 +993,238 @@ class WorksetRecoveryTests(unittest.TestCase):
         )
         recovery._publish_anchor_result_observation(plan, observation)  # noqa: SLF001
         return plan
+
+    def test_outcome_settlement_adopts_complete_transaction_without_writing(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, item, frozen = self._outcome_settlement_fixture(
+                fixture, write_outcome=True
+            )
+            before = tuple(fixture.events())
+            with mock.patch.object(
+                recovery, "_frozen_live_prefix", return_value=frozen
+            ):
+                contract = recovery._outcome_settlement_adoption_contract(  # noqa: SLF001
+                    item, reservation
+                )
+                output = recovery._outcome_settlement_adoption_action(  # noqa: SLF001
+                    item, reservation, contract
+                )
+
+            self.assertEqual(tuple(fixture.events()), before)
+            self.assertEqual(contract["event_count"], 43)
+            first_sequence = contract["first_event"][  # type: ignore[index]
+                "sequence_id"
+            ]
+            transaction_predecessor = before[first_sequence - 2]
+            self.assertEqual(
+                contract["expected_pre_head"],
+                {
+                    "epoch_id": frozen.projection.epoch_id,
+                    "event_count": transaction_predecessor.sequence_id,
+                    "sequence_id": transaction_predecessor.sequence_id,
+                    "entry_sha256": transaction_predecessor.entry_sha256,
+                },
+            )
+            self.assertEqual(
+                first_sequence,
+                contract["confirmation_event"]["sequence_id"] + 1,  # type: ignore[index,operator]
+            )
+            self.assertEqual(
+                contract["terminal_event"]["sequence_id"],  # type: ignore[index]
+                contract["confirmation_event"]["sequence_id"] + 43,  # type: ignore[index,operator]
+            )
+            self.assertEqual(output.kind, "live_outcome_settlement_transaction")
+            self.assertIsNone(output.reference)
+            self.assertEqual(output.semantics["event_count"], 43)
+            self.assertTrue(output.semantics["live_ledger_events_recorded"])
+            self.assertTrue(output.semantics["contiguous_exact_slice_verified"])
+            for claim in (
+                "network_action_performed",
+                "trusted_anchor_receipt_verified",
+                "e2_live_evidence_eligible",
+                "formal_warning_output",
+            ):
+                self.assertFalse(output.semantics[claim])
+
+    def test_outcome_settlement_adopts_after_manifest_frozen_anchor_request(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, item, confirmed_frozen = self._outcome_settlement_fixture(
+                fixture, write_outcome=True
+            )
+            confirmed = confirmed_frozen.frozen_events[-1]
+            requested = confirmed_frozen.frozen_events[-2]
+            self.assertEqual(requested.event_type, "anchor_requested")
+            requested_events = confirmed_frozen.frozen_events[:-1]
+            requested_projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+                requested_events,
+                confirmed_frozen.profile,
+                confirmed_frozen.prerequisites,
+            )
+            requested_frozen = recovery.FrozenLivePrefix(
+                profile=confirmed_frozen.profile,
+                paths=confirmed_frozen.paths,
+                prerequisites=confirmed_frozen.prerequisites,
+                projection=requested_projection,
+                frozen_events=requested_events,
+                current_events=confirmed_frozen.current_events,
+                expected_pre_head=recovery.live_cas.LiveLedgerPreHeadV1(
+                    epoch_id=requested_projection.epoch_id,
+                    event_count=len(requested_events),
+                    sequence_id=requested.sequence_id,
+                    entry_sha256=requested.entry_sha256,
+                ),
+            )
+            reservation.manifest["frozen_live_upper_tip"] = {
+                "old_live_epoch_id": requested_projection.epoch_id,
+                "live_event_count": len(requested_events),
+                "live_terminal_sha256": requested.entry_sha256,
+            }
+            authority = dict(item["authority"])  # type: ignore[arg-type]
+            authority.update(
+                {
+                    "anchor_confirmed_event": None,
+                    "frozen_live_upper_tip": requested.entry_sha256,
+                    "action": "anchor_result_recorded",
+                }
+            )
+            item = {**item, "authority": authority}
+            previous_result_receipt = {
+                "action": "anchor_result_recorded",
+                "action_output_kind": "live_anchor_result_event",
+                "action_output": None,
+                "next_actions": ["outcome_batch_settled"],
+                "terminal_for_key": False,
+                "action_semantics": {
+                    "schema_version": "ootang_live_anchor_result_action_output_v1",
+                    "result_outcome": "candidate_confirmed",
+                    "event_type": "anchor_confirmed",
+                    "selected_next_action": "outcome_batch_settled",
+                    "sealed_entry_sha256": requested_projection.seal_event.entry_sha256,
+                    "live_epoch_id": requested_projection.epoch_id,
+                    "live_ledger_event_recorded": True,
+                    "trusted_anchor_receipt_verified": False,
+                    "e2_live_evidence_eligible": False,
+                    "sequence_id": confirmed.sequence_id,
+                    "entry_sha256": confirmed.entry_sha256,
+                    "previous_entry_sha256": confirmed.previous_entry_sha256,
+                    "event_key": confirmed.event_key,
+                },
+            }
+
+            with mock.patch.object(
+                recovery, "_frozen_live_prefix", return_value=requested_frozen
+            ):
+                contract = recovery._outcome_settlement_adoption_contract(  # noqa: SLF001
+                    item,
+                    reservation,
+                    previous_result_receipt,
+                )
+
+            self.assertEqual(contract["event_count"], 43)
+            first_sequence = contract["first_event"][  # type: ignore[index]
+                "sequence_id"
+            ]
+            transaction_predecessor = requested_frozen.current_events[
+                first_sequence - 2
+            ]
+            self.assertEqual(
+                contract["expected_pre_head"],
+                {
+                    "epoch_id": requested_projection.epoch_id,
+                    "event_count": transaction_predecessor.sequence_id,
+                    "sequence_id": transaction_predecessor.sequence_id,
+                    "entry_sha256": transaction_predecessor.entry_sha256,
+                },
+            )
+
+    def test_outcome_settlement_allows_revisions_after_confirmation(self) -> None:
+        with _LiveFixture() as fixture:
+            reservation, item, frozen = self._outcome_settlement_fixture(
+                fixture,
+                write_outcome=True,
+                intervening_revision=True,
+            )
+            with mock.patch.object(
+                recovery, "_frozen_live_prefix", return_value=frozen
+            ):
+                contract = recovery._outcome_settlement_adoption_contract(  # noqa: SLF001
+                    item, reservation
+                )
+
+            confirmation_sequence = contract["confirmation_event"][  # type: ignore[index]
+                "sequence_id"
+            ]
+            pre_head_sequence = contract["expected_pre_head"][  # type: ignore[index]
+                "sequence_id"
+            ]
+            self.assertGreater(pre_head_sequence, confirmation_sequence)
+            self.assertEqual(
+                [
+                    event.event_type
+                    for event in frozen.current_events[
+                        confirmation_sequence:pre_head_sequence
+                    ]
+                ],
+                ["outcome_revision"] * 8,
+            )
+
+    def test_outcome_settlement_waits_until_transaction_is_durable(self) -> None:
+        with _LiveFixture() as fixture:
+            reservation, item, frozen = self._outcome_settlement_fixture(
+                fixture, write_outcome=False
+            )
+            before = tuple(fixture.events())
+            with (
+                mock.patch.object(recovery, "_frozen_live_prefix", return_value=frozen),
+                self.assertRaisesRegex(
+                    recovery.WorksetRecoveryExternalWait,
+                    "no durable settlement transaction yet",
+                ),
+            ):
+                recovery._outcome_settlement_adoption_contract(  # noqa: SLF001
+                    item, reservation
+                )
+
+            self.assertEqual(tuple(fixture.events()), before)
+
+    def test_outcome_settlement_rejects_partial_transaction_suffix(self) -> None:
+        with _LiveFixture() as fixture:
+            reservation, item, frozen = self._outcome_settlement_fixture(
+                fixture, write_outcome=True
+            )
+            settled = next(
+                event
+                for event in frozen.current_events
+                if event.event_type == "outcome_batch_settled"
+            )
+            first_index = settled.sequence_id - 43
+            partial_events = list(frozen.current_events)
+            del partial_events[first_index + 1]
+            partial = recovery.FrozenLivePrefix(
+                profile=frozen.profile,
+                paths=frozen.paths,
+                prerequisites=frozen.prerequisites,
+                projection=frozen.projection,
+                frozen_events=frozen.frozen_events,
+                current_events=tuple(partial_events),
+                expected_pre_head=frozen.expected_pre_head,
+            )
+            with (
+                mock.patch.object(
+                    recovery, "_frozen_live_prefix", return_value=partial
+                ),
+                self.assertRaisesRegex(
+                    recovery.WorksetRecoveryIntegrityError,
+                    "partial ledger slice",
+                ),
+            ):
+                recovery._outcome_settlement_adoption_contract(  # noqa: SLF001
+                    item, reservation
+                )
 
     def test_anchor_request_fresh_cas_rebuilds_exact_event_without_network(
         self,

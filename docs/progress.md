@@ -5,6 +5,48 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-28 manifest-reserved outcome settlement 终态采用（本增量）
+
+- 新增 `live_outstanding -> outcome_batch_settled` 的 receipt-only machine adapter。它不读取
+  mutable outcome inbox/current source，不生成 actual，不追加 live event；只在 append-only ledger
+  已存在完整 transaction 时终态化该 live key。transaction 缺失时在 settlement item intent 前
+  machine waiting，ledger/receipt/event 零新增，无人工 freeze/cleanup/approval/force/backdate。
+- live item 必须显式依赖同一 frozen manifest 中 target/old epoch/source revision 匹配的唯一
+  `outcome_revision` sibling；既有 terminal dependency gate 必须先深验该 sibling 的
+  `outcome_or_revision_consumed` receipt。manifest 后才 confirmed 且未预留 outcome dependency 的
+  分支不动态改 DAG，只保持 `waiting_for_supported_ready_key`。
+- confirmation 可来自 frozen prefix 内的 exact `anchor_confirmed_event`，或前一张
+  candidate-confirmed result receipt。它只提供 anchor authority，不被假定为 settlement pre-head。
+  adapter 从 matching settlement 反向取得 43-event batch 的真实前驱，因此允许 canonical poll 在
+  confirmation 后先追加较早日期的合法 revision。
+- 完整 transaction 必须连续满足 `1 opened + 8 revealed + 8×4 score/expert/conformal/drift +
+  1 site + 1 settled = 43`。batch 前 projection 与 settled projection 均由 frozen live core 重放；
+  target/issue/seal、outcome/source/revision/input-manifest、state hashes、ordered entry digest 与
+  first/terminal event 全部进入 create-only contract/receipt。partial/foreign/mismatched suffix fail
+  closed。trusted anchor、E2、network 与 formal warning 保持 false。
+- profile 升为 `1.7.0-outcome-settlement-adoption`，仅新增真实 capability
+  `live_outcome_settlement_adoption_implemented=true`。full workset、all successors、derived future
+  reservation、terminal closure、drained/active/rotation/lifecycle/trusted/E2/formal claims 仍为 false。
+- focused recovery 测试 `41/41`（约 0.76 s）；既定 recovery、live-ledger/CAS、inventory/manifest、
+  admission-cut、eligibility、drain-v2 与 main 相邻回归 `148/148`（约 8.13 s）通过。真实八站测试
+  覆盖 confirmation 与 43-event batch 之间 8 条 canonical outcome revision。未运行训练、真实
+  网络、长并发/容量或无关边界矩阵；ConvLSTM、v4、冻结 splits/metrics/thresholds 与科研结论未改。
+  初次独立复审的 2 个 P1（缺 reserved outcome authority、错误强制 confirmation 为 pre-head）均已
+  修复；最终 P0/P1=0。详细合同见
+  `docs/ootang_outcome_settlement_adoption_engineering.md`。
+- recovery module/profile/test、`main.py` 与本增量工程文档 SHA-256 分别为
+  `89ada0819ed1d81cafe2e854cc86c54f3c57bbe2ef3a36a170327d5fcc7291d5`、
+  `b114f8bdc646961a97808ce370db38727ef30f572a0a7262d06b31ed718343be`、
+  `2dc8200396310995d9011d881bd35ab2a662fec3d8361f951e27184a8db6c499`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`、
+  `a1ec3784e3d3d10acec03c76bc03ae51b4d87d3adc8617c1d362404508d8b269`；97-path
+  protected aggregate 保持
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+- 下一窄增量是 manifest-bound `outcome_revision -> outcome_or_revision_consumed` fresh writer：只
+  消费 immutable materializer receipt/exact outcome/source manifest，复用 frozen canonical writer
+  构造完整 EventSpecs，并用 expected-pre-head CAS append/adopt。`outcome_materialized` 与未来版本
+  derived-work reservation 继续分开处理。
+
 ## 2026-08-28 anchor-result result CAS、持久化 fence 与自动 retry（本增量）
 
 - 基于已提交的 `507b5a5 feat: observe anchor responses`，本增量只消费 linked response

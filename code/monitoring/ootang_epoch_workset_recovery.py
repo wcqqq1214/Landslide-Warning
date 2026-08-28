@@ -38,7 +38,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "3157abe52b5357b565366e2a3026a53b087e40a19f01615ff274b9e3e68074da"
+    "b114f8bdc646961a97808ce370db38727ef30f572a0a7262d06b31ed718343be"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -48,6 +48,7 @@ SUPPORTED_SUCCESSORS = (
     "anchor_receipt_repaired",
     "anchor_request_recorded",
     "anchor_result_recorded",
+    "outcome_batch_settled",
     "superseded_by_backfill",
 )
 INTENT_PREPARATION_SUCCESSORS = ("anchor_result_recorded",)
@@ -57,6 +58,25 @@ ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA = (
 )
 ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES = 1024 * 1024
 ANCHOR_RESULT_USER_AGENT = "ootang-workset-recovery/1"
+OUTCOME_SETTLEMENT_ADOPTION_CONTRACT_SCHEMA = (
+    "ootang_live_outcome_settlement_adoption_contract_v1"
+)
+OUTCOME_SETTLEMENT_EVENT_COUNT = 43
+OUTCOME_SETTLEMENT_EVENT_TYPES = (
+    "outcome_batch_opened",
+    *("outcome_revealed",) * 8,
+    *(
+        (
+            "score_recorded",
+            "expert_state_updated",
+            "conformal_state_updated",
+            "drift_state_updated",
+        )
+        * 8
+    ),
+    "site_score_recorded",
+    "outcome_batch_settled",
+)
 ANCHOR_RESULT_FAILURE_TAXONOMY = {
     ("response_body", "response_too_large"),
     ("http_status", "redirect_rejected"),
@@ -179,6 +199,7 @@ TRUE_CAPABILITIES = (
     "live_anchor_result_request_intent_implemented",
     "live_anchor_result_response_observation_implemented",
     "live_anchor_result_adapter_implemented",
+    "live_outcome_settlement_adoption_implemented",
     "ledger_mutation_recovery_implemented",
 )
 FALSE_CLAIMS = (
@@ -849,6 +870,9 @@ def _item_adapter_supported(item: Mapping[str, Any], action: str | None = None) 
     selected = action or item.get("canonical_successor_state")
     if selected not in SUPPORTED_SUCCESSORS:
         return False
+    if selected == "outcome_batch_settled":
+        dependencies = item.get("dependency_keys")
+        return isinstance(dependencies, list) and bool(dependencies)
     if selected != "superseded_by_backfill":
         return True
     authority = item.get("authority")
@@ -2124,6 +2148,514 @@ def _anchor_result_event_spec(
     return spec, expected
 
 
+_OUTSTANDING_LIFECYCLE_AUTHORITY_KEYS = {
+    "record_type",
+    "target_date",
+    "old_live_epoch_id",
+    "issue_id",
+    "issue_sha256",
+    "input_manifest_sha256",
+    "seal_event",
+    "anchor_confirmed_event",
+    "frozen_live_upper_tip",
+    "terminal",
+    "action",
+}
+
+
+def _settlement_confirmation_context(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None,
+) -> tuple[
+    FrozenLivePrefix,
+    live_ledger.LedgerEvent,
+    live_ledger.LedgerEvent,
+]:
+    """Resolve the exact confirmed-event pre-head without reading outcome files."""
+
+    if item.get("family") != "live_outstanding":
+        raise WorksetRecoveryIntegrityError("Settlement item family changed")
+    authority = _exact(
+        item.get("authority"),
+        _OUTSTANDING_LIFECYCLE_AUTHORITY_KEYS,
+        name="outcome settlement authority",
+    )
+    if (
+        authority["record_type"] != "outstanding_live_lifecycle"
+        or authority["terminal"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError("Settlement authority state changed")
+    frozen = _frozen_live_prefix(reservation)
+    seal = frozen.projection.seal_event
+    seal_record = _exact(
+        authority["seal_event"],
+        {"sequence_id", "entry_sha256", "event_type", "target_date", "issue_id"},
+        name="outcome settlement seal record",
+    )
+    if (
+        seal is None
+        or seal.event_type != "issue_batch_sealed"
+        or authority["target_date"] != seal.target_date
+        or authority["issue_id"] != seal.issue_id
+        or authority["old_live_epoch_id"] != frozen.projection.epoch_id
+        or authority["input_manifest_sha256"] != seal.input_manifest_sha256
+        or authority["frozen_live_upper_tip"] != frozen.expected_pre_head.entry_sha256
+        or seal_record
+        != {
+            "sequence_id": seal.sequence_id,
+            "entry_sha256": seal.entry_sha256,
+            "event_type": seal.event_type,
+            "target_date": seal.target_date,
+            "issue_id": seal.issue_id,
+        }
+    ):
+        raise WorksetRecoveryIntegrityError("Settlement frozen lifecycle changed")
+    _hash_text(authority["issue_sha256"], name="outcome settlement issue")
+    _hash_text(
+        authority["input_manifest_sha256"],
+        name="outcome settlement input manifest",
+    )
+
+    if previous_step_receipt is None:
+        confirmed_record = _exact(
+            authority["anchor_confirmed_event"],
+            {"sequence_id", "entry_sha256", "event_type", "target_date", "issue_id"},
+            name="frozen settlement confirmation",
+        )
+        position = confirmed_record["sequence_id"]
+        if (
+            authority["action"] != "outcome_batch_settled"
+            or not isinstance(position, int)
+            or isinstance(position, bool)
+            or position < 1
+            or position > frozen.expected_pre_head.event_count
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Frozen settlement confirmation is outside the frozen prefix"
+            )
+        confirmed = frozen.frozen_events[position - 1]
+        if confirmed_record != {
+            "sequence_id": confirmed.sequence_id,
+            "entry_sha256": confirmed.entry_sha256,
+            "event_type": confirmed.event_type,
+            "target_date": confirmed.target_date,
+            "issue_id": confirmed.issue_id,
+        }:
+            raise WorksetRecoveryIntegrityError(
+                "Frozen settlement confirmation event changed"
+            )
+    else:
+        # The manifest predates confirmation.  The preceding immutable result
+        # receipt is the only authority allowed to extend that frozen branch.
+        if (
+            authority["action"]
+            not in {"anchor_request_recorded", "anchor_result_recorded"}
+            or authority["anchor_confirmed_event"] is not None
+            or previous_step_receipt.get("action") != "anchor_result_recorded"
+            or previous_step_receipt.get("action_output_kind")
+            != "live_anchor_result_event"
+            or previous_step_receipt.get("action_output") is not None
+            or previous_step_receipt.get("next_actions") != ["outcome_batch_settled"]
+            or previous_step_receipt.get("terminal_for_key") is not False
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement lost its confirmed-result receipt authority"
+            )
+        semantics = previous_step_receipt.get("action_semantics")
+        if (
+            not isinstance(semantics, Mapping)
+            or semantics.get("schema_version")
+            != "ootang_live_anchor_result_action_output_v1"
+            or semantics.get("result_outcome") != "candidate_confirmed"
+            or semantics.get("event_type") != "anchor_confirmed"
+            or semantics.get("selected_next_action") != "outcome_batch_settled"
+            or semantics.get("sealed_entry_sha256") != seal.entry_sha256
+            or semantics.get("live_epoch_id") != frozen.projection.epoch_id
+            or semantics.get("live_ledger_event_recorded") is not True
+            or semantics.get("trusted_anchor_receipt_verified") is not False
+            or semantics.get("e2_live_evidence_eligible") is not False
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement confirmed-result semantics changed"
+            )
+        position = semantics.get("sequence_id")
+        if (
+            not isinstance(position, int)
+            or isinstance(position, bool)
+            or position < 1
+            or len(frozen.current_events) < position
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement confirmation position changed"
+            )
+        confirmed = frozen.current_events[position - 1]
+        if (
+            confirmed.sequence_id != position
+            or confirmed.event_type != "anchor_confirmed"
+            or confirmed.entry_sha256 != semantics.get("entry_sha256")
+            or confirmed.previous_entry_sha256 != semantics.get("previous_entry_sha256")
+            or confirmed.event_key != semantics.get("event_key")
+            or confirmed.target_date != seal.target_date
+            or confirmed.issue_id != seal.issue_id
+            or confirmed.payload.get("sealed_entry_sha256") != seal.entry_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement confirmation ledger event changed"
+            )
+
+    if (
+        confirmed.event_type != "anchor_confirmed"
+        or confirmed.target_date != seal.target_date
+        or confirmed.issue_id != seal.issue_id
+        or confirmed.payload.get("sealed_entry_sha256") != seal.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Settlement confirmation does not cover the frozen issue"
+        )
+    return frozen, seal, confirmed
+
+
+def _settlement_event_record(event: live_ledger.LedgerEvent) -> dict[str, object]:
+    return {
+        "sequence_id": event.sequence_id,
+        "event_key": event.event_key,
+        "entry_sha256": event.entry_sha256,
+    }
+
+
+def _settlement_outcome_dependency(
+    item: Mapping[str, Any], reservation: Reservation
+) -> dict[str, object]:
+    """Resolve one manifest-reserved outcome item for the live terminal proof."""
+
+    dependencies = item.get("dependency_keys")
+    raw_items = reservation.manifest.get("items")
+    if not isinstance(dependencies, list) or not isinstance(raw_items, list):
+        raise WorksetRecoveryIntegrityError(
+            "Settlement outcome dependency authority changed type"
+        )
+    candidates: list[dict[str, object]] = []
+    for candidate in raw_items:
+        if (
+            not isinstance(candidate, dict)
+            or candidate.get("natural_key") not in dependencies
+            or candidate.get("family") != "outcome_revision"
+        ):
+            continue
+        authority = candidate.get("authority")
+        if not isinstance(authority, dict):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement outcome dependency lost its authority"
+            )
+        record_type = authority.get("record_type")
+        if record_type == "outcome_receipt_chain":
+            revision = authority.get("tip_source_revision_id")
+            batch_sha256 = authority.get("tip_exact_outcome_sha256")
+            source_id = None
+            successor = candidate.get("canonical_successor_state")
+            if (
+                successor
+                not in {"outcome_materialized", "outcome_or_revision_consumed"}
+                or authority.get("tip_published")
+                is not (successor == "outcome_or_revision_consumed")
+                or authority.get("tip_ledger_consumed") is not False
+                or authority.get("terminal") is not False
+            ):
+                raise WorksetRecoveryIntegrityError(
+                    "Settlement outcome receipt dependency changed state"
+                )
+            _hash_text(batch_sha256, name="settlement dependency outcome batch")
+        elif record_type == "machine_selected_source_outcome":
+            revision = authority.get("source_revision_id")
+            batch_sha256 = None
+            source_id = authority.get("outcome_source_id")
+            if (
+                candidate.get("canonical_successor_state") != "outcome_materialized"
+                or authority.get("selection_kind") != "outstanding"
+                or authority.get("terminal") is not False
+                or not isinstance(source_id, str)
+                or not source_id
+            ):
+                raise WorksetRecoveryIntegrityError(
+                    "Settlement selected-outcome dependency changed state"
+                )
+        else:
+            continue
+        natural_key = candidate.get("natural_key")
+        namespace_digest = candidate.get("namespace_digest")
+        if (
+            not isinstance(natural_key, str)
+            or not natural_key
+            or not isinstance(namespace_digest, str)
+            or _hash_text(namespace_digest, name="settlement dependency namespace")
+            != namespace_digest
+            or not isinstance(revision, str)
+            or not revision
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Settlement outcome dependency identity changed"
+            )
+        candidates.append(
+            {
+                "natural_key": natural_key,
+                "namespace_digest": namespace_digest,
+                "record_type": record_type,
+                "target_date": authority.get("target_date"),
+                "old_live_epoch_id": authority.get("old_live_epoch_id"),
+                "source_revision_id": revision,
+                "outcome_batch_sha256": batch_sha256,
+                "outcome_source_id": source_id,
+            }
+        )
+    if not candidates:
+        raise WorksetRecoveryExternalWait(
+            "the live item has no manifest-reserved outcome dependency"
+        )
+    if len(candidates) != 1:
+        raise WorksetRecoveryIntegrityError(
+            "Settlement outcome dependency is not unique"
+        )
+    dependency = candidates[0]
+    authority = item.get("authority")
+    if (
+        not isinstance(authority, Mapping)
+        or dependency["target_date"] != authority.get("target_date")
+        or dependency["old_live_epoch_id"] != authority.get("old_live_epoch_id")
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Settlement outcome dependency scope changed"
+        )
+    return dependency
+
+
+def _outcome_settlement_adoption_contract(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> dict[str, object]:
+    """Bind a receipt to one already-existing, fully replayed 43-event batch."""
+
+    dependency = _settlement_outcome_dependency(item, reservation)
+    frozen, seal, confirmed = _settlement_confirmation_context(
+        item, reservation, previous_step_receipt
+    )
+    revision = dependency["source_revision_id"]
+    matching_settlements = [
+        event
+        for event in frozen.current_events[frozen.expected_pre_head.event_count :]
+        if event.event_type == "outcome_batch_settled"
+        and event.target_date == seal.target_date
+        and event.payload.get("source_revision_id") == revision
+        and (
+            dependency["outcome_batch_sha256"] is None
+            or event.payload.get("outcome_batch_sha256")
+            == dependency["outcome_batch_sha256"]
+        )
+    ]
+    if not matching_settlements:
+        raise WorksetRecoveryExternalWait(
+            "the reserved outcome dependency has no durable settlement transaction yet"
+        )
+    if len(matching_settlements) != 1:
+        raise WorksetRecoveryIntegrityError(
+            "Reserved outcome dependency has multiple settlement transactions"
+        )
+    settled = matching_settlements[0]
+    first_index = settled.sequence_id - OUTCOME_SETTLEMENT_EVENT_COUNT
+    if first_index < frozen.expected_pre_head.event_count:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction precedes its frozen reservation"
+        )
+    batch = tuple(
+        frozen.current_events[
+            first_index : first_index + OUTCOME_SETTLEMENT_EVENT_COUNT
+        ]
+    )
+    if len(batch) != OUTCOME_SETTLEMENT_EVENT_COUNT or batch[-1] != settled:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction is a partial ledger slice"
+        )
+    pre_head = frozen.current_events[first_index - 1]
+    try:
+        pre_settlement_projection = live._reconstruct_projection(  # noqa: SLF001
+            frozen.current_events[: pre_head.sequence_id],
+            frozen.profile,
+            frozen.prerequisites,
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Settlement pre-head no longer replays"
+        ) from exc
+    if (
+        pre_settlement_projection.outstanding_target_date
+        != date.fromisoformat(str(seal.target_date))
+        or pre_settlement_projection.outstanding_issue_id != seal.issue_id
+        or seal.entry_sha256 not in pre_settlement_projection.anchored_seal_hashes
+        or confirmed.sequence_id >= batch[0].sequence_id
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Settlement pre-head changed the confirmed outstanding lifecycle"
+        )
+    if tuple(event.event_type for event in batch) != OUTCOME_SETTLEMENT_EVENT_TYPES:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction type/order changed"
+        )
+    first = batch[0]
+    if (
+        first.sequence_id != pre_head.sequence_id + 1
+        or first.previous_entry_sha256 != pre_head.entry_sha256
+        or settled.sequence_id != pre_head.sequence_id + OUTCOME_SETTLEMENT_EVENT_COUNT
+        or any(event.target_date != seal.target_date for event in batch)
+        or first.issue_id != seal.issue_id
+        or settled.issue_id != seal.issue_id
+        or batch[-2].issue_id != seal.issue_id
+        or first.payload.get("issue_batch_sealed_entry_sha256") != seal.entry_sha256
+        or settled.payload.get("issue_batch_sealed_entry_sha256") != seal.entry_sha256
+        or settled.payload.get("anchor_confirmed") is not True
+        or settled.payload.get("trusted_anchor_receipt_verified") is not False
+        or settled.payload.get("e2_live_evidence_eligible") is not False
+        or settled.payload.get("formal_warning_output") is not False
+        or settled.payload.get("externally_anchored_before_outcome")
+        is not settled.payload.get("engineering_blind_time_order_candidate")
+        or any(
+            event.payload.get("formal_warning_output") is not False
+            for event in batch
+            if event.event_type == "score_recorded"
+        )
+        or batch[-2].payload.get("warning_color_output") is not False
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction safety semantics changed"
+        )
+    settled_revision = settled.payload.get("source_revision_id")
+    batch_sha256 = settled.payload.get("outcome_batch_sha256")
+    source_id = settled.payload.get("outcome_source_id")
+    input_manifest_sha256 = settled.input_manifest_sha256
+    if (
+        not isinstance(settled_revision, str)
+        or settled_revision != revision
+        or not isinstance(source_id, str)
+        or not source_id
+        or _hash_text(batch_sha256, name="settled outcome batch") != batch_sha256
+        or _hash_text(input_manifest_sha256, name="settled outcome input manifest")
+        != input_manifest_sha256
+        or first.payload.get("source_revision_id") != settled_revision
+        or first.payload.get("outcome_batch_sha256") != batch_sha256
+        or first.payload.get("outcome_source_id") != source_id
+        or first.input_manifest_sha256 != input_manifest_sha256
+        or (
+            dependency["outcome_source_id"] is not None
+            and dependency["outcome_source_id"] != source_id
+        )
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction identity changed"
+        )
+    try:
+        settled_projection = live._reconstruct_projection(  # noqa: SLF001
+            frozen.current_events[: settled.sequence_id],
+            frozen.profile,
+            frozen.prerequisites,
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction no longer fully replays"
+        ) from exc
+    replayed = settled_projection.settled_events.get(str(seal.target_date))
+    if (
+        replayed is None
+        or replayed.entry_sha256 != settled.entry_sha256
+        or settled_projection.outstanding_target_date is not None
+        or settled_projection.last_finalized_date
+        != date.fromisoformat(str(seal.target_date))
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement transaction did not close the frozen lifecycle"
+        )
+    ordered_entries_sha256 = _sha256(
+        _canonical_bytes([event.entry_sha256 for event in batch])
+    )
+    return {
+        "schema_version": OUTCOME_SETTLEMENT_ADOPTION_CONTRACT_SCHEMA,
+        "expected_pre_head": {
+            "epoch_id": frozen.projection.epoch_id,
+            "event_count": pre_head.sequence_id,
+            "sequence_id": pre_head.sequence_id,
+            "entry_sha256": pre_head.entry_sha256,
+        },
+        "target_date": seal.target_date,
+        "issue_id": seal.issue_id,
+        "sealed_entry_sha256": seal.entry_sha256,
+        "confirmation_event": _settlement_event_record(confirmed),
+        "outcome_dependency": dependency,
+        "outcome_batch_sha256": batch_sha256,
+        "outcome_source_id": source_id,
+        "source_revision_id": settled_revision,
+        "outcome_input_manifest_sha256": input_manifest_sha256,
+        "event_count": OUTCOME_SETTLEMENT_EVENT_COUNT,
+        "ordered_entries_sha256": ordered_entries_sha256,
+        "first_event": _settlement_event_record(first),
+        "terminal_event": _settlement_event_record(settled),
+        "state_before_sha256": settled.state_before_sha256,
+        "state_after_sha256": settled.state_after_sha256,
+        "engineering_blind_time_order_candidate": settled.payload.get(
+            "engineering_blind_time_order_candidate"
+        ),
+    }
+
+
+def _outcome_settlement_adoption_action(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any] | None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> ActionOutput:
+    if contract is None:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement adoption intent lost its contract"
+        )
+    rebuilt = _outcome_settlement_adoption_contract(
+        item, reservation, previous_step_receipt
+    )
+    if contract != rebuilt:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome settlement adoption contract changed"
+        )
+    return ActionOutput(
+        "live_outcome_settlement_transaction",
+        None,
+        {
+            "schema_version": "ootang_live_outcome_settlement_action_output_v1",
+            "live_epoch_id": rebuilt["expected_pre_head"]["epoch_id"],
+            "target_date": rebuilt["target_date"],
+            "issue_id": rebuilt["issue_id"],
+            "sealed_entry_sha256": rebuilt["sealed_entry_sha256"],
+            "confirmation_entry_sha256": rebuilt["confirmation_event"]["entry_sha256"],
+            "outcome_dependency": rebuilt["outcome_dependency"],
+            "outcome_batch_sha256": rebuilt["outcome_batch_sha256"],
+            "outcome_source_id": rebuilt["outcome_source_id"],
+            "source_revision_id": rebuilt["source_revision_id"],
+            "outcome_input_manifest_sha256": rebuilt["outcome_input_manifest_sha256"],
+            "event_count": rebuilt["event_count"],
+            "ordered_entries_sha256": rebuilt["ordered_entries_sha256"],
+            "first_event": rebuilt["first_event"],
+            "terminal_event": rebuilt["terminal_event"],
+            "state_before_sha256": rebuilt["state_before_sha256"],
+            "state_after_sha256": rebuilt["state_after_sha256"],
+            "engineering_blind_time_order_candidate": rebuilt[
+                "engineering_blind_time_order_candidate"
+            ],
+            "live_ledger_events_recorded": True,
+            "contiguous_exact_slice_verified": True,
+            "network_action_performed": False,
+            "trusted_anchor_receipt_verified": False,
+            "e2_live_evidence_eligible": False,
+            "formal_warning_output": False,
+        },
+    )
+
+
 def _action_contract(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -2135,6 +2667,10 @@ def _action_contract(
         return _anchor_request_contract(item, reservation, previous_step_receipt)
     if action == "anchor_result_recorded":
         return _anchor_result_request_contract(item, reservation, previous_step_receipt)
+    if action == "outcome_batch_settled":
+        return _outcome_settlement_adoption_contract(
+            item, reservation, previous_step_receipt
+        )
     return None
 
 
@@ -2146,6 +2682,16 @@ def _verify_item_intent_action_contract(
     *,
     previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> None:
+    if action == "outcome_batch_settled":
+        if not isinstance(contract, Mapping) or contract != (
+            _outcome_settlement_adoption_contract(
+                item, reservation, previous_step_receipt
+            )
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Outcome settlement item intent contract changed"
+            )
+        return
     if action == "anchor_result_recorded":
         if not isinstance(contract, Mapping):
             raise WorksetRecoveryIntegrityError(
@@ -3666,6 +4212,13 @@ def _perform_action(
                 action_contract,
                 previous_step_receipt,
             )
+        if successor == "outcome_batch_settled":
+            return _outcome_settlement_adoption_action(
+                item,
+                reservation,
+                action_contract,
+                previous_step_receipt,
+            )
         if successor == "superseded_by_backfill":
             return _guard_action(item, reservation, paths, inputs)
         raise WorksetRecoveryIntegrityError("Unsupported successor was dispatched")
@@ -3781,6 +4334,22 @@ def _verify_recorded_action_contract(
             spec,
             expected_pre_head,
             recovery_root=paths.root,
+        )
+    elif action == "outcome_batch_settled":
+        if reservation is None or item_intent is None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded outcome settlement lost its frozen intent authority"
+            )
+        contract = item_intent.get("action_contract")
+        if not isinstance(contract, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded outcome settlement contract changed"
+            )
+        expected = _outcome_settlement_adoption_action(
+            item,
+            reservation,
+            contract,
+            previous_step_receipt,
         )
     elif action == "trusted_time_request_der_repaired":
         target = authority.get("target_date")
@@ -4809,18 +5378,24 @@ def _coordinate_epoch_workset_recovery(
             )
         except WorksetRecoveryExternalWait as exc:
             reason = str(exc)
+            waiting_for_settlement = transition_action == "outcome_batch_settled"
+            status = (
+                "waiting_for_durable_outcome_settlement"
+                if waiting_for_settlement
+                else "waiting_for_external_anchor_endpoint"
+            )
             _write_status(
                 profile,
                 paths,
                 now=now,
-                status="waiting_for_external_anchor_endpoint",
+                status=status,
                 reason=reason,
                 key_id=item["key_id"],
                 receipt=None,
                 event=None,
             )
             return RecoveryResult(
-                "waiting_for_external_anchor_endpoint",
+                status,
                 reason,
                 paths.status,
                 item["key_id"],
