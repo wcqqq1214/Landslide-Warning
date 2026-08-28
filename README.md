@@ -161,15 +161,19 @@
   精准测试 `26/26`，相邻回归 `101/101`，protected aggregate 与 11 个 frozen writer 保持
   一致，独立审计 P0/P1=0。详细合同见
   `docs/ootang_anchor_request_recovery_engineering.md`。
-- `anchor_result_recorded` 现已完成**请求意图准备**，但 result action 本身仍未实现。机器只接受
+- `anchor_result_recorded` 现已完成**请求意图准备与四锁外响应观测**，但 result ledger action
+  本身仍未实现。机器只接受
   manifest frozen tip 或前一步 recovery request 后紧邻的唯一 canonical `anchor_requested`
   terminal event，并在 create-only item intent 中冻结 exact normalized HTTPS endpoint、POST
   body/hash、stable idempotency key 与 expected result pre-head。endpoint 缺失/非法时不创建
-  intent；已有 pending intent 全局排他并保持零网络。当前只新增
-  `live_anchor_result_request_intent_implemented=true`，仍保持 result adapter/network/trusted/E2
-  claims 为 false。下一步是四锁外 bounded transport + content-addressed response observation，
-  再重新加锁做 result CAS 与 branch-selected receipt；详见
-  `docs/ootang_anchor_result_request_intent_engineering.md`。
+  intent；已有 pending intent 全局排他。四锁释放后，独立 dispatch lock 使用冻结 body/key 做
+  bounded、no-redirect HTTPS POST，并按 object→link 顺序发布 create-only、content-addressed
+  observation。临时网络歧义保留同一 key 重试；确定性 response failure 也只形成 observation；
+  object-before-link crash 由下次 poll 零网络接管。token 只在 dispatch 时从环境读取且不落盘。
+  当前可新增 `live_anchor_result_response_observation_implemented=true`，但 result adapter、完整
+  network recovery、remote exactly-once、trusted/E2 claims 仍为 false。下一步是重新取得四锁，
+  消费 observation 做 expected-pre-head result CAS 与 branch-selected receipt；详见
+  `docs/ootang_anchor_result_response_observation_engineering.md`。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -269,6 +273,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/v5_validation_protocol.md`](docs/v5_validation_protocol.md) | 正式 v5 的标签、切分、指标、V0 unavailable 与融合决策门 |
 | [`docs/ootang_autonomous_research_protocol.md`](docs/ootang_autonomous_research_protocol.md) | 不依赖逐日人工操作的 E0--E3 机器闭环协议及科学边界 |
 | [`docs/ootang_anchor_result_request_intent_engineering.md`](docs/ootang_anchor_result_request_intent_engineering.md) | `anchor_result_recorded` 的机器请求意图、pending fence 与零网络边界 |
+| [`docs/ootang_anchor_result_response_observation_engineering.md`](docs/ootang_anchor_result_response_observation_engineering.md) | 四锁外 bounded HTTPS、内容寻址 response observation、崩溃接管与 result-CAS 前边界 |
 | [`docs/ootang_prequential_monitor_results.md`](docs/ootang_prequential_monitor_results.md) | E1 三折回放结果、确定性/因果校验、产物哈希与当前限制 |
 | [`docs/ootang_prequential_calibration_bakeoff.md`](docs/ootang_prequential_calibration_bakeoff.md) | 固定 E1 点预测上的 ACI/AgACI-EWA/SPCI 非排名校准比较、论文边界与 E2 shadow 门禁 |
 | [`docs/ootang_prequential_live_engineering.md`](docs/ootang_prequential_live_engineering.md) | E2-A ledger/runner 实现、验证、状态语义和 E2-B 激活门禁 |
@@ -309,10 +314,10 @@ docs/                           # 当前方法、结果边界和研究计划
    dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；
    recovery-only expected-pre-head CAS 已实现，且单事件 machine-only
    `anchor_request_recorded` adapter 已从 manifest frozen prefix 重建 seal/attempt/EventSpec 并调用该 CAS。
-   该 step 零网络且非 terminal；下一步 `anchor_result_recorded` 的 create-only external
-   request intent 与全局 pending fence 已实现，机器会在缺 endpoint 或等待 transport 时稳定
-   waiting，不转人工操作。下一切片只实现四锁外 bounded transport 与 content-addressed
-   response observation；之后才重新加锁做 result CAS/adoption 与 branch-selected receipt，
+   该 step 零网络且非 terminal；`anchor_result_recorded` 的 create-only external request intent、
+   全局 pending fence、四锁外 bounded transport 与 content-addressed response observation 已实现，
+   机器会在缺 endpoint/token、临时网络歧义或等待 result adapter 时稳定 waiting，不转人工操作。
+   下一切片只重新取得四锁做 result CAS/adoption 与 branch-selected receipt，
    其后才讨论其他 adapter、独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门

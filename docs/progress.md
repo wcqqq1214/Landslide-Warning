@@ -5,7 +5,51 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
-## 2026-08-28 anchor-result request intent 与全局 pending fence（本增量）
+## 2026-08-28 四锁外 anchor-result response observation（本增量）
+
+- 在已提交的 `e9120d9 feat: prepare anchor result requests` 上继续窄化
+  `anchor_result_recorded`。四重 coordinator 锁内现在只选择/复验唯一 pending intent 并返回
+  `AnchorResultDispatchPlan`；Python `finally` 释放
+  `manager → cycle → replay → shadow` 后，public coordinator 才取得独立
+  `external_anchor_dispatch.lock` 并执行 bounded HTTPS。DNS/TLS/socket/read deadline 不占用四锁，
+  也没有人工 freeze、cleanup、approval、force 或 backdate 分支。
+- transport 严格复用 intent 冻结的 normalized endpoint、canonical POST body、1 MiB response
+  上限、timeout 与 stable `Idempotency-Key`；固定 no-redirect、JSON/identity headers 和总
+  `SIGALRM` deadline。token 仅在 dispatch 时从冻结的环境变量名读取到内存，缺失/非法则机器
+  waiting 且零网络；token value 不进入 intent、hash、status、object、link 或 CLI 输出。
+- `408/425/429/5xx` 与 URL/timeout/OSError 属于 retryable/ambiguous：不落 response artifact，
+  下次仍用同一 key。完整确定性 response 则分类为 `candidate_confirmed` 或受控
+  `deterministic_failure`，并依次 create-only 发布
+  `external_anchor_response_objects/<step>/<sha256>.json` 与
+  `external_anchor_response_links/<step>.json`。object-before-link crash 会由后续 poll 深验并零网络
+  补 link；既有 exact link 也零网络等待 result adapter。
+- observation 深度绑定 profile、item intent、request event/body/endpoint/idempotency identity、原始
+  bounded response bytes 与归一化 candidate/failure；明确记录
+  `remote_exactly_once=false`、`trusted_anchor_receipt_verified=false`、
+  `live_ledger_result_recorded=false`、`recovery_receipt_created=false`。本增量不追加
+  `anchor_failed`/`anchor_confirmed`，不创建 recovery receipt/event，不修改 live ledger。
+- profile/schema authority 升为 v5，新增真实 capability
+  `live_anchor_result_response_observation_implemented=true`。`network_action_performed` 改为每次 poll
+  的 occurrence 字段，不再作为静态 capability；完整 network recovery、result adapter、terminal/
+  derived-work closure、drained/active/trusted/E2/formal claims 仍为 false。
+- focused fake-transport recovery 测试 `30/30`（约 0.18 s）；recovery、live-ledger/CAS、inventory、
+  manifest、admission-cut、eligibility、drain-v2 与 main 相邻回归 `137/137`（约 7.50 s）通过。
+  没有真实网络、训练、长时间并发/容量或科研边界重跑；ConvLSTM、v4 默认链、冻结 splits、metrics、
+  thresholds、模型参数与实验结论均未修改。
+- recovery module/profile/test 与 `main.py` SHA-256 分别为
+  `e7fe4011c2f00bbf09d22c3e451db66e3aa62ab1333ebb8b92b8ccd7ba1f634b`、
+  `2fd37e48a5b3eeb8a321b559f9a4e162f0abb9de32f5e930bff9956b7e488177`、
+  `dc68b54ab8b99813704903a3d81ae39d7bb33f692ce87a66895c09d2a66d31a0`、
+  `4da6b9f69069c6ef980e927961d557951ab4fd4fae3e0992e0d59c8e238f9a4d`；97-path protected
+  aggregate 仍为 `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+  独立只读审查发现的 2 个 P1/2 个 P2 已全部修正，最终 P0/P1=0。
+- 下一步只消费既有 response observation：重新取得四锁，复验 expected result pre-head，构造唯一
+  `anchor_confirmed`/`anchor_failed` EventSpec，通过 recovery-only CAS append/adopt，再发布
+  branch-selected recovery receipt/event。provider 未证明相同 key 的幂等 POST/query 前，继续不声称
+  remote exactly-once。详细合同见
+  `docs/ootang_anchor_result_response_observation_engineering.md`。
+
+## 2026-08-28 anchor-result request intent 与全局 pending fence（已提交 `e9120d9`）
 
 - 在已提交的 `51696db feat: recover anchor request events` 上继续窄化
   `anchor_request_recorded -> anchor_result_recorded`。本增量只在四重锁内创建

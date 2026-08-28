@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from contextlib import redirect_stdout
 from datetime import date, datetime, timezone
+from email.message import Message
 import hashlib
 import io
 import json
@@ -65,19 +66,30 @@ class WorksetRecoveryTests(unittest.TestCase):
         for path in (self.registry_root, self.active_root, self.shadow_root):
             path.mkdir(parents=True)
         self.paths = recovery.RecoveryPaths(
-            self.registry_root,
-            self.registry_root / "workset_recovery_v1",
-            self.registry_root / "workset_recovery_v1/intent.json",
-            self.registry_root / "workset_recovery_v1/item_intents",
-            self.registry_root / "workset_recovery_v1/receipts",
-            self.registry_root / "workset_recovery_v1/events",
-            self.registry_root / "workset_recovery_v1/status.json",
-            self.registry_root / "manager.lock",
-            self.active_root,
-            self.shadow_root,
-            self.active_root / "cycle.lock",
-            self.active_root / "replay.lock",
-            self.shadow_root / "runner.lock",
+            registry_root=self.registry_root,
+            root=self.registry_root / "workset_recovery_v1",
+            global_intent=self.registry_root / "workset_recovery_v1/intent.json",
+            item_intents=self.registry_root / "workset_recovery_v1/item_intents",
+            anchor_result_response_objects=(
+                self.registry_root
+                / "workset_recovery_v1/external_anchor_response_objects"
+            ),
+            anchor_result_response_links=(
+                self.registry_root
+                / "workset_recovery_v1/external_anchor_response_links"
+            ),
+            receipts=self.registry_root / "workset_recovery_v1/receipts",
+            events=self.registry_root / "workset_recovery_v1/events",
+            status=self.registry_root / "workset_recovery_v1/status.json",
+            anchor_result_dispatch_lock=(
+                self.registry_root / "workset_recovery_v1/external_anchor_dispatch.lock"
+            ),
+            manager_lock=self.registry_root / "manager.lock",
+            active_root=self.active_root,
+            shadow_root=self.shadow_root,
+            cycle_lock=self.active_root / "cycle.lock",
+            replay_lock=self.active_root / "replay.lock",
+            shadow_lock=self.shadow_root / "runner.lock",
         )
         self.profile = {
             "profile_id": "synthetic-recovery-v1",
@@ -88,6 +100,12 @@ class WorksetRecoveryTests(unittest.TestCase):
                 "receipt_schema_version": "step-receipt-v2",
                 "event_schema_version": "step-event-v2",
                 "status_schema_version": "status-v2",
+                "anchor_result_response_observation_schema_version": (
+                    "synthetic-anchor-result-response-observation-v1"
+                ),
+                "anchor_result_response_link_schema_version": (
+                    "synthetic-anchor-result-response-link-v1"
+                ),
                 "event_type": "epoch_workset_transition_step_recorded",
             },
         }
@@ -191,7 +209,7 @@ class WorksetRecoveryTests(unittest.TestCase):
         self,
         reservation: recovery.Reservation | None,
         hook: recovery.ActionHook | None = None,
-    ) -> recovery.RecoveryResult:
+    ) -> recovery.RecoveryResult | recovery.AnchorResultDispatchPlan:
         with (
             mock.patch.object(
                 recovery, "load_workset_recovery_profile", return_value=self.profile
@@ -202,6 +220,105 @@ class WorksetRecoveryTests(unittest.TestCase):
             return recovery._coordinate_epoch_workset_recovery(  # noqa: SLF001
                 clock=lambda: NOW, action_hook=hook
             )
+
+    def _anchor_result_dispatch_plan(self) -> recovery.AnchorResultDispatchPlan:
+        key_id = _digest("synthetic-anchor-result-key")
+        step_id = _digest("synthetic-anchor-result-step")
+        endpoint = "https://anchor.invalid/v1/receipts"
+        seal_sha256 = _digest("synthetic-anchor-result-seal")
+        request_body = {
+            "live_epoch_id": "synthetic-old-live-epoch",
+            "target_date": "2031-02-04",
+            "sealed_sequence_id": 7,
+            "sealed_entry_sha256": seal_sha256,
+            "attempt": 1,
+        }
+        request_body_raw = recovery.live._canonical_json(request_body).encode(  # noqa: SLF001
+            "utf-8"
+        )
+        contract = {
+            "schema_version": "synthetic-anchor-result-request-v1",
+            "endpoint": endpoint,
+            "endpoint_sha256": hashlib.sha256(endpoint.encode()).hexdigest(),
+            "endpoint_environment_variable": "OOTANG_TEST_ANCHOR_URL",
+            "bearer_token_environment_variable": "OOTANG_TEST_ANCHOR_TOKEN",
+            "http_method": "POST",
+            "timeout_seconds": 1,
+            "maximum_response_bytes": recovery.ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES,
+            "request_event": {
+                "event_key": "synthetic-old-live-epoch:2031-02-04:anchor:1:requested",
+                "event_type": "anchor_requested",
+                "sequence_id": 8,
+                "previous_entry_sha256": _digest("synthetic-anchor-predecessor"),
+                "entry_sha256": _digest("synthetic-anchor-request-event"),
+                "event_spec_sha256": _digest("synthetic-anchor-request-spec"),
+            },
+            "request_body": request_body,
+            "request_body_sha256": hashlib.sha256(request_body_raw).hexdigest(),
+            "idempotency_key": _digest("synthetic-anchor-idempotency-key"),
+            "expected_result_pre_head": {
+                "epoch_id": "synthetic-old-live-epoch",
+                "event_count": 8,
+                "sequence_id": 8,
+                "entry_sha256": _digest("synthetic-anchor-request-event"),
+            },
+            "receipt_verification_mode": (
+                "interface_only_no_cryptographic_verifier_e2a"
+            ),
+            "remote_delivery_semantics": (
+                "at_least_once_unless_provider_honors_idempotency_key"
+            ),
+        }
+        intent_path = self.paths.item_intents / f"{step_id}.json"
+        intent_path.parent.mkdir(parents=True, exist_ok=True)
+        intent_path.write_bytes(
+            recovery._canonical_bytes(  # noqa: SLF001
+                {
+                    "profile_id": self.profile["profile_id"],
+                    "profile_sha256": self.profile["_profile_sha256"],
+                    "step_id": step_id,
+                    "key_id": key_id,
+                    "action": "anchor_result_recorded",
+                    "action_contract": contract,
+                }
+            )
+        )
+        return recovery.AnchorResultDispatchPlan(
+            self.profile,
+            self.paths,
+            key_id,
+            step_id,
+            self._snapshot(intent_path),
+            contract,
+        )
+
+    @staticmethod
+    def _anchor_result_success_response(
+        plan: recovery.AnchorResultDispatchPlan,
+    ) -> recovery.AnchorResultTransportResponse:
+        body = json.dumps(
+            {
+                "provider": "synthetic-provider",
+                "receipt_id": "synthetic-receipt",
+                "anchored_at_utc": "2031-02-04T05:06:07Z",
+                "root_sha256": plan.action_contract["request_body"][
+                    "sealed_entry_sha256"
+                ],
+                "receipt": {"proof": "synthetic-proof"},
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        ).encode("utf-8")
+        return recovery.AnchorResultTransportResponse(
+            body=body,
+            status_code=200,
+            media_type="application/json",
+            charset="utf-8",
+            content_encoding=None,
+            final_url=str(plan.action_contract["endpoint"]),
+        )
 
     @staticmethod
     def _hook(
@@ -427,19 +544,28 @@ class WorksetRecoveryTests(unittest.TestCase):
 
     def setUp_paths_only(self) -> None:
         self.paths = recovery.RecoveryPaths(
-            self.registry_root,
-            self.registry_root / "recovery",
-            self.registry_root / "recovery/intent.json",
-            self.registry_root / "recovery/item_intents",
-            self.registry_root / "recovery/receipts",
-            self.registry_root / "recovery/events",
-            self.registry_root / "recovery/status.json",
-            self.registry_root / "manager.lock",
-            self.active_root,
-            self.shadow_root,
-            self.active_root / "cycle.lock",
-            self.active_root / "replay.lock",
-            self.shadow_root / "runner.lock",
+            registry_root=self.registry_root,
+            root=self.registry_root / "recovery",
+            global_intent=self.registry_root / "recovery/intent.json",
+            item_intents=self.registry_root / "recovery/item_intents",
+            anchor_result_response_objects=(
+                self.registry_root / "recovery/external_anchor_response_objects"
+            ),
+            anchor_result_response_links=(
+                self.registry_root / "recovery/external_anchor_response_links"
+            ),
+            receipts=self.registry_root / "recovery/receipts",
+            events=self.registry_root / "recovery/events",
+            status=self.registry_root / "recovery/status.json",
+            anchor_result_dispatch_lock=(
+                self.registry_root / "recovery/external_anchor_dispatch.lock"
+            ),
+            manager_lock=self.registry_root / "manager.lock",
+            active_root=self.active_root,
+            shadow_root=self.shadow_root,
+            cycle_lock=self.active_root / "cycle.lock",
+            replay_lock=self.active_root / "replay.lock",
+            shadow_lock=self.shadow_root / "runner.lock",
         )
 
     @staticmethod
@@ -972,12 +1098,212 @@ class WorksetRecoveryTests(unittest.TestCase):
             mock.patch.object(recovery.live, "_default_anchor_client", network),
         ):
             first = self._run(reservation)
+            first_status = json.loads(self.paths.status.read_bytes())
             second = self._run(reservation)
+            second_status = json.loads(self.paths.status.read_bytes())
 
-        self.assertEqual(first.status, "external_anchor_request_prepared")
-        self.assertEqual(second.status, "waiting_for_external_anchor_dispatch")
+        self.assertIsInstance(first, recovery.AnchorResultDispatchPlan)
+        self.assertIsInstance(second, recovery.AnchorResultDispatchPlan)
+        self.assertEqual(first_status["status"], "external_anchor_request_prepared")
+        self.assertEqual(
+            second_status["status"], "waiting_for_external_anchor_dispatch"
+        )
+        self.assertEqual(first.item_intent, second.item_intent)
         network.assert_not_called()
+        released = [
+            recovery.drain._acquire_lock(path, label=label)  # noqa: SLF001
+            for label, path in zip(
+                recovery.LOCK_ORDER,
+                (
+                    self.paths.manager_lock,
+                    self.paths.cycle_lock,
+                    self.paths.replay_lock,
+                    self.paths.shadow_lock,
+                ),
+                strict=True,
+            )
+        ]
+        recovery.drain._release_locks(released)  # noqa: SLF001
         self.assertEqual(len(list(self.paths.item_intents.glob("*.json"))), 1)
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
+    def test_anchor_result_dispatch_observes_response_without_receipt_or_event(
+        self,
+    ) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        token = "synthetic-secret-anchor-token"
+
+        def transport(contract, received_token):  # type: ignore[no-untyped-def]
+            self.assertEqual(contract, plan.action_contract)
+            self.assertEqual(received_token, token)
+            return self._anchor_result_success_response(plan)
+
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TEST_ANCHOR_TOKEN": token}, clear=False
+        ):
+            result = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan, transport=transport, clock=lambda: NOW
+            )
+
+        self.assertEqual(result.status, "external_anchor_response_observed")
+        self.assertTrue(result.network_action_performed)
+        self.assertIsNotNone(result.external_anchor_response_observation_path)
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+        persisted = b"".join(
+            path.read_bytes() for path in self.paths.root.rglob("*") if path.is_file()
+        )
+        self.assertNotIn(token.encode(), persisted)
+
+    def test_anchor_result_existing_link_is_zero_network(self) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TEST_ANCHOR_TOKEN": "first-token"}, clear=False
+        ):
+            first = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan,
+                transport=lambda *_args: self._anchor_result_success_response(plan),
+                clock=lambda: NOW,
+            )
+        network = mock.Mock(side_effect=AssertionError("linked response must replay"))
+
+        second = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+            plan, transport=network, clock=lambda: NOW
+        )
+
+        self.assertEqual(first.status, "external_anchor_response_observed")
+        self.assertEqual(second.status, "waiting_for_anchor_result_adapter")
+        self.assertFalse(second.network_action_performed)
+        self.assertEqual(
+            second.external_anchor_response_observation_path,
+            first.external_anchor_response_observation_path,
+        )
+        network.assert_not_called()
+
+    def test_anchor_result_deterministic_contract_failure_is_observed(self) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        response = self._anchor_result_success_response(plan)
+        invalid = recovery.AnchorResultTransportResponse(
+            body=response.body.replace(
+                plan.action_contract["request_body"]["sealed_entry_sha256"].encode(),
+                b"f" * 64,
+            ),
+            status_code=response.status_code,
+            media_type=response.media_type,
+            charset=response.charset,
+            content_encoding=response.content_encoding,
+            final_url=response.final_url,
+        )
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TEST_ANCHOR_TOKEN": "failure-token"}, clear=False
+        ):
+            result = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan, transport=lambda *_args: invalid, clock=lambda: NOW
+            )
+
+        link = json.loads(
+            result.external_anchor_response_observation_path.read_bytes()  # type: ignore[union-attr]
+        )
+        object_path = self.paths.root / link["response_observation"]["path"]
+        observation = json.loads(object_path.read_bytes())
+        self.assertEqual(result.status, "external_anchor_response_observed")
+        self.assertEqual(observation["outcome"], "deterministic_failure")
+        self.assertEqual(observation["failure"]["code"], "invalid_anchor_response")
+        self.assertIsNone(observation["validated_response"])
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
+    def test_anchor_result_object_before_link_is_forward_adopted_without_network(
+        self,
+    ) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TEST_ANCHOR_TOKEN": "first-token"}, clear=False
+        ):
+            recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan,
+                transport=lambda *_args: self._anchor_result_success_response(plan),
+                clock=lambda: NOW,
+            )
+        link_path = self.paths.anchor_result_response_links / f"{plan.step_id}.json"
+        link_path.unlink()
+        network = mock.Mock(side_effect=AssertionError("orphan object must be adopted"))
+
+        adopted = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+            plan, transport=network, clock=lambda: NOW
+        )
+
+        self.assertEqual(adopted.status, "external_anchor_response_forward_adopted")
+        self.assertFalse(adopted.network_action_performed)
+        self.assertEqual(adopted.external_anchor_response_observation_path, link_path)
+        self.assertTrue(link_path.is_file())
+        network.assert_not_called()
+
+    def test_anchor_result_retryable_transport_persists_no_observation(self) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        network = mock.Mock(
+            side_effect=recovery.WorksetRecoveryNetworkWait("synthetic timeout")
+        )
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TEST_ANCHOR_TOKEN": "retry-token"}, clear=False
+        ):
+            result = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan, transport=network, clock=lambda: NOW
+            )
+
+        self.assertEqual(result.status, "waiting_for_external_anchor_retry")
+        self.assertTrue(result.network_action_performed)
+        network.assert_called_once_with(plan.action_contract, "retry-token")
+        self.assertFalse(self.paths.anchor_result_response_objects.exists())
+        self.assertFalse(self.paths.anchor_result_response_links.exists())
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
+    def test_anchor_result_http_error_body_timeout_remains_retryable(self) -> None:
+        plan = self._anchor_result_dispatch_plan()
+
+        class TimeoutBody(io.BytesIO):
+            def read(self, _size: int = -1) -> bytes:
+                raise TimeoutError("synthetic slow error body")
+
+        headers = Message()
+        headers["Content-Type"] = "application/json"
+        error = recovery.urllib.error.HTTPError(
+            str(plan.action_contract["endpoint"]),
+            400,
+            "synthetic rejection",
+            headers,
+            TimeoutBody(),
+        )
+        opener = mock.Mock()
+        opener.open.side_effect = error
+
+        with (
+            mock.patch.object(
+                recovery.urllib.request, "build_opener", return_value=opener
+            ),
+            self.assertRaises(recovery.WorksetRecoveryNetworkWait),
+        ):
+            recovery._default_anchor_result_transport(  # noqa: SLF001
+                plan.action_contract, "synthetic-token"
+            )
+
+    def test_anchor_result_missing_token_is_zero_network_and_persists_nothing(
+        self,
+    ) -> None:
+        plan = self._anchor_result_dispatch_plan()
+        network = mock.Mock(side_effect=AssertionError("missing token must wait"))
+        with mock.patch.dict(os.environ, {}, clear=True):
+            result = recovery._dispatch_and_capture_anchor_result(  # noqa: SLF001
+                plan, transport=network, clock=lambda: NOW
+            )
+
+        self.assertEqual(result.status, "waiting_for_external_anchor_token")
+        self.assertFalse(result.network_action_performed)
+        network.assert_not_called()
+        self.assertFalse(self.paths.anchor_result_response_objects.exists())
+        self.assertFalse(self.paths.anchor_result_response_links.exists())
         self.assertFalse(self.paths.receipts.exists())
         self.assertFalse(self.paths.events.exists())
 

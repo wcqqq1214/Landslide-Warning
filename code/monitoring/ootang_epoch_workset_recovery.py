@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import base64
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
@@ -10,9 +11,13 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import signal
 import sqlite3
+import stat
 import sys
 from typing import Any, BinaryIO
+import urllib.error
+import urllib.request
 from urllib.parse import urlsplit, urlunsplit
 
 
@@ -33,7 +38,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "a6cb0bccfc60dc98fa036b91a64e5f9c07dd00e0872f0fac85c29a66ebdb24a8"
+    "2fd37e48a5b3eeb8a321b559f9a4e162f0abb9de32f5e930bff9956b7e488177"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -50,6 +55,7 @@ ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA = (
     "ootang_live_anchor_result_request_action_contract_v1"
 )
 ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES = 1024 * 1024
+ANCHOR_RESULT_USER_AGENT = "ootang-workset-recovery/1"
 LIVE_LEDGER_CAS_TIMEOUT_SECONDS = 0.25
 TRANSITION_CONTRACT = {
     "schema_version": "ootang_epoch_workset_transition_contract_v1",
@@ -158,6 +164,7 @@ TRUE_CAPABILITIES = (
     "live_ledger_expected_pre_head_cas_implemented",
     "live_anchor_request_adapter_implemented",
     "live_anchor_result_request_intent_implemented",
+    "live_anchor_result_response_observation_implemented",
     "ledger_mutation_recovery_implemented",
 )
 FALSE_CLAIMS = (
@@ -168,7 +175,6 @@ FALSE_CLAIMS = (
     "derived_future_work_reservation_implemented",
     "all_transition_branches_supported",
     "network_recovery_implemented",
-    "network_action_performed",
     "live_anchor_result_adapter_implemented",
     "legacy_guard_completion_created",
     "old_work_admission_fence_implemented",
@@ -221,9 +227,12 @@ EXPECTED_RUNTIME = {
     "namespace": "workset_recovery_v1",
     "global_intent": "intent.json",
     "item_intents": "item_intents",
+    "anchor_result_response_objects": "external_anchor_response_objects",
+    "anchor_result_response_links": "external_anchor_response_links",
     "receipts": "receipts",
     "events": "events",
     "status": "status.json",
+    "anchor_result_dispatch_lock": "external_anchor_dispatch.lock",
     "manager_lock": "manager.lock",
     "active_root": "runtime/ootang_prequential_live_v1",
     "shadow_root": "runtime/ootang_prequential_calibration_shadow_v1",
@@ -232,11 +241,17 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v4",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v4",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v4",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v5",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v5",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v5",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v4",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v5",
+    "anchor_result_response_observation_schema_version": (
+        "ootang_epoch_workset_anchor_result_response_observation_v1"
+    ),
+    "anchor_result_response_link_schema_version": (
+        "ootang_epoch_workset_anchor_result_response_link_v1"
+    ),
     "event_type": "epoch_workset_transition_step_recorded",
     "transition_contract_schema_version": TRANSITION_CONTRACT["schema_version"],
     "transition_contract_sha256": TRANSITION_CONTRACT_SHA256,
@@ -274,15 +289,31 @@ class WorksetRecoveryExternalWait(WorksetRecoveryError):
     """A mutable external prerequisite is not ready for intent freezing."""
 
 
+class WorksetRecoveryNetworkWait(WorksetRecoveryError):
+    """A bounded network attempt is retryable or has ambiguous delivery."""
+
+
+class _AnchorResultProtocolFailure(RuntimeError):
+    """A deterministic remote response cannot become an anchor candidate."""
+
+    def __init__(self, stage: str, code: str) -> None:
+        super().__init__(code)
+        self.stage = stage
+        self.code = code
+
+
 @dataclass(frozen=True)
 class RecoveryPaths:
     registry_root: Path
     root: Path
     global_intent: Path
     item_intents: Path
+    anchor_result_response_objects: Path
+    anchor_result_response_links: Path
     receipts: Path
     events: Path
     status: Path
+    anchor_result_dispatch_lock: Path
     manager_lock: Path
     active_root: Path
     shadow_root: Path
@@ -302,6 +333,28 @@ class RecoveryResult:
     bounded_workset_recovery_implemented: bool = False
     lifecycle_authority: bool = False
     transition_authority: bool = False
+    external_anchor_response_observation_path: Path | None = None
+    network_action_performed: bool = False
+
+
+@dataclass(frozen=True)
+class AnchorResultDispatchPlan:
+    profile: Mapping[str, Any]
+    paths: RecoveryPaths
+    key_id: str
+    step_id: str
+    item_intent: registry.ArtifactSnapshot
+    action_contract: Mapping[str, Any]
+
+
+@dataclass(frozen=True)
+class AnchorResultTransportResponse:
+    body: bytes
+    status_code: int
+    media_type: str
+    charset: str | None
+    content_encoding: str | None
+    final_url: str
 
 
 @dataclass(frozen=True)
@@ -335,6 +388,9 @@ class FrozenLivePrefix:
 
 ActionHook = Callable[[Mapping[str, Any], Reservation, RecoveryPaths], ActionOutput]
 LoadReservation = Callable[[RecoveryPaths], Reservation | None]
+AnchorResultTransport = Callable[
+    [Mapping[str, Any], str], AnchorResultTransportResponse
+]
 
 
 def _canonical_bytes(value: object) -> bytes:
@@ -481,19 +537,44 @@ def recovery_paths(
     active = (active_root or (ROOT / profile["runtime"]["active_root"])).resolve()
     shadow = (shadow_root or (ROOT / profile["runtime"]["shadow_root"])).resolve()
     return RecoveryPaths(
-        registry_path,
-        root,
-        _child(root, profile["runtime"]["global_intent"], name="global intent"),
-        _child(root, profile["runtime"]["item_intents"], name="item intents"),
-        _child(root, profile["runtime"]["receipts"], name="receipts"),
-        _child(root, profile["runtime"]["events"], name="events"),
-        _child(root, profile["runtime"]["status"], name="status"),
-        _child(registry_path, profile["runtime"]["manager_lock"], name="manager lock"),
-        active,
-        shadow,
-        _child(active, profile["runtime"]["cycle_lock"], name="cycle lock"),
-        _child(active, profile["runtime"]["replay_lock"], name="replay lock"),
-        _child(shadow, profile["runtime"]["shadow_lock"], name="shadow lock"),
+        registry_root=registry_path,
+        root=root,
+        global_intent=_child(
+            root, profile["runtime"]["global_intent"], name="global intent"
+        ),
+        item_intents=_child(
+            root, profile["runtime"]["item_intents"], name="item intents"
+        ),
+        anchor_result_response_objects=_child(
+            root,
+            profile["runtime"]["anchor_result_response_objects"],
+            name="anchor result response objects",
+        ),
+        anchor_result_response_links=_child(
+            root,
+            profile["runtime"]["anchor_result_response_links"],
+            name="anchor result response links",
+        ),
+        receipts=_child(root, profile["runtime"]["receipts"], name="receipts"),
+        events=_child(root, profile["runtime"]["events"], name="events"),
+        status=_child(root, profile["runtime"]["status"], name="status"),
+        anchor_result_dispatch_lock=_child(
+            root,
+            profile["runtime"]["anchor_result_dispatch_lock"],
+            name="anchor result dispatch lock",
+        ),
+        manager_lock=_child(
+            registry_path, profile["runtime"]["manager_lock"], name="manager lock"
+        ),
+        active_root=active,
+        shadow_root=shadow,
+        cycle_lock=_child(active, profile["runtime"]["cycle_lock"], name="cycle lock"),
+        replay_lock=_child(
+            active, profile["runtime"]["replay_lock"], name="replay lock"
+        ),
+        shadow_lock=_child(
+            shadow, profile["runtime"]["shadow_lock"], name="shadow lock"
+        ),
     )
 
 
@@ -869,6 +950,51 @@ def _strict_named_json(directory: Path, *, suffix: str, name: str) -> dict[str, 
     return result
 
 
+def _anchor_result_observation_step_ids(
+    paths: RecoveryPaths,
+) -> tuple[set[str], set[str]]:
+    links = set(
+        _strict_named_json(
+            paths.anchor_result_response_links,
+            suffix=".json",
+            name="anchor result response links",
+        )
+    )
+    root = paths.anchor_result_response_objects
+    if not root.exists() and not root.is_symlink():
+        return links, set()
+    try:
+        if not stat.S_ISDIR(os.lstat(root).st_mode):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response objects path is not a real directory"
+            )
+        object_steps: set[str] = set()
+        for directory in sorted(root.iterdir(), key=lambda path: path.name):
+            mode = os.lstat(directory).st_mode
+            step_id = directory.name
+            if (
+                not stat.S_ISDIR(mode)
+                or len(step_id) != 64
+                or any(character not in "0123456789abcdef" for character in step_id)
+            ):
+                raise WorksetRecoveryIntegrityError(
+                    "Anchor result response objects contain an unknown entry"
+                )
+            _strict_named_json(
+                directory,
+                suffix=".json",
+                name="anchor result response object set",
+            )
+            object_steps.add(step_id)
+    except WorksetRecoveryError:
+        raise
+    except OSError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Cannot inspect anchor result response objects"
+        ) from exc
+    return links, object_steps
+
+
 def _recovery_authority_state(paths: RecoveryPaths) -> tuple[bool, bool]:
     global_present = paths.global_intent.exists() or paths.global_intent.is_symlink()
     child_present = False
@@ -883,6 +1009,8 @@ def _recovery_authority_state(paths: RecoveryPaths) -> tuple[bool, bool]:
             )
         except manifest.WorksetManifestError as exc:
             raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    response_links, response_object_steps = _anchor_result_observation_step_ids(paths)
+    child_present = child_present or bool(response_links or response_object_steps)
     return global_present, child_present
 
 
@@ -1740,6 +1868,794 @@ def _ensure_item_intent(
     return _publish(
         path, _canonical_bytes(payload), root=paths.root, name="recovery item intent"
     )
+
+
+def _anchor_result_request_identity(
+    contract: Mapping[str, Any],
+) -> dict[str, str]:
+    request_event = _exact(
+        contract.get("request_event"),
+        _ANCHOR_RESULT_REQUEST_EVENT_KEYS,
+        name="anchor result observation request event",
+    )
+    return {
+        "request_event_entry_sha256": _hash_text(
+            request_event.get("entry_sha256"),
+            name="anchor result observation request event",
+        ),
+        "request_body_sha256": _hash_text(
+            contract.get("request_body_sha256"),
+            name="anchor result observation request body",
+        ),
+        "endpoint_sha256": _hash_text(
+            contract.get("endpoint_sha256"),
+            name="anchor result observation endpoint",
+        ),
+        "idempotency_key": _hash_text(
+            contract.get("idempotency_key"),
+            name="anchor result observation idempotency key",
+        ),
+    }
+
+
+def _anchor_result_sealed_entry_sha256(contract: Mapping[str, Any]) -> str:
+    request_body = contract.get("request_body")
+    if not isinstance(request_body, Mapping):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result request body changed before dispatch"
+        )
+    return _hash_text(
+        request_body.get("sealed_entry_sha256"),
+        name="anchor result sealed entry",
+    )
+
+
+def _anchor_result_token(contract: Mapping[str, Any]) -> str | None:
+    name = contract.get("bearer_token_environment_variable")
+    if (
+        not isinstance(name, str)
+        or not name
+        or name != name.strip()
+        or any(ord(character) < 0x21 or ord(character) > 0x7E for character in name)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result token environment-variable name changed"
+        )
+    token = os.environ.get(name)
+    if (
+        token is None
+        or not token
+        or token != token.strip()
+        or any(ord(character) < 0x21 or ord(character) > 0x7E for character in token)
+    ):
+        return None
+    return token
+
+
+class _AnchorResultNoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # type: ignore[no-untyped-def]
+        return None
+
+
+def _anchor_transport_response(
+    response: Any,
+    *,
+    maximum_bytes: int,
+) -> AnchorResultTransportResponse:
+    raw_status = getattr(response, "status", None)
+    if raw_status is None:
+        raw_status = getattr(response, "code", None)
+    status_code = int(raw_status)
+    if status_code in {408, 425, 429} or status_code >= 500:
+        raise WorksetRecoveryNetworkWait(
+            "Anchor result transport is retryable or has ambiguous delivery"
+        )
+    headers = response.headers
+    media_type = headers.get_content_type().lower()
+    charset_value = headers.get_content_charset()
+    charset = charset_value.lower() if charset_value is not None else None
+    encoding_value = headers.get("Content-Encoding")
+    content_encoding = (
+        encoding_value.strip().lower() if encoding_value is not None else None
+    )
+    return AnchorResultTransportResponse(
+        body=response.read(maximum_bytes + 1),
+        status_code=status_code,
+        media_type=media_type,
+        charset=charset,
+        content_encoding=content_encoding,
+        final_url=response.geturl(),
+    )
+
+
+def _default_anchor_result_transport(
+    contract: Mapping[str, Any], token: str
+) -> AnchorResultTransportResponse:
+    endpoint = contract.get("endpoint")
+    timeout = contract.get("timeout_seconds")
+    maximum_bytes = contract.get("maximum_response_bytes")
+    if (
+        not isinstance(endpoint, str)
+        or not isinstance(timeout, int)
+        or isinstance(timeout, bool)
+        or timeout < 1
+        or not isinstance(maximum_bytes, int)
+        or isinstance(maximum_bytes, bool)
+        or maximum_bytes != ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result transport contract changed")
+    try:
+        body = live._canonical_json(contract.get("request_body")).encode("utf-8")  # noqa: SLF001
+    except (UnicodeError, live.LiveIntegrityError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result request body is not canonical JSON"
+        ) from exc
+    if _sha256(body) != contract.get("request_body_sha256"):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result request body digest changed before dispatch"
+        )
+    request = urllib.request.Request(
+        endpoint,
+        data=body,
+        method="POST",
+        headers={
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Accept-Encoding": "identity",
+            "Idempotency-Key": str(contract.get("idempotency_key")),
+            "User-Agent": ANCHOR_RESULT_USER_AGENT,
+        },
+    )
+    try:
+        blocked_signals = signal.pthread_sigmask(signal.SIG_BLOCK, set())
+    except (AttributeError, OSError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport signal mask cannot be inspected"
+        ) from exc
+    if signal.SIGALRM in blocked_signals:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport deadline signal is blocked"
+        )
+    try:
+        opener = urllib.request.build_opener(_AnchorResultNoRedirect())
+    except Exception as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport opener cannot be constructed"
+        ) from exc
+    previous_handler = signal.getsignal(signal.SIGALRM)
+    previous_timer = signal.getitimer(signal.ITIMER_REAL)
+    if previous_timer != (0.0, 0.0):
+        raise WorksetRecoveryIntegrityError(
+            "An unrelated process alarm is already active"
+        )
+
+    def deadline_exceeded(_signum, _frame):  # type: ignore[no-untyped-def]
+        raise TimeoutError("Anchor result transport total deadline exceeded")
+
+    try:
+        signal.signal(signal.SIGALRM, deadline_exceeded)
+        signal.setitimer(signal.ITIMER_REAL, timeout)
+    except (OSError, ValueError) as exc:
+        try:
+            signal.signal(signal.SIGALRM, previous_handler)
+        except (OSError, ValueError):
+            pass
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport deadline cannot be armed"
+        ) from exc
+    try:
+        try:
+            try:
+                response = opener.open(request, timeout=timeout)
+            except urllib.error.HTTPError as exc:
+                response = exc
+            try:
+                return _anchor_transport_response(response, maximum_bytes=maximum_bytes)
+            finally:
+                response.close()
+        except WorksetRecoveryNetworkWait:
+            raise
+        except (urllib.error.URLError, TimeoutError, OSError) as exc:
+            raise WorksetRecoveryNetworkWait(
+                "Anchor result transport is retryable or has ambiguous delivery"
+            ) from exc
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0.0)
+        signal.signal(signal.SIGALRM, previous_handler)
+
+
+def _bounded_transport_text(
+    value: object, *, name: str, maximum_bytes: int, optional: bool = False
+) -> str | None:
+    if optional and value is None:
+        return None
+    if (
+        not isinstance(value, str)
+        or not value
+        or len(value.encode("utf-8")) > maximum_bytes
+        or any(ord(character) < 0x20 or ord(character) == 0x7F for character in value)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            f"Anchor result transport {name} is not bounded text"
+        )
+    return value
+
+
+def _anchor_result_transport_record(
+    response: AnchorResultTransportResponse,
+    *,
+    maximum_bytes: int,
+) -> dict[str, object]:
+    if (
+        not isinstance(response, AnchorResultTransportResponse)
+        or not isinstance(response.body, bytes)
+        or len(response.body) > maximum_bytes + 1
+        or not isinstance(response.status_code, int)
+        or isinstance(response.status_code, bool)
+        or not 100 <= response.status_code <= 599
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport returned an invalid bounded response"
+        )
+    media_type = _bounded_transport_text(
+        response.media_type, name="media type", maximum_bytes=256
+    )
+    charset = _bounded_transport_text(
+        response.charset,
+        name="charset",
+        maximum_bytes=128,
+        optional=True,
+    )
+    content_encoding = _bounded_transport_text(
+        response.content_encoding,
+        name="content encoding",
+        maximum_bytes=128,
+        optional=True,
+    )
+    final_url = _bounded_transport_text(
+        response.final_url, name="final URL", maximum_bytes=4096
+    )
+    body = response.body
+    return {
+        "status_code": response.status_code,
+        "media_type": media_type,
+        "charset": charset,
+        "content_encoding": content_encoding,
+        "final_url": final_url,
+        "body_complete": len(body) <= maximum_bytes,
+        "observed_body_size_bytes": len(body),
+        "observed_body_sha256": _sha256(body),
+        "observed_body_base64": base64.b64encode(body).decode("ascii"),
+    }
+
+
+def _anchor_result_transport_from_record(
+    value: object, *, maximum_bytes: int
+) -> AnchorResultTransportResponse:
+    record = _exact(
+        value,
+        {
+            "status_code",
+            "media_type",
+            "charset",
+            "content_encoding",
+            "final_url",
+            "body_complete",
+            "observed_body_size_bytes",
+            "observed_body_sha256",
+            "observed_body_base64",
+        },
+        name="anchor result transport observation",
+    )
+    encoded = record["observed_body_base64"]
+    if not isinstance(encoded, str):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result observed body encoding changed"
+        )
+    try:
+        body = base64.b64decode(encoded.encode("ascii"), validate=True)
+    except (UnicodeEncodeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result observed body encoding changed"
+        ) from exc
+    response = AnchorResultTransportResponse(
+        body=body,
+        status_code=record["status_code"],
+        media_type=record["media_type"],
+        charset=record["charset"],
+        content_encoding=record["content_encoding"],
+        final_url=record["final_url"],
+    )
+    rebuilt = _anchor_result_transport_record(response, maximum_bytes=maximum_bytes)
+    if rebuilt != record:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result transport observation changed"
+        )
+    return response
+
+
+def _strict_anchor_result_json(raw: bytes) -> dict[str, Any]:
+    try:
+        payload = registry._decode_json(raw, name="anchor result response")  # noqa: SLF001
+        _canonical_bytes(payload)
+    except (registry.EpochRegistryError, WorksetRecoveryError, UnicodeError) as exc:
+        raise _AnchorResultProtocolFailure(
+            "response_json", "invalid_strict_json"
+        ) from exc
+    return payload
+
+
+def _validated_anchor_result_candidate(
+    contract: Mapping[str, Any], response: AnchorResultTransportResponse
+) -> dict[str, Any]:
+    maximum_bytes = contract.get("maximum_response_bytes")
+    endpoint = contract.get("endpoint")
+    if not isinstance(maximum_bytes, int) or not isinstance(endpoint, str):
+        raise WorksetRecoveryIntegrityError("Anchor result response contract changed")
+    if response.status_code in {408, 425, 429} or response.status_code >= 500:
+        raise WorksetRecoveryNetworkWait(
+            "Anchor result transport is retryable or has ambiguous delivery"
+        )
+    if len(response.body) > maximum_bytes:
+        raise _AnchorResultProtocolFailure("response_body", "response_too_large")
+    if 300 <= response.status_code <= 399:
+        raise _AnchorResultProtocolFailure("http_status", "redirect_rejected")
+    if 400 <= response.status_code <= 499:
+        raise _AnchorResultProtocolFailure("http_status", "request_rejected")
+    if response.status_code != 200:
+        raise _AnchorResultProtocolFailure("http_status", "unexpected_http_status")
+    if response.final_url != endpoint:
+        raise _AnchorResultProtocolFailure("transport", "final_url_changed")
+    if response.content_encoding not in {None, "identity"}:
+        raise _AnchorResultProtocolFailure("transport", "unexpected_content_encoding")
+    if response.media_type != "application/json":
+        raise _AnchorResultProtocolFailure("transport", "unexpected_media_type")
+    if response.charset not in {None, "utf-8"}:
+        raise _AnchorResultProtocolFailure("transport", "unexpected_charset")
+    payload = _strict_anchor_result_json(response.body)
+    try:
+        candidate = live._anchor_response(  # noqa: SLF001
+            payload,
+            sealed_entry_sha256=_anchor_result_sealed_entry_sha256(contract),
+        )
+        _canonical_bytes(candidate)
+    except (
+        live.LiveInputError,
+        live.LiveIntegrityError,
+        WorksetRecoveryError,
+        UnicodeError,
+    ) as exc:
+        raise _AnchorResultProtocolFailure(
+            "response_contract", "invalid_anchor_response"
+        ) from exc
+    return candidate
+
+
+def _anchor_result_observation_payload(
+    plan: AnchorResultDispatchPlan,
+    response: AnchorResultTransportResponse,
+    *,
+    token: str | None,
+) -> dict[str, object]:
+    maximum_bytes = plan.action_contract.get("maximum_response_bytes")
+    if not isinstance(maximum_bytes, int):
+        raise WorksetRecoveryIntegrityError("Anchor result response size limit changed")
+    transport = _anchor_result_transport_record(response, maximum_bytes=maximum_bytes)
+    if token is not None and token.encode("ascii") in response.body:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response reflected bearer credentials"
+        )
+    try:
+        candidate = _validated_anchor_result_candidate(plan.action_contract, response)
+    except _AnchorResultProtocolFailure as exc:
+        outcome = "deterministic_failure"
+        candidate = None
+        failure: dict[str, object] | None = {
+            "stage": exc.stage,
+            "code": exc.code,
+            "error_type": "AnchorResultProtocolFailure",
+            "retry_policy": "record_failure_then_automatic_next_poll",
+        }
+    else:
+        outcome = "candidate_confirmed"
+        failure = None
+    return {
+        "schema_version": plan.profile["protocol"][
+            "anchor_result_response_observation_schema_version"
+        ],
+        "profile_id": plan.profile["profile_id"],
+        "profile_sha256": plan.profile["_profile_sha256"],
+        "step_id": plan.step_id,
+        "key_id": plan.key_id,
+        "item_intent": _reference(plan.item_intent, plan.paths.root),
+        "request_identity": _anchor_result_request_identity(plan.action_contract),
+        "outcome": outcome,
+        "transport_response": transport,
+        "validated_response": candidate,
+        "failure": failure,
+        "network_action_performed": True,
+        "remote_exactly_once": False,
+        "trusted_anchor_receipt_verified": False,
+        "e2_live_evidence_eligible": False,
+        "live_ledger_result_recorded": False,
+        "recovery_receipt_created": False,
+    }
+
+
+def _anchor_result_link_payload(
+    plan: AnchorResultDispatchPlan,
+    observation: Mapping[str, Any],
+    snapshot: registry.ArtifactSnapshot,
+) -> dict[str, object]:
+    return {
+        "schema_version": plan.profile["protocol"][
+            "anchor_result_response_link_schema_version"
+        ],
+        "profile_id": plan.profile["profile_id"],
+        "profile_sha256": plan.profile["_profile_sha256"],
+        "step_id": plan.step_id,
+        "key_id": plan.key_id,
+        "item_intent": _reference(plan.item_intent, plan.paths.root),
+        "request_identity": _anchor_result_request_identity(plan.action_contract),
+        "response_observation": _reference(snapshot, plan.paths.root),
+        "outcome": observation["outcome"],
+        "network_action_performed": True,
+        "remote_exactly_once": False,
+        "trusted_anchor_receipt_verified": False,
+        "e2_live_evidence_eligible": False,
+        "live_ledger_result_recorded": False,
+        "recovery_receipt_created": False,
+    }
+
+
+def _verify_anchor_result_dispatch_plan(plan: AnchorResultDispatchPlan) -> None:
+    expected_path = plan.paths.item_intents / f"{plan.step_id}.json"
+    if plan.item_intent.path != expected_path:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result dispatch intent path changed"
+        )
+    payload, snapshot = _strict_json(
+        expected_path, name="anchor result dispatch item intent"
+    )
+    if (
+        snapshot != plan.item_intent
+        or payload.get("profile_id") != plan.profile["profile_id"]
+        or payload.get("profile_sha256") != plan.profile["_profile_sha256"]
+        or payload.get("step_id") != plan.step_id
+        or payload.get("key_id") != plan.key_id
+        or payload.get("action") != "anchor_result_recorded"
+        or payload.get("action_contract") != plan.action_contract
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result dispatch intent changed after lock release"
+        )
+    _anchor_result_request_identity(plan.action_contract)
+    _anchor_result_sealed_entry_sha256(plan.action_contract)
+
+
+def _verify_anchor_result_observation(
+    plan: AnchorResultDispatchPlan, path: Path
+) -> tuple[dict[str, Any], registry.ArtifactSnapshot]:
+    payload, snapshot = _strict_json(path, name="anchor result response observation")
+    if path.name != f"{snapshot.sha256}.json":
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response observation is not content-addressed"
+        )
+    transport = _anchor_result_transport_from_record(
+        payload.get("transport_response"),
+        maximum_bytes=int(plan.action_contract["maximum_response_bytes"]),
+    )
+    try:
+        expected = _anchor_result_observation_payload(plan, transport, token=None)
+    except WorksetRecoveryNetworkWait as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Retryable anchor response was incorrectly persisted"
+        ) from exc
+    if payload != expected:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response observation changed"
+        )
+    return payload, snapshot
+
+
+def _inspect_anchor_result_observation(
+    plan: AnchorResultDispatchPlan,
+) -> (
+    tuple[
+        dict[str, Any],
+        registry.ArtifactSnapshot,
+        registry.ArtifactSnapshot | None,
+    ]
+    | None
+):
+    object_directory = plan.paths.anchor_result_response_objects / plan.step_id
+    objects = _strict_named_json(
+        object_directory,
+        suffix=".json",
+        name="anchor result response object set",
+    )
+    if len(objects) > 1:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response observation branched"
+        )
+    link_path = plan.paths.anchor_result_response_links / f"{plan.step_id}.json"
+    link_present = link_path.exists() or link_path.is_symlink()
+    if not objects:
+        if link_present:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response link is orphaned"
+            )
+        return None
+    object_path = next(iter(objects.values()))
+    observation, object_snapshot = _verify_anchor_result_observation(plan, object_path)
+    expected_link = _anchor_result_link_payload(plan, observation, object_snapshot)
+    if link_present:
+        link, link_snapshot = _strict_json(
+            link_path, name="anchor result response link"
+        )
+        if link != expected_link:
+            raise WorksetRecoveryIntegrityError("Anchor result response link changed")
+        return observation, object_snapshot, link_snapshot
+    return observation, object_snapshot, None
+
+
+def _load_or_adopt_anchor_result_observation(
+    plan: AnchorResultDispatchPlan,
+) -> (
+    tuple[dict[str, Any], registry.ArtifactSnapshot, registry.ArtifactSnapshot, str]
+    | None
+):
+    inspected = _inspect_anchor_result_observation(plan)
+    if inspected is None:
+        return None
+    observation, object_snapshot, link_snapshot = inspected
+    if link_snapshot is not None:
+        return observation, object_snapshot, link_snapshot, "linked"
+    link_path = plan.paths.anchor_result_response_links / f"{plan.step_id}.json"
+    expected_link = _anchor_result_link_payload(plan, observation, object_snapshot)
+    link_snapshot = _publish(
+        link_path,
+        _canonical_bytes(expected_link),
+        root=plan.paths.root,
+        name="anchor result response link",
+    )
+    return observation, object_snapshot, link_snapshot, "forward_adopted"
+
+
+def _deep_verify_locked_anchor_result_observations(
+    profile: Mapping[str, Any],
+    paths: RecoveryPaths,
+    reservation: Reservation,
+    items: Mapping[str, Mapping[str, Any]],
+    intents: Mapping[str, Path],
+    receipts: Mapping[str, tuple[dict[str, Any], registry.ArtifactSnapshot]],
+    observation_steps: set[str],
+) -> None:
+    if not observation_steps:
+        return
+    pending_steps = set(intents) - set(receipts)
+    if len(observation_steps) != 1 or pending_steps != observation_steps:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response observation is not bound to one pending intent"
+        )
+    step_id = next(iter(observation_steps))
+    intent_payload, intent_snapshot = _strict_json(
+        intents[step_id], name="observed anchor result item intent"
+    )
+    key_id = intent_payload.get("key_id")
+    item = items.get(key_id) if isinstance(key_id, str) else None
+    contract = intent_payload.get("action_contract")
+    if (
+        item is None
+        or intent_payload.get("action") != "anchor_result_recorded"
+        or not isinstance(contract, Mapping)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result response observation intent changed"
+        )
+    _verify_pending_anchor_result_head(item, reservation, contract)
+    plan = AnchorResultDispatchPlan(
+        profile=profile,
+        paths=paths,
+        key_id=key_id,
+        step_id=step_id,
+        item_intent=intent_snapshot,
+        action_contract=dict(contract),
+    )
+    _verify_anchor_result_dispatch_plan(plan)
+    _inspect_anchor_result_observation(plan)
+
+
+def _publish_anchor_result_observation(
+    plan: AnchorResultDispatchPlan,
+    payload: Mapping[str, Any],
+) -> tuple[registry.ArtifactSnapshot, registry.ArtifactSnapshot]:
+    raw = _canonical_bytes(payload)
+    digest = _sha256(raw)
+    object_path = (
+        plan.paths.anchor_result_response_objects / plan.step_id / f"{digest}.json"
+    )
+    object_snapshot = _publish(
+        object_path,
+        raw,
+        root=plan.paths.root,
+        name="anchor result response observation",
+    )
+    link = _anchor_result_link_payload(plan, payload, object_snapshot)
+    link_snapshot = _publish(
+        plan.paths.anchor_result_response_links / f"{plan.step_id}.json",
+        _canonical_bytes(link),
+        root=plan.paths.root,
+        name="anchor result response link",
+    )
+    return object_snapshot, link_snapshot
+
+
+def _dispatch_and_capture_anchor_result(
+    plan: AnchorResultDispatchPlan,
+    *,
+    transport: AnchorResultTransport | None = None,
+    clock: Callable[[], datetime] | None = None,
+) -> RecoveryResult:
+    """Dispatch one frozen request after the four coordinator locks are released."""
+
+    now = (clock or (lambda: datetime.now(timezone.utc)))()
+    handle: BinaryIO | None = None
+    network_action_performed = False
+    try:
+        try:
+            handle = drain._acquire_lock(  # noqa: SLF001
+                plan.paths.anchor_result_dispatch_lock,
+                label="anchor result dispatch",
+            )
+        except drain.EpochDrainBusyError as exc:
+            raise WorksetRecoveryBusyError(str(exc)) from exc
+        except drain.EpochDrainError as exc:
+            raise WorksetRecoveryIntegrityError(str(exc)) from exc
+        _verify_anchor_result_dispatch_plan(plan)
+        existing = _load_or_adopt_anchor_result_observation(plan)
+        if existing is not None:
+            _, _, link_snapshot, adoption = existing
+            if adoption == "forward_adopted":
+                status = "external_anchor_response_forward_adopted"
+                reason = (
+                    "one content-addressed anchor response observation was "
+                    "forward-adopted without another network action"
+                )
+            else:
+                status = "waiting_for_anchor_result_adapter"
+                reason = (
+                    "one exact anchor response observation already exists; "
+                    "live-ledger result CAS remains unimplemented"
+                )
+            _write_status(
+                plan.profile,
+                plan.paths,
+                now=now,
+                status=status,
+                reason=reason,
+                key_id=plan.key_id,
+                receipt=None,
+                event=None,
+                external_anchor_response_observation=link_snapshot.path,
+                network_action_performed=False,
+            )
+            return RecoveryResult(
+                status,
+                reason,
+                plan.paths.status,
+                key_id=plan.key_id,
+                external_anchor_response_observation_path=link_snapshot.path,
+                network_action_performed=False,
+            )
+        token = _anchor_result_token(plan.action_contract)
+        if token is None:
+            reason = (
+                "the frozen anchor bearer-token environment variable is missing "
+                "or invalid; the same immutable request remains pending"
+            )
+            _write_status(
+                plan.profile,
+                plan.paths,
+                now=now,
+                status="waiting_for_external_anchor_token",
+                reason=reason,
+                key_id=plan.key_id,
+                receipt=None,
+                event=None,
+                network_action_performed=False,
+            )
+            return RecoveryResult(
+                "waiting_for_external_anchor_token",
+                reason,
+                plan.paths.status,
+                key_id=plan.key_id,
+            )
+        network_action_performed = True
+        client = transport or _default_anchor_result_transport
+        try:
+            response = client(plan.action_contract, token)
+        except WorksetRecoveryNetworkWait:
+            raise
+        except WorksetRecoveryError:
+            raise
+        except Exception as exc:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result transport violated its reviewed contract"
+            ) from exc
+        observation = _anchor_result_observation_payload(plan, response, token=token)
+        _, link_snapshot = _publish_anchor_result_observation(plan, observation)
+        reason = (
+            "one bounded anchor response was durably observed outside the four "
+            "coordinator locks; no live-ledger result or recovery receipt was created"
+        )
+        _write_status(
+            plan.profile,
+            plan.paths,
+            now=now,
+            status="external_anchor_response_observed",
+            reason=reason,
+            key_id=plan.key_id,
+            receipt=None,
+            event=None,
+            external_anchor_response_observation=link_snapshot.path,
+            network_action_performed=True,
+        )
+        return RecoveryResult(
+            "external_anchor_response_observed",
+            reason,
+            plan.paths.status,
+            key_id=plan.key_id,
+            external_anchor_response_observation_path=link_snapshot.path,
+            network_action_performed=True,
+        )
+    except WorksetRecoveryNetworkWait:
+        reason = (
+            "the bounded anchor transport was retryable or delivery was ambiguous; "
+            "no response observation was created and the same idempotency key remains pending"
+        )
+        _write_status(
+            plan.profile,
+            plan.paths,
+            now=now,
+            status="waiting_for_external_anchor_retry",
+            reason=reason,
+            key_id=plan.key_id,
+            receipt=None,
+            event=None,
+            network_action_performed=network_action_performed,
+        )
+        return RecoveryResult(
+            "waiting_for_external_anchor_retry",
+            reason,
+            plan.paths.status,
+            key_id=plan.key_id,
+            network_action_performed=network_action_performed,
+        )
+    except WorksetRecoveryIntegrityError as exc:
+        try:
+            _write_status(
+                plan.profile,
+                plan.paths,
+                now=now,
+                status="blocked_integrity",
+                reason=f"{type(exc).__name__}:{exc}",
+                key_id=plan.key_id,
+                receipt=None,
+                event=None,
+                network_action_performed=network_action_performed,
+            )
+        except WorksetRecoveryError:
+            pass
+        raise
+    finally:
+        if handle is not None:
+            try:
+                drain._release_locks([handle])  # noqa: SLF001
+            except drain.EpochDrainError as exc:
+                if sys.exc_info()[0] is None:
+                    raise WorksetRecoveryIntegrityError(str(exc)) from exc
 
 
 def _live_projection(
@@ -2711,6 +3627,8 @@ def _write_status(
     key_id: str | None,
     receipt: Path | None,
     event: Path | None,
+    external_anchor_response_observation: Path | None = None,
+    network_action_performed: bool = False,
 ) -> None:
     payload = {
         "schema_version": profile["protocol"]["status_schema_version"],
@@ -2722,6 +3640,12 @@ def _write_status(
         "key_id": key_id,
         "receipt_path": str(receipt) if receipt else None,
         "event_path": str(event) if event else None,
+        "external_anchor_response_observation_path": (
+            str(external_anchor_response_observation)
+            if external_anchor_response_observation
+            else None
+        ),
+        "network_action_performed": network_action_performed,
         "cache_authority": False,
         **_claims(),
     }
@@ -2745,7 +3669,7 @@ def _coordinate_epoch_workset_recovery(
     clock: Callable[[], datetime] | None = None,
     action_hook: ActionHook | None = None,
     load_reservation: LoadReservation | None = None,
-) -> RecoveryResult:
+) -> RecoveryResult | AnchorResultDispatchPlan:
     profile = load_workset_recovery_profile(config_path)
     paths = recovery_paths(
         profile,
@@ -2810,6 +3734,17 @@ def _coordinate_epoch_workset_recovery(
         intents = _strict_named_json(
             paths.item_intents, suffix=".json", name="recovery item intents"
         )
+        response_links, response_object_steps = _anchor_result_observation_step_ids(
+            paths
+        )
+        observation_steps = response_links | response_object_steps
+        if (
+            not observation_steps <= set(intents)
+            or not response_links <= response_object_steps
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result response observation namespace is orphaned"
+            )
         receipts = _load_receipts(
             profile,
             paths,
@@ -2819,10 +3754,23 @@ def _coordinate_epoch_workset_recovery(
             intents,
             probe_actions=action_hook is None,
         )
+        _deep_verify_locked_anchor_result_observations(
+            profile,
+            paths,
+            reservation,
+            item_by_id,
+            intents,
+            receipts,
+            observation_steps,
+        )
         chains = _receipt_chains(receipts)
         events, previous = _load_events(profile, paths, receipts)
         event_keys = {event["step_id"] for event in events}
         missing_event = set(receipts) - event_keys
+        if observation_steps and missing_event:
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result observation coexists with an unindexed recovery receipt"
+            )
         if missing_event:
             step_id = next(iter(missing_event))
             receipt_payload, receipt_snapshot = receipts[step_id]
@@ -2863,7 +3811,7 @@ def _coordinate_epoch_workset_recovery(
             )
         if pending_step_ids:
             pending_step_id = next(iter(pending_step_ids))
-            pending_payload, _ = _strict_json(
+            pending_payload, pending_snapshot = _strict_json(
                 intents[pending_step_id], name="pending recovery step intent"
             )
             if pending_payload.get("action") == "anchor_result_recorded":
@@ -2882,7 +3830,7 @@ def _coordinate_epoch_workset_recovery(
                 )
                 reason = (
                     "one immutable anchor-result request intent fences recovery; "
-                    "the reviewed unlocked transport is not implemented yet"
+                    "the bounded transport will run after all four coordinator locks release"
                 )
                 _write_status(
                     profile,
@@ -2894,11 +3842,13 @@ def _coordinate_epoch_workset_recovery(
                     receipt=None,
                     event=None,
                 )
-                return RecoveryResult(
-                    "waiting_for_external_anchor_dispatch",
-                    reason,
-                    paths.status,
-                    key_id,
+                return AnchorResultDispatchPlan(
+                    profile=profile,
+                    paths=paths,
+                    key_id=key_id,
+                    step_id=pending_step_id,
+                    item_intent=pending_snapshot,
+                    action_contract=dict(pending_contract),
                 )
         completed_natural = {
             item_by_id[key_id]["natural_key"]
@@ -3018,7 +3968,7 @@ def _coordinate_epoch_workset_recovery(
             _verify_pending_anchor_result_head(item, reservation, action_contract)
             reason = (
                 "one immutable anchor-result request intent was prepared; "
-                "no network action or live-ledger result was performed"
+                "bounded dispatch will begin only after the four coordinator locks release"
             )
             _write_status(
                 profile,
@@ -3030,11 +3980,13 @@ def _coordinate_epoch_workset_recovery(
                 receipt=None,
                 event=None,
             )
-            return RecoveryResult(
-                "external_anchor_request_prepared",
-                reason,
-                paths.status,
-                item["key_id"],
+            return AnchorResultDispatchPlan(
+                profile=profile,
+                paths=paths,
+                key_id=item["key_id"],
+                step_id=_step_id(item["key_id"], step_index, transition_action),
+                item_intent=item_intent,
+                action_contract=dict(action_contract),
             )
         action = _perform_action(
             item,
@@ -3142,8 +4094,11 @@ def _coordinate_epoch_workset_recovery(
 def coordinate_epoch_workset_recovery(
     *, config_path: Path = DEFAULT_CONFIG_PATH
 ) -> RecoveryResult:
-    """Run one reviewed machine-only deterministic local recovery step."""
-    return _coordinate_epoch_workset_recovery(config_path=config_path)
+    """Run one reviewed machine-only recovery step and any unlocked dispatch."""
+    decision = _coordinate_epoch_workset_recovery(config_path=config_path)
+    if isinstance(decision, RecoveryResult):
+        return decision
+    return _dispatch_and_capture_anchor_result(decision)
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -3177,6 +4132,12 @@ def main(argv: list[str] | None = None) -> int:
                 if result.receipt_path
                 else None,
                 "event_path": str(result.event_path) if result.event_path else None,
+                "external_anchor_response_observation_path": (
+                    str(result.external_anchor_response_observation_path)
+                    if result.external_anchor_response_observation_path
+                    else None
+                ),
+                "network_action_performed": result.network_action_performed,
                 "bounded_workset_recovery_implemented": result.bounded_workset_recovery_implemented,
                 "lifecycle_authority": result.lifecycle_authority,
                 "transition_authority": result.transition_authority,

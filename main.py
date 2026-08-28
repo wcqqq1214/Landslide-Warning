@@ -673,7 +673,7 @@ STAGES = (
     Stage(
         "ootang-epoch-workset-recovery",
         "code/monitoring/ootang_epoch_workset_recovery.py",
-        "按 transition plan 单步推进旧 epoch 确定性本地恢复，含 machine-only 单事件 anchor request ledger adapter（R2b-2b-2d，零网络/非切换/非正式）",
+        "按 transition plan 单步推进旧 epoch 恢复，含 machine-only anchor request 与四锁外 bounded response observation（R2b-2b-2d，非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_recovery.v1.json",
             "config/ootang_epoch_workset_manifest.v1.json",

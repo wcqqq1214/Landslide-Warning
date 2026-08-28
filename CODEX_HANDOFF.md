@@ -3,15 +3,73 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `51696db feat: recover anchor request events`
+**Committed baseline before this increment:** `e9120d9 feat: prepare anchor result requests`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
-expected-pre-head CAS 与单事件 machine-only `anchor_request_recorded` adapter 已提交；本增量
-冻结下一步 `anchor_result_recorded` 的 create-only external request intent 和全局 pending fence。
-该切片仍为零网络、零 result ledger mutation，不是完整 recovery、terminal/transitive closure、
-泛化 admission fence 或 DRAINING lifecycle authority；不声明 drained、active switch、rotation、
-trusted anchor、E2 evidence、activation 或 formal warning。
+expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
+`anchor_result_recorded` create-only request intent 已提交；本增量实现四锁外 bounded HTTPS
+dispatch 和 create-only content-addressed response observation。它仍未执行 result ledger CAS、
+recovery receipt/event 或 branch transition，不是完整 recovery、terminal/transitive closure、泛化
+admission fence 或 DRAINING lifecycle authority；不声明 remote exactly-once、drained、active
+switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
 
-## 2026-08-28 anchor-result request-intent continuation
+## 2026-08-28 unlocked anchor-result response-observation continuation
+
+The coordinator now returns an `AnchorResultDispatchPlan` from either the newly prepared or the
+existing pending result-intent branch. Its existing `finally` releases the surviving
+manager→cycle→replay→shadow locks before the public coordinator invokes transport. A separate
+`external_anchor_dispatch.lock` is acquired only outside those four locks, so DNS, TLS, socket I/O
+and the total response deadline cannot hold or invert the coordinator lock order. Under that lock,
+the machine re-reads the exact item-intent snapshot and adopts any existing response artifact
+before reading credentials or invoking the network.
+
+The default transport performs a no-redirect HTTPS `POST` using only the frozen endpoint,
+canonical request body, timeout, 1 MiB response limit and stable `Idempotency-Key`. It sends fixed
+JSON/identity headers and a total `SIGALRM` deadline. The bearer token is read from the frozen
+environment-variable name only at dispatch time; missing or invalid token bytes produce machine
+waiting with zero network. The value is not persisted, hashed or returned. A response that reflects
+the exact token bytes is blocked before artifact publication.
+
+HTTP 408/425/429/5xx and URL/timeout/OSError delivery ambiguity create no observation and retain the
+same intent/key for automatic retry. A complete deterministic response is classified as either
+`candidate_confirmed` through the frozen `live._anchor_response` interface or a bounded
+`deterministic_failure`. The machine durably publishes the content-addressed object first at
+`external_anchor_response_objects/<step_id>/<sha256>.json`, then the unique link at
+`external_anchor_response_links/<step_id>.json`. A crash after the object but before the link is
+forward-adopted on the next poll with zero network; an existing exact link is also zero-network and
+waits for the result adapter. Multiple objects, orphan links, foreign step IDs, content/address or
+request-identity drift fail closed.
+
+Observation/link records bind the profile, item intent, request event/body/endpoint/idempotency
+identity, bounded raw response bytes, outcome and normalized candidate/failure. They explicitly
+keep `remote_exactly_once`, trusted-anchor/E2, live-ledger-result and recovery-receipt claims false.
+The profile uses v5 intent/item-intent/receipt/status authority and adds only
+`live_anchor_result_response_observation_implemented=true`; `network_action_performed` is now a
+per-poll occurrence rather than a static capability. No real network call or live-ledger mutation
+was executed in this increment.
+
+Focused fake-transport recovery tests pass 30/30 in about 0.18 seconds. The adjacent recovery,
+live-ledger/CAS, inventory, manifest, admission-cut, eligibility, drain-v2 and main suite passes
+137/137 in about 7.50 seconds. No training, model rerun, real TSA/HTTP request, long concurrency or
+capacity matrix was run. ConvLSTM, v4, frozen splits, metrics, thresholds and conclusions remain
+unchanged. Full detail is in
+`docs/ootang_anchor_result_response_observation_engineering.md`.
+
+Recovery module/profile/test and `main.py` SHA-256 values are
+`e7fe4011c2f00bbf09d22c3e451db66e3aa62ab1333ebb8b92b8ccd7ba1f634b`,
+`2fd37e48a5b3eeb8a321b559f9a4e162f0abb9de32f5e930bff9956b7e488177`,
+`dc68b54ab8b99813704903a3d81ae39d7bb33f692ce87a66895c09d2a66d31a0` and
+`4da6b9f69069c6ef980e927961d557951ab4fd4fae3e0992e0d59c8e238f9a4d`.
+The 97-path protected aggregate remains
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
+Independent review's initial two P1 and two P2 findings were fixed; final P0/P1 is zero.
+
+The next slice must not redispatch. It should reacquire the four coordinator locks, deep-verify the
+existing response link/object and exact result pre-head, build the unique `anchor_confirmed` or
+`anchor_failed` EventSpec, append/adopt it through the recovery-only expected-pre-head CAS, and only
+then publish the branch-selected recovery receipt/event. Provider idempotent POST or query-by-key
+behavior remains unproven, so remote exactly-once must stay false.
+
+## 2026-08-28 anchor-result request-intent continuation (committed `e9120d9`)
 
 The current increment implements only the locked preparation boundary for
 `anchor_result_recorded`; the result action itself remains unimplemented. The coordinator accepts
