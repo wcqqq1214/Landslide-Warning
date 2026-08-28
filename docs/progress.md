@@ -5,6 +5,36 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 cross-freeze step dependency sidecar v1（本增量）
+
+- 新增独立 `ootang_epoch_step_dependency_reservation.py` 与 profile
+  `1.0.0-cross-freeze-manifest-sibling`。sidecar 固定并只读深验现有 recovery v6
+  profile/implementation，在同一四锁下工作，不修改 frozen manifest、global intent、item
+  intent、receipt 或 recovery event。
+- 当前唯一规则是：freeze 后 `anchor_result_recorded(candidate_confirmed)` 选择
+  `outcome_batch_settled` 时，若 frozen manifest 中存在同 old epoch/target/issue/seal、且已取得
+  canonical outstanding-consumption terminal receipt 的唯一 outcome sibling，则机器发布一个
+  versioned step dependency reservation。
+- reservation 是 canonical JSON content-addressed create-only object；独立 append-only event 绑定
+  slot、source/dependency key 与 object reference。object 已落盘但 event 未落盘时，下一 poll 只补
+  event，不重新选择或改写 ledger。nonterminal sibling 等待，多 terminal sibling 歧义 fail closed。
+- 本增量只建立 dependency authority，尚未让 recovery dispatcher 消费它。因此
+  `derived_future_work_reservation_implemented`、`terminal_transition_closure_implemented`、full
+  workset、drained/active/rotation/lifecycle 与 trusted/E2/formal claims 全部保持 false。
+- 新增快测 `3/3`（0.024 s）；sidecar + recovery + manifest 定向回归 `67/67`
+  （5.913 s），相邻 sidecar/recovery/materializer/live-ledger/CAS/epoch-gates/prequential/main
+  回归 `224/224`（15.025 s）。Ruff、compile、strict JSON/profile load、diff check 通过；两路独立只读复审均为
+  P0=0、P1=0。未运行训练/真实网络，未修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、
+  模型参数或实验结论。
+- 当前 implementation/profile/test/main.py SHA-256 分别为
+  `c385b7c8783d86831561d5c1179b05efc78e3f5ef99a912b44382143625e5190`、
+  `8b10a9642610b76911813d80ee8e31205c0e3c490aa05a13f0ba8287d457670e`、
+  `250f82cdbf802d92193afd7d090f048de869f0af7658c5b1ae925a9249000796`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 下一窄增量是 versioned overlay dispatcher：消费本 sidecar authority 并把 terminal dependency
+  receipt 绑定进 settlement step intent/contract；再后才处理 source ingest 派生的新 outcome keys。
+  详细合同见 `docs/ootang_step_dependency_reservation_engineering.md`。
+
 ## 2026-08-29 first-backfill outcome 自动消费（本增量）
 
 - recovery coordinator 新增独立

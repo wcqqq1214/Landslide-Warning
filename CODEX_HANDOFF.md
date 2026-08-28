@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `8fc8c5c feat: consume backfill outcome revisions`
+**Committed baseline before this increment:** `ac8e278 feat: consume first backfill outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -11,11 +11,55 @@ loop、manifest-reserved outcome settlement adoption 与 published outstanding 4
 writer/crash-forward adoption、receipt-tip repair/machine-selected outcome materialization、下一
 poll 的 outstanding consumption 桥、revision predecessor authority、settled-date canonical
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
-crash-forward adoption 已提交；当前工作树实现 first-backfill canonical 单事件自动消费、
-fresh CAS 与 post-CAS receipt adoption。
+crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
+adoption 已提交；当前工作树新增独立 cross-freeze manifest-sibling step dependency sidecar v1。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-29 cross-freeze manifest-sibling step dependency sidecar v1
+
+The new `ootang_epoch_step_dependency_reservation.py` sidecar closes one precise authority gap
+without modifying or reinterpreting persisted recovery v6 bytes. Its profile pins recovery profile
+`5c50d168d389c286d0940a00884369ae8f65fc399f8726f0f64300999dd2de01` and implementation
+`b9f25133eef9cb94fb255bab588edcd573f0fa792ef82c4ddb9068d0a44a6c51`. Under the same
+manager/cycle/replay/shadow locks it deep-verifies the complete v6 manifest, global intent, item
+intents, receipts, events and anchor observations, but writes only under
+`workset_recovery_v1/step_dependencies_v1`.
+
+The sole v1 derivation rule covers a live item whose post-freeze terminally persisted
+`anchor_result_recorded(candidate_confirmed)` receipt selected `outcome_batch_settled`. The
+dependency must be a different key already present in the same frozen manifest, with a unique,
+deep-verified terminal `outcome_or_revision_consumed` receipt from the outstanding-settlement or
+preexisting-consumed-adoption writer. Old epoch, target, issue and seal must match exactly; the
+reservation also binds source revision, exact outcome hash, outcome source id, terminal ledger
+event and both recovery receipt/event references. No mutable source pointer or inbox participates.
+
+Each slot publishes one canonical content-addressed create-only object and one independently
+hash-linked append-only event. A crash after object publication but before the event is recovered
+by appending only the missing exact event; it does not reselect a dependency or mutate the live
+ledger. Zero terminal siblings waits, multiple exact terminal siblings fail closed, and an already
+static manifest outcome dependency is not duplicated. The original manifest/global intent/item
+intent/receipt/event bytes remain unchanged.
+
+New focused tests are `3/3` (0.024 s); sidecar + recovery + manifest regression is `67/67`
+(5.913 s), and the adjacent sidecar/recovery/materializer/live-ledger/CAS/epoch-gates/
+prequential/main suite is `224/224` (15.025 s). Ruff, compile, strict JSON/profile load and diff
+checks pass. Two independent read-only
+reviews report P0=0/P1=0. Current sidecar implementation/profile/test and protected
+`main.py` SHA-256 values are
+`c385b7c8783d86831561d5c1179b05efc78e3f5ef99a912b44382143625e5190`,
+`8b10a9642610b76911813d80ee8e31205c0e3c490aa05a13f0ba8287d457670e`,
+`250f82cdbf802d92193afd7d090f048de869f0af7658c5b1ae925a9249000796` and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+This is dependency authority only. The existing v6 dispatcher does not yet consume the sidecar,
+and source-ingest derived new keys, issue-route/shadow derived work and terminal/transitive closure
+remain unsupported. Therefore derived-future-work, full-workset, all-successor, drained,
+lifecycle/activation, trusted/E2 and formal-warning claims remain false. The next narrow increment
+is a versioned overlay dispatcher that consumes this exact sidecar reservation without
+reinterpreting v6; source-ingest new-key reservation follows separately. Detailed semantics are in
+`docs/ootang_step_dependency_reservation_engineering.md`.
 
 ## 2026-08-29 first-backfill outcome consumption
 
