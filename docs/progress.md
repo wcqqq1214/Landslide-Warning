@@ -5,6 +5,38 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 backfill outcome revision 自动消费（本增量）
+
+- recovery coordinator 现在对 `selection_kind=revision` 重放 current projection，并要求
+  目标日期排他地属于 settled 或 backfill original。backfill 分支使用独立
+  `ootang_live_backfill_revision_consumption_action_contract_v1`，不会改写既有
+  outstanding v2 或 settled revision v1 persisted contract/receipt。
+- writer 复用 canonical `_append_backfill_revision`，按八站固定顺序追加
+  `outcome_revision x 8`，不生成 rescore。后置深验证明原 backfill、online states、
+  last-finalized/outstanding、issue/seal 及 blind-settled/engineering-candidate/backfill counts
+  不变；revision registry 与目标日期 latest actual 精确更新。
+- 当目标正是最后 finalized 日期且当前无 outstanding 时，live projection 自动把
+  `latest_displacement_mm` 更新为 revised actuals，作为下一日 persistence baseline；其他情况
+  baseline 保持不变，不需要人工修正。
+- fresh path 只在 exact expected pre-head 上 CAS。CAS 已提交但 recovery receipt 未落盘时，
+  下一 poll 从 persisted contract 重建 8 个 EventSpecs，匹配 exact contiguous slice 后仅补
+  receipt、不再调用 CAS；partial/displaced/mismatched slice fail closed。
+- 定向 `2/2`（0.836 s）、完整 recovery `55/55`（4.715 s）、相邻
+  recovery/materializer/live-ledger/CAS/epoch-gates/main `219/219`（12.984 s）均通过；
+  Ruff format/check、Python compile、strict profile load 与 diff check 通过。两路独立只读
+  复审均为 P0=0、P1=0；临时 consumed-at-freeze fixture 还验证了 pointer/inbox 从 rev1
+  自动修复到 ledger 已消费的 rev2，并以零 CAS 精确采用。
+- recovery module/profile/test、本增量工程文档与受保护 `main.py` SHA-256 分别为
+  `e4b949664a7cb8cbb07936fa047bc157d6a648a2108adf19de93280a843afceb`、
+  `9c9a1dc4404a51b5a5a13721729cdc3306395d2bd69564e13e2c39c5f125f116`、
+  `ae558660ee058822d23573327f3139d7f673fbdf7234676d4d8aa24580466f7e`、
+  `15b1352743c808dd472dfce7465f44a6e82ffdf8e675f3ea7c5e6d5a8ec46242`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量未运行训练或真实网络，也未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。first-backfill writer 仍未实现，下一窄增量
+  即为 first-backfill；详细合同见
+  `docs/ootang_backfill_revision_consumption_engineering.md`。
+
 ## 2026-08-29 settled-date outcome revision 自动消费（本增量）
 
 - recovery coordinator 新增 `selection_kind=revision` 的 live-ledger 消费路径。它从

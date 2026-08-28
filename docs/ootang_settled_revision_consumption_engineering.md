@@ -83,15 +83,16 @@ recovery receipt/event。
 
 ## 5. 明确边界
 
-本增量只实现 settled-date revision consumption。若目标日期属于 backfill projection，
-coordinator 仍机器等待，不把 backfill revision 误当 settled revision；backfill
-revision consumption 和 first-backfill writer 均未实现。full workset、all-successor、
-derived future reservation、terminal/transitive closure 与 epoch lifecycle 等更高层声明
-继续为 false。
+本增量本身只实现 settled-date revision consumption。后续 backfill revision 增量已在
+current projection 上增加排他的 settled/backfill 分派：目标必须只属于
+`settled_events` 或 `backfill_events` 之一，不能把 backfill revision 误当 settled revision。
+backfill 分支使用独立 v1 contract 与 canonical `_append_backfill_revision` 8-event writer，
+因此不改变本文记录的 settled v1 persisted contract/receipt。
 
-下一窄增量是 backfill revision consumption，仍复用 immutable predecessor
-authority、canonical writer 与 expected-pre-head CAS/crash-forward 框架；之后再单独处理
-first-backfill writer。
+当前仍未实现的是 first-backfill writer。full workset、all-successor、derived future
+reservation、terminal/transitive closure 与 epoch lifecycle 等更高层声明继续为 false。
+下一窄增量是 first-backfill writer；backfill revision 的 authority、transaction 与验证记录见
+`docs/ootang_backfill_revision_consumption_engineering.md`。
 
 ## 6. 有界验证记录
 

@@ -1,9 +1,9 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "2.1.0-settled-revision-consumption",
+  "profile_version": "2.2.0-backfill-revision-consumption",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_exact_materialization_outstanding_and_settled_revision_consumption_revision_predecessor_authority_and_settlement_adoption_no_backfill_writer_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_exact_materialization_outstanding_settled_and_backfill_revision_consumption_predecessor_authority_and_settlement_adoption_no_first_backfill_writer_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
@@ -106,6 +106,7 @@
     "outcome_materialization_adapter_implemented": true,
     "live_outstanding_outcome_consumption_adapter_implemented": true,
     "live_settled_revision_consumption_adapter_implemented": true,
+    "live_backfill_revision_consumption_adapter_implemented": true,
     "live_outcome_settlement_adoption_implemented": true,
     "ledger_mutation_recovery_implemented": true,
     "bounded_workset_recovery_implemented": false,

@@ -40,7 +40,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "ef601148860ef5d4781e934f5cafb046eb82e0bac447c3d3f41ae05c19613c37"
+    "9c9a1dc4404a51b5a5a13721729cdc3306395d2bd69564e13e2c39c5f125f116"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -90,6 +90,9 @@ OUTCOME_CONSUMPTION_CONTRACT_SCHEMA = (
 OUTCOME_REVISION_CONSUMPTION_CONTRACT_SCHEMA = (
     "ootang_live_settled_revision_consumption_action_contract_v1"
 )
+OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA = (
+    "ootang_live_backfill_revision_consumption_action_contract_v1"
+)
 OUTCOME_CONSUMPTION_EVENT_COUNT = 43
 OUTCOME_CONSUMPTION_EVENT_TYPES = OUTCOME_SETTLEMENT_EVENT_TYPES
 OUTCOME_SETTLED_REVISION_EVENT_TYPES = (
@@ -97,6 +100,8 @@ OUTCOME_SETTLED_REVISION_EVENT_TYPES = (
     "revision_rescore_recorded",
 ) * 8
 OUTCOME_SETTLED_REVISION_EVENT_COUNT = len(OUTCOME_SETTLED_REVISION_EVENT_TYPES)
+OUTCOME_BACKFILL_REVISION_EVENT_TYPES = ("outcome_revision",) * 8
+OUTCOME_BACKFILL_REVISION_EVENT_COUNT = len(OUTCOME_BACKFILL_REVISION_EVENT_TYPES)
 ANCHOR_RESULT_FAILURE_TAXONOMY = {
     ("response_body", "response_too_large"),
     ("http_status", "redirect_rejected"),
@@ -222,6 +227,7 @@ TRUE_CAPABILITIES = (
     "outcome_materialization_adapter_implemented",
     "live_outstanding_outcome_consumption_adapter_implemented",
     "live_settled_revision_consumption_adapter_implemented",
+    "live_backfill_revision_consumption_adapter_implemented",
     "live_outcome_settlement_adoption_implemented",
     "ledger_mutation_recovery_implemented",
 )
@@ -3311,6 +3317,101 @@ def _capture_settled_revision_specs(
     return projection, specs, settlement, issue_id, sealed_entry_sha256
 
 
+def _backfill_revision_projection_authority(
+    context: OutcomeConsumptionContext,
+    projection: live.LiveProjection,
+) -> live_ledger.LedgerEvent:
+    """Validate the original backfill and its latest immutable predecessor."""
+
+    outcome = context.outcome
+    target_text = outcome.target_date.isoformat()
+    if target_text in projection.settled_events:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision target unexpectedly gained a settled lifecycle"
+        )
+    original = projection.backfill_events.get(target_text)
+    if original is None:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision consumption lost its original backfill"
+        )
+    _validate_outcome_predecessor_scope(
+        selection_kind=context.selection_kind,
+        previous_revision_id=context.previous_revision_id,
+        previous_outcome_sha256=context.previous_outcome_sha256,
+    )
+    known = projection.revision_ids.get(target_text)
+    if not isinstance(known, Mapping) or not known:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision consumption lost its predecessor registry"
+        )
+    if outcome.source_revision_id in known:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision was already present before its canonical transaction"
+        )
+    latest_revision = next(reversed(tuple(known)))
+    first_revision = next(iter(known))
+    if (
+        latest_revision != context.previous_revision_id
+        or known[latest_revision] != context.previous_outcome_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision predecessor disagrees with the live ledger tip"
+        )
+    if (
+        original.event_type != "backfill_not_blind"
+        or original.target_date != target_text
+        or original.payload.get("classification") != "backfill_not_blind"
+        or original.payload.get("source_revision_id") != first_revision
+        or original.payload.get("outcome_batch_sha256") != known[first_revision]
+        or original.payload.get("online_state_updated") is not False
+        or original.payload.get("blind_metric_eligible") is not False
+        or original.state_before_sha256 != original.state_after_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision original classification authority changed"
+        )
+    return original
+
+
+def _capture_backfill_revision_specs(
+    context: OutcomeConsumptionContext,
+    prefix_events: Sequence[live_ledger.LedgerEvent],
+) -> tuple[
+    live.LiveProjection,
+    tuple[live_ledger.EventSpec, ...],
+    live_ledger.LedgerEvent,
+]:
+    frozen = context.frozen
+    try:
+        projection = live._reconstruct_projection(  # noqa: SLF001
+            prefix_events, frozen.profile, frozen.prerequisites
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision consumption pre-head no longer replays"
+        ) from exc
+    original = _backfill_revision_projection_authority(context, projection)
+    collector = _EventSpecCollector(prefix_events)
+    try:
+        live._append_backfill_revision(  # noqa: SLF001
+            collector,
+            frozen.profile,
+            frozen.prerequisites,
+            projection,
+            context.outcome,
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Canonical backfill revision writer rejected the frozen tip:{exc}"
+        ) from exc
+    specs = collector.specs
+    if specs is None:
+        raise WorksetRecoveryIntegrityError(
+            "Canonical backfill revision writer emitted no transaction"
+        )
+    return projection, specs, original
+
+
 def _settled_revision_consumption_plan(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -3492,6 +3593,195 @@ def _settled_revision_consumption_plan(
     )
 
 
+def _backfill_revision_consumption_plan(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
+    *,
+    context: OutcomeConsumptionContext | None = None,
+) -> OutcomeConsumptionPlan:
+    context = context or _outcome_consumption_context(
+        item, reservation, previous_step_receipt
+    )
+    if context.selection_kind != "revision":
+        raise WorksetRecoveryExternalWait(
+            "the published outcome tip is not the reviewed backfill revision branch"
+        )
+    frozen = context.frozen
+    outcome = context.outcome
+    target_text = outcome.target_date.isoformat()
+    stations = frozen.profile["stations"]
+    prefix = (
+        f"{frozen.projection.epoch_id}:{target_text}:revision:"
+        f"{outcome.source_revision_id}"
+    )
+    first_key = f"{prefix}:outcome_revision:{stations[0]}"
+    terminal_key = f"{prefix}:outcome_revision:{stations[-1]}"
+    try:
+        current_projection = live._reconstruct_projection(  # noqa: SLF001
+            frozen.current_events, frozen.profile, frozen.prerequisites
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision current ledger no longer replays"
+        ) from exc
+    if (
+        target_text not in current_projection.backfill_events
+        or target_text in current_projection.settled_events
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision current ledger lost its exclusive original branch"
+        )
+    known = current_projection.revision_ids.get(target_text, {})
+    known_hash = known.get(outcome.source_revision_id)
+    if known_hash is not None and known_hash != outcome.sha256:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision id was already consumed with different bytes"
+        )
+
+    stored_events: tuple[live_ledger.LedgerEvent, ...] = ()
+    if known_hash is not None:
+        first_positions = [
+            index
+            for index, event in enumerate(frozen.current_events)
+            if event.event_key == first_key
+        ]
+        terminal_positions = [
+            index
+            for index, event in enumerate(frozen.current_events)
+            if event.event_key == terminal_key
+        ]
+        if len(first_positions) != 1 or len(terminal_positions) != 1:
+            raise WorksetRecoveryIntegrityError(
+                "Consumed backfill revision lost its canonical transaction"
+            )
+        first_index = first_positions[0]
+        terminal_index = terminal_positions[0]
+        if terminal_index - first_index + 1 != OUTCOME_BACKFILL_REVISION_EVENT_COUNT:
+            raise WorksetRecoveryIntegrityError(
+                "Consumed backfill revision transaction changed length"
+            )
+        stored_events = tuple(frozen.current_events[first_index : terminal_index + 1])
+        prefix_events = frozen.current_events[:first_index]
+    else:
+        prefix_events = frozen.current_events
+    if not prefix_events or (
+        len(prefix_events) < frozen.expected_pre_head.event_count
+        and not context.ledger_consumed_at_freeze
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision pre-head precedes the frozen reservation"
+        )
+    pre_head_event = prefix_events[-1]
+    expected = live_cas.LiveLedgerPreHeadV1(
+        epoch_id=frozen.projection.epoch_id,
+        event_count=len(prefix_events),
+        sequence_id=pre_head_event.sequence_id,
+        entry_sha256=pre_head_event.entry_sha256,
+    )
+    try:
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except live_ledger.LedgerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision consumption pre-head is invalid"
+        ) from exc
+    projection, specs, original = _capture_backfill_revision_specs(
+        context, prefix_events
+    )
+    if (
+        len(specs) != OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+        or tuple(spec.event_type for spec in specs)
+        != OUTCOME_BACKFILL_REVISION_EVENT_TYPES
+        or specs[0].event_key != first_key
+        or specs[-1].event_key != terminal_key
+        or len({spec.event_key for spec in specs}) != len(specs)
+        or any(spec.issue_id is not None for spec in specs)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Canonical backfill revision transaction shape changed"
+        )
+    if stored_events:
+        if (
+            tuple(event.event_type for event in stored_events)
+            != OUTCOME_BACKFILL_REVISION_EVENT_TYPES
+            or any(
+                not _outcome_event_matches_spec(event, spec)
+                for event, spec in zip(stored_events, specs, strict=True)
+            )
+            or [event.sequence_id for event in stored_events]
+            != list(
+                range(
+                    expected.sequence_id + 1,
+                    expected.sequence_id + OUTCOME_BACKFILL_REVISION_EVENT_COUNT + 1,
+                )
+            )
+            or stored_events[0].previous_entry_sha256 != expected.entry_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Stored backfill revision is not the exact canonical retry"
+            )
+    else:
+        current_keys = {event.event_key for event in frozen.current_events}
+        if any(spec.event_key in current_keys for spec in specs):
+            raise WorksetRecoveryIntegrityError(
+                "Fresh backfill revision has a partial canonical transaction"
+            )
+    seal = projection.seal_event
+    spec_payloads = [_event_spec_payload(spec) for spec in specs]
+    contract: dict[str, object] = {
+        "schema_version": OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA,
+        "writer_branch": (
+            "preexisting_backfill_revision_adoption"
+            if context.ledger_consumed_at_freeze
+            else "backfill_revision"
+        ),
+        "expected_pre_head": _pre_head_payload(expected),
+        "live_epoch_id": frozen.projection.epoch_id,
+        "target_date": target_text,
+        "original_backfill_entry_sha256": original.entry_sha256,
+        "previous_revision_id": context.previous_revision_id,
+        "previous_outcome_sha256": context.previous_outcome_sha256,
+        "tip_receipt_sha256": context.tip_receipt.sha256,
+        "exact_outcome_sha256": outcome.sha256,
+        "outcome_source_manifest_sha256": context.source_manifest.sha256,
+        "outcome_source_id": outcome.outcome_source_id,
+        "source_revision_id": outcome.source_revision_id,
+        "ledger_consumed_at_freeze": context.ledger_consumed_at_freeze,
+        "online_states_sha256": live._states_sha256(  # noqa: SLF001
+            projection.states, stations
+        ),
+        "last_finalized_date": projection.last_finalized_date.isoformat(),
+        "outstanding_target_date": (
+            projection.outstanding_target_date.isoformat()
+            if projection.outstanding_target_date is not None
+            else None
+        ),
+        "outstanding_issue_id": projection.outstanding_issue_id,
+        "outstanding_seal_entry_sha256": (
+            seal.entry_sha256 if seal is not None else None
+        ),
+        "blind_settled_count": projection.blind_settled_count,
+        "engineering_blind_candidate_count": (
+            projection.engineering_blind_candidate_count
+        ),
+        "backfill_count": projection.backfill_count,
+        "event_count": OUTCOME_BACKFILL_REVISION_EVENT_COUNT,
+        "first_event_key": first_key,
+        "terminal_event_key": terminal_key,
+        "ordered_event_keys_sha256": _sha256(
+            _canonical_bytes([spec.event_key for spec in specs])
+        ),
+        "event_specs_sha256": _sha256(_canonical_bytes(spec_payloads)),
+    }
+    return OutcomeConsumptionPlan(
+        context=context,
+        expected_pre_head=expected,
+        specs=specs,
+        stored_events=stored_events,
+        contract=contract,
+    )
+
+
 def _outcome_consumption_plan(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -3506,6 +3796,30 @@ def _outcome_consumption_plan(
             context=context,
         )
     if context.selection_kind == "revision":
+        try:
+            current_projection = live._reconstruct_projection(  # noqa: SLF001
+                context.frozen.current_events,
+                context.frozen.profile,
+                context.frozen.prerequisites,
+            )
+        except (live.LiveIntegrityError, live.LiveInputError) as exc:
+            raise WorksetRecoveryIntegrityError(
+                "Revision consumption current ledger no longer replays"
+            ) from exc
+        target_text = context.outcome.target_date.isoformat()
+        is_backfill = target_text in current_projection.backfill_events
+        is_settled = target_text in current_projection.settled_events
+        if is_backfill == is_settled:
+            raise WorksetRecoveryIntegrityError(
+                "Revision consumption lost its exclusive original branch"
+            )
+        if is_backfill:
+            return _backfill_revision_consumption_plan(
+                item,
+                reservation,
+                previous_step_receipt,
+                context=context,
+            )
         return _settled_revision_consumption_plan(
             item,
             reservation,
@@ -4106,6 +4420,190 @@ def _recorded_settled_revision_consumption_plan(
     )
 
 
+def _recorded_backfill_revision_consumption_plan(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> OutcomeConsumptionPlan:
+    context = _recorded_outcome_consumption_context(
+        item, reservation, previous_step_receipt
+    )
+    checked = _exact(
+        contract,
+        {
+            "schema_version",
+            "writer_branch",
+            "expected_pre_head",
+            "live_epoch_id",
+            "target_date",
+            "original_backfill_entry_sha256",
+            "previous_revision_id",
+            "previous_outcome_sha256",
+            "tip_receipt_sha256",
+            "exact_outcome_sha256",
+            "outcome_source_manifest_sha256",
+            "outcome_source_id",
+            "source_revision_id",
+            "ledger_consumed_at_freeze",
+            "online_states_sha256",
+            "last_finalized_date",
+            "outstanding_target_date",
+            "outstanding_issue_id",
+            "outstanding_seal_entry_sha256",
+            "blind_settled_count",
+            "engineering_blind_candidate_count",
+            "backfill_count",
+            "event_count",
+            "first_event_key",
+            "terminal_event_key",
+            "ordered_event_keys_sha256",
+            "event_specs_sha256",
+        },
+        name="recorded backfill revision consumption contract",
+    )
+    expected_branch = (
+        "preexisting_backfill_revision_adoption"
+        if context.ledger_consumed_at_freeze
+        else "backfill_revision"
+    )
+    if (
+        checked["schema_version"]
+        != OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA
+        or checked["writer_branch"] != expected_branch
+        or context.selection_kind != "revision"
+        or checked["previous_revision_id"] != context.previous_revision_id
+        or checked["previous_outcome_sha256"] != context.previous_outcome_sha256
+        or checked["ledger_consumed_at_freeze"] is not context.ledger_consumed_at_freeze
+        or checked["event_count"] != OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded backfill revision consumption contract branch changed"
+        )
+    _validate_outcome_predecessor_scope(
+        selection_kind=context.selection_kind,
+        previous_revision_id=context.previous_revision_id,
+        previous_outcome_sha256=context.previous_outcome_sha256,
+    )
+    pre_head = _exact(
+        checked["expected_pre_head"],
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="recorded backfill revision consumption pre-head",
+    )
+    try:
+        expected = live_cas.LiveLedgerPreHeadV1(**pre_head)
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except (TypeError, live_ledger.LedgerError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Recorded backfill revision consumption pre-head changed"
+        ) from exc
+    frozen = context.frozen
+    if (
+        expected.epoch_id != frozen.projection.epoch_id
+        or (
+            expected.event_count < frozen.expected_pre_head.event_count
+            and not context.ledger_consumed_at_freeze
+        )
+        or len(frozen.current_events)
+        < expected.event_count + OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded backfill revision consumption ledger slice disappeared"
+        )
+    prefix_events = frozen.current_events[: expected.event_count]
+    pre_head_event = prefix_events[-1]
+    if (
+        pre_head_event.sequence_id != expected.sequence_id
+        or pre_head_event.entry_sha256 != expected.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded backfill revision consumption pre-head moved"
+        )
+    projection, specs, original = _capture_backfill_revision_specs(
+        context, prefix_events
+    )
+    if (
+        len(specs) != OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+        or tuple(spec.event_type for spec in specs)
+        != OUTCOME_BACKFILL_REVISION_EVENT_TYPES
+        or any(spec.issue_id is not None for spec in specs)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded canonical backfill revision transaction changed shape"
+        )
+    outcome = context.outcome
+    stations = frozen.profile["stations"]
+    seal = projection.seal_event
+    spec_payloads = [_event_spec_payload(spec) for spec in specs]
+    rebuilt = {
+        "schema_version": OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA,
+        "writer_branch": expected_branch,
+        "expected_pre_head": _pre_head_payload(expected),
+        "live_epoch_id": frozen.projection.epoch_id,
+        "target_date": outcome.target_date.isoformat(),
+        "original_backfill_entry_sha256": original.entry_sha256,
+        "previous_revision_id": context.previous_revision_id,
+        "previous_outcome_sha256": context.previous_outcome_sha256,
+        "tip_receipt_sha256": context.tip_receipt.sha256,
+        "exact_outcome_sha256": outcome.sha256,
+        "outcome_source_manifest_sha256": context.source_manifest.sha256,
+        "outcome_source_id": outcome.outcome_source_id,
+        "source_revision_id": outcome.source_revision_id,
+        "ledger_consumed_at_freeze": context.ledger_consumed_at_freeze,
+        "online_states_sha256": live._states_sha256(  # noqa: SLF001
+            projection.states, stations
+        ),
+        "last_finalized_date": projection.last_finalized_date.isoformat(),
+        "outstanding_target_date": (
+            projection.outstanding_target_date.isoformat()
+            if projection.outstanding_target_date is not None
+            else None
+        ),
+        "outstanding_issue_id": projection.outstanding_issue_id,
+        "outstanding_seal_entry_sha256": (
+            seal.entry_sha256 if seal is not None else None
+        ),
+        "blind_settled_count": projection.blind_settled_count,
+        "engineering_blind_candidate_count": (
+            projection.engineering_blind_candidate_count
+        ),
+        "backfill_count": projection.backfill_count,
+        "event_count": OUTCOME_BACKFILL_REVISION_EVENT_COUNT,
+        "first_event_key": specs[0].event_key,
+        "terminal_event_key": specs[-1].event_key,
+        "ordered_event_keys_sha256": _sha256(
+            _canonical_bytes([spec.event_key for spec in specs])
+        ),
+        "event_specs_sha256": _sha256(_canonical_bytes(spec_payloads)),
+    }
+    stored_events = tuple(
+        frozen.current_events[
+            expected.event_count : expected.event_count
+            + OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+        ]
+    )
+    if (
+        checked != rebuilt
+        or tuple(event.event_type for event in stored_events)
+        != OUTCOME_BACKFILL_REVISION_EVENT_TYPES
+        or any(
+            not _outcome_event_matches_spec(event, spec)
+            for event, spec in zip(stored_events, specs, strict=True)
+        )
+        or stored_events[0].previous_entry_sha256 != expected.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded backfill revision consumption transaction changed"
+        )
+    return OutcomeConsumptionPlan(
+        context=context,
+        expected_pre_head=expected,
+        specs=specs,
+        stored_events=stored_events,
+        contract=dict(checked),
+    )
+
+
 def _recorded_outcome_consumption_plan(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -4119,6 +4617,10 @@ def _recorded_outcome_consumption_plan(
         )
     if schema == OUTCOME_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
         return _recorded_settled_revision_consumption_plan(
+            item, reservation, contract, previous_step_receipt
+        )
+    if schema == OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
+        return _recorded_backfill_revision_consumption_plan(
             item, reservation, contract, previous_step_receipt
         )
     raise WorksetRecoveryIntegrityError(
@@ -4329,6 +4831,118 @@ def _settled_revision_consumption_transaction_committed(
     return False
 
 
+def _backfill_revision_consumption_transaction_committed(
+    reservation: Reservation, contract: Mapping[str, Any]
+) -> bool:
+    checked = _exact(
+        contract,
+        {
+            "schema_version",
+            "writer_branch",
+            "expected_pre_head",
+            "live_epoch_id",
+            "target_date",
+            "original_backfill_entry_sha256",
+            "previous_revision_id",
+            "previous_outcome_sha256",
+            "tip_receipt_sha256",
+            "exact_outcome_sha256",
+            "outcome_source_manifest_sha256",
+            "outcome_source_id",
+            "source_revision_id",
+            "ledger_consumed_at_freeze",
+            "online_states_sha256",
+            "last_finalized_date",
+            "outstanding_target_date",
+            "outstanding_issue_id",
+            "outstanding_seal_entry_sha256",
+            "blind_settled_count",
+            "engineering_blind_candidate_count",
+            "backfill_count",
+            "event_count",
+            "first_event_key",
+            "terminal_event_key",
+            "ordered_event_keys_sha256",
+            "event_specs_sha256",
+        },
+        name="pending backfill revision consumption contract",
+    )
+    pre_head = _exact(
+        checked["expected_pre_head"],
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="pending backfill revision consumption pre-head",
+    )
+    try:
+        expected = live_cas.LiveLedgerPreHeadV1(**pre_head)
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except (TypeError, live_ledger.LedgerError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Pending backfill revision consumption pre-head changed"
+        ) from exc
+    expected_branch = (
+        "preexisting_backfill_revision_adoption"
+        if checked["ledger_consumed_at_freeze"] is True
+        else "backfill_revision"
+    )
+    if (
+        checked["schema_version"]
+        != OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA
+        or checked["writer_branch"] != expected_branch
+        or not isinstance(checked["ledger_consumed_at_freeze"], bool)
+        or checked["event_count"] != OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+        or checked["live_epoch_id"] != expected.epoch_id
+        or not isinstance(checked["previous_revision_id"], str)
+        or not checked["previous_revision_id"]
+        or _hash_text(
+            checked["previous_outcome_sha256"],
+            name="pending backfill revision predecessor",
+        )
+        != checked["previous_outcome_sha256"]
+        or not isinstance(checked["first_event_key"], str)
+        or not isinstance(checked["terminal_event_key"], str)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Pending backfill revision consumption contract identity changed"
+        )
+    frozen = _frozen_live_prefix(reservation)
+    if (
+        expected.epoch_id != frozen.projection.epoch_id
+        or (
+            expected.event_count < frozen.expected_pre_head.event_count
+            and not checked["ledger_consumed_at_freeze"]
+        )
+        or len(frozen.current_events) < expected.event_count
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Pending backfill revision consumption pre-head disappeared"
+        )
+    observed_pre_head = frozen.current_events[expected.event_count - 1]
+    if (
+        observed_pre_head.sequence_id != expected.sequence_id
+        or observed_pre_head.entry_sha256 != expected.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Pending backfill revision consumption pre-head moved"
+        )
+    start = expected.event_count
+    stop = start + OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+    events = frozen.current_events
+    first_key = checked["first_event_key"]
+    terminal_key = checked["terminal_event_key"]
+    complete = (
+        len(events) >= stop
+        and events[start].event_key == first_key
+        and events[stop - 1].event_key == terminal_key
+    )
+    if complete:
+        return True
+    if any(event.event_key in {first_key, terminal_key} for event in events[start:]):
+        raise WorksetRecoveryIntegrityError(
+            "Pending backfill revision transaction is partial or displaced"
+        )
+    return False
+
+
 def _outcome_consumption_transaction_committed(
     reservation: Reservation, contract: Mapping[str, Any]
 ) -> bool:
@@ -4339,6 +4953,10 @@ def _outcome_consumption_transaction_committed(
         )
     if schema == OUTCOME_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
         return _settled_revision_consumption_transaction_committed(
+            reservation, contract
+        )
+    if schema == OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
+        return _backfill_revision_consumption_transaction_committed(
             reservation, contract
         )
     raise WorksetRecoveryIntegrityError(
@@ -6032,6 +6650,189 @@ def _settled_revision_consumption_output(
     )
 
 
+def _backfill_revision_consumption_output(
+    plan: OutcomeConsumptionPlan,
+    committed: tuple[live_ledger.LedgerEvent, ...],
+    current_events: Sequence[live_ledger.LedgerEvent],
+) -> ActionOutput:
+    if (
+        plan.contract.get("schema_version")
+        != OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA
+        or len(committed) != OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+        or tuple(event.event_type for event in committed)
+        != OUTCOME_BACKFILL_REVISION_EVENT_TYPES
+        or any(
+            not _outcome_event_matches_spec(event, spec)
+            for event, spec in zip(committed, plan.specs, strict=True)
+        )
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision stored transaction changed"
+        )
+    start = plan.expected_pre_head.event_count
+    stop = start + OUTCOME_BACKFILL_REVISION_EVENT_COUNT
+    if tuple(current_events[start:stop]) != committed:
+        raise WorksetRecoveryIntegrityError("Backfill revision transaction disappeared")
+    frozen = plan.context.frozen
+    try:
+        prefix_projection = live._reconstruct_projection(  # noqa: SLF001
+            current_events[:start], frozen.profile, frozen.prerequisites
+        )
+        post_projection = live._reconstruct_projection(  # noqa: SLF001
+            current_events[:stop], frozen.profile, frozen.prerequisites
+        )
+    except (live.LiveIntegrityError, live.LiveInputError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision post-state no longer replays"
+        ) from exc
+    outcome = plan.context.outcome
+    target_text = outcome.target_date.isoformat()
+    original_before = prefix_projection.backfill_events.get(target_text)
+    original_after = post_projection.backfill_events.get(target_text)
+    stations = frozen.profile["stations"]
+    online_states_sha256 = live._states_sha256(  # noqa: SLF001
+        post_projection.states, stations
+    )
+    expected_outstanding = plan.contract["outstanding_target_date"]
+    actual_outstanding = (
+        post_projection.outstanding_target_date.isoformat()
+        if post_projection.outstanding_target_date is not None
+        else None
+    )
+    prefix_seal = prefix_projection.seal_event
+    post_seal = post_projection.seal_event
+    prefix_seal_sha256 = prefix_seal.entry_sha256 if prefix_seal is not None else None
+    post_seal_sha256 = post_seal.entry_sha256 if post_seal is not None else None
+    expected_revisions = {
+        target: dict(revisions)
+        for target, revisions in prefix_projection.revision_ids.items()
+    }
+    expected_revisions[target_text][outcome.source_revision_id] = outcome.sha256
+    expected_actuals = {
+        target: dict(actuals)
+        for target, actuals in prefix_projection.latest_actuals_by_date.items()
+    }
+    expected_actuals[target_text] = dict(outcome.actual_by_station)
+    latest_persistence_baseline_updated = (
+        outcome.target_date == prefix_projection.last_finalized_date
+        and prefix_projection.outstanding_target_date is None
+    )
+    expected_latest_displacement = (
+        dict(outcome.actual_by_station)
+        if latest_persistence_baseline_updated
+        else dict(prefix_projection.latest_displacement_mm)
+    )
+    if (
+        original_before is None
+        or original_after is None
+        or original_before.entry_sha256
+        != plan.contract["original_backfill_entry_sha256"]
+        or original_after.entry_sha256 != original_before.entry_sha256
+        or prefix_projection.backfill_events != post_projection.backfill_events
+        or prefix_projection.settled_events != post_projection.settled_events
+        or prefix_projection.states != post_projection.states
+        or online_states_sha256 != plan.contract["online_states_sha256"]
+        or post_projection.last_finalized_date.isoformat()
+        != plan.contract["last_finalized_date"]
+        or prefix_projection.last_finalized_date != post_projection.last_finalized_date
+        or actual_outstanding != expected_outstanding
+        or prefix_projection.outstanding_target_date
+        != post_projection.outstanding_target_date
+        or prefix_projection.outstanding_issue_id
+        != post_projection.outstanding_issue_id
+        or post_projection.outstanding_issue_id != plan.contract["outstanding_issue_id"]
+        or prefix_projection.issue_events != post_projection.issue_events
+        or prefix_seal_sha256 != post_seal_sha256
+        or post_seal_sha256 != plan.contract["outstanding_seal_entry_sha256"]
+        or prefix_projection.anchored_seal_hashes
+        != post_projection.anchored_seal_hashes
+        or post_projection.blind_settled_count != plan.contract["blind_settled_count"]
+        or prefix_projection.blind_settled_count != post_projection.blind_settled_count
+        or post_projection.engineering_blind_candidate_count
+        != plan.contract["engineering_blind_candidate_count"]
+        or prefix_projection.engineering_blind_candidate_count
+        != post_projection.engineering_blind_candidate_count
+        or post_projection.backfill_count != plan.contract["backfill_count"]
+        or prefix_projection.backfill_count != post_projection.backfill_count
+        or {
+            target: dict(revisions)
+            for target, revisions in post_projection.revision_ids.items()
+        }
+        != expected_revisions
+        or {
+            target: dict(actuals)
+            for target, actuals in post_projection.latest_actuals_by_date.items()
+        }
+        != expected_actuals
+        or dict(post_projection.latest_displacement_mm) != expected_latest_displacement
+        or tuple(event.station for event in committed) != tuple(stations)
+        or any(event.issue_id is not None for event in committed)
+        or any(
+            event.state_before_sha256 != event.state_after_sha256
+            or event.payload.get("source_revision_id") != outcome.source_revision_id
+            or event.payload.get("outcome_batch_sha256") != outcome.sha256
+            or event.payload.get("original_classification") != "backfill_not_blind"
+            or event.payload.get("retrospective_score_available") is not False
+            or event.payload.get("live_online_state_rewritten") is not False
+            for event in committed
+        )
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Backfill revision transaction changed online or backfill authority"
+        )
+    return ActionOutput(
+        "live_outcome_consumption_transaction",
+        None,
+        {
+            "schema_version": (
+                "ootang_live_backfill_revision_consumption_action_output_v1"
+            ),
+            "writer_branch": plan.contract["writer_branch"],
+            "live_epoch_id": plan.expected_pre_head.epoch_id,
+            "target_date": target_text,
+            "original_backfill_entry_sha256": plan.contract[
+                "original_backfill_entry_sha256"
+            ],
+            "previous_revision_id": plan.context.previous_revision_id,
+            "previous_outcome_sha256": plan.context.previous_outcome_sha256,
+            "tip_receipt_sha256": plan.context.tip_receipt.sha256,
+            "exact_outcome_sha256": outcome.sha256,
+            "outcome_source_manifest_sha256": plan.context.source_manifest.sha256,
+            "outcome_source_id": outcome.outcome_source_id,
+            "source_revision_id": outcome.source_revision_id,
+            "ledger_consumed_at_freeze": plan.context.ledger_consumed_at_freeze,
+            "expected_pre_head": _pre_head_payload(plan.expected_pre_head),
+            "online_states_sha256": online_states_sha256,
+            "last_finalized_date": plan.contract["last_finalized_date"],
+            "outstanding_target_date": expected_outstanding,
+            "outstanding_issue_id": plan.contract["outstanding_issue_id"],
+            "backfill_count": plan.contract["backfill_count"],
+            "event_count": len(committed),
+            "event_specs_sha256": plan.contract["event_specs_sha256"],
+            "ordered_event_keys_sha256": plan.contract["ordered_event_keys_sha256"],
+            "ordered_entries_sha256": _sha256(
+                _canonical_bytes([event.entry_sha256 for event in committed])
+            ),
+            "first_event": _settlement_event_record(committed[0]),
+            "terminal_event": _settlement_event_record(committed[-1]),
+            "original_classification": "backfill_not_blind",
+            "retrospective_score_available": False,
+            "latest_persistence_baseline_updated": (
+                latest_persistence_baseline_updated
+            ),
+            "live_online_state_rewritten": False,
+            "blind_metric_eligible": False,
+            "live_ledger_events_recorded": True,
+            "canonical_frozen_writer_reused": True,
+            "contiguous_exact_slice_verified": True,
+            "network_action_performed": False,
+            "trusted_anchor_receipt_verified": False,
+            "e2_live_evidence_eligible": False,
+            "formal_warning_output": False,
+        },
+    )
+
+
 def _outcome_consumption_output(
     plan: OutcomeConsumptionPlan,
     committed: tuple[live_ledger.LedgerEvent, ...],
@@ -6042,6 +6843,8 @@ def _outcome_consumption_output(
         return _outstanding_outcome_consumption_output(plan, committed, current_events)
     if schema == OUTCOME_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
         return _settled_revision_consumption_output(plan, committed, current_events)
+    if schema == OUTCOME_BACKFILL_REVISION_CONSUMPTION_CONTRACT_SCHEMA:
+        return _backfill_revision_consumption_output(plan, committed, current_events)
     raise WorksetRecoveryIntegrityError(
         "Outcome consumption output contract schema changed"
     )
