@@ -337,6 +337,162 @@ class WorksetInventoryOrchestrationTests(unittest.TestCase):
         live_item = next(item for item in items if item.natural_key == live_key)
         self.assertEqual(live_item.dependency_keys, (outcome_item.natural_key,))
 
+    def test_pending_outcome_revision_precedes_newer_machine_selected_source(
+        self,
+    ) -> None:
+        target = date(2030, 1, 2)
+        target_text = target.isoformat()
+        previous_revision = "revision-1"
+        current_revision = "revision-2"
+        seed = inventory.ArtifactRef(
+            role="current_source_fixture",
+            root="active",
+            path="fixtures/current-source.json",
+            sha256="a" * 64,
+            size_bytes=1,
+        )
+        live_key = "live_outstanding:pending-revision-fixture"
+        items = [
+            inventory._item(  # noqa: SLF001
+                "live_outstanding",
+                live_key,
+                "outcome_batch_settled",
+                (seed,),
+                {"target_date": target_text, "terminal": False},
+            )
+        ]
+        receipt = SimpleNamespace(
+            path=Path("/active/rev1-receipt.json"), sha256="1" * 64
+        )
+        exact = SimpleNamespace(path=Path("/active/rev1-outcome.json"), sha256="2" * 64)
+        source_manifest = SimpleNamespace(
+            path=Path("/active/rev1-source.json"), sha256="3" * 64
+        )
+        registered = SimpleNamespace(
+            receipt=receipt,
+            exact_object=exact,
+            payload={
+                "source_revision_id": previous_revision,
+                "source_manifest": {
+                    "path": str(source_manifest.path),
+                    "sha256": source_manifest.sha256,
+                    "size_bytes": 1,
+                },
+            },
+            raw=b"published-revision-1\n",
+            revision_sequence_id=1,
+        )
+        chain = SimpleNamespace(
+            receipts=(registered,),
+            tip=registered,
+            pointed=registered,
+            active_pointer_path=Path("/absent/active.json"),
+        )
+        projection = SimpleNamespace(
+            epoch_id="old-epoch-a",
+            revision_ids={},
+            ledger_events=(),
+            outstanding_target_date=target,
+        )
+        source_record = SimpleNamespace(day=target, revision_id=current_revision)
+        source = SimpleNamespace(
+            records=(source_record,),
+            outcome_source_id="outcome-source-a",
+            snapshot_sequence_id=2,
+            snapshot_receipt=SimpleNamespace(
+                path=Path("/active/snapshot-receipt.json"), sha256="4" * 64
+            ),
+        )
+        state = SimpleNamespace(
+            active_root=Path("/active"),
+            maximum_bytes=1024,
+            live_module=object(),
+            live_projection=projection,
+            prerequisites=object(),
+            source=source,
+        )
+
+        def artifact(_path, *, role, root_label, root, maximum_bytes):
+            del root, maximum_bytes
+            return inventory.ArtifactRef(
+                role=role,
+                root=root_label,
+                path=f"fixtures/{role}.json",
+                sha256="b" * 64,
+                size_bytes=1,
+            )
+
+        with (
+            mock.patch(
+                "monitoring.ootang_outcome_materializer.load_config",
+                return_value={"_live_profile": {}},
+            ),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._runtime_path",
+                side_effect=lambda _profile, _root, name: Path(f"/active/{name}"),
+            ),
+            mock.patch(
+                "monitoring.ootang_epoch_drain._strict_outcome_receipt_targets",
+                return_value=(target,),
+            ),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._scan_receipt_chain",
+                return_value=chain,
+            ),
+            mock.patch.object(inventory, "_strict_dated_records", return_value={}),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._pending_registered_tip"
+            ),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._outcome_inbox_path",
+                return_value=Path("/absent/outcome.json"),
+            ),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._legal_active_bytes",
+                return_value=registered.raw,
+            ),
+            mock.patch(
+                "monitoring.ootang_outcome_materializer._artifact_from_mapping",
+                return_value=source_manifest,
+            ),
+            mock.patch.object(inventory, "_artifact", side_effect=artifact),
+            mock.patch.object(
+                inventory, "_source_artifacts_for_record", return_value=(seed,)
+            ),
+        ):
+            inventory._inventory_outcome_registry(  # noqa: SLF001
+                state,
+                inventory._new_builders(),
+                items,  # noqa: SLF001
+            )
+
+        outcome_items = [item for item in items if item.family == "outcome_revision"]
+        self.assertEqual(len(outcome_items), 2)
+        previous_item = next(
+            item
+            for item in outcome_items
+            if item.authority["record_type"] == "outcome_receipt_chain"
+            and item.authority["tip_source_revision_id"] == previous_revision
+        )
+        current_item = next(
+            item
+            for item in outcome_items
+            if item.authority["record_type"] == "machine_selected_source_outcome"
+            and item.authority["source_revision_id"] == current_revision
+        )
+        self.assertEqual(
+            previous_item.canonical_successor_state,
+            "outcome_or_revision_consumed",
+        )
+        self.assertEqual(current_item.authority["selection_kind"], "revision")
+        self.assertEqual(
+            current_item.authority["previous_revision_id"], previous_revision
+        )
+        self.assertEqual(
+            current_item.authority["previous_outcome_sha256"], exact.sha256
+        )
+        self.assertEqual(current_item.dependency_keys, (previous_item.natural_key,))
+
 
 if __name__ == "__main__":
     unittest.main()

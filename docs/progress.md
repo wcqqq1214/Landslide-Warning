@@ -1,9 +1,52 @@
 # 项目工作进度
 
-> 更新日期：2026-08-28。本文件记录工程与研究实现进度；正式 v5 门禁以
+> 更新日期：2026-08-29。本文件记录工程与研究实现进度；正式 v5 门禁以
 > `v5_validation_protocol.md` 为准，机器连续预测支路以
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-29 outcome materialization 与 outstanding 自动消费桥（本增量）
+
+- recovery coordinator 现在支持两类 manifest-bound `outcome_materialized`：未完整发布的
+  `outcome_receipt_chain` tip 做发布修复，`machine_selected_source_outcome` 做新的
+  canonical materialization。输入绑定 source snapshot/record、old epoch/seal、selection 及
+  predecessor authority；物化动作不追加 live-ledger event、不调用网络。
+- 物化 step receipt 现在可以在下一次 poll 作为唯一 immutable 前驱，从其精确
+  materializer receipt、exact outcome 和 input manifest 进入已有 outstanding 43-event canonical
+  writer。真实回归已验证“machine-selected outstanding 物化 → 下一 poll 消费”，不依赖
+  mutable pointer/current source 重选 actual。
+- commit-before-recovery-receipt 窗口已按 immutable chain 分类：预期 current tip 才允许
+  reconcile pointer/inbox；若合法新 revision 已把它变成 historical predecessor，则只采用原
+  receipt/exact/input，不回退 current publication。冻结前已消费的 tip 显式使用
+  `preexisting_consumed_adoption`，采用既有 43-event slice 且 CAS 零新增。
+- inventory 和 recovery 同时绑定 `previous_revision_id`/
+  `previous_outcome_sha256`。同日存在 pending rev1 tip 时，current source rev2 会被正确冻结
+  为依赖 rev1 的 `revision`，不再被误分为 outstanding/backfill。真实链路测试已通过
+  “rev1 43-event 消费 → rev2 物化为 receipt sequence 2”。
+- manifest profile 升为 `1.3.0-revision-predecessor-authority`，recovery profile 升为
+  `2.0.0-outcome-materialization-chain`。本轮不声称 revision/backfill/first-backfill live writer、
+  full workset、all successors、derived future reservation、terminal closure、drained/active/rotation/
+  lifecycle/trusted/E2/formal authority。
+- inventory+recovery focused `58/58`（3.71 s）通过；含 outcome materializer 及既定
+  recovery、live-ledger/CAS、inventory/manifest、admission、eligibility、drain 与 main 相邻回归
+  `192/192`（11.06 s）通过。Ruff check/format、compile、strict profile load 和 diff check
+  均通过，独立最终只读复审 P0/P1=0。未运行训练、真实网络、长并发/容量或
+  无关边界矩阵；ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数和实验结论均未修改。
+- inventory/manifest/recovery module、manifest/recovery profile、两组直接测试、本增量工程文档
+  与 `main.py` SHA-256 分别为
+  `2b56de3f36da3a08d34bf3a9509b0492c5d989cd1f391491c0574bed2723bd52`、
+  `0ca331c6827cd896b4c3261792eed5f933e104d4c40c4fbf3b7e416e9b1fd424`、
+  `6b7cf96e376293ee6b06501f363a3b9e84844e0671084e2a8269bb6c5307bc7a`、
+  `857ae1ff031289d51c0a2947beeb2e47ceb9d48a3769db707c8f7f75750d48dc`、
+  `243d43b2b9444d0daaa217eac2695d3754686249777eaa0dadd11dd31ea735a2`、
+  `cf542fa0ca5901f9eb93448fc5581b983bd057750b371d6126bfc20e72f3e844`、
+  `2db4f4eef07fe5234c843faac7a0fb7c56790b0dae98b3b775b0c8d3b2d2ab9d`、
+  `8a53cf5eb33c669d5a427f9e7fdb73bebcbcadc1382dda54ca40e911a6bb5855`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。详细合同见
+  `docs/ootang_outcome_materialization_recovery_engineering.md`。
+- 下一窄增量是 settled-date revision consumption writer；随后分开实现 backfill 与
+  first-backfill writer。跨 freeze 的 derived-work/step-level dependency reservation 继续作为更高层
+  closure 问题处理。
 
 ## 2026-08-28 published outstanding outcome 自动消费（本增量）
 

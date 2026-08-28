@@ -1777,6 +1777,7 @@ def _inventory_outcome_registry(
             f"Outcome registry failed recursive replay:{type(exc).__name__}:{exc}"
         ) from exc
     pending_tip_key: str | None = None
+    pending_tips_by_date: dict[date, tuple[str, str, str]] = {}
     for target_text, chain in sorted(chains.items()):
         target = date.fromisoformat(target_text)
         active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
@@ -1900,6 +1901,11 @@ def _inventory_outcome_registry(
             chain.tip.exact_object.sha256,
         )
         pending_tip_key = natural_key
+        pending_tips_by_date[target] = (
+            natural_key,
+            tip_revision,
+            chain.tip.exact_object.sha256,
+        )
         items.append(
             _item(
                 "outcome_revision",
@@ -1914,7 +1920,9 @@ def _inventory_outcome_registry(
         )
 
     records_by_date = {record.day: record for record in state.source.records}
-    candidate_specs: list[tuple[str, date, object]] = []
+    candidate_specs: list[
+        tuple[str, date, object, str | None, str | None, str | None]
+    ] = []
     for target_text in sorted(state.live_projection.revision_ids):
         target = date.fromisoformat(target_text)
         record = records_by_date.get(target)
@@ -1926,11 +1934,29 @@ def _inventory_outcome_registry(
             continue
         known = state.live_projection.revision_ids[target_text]
         if record.revision_id not in known:
-            candidate_specs.append(("revision", target, record))
+            previous_revision = next(reversed(known))
+            candidate_specs.append(
+                (
+                    "revision",
+                    target,
+                    record,
+                    previous_revision,
+                    known[previous_revision],
+                    None,
+                )
+            )
     outstanding = state.live_projection.outstanding_target_date
     if outstanding is not None and outstanding in records_by_date:
+        outstanding_record = records_by_date[outstanding]
         candidate_specs.append(
-            ("outstanding", outstanding, records_by_date[outstanding])
+            (
+                "outstanding",
+                outstanding,
+                outstanding_record,
+                None,
+                None,
+                None,
+            )
         )
     if outstanding is None:
         target = state.live_projection.last_finalized_date + timedelta(days=1)
@@ -1940,7 +1966,7 @@ def _inventory_outcome_registry(
                 raise WorksetInventoryIntegrityError(
                     "Current source skipped a contiguous backfill date"
                 )
-            candidate_specs.append(("backfill", target, record))
+            candidate_specs.append(("backfill", target, record, None, None, None))
             target += timedelta(days=1)
     existing_identities = {
         (record["target_date"], record.get("tip_source_revision_id"))
@@ -1954,10 +1980,21 @@ def _inventory_outcome_registry(
         if item.family == "outcome_revision"
         and item.canonical_successor_state == "source_snapshot_ingested"
     ]
-    for kind, target, source_record in candidate_specs:
+    for (
+        kind,
+        target,
+        source_record,
+        previous_revision_id,
+        previous_outcome_sha256,
+        predecessor_key,
+    ) in candidate_specs:
         revision = _text(source_record.revision_id, name="selected source revision id")
         if (target.isoformat(), revision) in existing_identities:
             continue
+        pending = pending_tips_by_date.get(target)
+        if pending is not None and revision != pending[1]:
+            kind = "revision"
+            predecessor_key, previous_revision_id, previous_outcome_sha256 = pending
         artifacts = list(_source_artifacts_for_record(state, target))
         seal = next(
             (
@@ -1978,7 +2015,11 @@ def _inventory_outcome_registry(
             state.source.outcome_source_id,
         )
         dependencies = tuple(
-            value for value in (prior_key, *source_ingest_keys) if value is not None
+            dict.fromkeys(
+                value
+                for value in (prior_key, predecessor_key, *source_ingest_keys)
+                if value is not None
+            )
         )
         authority = {
             "record_type": "machine_selected_source_outcome",
@@ -1987,6 +2028,8 @@ def _inventory_outcome_registry(
             "old_live_epoch_id": state.live_projection.epoch_id,
             "outcome_source_id": state.source.outcome_source_id,
             "source_revision_id": revision,
+            "previous_revision_id": previous_revision_id,
+            "previous_outcome_sha256": previous_outcome_sha256,
             "source_snapshot_sequence_id": state.source.snapshot_sequence_id,
             "source_snapshot_receipt_sha256": state.source.snapshot_receipt.sha256,
             "live_issue_seal_entry_sha256": seal_hash,

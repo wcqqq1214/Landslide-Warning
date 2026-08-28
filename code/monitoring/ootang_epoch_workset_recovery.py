@@ -31,6 +31,7 @@ from monitoring import ootang_epoch_registry as registry  # noqa: E402
 from monitoring import ootang_epoch_workset_manifest as manifest  # noqa: E402
 from monitoring import ootang_live_ledger as live_ledger  # noqa: E402
 from monitoring import ootang_live_ledger_cas_v1 as live_cas  # noqa: E402
+from monitoring import ootang_live_source as live_source  # noqa: E402
 from monitoring import ootang_outcome_materializer as outcomes  # noqa: E402
 from monitoring import ootang_prequential_live as live  # noqa: E402
 from monitoring import ootang_trusted_time_shadow_core as trusted  # noqa: E402
@@ -39,7 +40,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "3983d790b23d8d4730bddde96070cac16717c29abe35e1e85abe4b5828893629"
+    "243d43b2b9444d0daaa217eac2695d3754686249777eaa0dadd11dd31ea735a2"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -49,6 +50,7 @@ SUPPORTED_SUCCESSORS = (
     "anchor_receipt_repaired",
     "anchor_request_recorded",
     "anchor_result_recorded",
+    "outcome_materialized",
     "outcome_or_revision_consumed",
     "outcome_batch_settled",
     "superseded_by_backfill",
@@ -62,6 +64,9 @@ ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES = 1024 * 1024
 ANCHOR_RESULT_USER_AGENT = "ootang-workset-recovery/1"
 OUTCOME_SETTLEMENT_ADOPTION_CONTRACT_SCHEMA = (
     "ootang_live_outcome_settlement_adoption_contract_v1"
+)
+OUTCOME_MATERIALIZATION_CONTRACT_SCHEMA = (
+    "ootang_outcome_materialization_action_contract_v1"
 )
 OUTCOME_SETTLEMENT_EVENT_COUNT = 43
 OUTCOME_SETTLEMENT_EVENT_TYPES = (
@@ -80,7 +85,7 @@ OUTCOME_SETTLEMENT_EVENT_TYPES = (
     "outcome_batch_settled",
 )
 OUTCOME_CONSUMPTION_CONTRACT_SCHEMA = (
-    "ootang_live_outcome_consumption_action_contract_v1"
+    "ootang_live_outcome_consumption_action_contract_v2"
 )
 OUTCOME_CONSUMPTION_EVENT_COUNT = 43
 OUTCOME_CONSUMPTION_EVENT_TYPES = OUTCOME_SETTLEMENT_EVENT_TYPES
@@ -206,6 +211,7 @@ TRUE_CAPABILITIES = (
     "live_anchor_result_request_intent_implemented",
     "live_anchor_result_response_observation_implemented",
     "live_anchor_result_adapter_implemented",
+    "outcome_materialization_adapter_implemented",
     "live_outstanding_outcome_consumption_adapter_implemented",
     "live_outcome_settlement_adoption_implemented",
     "ledger_mutation_recovery_implemented",
@@ -237,11 +243,11 @@ FALSE_CLAIMS = (
 EXPECTED_UPSTREAM = {
     "manifest_profile": {
         "path": "config/ootang_epoch_workset_manifest.v1.json",
-        "expected_sha256": "338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e",
+        "expected_sha256": "857ae1ff031289d51c0a2947beeb2e47ceb9d48a3769db707c8f7f75750d48dc",
     },
     "manifest_implementation": {
         "path": "code/monitoring/ootang_epoch_workset_manifest.py",
-        "expected_sha256": "5284018ade9160a80b78487470d3457a059490fb9062d965fc59048c7acb9c2d",
+        "expected_sha256": "0ca331c6827cd896b4c3261792eed5f933e104d4c40c4fbf3b7e416e9b1fd424",
     },
     "trusted_implementation": {
         "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
@@ -447,6 +453,7 @@ class OutcomeConsumptionContext:
     selection_kind: str
     tip_receipt: outcomes.Artifact
     source_manifest: outcomes.Artifact
+    ledger_consumed_at_freeze: bool
 
 
 @dataclass(frozen=True)
@@ -455,6 +462,14 @@ class OutcomeConsumptionPlan:
     expected_pre_head: live_cas.LiveLedgerPreHeadV1
     specs: tuple[live_ledger.EventSpec, ...]
     stored_events: tuple[live_ledger.LedgerEvent, ...]
+    contract: Mapping[str, object]
+
+
+@dataclass(frozen=True)
+class OutcomeMaterializationPlan:
+    materializer_profile: Mapping[str, Any]
+    frozen: FrozenLivePrefix
+    selection: outcomes._Selection | None
     contract: Mapping[str, object]
 
 
@@ -896,13 +911,39 @@ def _provenance() -> dict[str, object]:
     }
 
 
-def _item_adapter_supported(item: Mapping[str, Any], action: str | None = None) -> bool:
+def _item_adapter_supported(
+    item: Mapping[str, Any],
+    action: str | None = None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
+) -> bool:
     selected = action or item.get("canonical_successor_state")
     if selected not in SUPPORTED_SUCCESSORS:
         return False
+    if selected == "outcome_materialized":
+        authority = item.get("authority")
+        if item.get("family") != "outcome_revision" or not isinstance(
+            authority, Mapping
+        ):
+            return False
+        record_type = authority.get("record_type")
+        if record_type == "machine_selected_source_outcome":
+            return (
+                authority.get("action") == "outcome_materialized"
+                and authority.get("selection_kind")
+                in {"revision", "outstanding", "backfill"}
+                and authority.get("terminal") is False
+            )
+        if record_type == "outcome_receipt_chain":
+            return (
+                authority.get("action") == "outcome_materialized"
+                and authority.get("tip_published") is False
+                and isinstance(authority.get("tip_ledger_consumed"), bool)
+                and authority.get("terminal") is False
+            )
+        return False
     if selected == "outcome_or_revision_consumed":
         authority = item.get("authority")
-        return (
+        direct = (
             item.get("family") == "outcome_revision"
             and isinstance(authority, Mapping)
             and authority.get("record_type") == "outcome_receipt_chain"
@@ -911,6 +952,15 @@ def _item_adapter_supported(item: Mapping[str, Any], action: str | None = None) 
             and authority.get("tip_ledger_consumed") is False
             and authority.get("terminal") is False
         )
+        materialized = (
+            previous_step_receipt is not None
+            and previous_step_receipt.get("action") == "outcome_materialized"
+            and previous_step_receipt.get("next_actions")
+            == ["outcome_or_revision_consumed"]
+            and previous_step_receipt.get("terminal_for_key") is False
+            and _item_adapter_supported(item, "outcome_materialized")
+        )
+        return direct or materialized
     if selected == "outcome_batch_settled":
         dependencies = item.get("dependency_keys")
         return isinstance(dependencies, list) and bool(dependencies)
@@ -1274,6 +1324,67 @@ _OUTCOME_RECEIPT_RECORD_KEYS = {
     "source_manifest_sha256",
     "ledger_consumed",
 }
+_OUTCOME_SELECTED_AUTHORITY_KEYS = {
+    "record_type",
+    "selection_kind",
+    "target_date",
+    "old_live_epoch_id",
+    "outcome_source_id",
+    "source_revision_id",
+    "previous_revision_id",
+    "previous_outcome_sha256",
+    "source_snapshot_sequence_id",
+    "source_snapshot_receipt_sha256",
+    "live_issue_seal_entry_sha256",
+    "terminal",
+    "action",
+}
+_OUTCOME_MATERIALIZATION_CONTRACT_KEYS = {
+    "schema_version",
+    "writer_branch",
+    "authority_record_type",
+    "selection_kind",
+    "old_live_epoch_id",
+    "target_date",
+    "outcome_source_id",
+    "source_revision_id",
+    "source_snapshot_sequence_id",
+    "source_snapshot_receipt_sha256",
+    "live_issue_seal_entry_sha256",
+    "source_exported_at_utc",
+    "previous_revision_id",
+    "previous_outcome_sha256",
+    "revision_sequence_id",
+    "previous_receipt",
+    "input_manifest_payload",
+    "input_manifest",
+    "outcome_payload",
+    "exact_outcome_object",
+    "receipt_payload",
+    "receipt",
+    "item_artifacts_sha256",
+}
+_OUTCOME_MATERIALIZATION_OUTPUT_KEYS = {
+    "writer_branch",
+    "selection_kind",
+    "target_date",
+    "outcome_source_id",
+    "source_revision_id",
+    "source_snapshot_sequence_id",
+    "source_snapshot_receipt_sha256",
+    "input_manifest_sha256",
+    "exact_outcome_sha256",
+    "receipt_sha256",
+    "materializer_receipt",
+    "input_manifest",
+    "immutable_receipt_verified",
+    "fully_published_verified",
+    "canonical_materializer_writer_reused",
+    "current_pointer_required_for_historical_replay",
+    "live_ledger_event_count",
+    "live_ledger_mutation_performed",
+    "network_action_performed",
+}
 _MANIFEST_ARTIFACT_KEYS = {"role", "root", "path", "sha256", "size_bytes"}
 
 
@@ -1327,10 +1438,1246 @@ def _artifact_identity(
     return role, "active", relative, sha256, size_bytes
 
 
-def _outcome_consumption_context(
+def _materializer_artifact_payload(
+    artifact: outcomes.Artifact,
+) -> dict[str, object]:
+    return {
+        "path": str(artifact.path.resolve()),
+        "sha256": artifact.sha256,
+        "size_bytes": artifact.size_bytes,
+    }
+
+
+def _declared_materializer_artifact(value: object, *, name: str) -> outcomes.Artifact:
+    record = _exact(value, {"path", "sha256", "size_bytes"}, name=name)
+    path = record["path"]
+    size = record["size_bytes"]
+    digest = _hash_text(record["sha256"], name=f"{name} digest")
+    if (
+        not isinstance(path, str)
+        or not path
+        or not Path(path).is_absolute()
+        or not isinstance(size, int)
+        or isinstance(size, bool)
+        or size <= 0
+    ):
+        raise WorksetRecoveryIntegrityError(f"{name} identity changed")
+    return outcomes.Artifact(Path(path).resolve(), digest, size)
+
+
+def _expected_materializer_object(
+    profile: Mapping[str, Any],
+    root: Path,
+    payload: Mapping[str, Any],
+    *,
+    suffix: str,
+) -> outcomes.Artifact:
+    raw = outcomes._canonical_bytes(dict(payload))  # noqa: SLF001
+    digest = _sha256(raw)
+    return outcomes.Artifact(
+        path=outcomes._object_path(  # noqa: SLF001
+            outcomes._runtime_path(profile, root, "objects"),  # noqa: SLF001
+            digest,
+            suffix=suffix,
+        ),
+        sha256=digest,
+        size_bytes=len(raw),
+    )
+
+
+def _active_artifact_reference(
+    artifact: outcomes.Artifact, active_root: Path
+) -> dict[str, object]:
+    try:
+        relative = artifact.path.resolve().relative_to(active_root.resolve())
+    except ValueError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization output escaped the active runtime"
+        ) from exc
+    return {
+        "path": relative.as_posix(),
+        "sha256": artifact.sha256,
+        "size_bytes": artifact.size_bytes,
+    }
+
+
+def _active_artifact_from_reference(
+    value: object,
+    reservation: Reservation,
+    *,
+    name: str,
+) -> outcomes.Artifact:
+    reference = _exact(
+        value,
+        {"path", "sha256", "size_bytes"},
+        name=name,
+    )
+    try:
+        path = registry._contained(  # noqa: SLF001
+            reservation.paths.active_root,
+            reference["path"],
+            name=name,
+        )
+        artifact = outcomes._artifact_from_mapping(  # noqa: SLF001
+            {**reference, "path": str(path)},
+            name=name,
+        )
+    except (registry.EpochRegistryError, outcomes.OutcomeMaterializerError) as exc:
+        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    if _active_artifact_reference(artifact, reservation.paths.active_root) != reference:
+        raise WorksetRecoveryIntegrityError(f"{name} active-root binding changed")
+    return artifact
+
+
+def _outcome_materialization_item_artifacts_sha256(
+    item: Mapping[str, Any],
+) -> str:
+    artifacts = item.get("artifacts")
+    if not isinstance(artifacts, list) or not artifacts:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization item lost its artifact bindings"
+        )
+    for artifact in artifacts:
+        _exact(
+            artifact,
+            _MANIFEST_ARTIFACT_KEYS,
+            name="outcome materialization artifact",
+        )
+    return _sha256(_canonical_bytes(artifacts))
+
+
+def _validate_selected_source_artifact_bindings(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    profile: Mapping[str, Any],
+    input_manifest: Mapping[str, Any],
+) -> None:
+    raw_artifacts = item.get("artifacts")
+    if not isinstance(raw_artifacts, list):
+        raise WorksetRecoveryIntegrityError(
+            "Selected source outcome artifacts changed type"
+        )
+    by_role: dict[str, list[dict[str, Any]]] = {}
+    for raw in raw_artifacts:
+        artifact = _exact(raw, _MANIFEST_ARTIFACT_KEYS, name="selected source artifact")
+        role = artifact["role"]
+        if not isinstance(role, str):
+            raise WorksetRecoveryIntegrityError(
+                "Selected source artifact role changed type"
+            )
+        by_role.setdefault(role, []).append(artifact)
+    expected_roles = {
+        "current_source_pointer",
+        "activation_source_manifest",
+        "current_source_semantic_manifest",
+        "current_source_revision_head",
+        "current_source_snapshot_receipt",
+    }
+    if set(by_role) != expected_roles or any(
+        len(values) != 1 for values in by_role.values()
+    ):
+        raise WorksetRecoveryIntegrityError("Selected source artifact role set changed")
+    source = input_manifest.get("source")
+    if not isinstance(source, Mapping):
+        raise WorksetRecoveryIntegrityError(
+            "Selected outcome input source bindings changed"
+        )
+    mapping = {
+        "activation_source_manifest": "activation_source_manifest",
+        "current_source_semantic_manifest": "semantic_manifest",
+        "current_source_revision_head": "target_revision_receipt",
+        "current_source_snapshot_receipt": "snapshot_receipt",
+    }
+    for role, source_name in mapping.items():
+        try:
+            bound = outcomes._artifact_from_mapping(  # noqa: SLF001
+                source[source_name], name=f"selected source {source_name}"
+            )
+        except outcomes.OutcomeMaterializerError as exc:
+            raise WorksetRecoveryIntegrityError(str(exc)) from exc
+        obligation = by_role[role][0]
+        expected = _artifact_identity(
+            role=role,
+            path=bound.path,
+            sha256=bound.sha256,
+            size_bytes=bound.size_bytes,
+            active_root=reservation.paths.active_root,
+        )
+        actual = (
+            obligation["role"],
+            obligation["root"],
+            obligation["path"],
+            obligation["sha256"],
+            obligation["size_bytes"],
+        )
+        if actual != expected:
+            raise WorksetRecoveryIntegrityError(
+                f"Selected source {role} binding changed"
+            )
+    pointer_path = live_source._runtime_path(  # noqa: SLF001
+        profile["_deploy_profile"],
+        "current_source_pointer",
+        root=reservation.paths.active_root,
+    )
+    pointer = by_role["current_source_pointer"][0]
+    if _artifact_path(pointer, reservation) != pointer_path.resolve():
+        raise WorksetRecoveryIntegrityError(
+            "Selected current source pointer path changed"
+        )
+
+
+def _outcome_materialization_receipt_payload(
+    profile: Mapping[str, Any],
+    root: Path,
+    *,
+    target: date,
+    revision: str,
+    exact_object: outcomes.Artifact,
+    input_manifest: outcomes.Artifact,
+    input_manifest_payload: Mapping[str, Any],
+    outcome_payload: Mapping[str, Any],
+    previous_receipt: outcomes.Artifact | None,
+    revision_sequence_id: int,
+) -> tuple[dict[str, object], outcomes.Artifact]:
+    active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+        profile, root, target
+    )
+    scientific_semantics = input_manifest_payload.get("scientific_semantics_sha256")
+    _hash_text(
+        scientific_semantics,
+        name="materialization input scientific semantics",
+    )
+    semantic_outcome = dict(outcome_payload)
+    semantic_outcome["source_manifest"] = {
+        "scientific_semantics_sha256": scientific_semantics,
+        "exact_manifest_sha256": input_manifest.sha256,
+    }
+    payload = {
+        "schema_version": profile["outcome"]["receipt_schema_version"],
+        "target_date": target.isoformat(),
+        "source_revision_id": revision,
+        "active_outcome_path": str(active_path.resolve()),
+        "scientific_semantics_sha256": outcomes._canonical_digest(  # noqa: SLF001
+            semantic_outcome
+        ),
+        "input_manifest_sha256": input_manifest.sha256,
+        "exact_outcome_object": _materializer_artifact_payload(exact_object),
+        "revision_sequence_id": revision_sequence_id,
+        "previous_receipt": (
+            _materializer_artifact_payload(previous_receipt)
+            if previous_receipt is not None
+            else None
+        ),
+    }
+    raw = outcomes._canonical_bytes(payload)  # noqa: SLF001
+    path = outcomes._receipt_path(  # noqa: SLF001
+        outcomes._runtime_path(profile, root, "outcome_receipts"),  # noqa: SLF001
+        target,
+        revision,
+    )
+    return payload, outcomes.Artifact(path.resolve(), _sha256(raw), len(raw))
+
+
+def _outcome_materialization_contract_record(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+) -> tuple[
+    dict[str, Any],
+    outcomes.Artifact,
+    outcomes.Artifact,
+    outcomes.Artifact,
+]:
+    checked = _exact(
+        dict(contract),
+        _OUTCOME_MATERIALIZATION_CONTRACT_KEYS,
+        name="outcome materialization contract",
+    )
+    if (
+        checked["schema_version"] != OUTCOME_MATERIALIZATION_CONTRACT_SCHEMA
+        or checked["writer_branch"]
+        not in {"registered_tip_reconciliation", "machine_selected_source"}
+        or checked["authority_record_type"]
+        not in {"outcome_receipt_chain", "machine_selected_source_outcome"}
+        or checked["selection_kind"] not in {"revision", "outstanding", "backfill"}
+        or checked["writer_branch"]
+        != {
+            "outcome_receipt_chain": "registered_tip_reconciliation",
+            "machine_selected_source_outcome": "machine_selected_source",
+        }[checked["authority_record_type"]]
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization contract branch changed"
+        )
+    try:
+        target = date.fromisoformat(checked["target_date"])
+    except (TypeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization target changed"
+        ) from exc
+    revision = checked["source_revision_id"]
+    source_id = checked["outcome_source_id"]
+    snapshot_sequence = checked["source_snapshot_sequence_id"]
+    if (
+        target.isoformat() != checked["target_date"]
+        or not isinstance(revision, str)
+        or not revision
+        or revision != revision.strip()
+        or not isinstance(source_id, str)
+        or not source_id
+        or source_id != source_id.strip()
+        or not isinstance(snapshot_sequence, int)
+        or isinstance(snapshot_sequence, bool)
+        or snapshot_sequence <= 0
+        or not isinstance(checked["revision_sequence_id"], int)
+        or isinstance(checked["revision_sequence_id"], bool)
+        or checked["revision_sequence_id"] <= 0
+    ):
+        raise WorksetRecoveryIntegrityError("Outcome materialization identity changed")
+    for name in (
+        "source_snapshot_receipt_sha256",
+        "live_issue_seal_entry_sha256",
+        "item_artifacts_sha256",
+    ):
+        _hash_text(checked[name], name=f"outcome materialization {name}")
+    _parse_utc(
+        checked["source_exported_at_utc"],
+        name="outcome materialization source export",
+    )
+    if checked["previous_revision_id"] is None:
+        if checked["previous_outcome_sha256"] is not None:
+            raise WorksetRecoveryIntegrityError(
+                "Outcome materialization previous outcome lost its revision"
+            )
+    else:
+        if (
+            not isinstance(checked["previous_revision_id"], str)
+            or not checked["previous_revision_id"]
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Outcome materialization previous revision changed"
+            )
+        _hash_text(
+            checked["previous_outcome_sha256"],
+            name="outcome materialization previous outcome",
+        )
+    if (checked["selection_kind"] == "revision") is not (
+        checked["previous_revision_id"] is not None
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization predecessor branch changed"
+        )
+
+    input_manifest = _declared_materializer_artifact(
+        checked["input_manifest"], name="materialization input manifest"
+    )
+    exact_object = _declared_materializer_artifact(
+        checked["exact_outcome_object"], name="materialization exact outcome"
+    )
+    receipt = _declared_materializer_artifact(
+        checked["receipt"], name="materialization receipt"
+    )
+    input_payload = checked["input_manifest_payload"]
+    outcome_payload = checked["outcome_payload"]
+    receipt_payload = checked["receipt_payload"]
+    if not all(
+        isinstance(value, dict)
+        for value in (input_payload, outcome_payload, receipt_payload)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization payload changed type"
+        )
+    expected_input = _expected_materializer_object(
+        outcomes.load_config(),
+        reservation.paths.active_root,
+        input_payload,
+        suffix="outcome-input.json",
+    )
+    expected_exact = _expected_materializer_object(
+        outcomes.load_config(),
+        reservation.paths.active_root,
+        outcome_payload,
+        suffix="outcome.json",
+    )
+    expected_receipt_raw = outcomes._canonical_bytes(receipt_payload)  # noqa: SLF001
+    expected_receipt = outcomes.Artifact(
+        outcomes._receipt_path(  # noqa: SLF001
+            outcomes._runtime_path(  # noqa: SLF001
+                outcomes.load_config(),
+                reservation.paths.active_root,
+                "outcome_receipts",
+            ),
+            target,
+            revision,
+        ).resolve(),
+        _sha256(expected_receipt_raw),
+        len(expected_receipt_raw),
+    )
+    source = input_payload.get("source")
+    source_record = input_payload.get("source_record")
+    if (
+        input_manifest != expected_input
+        or exact_object != expected_exact
+        or receipt != expected_receipt
+        or input_payload.get("target_date") != target.isoformat()
+        or input_payload.get("selection_kind") != checked["selection_kind"]
+        or input_payload.get("outcome_source_id") != source_id
+        or not isinstance(source, dict)
+        or not isinstance(source_record, dict)
+        or source_record.get("date") != target.isoformat()
+        or source_record.get("revision_id") != revision
+        or outcome_payload.get("target_date") != target.isoformat()
+        or outcome_payload.get("outcome_source_id") != source_id
+        or outcome_payload.get("source_revision_id") != revision
+        or outcome_payload.get("source_manifest")
+        != _materializer_artifact_payload(input_manifest)
+        or receipt_payload.get("target_date") != target.isoformat()
+        or receipt_payload.get("source_revision_id") != revision
+        or receipt_payload.get("input_manifest_sha256") != input_manifest.sha256
+        or receipt_payload.get("exact_outcome_object")
+        != _materializer_artifact_payload(exact_object)
+        or receipt_payload.get("revision_sequence_id")
+        != checked["revision_sequence_id"]
+        or receipt_payload.get("previous_receipt") != checked["previous_receipt"]
+        or checked["item_artifacts_sha256"]
+        != _outcome_materialization_item_artifacts_sha256(item)
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization deterministic payload changed"
+        )
+    snapshot = source.get("snapshot_receipt")
+    try:
+        snapshot_artifact = outcomes._artifact_from_mapping(  # noqa: SLF001
+            snapshot, name="materialization source snapshot receipt"
+        )
+        snapshot_payload, _ = outcomes._read_json(  # noqa: SLF001
+            snapshot_artifact.path,
+            name="materialization source snapshot receipt",
+        )
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    if (
+        snapshot_artifact.sha256 != checked["source_snapshot_receipt_sha256"]
+        or snapshot_payload.get("schema_version") != "ootang_source_snapshot_receipt_v1"
+        or snapshot_payload.get("snapshot_sequence_id") != snapshot_sequence
+        or snapshot_payload.get("outcome_source_id") != source_id
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization source snapshot changed"
+        )
+
+    authority_type = checked["authority_record_type"]
+    if authority_type == "machine_selected_source_outcome":
+        authority = _exact(
+            item.get("authority"),
+            _OUTCOME_SELECTED_AUTHORITY_KEYS,
+            name="selected outcome materialization authority",
+        )
+        expected_authority = {
+            "record_type": authority_type,
+            "selection_kind": checked["selection_kind"],
+            "target_date": checked["target_date"],
+            "old_live_epoch_id": checked["old_live_epoch_id"],
+            "outcome_source_id": checked["outcome_source_id"],
+            "source_revision_id": checked["source_revision_id"],
+            "previous_revision_id": checked["previous_revision_id"],
+            "previous_outcome_sha256": checked["previous_outcome_sha256"],
+            "source_snapshot_sequence_id": checked["source_snapshot_sequence_id"],
+            "source_snapshot_receipt_sha256": checked["source_snapshot_receipt_sha256"],
+            "live_issue_seal_entry_sha256": checked["live_issue_seal_entry_sha256"],
+            "terminal": False,
+            "action": "outcome_materialized",
+        }
+        if authority != expected_authority:
+            raise WorksetRecoveryIntegrityError(
+                "Selected outcome materialization authority changed"
+            )
+    else:
+        authority = _exact(
+            item.get("authority"),
+            _OUTCOME_RECEIPT_AUTHORITY_KEYS,
+            name="registered outcome materialization authority",
+        )
+        if (
+            authority["record_type"] != authority_type
+            or authority["action"] != "outcome_materialized"
+            or authority["target_date"] != checked["target_date"]
+            or authority["old_live_epoch_id"] != checked["old_live_epoch_id"]
+            or authority["tip_source_revision_id"] != checked["source_revision_id"]
+            or authority["tip_receipt_sha256"] != receipt.sha256
+            or authority["tip_exact_outcome_sha256"] != exact_object.sha256
+            or authority["tip_published"] is not False
+            or not isinstance(authority["tip_ledger_consumed"], bool)
+            or authority["terminal"] is not False
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Registered outcome materialization authority changed"
+            )
+    return checked, input_manifest, exact_object, receipt
+
+
+def _machine_selected_outcome_materialization_plan(
     item: Mapping[str, Any], reservation: Reservation
+) -> OutcomeMaterializationPlan:
+    authority = _exact(
+        item.get("authority"),
+        _OUTCOME_SELECTED_AUTHORITY_KEYS,
+        name="machine-selected outcome authority",
+    )
+    if (
+        item.get("family") != "outcome_revision"
+        or item.get("canonical_successor_state") != "outcome_materialized"
+        or authority["record_type"] != "machine_selected_source_outcome"
+        or authority["action"] != "outcome_materialized"
+        or authority["selection_kind"] not in {"revision", "outstanding", "backfill"}
+        or authority["terminal"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome materialization scope changed"
+        )
+    try:
+        target = date.fromisoformat(authority["target_date"])
+    except (TypeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome target changed"
+        ) from exc
+    if target.isoformat() != authority["target_date"]:
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome target is not canonical"
+        )
+    revision = authority["source_revision_id"]
+    source_id = authority["outcome_source_id"]
+    previous_revision = authority["previous_revision_id"]
+    previous_outcome = authority["previous_outcome_sha256"]
+    if (
+        not isinstance(revision, str)
+        or not revision
+        or revision != revision.strip()
+        or not isinstance(source_id, str)
+        or not source_id
+        or source_id != source_id.strip()
+        or not isinstance(authority["source_snapshot_sequence_id"], int)
+        or isinstance(authority["source_snapshot_sequence_id"], bool)
+        or authority["source_snapshot_sequence_id"] <= 0
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome source identity changed"
+        )
+    if authority["selection_kind"] == "revision":
+        if (
+            not isinstance(previous_revision, str)
+            or not previous_revision
+            or previous_revision != previous_revision.strip()
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Machine-selected outcome predecessor revision changed"
+            )
+        _hash_text(
+            previous_outcome,
+            name="machine-selected previous outcome",
+        )
+    elif previous_revision is not None or previous_outcome is not None:
+        raise WorksetRecoveryIntegrityError(
+            "First outcome selection unexpectedly gained a predecessor"
+        )
+    _hash_text(
+        authority["source_snapshot_receipt_sha256"],
+        name="machine-selected source snapshot receipt",
+    )
+    _hash_text(
+        authority["live_issue_seal_entry_sha256"],
+        name="machine-selected live issue seal",
+    )
+    frozen = _frozen_live_prefix(reservation)
+    if authority["old_live_epoch_id"] != frozen.projection.epoch_id:
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome old epoch changed"
+        )
+    try:
+        current_projection = live._reconstruct_projection(  # noqa: SLF001
+            frozen.current_events, frozen.profile, frozen.prerequisites
+        )
+        profile = outcomes.load_config()
+        source = live_source.load_current_source(
+            profile["_deploy_profile"],
+            runtime_root=reservation.paths.active_root,
+            project_root=ROOT,
+        )
+        selection = outcomes._select_target(source, current_projection)  # noqa: SLF001
+    except (
+        outcomes.OutcomeMaterializerError,
+        live_source.SourceError,
+        live.LiveInputError,
+        live.LiveIntegrityError,
+    ) as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Frozen source outcome selection failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if selection is None:
+        raise WorksetRecoveryIntegrityError(
+            "Frozen source no longer selects the reserved outcome"
+        )
+    selected_revision = getattr(selection.record, "revision_id", None)
+    if (
+        selection.kind != authority["selection_kind"]
+        or selection.target_date != target
+        or selected_revision != revision
+        or selection.previous_revision_id != previous_revision
+        or selection.previous_outcome_sha256 != previous_outcome
+        or source.outcome_source_id != source_id
+        or source.snapshot_sequence_id != authority["source_snapshot_sequence_id"]
+        or source.snapshot_receipt is None
+        or source.snapshot_receipt.sha256 != authority["source_snapshot_receipt_sha256"]
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Frozen source selector disagrees with the reserved outcome"
+        )
+    seal = next(
+        (
+            event
+            for event in frozen.current_events
+            if event.event_type == "issue_batch_sealed"
+            and event.target_date == target.isoformat()
+        ),
+        None,
+    )
+    seal_hash = seal.entry_sha256 if seal is not None else ZERO_HASH
+    if seal_hash != authority["live_issue_seal_entry_sha256"]:
+        raise WorksetRecoveryIntegrityError(
+            "Machine-selected outcome seal binding changed"
+        )
+    try:
+        input_payload = outcomes._build_input_manifest(  # noqa: SLF001
+            profile, source, selection
+        )
+        _validate_selected_source_artifact_bindings(
+            item, reservation, profile, input_payload
+        )
+        input_manifest = _expected_materializer_object(
+            profile,
+            reservation.paths.active_root,
+            input_payload,
+            suffix="outcome-input.json",
+        )
+        outcome_payload = outcomes._outcome_payload(  # noqa: SLF001
+            profile,
+            selection,
+            input_manifest,
+            outcome_source_id=source_id,
+        )
+        exact_object = _expected_materializer_object(
+            profile,
+            reservation.paths.active_root,
+            outcome_payload,
+            suffix="outcome.json",
+        )
+        chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+            target=target,
+            profile=profile,
+            root=reservation.paths.active_root,
+            live_module=live,
+            live_profile=frozen.profile,
+            prerequisites=frozen.prerequisites,
+        )
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Frozen source outcome plan failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    previous_registered: outcomes._RegisteredOutcome | None = None
+    if selection.previous_revision_id is None:
+        if chain is not None:
+            raise WorksetRecoveryIntegrityError(
+                "Reserved first outcome already has a receipt chain"
+            )
+        revision_sequence_id = 1
+    else:
+        if (
+            chain is None
+            or chain.tip.payload.get("source_revision_id")
+            != selection.previous_revision_id
+            or chain.tip.exact_object.sha256 != selection.previous_outcome_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Reserved outcome revision lost its registered predecessor"
+            )
+        previous_registered = chain.tip
+        revision_sequence_id = chain.tip.revision_sequence_id + 1
+    receipt_payload, receipt = _outcome_materialization_receipt_payload(
+        profile,
+        reservation.paths.active_root,
+        target=target,
+        revision=revision,
+        exact_object=exact_object,
+        input_manifest=input_manifest,
+        input_manifest_payload=input_payload,
+        outcome_payload=outcome_payload,
+        previous_receipt=(
+            previous_registered.receipt if previous_registered is not None else None
+        ),
+        revision_sequence_id=revision_sequence_id,
+    )
+    contract: dict[str, object] = {
+        "schema_version": OUTCOME_MATERIALIZATION_CONTRACT_SCHEMA,
+        "writer_branch": "machine_selected_source",
+        "authority_record_type": "machine_selected_source_outcome",
+        "selection_kind": selection.kind,
+        "old_live_epoch_id": frozen.projection.epoch_id,
+        "target_date": target.isoformat(),
+        "outcome_source_id": source_id,
+        "source_revision_id": revision,
+        "source_snapshot_sequence_id": source.snapshot_sequence_id,
+        "source_snapshot_receipt_sha256": source.snapshot_receipt.sha256,
+        "live_issue_seal_entry_sha256": seal_hash,
+        "source_exported_at_utc": source.exported_at_utc,
+        "previous_revision_id": selection.previous_revision_id,
+        "previous_outcome_sha256": selection.previous_outcome_sha256,
+        "revision_sequence_id": revision_sequence_id,
+        "previous_receipt": (
+            _materializer_artifact_payload(previous_registered.receipt)
+            if previous_registered is not None
+            else None
+        ),
+        "input_manifest_payload": input_payload,
+        "input_manifest": _materializer_artifact_payload(input_manifest),
+        "outcome_payload": outcome_payload,
+        "exact_outcome_object": _materializer_artifact_payload(exact_object),
+        "receipt_payload": receipt_payload,
+        "receipt": _materializer_artifact_payload(receipt),
+        "item_artifacts_sha256": (_outcome_materialization_item_artifacts_sha256(item)),
+    }
+    _outcome_materialization_contract_record(item, reservation, contract)
+    return OutcomeMaterializationPlan(profile, frozen, selection, contract)
+
+
+def _registered_tip_outcome_materialization_plan(
+    item: Mapping[str, Any], reservation: Reservation
+) -> OutcomeMaterializationPlan:
+    authority = _exact(
+        item.get("authority"),
+        _OUTCOME_RECEIPT_AUTHORITY_KEYS,
+        name="registered outcome materialization authority",
+    )
+    if (
+        item.get("family") != "outcome_revision"
+        or item.get("canonical_successor_state") != "outcome_materialized"
+        or authority["record_type"] != "outcome_receipt_chain"
+        or authority["action"] != "outcome_materialized"
+        or authority["tip_published"] is not False
+        or not isinstance(authority["tip_ledger_consumed"], bool)
+        or authority["terminal"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization scope changed"
+        )
+    try:
+        target = date.fromisoformat(authority["target_date"])
+    except (TypeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization target changed"
+        ) from exc
+    revision = authority["tip_source_revision_id"]
+    if (
+        target.isoformat() != authority["target_date"]
+        or not isinstance(revision, str)
+        or not revision
+        or revision != revision.strip()
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization identity changed"
+        )
+    _hash_text(authority["tip_receipt_sha256"], name="registered outcome receipt")
+    _hash_text(authority["tip_exact_outcome_sha256"], name="registered exact outcome")
+    frozen = _frozen_live_prefix(reservation)
+    if authority["old_live_epoch_id"] != frozen.projection.epoch_id:
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization epoch changed"
+        )
+    try:
+        profile = outcomes.load_config()
+        chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+            target=target,
+            profile=profile,
+            root=reservation.paths.active_root,
+            live_module=live,
+            live_profile=frozen.profile,
+            prerequisites=frozen.prerequisites,
+        )
+        if chain is None:
+            raise WorksetRecoveryIntegrityError(
+                "Registered outcome receipt chain disappeared"
+            )
+        active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+            profile, reservation.paths.active_root, target
+        )
+        active_raw = outcomes._legal_active_bytes(chain, active_path)  # noqa: SLF001
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Registered outcome chain replay failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if (
+        chain.tip.payload.get("source_revision_id") != revision
+        or chain.tip.receipt.sha256 != authority["tip_receipt_sha256"]
+        or chain.tip.exact_object.sha256 != authority["tip_exact_outcome_sha256"]
+        or (
+            chain.pointed is not None
+            and chain.pointed.receipt.sha256 == chain.tip.receipt.sha256
+            and active_raw == chain.tip.raw
+        )
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome tip state changed before intent"
+        )
+    known_at_freeze = frozen.projection.revision_ids.get(target.isoformat(), {})
+    receipt_records = []
+    for registered in chain.receipts:
+        source_manifest = outcomes._artifact_from_mapping(  # noqa: SLF001
+            registered.payload["source_manifest"],
+            name="registered materialization source manifest",
+        )
+        registered_revision = registered.payload.get("source_revision_id")
+        receipt_records.append(
+            {
+                "source_revision_id": registered_revision,
+                "revision_sequence_id": registered.revision_sequence_id,
+                "receipt_sha256": registered.receipt.sha256,
+                "exact_outcome_sha256": registered.exact_object.sha256,
+                "source_manifest_sha256": source_manifest.sha256,
+                "ledger_consumed": registered_revision in known_at_freeze,
+            }
+        )
+    if authority["receipts"] != receipt_records:
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization receipt history changed"
+        )
+    tip = chain.tip
+    try:
+        input_manifest = outcomes._artifact_from_mapping(  # noqa: SLF001
+            tip.payload["source_manifest"],
+            name="registered materialization input manifest",
+        )
+        input_payload = outcomes._validate_input_manifest(  # noqa: SLF001
+            input_manifest,
+            profile=profile,
+            root=reservation.paths.active_root,
+        )
+        snapshot = outcomes._artifact_from_mapping(  # noqa: SLF001
+            input_payload["source"]["snapshot_receipt"],
+            name="registered materialization snapshot receipt",
+        )
+        snapshot_payload, _ = outcomes._read_json(  # noqa: SLF001
+            snapshot.path, name="registered materialization snapshot receipt"
+        )
+        receipt_payload, _ = outcomes._read_json(  # noqa: SLF001
+            tip.receipt.path, name="registered materialization receipt"
+        )
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(str(exc)) from exc
+    selection_kind = input_payload.get("selection_kind")
+    if selection_kind not in {"revision", "outstanding", "backfill"}:
+        raise WorksetRecoveryIntegrityError(
+            "Registered outcome materialization selection kind changed"
+        )
+    previous = chain.receipts[-2] if len(chain.receipts) > 1 else None
+    seal = next(
+        (
+            event
+            for event in frozen.frozen_events
+            if event.event_type == "issue_batch_sealed"
+            and event.target_date == target.isoformat()
+        ),
+        None,
+    )
+    contract: dict[str, object] = {
+        "schema_version": OUTCOME_MATERIALIZATION_CONTRACT_SCHEMA,
+        "writer_branch": "registered_tip_reconciliation",
+        "authority_record_type": "outcome_receipt_chain",
+        "selection_kind": selection_kind,
+        "old_live_epoch_id": frozen.projection.epoch_id,
+        "target_date": target.isoformat(),
+        "outcome_source_id": input_payload["outcome_source_id"],
+        "source_revision_id": revision,
+        "source_snapshot_sequence_id": snapshot_payload["snapshot_sequence_id"],
+        "source_snapshot_receipt_sha256": snapshot.sha256,
+        "live_issue_seal_entry_sha256": (
+            seal.entry_sha256 if seal is not None else ZERO_HASH
+        ),
+        "source_exported_at_utc": input_payload["source_exported_at_utc"],
+        "previous_revision_id": (
+            previous.payload.get("source_revision_id") if previous is not None else None
+        ),
+        "previous_outcome_sha256": (
+            previous.exact_object.sha256 if previous is not None else None
+        ),
+        "revision_sequence_id": tip.revision_sequence_id,
+        "previous_receipt": (
+            _materializer_artifact_payload(previous.receipt)
+            if previous is not None
+            else None
+        ),
+        "input_manifest_payload": input_payload,
+        "input_manifest": _materializer_artifact_payload(input_manifest),
+        "outcome_payload": tip.payload,
+        "exact_outcome_object": _materializer_artifact_payload(tip.exact_object),
+        "receipt_payload": receipt_payload,
+        "receipt": _materializer_artifact_payload(tip.receipt),
+        "item_artifacts_sha256": (_outcome_materialization_item_artifacts_sha256(item)),
+    }
+    _outcome_materialization_contract_record(item, reservation, contract)
+    return OutcomeMaterializationPlan(profile, frozen, None, contract)
+
+
+def _outcome_materialization_plan(
+    item: Mapping[str, Any], reservation: Reservation
+) -> OutcomeMaterializationPlan:
+    authority = item.get("authority")
+    record_type = (
+        authority.get("record_type") if isinstance(authority, Mapping) else None
+    )
+    if record_type == "machine_selected_source_outcome":
+        return _machine_selected_outcome_materialization_plan(item, reservation)
+    if record_type == "outcome_receipt_chain":
+        return _registered_tip_outcome_materialization_plan(item, reservation)
+    raise WorksetRecoveryIntegrityError(
+        "Outcome materialization item has no reviewed authority branch"
+    )
+
+
+def _outcome_materialization_contract(
+    item: Mapping[str, Any], reservation: Reservation
+) -> dict[str, object]:
+    return dict(_outcome_materialization_plan(item, reservation).contract)
+
+
+def _materialized_outcome_consumption_context(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any],
+) -> OutcomeConsumptionContext:
+    """Resolve a newly published outcome solely from its prior immutable step."""
+
+    semantics = _exact(
+        previous_step_receipt.get("action_semantics"),
+        _OUTCOME_MATERIALIZATION_OUTPUT_KEYS,
+        name="previous outcome materialization semantics",
+    )
+    if (
+        previous_step_receipt.get("key_id") != item.get("key_id")
+        or previous_step_receipt.get("natural_key") != item.get("natural_key")
+        or previous_step_receipt.get("namespace_digest") != item.get("namespace_digest")
+        or previous_step_receipt.get("action") != "outcome_materialized"
+        or previous_step_receipt.get("action_output_kind")
+        != "outcome_materializer_publication"
+        or previous_step_receipt.get("next_actions") != ["outcome_or_revision_consumed"]
+        or previous_step_receipt.get("terminal_for_key") is not False
+        or semantics["selection_kind"] not in {"revision", "outstanding", "backfill"}
+        or semantics["immutable_receipt_verified"] is not True
+        or semantics["fully_published_verified"] is not True
+        or semantics["canonical_materializer_writer_reused"] is not True
+        or semantics["current_pointer_required_for_historical_replay"] is not False
+        or semantics["live_ledger_event_count"] != 0
+        or semantics["live_ledger_mutation_performed"] is not False
+        or semantics["network_action_performed"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Previous outcome materialization receipt changed semantics"
+        )
+    try:
+        target = date.fromisoformat(semantics["target_date"])
+    except (TypeError, ValueError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Previous outcome materialization target changed"
+        ) from exc
+    revision = semantics["source_revision_id"]
+    source_id = semantics["outcome_source_id"]
+    snapshot_sequence = semantics["source_snapshot_sequence_id"]
+    if (
+        target.isoformat() != semantics["target_date"]
+        or not isinstance(revision, str)
+        or not revision
+        or revision != revision.strip()
+        or not isinstance(source_id, str)
+        or not source_id
+        or source_id != source_id.strip()
+        or not isinstance(snapshot_sequence, int)
+        or isinstance(snapshot_sequence, bool)
+        or snapshot_sequence <= 0
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Previous outcome materialization identity changed"
+        )
+    for name in (
+        "source_snapshot_receipt_sha256",
+        "input_manifest_sha256",
+        "exact_outcome_sha256",
+        "receipt_sha256",
+    ):
+        _hash_text(semantics[name], name=f"previous materialization {name}")
+
+    exact = _active_artifact_from_reference(
+        previous_step_receipt.get("action_output"),
+        reservation,
+        name="previous materialized exact outcome",
+    )
+    receipt = _active_artifact_from_reference(
+        semantics["materializer_receipt"],
+        reservation,
+        name="previous materializer receipt",
+    )
+    source_manifest = _active_artifact_from_reference(
+        semantics["input_manifest"],
+        reservation,
+        name="previous materializer input manifest",
+    )
+    profile = outcomes.load_config()
+    object_root = outcomes._runtime_path(  # noqa: SLF001
+        profile, reservation.paths.active_root, "objects"
+    )
+    receipt_root = outcomes._runtime_path(  # noqa: SLF001
+        profile, reservation.paths.active_root, "outcome_receipts"
+    )
+    if (
+        exact.sha256 != semantics["exact_outcome_sha256"]
+        or receipt.sha256 != semantics["receipt_sha256"]
+        or source_manifest.sha256 != semantics["input_manifest_sha256"]
+        or exact.path
+        != outcomes._object_path(  # noqa: SLF001
+            object_root, exact.sha256, suffix="outcome.json"
+        )
+        or source_manifest.path
+        != outcomes._object_path(  # noqa: SLF001
+            object_root, source_manifest.sha256, suffix="outcome-input.json"
+        )
+        or receipt.path != outcomes._receipt_path(receipt_root, target, revision)  # noqa: SLF001
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Previous outcome materialization artifact identity changed"
+        )
+
+    frozen = _frozen_live_prefix(reservation)
+    authority = item.get("authority")
+    if not isinstance(authority, Mapping):
+        raise WorksetRecoveryIntegrityError(
+            "Materialized outcome item lost its original authority"
+        )
+    authority_type = authority.get("record_type")
+    ledger_consumed_at_freeze = False
+    if authority_type == "machine_selected_source_outcome":
+        selected = _exact(
+            authority,
+            _OUTCOME_SELECTED_AUTHORITY_KEYS,
+            name="materialized selected-source authority",
+        )
+        if (
+            semantics["writer_branch"] != "machine_selected_source"
+            or selected["action"] != "outcome_materialized"
+            or selected["selection_kind"] != semantics["selection_kind"]
+            or selected["target_date"] != target.isoformat()
+            or selected["outcome_source_id"] != source_id
+            or selected["source_revision_id"] != revision
+            or selected["source_snapshot_sequence_id"] != snapshot_sequence
+            or selected["source_snapshot_receipt_sha256"]
+            != semantics["source_snapshot_receipt_sha256"]
+            or selected["terminal"] is not False
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Materialized selected-source authority changed"
+            )
+        if selected["selection_kind"] == "revision":
+            if (
+                not isinstance(selected["previous_revision_id"], str)
+                or not selected["previous_revision_id"]
+            ):
+                raise WorksetRecoveryIntegrityError(
+                    "Materialized selected-source predecessor changed"
+                )
+            _hash_text(
+                selected["previous_outcome_sha256"],
+                name="materialized selected-source previous outcome",
+            )
+        elif (
+            selected["previous_revision_id"] is not None
+            or selected["previous_outcome_sha256"] is not None
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Materialized first source selection gained a predecessor"
+            )
+        _hash_text(
+            selected["live_issue_seal_entry_sha256"],
+            name="materialized selected-source seal",
+        )
+    elif authority_type == "outcome_receipt_chain":
+        registered_authority = _exact(
+            authority,
+            _OUTCOME_RECEIPT_AUTHORITY_KEYS,
+            name="materialized receipt-chain authority",
+        )
+        if (
+            semantics["writer_branch"] != "registered_tip_reconciliation"
+            or registered_authority["action"] != "outcome_materialized"
+            or registered_authority["target_date"] != target.isoformat()
+            or registered_authority["tip_source_revision_id"] != revision
+            or registered_authority["tip_receipt_sha256"] != receipt.sha256
+            or registered_authority["tip_exact_outcome_sha256"] != exact.sha256
+            or registered_authority["tip_published"] is not False
+            or not isinstance(registered_authority["tip_ledger_consumed"], bool)
+            or registered_authority["terminal"] is not False
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Materialized receipt-chain authority changed"
+            )
+        ledger_consumed_at_freeze = registered_authority["tip_ledger_consumed"]
+    else:
+        raise WorksetRecoveryIntegrityError(
+            "Materialized outcome authority branch changed"
+        )
+    if authority.get("old_live_epoch_id") != frozen.projection.epoch_id:
+        raise WorksetRecoveryIntegrityError(
+            "Materialized outcome frozen live epoch changed"
+        )
+
+    try:
+        registered = outcomes._load_registered_outcome(  # noqa: SLF001
+            receipt_path=receipt.path,
+            active_path=outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, reservation.paths.active_root, target
+            ),
+            object_root=object_root,
+            receipt_root=receipt_root,
+            profile=profile,
+            root=reservation.paths.active_root,
+            live_module=live,
+            live_profile=frozen.profile,
+            prerequisites=frozen.prerequisites,
+        )
+        materialized_manifest = outcomes._artifact_from_mapping(  # noqa: SLF001
+            registered.payload["source_manifest"],
+            name="previous materialized source manifest",
+        )
+        input_manifest = outcomes._validate_input_manifest(  # noqa: SLF001
+            materialized_manifest,
+            profile=profile,
+            root=reservation.paths.active_root,
+        )
+        outcome = live.load_outcome_batch(
+            exact.path, frozen.profile, frozen.prerequisites
+        )
+        source = input_manifest.get("source")
+        if not isinstance(source, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Previous materialized input source changed"
+            )
+        snapshot = outcomes._artifact_from_mapping(  # noqa: SLF001
+            source.get("snapshot_receipt"),
+            name="previous materialized source snapshot",
+        )
+        snapshot_payload, _ = outcomes._read_json(  # noqa: SLF001
+            snapshot.path,
+            name="previous materialized source snapshot",
+        )
+    except WorksetRecoveryError:
+        raise
+    except (
+        outcomes.OutcomeMaterializerError,
+        live.LiveConfigError,
+        live.LivePrerequisiteError,
+        live.LiveInputError,
+        live.LiveIntegrityError,
+    ) as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Previous materialized outcome replay failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if (
+        registered.receipt != receipt
+        or registered.exact_object != exact
+        or materialized_manifest != source_manifest
+        or registered.payload.get("target_date") != target.isoformat()
+        or registered.payload.get("source_revision_id") != revision
+        or input_manifest.get("selection_kind") != semantics["selection_kind"]
+        or input_manifest.get("target_date") != target.isoformat()
+        or input_manifest.get("outcome_source_id") != source_id
+        or input_manifest.get("source_record", {}).get("revision_id") != revision
+        or outcome.sha256 != exact.sha256
+        or outcome.target_date != target
+        or outcome.source_revision_id != revision
+        or outcome.outcome_source_id != source_id
+        or outcome.source_manifest.sha256 != source_manifest.sha256
+        or snapshot.sha256 != semantics["source_snapshot_receipt_sha256"]
+        or snapshot_payload.get("schema_version") != "ootang_source_snapshot_receipt_v1"
+        or snapshot_payload.get("snapshot_sequence_id") != snapshot_sequence
+        or snapshot_payload.get("outcome_source_id") != source_id
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Previous materialized outcome immutable binding changed"
+        )
+    if authority_type == "machine_selected_source_outcome":
+        immutable_chain = _immutable_materializer_receipt_chain(
+            target=target,
+            profile=profile,
+            reservation=reservation,
+            frozen=frozen,
+        )
+        positions = [
+            index
+            for index, candidate in enumerate(immutable_chain)
+            if candidate.receipt == receipt and candidate.exact_object == exact
+        ]
+        if len(positions) != 1:
+            raise WorksetRecoveryIntegrityError(
+                "Materialized selected outcome left its immutable chain"
+            )
+        previous_registered = (
+            immutable_chain[positions[0] - 1] if positions[0] > 0 else None
+        )
+        expected_previous_revision = (
+            previous_registered.payload.get("source_revision_id")
+            if previous_registered is not None
+            else None
+        )
+        expected_previous_outcome = (
+            previous_registered.exact_object.sha256
+            if previous_registered is not None
+            else None
+        )
+        if (
+            authority.get("previous_revision_id") != expected_previous_revision
+            or authority.get("previous_outcome_sha256") != expected_previous_outcome
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Materialized selected outcome predecessor binding changed"
+            )
+    frozen_outcome_sha256 = frozen.projection.revision_ids.get(
+        target.isoformat(), {}
+    ).get(revision)
+    if ledger_consumed_at_freeze:
+        if frozen_outcome_sha256 != exact.sha256:
+            raise WorksetRecoveryIntegrityError(
+                "Materialized outcome consumed-at-freeze authority changed"
+            )
+    elif frozen_outcome_sha256 is not None:
+        raise WorksetRecoveryIntegrityError(
+            "Materialized outcome was already consumed at manifest freeze"
+        )
+    return OutcomeConsumptionContext(
+        frozen=frozen,
+        outcome=outcome,
+        selection_kind=semantics["selection_kind"],
+        tip_receipt=receipt,
+        source_manifest=source_manifest,
+        ledger_consumed_at_freeze=ledger_consumed_at_freeze,
+    )
+
+
+def _outcome_consumption_context(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> OutcomeConsumptionContext:
     """Resolve one frozen, already-published receipt tip without mutable selection."""
+
+    if previous_step_receipt is not None:
+        return _materialized_outcome_consumption_context(
+            item, reservation, previous_step_receipt
+        )
 
     if (
         item.get("family") != "outcome_revision"
@@ -1570,6 +2917,7 @@ def _outcome_consumption_context(
         selection_kind=selection_kind,
         tip_receipt=chain.tip.receipt,
         source_manifest=source_manifest,
+        ledger_consumed_at_freeze=False,
     )
 
 
@@ -1606,9 +2954,11 @@ def _pre_head_payload(
 
 
 def _outcome_consumption_plan(
-    item: Mapping[str, Any], reservation: Reservation
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> OutcomeConsumptionPlan:
-    context = _outcome_consumption_context(item, reservation)
+    context = _outcome_consumption_context(item, reservation, previous_step_receipt)
     frozen = context.frozen
     outcome = context.outcome
     if context.selection_kind != "outstanding":
@@ -1660,7 +3010,10 @@ def _outcome_consumption_plan(
         prefix_events = frozen.current_events[:first_index]
     else:
         prefix_events = frozen.current_events
-    if not prefix_events or len(prefix_events) < frozen.expected_pre_head.event_count:
+    if not prefix_events or (
+        len(prefix_events) < frozen.expected_pre_head.event_count
+        and not context.ledger_consumed_at_freeze
+    ):
         raise WorksetRecoveryIntegrityError(
             "Outcome consumption pre-head precedes the frozen reservation"
         )
@@ -1751,7 +3104,11 @@ def _outcome_consumption_plan(
     spec_payloads = [_event_spec_payload(spec) for spec in specs]
     contract: dict[str, object] = {
         "schema_version": OUTCOME_CONSUMPTION_CONTRACT_SCHEMA,
-        "writer_branch": "outstanding_settlement",
+        "writer_branch": (
+            "preexisting_consumed_adoption"
+            if context.ledger_consumed_at_freeze
+            else "outstanding_settlement"
+        ),
         "expected_pre_head": _pre_head_payload(expected),
         "live_epoch_id": frozen.projection.epoch_id,
         "target_date": target_text,
@@ -1762,6 +3119,7 @@ def _outcome_consumption_plan(
         "outcome_source_manifest_sha256": context.source_manifest.sha256,
         "outcome_source_id": outcome.outcome_source_id,
         "source_revision_id": outcome.source_revision_id,
+        "ledger_consumed_at_freeze": context.ledger_consumed_at_freeze,
         "event_count": OUTCOME_CONSUMPTION_EVENT_COUNT,
         "first_event_key": first_key,
         "terminal_event_key": terminal_key,
@@ -1780,9 +3138,13 @@ def _outcome_consumption_plan(
 
 
 def _outcome_consumption_contract(
-    item: Mapping[str, Any], reservation: Reservation
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> dict[str, object]:
-    return dict(_outcome_consumption_plan(item, reservation).contract)
+    return dict(
+        _outcome_consumption_plan(item, reservation, previous_step_receipt).contract
+    )
 
 
 def _immutable_outcome_artifact(
@@ -1830,9 +3192,16 @@ def _immutable_outcome_artifact(
 
 
 def _recorded_outcome_consumption_context(
-    item: Mapping[str, Any], reservation: Reservation
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> OutcomeConsumptionContext:
     """Replay immutable tip objects without consulting current active publication."""
+
+    if previous_step_receipt is not None:
+        return _materialized_outcome_consumption_context(
+            item, reservation, previous_step_receipt
+        )
 
     if (
         item.get("family") != "outcome_revision"
@@ -1991,6 +3360,7 @@ def _recorded_outcome_consumption_context(
         selection_kind=selection_kind,
         tip_receipt=receipt,
         source_manifest=source_manifest,
+        ledger_consumed_at_freeze=False,
     )
 
 
@@ -1998,8 +3368,11 @@ def _recorded_outcome_consumption_plan(
     item: Mapping[str, Any],
     reservation: Reservation,
     contract: Mapping[str, Any],
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> OutcomeConsumptionPlan:
-    context = _recorded_outcome_consumption_context(item, reservation)
+    context = _recorded_outcome_consumption_context(
+        item, reservation, previous_step_receipt
+    )
     checked = _exact(
         contract,
         {
@@ -2015,6 +3388,7 @@ def _recorded_outcome_consumption_plan(
             "outcome_source_manifest_sha256",
             "outcome_source_id",
             "source_revision_id",
+            "ledger_consumed_at_freeze",
             "event_count",
             "first_event_key",
             "terminal_event_key",
@@ -2025,8 +3399,12 @@ def _recorded_outcome_consumption_plan(
     )
     if (
         checked["schema_version"] != OUTCOME_CONSUMPTION_CONTRACT_SCHEMA
-        or checked["writer_branch"] != "outstanding_settlement"
+        or checked["writer_branch"]
+        not in {"outstanding_settlement", "preexisting_consumed_adoption"}
         or context.selection_kind != "outstanding"
+        or checked["ledger_consumed_at_freeze"] is not context.ledger_consumed_at_freeze
+        or (checked["writer_branch"] == "preexisting_consumed_adoption")
+        is not context.ledger_consumed_at_freeze
     ):
         raise WorksetRecoveryIntegrityError(
             "Recorded outcome consumption contract branch changed"
@@ -2046,7 +3424,10 @@ def _recorded_outcome_consumption_plan(
     frozen = context.frozen
     if (
         expected.epoch_id != frozen.projection.epoch_id
-        or expected.event_count < frozen.expected_pre_head.event_count
+        or (
+            expected.event_count < frozen.expected_pre_head.event_count
+            and not context.ledger_consumed_at_freeze
+        )
         or len(frozen.current_events)
         < expected.event_count + OUTCOME_CONSUMPTION_EVENT_COUNT
     ):
@@ -2104,7 +3485,11 @@ def _recorded_outcome_consumption_plan(
     spec_payloads = [_event_spec_payload(spec) for spec in specs]
     rebuilt = {
         "schema_version": OUTCOME_CONSUMPTION_CONTRACT_SCHEMA,
-        "writer_branch": "outstanding_settlement",
+        "writer_branch": (
+            "preexisting_consumed_adoption"
+            if context.ledger_consumed_at_freeze
+            else "outstanding_settlement"
+        ),
         "expected_pre_head": _pre_head_payload(expected),
         "live_epoch_id": frozen.projection.epoch_id,
         "target_date": target_text,
@@ -2115,6 +3500,7 @@ def _recorded_outcome_consumption_plan(
         "outcome_source_manifest_sha256": context.source_manifest.sha256,
         "outcome_source_id": outcome.outcome_source_id,
         "source_revision_id": outcome.source_revision_id,
+        "ledger_consumed_at_freeze": context.ledger_consumed_at_freeze,
         "event_count": OUTCOME_CONSUMPTION_EVENT_COUNT,
         "first_event_key": specs[0].event_key,
         "terminal_event_key": specs[-1].event_key,
@@ -2171,6 +3557,7 @@ def _outcome_consumption_transaction_committed(
             "outcome_source_manifest_sha256",
             "outcome_source_id",
             "source_revision_id",
+            "ledger_consumed_at_freeze",
             "event_count",
             "first_event_key",
             "terminal_event_key",
@@ -2193,9 +3580,13 @@ def _outcome_consumption_transaction_committed(
         ) from exc
     if (
         checked["schema_version"] != OUTCOME_CONSUMPTION_CONTRACT_SCHEMA
-        or checked["writer_branch"] != "outstanding_settlement"
+        or checked["writer_branch"]
+        not in {"outstanding_settlement", "preexisting_consumed_adoption"}
         or checked["event_count"] != OUTCOME_CONSUMPTION_EVENT_COUNT
         or checked["live_epoch_id"] != expected.epoch_id
+        or not isinstance(checked["ledger_consumed_at_freeze"], bool)
+        or (checked["writer_branch"] == "preexisting_consumed_adoption")
+        is not checked["ledger_consumed_at_freeze"]
         or not isinstance(checked["first_event_key"], str)
         or not isinstance(checked["terminal_event_key"], str)
     ):
@@ -2205,7 +3596,10 @@ def _outcome_consumption_transaction_committed(
     frozen = _frozen_live_prefix(reservation)
     if (
         expected.epoch_id != frozen.projection.epoch_id
-        or expected.event_count < frozen.expected_pre_head.event_count
+        or (
+            expected.event_count < frozen.expected_pre_head.event_count
+            and not checked["ledger_consumed_at_freeze"]
+        )
         or len(frozen.current_events) < expected.event_count
     ):
         raise WorksetRecoveryIntegrityError(
@@ -3753,6 +5147,7 @@ def _outcome_consumption_output(
             "outcome_source_manifest_sha256": (plan.context.source_manifest.sha256),
             "outcome_source_id": outcome.outcome_source_id,
             "source_revision_id": outcome.source_revision_id,
+            "ledger_consumed_at_freeze": (plan.context.ledger_consumed_at_freeze),
             "event_count": len(committed),
             "event_specs_sha256": plan.contract["event_specs_sha256"],
             "ordered_event_keys_sha256": plan.contract["ordered_event_keys_sha256"],
@@ -3781,6 +5176,7 @@ def _outcome_consumption_action(
     item: Mapping[str, Any],
     reservation: Reservation,
     contract: Mapping[str, Any] | None,
+    previous_step_receipt: Mapping[str, Any] | None = None,
 ) -> ActionOutput:
     """Append or exactly adopt one manifest-bound canonical outcome batch."""
 
@@ -3789,13 +5185,15 @@ def _outcome_consumption_action(
             "Outcome consumption intent lost its contract"
         )
     if _outcome_consumption_transaction_committed(reservation, contract):
-        recorded_plan = _recorded_outcome_consumption_plan(item, reservation, contract)
+        recorded_plan = _recorded_outcome_consumption_plan(
+            item, reservation, contract, previous_step_receipt
+        )
         return _outcome_consumption_output(
             recorded_plan,
             recorded_plan.stored_events,
             recorded_plan.context.frozen.current_events,
         )
-    plan = _outcome_consumption_plan(item, reservation)
+    plan = _outcome_consumption_plan(item, reservation, previous_step_receipt)
     if contract != plan.contract:
         raise WorksetRecoveryIntegrityError(
             "Outcome consumption intent contract changed"
@@ -3829,6 +5227,330 @@ def _outcome_consumption_action(
     )
 
 
+def _immutable_materializer_receipt_chain(
+    *,
+    target: date,
+    profile: Mapping[str, Any],
+    reservation: Reservation,
+    frozen: FrozenLivePrefix,
+) -> tuple[outcomes._RegisteredOutcome, ...]:
+    """Replay the linear immutable chain without consulting its mutable pointer."""
+
+    receipt_root = outcomes._runtime_path(  # noqa: SLF001
+        profile, reservation.paths.active_root, "outcome_receipts"
+    )
+    directory = receipt_root / target.isoformat()
+    if not directory.exists():
+        return ()
+    if not directory.is_dir():
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization receipt registry changed type"
+        )
+    try:
+        paths = sorted(
+            path.resolve()
+            for path in directory.iterdir()
+            if path.name != "active.json" and not path.name.startswith(".")
+        )
+    except OSError as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization receipt registry cannot be enumerated"
+        ) from exc
+    if any(
+        not path.is_file()
+        or path.suffix != ".json"
+        or len(path.stem) != 64
+        or any(character not in "0123456789abcdef" for character in path.stem)
+        for path in paths
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization receipt registry contains an unexpected entry"
+        )
+    active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+        profile, reservation.paths.active_root, target
+    )
+    try:
+        registered = tuple(
+            outcomes._load_registered_outcome(  # noqa: SLF001
+                receipt_path=path,
+                active_path=active_path,
+                object_root=outcomes._runtime_path(  # noqa: SLF001
+                    profile, reservation.paths.active_root, "objects"
+                ),
+                receipt_root=receipt_root,
+                profile=profile,
+                root=reservation.paths.active_root,
+                live_module=live,
+                live_profile=frozen.profile,
+                prerequisites=frozen.prerequisites,
+            )
+            for path in paths
+        )
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Immutable outcome receipt replay failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if not registered:
+        return ()
+    ordered = tuple(sorted(registered, key=lambda value: value.revision_sequence_id))
+    if ordered[0].previous_receipt is not None or [
+        value.revision_sequence_id for value in ordered
+    ] != list(range(1, len(ordered) + 1)):
+        raise WorksetRecoveryIntegrityError(
+            "Immutable outcome receipts do not have one contiguous root"
+        )
+    for previous, current in zip(ordered, ordered[1:]):
+        if (
+            current.previous_receipt is None
+            or current.previous_receipt.path != previous.receipt.path
+            or current.previous_receipt.sha256 != previous.receipt.sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Immutable outcome receipts do not form one linear history"
+            )
+    return ordered
+
+
+def _recorded_outcome_materialization_output(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+) -> ActionOutput:
+    checked, input_manifest, exact_object, receipt = (
+        _outcome_materialization_contract_record(item, reservation, contract)
+    )
+    frozen = _frozen_live_prefix(reservation)
+    profile = outcomes.load_config()
+    try:
+        registered = outcomes._load_registered_outcome(  # noqa: SLF001
+            receipt_path=receipt.path,
+            active_path=outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile,
+                reservation.paths.active_root,
+                date.fromisoformat(checked["target_date"]),
+            ),
+            object_root=outcomes._runtime_path(  # noqa: SLF001
+                profile, reservation.paths.active_root, "objects"
+            ),
+            receipt_root=outcomes._runtime_path(  # noqa: SLF001
+                profile, reservation.paths.active_root, "outcome_receipts"
+            ),
+            profile=profile,
+            root=reservation.paths.active_root,
+            live_module=live,
+            live_profile=frozen.profile,
+            prerequisites=frozen.prerequisites,
+        )
+        materialized_manifest = outcomes._artifact_from_mapping(  # noqa: SLF001
+            registered.payload["source_manifest"],
+            name="recorded materialization input manifest",
+        )
+        manifest_payload = outcomes._validate_input_manifest(  # noqa: SLF001
+            materialized_manifest,
+            profile=profile,
+            root=reservation.paths.active_root,
+        )
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Recorded outcome materialization replay failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if (
+        registered.receipt != receipt
+        or registered.exact_object != exact_object
+        or materialized_manifest != input_manifest
+        or registered.payload != checked["outcome_payload"]
+        or manifest_payload != checked["input_manifest_payload"]
+        or registered.revision_sequence_id != checked["revision_sequence_id"]
+        or (
+            _materializer_artifact_payload(registered.previous_receipt)
+            if registered.previous_receipt is not None
+            else None
+        )
+        != checked["previous_receipt"]
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recorded outcome materialization immutable binding changed"
+        )
+    return ActionOutput(
+        "outcome_materializer_publication",
+        _active_artifact_reference(exact_object, reservation.paths.active_root),
+        {
+            "writer_branch": checked["writer_branch"],
+            "selection_kind": checked["selection_kind"],
+            "target_date": checked["target_date"],
+            "outcome_source_id": checked["outcome_source_id"],
+            "source_revision_id": checked["source_revision_id"],
+            "source_snapshot_sequence_id": checked["source_snapshot_sequence_id"],
+            "source_snapshot_receipt_sha256": checked["source_snapshot_receipt_sha256"],
+            "input_manifest_sha256": input_manifest.sha256,
+            "exact_outcome_sha256": exact_object.sha256,
+            "receipt_sha256": receipt.sha256,
+            "materializer_receipt": _active_artifact_reference(
+                receipt, reservation.paths.active_root
+            ),
+            "input_manifest": _active_artifact_reference(
+                input_manifest, reservation.paths.active_root
+            ),
+            "immutable_receipt_verified": True,
+            "fully_published_verified": True,
+            "canonical_materializer_writer_reused": True,
+            "current_pointer_required_for_historical_replay": False,
+            "live_ledger_event_count": 0,
+            "live_ledger_mutation_performed": False,
+            "network_action_performed": False,
+        },
+    )
+
+
+def _outcome_materialization_action(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any] | None,
+    *,
+    now: datetime,
+) -> ActionOutput:
+    """Publish or repair one exact manifest-bound materializer candidate."""
+
+    if contract is None:
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization intent lost its contract"
+        )
+    checked, expected_manifest, expected_exact, expected_receipt = (
+        _outcome_materialization_contract_record(item, reservation, contract)
+    )
+    _utc_text(now)
+    profile = outcomes.load_config()
+    frozen = _frozen_live_prefix(reservation)
+    target = date.fromisoformat(checked["target_date"])
+    try:
+        if expected_receipt.path.exists():
+            immutable_chain = _immutable_materializer_receipt_chain(
+                target=target,
+                profile=profile,
+                reservation=reservation,
+                frozen=frozen,
+            )
+            matching = [
+                (index, candidate)
+                for index, candidate in enumerate(immutable_chain)
+                if candidate.receipt == expected_receipt
+                and candidate.exact_object == expected_exact
+            ]
+            if len(matching) != 1:
+                raise WorksetRecoveryIntegrityError(
+                    "Committed outcome materialization left its receipt chain"
+                )
+            if matching[0][0] == len(immutable_chain) - 1:
+                chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+                    target=target,
+                    profile=profile,
+                    root=reservation.paths.active_root,
+                    live_module=live,
+                    live_profile=frozen.profile,
+                    prerequisites=frozen.prerequisites,
+                )
+                if chain is None or chain.tip.receipt != expected_receipt:
+                    raise WorksetRecoveryIntegrityError(
+                        "Current outcome materialization tip changed"
+                    )
+                outcomes._reconcile_chain(  # noqa: SLF001
+                    chain,
+                    profile=profile,
+                    root=reservation.paths.active_root,
+                    now=now,
+                    live_module=live,
+                    live_profile=frozen.profile,
+                    prerequisites=frozen.prerequisites,
+                )
+            return _recorded_outcome_materialization_output(item, reservation, contract)
+
+        if checked["writer_branch"] != "machine_selected_source":
+            raise WorksetRecoveryIntegrityError(
+                "Registered outcome materialization receipt disappeared"
+            )
+
+        if checked["writer_branch"] == "machine_selected_source":
+            source_record = checked["input_manifest_payload"]["source_record"]
+            record = live_source.DailySourceRecord(
+                day=target,
+                revision_id=source_record["revision_id"],
+                observed_at_utc=source_record["observed_at_utc"],
+                available_at_utc=source_record["available_at_utc"],
+                finalized_at_utc=source_record["finalized_at_utc"],
+                rainfall_mm=source_record["rainfall_mm"],
+                reservoir_water_level_m=source_record["reservoir_water_level_m"],
+                displacement_mm=dict(source_record["displacement_mm"]),
+            )
+            outcomes._validate_finalization(  # noqa: SLF001
+                record,
+                source_exported_at_utc=checked["source_exported_at_utc"],
+                now=now,
+            )
+            input_manifest = outcomes._materialize_input_manifest(  # noqa: SLF001
+                profile,
+                reservation.paths.active_root,
+                checked["input_manifest_payload"],
+            )
+            if input_manifest != expected_manifest:
+                raise WorksetRecoveryIntegrityError(
+                    "Materialized outcome input manifest changed identity"
+                )
+            selection = outcomes._Selection(  # noqa: SLF001
+                kind=checked["selection_kind"],
+                target_date=target,
+                record=record,
+                previous_revision_id=checked["previous_revision_id"],
+                previous_outcome_sha256=checked["previous_outcome_sha256"],
+            )
+            _, registered, _, _ = outcomes._publish_candidate(  # noqa: SLF001
+                profile=profile,
+                root=reservation.paths.active_root,
+                selection=selection,
+                source_exported_at_utc=checked["source_exported_at_utc"],
+                input_manifest=input_manifest,
+                payload=dict(checked["outcome_payload"]),
+                clock=lambda: now,
+                live_module=live,
+                live_profile=frozen.profile,
+                prerequisites=frozen.prerequisites,
+            )
+        chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+            target=target,
+            profile=profile,
+            root=reservation.paths.active_root,
+            live_module=live,
+            live_profile=frozen.profile,
+            prerequisites=frozen.prerequisites,
+        )
+        active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+            profile, reservation.paths.active_root, target
+        )
+        active_raw = (
+            outcomes._legal_active_bytes(chain, active_path)  # noqa: SLF001
+            if chain is not None
+            else None
+        )
+    except WorksetRecoveryError:
+        raise
+    except outcomes.OutcomeMaterializerError as exc:
+        raise WorksetRecoveryIntegrityError(
+            f"Outcome materialization failed:{type(exc).__name__}:{exc}"
+        ) from exc
+    if (
+        registered.receipt != expected_receipt
+        or registered.exact_object != expected_exact
+        or chain is None
+        or chain.tip.receipt.sha256 != expected_receipt.sha256
+        or chain.pointed is None
+        or chain.pointed.receipt.sha256 != expected_receipt.sha256
+        or active_raw != registered.raw
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Outcome materialization did not publish the exact contract tip"
+        )
+    return _recorded_outcome_materialization_output(item, reservation, contract)
+
+
 def _action_contract(
     item: Mapping[str, Any],
     reservation: Reservation,
@@ -3840,8 +5562,10 @@ def _action_contract(
         return _anchor_request_contract(item, reservation, previous_step_receipt)
     if action == "anchor_result_recorded":
         return _anchor_result_request_contract(item, reservation, previous_step_receipt)
+    if action == "outcome_materialized":
+        return _outcome_materialization_contract(item, reservation)
     if action == "outcome_or_revision_consumed":
-        return _outcome_consumption_contract(item, reservation)
+        return _outcome_consumption_contract(item, reservation, previous_step_receipt)
     if action == "outcome_batch_settled":
         return _outcome_settlement_adoption_contract(
             item, reservation, previous_step_receipt
@@ -3858,6 +5582,13 @@ def _verify_item_intent_action_contract(
     previous_step_receipt: Mapping[str, Any] | None = None,
     recorded: bool = False,
 ) -> None:
+    if action == "outcome_materialized":
+        if not isinstance(contract, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Outcome materialization item intent contract changed"
+            )
+        _outcome_materialization_contract_record(item, reservation, contract)
+        return
     if action == "outcome_or_revision_consumed":
         if not isinstance(contract, Mapping):
             raise WorksetRecoveryIntegrityError(
@@ -3867,9 +5598,14 @@ def _verify_item_intent_action_contract(
             reservation, contract
         )
         rebuilt = (
-            _recorded_outcome_consumption_plan(item, reservation, contract).contract
+            _recorded_outcome_consumption_plan(
+                item,
+                reservation,
+                contract,
+                previous_step_receipt,
+            ).contract
             if transaction_committed
-            else _outcome_consumption_contract(item, reservation)
+            else _outcome_consumption_contract(item, reservation, previous_step_receipt)
         )
         if contract != rebuilt:
             raise WorksetRecoveryIntegrityError(
@@ -5388,6 +7124,7 @@ def _perform_action(
     action: str | None = None,
     action_contract: Mapping[str, object] | None = None,
     previous_step_receipt: Mapping[str, Any] | None = None,
+    now: datetime,
 ) -> ActionOutput:
     if hook is not None:
         hooked_item = dict(item)
@@ -5406,11 +7143,19 @@ def _perform_action(
                 action_contract,
                 previous_step_receipt,
             )
+        if successor == "outcome_materialized":
+            return _outcome_materialization_action(
+                item,
+                reservation,
+                action_contract,
+                now=now,
+            )
         if successor == "outcome_or_revision_consumed":
             return _outcome_consumption_action(
                 item,
                 reservation,
                 action_contract,
+                previous_step_receipt,
             )
         if successor == "outcome_batch_settled":
             return _outcome_settlement_adoption_action(
@@ -5535,6 +7280,21 @@ def _verify_recorded_action_contract(
             expected_pre_head,
             recovery_root=paths.root,
         )
+    elif action == "outcome_materialized":
+        if reservation is None or item_intent is None:
+            raise WorksetRecoveryIntegrityError(
+                "Recorded outcome materialization lost its frozen intent authority"
+            )
+        contract = item_intent.get("action_contract")
+        if not isinstance(contract, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Recorded outcome materialization contract changed"
+            )
+        expected = _recorded_outcome_materialization_output(
+            item,
+            reservation,
+            contract,
+        )
     elif action == "outcome_or_revision_consumed":
         if reservation is None or item_intent is None:
             raise WorksetRecoveryIntegrityError(
@@ -5549,6 +7309,7 @@ def _verify_recorded_action_contract(
             item,
             reservation,
             contract,
+            previous_step_receipt,
         )
         expected = _outcome_consumption_output(
             recorded_plan,
@@ -6539,7 +8300,11 @@ def _coordinate_epoch_workset_recovery(
                 continue
             transition_action = next_actions[0]
             if not (
-                _item_adapter_supported(item, transition_action)
+                _item_adapter_supported(
+                    item,
+                    transition_action,
+                    rows[-1][0] if rows else None,
+                )
                 or _item_intent_preparable(item, transition_action)
             ):
                 continue
@@ -6573,7 +8338,29 @@ def _coordinate_epoch_workset_recovery(
         item, step_index, transition_action, previous_step_receipt = supported[0]
         item_rows = chains.get(item["key_id"], [])
         previous_step_payload = item_rows[-1][0] if item_rows else None
+        materialized_consumption = (
+            transition_action == "outcome_or_revision_consumed"
+            and previous_step_payload is not None
+            and previous_step_payload.get("action") == "outcome_materialized"
+        )
         committed_outcome_contract: Mapping[str, Any] | None = None
+        persisted_materialization_contract: Mapping[str, Any] | None = None
+        if transition_action == "outcome_materialized":
+            pending_step_id = _step_id(item["key_id"], step_index, transition_action)
+            pending_path = intents.get(pending_step_id)
+            if pending_path is not None:
+                pending_payload, _ = _strict_json(
+                    pending_path, name="pending outcome materialization item intent"
+                )
+                pending_contract = pending_payload.get("action_contract")
+                if not isinstance(pending_contract, Mapping):
+                    raise WorksetRecoveryIntegrityError(
+                        "Pending outcome materialization intent lost its contract"
+                    )
+                _outcome_materialization_contract_record(
+                    item, reservation, pending_contract
+                )
+                persisted_materialization_contract = pending_contract
         if transition_action == "outcome_or_revision_consumed":
             pending_step_id = _step_id(item["key_id"], step_index, transition_action)
             pending_path = intents.get(pending_step_id)
@@ -6593,6 +8380,8 @@ def _coordinate_epoch_workset_recovery(
         inputs = (
             set()
             if committed_outcome_contract is not None
+            or persisted_materialization_contract is not None
+            or materialized_consumption
             else _cas_item_artifacts(item, reservation)
         )
         dependency_snapshots: list[registry.ArtifactSnapshot] = []
@@ -6613,8 +8402,11 @@ def _coordinate_epoch_workset_recovery(
             dependency_snapshots.append(dependency_rows[-1][1])
         try:
             action_contract = (
-                dict(committed_outcome_contract)
-                if committed_outcome_contract is not None
+                dict(committed_outcome_contract or persisted_materialization_contract)
+                if (
+                    committed_outcome_contract is not None
+                    or persisted_materialization_contract is not None
+                )
                 else _action_contract(
                     item,
                     reservation,
@@ -6705,6 +8497,7 @@ def _coordinate_epoch_workset_recovery(
             action=transition_action,
             action_contract=action_contract,
             previous_step_receipt=previous_step_payload,
+            now=now,
         )
         receipt_payload, receipt_snapshot = _ensure_receipt(
             profile,

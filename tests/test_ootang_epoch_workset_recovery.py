@@ -1036,6 +1036,458 @@ class WorksetRecoveryTests(unittest.TestCase):
         )
         return reservation, frozen_events, registered, prerequisites
 
+    def _unpublished_receipt_tip_fixture(
+        self, fixture: _LiveFixture
+    ) -> tuple[
+        recovery.Reservation,
+        tuple[live_ledger.LedgerEvent, ...],
+        outcomes._RegisteredOutcome,
+    ]:
+        """Leave a valid immutable receipt tip before pointer/inbox publication."""
+
+        reservation, frozen_events, registered, _ = (
+            self._published_outstanding_outcome_fixture(fixture)
+        )
+        profile = outcomes.load_config()
+        pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+            outcomes._runtime_path(  # noqa: SLF001
+                profile, fixture.root, "outcome_receipts"
+            ),
+            FIRST_TARGET,
+        )
+        active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+            profile, fixture.root, FIRST_TARGET
+        )
+        pointer_path.unlink()
+        active_path.unlink()
+
+        item = reservation.manifest["items"][0]
+        item["canonical_successor_state"] = "outcome_materialized"
+        item["artifacts"] = [
+            artifact
+            for artifact in item["artifacts"]
+            if artifact["role"]
+            in {
+                "outcome_receipt",
+                "exact_outcome_object",
+                "outcome_source_manifest",
+            }
+        ]
+        item["authority"] = {
+            **item["authority"],
+            "tip_published": False,
+            "action": "outcome_materialized",
+        }
+        return reservation, frozen_events, registered
+
+    def _machine_selected_source_outcome_fixture(
+        self, fixture: _LiveFixture
+    ) -> tuple[
+        recovery.Reservation,
+        tuple[live_ledger.LedgerEvent, ...],
+        date,
+        source_module.CanonicalSource,
+    ]:
+        """Freeze one real source-selected outstanding outcome candidate."""
+
+        source_profile = source_module.load_deploy_profile()
+        baseline = date.fromisoformat(source_profile["historical_base"]["last_date"])
+        activation_day = baseline + timedelta(days=1)
+        target = activation_day + timedelta(days=1)
+        fixture.install_prerequisites(watermark=activation_day)
+        model = json.loads(fixture.model_manifest.read_bytes())
+        model["created_at_utc"] = "2020-07-01T11:00:00Z"
+        fixture._write_json(fixture.model_manifest, model)  # noqa: SLF001
+        fixture.source_manifest.unlink()
+
+        stations = list(source_profile["source_feed"]["station_order_live"])
+
+        def source_record(day: date, revision: str, offset: float) -> dict[str, object]:
+            return {
+                "schema_version": source_profile["source_feed"][
+                    "record_schema_version"
+                ],
+                "date": day.isoformat(),
+                "revision_id": revision,
+                "observed_at_utc": f"{day.isoformat()}T04:00:00Z",
+                "available_at_utc": f"{day.isoformat()}T05:00:00Z",
+                "finalized_at_utc": f"{day.isoformat()}T06:00:00Z",
+                "finalized": True,
+                "rainfall_mm": offset,
+                "reservoir_water_level_m": 151.0 + offset,
+                "displacement_mm": {
+                    station: 200.0 + offset + index
+                    for index, station in enumerate(stations)
+                },
+            }
+
+        activation_record = source_record(activation_day, "revision-1", 1.0)
+        target_record = source_record(target, "revision-2", 2.0)
+        feed_path = source_module._runtime_path(  # noqa: SLF001
+            source_profile, "incoming_feed", root=fixture.root
+        )
+        feed_path.parent.mkdir(parents=True, exist_ok=True)
+
+        def ingest(records: list[dict[str, object]], exported_at: str) -> None:
+            payload = {
+                "schema_version": source_profile["source_feed"]["schema_version"],
+                "outcome_source_id": "ootang-survey-source-v1",
+                "exported_at_utc": exported_at,
+                "records": records,
+            }
+            feed_path.write_bytes(source_module._canonical_bytes(payload))  # noqa: SLF001
+            result = source_module.ingest_source(
+                source_profile,
+                runtime_root=fixture.root,
+                now=datetime.fromisoformat(exported_at.replace("Z", "+00:00"))
+                + timedelta(hours=1),
+            )
+            self.assertEqual(result.status, "ready")
+
+        ingest([activation_record], "2020-07-01T07:00:00Z")
+        fixture.write_issue(
+            target,
+            persistence=activation_record["displacement_mm"],  # type: ignore[arg-type]
+        )
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TIME_ANCHOR_URL": ANCHOR_URL}, clear=False
+        ):
+            fixture.poll(
+                now=datetime(2020, 7, 1, 15, 45, tzinfo=timezone.utc),
+                anchor_client=fixture.anchor_client("2020-07-01T15:50:00Z"),
+            )
+        frozen_events = tuple(fixture.events())
+        frozen_head = frozen_events[-1]
+        self.assertEqual(frozen_head.event_type, "anchor_confirmed")
+
+        ingest(
+            [activation_record, target_record],
+            "2020-07-02T07:00:00Z",
+        )
+        source = source_module.load_current_source(
+            source_profile, runtime_root=fixture.root
+        )
+        self.assertEqual(source.watermark, target)
+        prerequisites = recovery.live.load_prerequisites(fixture.profile, fixture.paths)
+        self.assertIsNotNone(prerequisites)
+        assert prerequisites is not None
+        projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+            frozen_events, fixture.profile, prerequisites
+        )
+        seal = projection.seal_event
+        self.assertIsNotNone(seal)
+        assert seal is not None
+
+        target_index = next(
+            index for index, record in enumerate(source.records) if record.day == target
+        )
+        artifact_specs = (
+            (
+                source_module._runtime_path(  # noqa: SLF001
+                    source_profile, "current_source_pointer", root=fixture.root
+                ),
+                "current_source_pointer",
+            ),
+            (source.activation_manifest.path, "activation_source_manifest"),
+            (source.semantic_manifest.path, "current_source_semantic_manifest"),
+            (
+                source.revision_heads[target_index].path,
+                "current_source_revision_head",
+            ),
+            (source.snapshot_receipt.path, "current_source_snapshot_receipt"),
+        )
+        artifacts = [
+            inventory._artifact(  # noqa: SLF001
+                path,
+                role=role,
+                root_label="active",
+                root=fixture.root,
+                maximum_bytes=64 * 1024 * 1024,
+            )
+            for path, role in artifact_specs
+        ]
+        authority = {
+            "record_type": "machine_selected_source_outcome",
+            "selection_kind": "outstanding",
+            "target_date": target.isoformat(),
+            "old_live_epoch_id": projection.epoch_id,
+            "outcome_source_id": source.outcome_source_id,
+            "source_revision_id": source.records[target_index].revision_id,
+            "previous_revision_id": None,
+            "previous_outcome_sha256": None,
+            "source_snapshot_sequence_id": source.snapshot_sequence_id,
+            "source_snapshot_receipt_sha256": source.snapshot_receipt.sha256,
+            "live_issue_seal_entry_sha256": seal.entry_sha256,
+            "terminal": False,
+            "action": "outcome_materialized",
+        }
+        natural_key = inventory._key(  # noqa: SLF001
+            "outcome_revision",
+            projection.epoch_id,
+            target.isoformat(),
+            source.records[target_index].revision_id,
+            seal.entry_sha256,
+            source.outcome_source_id,
+        )
+        inventoried = inventory._item(  # noqa: SLF001
+            "outcome_revision",
+            natural_key,
+            "outcome_materialized",
+            artifacts,
+            authority,
+        )
+
+        self.active_root = fixture.root.resolve()
+        self.setUp_paths_only()
+        reservation = self._reservation([(natural_key, "outcome_materialized", [])])
+        reservation.manifest["frozen_live_upper_tip"] = {
+            "old_live_epoch_id": projection.epoch_id,
+            "live_event_count": len(frozen_events),
+            "live_terminal_sha256": frozen_head.entry_sha256,
+        }
+        reservation.manifest["items"][0].update(
+            {
+                "family": inventoried.family,
+                "natural_key": inventoried.natural_key,
+                "canonical_successor_state": (inventoried.canonical_successor_state),
+                "dependency_keys": list(inventoried.dependency_keys),
+                "artifacts": [
+                    inventory._artifact_payload(value)  # noqa: SLF001
+                    for value in inventoried.artifacts
+                ],
+                "authority": dict(inventoried.authority),
+                "namespace_digest": inventoried.namespace_digest,
+            }
+        )
+        return reservation, frozen_events, target, source
+
+    def _pending_previous_revision_fixture(
+        self, fixture: _LiveFixture
+    ) -> tuple[
+        recovery.Reservation,
+        tuple[live_ledger.LedgerEvent, ...],
+        date,
+        outcomes._RegisteredOutcome,
+        source_module.CanonicalSource,
+    ]:
+        """Build a real rev1 receipt plus a current-source rev2 reservation."""
+
+        selected_reservation, frozen_events, target, source = (
+            self._machine_selected_source_outcome_fixture(fixture)
+        )
+        prerequisites = recovery.live.load_prerequisites(fixture.profile, fixture.paths)
+        self.assertIsNotNone(prerequisites)
+        assert prerequisites is not None
+        profile = outcomes.load_config()
+        target_record = next(
+            record for record in source.records if record.day == target
+        )
+        previous_record = source_module.DailySourceRecord(
+            day=target_record.day,
+            revision_id="revision-1",
+            observed_at_utc=target_record.observed_at_utc,
+            available_at_utc=target_record.available_at_utc,
+            finalized_at_utc=target_record.finalized_at_utc,
+            rainfall_mm=target_record.rainfall_mm - 1.0,
+            reservoir_water_level_m=target_record.reservoir_water_level_m - 1.0,
+            displacement_mm={
+                station: value - 1.0
+                for station, value in target_record.displacement_mm.items()
+            },
+        )
+        receipt_record = {
+            "date": previous_record.day.isoformat(),
+            "revision_id": previous_record.revision_id,
+            "observed_at_utc": previous_record.observed_at_utc,
+            "available_at_utc": previous_record.available_at_utc,
+            "finalized_at_utc": previous_record.finalized_at_utc,
+            "rainfall_mm": previous_record.rainfall_mm,
+            "reservoir_water_level_m": previous_record.reservoir_water_level_m,
+            "displacement_mm": previous_record.displacement_mm,
+        }
+        revision_raw = outcomes._canonical_bytes(  # noqa: SLF001
+            {
+                "schema_version": "ootang_source_revision_receipt_v1",
+                "case": "ootang",
+                "outcome_source_id": source.outcome_source_id,
+                "target_date": target.isoformat(),
+                "revision_id": previous_record.revision_id,
+                "revision_sequence_id": 1,
+                "record_sha256": outcomes._canonical_digest(  # noqa: SLF001
+                    receipt_record
+                ),
+                "record": receipt_record,
+                "accepted_source_semantic_manifest": outcomes._artifact_payload(  # noqa: SLF001
+                    source.semantic_manifest
+                ),
+                "predecessor_revision_receipt": None,
+            }
+        )
+        object_root = outcomes._runtime_path(  # noqa: SLF001
+            profile, fixture.root, "objects"
+        )
+        revision_head = outcomes._materialize_object(  # noqa: SLF001
+            object_root, revision_raw, suffix="source-revision.json"
+        )
+        previous_source = SimpleNamespace(
+            watermark=source.watermark,
+            outcome_source_id=source.outcome_source_id,
+            exported_at_utc=source.exported_at_utc,
+            records=(previous_record,),
+            dataset=source.dataset,
+            semantic_manifest=source.semantic_manifest,
+            activation_manifest=source.activation_manifest,
+            revision_heads=(revision_head,),
+            snapshot_receipt=source.snapshot_receipt,
+        )
+        selection = outcomes._Selection(  # noqa: SLF001
+            kind="outstanding", target_date=target, record=previous_record
+        )
+        input_manifest = outcomes._materialize_input_manifest(  # noqa: SLF001
+            profile,
+            fixture.root,
+            outcomes._build_input_manifest(  # noqa: SLF001
+                profile, previous_source, selection
+            ),
+        )
+        payload = outcomes._outcome_payload(  # noqa: SLF001
+            profile,
+            selection,
+            input_manifest,
+            outcome_source_id=source.outcome_source_id,
+        )
+        times = iter(
+            (
+                datetime(2020, 7, 2, 8, tzinfo=timezone.utc),
+                datetime(2020, 7, 2, 9, tzinfo=timezone.utc),
+            )
+        )
+        status, registered, _, _ = outcomes._publish_candidate(  # noqa: SLF001
+            profile=profile,
+            root=fixture.root,
+            selection=selection,
+            source_exported_at_utc=previous_source.exported_at_utc,
+            input_manifest=input_manifest,
+            payload=payload,
+            clock=lambda: next(times),
+            live_module=recovery.live,
+            live_profile=fixture.profile,
+            prerequisites=prerequisites,
+        )
+        self.assertEqual(status, "materialized")
+        projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+            frozen_events, fixture.profile, prerequisites
+        )
+        seal = projection.seal_event
+        self.assertIsNotNone(seal)
+        assert seal is not None
+        pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+            outcomes._runtime_path(profile, fixture.root, "outcome_receipts"), target
+        )
+        active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+            profile, fixture.root, target
+        )
+        previous_artifacts = tuple(
+            inventory._artifact(  # noqa: SLF001
+                path,
+                role=role,
+                root_label="active",
+                root=fixture.root,
+                maximum_bytes=64 * 1024 * 1024,
+            )
+            for path, role in (
+                (registered.receipt.path, "outcome_receipt"),
+                (registered.exact_object.path, "exact_outcome_object"),
+                (input_manifest.path, "outcome_source_manifest"),
+                (pointer_path, "active_outcome_receipt_pointer"),
+                (active_path, "active_outcome"),
+            )
+        )
+        previous_authority = {
+            "record_type": "outcome_receipt_chain",
+            "target_date": target.isoformat(),
+            "old_live_epoch_id": projection.epoch_id,
+            "tip_source_revision_id": previous_record.revision_id,
+            "tip_receipt_sha256": registered.receipt.sha256,
+            "tip_exact_outcome_sha256": registered.exact_object.sha256,
+            "tip_published": True,
+            "tip_ledger_consumed": False,
+            "receipts": [
+                {
+                    "source_revision_id": previous_record.revision_id,
+                    "revision_sequence_id": 1,
+                    "receipt_sha256": registered.receipt.sha256,
+                    "exact_outcome_sha256": registered.exact_object.sha256,
+                    "source_manifest_sha256": input_manifest.sha256,
+                    "ledger_consumed": False,
+                }
+            ],
+            "terminal": False,
+            "action": "outcome_or_revision_consumed",
+        }
+        previous_key = inventory._key(  # noqa: SLF001
+            "outcome_revision",
+            projection.epoch_id,
+            target.isoformat(),
+            previous_record.revision_id,
+            seal.entry_sha256,
+            registered.exact_object.sha256,
+        )
+        previous_item = inventory._item(  # noqa: SLF001
+            "outcome_revision",
+            previous_key,
+            "outcome_or_revision_consumed",
+            previous_artifacts,
+            previous_authority,
+        )
+        selected_manifest_item = selected_reservation.manifest["items"][0]
+        current_authority = {
+            **selected_manifest_item["authority"],
+            "selection_kind": "revision",
+            "previous_revision_id": previous_record.revision_id,
+            "previous_outcome_sha256": registered.exact_object.sha256,
+        }
+        current_item = inventory._item(  # noqa: SLF001
+            "outcome_revision",
+            selected_manifest_item["natural_key"],
+            "outcome_materialized",
+            tuple(
+                inventory.ArtifactRef(**artifact)
+                for artifact in selected_manifest_item["artifacts"]
+            ),
+            current_authority,
+            dependency_keys=(previous_key,),
+        )
+
+        def item_payload(value: inventory.InventoryItem) -> dict[str, object]:
+            return {
+                "family": value.family,
+                "natural_key": value.natural_key,
+                "canonical_successor_state": value.canonical_successor_state,
+                "dependency_keys": list(value.dependency_keys),
+                "artifacts": [
+                    inventory._artifact_payload(artifact)  # noqa: SLF001
+                    for artifact in value.artifacts
+                ],
+                "authority": dict(value.authority),
+                "namespace_digest": value.namespace_digest,
+            }
+
+        selected_reservation.manifest["items"] = [
+            item_payload(previous_item),
+            item_payload(current_item),
+        ]
+        selected_reservation.manifest["workset_keyset_sha256"] = hashlib.sha256(
+            recovery._canonical_bytes(  # noqa: SLF001
+                {
+                    "natural_keys": sorted(
+                        (previous_item.natural_key, current_item.natural_key)
+                    )
+                }
+            )
+        ).hexdigest()
+        return selected_reservation, frozen_events, target, registered, source
+
     def _publish_newer_materializer_revision(
         self,
         fixture: _LiveFixture,
@@ -1413,6 +1865,429 @@ class WorksetRecoveryTests(unittest.TestCase):
                 "formal_warning_output",
             ):
                 self.assertFalse(semantics[claim])
+
+    def test_unpublished_receipt_tip_is_forward_reconciled_without_live_events(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, registered = self._unpublished_receipt_tip_fixture(
+                fixture
+            )
+            profile = outcomes.load_config()
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                outcomes._runtime_path(  # noqa: SLF001
+                    profile, fixture.root, "outcome_receipts"
+                ),
+                FIRST_TARGET,
+            )
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, FIRST_TARGET
+            )
+            self.assertFalse(pointer_path.exists())
+            self.assertFalse(active_path.exists())
+
+            result = self._run(reservation)
+
+            self.assertEqual(result.status, "recovery_step_completed")
+            self.assertEqual(tuple(fixture.events()), before)
+            self.assertEqual(active_path.read_bytes(), registered.raw)
+            pointer = json.loads(pointer_path.read_bytes())
+            self.assertEqual(
+                pointer["active_receipt"]["sha256"], registered.receipt.sha256
+            )
+            self.assertIsNotNone(result.receipt_path)
+            assert result.receipt_path is not None
+            receipt = json.loads(result.receipt_path.read_bytes())
+            self.assertEqual(receipt["action"], "outcome_materialized")
+            self.assertEqual(
+                receipt["action_output_kind"], "outcome_materializer_publication"
+            )
+            self.assertEqual(
+                receipt["action_output"]["sha256"],
+                registered.exact_object.sha256,
+            )
+            self.assertFalse(receipt["terminal_for_key"])
+            self.assertEqual(receipt["next_actions"], ["outcome_or_revision_consumed"])
+            semantics = receipt["action_semantics"]
+            self.assertEqual(semantics["selection_kind"], "outstanding")
+            self.assertEqual(semantics["target_date"], FIRST_TARGET.isoformat())
+            self.assertEqual(semantics["source_revision_id"], "revision-1")
+            self.assertEqual(semantics["receipt_sha256"], registered.receipt.sha256)
+            self.assertEqual(
+                semantics["input_manifest_sha256"],
+                registered.payload["source_manifest"]["sha256"],
+            )
+            self.assertEqual(
+                semantics["exact_outcome_sha256"],
+                registered.exact_object.sha256,
+            )
+            self.assertTrue(semantics["immutable_receipt_verified"])
+            self.assertTrue(semantics["fully_published_verified"])
+            self.assertFalse(semantics["live_ledger_mutation_performed"])
+            self.assertFalse(semantics["network_action_performed"])
+
+    def test_machine_selected_outcome_crash_adopts_one_registration(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, target, source = (
+                self._machine_selected_source_outcome_fixture(fixture)
+            )
+            profile = outcomes.load_config()
+            object_root = outcomes._runtime_path(  # noqa: SLF001
+                profile, fixture.root, "objects"
+            )
+            receipt_root = outcomes._runtime_path(  # noqa: SLF001
+                profile, fixture.root, "outcome_receipts"
+            )
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                receipt_root, target
+            )
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, target
+            )
+
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_ensure_receipt",
+                    side_effect=RuntimeError("synthetic post-publication crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "post-publication crash"),
+            ):
+                self._run(reservation)
+
+            self.assertEqual(tuple(fixture.events()), before)
+            self.assertEqual(len(list(self.paths.item_intents.glob("*.json"))), 1)
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 0)
+            immutable_receipts = sorted(
+                path
+                for path in (receipt_root / target.isoformat()).glob("*.json")
+                if path.name != "active.json"
+            )
+            input_manifests = sorted(object_root.glob("*.outcome-input.json"))
+            exact_outcomes = sorted(object_root.glob("*.outcome.json"))
+            self.assertEqual(len(immutable_receipts), 1)
+            self.assertEqual(len(input_manifests), 1)
+            self.assertEqual(len(exact_outcomes), 1)
+            self.assertTrue(pointer_path.is_file())
+            self.assertTrue(active_path.is_file())
+            publication_before = {
+                path: path.read_bytes()
+                for path in (
+                    *immutable_receipts,
+                    *input_manifests,
+                    *exact_outcomes,
+                    pointer_path,
+                    active_path,
+                )
+            }
+
+            with mock.patch.object(
+                outcomes,
+                "_create_or_validate_receipt",
+                side_effect=AssertionError(
+                    "a committed materializer receipt must be adopted"
+                ),
+            ) as register:
+                result = self._run(reservation)
+
+            register.assert_not_called()
+            self.assertEqual(result.status, "recovery_step_completed")
+            self.assertEqual(tuple(fixture.events()), before)
+            self.assertEqual(
+                sorted(
+                    path
+                    for path in (receipt_root / target.isoformat()).glob("*.json")
+                    if path.name != "active.json"
+                ),
+                immutable_receipts,
+            )
+            self.assertEqual(
+                sorted(object_root.glob("*.outcome-input.json")), input_manifests
+            )
+            self.assertEqual(sorted(object_root.glob("*.outcome.json")), exact_outcomes)
+            for path, raw in publication_before.items():
+                self.assertEqual(path.read_bytes(), raw)
+
+            self.assertIsNotNone(result.receipt_path)
+            assert result.receipt_path is not None
+            receipt = json.loads(result.receipt_path.read_bytes())
+            registered = json.loads(immutable_receipts[0].read_bytes())
+            self.assertEqual(receipt["action"], "outcome_materialized")
+            self.assertEqual(
+                receipt["action_output_kind"], "outcome_materializer_publication"
+            )
+            self.assertEqual(
+                receipt["action_output"]["sha256"],
+                hashlib.sha256(exact_outcomes[0].read_bytes()).hexdigest(),
+            )
+            self.assertFalse(receipt["terminal_for_key"])
+            self.assertEqual(receipt["next_actions"], ["outcome_or_revision_consumed"])
+            semantics = receipt["action_semantics"]
+            self.assertEqual(semantics["selection_kind"], "outstanding")
+            self.assertEqual(semantics["target_date"], target.isoformat())
+            self.assertEqual(
+                semantics["source_revision_id"],
+                source.records[-1].revision_id,
+            )
+            self.assertEqual(
+                semantics["receipt_sha256"],
+                hashlib.sha256(immutable_receipts[0].read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
+                semantics["input_manifest_sha256"],
+                hashlib.sha256(input_manifests[0].read_bytes()).hexdigest(),
+            )
+            self.assertEqual(
+                semantics["exact_outcome_sha256"],
+                registered["exact_outcome_object"]["sha256"],
+            )
+            self.assertTrue(semantics["immutable_receipt_verified"])
+            self.assertTrue(semantics["fully_published_verified"])
+            self.assertFalse(semantics["live_ledger_mutation_performed"])
+            self.assertFalse(semantics["network_action_performed"])
+
+    def test_machine_selected_outcome_materializes_then_consumes_next_poll(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, _, _ = self._machine_selected_source_outcome_fixture(
+                fixture
+            )
+
+            materialized = self._run(reservation)
+            consumed = self._run(reservation)
+
+            committed = tuple(fixture.events())[len(before) :]
+            self.assertEqual(materialized.status, "recovery_step_completed")
+            self.assertEqual(consumed.status, "recovery_item_completed")
+            self.assertEqual(len(committed), 43)
+            self.assertEqual(
+                tuple(event.event_type for event in committed),
+                recovery.OUTCOME_CONSUMPTION_EVENT_TYPES,
+            )
+            receipts = sorted(
+                (
+                    json.loads(path.read_bytes())
+                    for path in self.paths.receipts.glob("*.json")
+                ),
+                key=lambda payload: payload["step_index"],
+            )
+            self.assertEqual(
+                [receipt["action"] for receipt in receipts],
+                ["outcome_materialized", "outcome_or_revision_consumed"],
+            )
+            self.assertFalse(receipts[0]["terminal_for_key"])
+            self.assertTrue(receipts[1]["terminal_for_key"])
+            self.assertEqual(
+                receipts[1]["action_semantics"]["writer_branch"],
+                "outstanding_settlement",
+            )
+
+    def test_pending_outcome_then_newer_source_materializes_as_revision(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, target, previous, source = (
+                self._pending_previous_revision_fixture(fixture)
+            )
+            current_record = next(
+                record for record in source.records if record.day == target
+            )
+
+            consumed = self._run(reservation)
+            after_consumption = tuple(fixture.events())
+            materialized = self._run(reservation)
+
+            self.assertEqual(consumed.status, "recovery_item_completed")
+            self.assertEqual(len(after_consumption) - len(before), 43)
+            self.assertEqual(materialized.status, "recovery_step_completed")
+            self.assertEqual(tuple(fixture.events()), after_consumption)
+            self.assertIsNotNone(materialized.receipt_path)
+            assert materialized.receipt_path is not None
+            materialization_receipt = json.loads(materialized.receipt_path.read_bytes())
+            semantics = materialization_receipt["action_semantics"]
+            self.assertEqual(materialization_receipt["action"], "outcome_materialized")
+            self.assertEqual(semantics["selection_kind"], "revision")
+            self.assertEqual(
+                semantics["source_revision_id"], current_record.revision_id
+            )
+
+            profile = outcomes.load_config()
+            prerequisites = recovery.live.load_prerequisites(
+                fixture.profile, fixture.paths
+            )
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+            chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+                target=target,
+                profile=profile,
+                root=fixture.root,
+                live_module=recovery.live,
+                live_profile=fixture.profile,
+                prerequisites=prerequisites,
+            )
+            self.assertIsNotNone(chain)
+            assert chain is not None
+            self.assertEqual(len(chain.receipts), 2)
+            self.assertEqual(chain.tip.revision_sequence_id, 2)
+            self.assertEqual(
+                chain.tip.payload["source_revision_id"], current_record.revision_id
+            )
+            self.assertIsNotNone(chain.tip.previous_receipt)
+            assert chain.tip.previous_receipt is not None
+            self.assertEqual(
+                chain.tip.previous_receipt.sha256,
+                previous.receipt.sha256,
+            )
+
+    def test_materialization_crash_adopts_after_pointer_advances_then_consumes(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, first = self._unpublished_receipt_tip_fixture(fixture)
+            prerequisites = recovery.live.load_prerequisites(
+                fixture.profile, fixture.paths
+            )
+            self.assertIsNotNone(prerequisites)
+            assert prerequisites is not None
+
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_ensure_receipt",
+                    side_effect=RuntimeError("synthetic post-materialization crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "post-materialization crash"),
+            ):
+                self._run(reservation)
+
+            newer = self._publish_newer_materializer_revision(
+                fixture, prerequisites, first
+            )
+            profile = outcomes.load_config()
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, FIRST_TARGET
+            )
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                outcomes._runtime_path(  # noqa: SLF001
+                    profile, fixture.root, "outcome_receipts"
+                ),
+                FIRST_TARGET,
+            )
+            newer_publication = {
+                active_path: active_path.read_bytes(),
+                pointer_path: pointer_path.read_bytes(),
+            }
+            self.assertEqual(active_path.read_bytes(), newer.raw)
+
+            with mock.patch.object(
+                outcomes,
+                "_reconcile_chain",
+                side_effect=AssertionError(
+                    "historical materialization must not rewrite the current tip"
+                ),
+            ) as reconcile:
+                adopted = self._run(reservation)
+
+            reconcile.assert_not_called()
+            self.assertEqual(adopted.status, "recovery_step_completed")
+            self.assertEqual(tuple(fixture.events()), before)
+            for path, raw in newer_publication.items():
+                self.assertEqual(path.read_bytes(), raw)
+
+            consumed = self._run(reservation)
+
+            committed = tuple(fixture.events())[len(before) :]
+            self.assertEqual(consumed.status, "recovery_item_completed")
+            self.assertEqual(len(committed), 43)
+            self.assertEqual(
+                committed[-1].payload["outcome_batch_sha256"],
+                first.exact_object.sha256,
+            )
+            self.assertNotEqual(
+                committed[-1].payload["outcome_batch_sha256"],
+                newer.exact_object.sha256,
+            )
+            for path, raw in newer_publication.items():
+                self.assertEqual(path.read_bytes(), raw)
+
+    def test_repaired_already_consumed_tip_is_terminally_adopted_without_cas(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, _, registered, _ = self._published_outstanding_outcome_fixture(
+                fixture
+            )
+            contract = recovery._outcome_consumption_contract(  # noqa: SLF001
+                reservation.manifest["items"][0], reservation
+            )
+            recovery._outcome_consumption_action(  # noqa: SLF001
+                reservation.manifest["items"][0], reservation, contract
+            )
+            consumed_events = tuple(fixture.events())
+            consumed_head = consumed_events[-1]
+            self.assertEqual(consumed_head.event_type, "outcome_batch_settled")
+
+            profile = outcomes.load_config()
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                outcomes._runtime_path(  # noqa: SLF001
+                    profile, fixture.root, "outcome_receipts"
+                ),
+                FIRST_TARGET,
+            )
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, FIRST_TARGET
+            )
+            pointer_path.unlink()
+            active_path.unlink()
+            item = reservation.manifest["items"][0]
+            item["canonical_successor_state"] = "outcome_materialized"
+            item["artifacts"] = [
+                artifact
+                for artifact in item["artifacts"]
+                if artifact["role"]
+                in {
+                    "outcome_receipt",
+                    "exact_outcome_object",
+                    "outcome_source_manifest",
+                }
+            ]
+            item["authority"]["tip_published"] = False
+            item["authority"]["tip_ledger_consumed"] = True
+            item["authority"]["receipts"][0]["ledger_consumed"] = True
+            item["authority"]["action"] = "outcome_materialized"
+            reservation.manifest["frozen_live_upper_tip"] = {
+                "old_live_epoch_id": item["authority"]["old_live_epoch_id"],
+                "live_event_count": len(consumed_events),
+                "live_terminal_sha256": consumed_head.entry_sha256,
+            }
+
+            materialized = self._run(reservation)
+            with mock.patch.object(
+                recovery.live_cas,
+                "append_transaction_at_pre_head_v1",
+                side_effect=AssertionError(
+                    "a frozen consumed batch must be receipt-only adoption"
+                ),
+            ) as ledger_cas:
+                adopted = self._run(reservation)
+
+            ledger_cas.assert_not_called()
+            self.assertEqual(materialized.status, "recovery_step_completed")
+            self.assertEqual(adopted.status, "recovery_item_completed")
+            self.assertEqual(tuple(fixture.events()), consumed_events)
+            self.assertEqual(
+                json.loads(adopted.receipt_path.read_bytes())["action_semantics"][  # type: ignore[union-attr]
+                    "writer_branch"
+                ],
+                "preexisting_consumed_adoption",
+            )
+            self.assertEqual(
+                consumed_head.payload["outcome_batch_sha256"],
+                registered.exact_object.sha256,
+            )
 
     def test_outcome_consumption_commit_before_receipt_is_exactly_adopted(
         self,

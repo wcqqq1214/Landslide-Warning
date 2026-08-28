@@ -124,7 +124,9 @@ suffix fail-closed、历史 slice 回退零重写、合法 revision 移动 point
 
 ## 7. 下一步
 
-下一窄增量应实现 manifest-bound `outcome_materialized`，把已选择但尚未发布的 source outcome 自动
-物化成 immutable receipt/exact object/pointer；完成后再分别处理 settled revision、backfill revision
-和首次 backfill writer。更高优先级的完整闭环问题是版本化 derived-work/step-level dependency，令
-manifest 后才 confirmed 的 live item 也能自动关联随后终态化的 outcome，而不改写原 DAG。
+manifest-bound `outcome_materialized` 及其到 outstanding 43-event consumption 的下一轮
+step-receipt 桥已实现，详见 `docs/ootang_outcome_materialization_recovery_engineering.md`。下一
+窄增量改为 settled-date revision consumption writer，随后分别处理 backfill revision 和
+首次 backfill writer。更高层的完整闭环问题仍是版本化 derived-work/step-level
+dependency，令 manifest 后才 confirmed 的 live item 也能自动关联随后终态化的
+outcome，而不改写原 DAG。

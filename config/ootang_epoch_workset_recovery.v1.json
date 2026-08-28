@@ -1,19 +1,19 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.8.0-outstanding-outcome-consumption",
+  "profile_version": "2.0.0-outcome-materialization-chain",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_canonical_outstanding_outcome_writer_and_settlement_adoption_no_revision_writer_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_exact_materialization_to_outstanding_consumption_revision_predecessor_authority_and_settlement_adoption_no_revision_writer_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
     "manifest_profile": {
       "path": "config/ootang_epoch_workset_manifest.v1.json",
-      "expected_sha256": "338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e"
+      "expected_sha256": "857ae1ff031289d51c0a2947beeb2e47ceb9d48a3769db707c8f7f75750d48dc"
     },
     "manifest_implementation": {
       "path": "code/monitoring/ootang_epoch_workset_manifest.py",
-      "expected_sha256": "5284018ade9160a80b78487470d3457a059490fb9062d965fc59048c7acb9c2d"
+      "expected_sha256": "0ca331c6827cd896b4c3261792eed5f933e104d4c40c4fbf3b7e416e9b1fd424"
     },
     "trusted_implementation": {
       "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
@@ -77,6 +77,7 @@
       "anchor_receipt_repaired",
       "anchor_request_recorded",
       "anchor_result_recorded",
+      "outcome_materialized",
       "outcome_or_revision_consumed",
       "outcome_batch_settled",
       "superseded_by_backfill"
@@ -102,6 +103,7 @@
     "live_anchor_result_request_intent_implemented": true,
     "live_anchor_result_response_observation_implemented": true,
     "live_anchor_result_adapter_implemented": true,
+    "outcome_materialization_adapter_implemented": true,
     "live_outstanding_outcome_consumption_adapter_implemented": true,
     "live_outcome_settlement_adoption_implemented": true,
     "ledger_mutation_recovery_implemented": true,

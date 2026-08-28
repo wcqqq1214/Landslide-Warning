@@ -1,18 +1,86 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
-**Prepared:** 2026-08-28
+**Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `9d0afa8 feat: adopt settled outcome batches`
+**Committed baseline before this increment:** `ddbdef1 feat: consume published outcome batches`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
-loop 与 manifest-reserved outcome settlement adoption 已提交；本增量实现 published outstanding
-outcome 的 canonical 43-event fresh writer/crash-forward adoption，并补齐已确认 settlement item 的
-精确 outcome dependency。
+loop、manifest-reserved outcome settlement adoption 与 published outstanding 43-event
+writer/crash-forward adoption 已提交；本增量实现 receipt-tip repair/machine-selected
+outcome materialization、下一 poll 的 outstanding consumption 桥、revision predecessor authority
+与 consumed-at-freeze adoption。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-29 outcome materialization and outstanding-consumption bridge
+
+The recovery coordinator now implements two exact manifest-bound
+`outcome_revision -> outcome_materialized` authority branches. An unpublished
+`outcome_receipt_chain` tip is forward-reconciled from its immutable receipt, exact outcome and
+input manifest. A `machine_selected_source_outcome` is rebuilt from the frozen current-source
+snapshot, source record, live epoch/seal and selection authority, then published with the canonical
+materializer primitives. The latter authority now includes an exact predecessor revision/outcome
+pair for revisions; first outstanding/backfill candidates require both predecessor fields to be
+null. Materialization writes no live-ledger events and performs no network action.
+
+The nonterminal materialization recovery receipt is now the only authority for the next poll. Its
+materializer receipt, exact object and input manifest are confined to the active runtime and replayed
+immutably before the existing outstanding writer can construct or adopt the canonical 43-event live
+transaction. No mutable pointer or current-source reselection is used for this bridge. A real
+end-to-end fixture verifies machine-selected outstanding materialization on one poll and exact
+43-event consumption on the next.
+
+Commit-before-recovery-receipt recovery distinguishes the expected receipt as the current tip, a
+legal historical predecessor, or absent. Only the current tip is reconciled against pointer/inbox;
+a historical receipt is adopted without rolling back a newer publication, while only the
+machine-selected branch may fresh-publish an absent receipt. A frozen tip already present in the
+live ledger uses the explicit `preexisting_consumed_adoption` branch and adopts its canonical
+43-event slice with zero CAS writes.
+
+Inventory now tracks the pending receipt tip per date. If current source has a newer revision, the
+candidate is frozen as `selection_kind=revision`, binds `previous_revision_id` and
+`previous_outcome_sha256`, and depends on the pending tip. This also handles ledger-known rev1 plus
+pending rev2 plus current rev3. Recovery checks the same predecessor fields against the source
+selector and the immutable materializer chain. A real chain test consumes pending rev1 and then
+materializes current rev2 as receipt sequence 2 without additional live events.
+
+Manifest profile `1.3.0-revision-predecessor-authority` and recovery profile
+`2.0.0-outcome-materialization-chain` expose only these implemented capabilities. Revision,
+backfill and first-backfill live-ledger consumption writers remain unsupported. Full workset,
+all-successor, derived-reservation, terminal closure, lifecycle, trusted-anchor, E2 and formal
+claims remain false.
+
+Focused inventory+recovery tests pass `58/58` in 3.71 seconds. The bounded adjacent suite, including
+the outcome materializer plus recovery, live-ledger/CAS, inventory/manifest, admission,
+eligibility, drain and main, passes `192/192` in 11.06 seconds. Ruff check/format, compile, strict
+profile loading and diff checks pass. Final independent read-only review reports P0/P1=0. No
+training, real network, long concurrency/capacity matrix or unrelated edge suite was
+run. ConvLSTM, v4, frozen splits, metrics, thresholds, parameters and conclusions are unchanged.
+Detailed authority and crash semantics are in
+`docs/ootang_outcome_materialization_recovery_engineering.md`.
+
+Current inventory/manifest/recovery module hashes are
+`2b56de3f36da3a08d34bf3a9509b0492c5d989cd1f391491c0574bed2723bd52`,
+`0ca331c6827cd896b4c3261792eed5f933e104d4c40c4fbf3b7e416e9b1fd424` and
+`6b7cf96e376293ee6b06501f363a3b9e84844e0671084e2a8269bb6c5307bc7a`.
+Manifest/recovery profile hashes are
+`857ae1ff031289d51c0a2947beeb2e47ceb9d48a3769db707c8f7f75750d48dc` and
+`243d43b2b9444d0daaa217eac2695d3754686249777eaa0dadd11dd31ea735a2`.
+Inventory/recovery test hashes are
+`cf542fa0ca5901f9eb93448fc5581b983bd057750b371d6126bfc20e72f3e844` and
+`2db4f4eef07fe5234c843faac7a0fb7c56790b0dae98b3b775b0c8d3b2d2ab9d`; the increment
+engineering document is
+`8a53cf5eb33c669d5a427f9e7fdb73bebcbcadc1382dda54ca40e911a6bb5855`.
+Protected `main.py` remains
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+The next narrow increment is the settled-date revision consumption writer, using the immutable
+predecessor chain and the existing expected-pre-head CAS/crash-forward framework. Backfill and
+first-backfill writers follow separately. Cross-freeze derived-work/step-level dependency
+reservation remains a higher-level closure increment.
 
 ## 2026-08-28 published outstanding outcome consumption
 
