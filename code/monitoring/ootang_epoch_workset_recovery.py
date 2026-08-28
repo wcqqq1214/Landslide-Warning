@@ -8,10 +8,12 @@ from dataclasses import dataclass
 from datetime import date, datetime, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import sqlite3
 import sys
 from typing import Any, BinaryIO
+from urllib.parse import urlsplit, urlunsplit
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -31,7 +33,7 @@ from monitoring import ootang_verified_live as guard  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_recovery.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "beb5ff9c3e34f60451ee933bfd3dbcc3dcb5d398f575a24cfbd0ea811ac4a3f2"
+    "a6cb0bccfc60dc98fa036b91a64e5f9c07dd00e0872f0fac85c29a66ebdb24a8"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -42,7 +44,12 @@ SUPPORTED_SUCCESSORS = (
     "anchor_request_recorded",
     "superseded_by_backfill",
 )
+INTENT_PREPARATION_SUCCESSORS = ("anchor_result_recorded",)
 ANCHOR_REQUEST_CONTRACT_SCHEMA = "ootang_live_anchor_request_action_contract_v1"
+ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA = (
+    "ootang_live_anchor_result_request_action_contract_v1"
+)
+ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES = 1024 * 1024
 LIVE_LEDGER_CAS_TIMEOUT_SECONDS = 0.25
 TRANSITION_CONTRACT = {
     "schema_version": "ootang_epoch_workset_transition_contract_v1",
@@ -150,6 +157,7 @@ TRUE_CAPABILITIES = (
     "terminal_receipt_dependency_gate_implemented",
     "live_ledger_expected_pre_head_cas_implemented",
     "live_anchor_request_adapter_implemented",
+    "live_anchor_result_request_intent_implemented",
     "ledger_mutation_recovery_implemented",
 )
 FALSE_CLAIMS = (
@@ -161,6 +169,7 @@ FALSE_CLAIMS = (
     "all_transition_branches_supported",
     "network_recovery_implemented",
     "network_action_performed",
+    "live_anchor_result_adapter_implemented",
     "legacy_guard_completion_created",
     "old_work_admission_fence_implemented",
     "direct_filesystem_writer_fence_implemented",
@@ -223,11 +232,11 @@ EXPECTED_RUNTIME = {
     "shadow_lock": "runner.lock",
 }
 EXPECTED_PROTOCOL = {
-    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v3",
-    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v3",
-    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v3",
+    "intent_schema_version": "ootang_epoch_workset_recovery_intent_v4",
+    "item_intent_schema_version": "ootang_epoch_workset_recovery_step_intent_v4",
+    "receipt_schema_version": "ootang_epoch_workset_recovery_step_receipt_v4",
     "event_schema_version": "ootang_epoch_workset_recovery_step_event_v2",
-    "status_schema_version": "ootang_epoch_workset_recovery_status_v3",
+    "status_schema_version": "ootang_epoch_workset_recovery_status_v4",
     "event_type": "epoch_workset_transition_step_recorded",
     "transition_contract_schema_version": TRANSITION_CONTRACT["schema_version"],
     "transition_contract_sha256": TRANSITION_CONTRACT_SHA256,
@@ -235,10 +244,13 @@ EXPECTED_PROTOCOL = {
     "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
     "surviving_lock_order": list(LOCK_ORDER),
     "supported_successors": list(SUPPORTED_SUCCESSORS),
+    "intent_preparation_successors": list(INTENT_PREPARATION_SUCCESSORS),
     "maximum_items": 4096,
     "maximum_control_bytes": MAX_CONTROL_BYTES,
     "initial_previous_entry_sha256": ZERO_HASH,
-    "poll_policy": "advance_at_most_one_ready_supported_key",
+    "poll_policy": (
+        "advance_at_most_one_ready_supported_key_or_prepare_one_external_intent"
+    ),
 }
 
 
@@ -256,6 +268,10 @@ class WorksetRecoveryIntegrityError(WorksetRecoveryError):
 
 class WorksetRecoveryBusyError(WorksetRecoveryError):
     """A surviving lock is held."""
+
+
+class WorksetRecoveryExternalWait(WorksetRecoveryError):
+    """A mutable external prerequisite is not ready for intent freezing."""
 
 
 @dataclass(frozen=True)
@@ -739,6 +755,14 @@ def _item_adapter_supported(item: Mapping[str, Any], action: str | None = None) 
     )
 
 
+def _item_intent_preparable(item: Mapping[str, Any], action: str | None = None) -> bool:
+    selected = action or item.get("canonical_successor_state")
+    return (
+        item.get("family") == "live_outstanding"
+        and selected in INTENT_PREPARATION_SUCCESSORS
+    )
+
+
 def _global_intent_payload(
     profile: Mapping[str, Any],
     reservation: Reservation,
@@ -754,7 +778,10 @@ def _global_intent_payload(
             "action": plan["initial_action"],
         }
         for item, plan in zip(ordered, plans, strict=True)
-        if not _item_adapter_supported(item, str(plan["initial_action"]))
+        if not (
+            _item_adapter_supported(item, str(plan["initial_action"]))
+            or _item_intent_preparable(item, str(plan["initial_action"]))
+        )
     ]
     return {
         "schema_version": profile["protocol"]["intent_schema_version"],
@@ -776,6 +803,11 @@ def _global_intent_payload(
             item["key_id"]
             for item, plan in zip(ordered, plans, strict=True)
             if _item_adapter_supported(item, str(plan["initial_action"]))
+        ],
+        "initial_step_intent_preparable_key_ids": [
+            item["key_id"]
+            for item, plan in zip(ordered, plans, strict=True)
+            if _item_intent_preparable(item, str(plan["initial_action"]))
         ],
         "unsupported_initial_steps": unsupported_initial_steps,
         "adapter_provenance": _provenance(),
@@ -1169,12 +1201,488 @@ def _anchor_request_contract(
     return contract
 
 
+_EXTERNAL_ANCHOR_KEYS = {
+    "mode",
+    "endpoint_environment_variable",
+    "bearer_token_environment_variable",
+    "timeout_seconds",
+    "anchor_issue_batch_seal",
+    "missing_or_failed_status",
+    "confirmed_status",
+    "provider_allowlist",
+    "receipt_verification_mode",
+    "trusted_receipt_required_for_live_evidence",
+    "e2a_receipts_count_as_live_evidence",
+    "required_before_outcome_read",
+    "claim_independent_time_proof_without_confirmed_receipt",
+}
+_ANCHOR_RESULT_REQUEST_EVENT_KEYS = {
+    "event_key",
+    "event_type",
+    "sequence_id",
+    "previous_entry_sha256",
+    "entry_sha256",
+    "event_spec_sha256",
+}
+
+
+def _normalized_https_anchor_endpoint(value: object) -> str:
+    if not isinstance(value, str) or not value or value != value.strip():
+        raise WorksetRecoveryExternalWait(
+            "time-anchor endpoint is missing or is not a trimmed URL"
+        )
+    if any(ord(character) < 0x20 or ord(character) == 0x7F for character in value):
+        raise WorksetRecoveryExternalWait("time-anchor endpoint contains control bytes")
+    try:
+        parsed = urlsplit(value)
+        port = parsed.port
+    except ValueError as exc:
+        raise WorksetRecoveryExternalWait("time-anchor endpoint is malformed") from exc
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+    ):
+        raise WorksetRecoveryExternalWait(
+            "time-anchor endpoint must be exact HTTPS without credentials, query, or fragment"
+        )
+    host = parsed.hostname.lower()
+    netloc = f"[{host}]" if ":" in host else host
+    if port not in {None, 443}:
+        netloc = f"{netloc}:{port}"
+    return urlunsplit(("https", netloc, parsed.path or "/", "", ""))
+
+
+def _external_anchor_profile(frozen: FrozenLivePrefix) -> dict[str, Any]:
+    external = _exact(
+        frozen.profile.get("external_anchor"),
+        _EXTERNAL_ANCHOR_KEYS,
+        name="frozen external-anchor profile",
+    )
+    endpoint_name = external["endpoint_environment_variable"]
+    token_name = external["bearer_token_environment_variable"]
+    timeout = external["timeout_seconds"]
+    allowlist = external["provider_allowlist"]
+    if (
+        external["mode"] != "https_json_post_from_environment"
+        or not isinstance(endpoint_name, str)
+        or not endpoint_name
+        or endpoint_name != endpoint_name.strip()
+        or not isinstance(token_name, str)
+        or not token_name
+        or token_name != token_name.strip()
+        or not isinstance(timeout, int)
+        or isinstance(timeout, bool)
+        or timeout < 1
+        or not isinstance(allowlist, list)
+        or not all(
+            isinstance(provider, str)
+            and bool(provider)
+            and provider == provider.strip()
+            for provider in allowlist
+        )
+        or external["receipt_verification_mode"]
+        != "interface_only_no_cryptographic_verifier_e2a"
+        or external["trusted_receipt_required_for_live_evidence"] is not True
+        or external["e2a_receipts_count_as_live_evidence"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError("Frozen external-anchor semantics changed")
+    return external
+
+
+def _anchor_result_context(
+    item: Mapping[str, Any], reservation: Reservation
+) -> tuple[FrozenLivePrefix, live_ledger.LedgerEvent, Mapping[str, Any]]:
+    if item.get("family") != "live_outstanding":
+        raise WorksetRecoveryIntegrityError("Anchor result item family changed")
+    authority = _exact(
+        item.get("authority"),
+        {
+            "record_type",
+            "target_date",
+            "old_live_epoch_id",
+            "issue_id",
+            "issue_sha256",
+            "input_manifest_sha256",
+            "seal_event",
+            "anchor_confirmed_event",
+            "frozen_live_upper_tip",
+            "terminal",
+            "action",
+        },
+        name="anchor result authority",
+    )
+    if (
+        authority["record_type"] != "outstanding_live_lifecycle"
+        or authority["action"]
+        not in {"anchor_request_recorded", "anchor_result_recorded"}
+        or authority["anchor_confirmed_event"] is not None
+        or authority["terminal"] is not False
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result authority state changed")
+    frozen = _frozen_live_prefix(reservation)
+    projection = frozen.projection
+    seal = projection.seal_event
+    if (
+        seal is None
+        or seal.event_type != "issue_batch_sealed"
+        or authority["target_date"] != seal.target_date
+        or authority["issue_id"] != seal.issue_id
+        or authority["old_live_epoch_id"] != projection.epoch_id
+        or authority["input_manifest_sha256"] != seal.input_manifest_sha256
+        or authority["frozen_live_upper_tip"] != frozen.expected_pre_head.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result frozen lifecycle changed")
+    _hash_text(authority["issue_sha256"], name="anchor result issue")
+    _hash_text(authority["input_manifest_sha256"], name="anchor result input manifest")
+    seal_record = _exact(
+        authority["seal_event"],
+        {"sequence_id", "entry_sha256", "event_type", "target_date", "issue_id"},
+        name="anchor result seal record",
+    )
+    if seal_record != {
+        "sequence_id": seal.sequence_id,
+        "entry_sha256": seal.entry_sha256,
+        "event_type": seal.event_type,
+        "target_date": seal.target_date,
+        "issue_id": seal.issue_id,
+    }:
+        raise WorksetRecoveryIntegrityError("Anchor result seal binding changed")
+    _external_anchor_profile(frozen)
+    return frozen, seal, authority
+
+
+def _canonical_anchor_request_spec(
+    frozen: FrozenLivePrefix,
+    seal: live_ledger.LedgerEvent,
+    payload: object,
+) -> live_ledger.EventSpec:
+    request = _exact(
+        payload,
+        {
+            "live_epoch_id",
+            "target_date",
+            "sealed_sequence_id",
+            "sealed_entry_sha256",
+            "attempt",
+        },
+        name="anchor result request payload",
+    )
+    attempt = request["attempt"]
+    if (
+        request["live_epoch_id"] != frozen.projection.epoch_id
+        or request["target_date"] != seal.target_date
+        or request["sealed_sequence_id"] != seal.sequence_id
+        or request["sealed_entry_sha256"] != seal.entry_sha256
+        or not isinstance(attempt, int)
+        or isinstance(attempt, bool)
+        or attempt < 1
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result request identity changed")
+    return live._event_spec(  # noqa: SLF001
+        event_key=(
+            f"{frozen.projection.epoch_id}:{seal.target_date}:anchor:{attempt}:requested"
+        ),
+        event_type="anchor_requested",
+        prerequisites=frozen.prerequisites,
+        payload=request,
+        target_date_value=date.fromisoformat(str(seal.target_date)),
+        issue_id=seal.issue_id,
+        input_manifest_sha256=seal.input_manifest_sha256,
+        state_before_sha256=seal.state_after_sha256,
+        state_after_sha256=seal.state_after_sha256,
+    )
+
+
+def _anchor_result_request_record(
+    request_event: live_ledger.LedgerEvent, spec: live_ledger.EventSpec
+) -> dict[str, object]:
+    return {
+        "event_key": request_event.event_key,
+        "event_type": request_event.event_type,
+        "sequence_id": request_event.sequence_id,
+        "previous_entry_sha256": request_event.previous_entry_sha256,
+        "entry_sha256": request_event.entry_sha256,
+        "event_spec_sha256": _sha256(_canonical_bytes(_event_spec_payload(spec))),
+    }
+
+
+def _anchor_result_request_contract(
+    item: Mapping[str, Any], reservation: Reservation
+) -> dict[str, object]:
+    frozen, seal, authority = _anchor_result_context(item, reservation)
+    lifecycle = [
+        event
+        for event in frozen.current_events
+        if event.event_type in {"anchor_requested", "anchor_failed", "anchor_confirmed"}
+        and event.payload.get("sealed_entry_sha256") == seal.entry_sha256
+    ]
+    if not lifecycle or len(lifecycle) % 2 != 1:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result requires one canonical unmatched request at the live tip"
+        )
+    request_event = lifecycle[-1]
+    for attempt, offset in enumerate(range(0, len(lifecycle), 2), 1):
+        request = lifecycle[offset]
+        if (
+            request.event_type != "anchor_requested"
+            or request.payload.get("attempt") != attempt
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result lifecycle request pairing changed"
+            )
+        request_spec = _canonical_anchor_request_spec(frozen, seal, request.payload)
+        if not _event_matches_spec(request, request_spec):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result lifecycle request changed"
+            )
+        if offset == len(lifecycle) - 1:
+            continue
+        result = lifecycle[offset + 1]
+        prefix = request.event_key.removesuffix(":requested")
+        request_payload = dict(request.payload)
+        if (
+            result.event_type not in {"anchor_failed", "anchor_confirmed"}
+            or result.sequence_id != request.sequence_id + 1
+            or result.previous_entry_sha256 != request.entry_sha256
+            or result.event_key
+            != f"{prefix}:{result.event_type.removeprefix('anchor_')}"
+            or any(
+                result.payload.get(key) != value
+                for key, value in request_payload.items()
+            )
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result lifecycle result pairing changed"
+            )
+    if request_event != frozen.current_events[-1]:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result requires one canonical unmatched request at the live tip"
+        )
+    spec = _canonical_anchor_request_spec(frozen, seal, request_event.payload)
+    if not _event_matches_spec(request_event, spec):
+        raise WorksetRecoveryIntegrityError("Anchor result request event changed")
+    if authority["action"] == "anchor_result_recorded":
+        if (
+            request_event.sequence_id != frozen.expected_pre_head.event_count
+            or request_event.entry_sha256 != frozen.expected_pre_head.entry_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Frozen anchor result request is not the manifest tip"
+            )
+    elif (
+        request_event.sequence_id != frozen.expected_pre_head.event_count + 1
+        or request_event.previous_entry_sha256 != frozen.expected_pre_head.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Recovered anchor request is not immediately after the manifest tip"
+        )
+    external = _external_anchor_profile(frozen)
+    endpoint_name = external["endpoint_environment_variable"]
+    endpoint = _normalized_https_anchor_endpoint(os.environ.get(endpoint_name))
+    allowlist = {str(provider).lower() for provider in external["provider_allowlist"]}
+    endpoint_host = urlsplit(endpoint).hostname
+    if allowlist and endpoint_host not in allowlist:
+        raise WorksetRecoveryExternalWait(
+            "time-anchor endpoint host is outside the frozen allowlist"
+        )
+    request_body = dict(request_event.payload)
+    request_body_raw = live._canonical_json(request_body).encode("utf-8")  # noqa: SLF001
+    request_record = _anchor_result_request_record(request_event, spec)
+    idempotency_identity = {
+        "event_key": request_record["event_key"],
+        "sequence_id": request_record["sequence_id"],
+        "entry_sha256": request_record["entry_sha256"],
+        "event_spec_sha256": request_record["event_spec_sha256"],
+    }
+    contract: dict[str, object] = {
+        "schema_version": ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA,
+        "endpoint": endpoint,
+        "endpoint_sha256": _sha256(endpoint.encode("utf-8")),
+        "endpoint_environment_variable": endpoint_name,
+        "bearer_token_environment_variable": external[
+            "bearer_token_environment_variable"
+        ],
+        "http_method": "POST",
+        "timeout_seconds": external["timeout_seconds"],
+        "maximum_response_bytes": ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES,
+        "request_event": request_record,
+        "request_body": request_body,
+        "request_body_sha256": _sha256(request_body_raw),
+        "idempotency_key": _sha256(_canonical_bytes(idempotency_identity)),
+        "expected_result_pre_head": {
+            "epoch_id": frozen.projection.epoch_id,
+            "event_count": request_event.sequence_id,
+            "sequence_id": request_event.sequence_id,
+            "entry_sha256": request_event.entry_sha256,
+        },
+        "receipt_verification_mode": external["receipt_verification_mode"],
+        "remote_delivery_semantics": (
+            "at_least_once_unless_provider_honors_idempotency_key"
+        ),
+    }
+    _verify_anchor_result_request_contract(item, reservation, contract)
+    return contract
+
+
+def _verify_anchor_result_request_contract(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+) -> None:
+    checked = _exact(
+        contract,
+        {
+            "schema_version",
+            "endpoint",
+            "endpoint_sha256",
+            "endpoint_environment_variable",
+            "bearer_token_environment_variable",
+            "http_method",
+            "timeout_seconds",
+            "maximum_response_bytes",
+            "request_event",
+            "request_body",
+            "request_body_sha256",
+            "idempotency_key",
+            "expected_result_pre_head",
+            "receipt_verification_mode",
+            "remote_delivery_semantics",
+        },
+        name="anchor result request action contract",
+    )
+    frozen, seal, authority = _anchor_result_context(item, reservation)
+    external = _external_anchor_profile(frozen)
+    try:
+        endpoint = _normalized_https_anchor_endpoint(checked["endpoint"])
+    except WorksetRecoveryExternalWait as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Recorded time-anchor endpoint changed"
+        ) from exc
+    request_record = _exact(
+        checked["request_event"],
+        _ANCHOR_RESULT_REQUEST_EVENT_KEYS,
+        name="anchor result request event",
+    )
+    pre_head = _exact(
+        checked["expected_result_pre_head"],
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="anchor result expected pre-head",
+    )
+    try:
+        expected = live_cas.LiveLedgerPreHeadV1(**pre_head)
+        live_cas._validate_pre_head(expected)  # noqa: SLF001
+    except (TypeError, live_ledger.LedgerError) as exc:
+        raise WorksetRecoveryIntegrityError(
+            "Anchor result expected pre-head changed"
+        ) from exc
+    position = expected.event_count - 1
+    if position < 0 or len(frozen.current_events) <= position:
+        raise WorksetRecoveryIntegrityError("Anchor result request event disappeared")
+    request_event = frozen.current_events[position]
+    spec = _canonical_anchor_request_spec(frozen, seal, checked["request_body"])
+    expected_record = _anchor_result_request_record(request_event, spec)
+    idempotency_identity = {
+        "event_key": expected_record["event_key"],
+        "sequence_id": expected_record["sequence_id"],
+        "entry_sha256": expected_record["entry_sha256"],
+        "event_spec_sha256": expected_record["event_spec_sha256"],
+    }
+    request_body_raw = live._canonical_json(  # noqa: SLF001
+        checked["request_body"]
+    ).encode("utf-8")
+    allowlist = {str(provider).lower() for provider in external["provider_allowlist"]}
+    endpoint_host = urlsplit(endpoint).hostname
+    if (
+        checked["schema_version"] != ANCHOR_RESULT_REQUEST_CONTRACT_SCHEMA
+        or request_record != expected_record
+        or not _event_matches_spec(request_event, spec)
+        or expected.epoch_id != frozen.projection.epoch_id
+        or expected.sequence_id != request_event.sequence_id
+        or expected.entry_sha256 != request_event.entry_sha256
+        or checked["endpoint"] != endpoint
+        or checked["endpoint_sha256"] != _sha256(endpoint.encode("utf-8"))
+        or checked["endpoint_environment_variable"]
+        != external["endpoint_environment_variable"]
+        or checked["bearer_token_environment_variable"]
+        != external["bearer_token_environment_variable"]
+        or checked["http_method"] != "POST"
+        or checked["timeout_seconds"] != external["timeout_seconds"]
+        or checked["maximum_response_bytes"] != ANCHOR_RESULT_MAXIMUM_RESPONSE_BYTES
+        or checked["request_body"] != dict(request_event.payload)
+        or checked["request_body_sha256"] != _sha256(request_body_raw)
+        or checked["idempotency_key"] != _sha256(_canonical_bytes(idempotency_identity))
+        or checked["receipt_verification_mode"] != external["receipt_verification_mode"]
+        or checked["remote_delivery_semantics"]
+        != "at_least_once_unless_provider_honors_idempotency_key"
+        or (allowlist and endpoint_host not in allowlist)
+    ):
+        raise WorksetRecoveryIntegrityError("Anchor result request contract changed")
+    if authority["action"] == "anchor_result_recorded":
+        if (
+            request_event.sequence_id != frozen.expected_pre_head.event_count
+            or request_event.entry_sha256 != frozen.expected_pre_head.entry_sha256
+        ):
+            raise WorksetRecoveryIntegrityError(
+                "Frozen anchor result request position changed"
+            )
+    elif (
+        request_event.sequence_id != frozen.expected_pre_head.event_count + 1
+        or request_event.previous_entry_sha256 != frozen.expected_pre_head.entry_sha256
+    ):
+        raise WorksetRecoveryIntegrityError("Recovered anchor request position changed")
+
+
+def _verify_pending_anchor_result_head(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    contract: Mapping[str, Any],
+) -> None:
+    _verify_anchor_result_request_contract(item, reservation, contract)
+    expected_record = _exact(
+        contract["expected_result_pre_head"],
+        {"epoch_id", "event_count", "sequence_id", "entry_sha256"},
+        name="pending anchor result expected pre-head",
+    )
+    frozen = _frozen_live_prefix(reservation)
+    if (
+        len(frozen.current_events) != expected_record["event_count"]
+        or frozen.current_events[-1].sequence_id != expected_record["sequence_id"]
+        or frozen.current_events[-1].entry_sha256 != expected_record["entry_sha256"]
+    ):
+        raise WorksetRecoveryIntegrityError(
+            "Pending anchor result request is no longer at the live-ledger head"
+        )
+
+
 def _action_contract(
     item: Mapping[str, Any], reservation: Reservation, action: str
 ) -> dict[str, object] | None:
     if action == "anchor_request_recorded":
         return _anchor_request_contract(item, reservation)
+    if action == "anchor_result_recorded":
+        return _anchor_result_request_contract(item, reservation)
     return None
+
+
+def _verify_item_intent_action_contract(
+    item: Mapping[str, Any],
+    reservation: Reservation,
+    action: str,
+    contract: object,
+) -> None:
+    if action == "anchor_result_recorded":
+        if not isinstance(contract, Mapping):
+            raise WorksetRecoveryIntegrityError(
+                "Anchor result item intent lost its request contract"
+            )
+        _verify_anchor_result_request_contract(item, reservation, contract)
+        return
+    if contract != _action_contract(item, reservation, action):
+        raise WorksetRecoveryIntegrityError("Recovery step intent contract changed")
 
 
 def _ensure_item_intent(
@@ -1999,6 +2507,12 @@ def _load_receipts(
         expected_previous = (
             _reference(previous[2], paths.root) if previous is not None else None
         )
+        _verify_item_intent_action_contract(
+            item,
+            reservation,
+            action,
+            intent_payload.get("action_contract"),
+        )
         position = (key_id, step_index)
         if (
             position in intent_positions
@@ -2012,8 +2526,6 @@ def _load_receipts(
             or filename_step_id != _step_id(key_id, step_index, action)
             or intent_payload.get("natural_key") != item["natural_key"]
             or intent_payload.get("namespace_digest") != item["namespace_digest"]
-            or intent_payload.get("action_contract")
-            != _action_contract(item, reservation, action)
             or intent_payload.get("transition_plan_sha256") != plan["plan_sha256"]
             or intent_payload.get("previous_step_receipt") != expected_previous
             or intent_payload.get("dependency_keys") != item["dependency_keys"]
@@ -2344,6 +2856,50 @@ def _coordinate_epoch_workset_recovery(
                 receipt_snapshot.path,
                 event_snapshot.path,
             )
+        pending_step_ids = set(intents) - set(receipts)
+        if len(pending_step_ids) > 1:
+            raise WorksetRecoveryIntegrityError(
+                "Recovery has branched pending step intents"
+            )
+        if pending_step_ids:
+            pending_step_id = next(iter(pending_step_ids))
+            pending_payload, _ = _strict_json(
+                intents[pending_step_id], name="pending recovery step intent"
+            )
+            if pending_payload.get("action") == "anchor_result_recorded":
+                key_id = pending_payload.get("key_id")
+                if not isinstance(key_id, str) or key_id not in item_by_id:
+                    raise WorksetRecoveryIntegrityError(
+                        "Pending anchor result intent lost its manifest key"
+                    )
+                pending_contract = pending_payload.get("action_contract")
+                if not isinstance(pending_contract, Mapping):
+                    raise WorksetRecoveryIntegrityError(
+                        "Pending anchor result intent lost its request contract"
+                    )
+                _verify_pending_anchor_result_head(
+                    item_by_id[key_id], reservation, pending_contract
+                )
+                reason = (
+                    "one immutable anchor-result request intent fences recovery; "
+                    "the reviewed unlocked transport is not implemented yet"
+                )
+                _write_status(
+                    profile,
+                    paths,
+                    now=now,
+                    status="waiting_for_external_anchor_dispatch",
+                    reason=reason,
+                    key_id=key_id,
+                    receipt=None,
+                    event=None,
+                )
+                return RecoveryResult(
+                    "waiting_for_external_anchor_dispatch",
+                    reason,
+                    paths.status,
+                    key_id,
+                )
         completed_natural = {
             item_by_id[key_id]["natural_key"]
             for key_id, rows in chains.items()
@@ -2371,7 +2927,10 @@ def _coordinate_epoch_workset_recovery(
             if len(next_actions) != 1:
                 continue
             transition_action = next_actions[0]
-            if not _item_adapter_supported(item, transition_action):
+            if not (
+                _item_adapter_supported(item, transition_action)
+                or _item_intent_preparable(item, transition_action)
+            ):
                 continue
             candidates.append(
                 (
@@ -2418,7 +2977,26 @@ def _coordinate_epoch_workset_recovery(
                     "Ready key lost a deep-verified terminal dependency receipt"
                 )
             dependency_snapshots.append(dependency_rows[-1][1])
-        action_contract = _action_contract(item, reservation, transition_action)
+        try:
+            action_contract = _action_contract(item, reservation, transition_action)
+        except WorksetRecoveryExternalWait as exc:
+            reason = str(exc)
+            _write_status(
+                profile,
+                paths,
+                now=now,
+                status="waiting_for_external_anchor_endpoint",
+                reason=reason,
+                key_id=item["key_id"],
+                receipt=None,
+                event=None,
+            )
+            return RecoveryResult(
+                "waiting_for_external_anchor_endpoint",
+                reason,
+                paths.status,
+                item["key_id"],
+            )
         item_intent = _ensure_item_intent(
             profile,
             paths,
@@ -2432,6 +3010,32 @@ def _coordinate_epoch_workset_recovery(
             action_contract=action_contract,
             now=now,
         )
+        if transition_action in INTENT_PREPARATION_SUCCESSORS:
+            if not isinstance(action_contract, Mapping):
+                raise WorksetRecoveryIntegrityError(
+                    "Prepared anchor result intent lost its request contract"
+                )
+            _verify_pending_anchor_result_head(item, reservation, action_contract)
+            reason = (
+                "one immutable anchor-result request intent was prepared; "
+                "no network action or live-ledger result was performed"
+            )
+            _write_status(
+                profile,
+                paths,
+                now=now,
+                status="external_anchor_request_prepared",
+                reason=reason,
+                key_id=item["key_id"],
+                receipt=None,
+                event=None,
+            )
+            return RecoveryResult(
+                "external_anchor_request_prepared",
+                reason,
+                paths.status,
+                item["key_id"],
+            )
         action = _perform_action(
             item,
             reservation,

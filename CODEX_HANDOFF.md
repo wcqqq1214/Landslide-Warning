@@ -3,13 +3,48 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `232d4ca feat: add live ledger head cas`
+**Committed baseline before this increment:** `51696db feat: recover anchor request events`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
-expected-pre-head CAS 已提交并 push；本增量把它接入单事件 machine-only
-`live_outstanding -> anchor_request_recorded` adapter。该 step 零网络、非 terminal，不是
-完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority，
-不声明 drained、active switch、rotation、trusted anchor、E2 evidence、activation 或 formal
-warning。
+expected-pre-head CAS 与单事件 machine-only `anchor_request_recorded` adapter 已提交；本增量
+冻结下一步 `anchor_result_recorded` 的 create-only external request intent 和全局 pending fence。
+该切片仍为零网络、零 result ledger mutation，不是完整 recovery、terminal/transitive closure、
+泛化 admission fence 或 DRAINING lifecycle authority；不声明 drained、active switch、rotation、
+trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-28 anchor-result request-intent continuation
+
+The current increment implements only the locked preparation boundary for
+`anchor_result_recorded`; the result action itself remains unimplemented. The coordinator accepts
+only a unique canonical `anchor_requested` event at the current live-ledger tip. For a manifest
+whose initial action is the result, that request must be the frozen tip itself. For a request just
+created by recovery, it must be the single event immediately after the frozen tip and remain bound
+to the preceding step receipt. Aggregate request/result counts are not sufficient pairing
+authority.
+
+Before any future external action, a create-only item-intent action contract freezes the exact
+request event identity, canonical POST body and digest, expected result pre-head, normalized HTTPS
+endpoint, timeout/response limit, and a stable idempotency key derived from the request identity.
+The bearer-token value is never persisted or hashed. A missing, malformed, non-HTTPS or
+out-of-allowlist endpoint produces machine waiting without creating an immutable intent.
+
+Once this result intent exists without a receipt, it globally fences the coordinator. Later polls
+deep-verify the same intent and return `waiting_for_external_anchor_dispatch`; they perform no
+network call, ledger mutation, receipt/event publication or unrelated-key progress. This avoids
+placing HTTP/DNS/provider latency inside the surviving manager→cycle→replay→shadow lock scope.
+
+The profile uses v4 intent/item-intent/receipt/status authority and states only
+`live_anchor_result_request_intent_implemented=true`. It deliberately keeps
+`live_anchor_result_adapter_implemented=false`, `network_recovery_implemented=false` and
+`network_action_performed=false`, along with all full-recovery/lifecycle/trusted/E2/formal claims.
+ConvLSTM, v4, frozen splits, metrics, thresholds and conclusions are untouched. Focused tests pass
+23/23 and the seven adjacent modules pass 117/117; Ruff, formatting, compile, strict profile load
+and diff checks pass.
+
+The next slice is an unlocked bounded HTTPS dispatcher plus a create-only content-addressed response
+observation. Only a subsequent locked phase may replay all authority and commit/adopt the exact
+`anchor_failed` or `anchor_confirmed` event, followed by a branch-selected receipt. Until the
+provider contract proves idempotent POST or query-by-key behavior, external exactly-once must not be
+claimed. Full detail is in `docs/ootang_anchor_result_request_intent_engineering.md`.
 
 ## 2026-08-28 single-event anchor request recovery continuation
 

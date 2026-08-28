@@ -161,6 +161,15 @@
   精准测试 `26/26`，相邻回归 `101/101`，protected aggregate 与 11 个 frozen writer 保持
   一致，独立审计 P0/P1=0。详细合同见
   `docs/ootang_anchor_request_recovery_engineering.md`。
+- `anchor_result_recorded` 现已完成**请求意图准备**，但 result action 本身仍未实现。机器只接受
+  manifest frozen tip 或前一步 recovery request 后紧邻的唯一 canonical `anchor_requested`
+  terminal event，并在 create-only item intent 中冻结 exact normalized HTTPS endpoint、POST
+  body/hash、stable idempotency key 与 expected result pre-head。endpoint 缺失/非法时不创建
+  intent；已有 pending intent 全局排他并保持零网络。当前只新增
+  `live_anchor_result_request_intent_implemented=true`，仍保持 result adapter/network/trusted/E2
+  claims 为 false。下一步是四锁外 bounded transport + content-addressed response observation，
+  再重新加锁做 result CAS 与 branch-selected receipt；详见
+  `docs/ootang_anchor_result_request_intent_engineering.md`。
 - 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
 - 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
 - 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
@@ -259,6 +268,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/v5_v0_numerical_audit.md`](docs/v5_v0_numerical_audit.md) | ATU3/MJ9 负 SSE 的复现、根因、修复和保护性验证记录 |
 | [`docs/v5_validation_protocol.md`](docs/v5_validation_protocol.md) | 正式 v5 的标签、切分、指标、V0 unavailable 与融合决策门 |
 | [`docs/ootang_autonomous_research_protocol.md`](docs/ootang_autonomous_research_protocol.md) | 不依赖逐日人工操作的 E0--E3 机器闭环协议及科学边界 |
+| [`docs/ootang_anchor_result_request_intent_engineering.md`](docs/ootang_anchor_result_request_intent_engineering.md) | `anchor_result_recorded` 的机器请求意图、pending fence 与零网络边界 |
 | [`docs/ootang_prequential_monitor_results.md`](docs/ootang_prequential_monitor_results.md) | E1 三折回放结果、确定性/因果校验、产物哈希与当前限制 |
 | [`docs/ootang_prequential_calibration_bakeoff.md`](docs/ootang_prequential_calibration_bakeoff.md) | 固定 E1 点预测上的 ACI/AgACI-EWA/SPCI 非排名校准比较、论文边界与 E2 shadow 门禁 |
 | [`docs/ootang_prequential_live_engineering.md`](docs/ootang_prequential_live_engineering.md) | E2-A ledger/runner 实现、验证、状态语义和 E2-B 激活门禁 |
@@ -299,9 +309,11 @@ docs/                           # 当前方法、结果边界和研究计划
    dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；
    recovery-only expected-pre-head CAS 已实现，且单事件 machine-only
    `anchor_request_recorded` adapter 已从 manifest frozen prefix 重建 seal/attempt/EventSpec 并调用该 CAS。
-   该 step 零网络且非 terminal，机器现稳定等待尚未实现的
-   `anchor_result_recorded`。下一切片必须先设计外部 request intent、释锁 fence、幂等
-   response adoption 和 result validation；其后才讨论其他 adapter、独立
+   该 step 零网络且非 terminal；下一步 `anchor_result_recorded` 的 create-only external
+   request intent 与全局 pending fence 已实现，机器会在缺 endpoint 或等待 transport 时稳定
+   waiting，不转人工操作。下一切片只实现四锁外 bounded transport 与 content-addressed
+   response observation；之后才重新加锁做 result CAS/adoption 与 branch-selected receipt，
+   其后才讨论其他 adapter、独立
    drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
    O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
    关闭前保持 `real_activation_ready=false`。

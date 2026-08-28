@@ -5,7 +5,38 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
-## 2026-08-28 single-event anchor request recovery（本增量）
+## 2026-08-28 anchor-result request intent 与全局 pending fence（本增量）
+
+- 在已提交的 `51696db feat: recover anchor request events` 上继续窄化
+  `anchor_request_recorded -> anchor_result_recorded`。本增量只在四重锁内创建
+  create-only result item intent；不发 HTTP/TSA 请求，不写 response observation，不追加
+  `anchor_failed`/`anchor_confirmed`，也不创建 result receipt/event。
+- result contract 不再依赖 inventory 的 aggregate request/result 计数猜测配对。它只接受
+  manifest frozen tip 本身，或前一步 recovery request 紧邻产生的唯一 canonical
+  `anchor_requested` terminal event；冻结 event key/type/sequence/predecessor/entry、完整 POST
+  body 与 digest、expected result pre-head、normalized exact HTTPS endpoint、timeout/response
+  上限及由 request identity 派生的 stable idempotency key。
+- endpoint 缺失、非法或超出冻结 allowlist 时返回
+  `waiting_for_external_anchor_endpoint`，且不创建 immutable intent。token value 永不进入
+  intent/status/hash/log；后续只允许 transport 在 dispatch 时读取环境变量。
+- 已创建但无 receipt 的 result intent 是全局排他 fence。后续 poll 只深度复验并返回
+  `waiting_for_external_anchor_dispatch`，零网络、零 ledger mutation、零其他 key 推进，避免
+  在当前 manager→cycle→replay→shadow 四锁内执行长网络 I/O。
+- profile/schema authority 升为 v4；新增真实 capability
+  `live_anchor_result_request_intent_implemented=true`，同时保持
+  `live_anchor_result_adapter_implemented=false`、`network_recovery_implemented=false`、
+  `network_action_performed=false`。full/terminal/derived-work/drained/active/trusted/E2/formal
+  claims 仍为 false。
+- ConvLSTM、v4 默认链、冻结 splits、metrics、thresholds、模型参数和实验结论均未修改；
+  本增量只触及 recovery 控制面。定向 recovery 测试 `23/23`（约 0.17 s），相邻 7 模块
+  `117/117`（约 1.8 s），Ruff check/format、compile、strict profile load 与 diff check 通过。
+- 下一步是四锁外的 bounded HTTPS transport 和 create-only、content-addressed response
+  observation；其后才重新取得四锁做 expected-pre-head result CAS/adoption 与 branch-selected
+  receipt（failed→新 request，confirmed→outcome settlement）。provider 未证明支持相同 key
+  幂等 POST/query 前，不声称 external exactly-once。详细合同见
+  `docs/ootang_anchor_result_request_intent_engineering.md`。
+
+## 2026-08-28 single-event anchor request recovery（已提交 `51696db`）
 
 - 基于已提交并 push 的 `232d4ca feat: add live ledger head cas`，
   `ootang-epoch-workset-recovery` 新增唯一一个 ledger mutation adapter：

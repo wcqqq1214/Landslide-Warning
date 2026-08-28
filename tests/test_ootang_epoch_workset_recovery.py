@@ -7,6 +7,7 @@ from datetime import date, datetime, timezone
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import sqlite3
 import sys
@@ -33,6 +34,24 @@ NOW = datetime(2031, 2, 3, 4, 5, tzinfo=timezone.utc)
 
 def _digest(name: str) -> str:
     return hashlib.sha256(name.encode()).hexdigest()
+
+
+def _external_anchor_profile() -> dict[str, object]:
+    return {
+        "mode": "https_json_post_from_environment",
+        "endpoint_environment_variable": "OOTANG_TIME_ANCHOR_URL",
+        "bearer_token_environment_variable": "OOTANG_TIME_ANCHOR_TOKEN",
+        "timeout_seconds": 10,
+        "anchor_issue_batch_seal": True,
+        "missing_or_failed_status": "locally_sealed_unanchored",
+        "confirmed_status": "externally_anchored_blind_candidate",
+        "provider_allowlist": [],
+        "receipt_verification_mode": ("interface_only_no_cryptographic_verifier_e2a"),
+        "trusted_receipt_required_for_live_evidence": True,
+        "e2a_receipts_count_as_live_evidence": False,
+        "required_before_outcome_read": False,
+        "claim_independent_time_proof_without_confirmed_receipt": False,
+    }
 
 
 class WorksetRecoveryTests(unittest.TestCase):
@@ -785,6 +804,183 @@ class WorksetRecoveryTests(unittest.TestCase):
 
         self.assertEqual(len(ledger.read_events()), 4)
 
+    def test_anchor_result_request_contract_freezes_tip_endpoint_and_idempotency(
+        self,
+    ) -> None:
+        ledger, reservation, item, load_frozen, _ = self._anchor_request_fixture()
+
+        def load_external(reserved):  # type: ignore[no-untyped-def]
+            frozen = load_frozen(reserved)
+            return recovery.FrozenLivePrefix(
+                profile={"external_anchor": _external_anchor_profile()},
+                paths=frozen.paths,
+                prerequisites=frozen.prerequisites,
+                projection=frozen.projection,
+                frozen_events=frozen.frozen_events,
+                current_events=frozen.current_events,
+                expected_pre_head=frozen.expected_pre_head,
+            )
+
+        network = mock.Mock(side_effect=AssertionError("network must remain unlocked"))
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.object(recovery.live, "_default_anchor_client", network),
+            mock.patch.dict(
+                os.environ,
+                {
+                    "OOTANG_TIME_ANCHOR_URL": (
+                        "https://Anchor.Invalid:443/v1/receipts"
+                    ),
+                    "OOTANG_TIME_ANCHOR_TOKEN": "synthetic-secret-token",
+                },
+                clear=False,
+            ),
+        ):
+            request_contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, request_contract
+            )
+            result_contract = recovery._anchor_result_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+
+        network.assert_not_called()
+        request_event = ledger.read_events()[-1]
+        self.assertEqual(
+            result_contract["endpoint"], "https://anchor.invalid/v1/receipts"
+        )
+        self.assertEqual(result_contract["request_body"], request_event.payload)
+        self.assertEqual(
+            result_contract["expected_result_pre_head"]["entry_sha256"],
+            request_event.entry_sha256,
+        )
+        self.assertEqual(len(result_contract["idempotency_key"]), 64)
+        self.assertNotIn("synthetic-secret-token", json.dumps(result_contract))
+
+    def test_anchor_result_request_contract_replays_after_suffix_and_rejects_drift(
+        self,
+    ) -> None:
+        ledger, reservation, item, load_frozen, seal = self._anchor_request_fixture()
+
+        def load_external(reserved):  # type: ignore[no-untyped-def]
+            frozen = load_frozen(reserved)
+            return recovery.FrozenLivePrefix(
+                profile={"external_anchor": _external_anchor_profile()},
+                paths=frozen.paths,
+                prerequisites=frozen.prerequisites,
+                projection=frozen.projection,
+                frozen_events=frozen.frozen_events,
+                current_events=frozen.current_events,
+                expected_pre_head=frozen.expected_pre_head,
+            )
+
+        with (
+            mock.patch.object(
+                recovery, "_frozen_live_prefix", side_effect=load_external
+            ),
+            mock.patch.dict(
+                os.environ,
+                {"OOTANG_TIME_ANCHOR_URL": "https://anchor.invalid/v1/receipts"},
+                clear=False,
+            ),
+        ):
+            request_contract = recovery._anchor_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            recovery._anchor_request_action(  # noqa: SLF001
+                item, reservation, request_contract
+            )
+            contract = recovery._anchor_result_request_contract(  # noqa: SLF001
+                item, reservation
+            )
+            request = ledger.read_events()[-1]
+            ledger.append_transaction(
+                [
+                    self._synthetic_live_spec(
+                        request.event_key.removesuffix(":requested") + ":failed",
+                        event_type="anchor_failed",
+                        target=seal.target_date,
+                        issue_id=seal.issue_id,
+                        payload={
+                            **request.payload,
+                            "reason_code": "request_or_receipt_validation_failed",
+                            "error_type": "SyntheticFailure",
+                            "retry_policy": "automatic_next_poll",
+                        },
+                        input_manifest_sha256=seal.input_manifest_sha256,
+                        state_sha256=seal.state_after_sha256,
+                    )
+                ]
+            )
+            recovery._verify_anchor_result_request_contract(  # noqa: SLF001
+                item, reservation, contract
+            )
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError,
+                "no longer at the live-ledger head",
+            ):
+                recovery._verify_pending_anchor_result_head(  # noqa: SLF001
+                    item, reservation, contract
+                )
+            changed = {**contract, "idempotency_key": "f" * 64}
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError,
+                "contract changed",
+            ):
+                recovery._verify_anchor_result_request_contract(  # noqa: SLF001
+                    item, reservation, changed
+                )
+
+    def test_anchor_result_endpoint_wait_does_not_freeze_an_intent(self) -> None:
+        reservation = self._reservation(
+            [("anchor-result", "anchor_result_recorded", [])]
+        )
+        with mock.patch.object(
+            recovery,
+            "_action_contract",
+            side_effect=recovery.WorksetRecoveryExternalWait(
+                "time-anchor endpoint is missing"
+            ),
+        ):
+            result = self._run(reservation)
+
+        self.assertEqual(result.status, "waiting_for_external_anchor_endpoint")
+        self.assertFalse(self.paths.item_intents.exists())
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
+    def test_anchor_result_pending_intent_fences_without_network_or_receipt(
+        self,
+    ) -> None:
+        reservation = self._reservation(
+            [("anchor-result", "anchor_result_recorded", [])]
+        )
+        contract = {"schema_version": "synthetic-anchor-result-request"}
+        network = mock.Mock(side_effect=AssertionError("network must stay unreachable"))
+        with (
+            mock.patch.object(recovery, "_action_contract", return_value=contract),
+            mock.patch.object(
+                recovery, "_verify_item_intent_action_contract", return_value=None
+            ),
+            mock.patch.object(
+                recovery, "_verify_pending_anchor_result_head", return_value=None
+            ),
+            mock.patch.object(recovery.live, "_default_anchor_client", network),
+        ):
+            first = self._run(reservation)
+            second = self._run(reservation)
+
+        self.assertEqual(first.status, "external_anchor_request_prepared")
+        self.assertEqual(second.status, "waiting_for_external_anchor_dispatch")
+        network.assert_not_called()
+        self.assertEqual(len(list(self.paths.item_intents.glob("*.json"))), 1)
+        self.assertFalse(self.paths.receipts.exists())
+        self.assertFalse(self.paths.events.exists())
+
     def test_frozen_live_prefix_accepts_suffix_but_rejects_tip_drift(self) -> None:
         ledger, reservation, _, _, seal = self._anchor_request_fixture()
         projection = SimpleNamespace(epoch_id="synthetic-live-epoch-anchor-request")
@@ -889,6 +1085,8 @@ class WorksetRecoveryTests(unittest.TestCase):
         self.assertTrue(claims["step_receipt_chain_implemented"])
         self.assertTrue(claims["terminal_receipt_dependency_gate_implemented"])
         self.assertTrue(claims["live_ledger_expected_pre_head_cas_implemented"])
+        self.assertTrue(claims["live_anchor_result_request_intent_implemented"])
+        self.assertFalse(claims["live_anchor_result_adapter_implemented"])
         self.assertFalse(claims["bounded_workset_recovery_implemented"])
         self.assertFalse(claims["terminal_transition_closure_implemented"])
         result = recovery.RecoveryResult("waiting", "no authority", Path("status"))
