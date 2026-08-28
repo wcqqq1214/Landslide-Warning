@@ -24,9 +24,12 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from monitoring import ootang_epoch_registry as registry  # noqa: E402
+from monitoring import ootang_epoch_workset_inventory as inventory  # noqa: E402
 from monitoring import ootang_epoch_workset_manifest as manifest  # noqa: E402
 from monitoring import ootang_epoch_workset_recovery as recovery  # noqa: E402
 from monitoring import ootang_live_ledger as live_ledger  # noqa: E402
+from monitoring import ootang_live_source as source_module  # noqa: E402
+from monitoring import ootang_outcome_materializer as outcomes  # noqa: E402
 from monitoring import ootang_trusted_time_shadow_core as trusted  # noqa: E402
 from tests.test_ootang_prequential_live import (  # noqa: E402
     ANCHOR_URL,
@@ -787,6 +790,374 @@ class WorksetRecoveryTests(unittest.TestCase):
 
         return ledger, reservation, load_external, seal
 
+    def _published_outstanding_outcome_fixture(
+        self, fixture: _LiveFixture
+    ) -> tuple[
+        recovery.Reservation,
+        tuple[live_ledger.LedgerEvent, ...],
+        outcomes._RegisteredOutcome,
+        recovery.live.Prerequisites,
+    ]:
+        """Freeze an outstanding tip, then publish it through the real materializer."""
+
+        fixture.install_prerequisites()
+        fixture.write_issue()
+        with mock.patch.dict(
+            os.environ, {"OOTANG_TIME_ANCHOR_URL": ANCHOR_URL}, clear=False
+        ):
+            fixture.poll(now=ISSUE_CLOCK, anchor_client=fixture.anchor_client())
+        frozen_events = tuple(fixture.events())
+        frozen_head = frozen_events[-1]
+        self.assertEqual(frozen_head.event_type, "anchor_confirmed")
+        prerequisites = recovery.live.load_prerequisites(fixture.profile, fixture.paths)
+        self.assertIsNotNone(prerequisites)
+        assert prerequisites is not None
+        projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+            frozen_events, fixture.profile, prerequisites
+        )
+        seal = projection.seal_event
+        self.assertIsNotNone(seal)
+        assert seal is not None
+
+        profile = outcomes.load_config()
+        object_root = outcomes._runtime_path(  # noqa: SLF001
+            profile, fixture.root, "objects"
+        )
+        dataset = outcomes._materialize_object(  # noqa: SLF001
+            object_root, b"recovery-test-dataset\n", suffix="source.json"
+        )
+        semantic = outcomes._materialize_object(  # noqa: SLF001
+            object_root,
+            b"recovery-test-semantic-manifest\n",
+            suffix="source-manifest.json",
+        )
+        activation = outcomes._artifact_from_path(  # noqa: SLF001
+            fixture.source_manifest
+        )
+        record = source_module.DailySourceRecord(
+            day=FIRST_TARGET,
+            revision_id="revision-1",
+            observed_at_utc="2030-01-02T01:00:00Z",
+            available_at_utc="2030-01-02T02:00:00Z",
+            finalized_at_utc="2030-01-02T04:00:00Z",
+            rainfall_mm=2.0,
+            reservoir_water_level_m=151.0,
+            displacement_mm={
+                station: fixture.latest[station] + 1.0 for station in fixture.stations
+            },
+        )
+        receipt_record = {
+            "date": record.day.isoformat(),
+            "revision_id": record.revision_id,
+            "observed_at_utc": record.observed_at_utc,
+            "available_at_utc": record.available_at_utc,
+            "finalized_at_utc": record.finalized_at_utc,
+            "rainfall_mm": record.rainfall_mm,
+            "reservoir_water_level_m": record.reservoir_water_level_m,
+            "displacement_mm": record.displacement_mm,
+        }
+        revision_raw = outcomes._canonical_bytes(  # noqa: SLF001
+            {
+                "schema_version": "ootang_source_revision_receipt_v1",
+                "case": "ootang",
+                "outcome_source_id": "ootang-survey-source-v1",
+                "target_date": FIRST_TARGET.isoformat(),
+                "revision_id": record.revision_id,
+                "revision_sequence_id": 1,
+                "record_sha256": outcomes._canonical_digest(  # noqa: SLF001
+                    receipt_record
+                ),
+                "record": receipt_record,
+                "accepted_source_semantic_manifest": outcomes._artifact_payload(  # noqa: SLF001
+                    semantic
+                ),
+                "predecessor_revision_receipt": None,
+            }
+        )
+        revision_head = outcomes._materialize_object(  # noqa: SLF001
+            object_root, revision_raw, suffix="source-revision.json"
+        )
+        snapshot_raw = outcomes._canonical_bytes(  # noqa: SLF001
+            {
+                "schema_version": "ootang_source_snapshot_receipt_v1",
+                "case": "ootang",
+                "profile_id": "ootang-prequential-deploy-v1",
+                "outcome_source_id": "ootang-survey-source-v1",
+                "snapshot_sequence_id": 1,
+                "source_pointer": {},
+                "source_semantic_manifest": {},
+                "predecessor_snapshot_receipt": None,
+            }
+        )
+        snapshot_receipt = outcomes._materialize_object(  # noqa: SLF001
+            object_root, snapshot_raw, suffix="source-snapshot-receipt.json"
+        )
+        source = SimpleNamespace(
+            watermark=FIRST_TARGET,
+            outcome_source_id="ootang-survey-source-v1",
+            exported_at_utc="2030-01-02T05:00:00Z",
+            records=(record,),
+            dataset=dataset,
+            semantic_manifest=semantic,
+            activation_manifest=activation,
+            revision_heads=(revision_head,),
+            snapshot_receipt=snapshot_receipt,
+        )
+        selection = outcomes._Selection(  # noqa: SLF001
+            kind="outstanding", target_date=FIRST_TARGET, record=record
+        )
+        input_manifest = outcomes._materialize_input_manifest(  # noqa: SLF001
+            profile,
+            fixture.root,
+            outcomes._build_input_manifest(profile, source, selection),  # noqa: SLF001
+        )
+        payload = outcomes._outcome_payload(  # noqa: SLF001
+            profile,
+            selection,
+            input_manifest,
+            outcome_source_id=source.outcome_source_id,
+        )
+        times = iter(
+            (
+                datetime(2030, 1, 2, 6, tzinfo=timezone.utc),
+                datetime(2030, 1, 2, 7, tzinfo=timezone.utc),
+            )
+        )
+        status, registered, _, _ = outcomes._publish_candidate(  # noqa: SLF001
+            profile=profile,
+            root=fixture.root,
+            selection=selection,
+            source_exported_at_utc=source.exported_at_utc,
+            input_manifest=input_manifest,
+            payload=payload,
+            clock=lambda: next(times),
+            live_module=recovery.live,
+            live_profile=fixture.profile,
+            prerequisites=prerequisites,
+        )
+        self.assertEqual(status, "materialized")
+        self.assertEqual(tuple(fixture.events()), frozen_events)
+
+        chain = outcomes._scan_receipt_chain(  # noqa: SLF001
+            target=FIRST_TARGET,
+            profile=profile,
+            root=fixture.root,
+            live_module=recovery.live,
+            live_profile=fixture.profile,
+            prerequisites=prerequisites,
+        )
+        self.assertIsNotNone(chain)
+        assert chain is not None
+        active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+            profile, fixture.root, FIRST_TARGET
+        )
+        self.assertEqual(
+            outcomes._legal_active_bytes(chain, active_path),
+            chain.tip.raw,  # noqa: SLF001
+        )
+        artifact_specs = [
+            (registered.receipt.path, "outcome_receipt"),
+            (registered.exact_object.path, "exact_outcome_object"),
+            (input_manifest.path, "outcome_source_manifest"),
+            (chain.active_pointer_path, "active_outcome_receipt_pointer"),
+            (active_path, "active_outcome"),
+        ]
+        artifacts = [
+            inventory._artifact(  # noqa: SLF001
+                path,
+                role=role,
+                root_label="active",
+                root=fixture.root,
+                maximum_bytes=64 * 1024 * 1024,
+            )
+            for path, role in artifact_specs
+        ]
+        authority = {
+            "record_type": "outcome_receipt_chain",
+            "target_date": FIRST_TARGET.isoformat(),
+            "old_live_epoch_id": projection.epoch_id,
+            "tip_source_revision_id": record.revision_id,
+            "tip_receipt_sha256": registered.receipt.sha256,
+            "tip_exact_outcome_sha256": registered.exact_object.sha256,
+            "tip_published": True,
+            "tip_ledger_consumed": False,
+            "receipts": [
+                {
+                    "source_revision_id": record.revision_id,
+                    "revision_sequence_id": 1,
+                    "receipt_sha256": registered.receipt.sha256,
+                    "exact_outcome_sha256": registered.exact_object.sha256,
+                    "source_manifest_sha256": input_manifest.sha256,
+                    "ledger_consumed": False,
+                }
+            ],
+            "terminal": False,
+            "action": "outcome_or_revision_consumed",
+        }
+        natural_key = inventory._key(  # noqa: SLF001
+            "outcome_revision",
+            projection.epoch_id,
+            FIRST_TARGET.isoformat(),
+            record.revision_id,
+            seal.entry_sha256,
+            registered.exact_object.sha256,
+        )
+        inventoried = inventory._item(  # noqa: SLF001
+            "outcome_revision",
+            natural_key,
+            "outcome_or_revision_consumed",
+            artifacts,
+            authority,
+        )
+
+        self.active_root = fixture.root.resolve()
+        self.setUp_paths_only()
+        reservation = self._reservation(
+            [(natural_key, "outcome_or_revision_consumed", [])]
+        )
+        reservation.manifest["frozen_live_upper_tip"] = {
+            "old_live_epoch_id": projection.epoch_id,
+            "live_event_count": len(frozen_events),
+            "live_terminal_sha256": frozen_head.entry_sha256,
+        }
+        reservation.manifest["items"][0].update(
+            {
+                "family": inventoried.family,
+                "natural_key": inventoried.natural_key,
+                "canonical_successor_state": (inventoried.canonical_successor_state),
+                "dependency_keys": list(inventoried.dependency_keys),
+                "artifacts": [
+                    inventory._artifact_payload(value)  # noqa: SLF001
+                    for value in inventoried.artifacts
+                ],
+                "authority": dict(inventoried.authority),
+                "namespace_digest": inventoried.namespace_digest,
+            }
+        )
+        return reservation, frozen_events, registered, prerequisites
+
+    def _publish_newer_materializer_revision(
+        self,
+        fixture: _LiveFixture,
+        prerequisites: recovery.live.Prerequisites,
+        previous: outcomes._RegisteredOutcome,
+    ) -> outcomes._RegisteredOutcome:
+        profile = outcomes.load_config()
+        previous_manifest = outcomes._artifact_from_mapping(  # noqa: SLF001
+            previous.payload["source_manifest"],
+            name="previous recovery-test outcome manifest",
+        )
+        manifest_payload = json.loads(previous_manifest.path.read_bytes())
+        source_artifacts = manifest_payload["source"]
+        record = source_module.DailySourceRecord(
+            day=FIRST_TARGET,
+            revision_id="revision-2",
+            observed_at_utc="2030-01-02T04:30:00Z",
+            available_at_utc="2030-01-02T05:30:00Z",
+            finalized_at_utc="2030-01-02T06:30:00Z",
+            rainfall_mm=2.5,
+            reservoir_water_level_m=151.5,
+            displacement_mm={
+                station: fixture.latest[station] + 2.0 for station in fixture.stations
+            },
+        )
+        receipt_record = {
+            "date": record.day.isoformat(),
+            "revision_id": record.revision_id,
+            "observed_at_utc": record.observed_at_utc,
+            "available_at_utc": record.available_at_utc,
+            "finalized_at_utc": record.finalized_at_utc,
+            "rainfall_mm": record.rainfall_mm,
+            "reservoir_water_level_m": record.reservoir_water_level_m,
+            "displacement_mm": record.displacement_mm,
+        }
+        revision_raw = outcomes._canonical_bytes(  # noqa: SLF001
+            {
+                "schema_version": "ootang_source_revision_receipt_v1",
+                "case": "ootang",
+                "outcome_source_id": manifest_payload["outcome_source_id"],
+                "target_date": FIRST_TARGET.isoformat(),
+                "revision_id": record.revision_id,
+                "revision_sequence_id": 2,
+                "record_sha256": outcomes._canonical_digest(  # noqa: SLF001
+                    receipt_record
+                ),
+                "record": receipt_record,
+                "accepted_source_semantic_manifest": source_artifacts[
+                    "semantic_manifest"
+                ],
+                "predecessor_revision_receipt": source_artifacts[
+                    "target_revision_receipt"
+                ],
+            }
+        )
+        object_root = outcomes._runtime_path(  # noqa: SLF001
+            profile, fixture.root, "objects"
+        )
+        revision_head = outcomes._materialize_object(  # noqa: SLF001
+            object_root, revision_raw, suffix="source-revision.json"
+        )
+        source = SimpleNamespace(
+            watermark=FIRST_TARGET,
+            outcome_source_id=manifest_payload["outcome_source_id"],
+            exported_at_utc="2030-01-02T07:00:00Z",
+            records=(record,),
+            dataset=outcomes._artifact_from_mapping(  # noqa: SLF001
+                source_artifacts["canonical_dataset"], name="revision dataset"
+            ),
+            semantic_manifest=outcomes._artifact_from_mapping(  # noqa: SLF001
+                source_artifacts["semantic_manifest"],
+                name="revision semantic manifest",
+            ),
+            activation_manifest=outcomes._artifact_from_mapping(  # noqa: SLF001
+                source_artifacts["activation_source_manifest"],
+                name="revision activation manifest",
+            ),
+            revision_heads=(revision_head,),
+            snapshot_receipt=outcomes._artifact_from_mapping(  # noqa: SLF001
+                source_artifacts["snapshot_receipt"],
+                name="revision snapshot receipt",
+            ),
+        )
+        selection = outcomes._Selection(  # noqa: SLF001
+            kind="revision",
+            target_date=FIRST_TARGET,
+            record=record,
+            previous_revision_id=previous.payload["source_revision_id"],
+            previous_outcome_sha256=previous.exact_object.sha256,
+        )
+        input_manifest = outcomes._materialize_input_manifest(  # noqa: SLF001
+            profile,
+            fixture.root,
+            outcomes._build_input_manifest(profile, source, selection),  # noqa: SLF001
+        )
+        payload = outcomes._outcome_payload(  # noqa: SLF001
+            profile,
+            selection,
+            input_manifest,
+            outcome_source_id=source.outcome_source_id,
+        )
+        times = iter(
+            (
+                datetime(2030, 1, 2, 8, tzinfo=timezone.utc),
+                datetime(2030, 1, 2, 9, tzinfo=timezone.utc),
+            )
+        )
+        status, registered, _, _ = outcomes._publish_candidate(  # noqa: SLF001
+            profile=profile,
+            root=fixture.root,
+            selection=selection,
+            source_exported_at_utc=source.exported_at_utc,
+            input_manifest=input_manifest,
+            payload=payload,
+            clock=lambda: next(times),
+            live_module=recovery.live,
+            live_profile=fixture.profile,
+            prerequisites=prerequisites,
+        )
+        self.assertEqual(status, "materialized")
+        return registered
+
     def _outcome_settlement_fixture(
         self,
         fixture: _LiveFixture,
@@ -993,6 +1364,342 @@ class WorksetRecoveryTests(unittest.TestCase):
         )
         recovery._publish_anchor_result_observation(plan, observation)  # noqa: SLF001
         return plan
+
+    def test_published_outstanding_outcome_is_consumed_as_exact_transaction(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, registered, _ = (
+                self._published_outstanding_outcome_fixture(fixture)
+            )
+
+            result = self._run(reservation)
+
+            after = tuple(fixture.events())
+            committed = after[len(before) :]
+            self.assertEqual(result.status, "recovery_item_completed")
+            self.assertEqual(len(committed), 43)
+            self.assertEqual(
+                tuple(event.event_type for event in committed),
+                recovery.OUTCOME_CONSUMPTION_EVENT_TYPES,
+            )
+            self.assertEqual(
+                committed[-1].payload["outcome_batch_sha256"],
+                registered.exact_object.sha256,
+            )
+            self.assertEqual(committed[-1].payload["source_revision_id"], "revision-1")
+            self.assertIsNotNone(result.receipt_path)
+            assert result.receipt_path is not None
+            receipt = json.loads(result.receipt_path.read_bytes())
+            self.assertEqual(receipt["action"], "outcome_or_revision_consumed")
+            self.assertEqual(
+                receipt["action_output_kind"],
+                "live_outcome_consumption_transaction",
+            )
+            self.assertIsNone(receipt["action_output"])
+            self.assertTrue(receipt["terminal_for_key"])
+            self.assertEqual(receipt["next_actions"], [])
+            semantics = receipt["action_semantics"]
+            self.assertEqual(semantics["event_count"], 43)
+            self.assertEqual(
+                semantics["exact_outcome_sha256"], registered.exact_object.sha256
+            )
+            self.assertTrue(semantics["canonical_frozen_writer_reused"])
+            self.assertTrue(semantics["contiguous_exact_slice_verified"])
+            for claim in (
+                "network_action_performed",
+                "trusted_anchor_receipt_verified",
+                "e2_live_evidence_eligible",
+                "formal_warning_output",
+            ):
+                self.assertFalse(semantics[claim])
+
+    def test_outcome_consumption_commit_before_receipt_is_exactly_adopted(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, first, prerequisites = (
+                self._published_outstanding_outcome_fixture(fixture)
+            )
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_ensure_receipt",
+                    side_effect=RuntimeError("synthetic post-CAS crash"),
+                ),
+                self.assertRaisesRegex(RuntimeError, "post-CAS crash"),
+            ):
+                self._run(reservation)
+            committed = tuple(fixture.events())
+            self.assertEqual(len(committed) - len(before), 43)
+            self.assertEqual(
+                sum(event.event_type == "outcome_batch_settled" for event in committed),
+                1,
+            )
+            self.assertEqual(len(list(self.paths.item_intents.glob("*.json"))), 1)
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 0)
+
+            newer = self._publish_newer_materializer_revision(
+                fixture, prerequisites, first
+            )
+            profile = outcomes.load_config()
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, FIRST_TARGET
+            )
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                outcomes._runtime_path(  # noqa: SLF001
+                    profile, fixture.root, "outcome_receipts"
+                ),
+                FIRST_TARGET,
+            )
+            published_revision_two = {
+                active_path: active_path.read_bytes(),
+                pointer_path: pointer_path.read_bytes(),
+            }
+            self.assertEqual(active_path.read_bytes(), newer.raw)
+            with mock.patch.object(
+                recovery.live_cas,
+                "append_transaction_at_pre_head_v1",
+                side_effect=AssertionError(
+                    "committed pending intent must be receipt-only"
+                ),
+            ) as ledger_cas:
+                result = self._run(reservation)
+
+            ledger_cas.assert_not_called()
+            self.assertEqual(result.status, "recovery_item_completed")
+            self.assertEqual(tuple(fixture.events()), committed)
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 1)
+            self.assertEqual(len(list(self.paths.events.glob("*.json"))), 1)
+            assert result.receipt_path is not None
+            receipt = json.loads(result.receipt_path.read_bytes())
+            self.assertEqual(
+                receipt["action_semantics"]["tip_receipt_sha256"],
+                first.receipt.sha256,
+            )
+            self.assertEqual(
+                receipt["action_semantics"]["exact_outcome_sha256"],
+                first.exact_object.sha256,
+            )
+            self.assertNotEqual(
+                receipt["action_semantics"]["exact_outcome_sha256"],
+                newer.exact_object.sha256,
+            )
+            for path, raw in published_revision_two.items():
+                self.assertEqual(path.read_bytes(), raw)
+            projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+                tuple(fixture.events()), fixture.profile, prerequisites
+            )
+            known = projection.revision_ids[FIRST_TARGET.isoformat()]
+            self.assertEqual(known, {"revision-1": first.exact_object.sha256})
+            self.assertNotIn("revision-2", known)
+
+    def test_outcome_consumption_intent_rejects_legal_foreign_suffix(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, frozen_events, _, prerequisites = (
+                self._published_outstanding_outcome_fixture(fixture)
+            )
+
+            def stop_after_intent(*_args, **_kwargs):  # type: ignore[no-untyped-def]
+                raise RuntimeError("synthetic action pause")
+
+            with self.assertRaisesRegex(RuntimeError, "action pause"):
+                self._run(reservation, stop_after_intent)
+            self.assertEqual(tuple(fixture.events()), frozen_events)
+            self.assertEqual(len(list(self.paths.item_intents.glob("*.json"))), 1)
+
+            projection = recovery.live._reconstruct_projection(  # noqa: SLF001
+                frozen_events, fixture.profile, prerequisites
+            )
+            seal = projection.seal_event
+            self.assertIsNotNone(seal)
+            assert seal is not None
+            attempt = 1 + sum(
+                event.event_type == "anchor_requested" for event in frozen_events
+            )
+            request_payload = {
+                "live_epoch_id": projection.epoch_id,
+                "target_date": seal.target_date,
+                "sealed_sequence_id": seal.sequence_id,
+                "sealed_entry_sha256": seal.entry_sha256,
+                "attempt": attempt,
+            }
+            foreign = recovery.live._event_spec(  # noqa: SLF001
+                event_key=(
+                    f"{projection.epoch_id}:{seal.target_date}:"
+                    f"anchor:{attempt}:requested"
+                ),
+                event_type="anchor_requested",
+                prerequisites=prerequisites,
+                payload=request_payload,
+                target_date_value=FIRST_TARGET,
+                issue_id=seal.issue_id,
+                input_manifest_sha256=seal.input_manifest_sha256,
+                state_before_sha256=seal.state_after_sha256,
+                state_after_sha256=seal.state_after_sha256,
+            )
+            live_ledger.AppendOnlyLedger(fixture.paths.ledger).append_transaction(
+                [foreign]
+            )
+            with_suffix = tuple(fixture.events())
+            self.assertEqual(len(with_suffix), len(frozen_events) + 1)
+            self.assertEqual(with_suffix[-1].event_type, "anchor_requested")
+            recovery.live._reconstruct_projection(  # noqa: SLF001
+                with_suffix, fixture.profile, prerequisites
+            )
+
+            with self.assertRaisesRegex(
+                recovery.WorksetRecoveryIntegrityError,
+                "Outcome consumption item intent contract changed",
+            ):
+                self._run(reservation)
+
+            self.assertEqual(tuple(fixture.events()), with_suffix)
+            self.assertFalse(
+                any(
+                    event.event_type == "outcome_batch_opened"
+                    for event in fixture.events()
+                )
+            )
+            self.assertEqual(len(list(self.paths.receipts.glob("*.json"))), 0)
+            self.assertEqual(len(list(self.paths.events.glob("*.json"))), 0)
+
+    def test_recorded_outcome_consumption_never_reappends_a_missing_slice(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, before, _, _ = self._published_outstanding_outcome_fixture(
+                fixture
+            )
+            result = self._run(reservation)
+            self.assertEqual(result.status, "recovery_item_completed")
+            self.assertEqual(len(fixture.events()) - len(before), 43)
+            intent_path = next(self.paths.item_intents.glob("*.json"))
+            intent = json.loads(intent_path.read_bytes())
+            pre_head_count = intent["action_contract"]["expected_pre_head"][
+                "event_count"
+            ]
+
+            connection = sqlite3.connect(fixture.paths.ledger)
+            try:
+                connection.execute("DROP TRIGGER events_no_delete")
+                deleted = connection.execute(
+                    "DELETE FROM events WHERE sequence_id > ?", (pre_head_count,)
+                ).rowcount
+                connection.execute(live_ledger._NO_DELETE_TRIGGER_SQL)  # noqa: SLF001
+                connection.commit()
+            finally:
+                connection.close()
+            self.assertEqual(deleted, 43)
+            rolled_back = tuple(fixture.events())
+            self.assertEqual(len(rolled_back), pre_head_count)
+
+            with (
+                mock.patch.object(
+                    recovery,
+                    "_outcome_consumption_action",
+                    side_effect=AssertionError(
+                        "historical verification must never write"
+                    ),
+                ) as action,
+                self.assertRaisesRegex(
+                    recovery.WorksetRecoveryIntegrityError,
+                    "ledger slice disappeared",
+                ),
+            ):
+                self._run(reservation)
+
+            action.assert_not_called()
+            self.assertEqual(tuple(fixture.events()), rolled_back)
+            self.assertFalse(
+                any(
+                    event.event_type == "outcome_batch_opened"
+                    for event in fixture.events()
+                )
+            )
+
+    def test_recorded_outcome_consumption_ignores_a_newer_active_revision(
+        self,
+    ) -> None:
+        with _LiveFixture() as fixture:
+            reservation, _, first, prerequisites = (
+                self._published_outstanding_outcome_fixture(fixture)
+            )
+            completed = self._run(reservation)
+            self.assertEqual(completed.status, "recovery_item_completed")
+            ledger_before = tuple(fixture.events())
+            immutable_before = {
+                first.receipt.path: first.receipt.path.read_bytes(),
+                first.exact_object.path: first.exact_object.path.read_bytes(),
+                Path(first.payload["source_manifest"]["path"]): Path(
+                    first.payload["source_manifest"]["path"]
+                ).read_bytes(),
+            }
+            profile = outcomes.load_config()
+            pointer_path = outcomes._active_pointer_path(  # noqa: SLF001
+                outcomes._runtime_path(  # noqa: SLF001
+                    profile, fixture.root, "outcome_receipts"
+                ),
+                FIRST_TARGET,
+            )
+            first_pointer_raw = pointer_path.read_bytes()
+
+            newer = self._publish_newer_materializer_revision(
+                fixture, prerequisites, first
+            )
+            active_path = outcomes._outcome_inbox_path(  # noqa: SLF001
+                profile, fixture.root, FIRST_TARGET
+            )
+            self.assertEqual(active_path.read_bytes(), newer.raw)
+            self.assertNotEqual(active_path.read_bytes(), first.raw)
+            self.assertNotEqual(pointer_path.read_bytes(), first_pointer_raw)
+            self.assertEqual(
+                json.loads(pointer_path.read_bytes())["active_receipt"]["sha256"],
+                newer.receipt.sha256,
+            )
+            mutable_before = {
+                active_path: active_path.read_bytes(),
+                pointer_path: pointer_path.read_bytes(),
+            }
+            recovery_receipts_before = {
+                path.name: path.read_bytes()
+                for path in self.paths.receipts.glob("*.json")
+            }
+            recovery_events_before = {
+                path.name: path.read_bytes()
+                for path in self.paths.events.glob("*.json")
+            }
+
+            with mock.patch.object(
+                recovery,
+                "_outcome_consumption_action",
+                side_effect=AssertionError("historical verification must be read-only"),
+            ) as action:
+                replayed = self._run(reservation)
+
+            action.assert_not_called()
+            self.assertEqual(replayed.status, "waiting_for_supported_ready_key")
+            self.assertEqual(tuple(fixture.events()), ledger_before)
+            for path, raw in immutable_before.items():
+                self.assertEqual(path.read_bytes(), raw)
+            for path, raw in mutable_before.items():
+                self.assertEqual(path.read_bytes(), raw)
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in self.paths.receipts.glob("*.json")
+                },
+                recovery_receipts_before,
+            )
+            self.assertEqual(
+                {
+                    path.name: path.read_bytes()
+                    for path in self.paths.events.glob("*.json")
+                },
+                recovery_events_before,
+            )
 
     def test_outcome_settlement_adopts_complete_transaction_without_writing(
         self,

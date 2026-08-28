@@ -36,7 +36,7 @@ from monitoring import ootang_epoch_registry as registry  # noqa: E402
 
 DEFAULT_CONFIG_PATH = ROOT / "config" / "ootang_epoch_workset_manifest.v1.json"
 DEFAULT_CONFIG_SHA256 = (
-    "ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc"
+    "338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e"
 )
 MAX_CONTROL_BYTES = 4 * 1024 * 1024
 ZERO_HASH = "0" * 64
@@ -122,7 +122,7 @@ EXPECTED_UPSTREAM = {
     "inventory_implementation": {
         "path": "code/monitoring/ootang_epoch_workset_inventory.py",
         "expected_sha256": (
-            "cb4ce5c3e734aca6da1fccf8c07fca6e313cece177a096232626fea15011c982"
+            "64e7feaf295689e444803fd20eda2d3a754b2ec75932e85987fcba603281bb01"
         ),
     },
 }
@@ -365,7 +365,7 @@ def load_workset_manifest_profile(
     expected_identity = (
         "ootang_epoch_workset_manifest_profile_v1",
         "ootang-epoch-workset-manifest-v1",
-        "1.1.0-frozen-observation-transition-seed",
+        "1.2.0-outcome-settlement-dependency",
         "ootang",
         "bounded_frozen_observation_workset_and_transition_seed_reservation_only_no_terminal_closure_recovery_lifecycle_or_transition_authority",
     )

@@ -1,7 +1,7 @@
 {
   "schema_version": "ootang_epoch_workset_manifest_profile_v1",
   "profile_id": "ootang-epoch-workset-manifest-v1",
-  "profile_version": "1.1.0-frozen-observation-transition-seed",
+  "profile_version": "1.2.0-outcome-settlement-dependency",
   "case": "ootang",
   "artifact_status": "bounded_frozen_observation_workset_and_transition_seed_reservation_only_no_terminal_closure_recovery_lifecycle_or_transition_authority",
   "formal_warning_output": false,
@@ -20,7 +20,7 @@
     },
     "inventory_implementation": {
       "path": "code/monitoring/ootang_epoch_workset_inventory.py",
-      "expected_sha256": "cb4ce5c3e734aca6da1fccf8c07fca6e313cece177a096232626fea15011c982"
+      "expected_sha256": "64e7feaf295689e444803fd20eda2d3a754b2ec75932e85987fcba603281bb01"
     }
   },
   "runtime": {

@@ -1,19 +1,19 @@
 {
   "schema_version": "ootang_epoch_workset_recovery_profile_v1",
   "profile_id": "ootang-epoch-workset-recovery-v1",
-  "profile_version": "1.7.0-outcome-settlement-adoption",
+  "profile_version": "1.8.0-outstanding-outcome-consumption",
   "case": "ootang",
-  "artifact_status": "manifest_keyed_transition_step_chain_with_full_outcome_settlement_replay_adoption_no_fresh_outcome_writer_or_lifecycle_authority",
+  "artifact_status": "manifest_keyed_transition_step_chain_with_canonical_outstanding_outcome_writer_and_settlement_adoption_no_revision_writer_or_lifecycle_authority",
   "formal_warning_output": false,
   "default_pipeline_member": false,
   "upstream": {
     "manifest_profile": {
       "path": "config/ootang_epoch_workset_manifest.v1.json",
-      "expected_sha256": "ca3f24c91492d4cbd415331c1abf1e90bd2b971aac8016e69183652e3fb850dc"
+      "expected_sha256": "338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e"
     },
     "manifest_implementation": {
       "path": "code/monitoring/ootang_epoch_workset_manifest.py",
-      "expected_sha256": "8868075715188effe708fe353bf18cbefdee9060abd90f92ede8120cf5313ef2"
+      "expected_sha256": "5284018ade9160a80b78487470d3457a059490fb9062d965fc59048c7acb9c2d"
     },
     "trusted_implementation": {
       "path": "code/monitoring/ootang_trusted_time_shadow_core.py",
@@ -30,6 +30,10 @@
     "live_ledger_cas_implementation": {
       "path": "code/monitoring/ootang_live_ledger_cas_v1.py",
       "expected_sha256": "b443da5fd92eb2e48e33918c3e6090be0e53fe2182584f6bb0ccee050dfb327e"
+    },
+    "outcome_materializer_implementation": {
+      "path": "code/monitoring/ootang_outcome_materializer.py",
+      "expected_sha256": "2a6478c191fdf1cd0df7d78324c6e4d7637241683956de621fd319feb3bcb642"
     },
     "guard_implementation": {
       "path": "code/monitoring/ootang_verified_live.py",
@@ -73,6 +77,7 @@
       "anchor_receipt_repaired",
       "anchor_request_recorded",
       "anchor_result_recorded",
+      "outcome_or_revision_consumed",
       "outcome_batch_settled",
       "superseded_by_backfill"
     ],
@@ -97,6 +102,7 @@
     "live_anchor_result_request_intent_implemented": true,
     "live_anchor_result_response_observation_implemented": true,
     "live_anchor_result_adapter_implemented": true,
+    "live_outstanding_outcome_consumption_adapter_implemented": true,
     "live_outcome_settlement_adoption_implemented": true,
     "ledger_mutation_recovery_implemented": true,
     "bounded_workset_recovery_implemented": false,

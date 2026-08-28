@@ -74,7 +74,8 @@ receipt 证明的是 ledger 中已存在的工程 transaction 和该 workset key
 
 `live_outstanding` item 的 manifest artifacts 不包含未来 outcome bytes，因此本 adapter 禁止读取
 可替换的 date-named outcome inbox，也禁止跨 item 偷用 current source。live item 必须显式依赖
-同一 manifest 中 target/epoch/revision 匹配的 `outcome_revision` sibling；既有 dependency gate 必须
+同一 manifest 中 target/epoch/revision 匹配的 `outcome_revision` sibling；inventory 现会为 admission
+时已经处于 settlement successor 的同日 receipt-chain 写入这条唯一依赖，既有 dependency gate 必须
 先深验该 sibling 的 terminal `outcome_or_revision_consumed` receipt，live item 才会成为 ready key。
 缺少这个预留依赖（包括 manifest 后才 confirmed 的动态分支）时只保持 machine waiting，不事后
 改写 DAG。adapter 随后只读取 frozen live prefix、前一张 recovery receipt（若有）和完整
@@ -101,13 +102,15 @@ append-only ledger suffix；live ledger 本轮零 mutation。
 
 ## 6. 下一步
 
-当前仍未实现 fresh outcome consumption，所以
-`outcome_revision -> outcome_or_revision_consumed` 仍是下一窄增量。安全实现必须只消费 manifest
+published outstanding receipt tip 的 fresh outcome consumption 已由下一增量实现：它只消费 manifest
 冻结的 immutable materializer receipt、exact outcome object 与 source manifest，复用 frozen
-canonical writer 生成完整 EventSpecs，并通过 expected-pre-head CAS append/adopt。完成该 writer 后，
-本增量的 settlement adapter才能在同一机器闭环中采用其 43-event transaction。
+canonical writer 生成完整 EventSpecs，并通过 expected-pre-head CAS append/adopt。本 settlement
+adapter 因而可在 admission 时已 confirmed、已预留 dependency 的分支中采用同一 43-event
+transaction。详细边界见 `docs/ootang_outstanding_outcome_consumption_engineering.md`。
 
-在此之前继续保持 `derived_future_work_reservation_implemented=false`、
+下一窄增量改为 `outcome_materialized`。manifest 后才 confirmed 的 live item 仍需要未来版本的
+derived-work/step-level dependency reservation；settled revision、backfill revision 与首次 backfill
+writer 也仍未实现。继续保持 `derived_future_work_reservation_implemented=false`、
 `terminal_transition_closure_implemented=false`、`bounded_workset_recovery_implemented=false`、
 `old_epoch_drained=false` 和所有 trusted/E2/formal claims 为 false。
 

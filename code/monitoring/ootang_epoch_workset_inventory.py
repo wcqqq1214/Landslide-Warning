@@ -1635,6 +1635,32 @@ def _add_dependency_to_item(
         return
 
 
+def _add_outcome_dependency_to_live_settlement(
+    items: list[InventoryItem], *, target: date, dependency: str
+) -> None:
+    """Bind a same-date live settlement to its first reserved outcome key."""
+
+    for item in tuple(items):
+        if (
+            item.family == "live_outstanding"
+            and item.authority.get("target_date") == target.isoformat()
+            and item.canonical_successor_state == "outcome_batch_settled"
+        ):
+            # Receipt-chain items are enumerated before later source candidates.
+            # Once one exact outcome is reserved to settle the outstanding issue,
+            # any newer same-date candidate is a post-settlement revision instead.
+            existing = tuple(
+                value
+                for value in item.dependency_keys
+                if value.startswith("outcome_revision:")
+            )
+            if dependency in existing:
+                continue
+            if existing and dependency not in existing:
+                continue
+            _add_dependency_to_item(items, item.natural_key, dependency)
+
+
 def _source_artifacts_for_record(
     state: _VerifiedState, target: date
 ) -> tuple[ArtifactRef, ...]:
@@ -1883,6 +1909,9 @@ def _inventory_outcome_registry(
                 {**record, "action": successor},
             )
         )
+        _add_outcome_dependency_to_live_settlement(
+            items, target=target, dependency=natural_key
+        )
 
     records_by_date = {record.day: record for record in state.source.records}
     candidate_specs: list[tuple[str, date, object]] = []
@@ -1977,13 +2006,9 @@ def _inventory_outcome_registry(
         )
         prior_key = natural_key
         if outstanding == target:
-            for item in tuple(items):
-                if (
-                    item.family == "live_outstanding"
-                    and item.authority.get("target_date") == target.isoformat()
-                    and item.canonical_successor_state == "outcome_batch_settled"
-                ):
-                    _add_dependency_to_item(items, item.natural_key, natural_key)
+            _add_outcome_dependency_to_live_settlement(
+                items, target=target, dependency=natural_key
+            )
 
 
 def _inventory_guard(

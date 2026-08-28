@@ -5,6 +5,48 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-28 published outstanding outcome 自动消费（本增量）
+
+- recovery coordinator 新增 manifest-bound
+  `outcome_revision -> outcome_or_revision_consumed` fresh writer，目前只支持
+  `selection_kind=outstanding`。它从 immutable materializer receipt、exact outcome object、source
+  manifest 与 frozen item authority 重建输入，复用冻结 live canonical writer 生成完整 43-event
+  EventSpecs；不人工 freeze/cleanup/approval/force/backdate，也不改动模型或科研门禁。
+- fresh path 先验证 frozen receipt chain 与 current publication 仍指向同一 predecessor，再以
+  expected-pre-head CAS 追加 exact `1 opened + 8 revealed + 32 score/expert/conformal/drift + 1 site +
+  1 settled` transaction。CAS 已提交但 receipt 未落盘时，机器只按持久化 contract 和 immutable
+  EventSpecs 采用 exact slice；不重新读取 mutable current pointer/inbox，也不再次调用 ledger CAS。
+- pending transaction 被分为 absent、exact-complete、partial/displaced 三态：absent 才允许 fresh
+  CAS，exact-complete 只补终态 receipt，partial/displaced fail closed。completed receipt 的历史深验是
+  纯 immutable/read-only 路径，因此后续合法 revision 移动 current publication 或追加 ledger suffix
+  不会令旧 receipt 失效，也不会重写 43 个事件。
+- inventory 补上真实 dependency edge：frozen manifest 中已经 confirmed 的 live settlement item 会
+  唯一依赖同日期、同 source revision 的 outcome item，并优先采用 receipt-chain 提供的精确依赖。
+  但 manifest freeze 之后才确认的 live item 无法倒改 immutable DAG；该分支继续机器等待，不虚报
+  terminal/transitive closure。未来需要 versioned derived-work/step-level dependency reservation。
+- recovery profile 升为 `1.8.0-outstanding-outcome-consumption`，manifest profile 升为
+  `1.2.0-outcome-settlement-dependency`。`revision`、`backfill`、first-backfill 与
+  `outcome_materialized` 仍未实现；full workset、all successors、derived future reservation、terminal
+  closure、drained/active/rotation/lifecycle/trusted/E2/formal claims 均保持 false。
+- focused recovery 测试 `46/46`（2.03 s）；既定 recovery、live-ledger/CAS、inventory/manifest、
+  admission-cut、eligibility、drain-v2 与 main 相邻回归 `154/154`（8.52 s）通过。独立最终复审
+  P0/P1=0。未运行训练、真实网络、长并发/容量或无关边界矩阵；ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数和实验结论均未修改。详细合同见
+  `docs/ootang_outstanding_outcome_consumption_engineering.md`。
+- inventory/manifest/recovery module、manifest/recovery profile 与两组测试 SHA-256 分别为
+  `64e7feaf295689e444803fd20eda2d3a754b2ec75932e85987fcba603281bb01`、
+  `5284018ade9160a80b78487470d3457a059490fb9062d965fc59048c7acb9c2d`、
+  `ee31538f5f089b7c49a62e342c32243ba66fdb7bc3eec5efe0dc108795a84340`、
+  `338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e`、
+  `3983d790b23d8d4730bddde96070cac16717c29abe35e1e85abe4b5828893629`、
+  `397483a942517d5af2579cdd590ba1293b207a96b8761fbd9f66f964a3fc2f18`、
+  `69751bfcfa17d892c0087d0aa70a7485b829661a40f2c8f5b36b5b049a9cc6c4`。本增量未触及
+  protected ML paths；`main.py` 保持
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 下一窄增量先实现 `outcome_materialized -> outcome_or_revision_consumed`，继续复用同一 immutable
+  authority/CAS/三态 crash-forward 框架；随后再分别处理 revision/backfill writer。跨 freeze 的
+  derived dependency reservation 作为更高层 closure 工作单独推进。
+
 ## 2026-08-28 manifest-reserved outcome settlement 终态采用（本增量）
 
 - 新增 `live_outstanding -> outcome_batch_settled` 的 receipt-only machine adapter。它不读取

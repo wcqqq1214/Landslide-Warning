@@ -3,16 +3,69 @@
 **Prepared:** 2026-08-28
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `8889df7 feat: recover anchor result events`
+**Committed baseline before this increment:** `9d0afa8 feat: adopt settled outcome batches`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
-`anchor_result_recorded` request intent/四锁外 response observation 已提交；本增量实现四锁内
-result expected-pre-head CAS、crash-forward adoption、failure 后自动 `attempt + 1` request loop，
-并为 manifest 预留且已 terminal-consumed 的 outcome dependency 增加完整 43-event settlement
-终态采用。
+`anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
+loop 与 manifest-reserved outcome settlement adoption 已提交；本增量实现 published outstanding
+outcome 的 canonical 43-event fresh writer/crash-forward adoption，并补齐已确认 settlement item 的
+精确 outcome dependency。
 它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
 authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
 evidence、activation 或 formal warning。
+
+## 2026-08-28 published outstanding outcome consumption
+
+The recovery coordinator now implements the manifest-bound
+`outcome_revision -> outcome_or_revision_consumed` writer for `selection_kind=outstanding`. It
+reconstructs authority from the immutable materializer receipt, exact outcome object, source
+manifest and frozen item contract, then invokes the frozen live canonical writer to produce the
+exact 43-event transaction. It does not fabricate actuals, mutate research thresholds, or add any
+manual freeze, cleanup, approval, force or backdate path.
+
+On a fresh action, the frozen receipt chain and current publication must still identify the same
+predecessor. The transaction is then appended through expected-pre-head CAS. Crash recovery uses a
+three-state ledger classification: absent permits fresh CAS, exact-complete adopts the transaction
+and writes only the terminal recovery receipt, and partial/displaced fails closed. Exact-complete
+adoption is derived solely from the persisted contract and immutable EventSpecs; it never re-reads
+the mutable outcome pointer/inbox or calls CAS again. Historical completed-receipt verification is
+also pure/read-only, so later legal source revisions and ledger suffixes do not invalidate or replay
+the consumed batch.
+
+Inventory construction now gives an already-confirmed frozen live settlement item the unique
+same-date, same-source-revision outcome dependency, preferring the exact receipt-chain dependency.
+This closes the real manifest path only when confirmation/dependency already exists at freeze time.
+If confirmation occurs after manifest freeze, the immutable DAG has no reserved outcome edge and
+the live key remains machine-waiting. This limitation is explicit: derived future-work or step-level
+dependency reservation still needs a versioned design, and terminal/transitive closure is not
+claimed.
+
+Recovery profile `1.8.0-outstanding-outcome-consumption` and manifest profile
+`1.2.0-outcome-settlement-dependency` expose only the implemented capabilities. Revision,
+backfill, first-backfill and `outcome_materialized` writers remain unsupported, as do full-workset,
+all-successor, derived-reservation, lifecycle, trusted-anchor, E2 and formal-warning claims.
+
+Focused recovery tests pass `46/46` in 2.03 seconds. The bounded adjacent recovery,
+live-ledger/CAS, inventory/manifest, admission, eligibility, drain and main suite passed `154/154`
+in 8.52 seconds before the final formatting-only pass. Ruff check/format, compile, strict profile
+loading and diff checks pass after formatting. Independent final review reports P0/P1=0. No
+training, real network, long concurrency/capacity matrix or unrelated edge suite was run; ConvLSTM,
+v4, frozen splits, metrics, thresholds, parameters and conclusions are unchanged. Full authority
+and crash semantics are documented in
+`docs/ootang_outstanding_outcome_consumption_engineering.md`.
+
+Current inventory/manifest/recovery implementation SHA-256 values are
+`64e7feaf295689e444803fd20eda2d3a754b2ec75932e85987fcba603281bb01`,
+`5284018ade9160a80b78487470d3457a059490fb9062d965fc59048c7acb9c2d` and
+`ee31538f5f089b7c49a62e342c32243ba66fdb7bc3eec5efe0dc108795a84340`.
+Manifest/recovery profile hashes are
+`338b8e4c90bf1bf241a255148c4352b3a9fa197658dd08d1dd745ada604dd39e` and
+`3983d790b23d8d4730bddde96070cac16717c29abe35e1e85abe4b5828893629`.
+
+The next narrow slice is `outcome_materialized -> outcome_or_revision_consumed`, reusing the same
+immutable-authority, expected-pre-head CAS and three-state crash-forward framework. Revision and
+backfill writers follow separately. Cross-freeze derived dependency reservation is a higher-level
+closure increment and must not be conflated with those writers.
 
 ## 2026-08-28 manifest-reserved outcome settlement adoption
 
