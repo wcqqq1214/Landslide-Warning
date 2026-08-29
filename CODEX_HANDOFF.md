@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `762bd3e feat: reserve cross-freeze step dependencies`
+**Committed baseline before this increment:** `f0131bb feat: adopt cross-freeze settlement overlays`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -12,10 +12,57 @@ writer/crash-forward adoption、receipt-tip repair/machine-selected outcome mate
 poll 的 outstanding consumption 桥、revision predecessor authority、settled-date canonical
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
-adoption 以及 cross-freeze manifest-sibling step dependency sidecar v1 已提交；当前工作树新增
-独立 settlement overlay dispatcher v1。它仍不是完整 recovery、terminal/transitive closure、
-泛化 admission fence 或 DRAINING lifecycle authority；不声明 remote exactly-once、drained、
+adoption、cross-freeze manifest-sibling step dependency sidecar v1 与独立 settlement overlay
+dispatcher v1 已提交；当前工作树新增独立 source-key terminal aggregate v1。它仍不是完整
+recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
+不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 overlay-backed source-key terminal aggregate v1
+
+The new `ootang_epoch_source_terminal_aggregate.py` consumes only completed settlement-overlay
+events and publishes an independent content-addressed proof plus one hash-linked append-only event
+under `workset_recovery_v1/source_terminal_aggregate_v1`. Its profile directly pins the unchanged
+recovery v6, dependency-sidecar v1, and overlay v1 implementation/profile bytes. Under the same
+manager/cycle/replay/shadow locks, it deep-replays the complete authority chain and requires
+aggregate events to be an exact prefix of completed overlay events.
+
+The terminal formula is deliberately narrow. The source must still be the current recovery tip
+`anchor_result_recorded(candidate_confirmed)` with exactly
+`next_actions=[outcome_batch_settled]` and `terminal_for_key=false`; the dependency must still be a
+current terminal recovery tip. Source/dependency receipts and events, transition-plan hash,
+canonical step id/index, sidecar object/event, overlay intent/receipt/event, effective dependency
+edge, and the exact 43-event settlement action semantics must all agree. Recovery v6 must define
+the completed action as closure-resolved, terminal, and successor-free. The resulting proof states
+only `terminal_for_source_key=true` in aggregate-v1 scope; the original v6 receipt remains
+nonterminal and unchanged.
+
+The durable order is `proof -> event`. A proof is deterministic canonical JSON without a timestamp
+and is not published terminal authority until its matching aggregate event exists. A proof-only
+crash is recovered by deep-verifying that exact proof and appending only the missing event; the
+selector, sidecar/overlay ensure paths, and settlement action are not rerun. Event-without-proof,
+non-prefix/skip/branch state, more than one orphan proof, or more than one completed overlay slot
+for the same source key fails closed. `status.json` is only a replaceable cache.
+
+Focused tests are `3/3` (0.070 s), and the adjacent aggregate/overlay/sidecar/recovery/
+materializer/live-ledger/CAS/epoch-gates/prequential/main suite is `230/230` (14.089 s). Ruff
+format/check, Python compile, strict JSON/profile load, protected-upstream diff, and temporary-path
+checks pass. Two independent read-only reviews finish at P0=0/P1=0. Current aggregate
+implementation/profile/test, engineering document, and protected `main.py` SHA-256 values are
+`8d7b03a7480f3bf647f75694631031b3d11200462f4a4887979a982ba1e1a296`,
+`80779ecdb582d2dde53576668037597ac29bf56f486ac926a9754f103eb6604c`,
+`8441967ffb5451e39555c8cd47e6c36d968376144b3c2686a0c5b737562f0374`,
+`e94011778d922b64ed6fc45b2a54fcb07c3fa1155b1869da10a96fd577633ae5`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+This increment proves one overlay-backed source key only. Full/bounded-workset recovery,
+all-item/all-successor coverage, terminal or transitive workset closure, content-dependent new-key
+reservation, drain/lifecycle/activation, trusted/E2, and formal-warning claims remain false.
+ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, and scientific conclusions are
+unchanged. The next narrow increment is a separately versioned manifest-coverage assessor that
+combines ordinary v6 terminal receipts with published aggregate events. Source-ingest reservation
+for genuinely new content-dependent keys remains a separate subsequent authority boundary.
+Detailed semantics are in `docs/ootang_source_terminal_aggregate_engineering.md`.
 
 ## 2026-08-29 cross-freeze settlement overlay dispatcher v1
 
@@ -57,10 +104,10 @@ This increment proves only ordered machine adoption of one cross-freeze settleme
 Full-workset recovery, all-successor support, original recovery-key terminality, terminal/transitive
 closure, derived new-key reservation, drained/lifecycle/activation, trusted/E2 and formal-warning
 claims remain false. ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters and
-scientific conclusions are unchanged. The next narrow increment is a separately versioned
-aggregate assessor/recovery-v7 authority that consumes overlay receipts when determining source-key
-terminality; source-ingest reservation for genuinely new outcome keys follows separately. Detailed
-semantics are in `docs/ootang_step_dependency_overlay_engineering.md`.
+scientific conclusions are unchanged. This section's planned aggregate assessor is now implemented
+by the source-terminal aggregate v1 section above; source-ingest reservation for genuinely new
+outcome keys remains separate. Detailed semantics are in
+`docs/ootang_step_dependency_overlay_engineering.md`.
 
 ## 2026-08-29 cross-freeze manifest-sibling step dependency sidecar v1
 

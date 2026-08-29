@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 overlay-backed source-key terminal aggregate v1（本增量）
+
+- 新增独立 `ootang_epoch_source_terminal_aggregate.py` 与 profile
+  `1.0.0-overlay-backed-source-terminal`。profile 直接固定未改动的 recovery v6、step
+  dependency sidecar v1 和 settlement overlay v1 implementation/profile SHA-256；assessor 在
+  manager/cycle/replay/shadow 四锁下深验完整 authority chain，只写
+  `workset_recovery_v1/source_terminal_aggregate_v1`。
+- 只有已发布 completed overlay event 才能进入 aggregate。source 必须仍是 recovery 当前
+  `anchor_result_recorded(candidate_confirmed)` tip，且
+  `next_actions=[outcome_batch_settled]`、`terminal_for_key=false`；dependency 必须仍是当前
+  terminal recovery tip。两端 receipt/event、transition plan、canonical step id/index、sidecar、
+  overlay、effective dependency edge 及真实 43-event settlement action semantics 均须精确一致。
+- aggregate 采用 `proof -> event` 独立 durable 协议。proof 是无时间字段的 canonical
+  content-addressed JSON，只有 matching aggregate event 落盘后才是已发布终态 authority。
+  proof 后崩溃时下一 poll 只深验并补 event，不重新选择 candidate、不调用 ensure，也不重跑
+  settlement action。event-without-proof、non-prefix/skip/branch、多个 orphan proof 或同一 source
+  多个 completed overlay slot 均 fail closed；`status.json` 不是 authority。
+- proof 只在 `source_terminal_aggregate_v1` 范围声明
+  `terminal_for_source_key=true`。原 recovery v6 receipt 继续明确
+  `terminal_for_key=false`，且 recovery/sidecar/overlay/manifest/live ledger 均未修改。本增量不
+  声称 full/bounded workset、all-item/all-successor、terminal/transitive closure、derived new-key、
+  drained/lifecycle/activation、trusted/E2 或 formal warning。
+- 快测 `3/3`（0.070 s），相邻 aggregate/overlay/sidecar/recovery/materializer/live-ledger/CAS/
+  epoch-gates/prequential/main 回归 `230/230`（14.089 s）。Ruff format/check、Python compile、
+  strict JSON/profile load、受保护上游 diff 与临时路径检查通过；两路独立只读复审均为
+  P0=0、P1=0。未运行训练或真实网络，未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。
+- 当前 aggregate implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `8d7b03a7480f3bf647f75694631031b3d11200462f4a4887979a982ba1e1a296`、
+  `80779ecdb582d2dde53576668037597ac29bf56f486ac926a9754f103eb6604c`、
+  `8441967ffb5451e39555c8cd47e6c36d968376144b3c2686a0c5b737562f0374`、
+  `e94011778d922b64ed6fc45b2a54fcb07c3fa1155b1869da10a96fd577633ae5`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 下一窄增量是独立 versioned manifest-coverage assessor：组合 ordinary v6 terminal receipts
+  与已发布 aggregate events，判断冻结 manifest 的 key coverage；source-ingest 产生的真正
+  content-dependent new key reservation 仍须随后单独建立 authority。详细合同见
+  `docs/ootang_source_terminal_aggregate_engineering.md`。
+
 ## 2026-08-29 cross-freeze settlement overlay dispatcher v1（本增量）
 
 - 新增独立 `ootang_epoch_step_dependency_overlay.py` 与 profile
@@ -38,9 +76,9 @@
   `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
 - 本增量只证明一个有序 cross-freeze settlement dependency 的机器采用。full-workset、
   all-successor、原 recovery key terminality、terminal/transitive closure、derived new-key、
-  drained/lifecycle/activation 与 trusted/E2/formal claims 继续为 false。下一窄增量是独立
-  aggregate assessor/recovery-v7，消费 overlay receipt 后才可判断 source-key terminality；
-  source-ingest 新 key reservation 再单独实现。详细合同见
+  drained/lifecycle/activation 与 trusted/E2/formal claims 继续为 false。本历史条目规划的
+  aggregate assessor 已由上方 source-terminal aggregate v1 实现；source-ingest 新 key
+  reservation 仍需单独实现。详细合同见
   `docs/ootang_step_dependency_overlay_engineering.md`。
 
 ## 2026-08-29 cross-freeze step dependency sidecar v1（本增量）
