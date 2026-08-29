@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `b6b5673 feat: reserve source-derived outcome keys`
+**Committed baseline before this increment:** `1dd026d feat: automate cross-freeze source ingest`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -14,11 +14,61 @@ poll 的 outstanding consumption 桥、revision predecessor authority、settled-
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
-source-ingest derived outcome-key reservation v1 已提交；当前工作树新增独立 cross-freeze
-source-ingest writer/adoption v1。它仍不是完整
+source-ingest derived outcome-key reservation v1 与 cross-freeze source-ingest writer/adoption
+v1 已提交；当前工作树新增独立 source-derived effective-workset overlay v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived effective-workset overlay v1
+
+The new `ootang_epoch_source_derived_workset_overlay.py` consumes only a fully published derived
+reservation event and its matching cross-freeze completion receipt/event. Before invoking any
+upstream loader, it read-only proves that the public source pointer is the unique receipt-registry
+tip; a missing or stale pointer fails closed, so this layer cannot trigger cross-freeze pointer
+repair. It independently reloads the durable frozen manifest and rejects any manifest/derived/cross
+authority divergence. Status files never satisfy the publication barrier.
+
+The deterministic transform is `Meff = base - I`, whole-row replacement by `R`, then addition of
+`D`. D/R/I natural-key sets must be pairwise disjoint; D must be absent from base, R must identify a
+base machine-selected source outcome and change its namespace-bound identity, and I must reproduce
+the exact enriched frozen row. All effective namespace digests and frozen-manifest-bound key ids are
+recomputed. The authority publishes separate natural-key and item-identity digests, a transition
+plan digest, and a rebuilt stable topological dependency-graph digest. Unknown, duplicate, self, or
+cyclic edges—including any surviving base edge to I—fail before publication; no dependency is
+silently rewritten.
+
+Publication is a compact deterministic `content-addressed overlay object -> singleton event`
+protocol under `workset_recovery_v1/source_derived_workset_overlay_v1`. The object stores immutable
+upstream refs plus D/R/I mapping and effective-set digests rather than copying the complete rows;
+`effective_rows_embedded=false` is explicit. An object-only crash deeply reconstructs the same
+object and appends only the missing event. Branches, orphan events, changed bytes, or changed
+upstream bindings fail closed; status remains a non-authoritative cache.
+
+Focused tests are `6/6` (5.838 s), the overlay/cross/derived/inventory/manifest/recovery core is
+`93/93` (19.627 s), and live-source is `32/32` (2.381 s). Ruff, Python compilation, strict profile
+loading with 10 direct upstream pins, and diff checks pass. Independent review reproduced one P1:
+pointer loss between the read-only gate and the writable upstream cross loader could still invoke
+repair. The coordinator now owns a pure-read cross replay and rechecks the pointer; the regression
+proves zero recovery calls and zero overlay bytes, while historical N+2 publication remains valid.
+Both final independent read-only reviews report P0=0/P1=0. This increment does not modify the
+frozen manifest, recovery v6, ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, or
+scientific conclusions; no training, full pipeline, or real-network run occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `54ea77652bc5f020146b777d98cd34e1ec26895f363d35a4cb5933b93ef11be7`,
+`d80504e58393d58f284665ed471f19e51b09e847153df7f4143ab99bdf70e8d3`,
+`836da67f06c7560900a570c1fc729d0868f2842cee947f4b3923ed8473f98a1b`,
+`183a2bb62da5b7e75cea9117bec9c628bbb4aac7d09b38db0ba3eab435a92561`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+The positive boundary is one exact source edge's derived future-work reservation and effective
+DAG. `all_content_dependent_lanes_reserved`, source/effective-item terminal state,
+materialization/consumption, full closure, drain/lifecycle/activation, trusted/E2, and formal
+warning remain false. The next narrow increment is a separate historical-N+1 effective outcome
+dispatcher; it must reconstruct rows from the immutable refs and must not feed a synthetic
+`recovery.Reservation` to recovery v6. Detailed semantics are in
+`docs/ootang_source_derived_workset_overlay_engineering.md`.
 
 ## 2026-08-29 cross-freeze source-ingest writer/adoption v1
 

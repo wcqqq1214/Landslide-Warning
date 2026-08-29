@@ -5,6 +5,42 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived effective-workset overlay v1（本增量）
+
+- 新增独立 `ootang_epoch_source_derived_workset_overlay.py` 与严格 hash-pinned profile。
+  authority 在存续的 manager/cycle/replay/shadow 四锁下，先只读证明 public source pointer
+  等于 receipt registry tip，再深验 frozen manifest reservation/event、source-derived
+  reservation/event 以及 matching cross-freeze completion receipt/event。pointer 缺失、陈旧或
+  分支时直接 fail closed；本层不会调用 pointer repair，也不执行 source ingest。
+- effective 变换固定为 `Meff = (M0 - I)`、按 natural key 用完整 `R` row 替换、再加入 `D`。
+  `D/R/I` 必须两两不交；D 必须是新 key，R 必须命中旧 key 且 namespace/key-id 改变，I 必须与
+  frozen old row 完全一致。除 machine-selected source outcome 外的 row 不允许被 D/R/I 改写。
+- 所有 effective item 重新验证 namespace，并以 frozen manifest SHA 重算 key-id；同时发布诚实的
+  natural-key-set digest、包含 natural/namespace/key-id 的 identity-set digest、transition-plan-set
+  digest 与稳定拓扑 dependency-graph digest。保留项若仍依赖 I、出现 unknown/self/duplicate edge
+  或 cycle，均在写入前 fail closed，不机器猜测或删除依赖。
+- durable 顺序为 compact content-addressed create-only overlay object -> singleton append-only event；
+  完整 effective rows 从 immutable base+D/R/I refs 重建，object 明确
+  `effective_rows_embedded=false`。object-only crash 只补 matching event；status 仅为 cache。
+- focused `6/6`、overlay/cross/derived/inventory/manifest/recovery 核心 `93/93`、live-source
+  `32/32` 通过；Ruff、Python compile、strict profile 与 10 个 direct upstream SHA pins、
+  `git diff --check` 均通过。独立审查复现的 P1（只读 gate 与可写 cross loader 间 pointer-loss
+  TOCTOU）已改为 overlay-owned pure-read cross replay，并由 gate 后删除 pointer 的回归证明
+  recovery call=0、无 object/event；历史 N+2 场景仍保持 N+2 且正常发布。未运行训练、全管线或
+  真实网络；两路最终独立只读复审均为 P0=0、P1=0。未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `54ea77652bc5f020146b777d98cd34e1ec26895f363d35a4cb5933b93ef11be7`、
+  `d80504e58393d58f284665ed471f19e51b09e847153df7f4143ab99bdf70e8d3`、
+  `836da67f06c7560900a570c1fc729d0868f2842cee947f4b3923ed8473f98a1b`、
+  `183a2bb62da5b7e75cea9117bec9c628bbb4aac7d09b38db0ba3eab435a92561`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量只实现 exact source edge 的 derived future-work reservation/effective DAG；仍保持
+  `all_content_dependent_lanes_reserved=false`、source parent/effective items 非 terminal，且不创建
+  recovery-v6 receipt、materialization/consumption、full closure、drain/lifecycle/activation 或
+  formal warning。下一步是独立 historical-N+1 effective dispatcher，一次调度一个 effective
+  outcome item，不能把 overlay 伪装为 recovery-v6 manifest reservation。
+
 ## 2026-08-29 cross-freeze source-ingest writer/adoption v1（本增量）
 
 - 新增独立 `ootang_epoch_source_ingest_cross_freeze.py` 与 profile
