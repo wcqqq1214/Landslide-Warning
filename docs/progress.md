@@ -5,6 +5,43 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-ingest 派生 outcome key reservation v1（本增量）
+
+- 新增独立 `ootang_epoch_source_ingest_derived_reservation.py` 与 profile
+  `1.0.0-post-ingest-adoption`。authority 在 manager/cycle/replay/shadow 四锁下只读采用 frozen
+  manifest 中唯一 `source_snapshot_ingested` parent 对应的 immutable `N -> N+1` source edge，
+  仅写 `workset_recovery_v1/source_ingest_derived_reservation_v1`；不执行 source ingest、outcome
+  materialization、live ledger action 或 recovery-v6 terminal receipt。
+- 完整重放 source receipt registry 后，从唯一链内定位 predecessor 的 exact child；current tip
+  可已推进到 `N+2+`，但公共 pointer 必须仍绑定唯一 current tip。采用的 `N+1` 则完全从 immutable
+  receipt/pointer/semantic manifest/dataset/revision heads/feed objects 重建，所以 sidecar 在后续
+  source 推进后仍可 byte-identical replay；mutable incoming feed 与 status 不构成 authority。
+- derived selector 精确复用 frozen live projection 的 `revision_ids`、`outstanding_target_date`、
+  `last_finalized_date` 与完整 frozen-ledger seal。令 `P1` 为 successor snapshot 的完整 prospective
+  machine-selected 集、`K0` 为 frozen machine-selected 集，显式记录
+  `D=P1-K0`、同 natural key 但 namespace/snapshot binding 改变的 `R`，以及不再 prospective 的
+  `I=K0-P1`。初始 prior 只取 pending outcome receipt-chain tip，D/R 被禁止依赖 I；同 family 的
+  `anchor_confirmation` repair item 不会被误当 outstanding selector。
+- durable 顺序为 canonical content-addressed create-only `reservation -> append-only event`。
+  object-only crash 只补 matching event；event/object branch、重复 child、partial diff、超 4096 个
+  D/R/I rows 或超 4 MiB control bytes 均在 durable write 前 fail closed。status 仍只是 replaceable
+  observation cache。
+- focused tests `8/8`（2.575 s）；derived/inventory/manifest/recovery 核心回归 `78/78`
+  （8.730 s）；live-source 回归 `32/32`（2.547 s）。Ruff format/check、Python compile、strict
+  profile/upstream pin load 通过；两路独立最终只读复审均为 P0=0、P1=0。未运行训练或真实网络，
+  未修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `1d620fbe20d936a27f55d1e03204d87be3ff8d94a892b2f9c966c061e2fa59d2`、
+  `916b72d8cf2726afcde289f58b5b8f9729c382bb93ee03bad3b6f8d34caadb18`、
+  `72476bbe33c7fdd9ad252a5d7cfc78c0a07baa2d0ddb6aecd0c60883d80e4d0a`、
+  `686576cd300bfa211750cc38c7e95d57f68c00e519416f0d069f0654450d8252`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量只证明一个已提交 source edge 的完整 outcome-key reservation。下一窄增量是独立
+  cross-freeze source-ingest writer/adoption adapter：机器创建/采用 frozen parent 唯一允许的 source
+  objects，并以 matching derived reservation event 作为 parent transition 后续解析条件；仍不得恢复
+  legacy writer 或加入人工 freeze/approval。详细合同见
+  `docs/ootang_source_ingest_derived_reservation_engineering.md`。
+
 ## 2026-08-29 frozen-manifest terminal coverage v1（本增量）
 
 - 新增独立 `ootang_epoch_manifest_terminal_coverage.py` 与 profile

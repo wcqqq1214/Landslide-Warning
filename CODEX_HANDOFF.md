@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `b9ccfb6 feat: aggregate source terminal proofs`
+**Committed baseline before this increment:** `5a2f44b feat: prove frozen manifest coverage`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -13,11 +13,62 @@ poll 的 outstanding consumption 桥、revision predecessor authority、settled-
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
-dispatcher v1 与 source-key terminal aggregate v1 已提交；当前工作树新增独立 frozen-manifest
-terminal coverage v1。它仍不是完整
+dispatcher v1、source-key terminal aggregate v1 与 frozen-manifest terminal coverage v1 已提交；
+当前工作树新增独立 source-ingest derived outcome-key reservation v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-ingest derived outcome-key reservation v1
+
+The new `ootang_epoch_source_ingest_derived_reservation.py` is a machine-only, read-only adoption
+authority below `workset_recovery_v1/source_ingest_derived_reservation_v1`. Its reviewed profile
+pins the unchanged admission-cut, manifest, inventory, recovery, source, materializer, live, and
+live-ledger contracts. Under the surviving manager/cycle/replay/shadow lock order it accepts exactly
+one frozen-manifest `source_snapshot_ingested` parent, but it does not call the source writer or
+outcome materializer and does not create a recovery-v6 terminal receipt.
+
+The source registry is fully replayed first. The selected edge is the unique immutable `N+1` child
+of the parent's frozen predecessor, reconstructed through receipt, pointer, semantic-manifest,
+dataset, revision-head, and feed objects. The public pointer must bind the unique current registry
+tip, while that tip may already be `N+2+`; later source publication therefore does not invalidate
+or rewrite the historical sidecar. The real predecessor-to-child diff must exactly equal the
+parent's frozen changed/appended rows and natural-key formula.
+
+The complete prospective set is rebuilt with the canonical frozen live projection selector:
+ledger-known revisions first, then the single outstanding target, otherwise contiguous backfill
+after `last_finalized_date`; every historical issue seal comes from the frozen ledger prefix. With
+`P1` as that set and `K0` as frozen machine-selected outcomes, the reservation records new `D`,
+same-key/new-namespace `R`, and invalidated `I` sets. The initial dependency tip comes only from a
+pending outcome receipt chain, `anchor_confirmation` repair peers are ignored by outstanding
+selection, and D/R dependencies may not reference I.
+
+Publication is deterministic content-addressed create-only `reservation -> append-only event`.
+An object-only crash appends only the missing event; `N+2+` replay reproduces the original N+1
+reservation and event bytes. Branches, multiple children, changed source semantics, partial
+classification, more than 4096 D/R/I rows, or a control record over 4 MiB fail before durable
+publication. The replaceable status remains non-authoritative.
+
+Focused tests are `8/8` (2.575 s), derived/inventory/manifest/recovery core regression is `78/78`
+(8.730 s), and live-source regression is `32/32` (2.547 s). Ruff format/check, Python compile, and
+strict profile/upstream-pin load pass. Two independent final read-only reviews report P0=0/P1=0;
+the first review round found and the implementation closed the full-P1 selector, historical seal,
+invalidated dependency, N+2 replay, repair-peer, and pre-write byte-limit gaps. Current
+implementation/profile/test, engineering-document, and protected `main.py` SHA-256 values are
+`1d620fbe20d936a27f55d1e03204d87be3ff8d94a892b2f9c966c061e2fa59d2`,
+`916b72d8cf2726afcde289f58b5b8f9729c382bb93ee03bad3b6f8d34caadb18`,
+`72476bbe33c7fdd9ad252a5d7cfc78c0a07baa2d0ddb6aecd0c60883d80e4d0a`,
+`686576cd300bfa211750cc38c7e95d57f68c00e519416f0d069f0654450d8252`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+This increment changes no ConvLSTM/v4 model, frozen split, metric, threshold, parameter, or
+scientific conclusion. It proves only the complete outcome-key reservation for one already
+committed source edge. The next narrow increment is a separately versioned cross-freeze
+source-ingest writer/adoption adapter. It must machine-create or adopt only the source objects
+allowed by the frozen parent, recover at the receipt/public-pointer crash boundary, and require the
+matching derived reservation event before resolving that parent transition. It must not restore
+the legacy writer or introduce a human freeze/approval path. Detailed semantics are in
+`docs/ootang_source_ingest_derived_reservation_engineering.md`.
 
 ## 2026-08-29 frozen-manifest terminal coverage v1
 
