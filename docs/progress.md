@@ -5,6 +5,40 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived dependent outcome dispatch v1（本增量）
+
+- 新增独立 `ootang_epoch_source_derived_dependent_outcome_dispatch.py` 与严格 hash-pinned
+  profile，位于 sibling namespace
+  `workset_recovery_v1/source_derived_dependent_outcome_dispatch_v1/`，不反向修改或 pin 已冻结的
+  source-only dispatcher/consumption。coordinator 先深回放 effective overlay、historical
+  dispatcher 与 effective-key consumption；候选必须是当前 overlay 中非 source-only 的 exact
+  `D/R` row，并按稳定拓扑顺序每 poll 最多推进一个。
+- 当前 reviewed graph 为 `source -> D1 -> D2`，且 `D2` 同时直接依赖 source。source edge 只由
+  exact cross-freeze gate 满足；其余 `D/R` edge 必须由匹配当前 `key_id + natural_key +
+  namespace_digest` 的 terminal consumption receipt/event 满足。D1 materialization-only、consumption
+  receipt-without-event、旧 `R` identity、`I`、status 与 retained-base/unsupported dependency 均不能
+  解锁 D2。
+- readiness 成立后直接复用 pinned historical planner/action 和 canonical materializer 写入 D2，
+  不发布空泛 readiness proof，也不调用 current-source selector 或 public materializer。create-only
+  intent 绑定 overlay/source gate、完整 dependency proof、effective row/transition、exact historical
+  materialization contract 与实现哈希；durable 顺序为 intent -> canonical commit/adoption ->
+  nonterminal receipt -> append-only nonterminal event。post-materializer 与 receipt-only crash 均只做
+  exact forward adoption/healing，不重复 outcome。
+- focused `4/4` 与 dependent-dispatch/consumption/source-only-dispatch/overlay 相邻回归 `19/19`
+  通过；Ruff format/check、Python compile、strict profile load、`git diff --check` 通过。authority
+  scope 与 durable integrity 两路独立只读复审均为 P0=0/P1=0。未运行训练、全科研管线或真实网络。
+  当前 event 仍保持 `next_action=outcome_or_revision_consumed`，effective/recovery-v6/source parent
+  terminal、full closure、drain/lifecycle/activation、trusted/E2 与 formal warning 均为 false/unproved。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `c172c08ef48e0153b139542998bb6cf0cd382f5e1940593107ff7424713a2c59`、
+  `d374df70debab962143b584c0167661d005b9d7ee36495be44db84bbcb6beb3b`、
+  `abfbbb4345bb79a2a43a1a95ecef159c55998a3e2417698fc214dc2c6356e7f2`、
+  `d979acdad960643b68fb033185ee5c58360c998e41d49663021aac58278bff57`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄增量是
+  versioned dependent consumption bridge：只接受本 namespace 的 exact live expected-pre-head 与
+  ordered canonical EventSpecs，terminalize D2 后才允许继续解锁后继 dependent item。
+
 ## 2026-08-29 source-derived effective outcome consumption v1（本增量）
 
 - 新增独立 `ootang_epoch_source_derived_outcome_consumption.py` 与严格 hash-pinned profile。

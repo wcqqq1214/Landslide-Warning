@@ -1,0 +1,106 @@
+{
+  "schema_version": "ootang_epoch_source_derived_dependent_outcome_dispatch_profile_v1",
+  "profile_id": "ootang-epoch-source-derived-dependent-outcome-dispatch-v1",
+  "profile_version": "1.0.0-dependent-materialization-only",
+  "case": "ootang",
+  "artifact_status": "narrow_dependency_gated_historical_materialization_dispatch_only",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "upstream": {
+    "materialization_dispatch_profile": {
+      "path": "config/ootang_epoch_source_derived_outcome_dispatch.v1.json",
+      "expected_sha256": "5d9d85174620cd29b3b216fdd3cec9a9b61d05176cb8a16697f5be3af112a995"
+    },
+    "materialization_dispatch_implementation": {
+      "path": "code/monitoring/ootang_epoch_source_derived_outcome_dispatch.py",
+      "expected_sha256": "5d51174c16bdff0dabc88af357bf54ba0e1281aa5b69e06d198b54d4a5941fab"
+    },
+    "consumption_profile": {
+      "path": "config/ootang_epoch_source_derived_outcome_consumption.v1.json",
+      "expected_sha256": "efd33c6c3e9cb386d64cd1e44720b4019c3468a774d695ddc3f77cca3efa863b"
+    },
+    "consumption_implementation": {
+      "path": "code/monitoring/ootang_epoch_source_derived_outcome_consumption.py",
+      "expected_sha256": "fb03dfa502d7402b824cec16b36698d0de6349e419feac8a34981ff9e05b0789"
+    }
+  },
+  "runtime": {
+    "registry_root": "runtime/ootang_epoch_registry_v1",
+    "recovery_namespace": "workset_recovery_v1",
+    "namespace": "source_derived_dependent_outcome_dispatch_v1",
+    "intents": "intents",
+    "receipts": "receipts",
+    "events": "events",
+    "status": "status.json",
+    "manager_lock": "manager.lock",
+    "active_root": "runtime/ootang_prequential_live_v1",
+    "shadow_root": "runtime/ootang_prequential_calibration_shadow_v1"
+  },
+  "protocol": {
+    "intent_schema_version": "ootang_epoch_source_derived_dependent_outcome_dispatch_intent_v1",
+    "receipt_schema_version": "ootang_epoch_source_derived_dependent_outcome_dispatch_receipt_v1",
+    "event_schema_version": "ootang_epoch_source_derived_dependent_outcome_dispatch_event_v1",
+    "status_schema_version": "ootang_epoch_source_derived_dependent_outcome_dispatch_status_v1",
+    "event_type": "epoch_source_derived_dependent_outcome_materialization_recorded",
+    "action": "outcome_materialized",
+    "next_action": "outcome_or_revision_consumed",
+    "canonical_json": "utf8_sort_keys_compact_no_nan_trailing_lf",
+    "initial_previous_entry_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "surviving_lock_order": [
+      "manager",
+      "cycle",
+      "replay",
+      "shadow"
+    ],
+    "readiness_policy": "current_effective_non_source_only_d_or_r_with_exact_source_gate_and_consumption_terminal_dependencies",
+    "poll_policy": "heal_or_materialize_at_most_one_dependency_ready_effective_key",
+    "maximum_control_bytes": 4194304
+  },
+  "engineering_capabilities": {
+    "machine_only": true,
+    "published_effective_overlay_deep_verified": true,
+    "source_only_dispatch_deep_verified": true,
+    "source_only_consumption_deep_verified": true,
+    "exact_dependency_terminal_events_required": true,
+    "current_effective_identity_required": true,
+    "dependent_d_or_r_materialization_dispatch_implemented": true,
+    "canonical_materializer_writer_reused": true,
+    "create_only_dispatch_intents_implemented": true,
+    "create_only_dispatch_receipts_implemented": true,
+    "append_only_dispatch_events_implemented": true,
+    "crash_forward_adoption_implemented": true,
+    "outcome_materialization_performed": false,
+    "outcome_or_revision_consumed": false,
+    "terminal_for_effective_key": false,
+    "terminal_for_recovery_v6_key": false,
+    "source_parent_terminal": false,
+    "recovery_v6_mutated": false,
+    "effective_workset_overlay_mutated": false,
+    "source_only_dispatch_mutated": false,
+    "source_only_consumption_mutated": false,
+    "cross_freeze_authority_mutated": false,
+    "source_ingest_executed": false,
+    "materialization_receipt_used_as_terminal_dependency": false,
+    "consumption_receipt_without_event_used_as_terminal_dependency": false,
+    "old_effective_identity_used_as_terminal_dependency": false,
+    "invalidation_item_materialized": false,
+    "retained_base_dependency_supported": false,
+    "all_effective_items_terminal": false,
+    "terminal_transition_closure_implemented": false,
+    "bounded_workset_recovery_implemented": false,
+    "all_content_dependent_lanes_reserved": false,
+    "all_reserved_items_settled": false,
+    "all_reserved_successors_supported": false,
+    "lifecycle_authority": false,
+    "transition_authority": false,
+    "drained_eligibility_current": false,
+    "old_epoch_drained": false,
+    "active_epoch_switch_implemented": false,
+    "automatic_epoch_rotation_implemented": false,
+    "trusted_anchor_receipt_verified": false,
+    "e2_live_evidence_eligible": false,
+    "real_activation_ready": false,
+    "formal_warning_output": false,
+    "network_action_performed": false
+  }
+}

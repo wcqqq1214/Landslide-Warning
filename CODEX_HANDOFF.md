@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `aaf78d9 feat: dispatch source-derived outcomes`
+**Committed baseline before this increment:** `0a21f82 feat: consume source-derived outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -15,11 +15,55 @@ crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CA
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
-v1、source-derived effective-workset overlay v1 与 historical-N+1 materialization dispatcher v1
-已提交；当前工作树新增独立 source-derived effective outcome consumption v1。它仍不是完整
+v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1 与
+source-derived effective outcome consumption v1 已提交；当前工作树新增独立 source-derived
+dependent outcome dispatch v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived dependent outcome dispatch v1
+
+The new `ootang_epoch_source_derived_dependent_outcome_dispatch.py` is an independent sibling
+authority under `workset_recovery_v1/source_derived_dependent_outcome_dispatch_v1`; it does not
+modify or reverse-pin the source-only dispatcher or its consumption bridge. It deep-replays the
+effective overlay, historical dispatcher, and effective-key consumption authority before deriving
+the current effective `D/R` dependency graph in stable topological order. It advances at most one
+non-source-only dependent outcome per poll.
+
+The reviewed graph is `source -> D1 -> D2`, with a direct source edge into `D2`. The exact
+cross-freeze gate alone satisfies the source edge. Every other `D/R` edge requires a terminal
+consumption receipt/event whose key id, natural key, and namespace digest exactly match the current
+effective dependency. A materialization-only D1, a consumption receipt without its event, status,
+an old rebound `R` identity, `I`, or an unsupported/retained-base dependency cannot make D2 ready.
+
+Readiness invokes the pinned historical planner/action and canonical materializer directly; it does
+not publish a readiness-only proof, consult the mutable current-source selector, or call the public
+materialization API. The create-only intent binds the exact overlay and source-gate refs, every
+terminal dependency receipt/event, the complete dependency proof, current effective row and
+transition identity, historical materialization contract, and implementation hash. The durable
+order is `intent -> canonical materializer commit/adoption -> nonterminal receipt -> append-only
+nonterminal event`. Post-materializer and receipt-only crashes heal forward without duplicating the
+outcome. The event keeps `next_action=outcome_or_revision_consumed`; effective/recovery-v6/source
+parent terminal state and full closure remain false.
+
+Focused tests are `4/4`; dependent-dispatch/consumption/source-only-dispatch/overlay regressions are
+`19/19`. Ruff formatting/lint, Python compilation, strict profile loading, and diff checks pass.
+Independent authority-scope and durable-integrity reviews both report P0=0/P1=0. No training, full
+scientific pipeline, or real-network run occurred. ConvLSTM, v4, frozen splits, metrics, thresholds,
+model parameters, and scientific conclusions are unchanged.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `c172c08ef48e0153b139542998bb6cf0cd382f5e1940593107ff7424713a2c59`,
+`d374df70debab962143b584c0167661d005b9d7ee36495be44db84bbcb6beb3b`,
+`abfbbb4345bb79a2a43a1a95ecef159c55998a3e2417698fc214dc2c6356e7f2`,
+`d979acdad960643b68fb033185ee5c58360c998e41d49663021aac58278bff57`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+Detailed semantics are in
+`docs/ootang_source_derived_dependent_outcome_dispatch_engineering.md`. The next narrow increment is
+a versioned consumption bridge that binds this namespace's event to the live ledger's exact
+expected-pre-head and ordered canonical EventSpecs. Only its terminal receipt/event may unlock a
+later dependent item.
 
 ## 2026-08-29 source-derived effective outcome consumption v1
 
