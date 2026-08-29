@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 frozen-manifest terminal coverage v1（本增量）
+
+- 新增独立 `ootang_epoch_manifest_terminal_coverage.py` 与 profile
+  `1.0.0-exact-frozen-key-bijection`。profile 直接固定未改动的 manifest、recovery v6、step
+  dependency sidecar、settlement overlay 与 source-terminal aggregate 共十个
+  implementation/profile SHA-256；assessor 在 manager/cycle/replay/shadow 四锁下只读深验，
+  仅写 `workset_recovery_v1/manifest_terminal_coverage_v1`。
+- 精确公式为 `K = T6 ⊎ TA`。`K` 从 durable manifest bytes 独立重建 canonical key id 与
+  deterministic topological order；`T6` 只取 current recovery-v6 terminal receipt tip 及 matching
+  recovery event；`TA` 只取具有 matching proof 的 published aggregate event。completed overlay
+  slot、orphan/pending proof 不计，两个集合必须互斥且逐 key exact union 等于 `K`，不能只比数量。
+- manifest/global/receipt/event/proof snapshot 全部从 durable bytes 重读；recovered ordered items
+  必须精确等于 durable manifest 重建结果，aggregate state 也从 proof/event 目录独立重放。独立
+  复审发现的两个 P1——内存 receipt 伪造 terminal、内存 `ordered_items` 缩小 key set——均已修复
+  并增加回归；两路最终独立只读复审均为 P0=0、P1=0。
+- 只有完整覆盖且上游无 pending/incomplete publication boundary 时才执行 deterministic
+  content-addressed `proof -> singleton event`。event 前
+  `frozen_manifest_key_coverage=false`；proof 后崩溃只复验并补 event，不发布替代 proof、不调用
+  上游 action。合法缺 key 只写非权威 waiting status，不生成 partial proof；branch/orphan/multiple
+  authority fail closed。
+- 快测 `5/5`（0.168 s）；coverage/aggregate/overlay/sidecar/recovery/manifest 核心回归
+  `78/78`（6.433 s）；相邻 materializer/live-ledger/CAS/epoch-gates/prequential/main 回归
+  `235/235`（14.505 s）。Ruff format/check、Python compile、strict JSON/profile load、受保护上游
+  diff 与 diff check 通过。未运行训练或真实网络，未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。
+- 当前 coverage implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `5cb928ab7ee8d3ab15b6da8be29d9b597598b200744ce30d0ae01a8568fa15b2`、
+  `4edfc6a9386452393197af827d325f0f877e60a32b6c7bd5ed9e37af250deecb`、
+  `d304c4bbf9cca11fcd86b6e5b56f6c7a287d2c9c434c76cfbc07bee07317b4d4`、
+  `f286481abbd54cb433356a181f8006b0a83b24f40f4a35b1873963947092e84f`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量只证明 frozen manifest key coverage；full/bounded workset、all-item settlement、
+  all-successor、terminal/transitive closure、derived new-key、drained/lifecycle/activation 与
+  trusted/E2/formal claims 继续为 false。下一窄增量是 source ingestion 产生的
+  content-dependent keys 的 versioned create-only reservation authority；issue-route 与 shadow
+  derived work 仍是后续独立边界。详细合同见
+  `docs/ootang_manifest_terminal_coverage_engineering.md`。
+
 ## 2026-08-29 overlay-backed source-key terminal aggregate v1（本增量）
 
 - 新增独立 `ootang_epoch_source_terminal_aggregate.py` 与 profile
@@ -38,9 +76,9 @@
   `8441967ffb5451e39555c8cd47e6c36d968376144b3c2686a0c5b737562f0374`、
   `e94011778d922b64ed6fc45b2a54fcb07c3fa1155b1869da10a96fd577633ae5`、
   `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
-- 下一窄增量是独立 versioned manifest-coverage assessor：组合 ordinary v6 terminal receipts
-  与已发布 aggregate events，判断冻结 manifest 的 key coverage；source-ingest 产生的真正
-  content-dependent new key reservation 仍须随后单独建立 authority。详细合同见
+- 本历史条目规划的 manifest-coverage assessor 已由上方 frozen-manifest terminal coverage v1
+  实现；source-ingest 产生的真正 content-dependent new key reservation 现在是下一独立
+  authority。详细合同见
   `docs/ootang_source_terminal_aggregate_engineering.md`。
 
 ## 2026-08-29 cross-freeze settlement overlay dispatcher v1（本增量）

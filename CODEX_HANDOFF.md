@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `f0131bb feat: adopt cross-freeze settlement overlays`
+**Committed baseline before this increment:** `b9ccfb6 feat: aggregate source terminal proofs`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -12,11 +12,63 @@ writer/crash-forward adoption、receipt-tip repair/machine-selected outcome mate
 poll 的 outstanding consumption 桥、revision predecessor authority、settled-date canonical
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
-adoption、cross-freeze manifest-sibling step dependency sidecar v1 与独立 settlement overlay
-dispatcher v1 已提交；当前工作树新增独立 source-key terminal aggregate v1。它仍不是完整
+adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
+dispatcher v1 与 source-key terminal aggregate v1 已提交；当前工作树新增独立 frozen-manifest
+terminal coverage v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 frozen-manifest terminal coverage v1
+
+The new `ootang_epoch_manifest_terminal_coverage.py` publishes a singleton, independently
+versioned assessment under `workset_recovery_v1/manifest_terminal_coverage_v1`. Its profile
+directly pins the unchanged manifest, recovery v6, dependency sidecar v1, settlement overlay v1,
+and source-terminal aggregate v1 implementation/profile bytes. Under the same
+manager/cycle/replay/shadow locks it calls only read-only authority/state loaders and writes only
+its own content-addressed proof, singleton event, and non-authoritative status cache.
+
+The exact formula is `K = T6 ⊎ TA`. `K` is independently reconstructed from the durable manifest
+bytes, including canonical key ids and deterministic topological order. `T6` contains only a
+current recovery-v6 chain tip with `terminal_for_key=true` and its exact published recovery event.
+`TA` contains only source keys backed by a published aggregate event and its exact terminal proof;
+completed overlay slots, proof objects without events, and pending/orphan proofs do not count. The
+two evidence sets must be disjoint, contain no unknown/duplicate key, and their union must exactly
+equal `K`. Valid missing keys or pending upstream publication boundaries only produce a waiting
+status and never a partial coverage proof.
+
+All manifest/global/receipt/event/proof snapshots are re-read from durable bytes. The recovered
+ordered items must exactly equal an independent reconstruction from the durable manifest, and the
+aggregate state is independently reloaded from its proof/event directory before assessment. These
+checks close two review-found injected-view failures: an in-memory nonterminal receipt forged as
+terminal, and an in-memory manifest key set shrunk below the durable manifest.
+
+The durable publication order is deterministic content-addressed `proof -> singleton event`.
+Before the event exists, frozen-manifest coverage remains false. A proof-only crash rebuilds and
+verifies the exact proof and appends only the missing event; it does not publish an alternative
+proof or invoke any upstream action. Event-without-proof, multiple proofs/events, changed proof
+semantics, or a previously published authority that no longer reproduces fails closed.
+
+Focused tests are `5/5` (0.168 s), the coverage/aggregate/overlay/sidecar/recovery/manifest core is
+`78/78` (6.433 s), and the adjacent materializer/live-ledger/CAS/epoch-gates/prequential/main suite
+is `235/235` (14.505 s). Ruff format/check, Python compile, strict JSON/profile load, protected
+upstream diff, and diff checks pass. Two independent final read-only reviews are P0=0/P1=0; the
+correctness review first found and then verified the two injected-view fixes. Current coverage
+implementation/profile/test, engineering document, and protected `main.py` SHA-256 values are
+`5cb928ab7ee8d3ab15b6da8be29d9b597598b200744ce30d0ae01a8568fa15b2`,
+`4edfc6a9386452393197af827d325f0f877e60a32b6c7bd5ed9e37af250deecb`,
+`d304c4bbf9cca11fcd86b6e5b56f6c7a287d2c9c434c76cfbc07bee07317b4d4`,
+`f286481abbd54cb433356a181f8006b0a83b24f40f4a35b1873963947092e84f`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+This increment proves exact coverage of the frozen manifest keys only. Full/bounded-workset
+recovery, all-item settlement, all-successor support, terminal/transitive closure, derived new-key
+reservation, drain/lifecycle/activation, trusted/E2, and formal-warning claims remain false.
+ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, and scientific conclusions are
+unchanged. The next narrow increment is a versioned create-only reservation authority for
+content-dependent keys produced by source ingestion. Issue-route and shadow-derived work remain
+separate later boundaries. Detailed semantics are in
+`docs/ootang_manifest_terminal_coverage_engineering.md`.
 
 ## 2026-08-29 overlay-backed source-key terminal aggregate v1
 
@@ -59,9 +111,9 @@ This increment proves one overlay-backed source key only. Full/bounded-workset r
 all-item/all-successor coverage, terminal or transitive workset closure, content-dependent new-key
 reservation, drain/lifecycle/activation, trusted/E2, and formal-warning claims remain false.
 ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, and scientific conclusions are
-unchanged. The next narrow increment is a separately versioned manifest-coverage assessor that
-combines ordinary v6 terminal receipts with published aggregate events. Source-ingest reservation
-for genuinely new content-dependent keys remains a separate subsequent authority boundary.
+unchanged. This section's planned manifest-coverage assessor is now implemented by the
+frozen-manifest terminal coverage v1 section above. Source-ingest reservation for genuinely new
+content-dependent keys remains the next separate authority boundary.
 Detailed semantics are in `docs/ootang_source_terminal_aggregate_engineering.md`.
 
 ## 2026-08-29 cross-freeze settlement overlay dispatcher v1
