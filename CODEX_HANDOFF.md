@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `0a21f82 feat: consume source-derived outcomes`
+**Committed baseline before this increment:** `062bc18 feat: dispatch dependent source outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -15,12 +15,56 @@ crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CA
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
-v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1 与
-source-derived effective outcome consumption v1 已提交；当前工作树新增独立 source-derived
-dependent outcome dispatch v1。它仍不是完整
+v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1、
+source-derived effective outcome consumption v1 与 dependent outcome dispatch v1 已提交；当前
+工作树新增独立 source-derived dependent outcome consumption v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived dependent outcome consumption v1
+
+The new `ootang_epoch_source_derived_dependent_outcome_consumption.py` is a leaf sibling authority
+under `workset_recovery_v1/source_derived_dependent_outcome_consumption_v1`. It does not modify the
+dependent dispatcher, source-only dispatcher/consumption bridge, or recovery v6. It deep-replays
+the current overlay, source dependency authority, and dependent dispatcher state. Only a current
+dependent `D/R` with an exact intent, receipt, and append-only materialization event is eligible;
+receipt-only, status, source-only events, old rebound identities, and `I` never authorize D2.
+
+The semantic step index is 3. Its step id binds the overlay event, dependent-dispatch event,
+dependency-proof digest, exact key, and action. Before ledger mutation, the create-only intent binds
+all three parent records, the complete dependency proof, effective row and transition, nonterminal
+recovery previous-step adapter, exact expected pre-head, full ordered canonical EventSpecs, and the
+recovery consumption contract. Direct pins cover dependent dispatch, source-only consumption, and
+recovery profile/implementation pairs; upstream transitive pins remain one-way, so no reverse hash
+cycle is introduced.
+
+The pinned recovery expected-pre-head CAS remains the only live-ledger writer. Fresh execution can
+append only at the intent's recorded head; a post-CAS retry adopts only the exact positioned
+contiguous slice, and a receipt-only retry appends only the missing hash-chained terminal event.
+Foreign, partial, displaced, or different suffixes cannot rebase the intent. The receipt/event make
+only the exact current D2 effective key terminal. Recovery-v6, source/D1 parents, whole-workset
+closure, drain, lifecycle, activation, trusted/E2 evidence, and formal-warning output remain false.
+
+Focused tests are `5/5`, and the dependent-consumption/dispatch, source-only consumption/dispatch,
+and overlay chain is `24/24`. The initial focused test found an incorrect nested overlay path before
+CAS; it was corrected across all three references. Integrity review then found upstream Busy being
+misclassified as integrity and a narrower committed-slice Busy case; both now preserve retryable
+machine semantics, with a focused prerequisite-Busy regression. Final integrity and scope reviews
+report P0=0/P1=0/P2=0. Ruff, Python compilation, strict profile loading, and diff checks pass. No
+training, full scientific pipeline, or real-network run occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `83c32fd80e07bed0cf2ec95d173f3152dd8d0c8d1e0aa3283803481495af860a`,
+`b5169b116116c27cf755913f4a52a3c2ecf68b46213ffb77cc6894013c92eb57`,
+`b645dd36ef0a6d990a795be08f1c2bb0ec3c965f4e925ec3e79e866410955703`,
+`9312ae87d31ec06abaa0a259f38be9db330992db86b722501546be704878326f`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+Detailed semantics are in
+`docs/ootang_source_derived_dependent_outcome_consumption_engineering.md`. The next narrow
+increment should aggregate exact source-only and dependent consumption terminal events against the
+current overlay's effective `D/R` set. It must not turn source-gate or unsupported retained-base
+evidence into recovery/lifecycle closure.
 
 ## 2026-08-29 source-derived dependent outcome dispatch v1
 

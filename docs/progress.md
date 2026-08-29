@@ -5,6 +5,41 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived dependent outcome consumption v1（本增量）
+
+- 新增叶子 sibling `ootang_epoch_source_derived_dependent_outcome_consumption.py` 与严格
+  hash-pinned profile，namespace 为
+  `workset_recovery_v1/source_derived_dependent_outcome_consumption_v1/`。coordinator 深回放
+  current effective overlay、source dependency authority 与 dependent dispatcher durable state；
+  只有同时拥有 exact intent/receipt/append-only event 且仍匹配当前
+  `key_id + natural_key + namespace_digest` 的 dependent `D/R` 才能进入消费候选。
+- D2 的 `step_index=3`；step id 绑定 overlay event SHA、dependent-dispatch event SHA、
+  dependency-proof SHA、exact key 与 action。CAS 前 create-only intent 完整绑定 parent
+  intent/receipt/event refs、dependency proof、effective row/transition、nonterminal previous-step
+  adapter、live-ledger exact expected-pre-head、完整有序 canonical EventSpecs 与 recovery contract。
+  dependent receipt-without-event、status、source-only event、旧 `R` identity 与 `I` 均不授权。
+- 唯一 ledger writer 仍是 pinned recovery expected-pre-head CAS。fresh 只在 intent 固定 head 写入；
+  post-CAS 只采用 exact positioned contiguous slice，receipt-only 只补 hash-chained terminal event；
+  foreign/partial/displaced/different suffix 禁止 rebase。terminal 仅属于 exact D2 effective key，
+  recovery-v6/source parent/D1 dependency parent、whole-workset closure、drain/lifecycle/activation、
+  trusted/E2/formal warning 均保持 false/unproved。
+- focused `5/5` 与 dependent-consumption/dispatch、source-only consumption/dispatch、overlay 直接链
+  `24/24` 通过。首轮测试发现的 nested overlay path P1 已在 CAS 前关闭；独立完整性审查发现的
+  upstream Busy 误分类 P1 与 committed-slice Busy P2 均改为保留机器可重试 Busy 语义，并加入
+  prerequisite Busy 回归。最终 integrity 与 scope 两路只读复审均为 P0=0/P1=0/P2=0。
+  Ruff format/check、Python compile、strict profile load 与 diff checks 通过；未运行训练、全科研
+  管线或真实网络。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `83c32fd80e07bed0cf2ec95d173f3152dd8d0c8d1e0aa3283803481495af860a`、
+  `b5169b116116c27cf755913f4a52a3c2ecf68b46213ffb77cc6894013c92eb57`、
+  `b645dd36ef0a6d990a795be08f1c2bb0ec3c965f4e925ec3e79e866410955703`、
+  `9312ae87d31ec06abaa0a259f38be9db330992db86b722501546be704878326f`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄增量
+  优先实现 current-overlay effective `D/R` terminal coverage aggregate：合并 source-only 与
+  dependent consumption exact terminal events，但不得把 source gate、retained-base/unsupported
+  dependency 或覆盖证明扩大为 recovery/lifecycle closure。
+
 ## 2026-08-29 source-derived dependent outcome dispatch v1（本增量）
 
 - 新增独立 `ootang_epoch_source_derived_dependent_outcome_dispatch.py` 与严格 hash-pinned
