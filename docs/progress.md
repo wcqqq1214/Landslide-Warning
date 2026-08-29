@@ -5,6 +5,45 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived historical outcome dispatch v1（本增量）
+
+- 新增独立 `ootang_epoch_source_derived_outcome_dispatch.py` 与严格 hash-pinned profile。
+  coordinator 只消费已深验并发布的 effective overlay object/event，每 poll 最多推进一个
+  source-only-ready 的 effective `D/R` outcome；`I` 永不 dispatch。matching cross-freeze
+  receipt/event 与 overlay event 仅构成 source expansion gate，不伪造 source parent 或
+  recovery-v6 terminal receipt。
+- materialization planner 不调用 current-source selector 或 public `materialize_outcome()`；它从
+  immutable derived authority 重建 exact historical `N+1` successor source，直接构造 selection、
+  input manifest、outcome 与 receipt contract。真实 base `Reservation` 只提供 frozen cut 与 runtime
+  paths，不构造或传入 synthetic effective manifest，不调用 recovery coordinator。
+- 历史 `current_source_pointer` obligation 的 logical path 绑定 public pointer path，但 SHA/size
+  独立绑定 `N+1` snapshot receipt 中的 immutable content object；不会读取该 public path 作为历史
+  CAS，也不会把已推进到 `N+2+` 的 pointer/inbox 回滚。其余 activation/semantic/revision-head/
+  snapshot artifacts 与 dataset 均精确绑定 historical source。
+- durable 顺序固定为 create-only effective-key intent -> pinned canonical materializer commit/adoption
+  -> create-only dispatcher receipt -> append-only event。intent-only 与 materializer-commit crash 均
+  可 exact forward-adopt；receipt-only 只补 event。已有 receipt 必须逐字节等于实际 immutable chain
+  member；fresh 仅允许空链 genesis 或 declared predecessor 为 unique tip。receipt/event 保持
+  `next_action=outcome_or_revision_consumed`、effective/recovery-v6 均非 terminal。
+- focused `5/5` 通过；dispatcher/overlay/cross/derived `28/28` 与
+  recovery/materializer/live-source `120/120` 通过。Ruff format/check、Python compile、strict profile
+  与 6 个 direct upstream SHA pins、`git diff --check` 均通过。独立审查复现的 event replay P1
+  （用空 timestamp 重算 entry hash，导致成功后的下一 poll fail）已改为使用 persisted UTC time
+  exact 重建完整 event，并由第二次 poll current/单例 intent-receipt-event 回归关闭；另一处
+  historical interior adoption P1 已增加当前 chain pointer/inbox 的只读合法性验证，同时禁止历史
+  reconcile/回拨。两路最终独立复审均为 P0=0、P1=0。未运行训练、全科研管线或真实网络。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `5d51174c16bdff0dabc88af357bf54ba0e1281aa5b69e06d198b54d4a5941fab`、
+  `5d9d85174620cd29b3b216fdd3cec9a9b61d05176cb8a16697f5be3af112a995`、
+  `774a5ae566e813238028c754c7128a3cd932d646ba82bf4f64e05fa66ac38ad1`、
+  `9678bf442a983d771dbc55a794baf5d34fd0996307000fee93ae1d9bb0d9b5f8`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论，也不声明
+  consumption、effective/source/recovery-v6 terminal、full closure、drain/lifecycle/activation、
+  trusted/E2 或 formal warning。下一窄增量是独立 effective consumption bridge：以本 receipt 为
+  previous-step authority，绑定 live ledger exact expected-pre-head/EventSpecs 后执行或采用 CAS，
+  只有其 terminal receipt/event 才能解锁后继 D/R。
+
 ## 2026-08-29 source-derived effective-workset overlay v1（本增量）
 
 - 新增独立 `ootang_epoch_source_derived_workset_overlay.py` 与严格 hash-pinned profile。

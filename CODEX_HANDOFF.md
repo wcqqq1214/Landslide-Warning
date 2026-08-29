@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `1dd026d feat: automate cross-freeze source ingest`
+**Committed baseline before this increment:** `16d646a feat: publish source-derived workset overlay`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -14,11 +14,63 @@ poll 的 outstanding consumption 桥、revision predecessor authority、settled-
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
-source-ingest derived outcome-key reservation v1 与 cross-freeze source-ingest writer/adoption
-v1 已提交；当前工作树新增独立 source-derived effective-workset overlay v1。它仍不是完整
+source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
+v1 与 source-derived effective-workset overlay v1 已提交；当前工作树新增独立 historical-N+1
+source-derived outcome materialization dispatcher v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived historical outcome dispatch v1
+
+The new `ootang_epoch_source_derived_outcome_dispatch.py` consumes only the deeply replayed,
+published effective overlay object/event and advances at most one source-only-ready effective `D`
+or `R` outcome per poll. `I` is never dispatchable. The matching cross-freeze receipt/event plus
+overlay publication is a narrow source-expansion gate and is explicitly not a source-parent or
+recovery-v6 terminal proof.
+
+The existing recovery materialization planner is not used because it reloads the public current
+source and would reselect `N+2+`. The dispatcher instead reconstructs the immutable historical
+`N+1` successor source from the derived authority, locates the exact reserved record, and directly
+builds the selection, input manifest, outcome object, and old-schema materializer action contract.
+It passes the real base `Reservation` only as frozen-cut/runtime context to the pinned low-level
+materializer adapter; no synthetic effective manifest is created and the recovery coordinator is
+never invoked.
+
+Historical pointer semantics are verified separately. The item role retains the public logical
+pointer path, but its SHA/size must equal the immutable content object referenced by the `N+1`
+snapshot receipt. The public `N+2+` pointer is neither used as a historical CAS nor rolled back.
+Activation, semantic manifest, target revision head, snapshot receipt, canonical dataset, frozen
+epoch, and live issue seal are also bound exactly to the historical authority.
+
+The durable order under the surviving manager/cycle/replay/shadow locks is
+`create-only intent -> canonical materializer commit/adoption -> create-only dispatcher receipt ->
+append-only event`. Existing receipts must equal the actual immutable chain member byte for byte;
+fresh publication permits only an empty-chain genesis or the declared predecessor as the unique
+tip. Interior adoption additionally requires a legal current materializer pointer/inbox and never
+reconciles them back to the historical member. Intent-only, post-materializer, and receipt-only
+crashes forward-adopt without duplicating the outcome. The dispatcher receipt remains non-terminal
+and records `next_action=outcome_or_revision_consumed`.
+
+Focused tests are `5/5`; dispatcher/overlay/cross-freeze/derived regressions are `28/28`, and
+recovery/materializer/live-source regressions are `120/120`. Ruff formatting/lint, Python
+compilation, strict profile loading with six direct SHA pins, and diff checks pass. Independent
+review reproduced an event-replay P1: replay recomputed the entry hash with an empty timestamp and
+therefore failed on the first post-success poll. Replay now uses the persisted UTC timestamp and
+requires exact event/hash-chain/filename equality; the normal test performs a second poll and
+proves one unchanged intent/receipt/event. A second P1 around historical interior adoption was
+closed by requiring a legal current chain pointer/inbox before adoption while still forbidding any
+historical reconcile or rollback. Both final independent reviews report P0=0/P1=0. No training,
+full scientific pipeline, or real-network run occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are recorded in `docs/progress.md`. The control-plane change does not modify
+ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, or scientific conclusions. It
+does not claim consumption, effective/source/recovery-v6 terminal state, all-item/full closure,
+drain/lifecycle/activation, trusted/E2 evidence, or formal warning. The next narrow authority is an
+effective consumption bridge keyed by this dispatcher receipt and the live ledger's exact
+expected-pre-head/EventSpecs; only its terminal receipt/event may unlock dependent D/R rows.
+Detailed semantics are in `docs/ootang_source_derived_outcome_dispatch_engineering.md`.
 
 ## 2026-08-29 source-derived effective-workset overlay v1
 
