@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `16d646a feat: publish source-derived workset overlay`
+**Committed baseline before this increment:** `aaf78d9 feat: dispatch source-derived outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -15,11 +15,55 @@ crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CA
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
-v1 与 source-derived effective-workset overlay v1 已提交；当前工作树新增独立 historical-N+1
-source-derived outcome materialization dispatcher v1。它仍不是完整
+v1、source-derived effective-workset overlay v1 与 historical-N+1 materialization dispatcher v1
+已提交；当前工作树新增独立 source-derived effective outcome consumption v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived effective outcome consumption v1
+
+The new `ootang_epoch_source_derived_outcome_consumption.py` is an independent sibling authority
+under `workset_recovery_v1/source_derived_outcome_consumption_v1`. It deep-replays the published
+effective overlay and the historical materialization dispatcher's exact intent, receipt, and event.
+Only evented current-overlay `D/R` rows are eligible; `I`, status, intent-only, and a materialization
+receipt without its append-only event do not authorize a ledger mutation.
+
+The dispatcher receipt is converted to a deterministic in-memory recovery previous-step view and
+is never persisted as a fake recovery-v6 receipt. The real base `Reservation` supplies only the
+immutable frozen-cut and runtime-path execution context. The bridge reuses the pinned recovery
+planner/action for the canonical 43-event outstanding settlement, 16-event settled revision,
+8-event backfill revision, or 1-event first-backfill branch. Its create-only intent stores the exact
+expected-pre-head, complete recovery contract, and complete ordered canonical EventSpecs. The
+existing live-ledger expected-pre-head CAS remains the only writer.
+
+The durable order is `create-only intent -> canonical CAS commit/adoption -> create-only terminal
+receipt -> append-only terminal event`, with at most one key healed or advanced per poll. An exact
+complete post-CAS slice is adopted without a duplicate append; receipt-only recovery adds only the
+missing control event. A foreign suffix that wins before the recorded transaction, or a partial,
+displaced, or different slice, cannot rebase the create-only intent and fails closed. Only the exact
+current effective key is terminal. The recovery-v6 key, source parent, other effective keys, full
+closure, drain, lifecycle, and activation remain non-terminal/unproved.
+
+Focused tests are `4/4` with a real SQLite live ledger. They cover first-backfill fresh CAS and
+idempotence, post-CAS exact adoption, receipt-only event healing, and denial when the materialization
+receipt has no event. Consumption/dispatcher/overlay regressions are `15/15`; recovery regressions
+are `57/57`. Ruff, Python compilation, strict profile loading with both dispatcher and recovery
+transitive pins, and diff checks pass. The test-focused independent review reports P0=0/P1=0; final
+durable-integrity and authority-scope reviews also report P0=0/P1=0. The only non-blocking note is
+that this bridge's end-to-end fixture dynamically covers first-backfill; pinned recovery regressions
+retain the 43/16/8-event branches. No training, full scientific pipeline, or real-network run
+occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `fb03dfa502d7402b824cec16b36698d0de6349e419feac8a34981ff9e05b0789`,
+`efd33c6c3e9cb386d64cd1e44720b4019c3468a774d695ddc3f77cca3efa863b`,
+`1304ec0c4f57f315b50a7a691ab3109a4cd4447c68d47c77e4cf71b273064777`,
+`a0c01b931a204f37aa4e90825fff2eefa01f34115020be2ef2a1a509a2016ba6`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+The next narrow increment is a versioned dependent-readiness dispatcher that consumes only this
+namespace's exact terminal event for D/R dependencies while retaining the cross-freeze gate for
+the source parent. It must avoid a reverse hash-pin from materialization dispatcher v1.
 
 ## 2026-08-29 source-derived historical outcome dispatch v1
 

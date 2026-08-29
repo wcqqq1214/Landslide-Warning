@@ -5,6 +5,43 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived effective outcome consumption v1（本增量）
+
+- 新增独立 `ootang_epoch_source_derived_outcome_consumption.py` 与严格 hash-pinned profile。
+  coordinator 只接受已深验的 effective overlay 与 matching historical materialization
+  dispatcher intent/receipt/event；只把 evented `D/R` 纳入候选，`I`、status、intent-only 与
+  receipt-without-event 均不授权 live-ledger mutation。dispatcher receipt 仅转换为内存
+  recovery previous-step adapter，不写入或伪造 recovery-v6 receipt。
+- 使用真实 base `Reservation` 作为 frozen-cut/runtime context，直接复用 pinned recovery
+  consumption planner/action 的四个 canonical 分支：outstanding 43 events、settled revision
+  16 events、backfill revision 8 events、first backfill 1 event。create-only intent 完整绑定
+  exact expected-pre-head、recovery contract 与 ordered canonical EventSpecs；唯一 ledger writer
+  是既有 `append_transaction_at_pre_head_v1` CAS，不调用 current-source selector、public
+  materializer 或网络。
+- durable 顺序固定为 create-only intent -> canonical CAS commit/adoption -> create-only terminal
+  receipt -> append-only terminal event，每 poll 最多推进一个 key。post-CAS crash 只采用 exact
+  positioned complete slice，receipt-only crash 只补 control event；intent 后先出现 foreign suffix、
+  partial/displaced/different slice 均禁止 rebase 并 fail closed。terminal scope 仅为当前 overlay 的
+  exact effective key；recovery-v6 key、source parent、其他 effective items 与 full closure 仍为 false。
+- focused `4/4` 真实 SQLite ledger 测试通过，覆盖 first-backfill fresh CAS/幂等、post-CAS
+  不重复采用、receipt-only 补 event、dispatcher receipt 无 event 不授权；consumption/dispatcher/
+  overlay 相邻回归 `15/15`、recovery 回归 `57/57` 通过。Ruff format/check、Python compile、
+  strict profile（含 dispatcher 与 recovery 的传递 pins）及 `git diff --check` 通过。未运行训练、
+  全科研管线或真实网络。durable integrity、authority scope 与 test realism 三路独立只读复审
+  均为 P0=0/P1=0；非阻断备注仅为本桥端到端 fixture 动态覆盖 1-event first-backfill，
+  43/16/8-event 分支继续由 pinned recovery regressions 直接覆盖。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `fb03dfa502d7402b824cec16b36698d0de6349e419feac8a34981ff9e05b0789`、
+  `efd33c6c3e9cb386d64cd1e44720b4019c3468a774d695ddc3f77cca3efa863b`、
+  `1304ec0c4f57f315b50a7a691ab3109a4cd4447c68d47c77e4cf71b273064777`、
+  `a0c01b931a204f37aa4e90825fff2eefa01f34115020be2ef2a1a509a2016ba6`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论，也不声明
+  all-effective terminal、transition closure、drain/lifecycle/activation、trusted/E2 或 formal
+  warning。下一步是 versioned dependent-readiness dispatcher：只用本 namespace 的 exact terminal
+  event 解锁 D/R dependency，并继续用 cross-freeze gate 处理 source parent，避免与 v1
+  materialization dispatcher 形成反向 hash-pin 环。
+
 ## 2026-08-29 source-derived historical outcome dispatch v1（本增量）
 
 - 新增独立 `ootang_epoch_source_derived_outcome_dispatch.py` 与严格 hash-pinned profile。
