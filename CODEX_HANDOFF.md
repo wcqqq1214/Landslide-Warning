@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `ac8e278 feat: consume first backfill outcomes`
+**Committed baseline before this increment:** `762bd3e feat: reserve cross-freeze step dependencies`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -12,10 +12,55 @@ writer/crash-forward adoption、receipt-tip repair/machine-selected outcome mate
 poll 的 outstanding consumption 桥、revision predecessor authority、settled-date canonical
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
-adoption 已提交；当前工作树新增独立 cross-freeze manifest-sibling step dependency sidecar v1。
-它仍不是完整 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle
-authority；不声明 remote exactly-once、drained、active switch、rotation、trusted anchor、E2
-evidence、activation 或 formal warning。
+adoption 以及 cross-freeze manifest-sibling step dependency sidecar v1 已提交；当前工作树新增
+独立 settlement overlay dispatcher v1。它仍不是完整 recovery、terminal/transitive closure、
+泛化 admission fence 或 DRAINING lifecycle authority；不声明 remote exactly-once、drained、
+active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 cross-freeze settlement overlay dispatcher v1
+
+The new `ootang_epoch_step_dependency_overlay.py` consumes only fully published sidecar events and
+writes its own create-only intent/receipt plus append-only event under
+`workset_recovery_v1/step_dependency_overlay_v1`. Its profile directly pins the unchanged recovery
+v6 and sidecar v1 implementation/profile bytes. The dispatcher takes the same four locks, deep
+replays both authorities, and requires completed overlay events to be an exact prefix of sidecar
+events; it never consumes an orphan sidecar object, skips a slot, or reruns candidate selection.
+
+For one eligible slot, the dispatcher copies the frozen live item in memory and adds exactly the
+reserved outcome sibling natural key. It asks recovery v6 to reconstruct and re-verify the exact
+already-existing 43-event settlement transaction, cross-checks target/issue/seal/revision/outcome
+hash/source/terminal event against the sidecar, and persists an overlay wrapper containing direct
+source/dependency receipt/event references plus the base recovery contract digest. Neither the
+manifest nor the live ledger is written.
+
+The durable order is `intent -> receipt -> event`. An intent-only crash replays the exact persisted
+contract and repeats the read-only verifier. A receipt-only crash validates the contract and
+receipt but only forward-adopts the missing overlay event; it does not rerun the settlement action.
+Receipt-without-intent, event-without-receipt, non-prefix/branched state, or more than one pending
+slot fails closed. Receipts use `terminal_for_overlay_slot=true` and deliberately omit
+`terminal_for_key`; recovery v6 source-key terminality remains false.
+
+Focused tests are `3/3` (0.048 s), overlay + sidecar + recovery + manifest regression is `70/70`
+(6.105 s), and the adjacent overlay/sidecar/recovery/materializer/live-ledger/CAS/epoch-gates/
+prequential/main suite is `227/227` (13.853 s). Ruff, format, compile, strict JSON/profile load and
+diff checks pass. Two independent read-only reviews finish at P0=0/P1=0; the protocol review first
+found and then verified the fix for recovery v6's record-type-specific optional source identity.
+Current overlay implementation/profile/test, engineering document and protected
+`main.py` SHA-256 values are
+`53932a5ebd095d98f08fe68aaa3891ba9569b51950da34bfbf662882d97fff53`,
+`4da333ef6233059aedb6ff1cd52bb6de31bae18aa14f1e571e97ee3018f52496`,
+`3a98046df5bf482dfd11506fbab2b527b8c587f71595029c71eec8f716add45c`,
+`be9df3a74d8b8308919a257f937c90d7b839aeb37487c53f8beeffcb21bcd59a` and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+This increment proves only ordered machine adoption of one cross-freeze settlement dependency.
+Full-workset recovery, all-successor support, original recovery-key terminality, terminal/transitive
+closure, derived new-key reservation, drained/lifecycle/activation, trusted/E2 and formal-warning
+claims remain false. ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters and
+scientific conclusions are unchanged. The next narrow increment is a separately versioned
+aggregate assessor/recovery-v7 authority that consumes overlay receipts when determining source-key
+terminality; source-ingest reservation for genuinely new outcome keys follows separately. Detailed
+semantics are in `docs/ootang_step_dependency_overlay_engineering.md`.
 
 ## 2026-08-29 cross-freeze manifest-sibling step dependency sidecar v1
 

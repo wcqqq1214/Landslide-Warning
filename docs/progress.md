@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 cross-freeze settlement overlay dispatcher v1（本增量）
+
+- 新增独立 `ootang_epoch_step_dependency_overlay.py` 与 profile
+  `1.0.0-sidecar-authorized-settlement`。profile 直接固定未改动的 recovery v6 与 step
+  dependency sidecar v1 implementation/profile SHA-256；dispatcher 在同一 manager/cycle/
+  replay/shadow 四锁下深验两条既有 authority，只写
+  `workset_recovery_v1/step_dependency_overlay_v1`。
+- overlay 只消费具有完整 sidecar event 的 reservation，且已完成 overlay events 必须精确构成
+  sidecar event chain 的前缀。orphan sidecar object 继续等待，不能跳槽、重排或重新选 candidate；
+  每次 poll 最多处理一个 ready slot。
+- 机器仅在内存复制 source manifest item，并添加 reservation 固定的唯一 outcome sibling
+  natural key。随后复用 recovery v6 的只读 settlement adoption verifier，重放既有 43-event
+  transaction；target/issue/seal/source revision/exact outcome/source id/terminal event 与 sidecar
+  精确交叉校验。frozen manifest、recovery v6、sidecar 与 live ledger 均不写入。
+- 独立 durable 顺序为 `intent -> receipt -> event`。intent 后崩溃会精确复用原 intent 并重验；
+  receipt 后崩溃只做 receipt/event forward-adoption，不重复 settlement action。orphan、branch、
+  non-prefix 或多个 pending 状态 fail closed。receipt 仅声明
+  `terminal_for_overlay_slot=true`，不含 `terminal_for_key`，因此原 recovery v6 source key 仍非终态。
+- 新增快测 `3/3`（0.048 s）；overlay + sidecar + recovery + manifest 定向回归 `70/70`
+  （6.105 s），相邻 overlay/sidecar/recovery/materializer/live-ledger/CAS/epoch-gates/
+  prequential/main 回归 `227/227`（13.853 s）。Ruff、format、compile、strict JSON/profile load、
+  diff check 通过。两路独立只读复审最终均为 P0=0、P1=0；其中协议复审先发现 recovery v6
+  两类 record type 的 optional source identity 二选一兼容问题，修复后已用真实形态复核通过。
+  未运行训练或真实网络，未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。
+- 当前 overlay implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `53932a5ebd095d98f08fe68aaa3891ba9569b51950da34bfbf662882d97fff53`、
+  `4da333ef6233059aedb6ff1cd52bb6de31bae18aa14f1e571e97ee3018f52496`、
+  `3a98046df5bf482dfd11506fbab2b527b8c587f71595029c71eec8f716add45c`、
+  `be9df3a74d8b8308919a257f937c90d7b839aeb37487c53f8beeffcb21bcd59a`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量只证明一个有序 cross-freeze settlement dependency 的机器采用。full-workset、
+  all-successor、原 recovery key terminality、terminal/transitive closure、derived new-key、
+  drained/lifecycle/activation 与 trusted/E2/formal claims 继续为 false。下一窄增量是独立
+  aggregate assessor/recovery-v7，消费 overlay receipt 后才可判断 source-key terminality；
+  source-ingest 新 key reservation 再单独实现。详细合同见
+  `docs/ootang_step_dependency_overlay_engineering.md`。
+
 ## 2026-08-29 cross-freeze step dependency sidecar v1（本增量）
 
 - 新增独立 `ootang_epoch_step_dependency_reservation.py` 与 profile
