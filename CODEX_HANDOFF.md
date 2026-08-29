@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `5a2f44b feat: prove frozen manifest coverage`
+**Committed baseline before this increment:** `b6b5673 feat: reserve source-derived outcome keys`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -13,11 +13,63 @@ poll 的 outstanding consumption 桥、revision predecessor authority、settled-
 16-event revision consumption、backfill revision canonical 8-event consumption 与各自的
 crash-forward adoption、first-backfill canonical 单事件自动消费/fresh CAS/post-CAS receipt
 adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 settlement overlay
-dispatcher v1、source-key terminal aggregate v1 与 frozen-manifest terminal coverage v1 已提交；
-当前工作树新增独立 source-ingest derived outcome-key reservation v1。它仍不是完整
+dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
+source-ingest derived outcome-key reservation v1 已提交；当前工作树新增独立 cross-freeze
+source-ingest writer/adoption v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 cross-freeze source-ingest writer/adoption v1
+
+The new `ootang_epoch_source_ingest_cross_freeze.py` is the machine-only writer/adoption authority
+for the frozen manifest's unique `source_snapshot_ingested` parent. It runs under the surviving
+manager/cycle/replay/shadow locks and never opens, replaces, deletes, or reconstructs the cut legacy
+deploy/runner sentinel. It does not call public `ingest_source()`. Instead, it captures the exact
+manifest-bound feed as a content-addressed create-only object, publishes deterministic prepare and
+intent records, deep-copies the reviewed source profile, changes only `runtime.incoming_feed` to the
+prepared object, and invokes the pinned private source kernel. The original snapshot receipt remains
+the source commit point.
+
+Receipt-before-pointer recovery is intent-gated and mutation-safe. The adapter first reproduces the
+exact prepare and intent, replays the complete snapshot registry, and, for a stale or missing public
+pointer, requires the registry head to be the frozen predecessor's exact N+1 child. It reconstructs
+that child through pointer, semantic manifest, dataset, revision heads, immutable feed, and actual
+revision diff; the feed raw bytes, SHA, and size must equal the durable prepared object. Only then may
+the existing source pointer-recovery primitive run. Without adapter intent, or with a different but
+otherwise valid N+1 child, the poll fails before changing pointer bytes.
+
+A fresh N->N+1 edge executes the writer once. An already committed edge is adopted; if the public tip
+is N+2 or newer, the immutable historical N+1 is used without rollback or writer replay. After the
+source boundary, the adapter releases all four locks, automatically drives the existing derived-key
+reservation coordinator, re-acquires the locks, and replays the unchanged slot. A completion receipt
+and append-only event are published only when the exact derived reservation event exists. A
+receipt-only crash appends only the missing event and does not re-run source or derived actions.
+
+The narrow positive claims are `source_snapshot_ingested=true` and
+`derived_batch_classified=true`; `terminal_for_recovery_v6_key=false` remains explicit. This
+increment creates no recovery-v6 receipt/event, outcome materialization/consumption, R/I overlay,
+full-workset or closure proof, drain/lifecycle/activation authority, trusted/E2 evidence, or formal
+warning. ConvLSTM, v4, frozen splits, metrics, thresholds, model parameters, and scientific
+conclusions remain unchanged.
+
+Focused tests are `9/9` (5.508 s), the cross-freeze/derived/inventory/manifest/recovery core is
+`87/87` (13.910 s), and live-source is `32/32` (2.330 s). Ruff format/check, Python compilation,
+strict profile loading, and all 11 direct upstream pins pass. Independent review reproduced one P1
+in the initial intent-only recovery gate; the exact-child/feed pre-mutation verifier and negative
+regression close it, and both final read-only reviews report P0=0/P1=0. Current implementation,
+profile, test, engineering-document, and protected `main.py` SHA-256 values are
+`14b975d4198716d0699ae80925ed907f431454243e2d47899a3e6fa9896e25f4`,
+`d5ebf200bacae7debfc0a20d3b431f108e75e54617e4d421d12bf998e18a420e`,
+`18604d6aa9bdfa6c192c9ba885b747ff51901e65fcd59269b82fdd7eb96a5aa5`,
+`12ebc3c33ba1556febf033a4cf9c497c8c26aa7913cfaac08b6290a35c65bcc2`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+
+The next narrow authority is a source-derived effective-workset overlay. It should consume the
+published D/R/I batch, add D, explicitly replace R, explicitly supersede I, and rebuild the effective
+dependency graph without rewriting the frozen manifest or recovery-v6 bytes. Materialization and
+consumption of those effective items follow only after that overlay is durable. Detailed semantics
+are in `docs/ootang_source_ingest_cross_freeze_engineering.md`.
 
 ## 2026-08-29 source-ingest derived outcome-key reservation v1
 

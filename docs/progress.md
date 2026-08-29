@@ -5,6 +5,45 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 cross-freeze source-ingest writer/adoption v1（本增量）
+
+- 新增独立 `ootang_epoch_source_ingest_cross_freeze.py` 与 profile
+  `1.0.0-machine-writer-adoption`。adapter 在 admission cut 后只使用仍存续的
+  manager/cycle/replay/shadow 四锁；不会打开、替换、删除或重建 cut legacy deploy/runner
+  sentinel，也不会调用 public `ingest_source()`。它对 reviewed source profile 做内存深拷贝，唯一
+  runtime 变化是把 `incoming_feed` 指向 manifest-bound、content-addressed、create-only prepared
+  feed，再调用 pinned private source kernel；原 source snapshot receipt 继续作为 commit point。
+- durable source 前置顺序为 immutable feed copy -> deterministic prepare -> deterministic intent。
+  mutable inbox 在 intent 后变化不会改变 source edge。只有 exact slot 的 prepare/intent 已深验后才
+  允许 receipt-before-pointer recovery；且恢复前先重放完整 registry，要求 head 是 frozen
+  predecessor 的 exact N+1 child，并重建 semantic lineage/feed/revision diff，feed raw
+  SHA/size/bytes 必须与 prepared intent 完全相同。无 intent 或 wrong-feed N+1 均在 pointer mutation
+  前 fail closed。
+- fresh N->N+1 执行一次 writer；current 已为 N+1 或 N+2+ 时只采用 immutable historical N+1，
+  不回退 pointer、不重写 source。source commit/adoption 后先释放四锁，机器驱动既有
+  source-ingest derived-reservation coordinator，再重新取锁并重放 prepare/intent；只有 matching
+  published derived event 才能发布本 namespace 的 create-only completion receipt 与 append-only
+  event。receipt-only crash 只补 event，不重复 source writer 或 derived ensure。
+- completion 只声明 `source_snapshot_ingested=true` 与 `derived_batch_classified=true`，并显式保持
+  `terminal_for_recovery_v6_key=false`。recovery-v6 receipt/event、D materialization/consumption、R/I
+  overlay、all-lane/full-workset/closure/drain/lifecycle/activation/trusted/E2/formal claims 均未创建。
+- focused tests `9/9`（5.508 s）；cross-freeze/derived/inventory/manifest/recovery 核心回归
+  `87/87`（13.910 s）；live-source 回归 `32/32`（2.330 s）。Ruff format/check、Python compile、
+  strict profile 与 11 个 direct upstream pins load 通过。独立审查复现的 P1（合法 intent 下错误
+  N+1 receipt 可能先推进 pointer）已用 pre-mutation exact-child/feed 深验与回归关闭；最终两路
+  只读复审均为 P0=0、P1=0。未运行训练或真实网络，未修改 ConvLSTM、v4、冻结
+  splits/metrics/thresholds、模型参数或实验结论。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `14b975d4198716d0699ae80925ed907f431454243e2d47899a3e6fa9896e25f4`、
+  `d5ebf200bacae7debfc0a20d3b431f108e75e54617e4d421d12bf998e18a420e`、
+  `18604d6aa9bdfa6c192c9ba885b747ff51901e65fcd59269b82fdd7eb96a5aa5`、
+  `12ebc3c33ba1556febf033a4cf9c497c8c26aa7913cfaac08b6290a35c65bcc2`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 下一窄增量是 source-derived effective-workset overlay：基于 published D/R/I batch 增加 D、显式
+  替换 R、显式 supersede I，并重建 effective DAG；不得重写 frozen manifest/recovery-v6 bytes，
+  也不把分类误报为 materialization 或 terminal closure。详细合同见
+  `docs/ootang_source_ingest_cross_freeze_engineering.md`。
+
 ## 2026-08-29 source-ingest 派生 outcome key reservation v1（本增量）
 
 - 新增独立 `ootang_epoch_source_ingest_derived_reservation.py` 与 profile
