@@ -5,6 +5,42 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived effective outcome terminal coverage v1（本增量）
+
+- 新增独立 leaf `ootang_epoch_source_derived_effective_outcome_terminal_coverage.py` 与严格
+  hash-pinned profile，namespace 为
+  `workset_recovery_v1/source_derived_effective_outcome_terminal_coverage_v1/`。authority 对上游
+  只读，深回放 current effective overlay、source-only consumption、dependent dispatch/consumption
+  与 recovery transition contract；自身仅写 content-addressed proof、singleton event 与非权威
+  status cache。
+- 分母 `Q` 固定为当前 overlay 的完整 normalized `D/R` 集，禁止按 ready candidates 缩小。
+  `Qsrc` 只含 dependency list 恰为 source key 的行；其他行均在 `Qdep`。只有包含 source edge 且
+  其余依赖全部属于当前 `D/R` 的行进入 supported-dependent 诊断类；retained-base、no-source 或
+  其他 unsupported 行仍在分母中并保持 missing。覆盖只接受 deeply replayed terminal event 的
+  exact `key_id + natural_key + namespace_digest`；intent、receipt-only、status、materialization、
+  live-ledger bytes、source gate、旧 rebound identity 与 `I` 均不计数。
+- 仅当非空 `Q` 与 source/dependent terminal evidence 构成 exact disjoint bijection，且三条上游
+  durable frontier 均完整时，proof/event 才声明
+  `all_current_effective_d_or_r_terminal=true`。proof-only crash 的下一 poll 只补 matching event；
+  orphan/branch/changed overlay 或已发布覆盖失效均 fail closed。whole-effective、source parent、
+  recovery-v6、transition closure、drain/lifecycle/activation、trusted/E2 与 formal-warning claims
+  继续为 false。
+- focused `3/3` 通过；六模块相邻链（本 authority、dependent consumption/dispatch、source-only
+  consumption/dispatch、overlay）`27/27` 通过，用时 56.632 秒。审查发现并关闭了 reused drain
+  publication kernel 的直接 pin 缺口，以及 read-only/依赖分类两项诊断口径问题；最终 integrity
+  与 scope 两路只读复审均为 P0=0/P1=0/P2=0。Ruff E7/E9/F、Python compile、strict profile
+  load 与 `git diff --check` 通过；未运行训练、全科研管线或真实网络。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `2cf201b5f2b9e439b37e7b5880b39776f442ed189093b6d866c3276f7f6e4bf6`、
+  `32eca2b5de227f77d42de79fb0be62b7a0a824712ee9bf19489675b8716ede5c`、
+  `ec019a7db449273d8b6147b6748172b3574f7efa480383c066a5e96ae8f25903`、
+  `1e45ccec7ba6750e3d7fe61aa4416e598c52d2fd9e786162d9daafc9f7891520`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄增量
+  应构建 versioned current-effective-workset terminal assessor：在新 `D/R` coverage 之外分别核对
+  current source parent 与 retained-base families，且不得复用已被 `R/I` 替换或删除的旧 identity，
+  也不得把 family coverage 扩大成 recovery/transitive closure 或 lifecycle authority。
+
 ## 2026-08-29 source-derived dependent outcome consumption v1（本增量）
 
 - 新增叶子 sibling `ootang_epoch_source_derived_dependent_outcome_consumption.py` 与严格

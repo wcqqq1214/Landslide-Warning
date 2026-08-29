@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `062bc18 feat: dispatch dependent source outcomes`
+**Committed baseline before this increment:** `f53ae17 feat: consume dependent source outcomes`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -16,11 +16,59 @@ adoption、cross-freeze manifest-sibling step dependency sidecar v1、独立 set
 dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal coverage v1 与
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
 v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1、
-source-derived effective outcome consumption v1 与 dependent outcome dispatch v1 已提交；当前
-工作树新增独立 source-derived dependent outcome consumption v1。它仍不是完整
+source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
+outcome consumption v1 已提交；当前工作树新增独立 source-derived effective outcome terminal
+coverage v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived effective outcome terminal coverage v1
+
+The new `ootang_epoch_source_derived_effective_outcome_terminal_coverage.py` is an independent
+leaf authority under
+`workset_recovery_v1/source_derived_effective_outcome_terminal_coverage_v1`. It is read-only toward
+the overlay, source/dependent consumption namespaces, recovery contract, materializer, and live
+ledger. Its only durable writes are a content-addressed coverage proof, a singleton publication
+event, and a replaceable status cache in its own namespace.
+
+The required denominator is every normalized current-overlay `D/R` identity and is never reduced
+to ready candidates. Exact source-only rows require deeply replayed source-consumption terminal
+events. All other `D/R` rows remain required; only rows with the source edge and otherwise-current
+`D/R` dependencies are supported by dependent-consumption terminal evidence. Retained-base,
+no-source, or other unsupported dependencies remain missing. Intent, receipt-only, status,
+materialization, live-ledger bytes, the source gate, old rebound identities, and `I` never count as
+terminal evidence.
+
+Publication requires a non-empty exact disjoint bijection between the current identities and the
+two provenance-specific terminal-event sets, plus complete source-consumption, dependent-dispatch,
+and dependent-consumption durable frontiers. Legitimate intent/receipt-only crash frontiers return
+waiting without partial authority. A proof-only crash forward-adopts only the matching singleton
+event. Changed overlay/evidence, orphan/branch bytes, wrong provenance, extra evidence, or a lost
+published coverage relation fail closed. Only `all_current_effective_d_or_r_terminal` becomes true;
+whole-effective/source-parent/recovery-v6/transition-closure/drain/lifecycle/activation/trusted/E2/
+formal-warning claims remain false. Direct pins include every invoked overlay, dispatch,
+consumption, recovery, and drain publication-kernel profile/implementation pair, with no reverse
+hash edge.
+
+Focused tests are `3/3`; the six-module adjacent coverage/consumption/dispatch/overlay chain is
+`27/27` in 56.632 seconds. Review found and closed one direct drain-pin gap and two diagnostic
+scope mismatches. Final integrity and scope reviews report P0=0/P1=0/P2=0. Ruff E7/E9/F, Python
+compilation, strict profile loading, and diff checks pass. No training, full scientific pipeline,
+or real-network run occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `2cf201b5f2b9e439b37e7b5880b39776f442ed189093b6d866c3276f7f6e4bf6`,
+`32eca2b5de227f77d42de79fb0be62b7a0a824712ee9bf19489675b8716ede5c`,
+`ec019a7db449273d8b6147b6748172b3574f7efa480383c066a5e96ae8f25903`,
+`1e45ccec7ba6750e3d7fe61aa4416e598c52d2fd9e786162d9daafc9f7891520`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+Detailed semantics are in
+`docs/ootang_source_derived_effective_outcome_terminal_coverage_engineering.md`. The next narrow
+increment should be a versioned current-effective-workset terminal assessor that separately
+evaluates the current source parent and retained-base families around this exact `D/R` proof. It
+must never reuse superseded `R/I` identities or promote family coverage to recovery/transitive
+closure or lifecycle authority.
 
 ## 2026-08-29 source-derived dependent outcome consumption v1
 
