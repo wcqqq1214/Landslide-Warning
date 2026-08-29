@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-29
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `f53ae17 feat: consume dependent source outcomes`
+**Committed baseline before this increment:** `e2584f6 feat: prove effective outcome coverage`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -17,11 +17,61 @@ dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal cove
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
 v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1、
 source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
-outcome consumption v1 已提交；当前工作树新增独立 source-derived effective outcome terminal
-coverage v1。它仍不是完整
+outcome consumption v1、source-derived effective outcome terminal coverage v1 已提交；当前
+工作树新增独立 source-derived source-parent terminal aggregate v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-29 source-derived source-parent terminal aggregate v1
+
+The next layer could not honestly publish whole-effective-workset terminal state. The pinned
+source-ingest recovery plan remains
+`source_snapshot_ingested -> derived_outcome_items_required -> []`, with
+`closure_resolved=false` and no recovery-v6 terminal action because source ingestion creates a
+content-dependent child set. The cross-freeze receipt/event also deliberately keeps
+`terminal_for_recovery_v6_key=false`.
+
+The new `ootang_epoch_source_derived_source_parent_terminal_aggregate.py` therefore closes only
+this exact source parent's derived obligations in the independent namespace
+`workset_recovery_v1/source_derived_source_parent_terminal_aggregate_v1`. Under the surviving lock
+order it requires the frozen, cross-freeze, and current-overlay parent to be one unchanged exact
+`key_id + natural_key + namespace_digest` singleton outside `D/R/I`. It then deep-binds the matching
+cross completion, complete derived reservation/event, effective overlay event, and the current
+`D/R` terminal-coverage content-addressed proof plus singleton event. Coverage counts and ordered-
+row digests come directly from that deeply replayed proof; invalidation remains an overlay
+supersession audit rather than terminal evidence.
+
+The deterministic aggregate proof preserves the original unresolved recovery plan and uses the
+pinned recovery step-id function for step 0 `source_snapshot_ingested` and step 1
+`derived_outcome_items_required`. Only its matching singleton event publishes the scoped fact
+`current_source_ingest_parent_terminal=true`. The broader `source_parent_terminal`, recovery-v6
+terminal, whole-effective-workset, terminal/transitive closure, all-lanes, drain, lifecycle,
+activation, trusted/E2, and formal-warning claims remain false. An upstream coverage proof without
+its event produces waiting; an aggregate proof-only crash appends only the matching event. Status
+is replaceable cache with `cache_authority=false` and can be deleted/rebuilt without changing proof
+or event bytes.
+
+Focused tests are `3/3`; the seven-module aggregate/coverage/consumption/dispatch/overlay chain is
+`30/30` in 81.570 seconds. Review closed an initially synthetic D/R count, noncanonical step-id,
+overbroad status naming, incomplete broad-false set, and implicit cache boundary. Final integrity
+and scope reviews report P0=0/P1=0/P2=0. Ruff formatting and E7/E9/F checks, Python compilation,
+strict profile loading, and diff checks pass. No training, full scientific pipeline, or real-
+network run occurred.
+
+Current implementation, profile, focused-test, engineering-document, and protected `main.py`
+SHA-256 values are `43d541e0eb17144eddc127fdfb7b9c826c5038877d9ae4a9cad08cea5c92447d`,
+`6c9f89bb0f2089f19df71fa9a0bd47a54db8df4638e596ddf98f4c513c2f0b4e`,
+`0a4ebd9feb6784402d4d2c3dbe2fe6c1c93b662856fb1761fb730429887d939a`,
+`6dfc283f0ba5e60b3568a39b3de623ad77d9afbe5f8add6001cc7adce8ef367a`, and
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`.
+Detailed semantics are in
+`docs/ootang_source_derived_source_parent_terminal_aggregate_engineering.md`. The next narrow
+increment should be a retained-base exact-subset terminal authority. It must deeply replay
+per-item terminal evidence only for complete identities that survive the current overlay unchanged,
+must not reuse old `R` or removed `I` identities, and must not treat a whole frozen-manifest boolean
+as blanket current coverage. A later authority may then combine retained base, this source parent,
+and current `D/R`; generic recovery/transitive closure remains separate.
 
 ## 2026-08-29 source-derived effective outcome terminal coverage v1
 

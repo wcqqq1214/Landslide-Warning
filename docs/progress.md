@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-29 source-derived source-parent terminal aggregate v1（本增量）
+
+- 下一层不能直接声称 whole effective workset terminal：source-ingest parent 的 pinned recovery
+  plan 明确为 `source_snapshot_ingested -> derived_outcome_items_required -> []`，且因 content-
+  dependent obligations 未知而保持 `closure_resolved=false`、`terminal_actions=[]`；cross-freeze
+  receipt/event 也显式保持 `terminal_for_recovery_v6_key=false`。因此本增量先新增独立 leaf
+  `ootang_epoch_source_derived_source_parent_terminal_aggregate.py` 与严格 hash-pinned profile，
+  namespace 为
+  `workset_recovery_v1/source_derived_source_parent_terminal_aggregate_v1/`。
+- authority 在既有锁序下深验同一 current overlay 的完整证据链：frozen/cross/current effective
+  source parent 必须是唯一且完全相同的 `key_id + natural_key + namespace_digest`，不得落入
+  `D/R/I`；matching cross completion 必须证明 source snapshot 已 ingest、derived batch 已完整
+  classified；derived reservation/event 与 overlay event 必须绑定同一 source edge 和完整 D/R/I；
+  最后必须存在 matching current `D/R` terminal coverage proof + singleton event。D/R count 与
+  ordered-row digest 直接取该深验 proof，I 只作为 overlay supersession audit，不冒充 terminal。
+- content-addressed proof 记录原 unresolved recovery plan，并以 pinned `recovery._step_id` 绑定
+  step 0 `source_snapshot_ingested` 与 step 1 `derived_outcome_items_required`。只有 matching
+  singleton event 发布后，窄 claim `current_source_ingest_parent_terminal=true`；广义
+  `source_parent_terminal`、recovery-v6 terminal、whole effective、transitive/transition closure、
+  all-lanes、drain/lifecycle/activation、trusted/E2/formal 等均保持 false。upstream coverage
+  proof-only 时只 waiting；自身 proof-only crash 只补 matching event。status 明确
+  `cache_authority=false`，删除后可由 proof/event 自动重建。
+- focused `3/3` 通过；本 aggregate、effective D/R coverage、dependent/source-only
+  consumption/dispatch 与 overlay 的七模块相邻链 `30/30` 通过，用时 81.570 秒。审查关闭了
+  synthetic D/R count、canonical step-id、过宽 status 命名、broad false 集合与 status cache
+  标识问题；最终 integrity 与 scope 两路只读复审均为 P0=0/P1=0/P2=0。Ruff format/E7/E9/F、
+  Python compile、strict profile load 与 `git diff --check` 通过；未运行训练、全科研管线或真实网络。
+- 当前 implementation/profile/test、工程文档与受保护 `main.py` SHA-256 分别为
+  `43d541e0eb17144eddc127fdfb7b9c826c5038877d9ae4a9cad08cea5c92447d`、
+  `6c9f89bb0f2089f19df71fa9a0bd47a54db8df4638e596ddf98f4c513c2f0b4e`、
+  `0a4ebd9feb6784402d4d2c3dbe2fe6c1c93b662856fb1761fb730429887d939a`、
+  `6dfc283f0ba5e60b3568a39b3de623ad77d9afbe5f8add6001cc7adce8ef367a`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄增量
+  应实现 retained-base exact-subset terminal authority：逐项深验 current overlay 中完整 identity
+  未改变的 base rows，不把 whole frozen-manifest boolean 当 blanket，也绝不复用旧 `R` 或已删除
+  `I` identity；之后才可汇总 current effective workset coverage。
+
 ## 2026-08-29 source-derived effective outcome terminal coverage v1（本增量）
 
 - 新增独立 leaf `ootang_epoch_source_derived_effective_outcome_terminal_coverage.py` 与严格
