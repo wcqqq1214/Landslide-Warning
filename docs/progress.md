@@ -5,6 +5,44 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 source-derived current-effective workset terminal coverage v1（本增量）
+
+- 新增独立 assessor
+  `ootang_epoch_source_derived_current_effective_workset_terminal_coverage.py` 与严格
+  hash-pinned profile，namespace 为
+  `workset_recovery_v1/source_derived_current_effective_workset_terminal_coverage_v1/`。
+  coordinator 在既有机器锁序下只读深验同一 current overlay object/event、已发布 source-parent
+  terminal aggregate、retained-base terminal coverage 与 current `D/R` terminal coverage；自身仅写
+  content-addressed proof、singleton event 和 `cache_authority=false` 的可替换 status。
+- identity 固定为完整 `key_id + natural_key + namespace_digest`。发布前重新验证精确集合等式
+  `E = {P} ⊎ Qretained ⊎ Qdri`：三类内部唯一、两两不相交、并集严格等于 current effective
+  identity set。随后按 current overlay 拓扑顺序逐项绑定所属 leaf proof/event SHA-256 与可用的
+  per-item coverage-row SHA-256，再绑定 current keyset、identity-set 与 dependency-graph digest；
+  count-only、status、proof-only、旧 `R` 或 `I` 均不能替代精确集合关系。
+- 只有 matching singleton event 发布窄 claim
+  `current_effective_workset_terminal_coverage=true`。它只描述一个 current source-derived overlay，
+  不等于跨 generation 的 `all_effective_items_terminal`，也不证明 recovery-v6/transitive closure、
+  all-reserved/all-successor、bounded recovery、drain/lifecycle/activation、trusted/E2、network 或
+  formal warning。缺一家 leaf 时机器只 waiting；自身 proof-only crash 的下一 poll 只补 matching
+  event；已经发布后任一精确 leaf 丢失或漂移会 fail closed。
+- focused `3/3` 通过，用时 14.731 秒；current-effective/source-parent/retained-base/current-`D/R`
+  窄 family chain `15/15` 通过，用时 45.205 秒。覆盖完整三类精确并集与幂等 status 重建、缺
+  source-parent 时不发布、proof-only crash 自动续接。Ruff E7/E9/F、Python compile、strict
+  profile load 与 diff checks 通过；未运行训练、全科研管线、真实网络或任何人工冻结/批准/清理。
+- 当前 implementation/profile/test、工程文档、受保护 `main.py` 与 ConvLSTM model SHA-256
+  分别为
+  `80f84db4e88dc5fdcc8e768eda2ea11f93e89c89c12726522ed9efb015361ac3`、
+  `f82269a8d2c60d9c41bf0d48dab626444084aae2df481f58c19a12d056bfc1b7`、
+  `53b33573a0dceeaa775375a9edbf1dc1fac8c3e4f0f16c9d5147c0a7d28bab87`、
+  `05eefbedd4ba3940e247d335e9121b9f52e46749b7b7a66a1f8f0771339a238f`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` 与
+  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄
+  增量应建立 separately versioned bounded terminal-closure assessor：在一个 immutable cut 下证明
+  frozen reservation inventory、current effective identity union 与 source-derived successor inventory
+  完整后，才允许后续 drain/lifecycle assessor 消费；zero-`D/R` 精确空分支也应由机器显式处理，
+  不能用人工例外。
+
 ## 2026-08-30 source-derived retained-base terminal coverage v1（本增量）
 
 - 新增独立 leaf

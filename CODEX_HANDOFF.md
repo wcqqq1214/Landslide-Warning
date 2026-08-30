@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `2e825aa feat: aggregate source parent terminality`
+**Committed baseline before this increment:** `ddf8f33 feat: prove retained base coverage`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -18,11 +18,63 @@ source-ingest derived outcome-key reservation v1、cross-freeze source-ingest wr
 v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1、
 source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
 outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
-source-parent terminal aggregate v1 已提交；当前工作树新增独立 source-derived retained-base
-terminal coverage v1。它仍不是完整
+source-parent terminal aggregate v1 与 source-derived retained-base terminal coverage v1 已提交；
+当前工作树新增独立 source-derived current-effective workset terminal coverage v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-30 source-derived current-effective workset terminal coverage v1
+
+The new
+`ootang_epoch_source_derived_current_effective_workset_terminal_coverage.py` is a separate
+assessor under
+`workset_recovery_v1/source_derived_current_effective_workset_terminal_coverage_v1`. Under the
+existing machine lock order it deeply replays one current overlay object/event and requires three
+already published exact leaf proof/event pairs: the current source-ingest parent aggregate, the
+retained frozen-base subset coverage, and current `D/R` coverage. It writes only its own
+content-addressed proof, singleton event, and replaceable `cache_authority=false` status.
+
+Identity remains the complete `key_id + natural_key + namespace_digest` tuple. The assessor
+reconstructs the current overlay and requires the exact pairwise-disjoint set equality
+`E = {P} ⊎ Qretained ⊎ Qdri`. Internal duplicates, any family overlap, a missing identity, or an
+extra identity fail closed. It then walks the current effective topological order and binds every
+identity to its selected leaf proof/event SHA-256 and, for retained or `D/R` rows, the exact leaf
+coverage-row SHA-256. The ordered aggregate row digest is also bound to the overlay keyset,
+identity-set, and dependency-graph digests. Counts, status caches, proof-only frontiers, old
+rebound identities, and invalidations never substitute for that exact union.
+
+Only the matching singleton event publishes
+`current_effective_workset_terminal_coverage=true`, scoped to that one current source-derived
+overlay. The assessor deliberately keeps `all_effective_items_terminal`, generic/full-workset
+terminality, recovery-v6/transitive or transition closure, all-reserved/all-successor support,
+bounded recovery, drain/lifecycle/activation, trusted/E2/network, and formal-warning claims false.
+A missing leaf waits without own authority; once published, a lost or changed exact leaf fails
+closed. A proof-only crash is machine-recovered by appending only the matching event. The inherited
+current-`D/R` leaf still requires a non-empty denominator, so zero-`D/R` overlays remain an explicit
+future exact-vacuous edge rather than a manual exception.
+
+Focused tests are `3/3` in 14.731 seconds. The narrow current-effective/source-parent/retained-base/
+current-`D/R` family chain is `15/15` in 45.205 seconds. Ruff E7/E9/F, Python compilation, strict
+profile loading, and diff checks pass. No training, full scientific pipeline, real-network action,
+manual freeze, manual approval, cleanup, force, or fabricated backfill occurred.
+
+Implementation, profile, focused-test, engineering-document, protected `main.py`, and ConvLSTM
+model SHA-256 values are
+`80f84db4e88dc5fdcc8e768eda2ea11f93e89c89c12726522ed9efb015361ac3`,
+`f82269a8d2c60d9c41bf0d48dab626444084aae2df481f58c19a12d056bfc1b7`,
+`53b33573a0dceeaa775375a9edbf1dc1fac8c3e4f0f16c9d5147c0a7d28bab87`,
+`05eefbedd4ba3940e247d335e9121b9f52e46749b7b7a66a1f8f0771339a238f`,
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`, and
+`282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
+Detailed semantics are in
+`docs/ootang_source_derived_current_effective_workset_terminal_coverage_engineering.md`.
+
+The next narrow increment should be a separately versioned bounded terminal-closure assessor. It
+must prove that the frozen reservation inventory, this current effective identity union, and the
+source-derived successor inventory are complete under one immutable cut before any later
+drain/lifecycle assessor can consume the result. The zero-`D/R` exact-vacuous branch should be
+closed explicitly by machine semantics during that progression, never by human freeze or waiver.
 
 ## 2026-08-30 source-derived retained-base terminal coverage v1
 
