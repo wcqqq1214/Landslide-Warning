@@ -1,0 +1,216 @@
+{
+  "artifact_kind": "ootang_ngboost_ecdf_auto_state_lag7_memory_challenger",
+  "artifact_status": "exploratory_state_memory_challenger_not_formal_warning",
+  "case": "ootang",
+  "comparison": {
+    "all_valid_estimators": [
+      "memory_ngboost"
+    ],
+    "decision": {
+      "checks": {
+        "brier_below_v1": false,
+        "log_loss_below_absolute_upper": false,
+        "log_loss_below_v1": false,
+        "macro_f1_above_persistence": false,
+        "macro_f1_above_v1": false,
+        "ordinal_mae_below_persistence": false,
+        "ordinal_mae_below_v1": false
+      },
+      "evaluation_fold": 2,
+      "log_loss_absolute_upper": 1.6094,
+      "passed": false,
+      "scope": "lag7_common_273",
+      "status": "rejected",
+      "values": {
+        "lag7_persistence": {
+          "macro_f1_fixed_five": 0.672214572137293,
+          "ordinal_mae": 0.22344322344322345
+        },
+        "memory_ngboost": {
+          "macro_f1_fixed_five": 0.2813222889957955,
+          "multiclass_brier": 1.0282431120337747,
+          "multiclass_log_loss": 3.434553483064678,
+          "ordinal_mae": 0.7619047619047619
+        },
+        "v1_ngboost": {
+          "macro_f1_fixed_five": 0.2813222889957955,
+          "multiclass_brier": 1.021504084921172,
+          "multiclass_log_loss": 3.421185740759914,
+          "ordinal_mae": 0.7619047619047619
+        }
+      }
+    },
+    "fold2_transition_actual_rows": 11,
+    "fold2_transition_expected_rows": 11,
+    "fold3_metrics_status": "prediction_only_no_metrics",
+    "lag7_common_estimators": [
+      "memory_ngboost",
+      "v1_ngboost",
+      "lag7_persistence"
+    ],
+    "lag7_common_expected_rows_per_fold": 273,
+    "metric_folds": [
+      2
+    ],
+    "persistence_probability_metrics": false,
+    "prediction_only_folds": [
+      3
+    ],
+    "probability_estimators": [
+      "memory_ngboost",
+      "v1_ngboost"
+    ],
+    "transition_definition": "same_fold_adjacent_valid_day_state_change",
+    "transition_status": "small_support_descriptive_only"
+  },
+  "feature_count": 33,
+  "feature_order": [
+    "ATU1__interval_z",
+    "ATU1__velocity_mm_per_day",
+    "ATU1__acceleration_mm_per_day_squared",
+    "ATU1__tangent_angle_degree",
+    "ATU2__interval_z",
+    "ATU2__velocity_mm_per_day",
+    "ATU2__acceleration_mm_per_day_squared",
+    "ATU2__tangent_angle_degree",
+    "ATU3__interval_z",
+    "ATU3__velocity_mm_per_day",
+    "ATU3__acceleration_mm_per_day_squared",
+    "ATU3__tangent_angle_degree",
+    "ATU4__interval_z",
+    "ATU4__velocity_mm_per_day",
+    "ATU4__acceleration_mm_per_day_squared",
+    "ATU4__tangent_angle_degree",
+    "ATU5__interval_z",
+    "ATU5__velocity_mm_per_day",
+    "ATU5__acceleration_mm_per_day_squared",
+    "ATU5__tangent_angle_degree",
+    "MJ1__interval_z",
+    "MJ1__velocity_mm_per_day",
+    "MJ1__acceleration_mm_per_day_squared",
+    "MJ1__tangent_angle_degree",
+    "MJ3__interval_z",
+    "MJ3__velocity_mm_per_day",
+    "MJ3__acceleration_mm_per_day_squared",
+    "MJ3__tangent_angle_degree",
+    "MJ9__interval_z",
+    "MJ9__velocity_mm_per_day",
+    "MJ9__acceleration_mm_per_day_squared",
+    "MJ9__tangent_angle_degree",
+    "lag7_state_level"
+  ],
+  "fold_roles": {
+    "1": "fit",
+    "2": "development_already_exposed",
+    "3": "historical_already_exposed_not_confirmatory"
+  },
+  "formal_warning_output": false,
+  "future_severity_target_end_fields_in_X": false,
+  "inputs": {
+    "classifier_manifest": {
+      "path": "figures/ngboost_auto_state_classifier_v1/manifest.json",
+      "sha256": "d938149e8eb981b343263419850f6ca28f687682aaa3f6f08ae38ae59fc078d6"
+    },
+    "classifier_site_predictions": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+      "sha256": "b86fb8b52800b51818cc69b6ac02ec727d8affba12bc9661c74d94ac6de88682"
+    },
+    "ecdf_label_gate": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+      "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+    },
+    "ecdf_manifest": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+      "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+    },
+    "ecdf_site_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+      "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+    },
+    "ecdf_station_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+      "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+    },
+    "source_code": {
+      "path": "code/warning/ootang_ngboost_auto_state_memory.py",
+      "sha256": "4b439fc7f9ed33b9c913805799853e642e82326906cf563782e7ae787272c38e"
+    }
+  },
+  "memory": {
+    "availability_feature": false,
+    "lag_days": 7,
+    "missing_sentinel": -1,
+    "name": "lag7_state_level",
+    "source": "strict_same_fold_automatic_label_anchor_t_minus_7"
+  },
+  "model": {
+    "fit_fold": 1,
+    "fit_valid_rows": 280,
+    "hyperparameter_search": false,
+    "ngboost": {
+      "base_learner": {
+        "class": "DecisionTreeRegressor",
+        "criterion": "friedman_mse",
+        "max_depth": 3,
+        "random_state": 0
+      },
+      "classes": 5,
+      "col_sample": 1.0,
+      "learning_rate": 0.01,
+      "minibatch_frac": 1.0,
+      "n_estimators": 500,
+      "natural_gradient": true,
+      "random_state": 0,
+      "score": "LogScore",
+      "verbose": false
+    },
+    "posthoc_probability_calibration": false,
+    "resampling": false
+  },
+  "model_output": {
+    "path": "models/ootang_ngboost_auto_state_memory_v2.pkl",
+    "sha256": "7f2772f083d5cd73c656d1a9941eb3076abf1052e49aaec817167d3b96659833",
+    "size_bytes": 2428880
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "hyperparameter_optimization",
+    "posthoc_probability_calibration",
+    "causal_memory_effect"
+  ],
+  "outputs": {
+    "comparison_metrics": {
+      "path": "figures/ngboost_auto_state_memory_v2/comparison_metrics.csv",
+      "rows": 27,
+      "sha256": "247911b7074a71358af9773ee2e2776cf061cbe5633f814c73da1a7532cd259c"
+    },
+    "feature_importance": {
+      "path": "figures/ngboost_auto_state_memory_v2/feature_importance.csv",
+      "rows": 132,
+      "sha256": "43760aaa42c53c87fa8e6502ce341df29f7a13608799bcdd569452f477d561d0"
+    },
+    "site_predictions": {
+      "path": "figures/ngboost_auto_state_memory_v2/site_predictions.csv",
+      "rows": 861,
+      "sha256": "539acb5cc8df881dd131ce6127c427720da4162bd0fee4e8a161bb607c787584"
+    }
+  },
+  "profile": {
+    "id": "ootang_ngboost_auto_state_memory_v2",
+    "path": "config/ootang_ngboost_auto_state_memory.v2.json",
+    "sha256": "ddb4bf23c1bfa1f9266cd427125c1ac9a7fb45d2d26fd7afb110979bfafa7fbb",
+    "version": 2
+  },
+  "row_counts": {
+    "comparison_metrics": 27,
+    "feature_importance": 132,
+    "site_predictions": 861
+  },
+  "runtime_seconds": 2.3591215829364955,
+  "schema_version": 1,
+  "source_label_boundary_version": "fold1_h7_station_ecdf_site_quantiles_v2",
+  "source_label_gate_passed": true
+}

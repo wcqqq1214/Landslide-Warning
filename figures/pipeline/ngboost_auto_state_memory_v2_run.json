@@ -1,0 +1,102 @@
+{
+  "schema_version": 3,
+  "status": "completed",
+  "warning_pipeline_scope": "research_and_operational_draft_only",
+  "formal_warning_output": false,
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "started_at": "2026-08-31T00:23:52+08:00",
+  "finished_at": "2026-08-31T00:23:56+08:00",
+  "git_commit": "b0dc37adafe2635c3f39fcd612adf889fec4176f",
+  "git_worktree_dirty": true,
+  "source_sha256": "88d010b70e8df8c5cd352c3dc15e55a07e7780a47b941a3caaa1dceb4c0f823d",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 3.995,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "ootang-ngboost-auto-state-memory",
+      "script": "code/warning/ootang_ngboost_auto_state_memory.py",
+      "warning_artifact_scope": "exploratory_auto_future_state_lag7_memory_challenger",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 3.976,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "config/ootang_ngboost_auto_state_memory.v2.json",
+        "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+        "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+        "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+        "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+        "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+        "figures/ngboost_auto_state_classifier_v1/manifest.json"
+      ],
+      "input_artifacts": [
+        {
+          "path": "config/ootang_ngboost_auto_state_memory.v2.json",
+          "size_bytes": 3253,
+          "sha256": "ddb4bf23c1bfa1f9266cd427125c1ac9a7fb45d2d26fd7afb110979bfafa7fbb"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+          "size_bytes": 3587296,
+          "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+          "size_bytes": 317152,
+          "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+          "size_bytes": 6347,
+          "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+          "size_bytes": 4349,
+          "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+          "size_bytes": 463247,
+          "sha256": "b86fb8b52800b51818cc69b6ac02ec727d8affba12bc9661c74d94ac6de88682"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/manifest.json",
+          "size_bytes": 9378,
+          "sha256": "d938149e8eb981b343263419850f6ca28f687682aaa3f6f08ae38ae59fc078d6"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/ngboost_auto_state_memory_v2/site_predictions.csv",
+          "size_bytes": 149764,
+          "sha256": "539acb5cc8df881dd131ce6127c427720da4162bd0fee4e8a161bb607c787584"
+        },
+        {
+          "path": "figures/ngboost_auto_state_memory_v2/comparison_metrics.csv",
+          "size_bytes": 3149,
+          "sha256": "247911b7074a71358af9773ee2e2776cf061cbe5633f814c73da1a7532cd259c"
+        },
+        {
+          "path": "figures/ngboost_auto_state_memory_v2/feature_importance.csv",
+          "size_bytes": 15112,
+          "sha256": "43760aaa42c53c87fa8e6502ce341df29f7a13608799bcdd569452f477d561d0"
+        },
+        {
+          "path": "figures/ngboost_auto_state_memory_v2/manifest.json",
+          "size_bytes": 7151,
+          "sha256": "40869be9e4cbee9484d67b73b04a2bc44dbbf73e5ddf9d4ce076f16f67b942c8"
+        },
+        {
+          "path": "models/ootang_ngboost_auto_state_memory_v2.pkl",
+          "size_bytes": 2428880,
+          "sha256": "7f2772f083d5cd73c656d1a9941eb3076abf1052e49aaec817167d3b96659833"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}

@@ -8,6 +8,27 @@
 Figshare, a post-2020 live feed, or formal-v5 G1--G4.
 **Current deployment gate:** authentic post-2020 finalized source unavailable; R1 remains
 `waiting_for_candidate_feed`.
+
+## 2026-08-31 lag-7 memory challenger: completed and rejected
+
+The pre-registered lag-7 state-memory challenger ran from code commit `b0dc37a`. The pipeline
+completed in 4.0 seconds and passed its artifact contract. It produced 861 site predictions and
+27 fold-2-only metric rows; fold 3 is prediction-only and has no reported metrics. On the common
+273-day fold-2 mask, memory NGBoost / committed v1 NGBoost / strict persistence respectively had
+accuracy `0.336996/0.336996/0.802198`, fixed-five macro-F1
+`0.281322/0.281322/0.672215`, and ordinal MAE `0.761905/0.761905/0.223443`. Memory/v1
+log-loss was `3.434553/3.421186`, and Brier was `1.028243/1.021504`.
+
+All seven pre-registered improvement checks were false, so the challenger is **rejected**. The
+11 fold-2 transition dates remain descriptive only. Built-in NGBoost importance assigned the
+lag-7 feature exactly `0`, rank 33; this is model dependency evidence, not causal evidence. No
+fold-3 evaluation, field validation, or formal warning claim is available. ConvLSTM and the
+advisor-specified overall framework were not modified.
+
+Stop direct five-classification lag-feature patching here. The next research action is a pre-fit
+causal/protocol review of one structural residual/transition method, followed by machine-recorded
+pre-registration before any fit. No human freeze or approval step is introduced, and that method
+has not yet been fitted or run.
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry

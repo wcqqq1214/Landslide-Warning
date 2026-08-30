@@ -267,6 +267,28 @@ SHAP masker 内部另出现 3 条 sklearn 矩阵数值 warning；最终概率、
 不重复八点模型/SHAP/图件，不开始 horizon、消融、校准或超参数搜索。若失败，本轮停止模型
 修补，把问题返回自动标签的可预测性或显式时序模型设计。
 
+## 2026-08-31 lag-7 状态记忆 challenger 执行结果
+
+正式运行使用代码提交 `b0dc37a`，完整管线耗时 4.0 秒且产物合同通过。模型输出全部 861
+个 site 日期的概率与颜色；指标表共 27 行，仅评价 fold 2。fold 3 严格保持
+`prediction_only`，不计算指标，也不得解释为现场验证或确认性测试。
+
+| fold 2 common 273 estimator | Accuracy | Fixed-five macro-F1 | Ordinal MAE | Log-loss | Brier |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Memory NGBoost | 0.336996 | 0.281322 | 0.761905 | 3.434553 | 1.028243 |
+| Committed v1 NGBoost | 0.336996 | 0.281322 | 0.761905 | 3.421186 | 1.021504 |
+| Strict lag-7 persistence | 0.802198 | 0.672215 | 0.223443 | N/A | N/A |
+
+Memory 模型的 macro-F1 没有严格超过 v1 或 persistence，ordinal MAE 没有严格低于二者，
+log-loss/Brier 没有低于 v1，且 log-loss 没有低于 `1.6094`。预注册的 7 项机械门槛因此全部
+为 false，最终结论为 `rejected`。fold 2 的 11 个相邻状态转折只保留描述性结果，不建立
+额外通过门槛。lag-7 特征的 NGBoost built-in importance 为 `0`、rank 33；该值仅表示此固定
+模型没有利用该输入，不是因果主控因素结论。
+
+该负结果没有修改 ConvLSTM 主结构或导师指定的总体框架。实验在此停止直接五分类 lag-feature
+修补；下一步只允许先审查结构性 residual/transition 方法的目标、时间因果性和评价合同。
+审查结果应由机器写入拟合前协议，不设置人工冻结或批准步骤；该方法尚未预注册、拟合或运行。
+
 ## Expected Outputs
 
 ### v1 失败诊断（已冻结）
