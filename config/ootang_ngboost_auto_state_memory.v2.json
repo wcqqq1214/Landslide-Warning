@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "profile_id": "ootang_ngboost_auto_state_memory_v2",
+  "profile_version": 2,
+  "status": "exploratory_state_memory_challenger_not_formal_warning",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "inputs": {
+    "ecdf_station_labels": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+    "ecdf_site_labels": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+    "ecdf_label_gate": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+    "ecdf_manifest": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+    "classifier_site_predictions": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+    "classifier_manifest": "figures/ngboost_auto_state_classifier_v1/manifest.json"
+  },
+  "output_dir": "figures/ngboost_auto_state_memory_v2",
+  "model_output": "models/ootang_ngboost_auto_state_memory_v2.pkl",
+  "scientific_feature_whitelist": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "acceleration_mm_per_day_squared",
+    "tangent_angle_degree"
+  ],
+  "memory_feature": {
+    "name": "lag7_state_level",
+    "lag_days": 7,
+    "source": "strict_same_fold_automatic_label_anchor_t_minus_7",
+    "missing_sentinel": -1,
+    "availability_feature": false
+  },
+  "site_task": {
+    "base_feature_count": 32,
+    "total_feature_count": 33,
+    "target": "site_auto_state_level",
+    "fit_fold": 1,
+    "fit_valid_rows": 280
+  },
+  "ngboost": {
+    "classes": 5,
+    "score": "LogScore",
+    "base_learner": {
+      "class": "DecisionTreeRegressor",
+      "max_depth": 3,
+      "criterion": "friedman_mse",
+      "random_state": 0
+    },
+    "n_estimators": 500,
+    "learning_rate": 0.01,
+    "minibatch_frac": 1.0,
+    "col_sample": 1.0,
+    "natural_gradient": true,
+    "random_state": 0,
+    "verbose": false
+  },
+  "training_policy": {
+    "hyperparameter_search": false,
+    "posthoc_probability_calibration": false,
+    "resampling": false,
+    "predict_all_dates": true
+  },
+  "comparison": {
+    "metric_folds": [2],
+    "prediction_only_folds": [3],
+    "all_valid_estimators": ["memory_ngboost"],
+    "lag7_common_estimators": ["memory_ngboost", "v1_ngboost", "lag7_persistence"],
+    "lag7_common_expected_rows_per_fold": 273,
+    "transition_definition": "same_fold_adjacent_valid_day_state_change",
+    "fold2_transition_expected_rows": 11,
+    "transition_status": "small_support_descriptive_only",
+    "probability_estimators": ["memory_ngboost", "v1_ngboost"],
+    "decision": {
+      "macro_f1_strictly_above": ["v1_ngboost", "lag7_persistence"],
+      "ordinal_mae_strictly_below": ["v1_ngboost", "lag7_persistence"],
+      "log_loss_strictly_below": "v1_ngboost",
+      "brier_strictly_below": "v1_ngboost",
+      "log_loss_absolute_upper": 1.6094
+    }
+  },
+  "outputs": {
+    "site_predictions": "site_predictions.csv",
+    "comparison_metrics": "comparison_metrics.csv",
+    "feature_importance": "feature_importance.csv",
+    "manifest": "manifest.json"
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "hyperparameter_optimization",
+    "posthoc_probability_calibration",
+    "causal_memory_effect"
+  ]
+}

@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 41)
+        self.assertEqual(len(pipeline.STAGES), 42)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -342,6 +342,38 @@ class PipelineTests(unittest.TestCase):
             stage.outputs,
         )
         self.assertIn("models/ootang_ngboost_auto_state_site_v1.pkl", stage.outputs)
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+
+    def test_ngboost_auto_state_memory_stage_is_explicit_and_isolated(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        classifier_stage = pipeline.STAGE_BY_NAME[
+            "ootang-ngboost-auto-state-classifier"
+        ]
+        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-auto-state-memory"]
+
+        self.assertEqual(
+            names.index(stage.name), names.index(classifier_stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "exploratory_auto_future_state_lag7_memory_challenger",
+        )
+        self.assertIn(
+            "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+            stage.inputs,
+        )
+        self.assertIn(
+            "figures/ngboost_auto_state_memory_v2/site_predictions.csv",
+            stage.outputs,
+        )
         existing_outputs = {
             path
             for existing in pipeline.STAGES
