@@ -240,6 +240,33 @@ ATU2 切线角 `0.5440`、ATU1 切线角 `0.4815`、ATU5 速度 `0.2094`、ATU2 
 SHAP masker 内部另出现 3 条 sklearn 矩阵数值 warning；最终概率、概率和与 800 个 SHAP
 值均通过有限性检查，因此保留为运行提示，不增加会掩盖数值结果的兼容代码。
 
+## 第三增量：单一 lag-7 状态记忆 challenger（拟合前固定）
+
+固定分类器没有超过 persistence，下一步不调 NGBoost 参数，只回答一个明确问题：模型若显式
+知道 issue 时刻已经成熟的上一状态，能否学习 persistence 之上的修正？
+
+1. 输入为原 32 个 site 白名单特征，加唯一标量
+   `lag7_state_level=Y_auto(t-7)`；不得加入 future outcome、severity、target end、当前
+   `Y_auto(t)` 或其他标签字段。
+2. `Y_auto(t-7)` 的目标窗是 `[t-6,t]`，只在收到 `U_t` 后成熟。按同折日期精确查找；
+   必须验证来源行恰为七个日历日前且其 `target_end_date == t`，不能只依赖行位移。每折前
+   7 日用 sentinel `-1`，不跨折填充、不增加 availability 列。
+3. NGBoost 结构/500 estimators/learning rate 0.01/树深 3/random seed 0 全部不变；fold 1
+   的 280 个 valid 日期拟合，fold 2 是唯一评价折；fold 3 只输出逐时预测，不计算指标。
+4. 直接校验并消费已提交 v1 `site_predictions.csv`/manifest，不重训 no-memory 模型。
+   common mask 是每折 lag-7 可得的 273 日；相邻转折仍为同折 `Y_t != Y_(t-1)`，再与
+   common mask 取交集，fold 2 固定为 11 日。
+5. fold 2 common 273 日对 memory/no-memory/persistence 报 accuracy、fixed-five
+   macro-F1、ordinal MAE；仅两个 NGBoost 报 log-loss/Brier。另报 memory 的 fold 2 全
+   280 日指标；不为 hard persistence 构造 epsilon/one-hot 概率分数，也不计算 fold 3 指标。
+6. “改进候选”要求 fold 2 common-mask 上，memory 的 macro-F1 严格高于 no-memory 与
+   persistence、ordinal MAE 严格低于二者、log-loss 与 Brier 都低于 no-memory，且
+   log-loss `<1.6094`；否则拒绝。transition 11 日只描述，不设第二套门槛。
+
+该增量只生成 site prediction、comparison metrics、feature importance、manifest 和单个模型；
+不重复八点模型/SHAP/图件，不开始 horizon、消融、校准或超参数搜索。若失败，本轮停止模型
+修补，把问题返回自动标签的可预测性或显式时序模型设计。
+
 ## Expected Outputs
 
 ### v1 失败诊断（已冻结）

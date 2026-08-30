@@ -145,6 +145,27 @@ times and passed the 5-pt PDF text floor and rendered collision audit. The immed
 question is whether one fixed, strictly available lag-7 state-memory feature lets NGBoost learn
 corrections to persistence; do not start a hyperparameter, horizon, calibration or ablation sweep.
 
+### Pre-fit protocol: lag-7 state-memory challenger
+
+Run exactly one site-only challenger before reconsidering the method. Keep the 32 current-time
+advisor indicators and add one scalar `lag7_state_level`: the same-fold automatic state anchored at
+`t-7`, whose H=7 target window ends at issue time `t`. It is therefore available only under the
+already fixed “observe `U_t`, then issue” semantics. Encode the first seven dates of each fold as
+the fixed sentinel `-1`; add no separate availability feature and never fill from another fold.
+Require the source row to be exactly seven calendar days earlier and its `target_end_date` to equal
+`t`, rather than trusting row order alone.
+
+Fit the unchanged NGBoost parameters on all 280 valid fold-1 dates. Produce all 861 site dates, but
+compute challenger metrics only on fold 2: compare the memory model, committed no-memory NGBoost
+and strict persistence on their 273-date common lag-available mask. Use adjacent-day state
+transitions within that common mask; the 11 transition dates remain descriptive. Probability
+metrics apply to the two NGBoost models, never to hard persistence. Accept an improvement candidate
+only if its fold-2 common-mask macro-F1 is higher than both comparators, ordinal MAE is lower than
+both, log-loss and Brier are lower than no-memory NGBoost, and log-loss is below the fixed fold-1
+prior `1.6094`; otherwise reject it. Fold 3 still receives all-time predictions, but its metrics are
+withheld and cannot select the result. Do not add station training, SHAP, plots, horizons,
+calibration or parameter search to this challenger.
+
 ## 2026-08-30 authentic live-feed source audit
 
 The next input blocker was audited against the official Figshare article/version APIs, the source

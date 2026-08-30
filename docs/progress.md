@@ -99,6 +99,23 @@
   机器可得状态记忆，与原 32 个导师指标联合训练 NGBoost，判断能否在保持 persistence 的
   同时改善转折；不启动 horizon、消融、概率校准或参数网格。
 
+## 2026-08-31 lag-7 状态记忆 challenger 预注册（拟合前）
+
+- 只增加一个 site 特征 `lag7_state_level=y_(t-7)`。该标签的 H=7 未来窗在 issue 日 `t`
+  结束，因此在“收到 `U_t` 后发报”语义下机器可得；每折前 7 日固定用 sentinel `-1`，不跨折
+  填充，也不增加第二个 availability 特征。来源必须恰为七个日历日前，且其
+  `target_end_date == t`；其余 32 维仍是八点四指标白名单。
+- 固定复用 v1 NGBoost 参数，在 fold 1 全部 280 个 valid 日拟合；不训练测点模型、不做
+  SHAP/新图、不搜索 horizon/参数、不校准概率。输出仅含 861 日 site 概率、共同指标、内置
+  importance、manifest 和一个模型。
+- fold 2 的主要比较使用 lag-7 可得的共同 273 日：memory NGBoost 对提交的 no-memory
+  NGBoost 和 hard persistence 报 accuracy/macro-F1/ordinal MAE；两个 NGBoost 另报
+  log-loss/Brier，persistence 不伪造概率指标。相邻日 transition 仍取共同 mask，11 日只描述。
+- 只有当 fold 2 common-mask 上，memory 的 macro-F1 严格高于 no-memory 与 persistence、
+  ordinal MAE 严格低于二者、log-loss 与 Brier 都低于 no-memory，且 log-loss 低于
+  fold-1 prior `1.6094`，才称为“改进候选”；否则拒绝。fold 3 仍输出全时刻信号，但不计算
+  指标、不参与选择。失败则停止本轮 NGBoost 修补，回到标签/时序方法层讨论。
+
 ## 2026-08-30 藕塘 live feed 真实来源审计（本增量）
 
 - 已完成 Figshare 官方 API、论文数据声明与仓库数据血缘的定向核验。当前唯一核实的公开行级
