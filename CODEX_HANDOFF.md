@@ -3,7 +3,9 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `3cc4a90 feat: add atomic epoch transition`
+**Committed baseline before this increment:** `7c63a27 docs: record machine readiness poll`
+**Current gate:** authentic post-2020 finalized source unavailable; R1 remains
+`waiting_for_candidate_feed`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -27,6 +29,40 @@ fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2
 或 formal warning。本增量进一步实现一个 scoped official-scheduler lifecycle event，
 原子表达 `SEALED(old)+ACTIVE(new)`，并以无参数 cycle-v4 adapter 执行事件授权的 frozen
 cycle-v3；其 claims 与 trusted/anti-rollback/continuous-rotation 边界见下节。
+
+## 2026-08-30 authentic live-feed source audit
+
+The next input blocker was audited against the official Figshare article/version APIs, the source
+paper, later Ootang literature, the local lineage report, and the exact R1/source-ingest contract.
+The only verified public row-level source remains Figshare article `28171343` v1, file `54029702`,
+MD5 `372d1608f46d7fcdb9805568d1c0782a`: 1461 daily rows from 2016-07-01 through
+2020-06-30 with the current MJ/ATU stations, rainfall, and RWL. The versions API currently lists
+only v1. Figshare can support a repository release observer, but it is not a daily sensor endpoint
+and its publish/modified/download times cannot stand in for record observation, availability,
+finalization, or revision provenance.
+
+The bounded public-source search found no machine-readable continuous extension from 2020-07-01
+with the same eight MJ/ATU stations plus Rainfall and RWL. Later Ootang papers establish that other
+observations exist, but the checked source does not expose compatible row-level data/API and uses
+JW identifiers; figures must not be reverse-digitized into a purported finalized feed. This is a
+scoped search result, not proof that no private or unindexed source exists.
+
+No producer, generic HTTP adapter, or Figshare-to-incoming bridge was implemented. The existing
+exact file-drop boundary is already the correct consumer: a source-specific single machine writer
+must atomically publish the authentic complete feed to
+`runtime/ootang_prequential_live_v1/incoming/daily_finalized_feed.json`, after which the existing
+R1 and ingest chain validate and persist it. Implementation remains blocked on a real endpoint and
+authorization; stable source identity; authoritative station/reference-epoch/units/QC mapping;
+continuous post-2020 history; and actual observed/available/finalized/revision semantics.
+
+The audit also records a P1 protocol feasibility issue. V1 labels rainfall as a complete natural-
+day amount, requires that day's record to finalize before the next Asia/Shanghai day boundary,
+and requires the watermark+1 bundle/issue before the same target boundary. A closed 00:00--24:00
+total cannot normally be known before that boundary. The upstream contract must define a causal
+cutoff/accumulation interval and late-revision policy; otherwise a separately versioned source and
+target protocol must be reviewed. Do not silently change frozen v1, target semantics, or scientific
+results. Full evidence and the machine-only resumption checklist are in
+`docs/ootang_live_feed_source_audit.md`.
 
 ## 2026-08-30 real machine readiness poll and first-gate short-circuit
 

@@ -5,6 +5,27 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 藕塘 live feed 真实来源审计（本增量）
+
+- 已完成 Figshare 官方 API、论文数据声明与仓库数据血缘的定向核验。当前唯一核实的公开行级
+  藕塘源仍是 version 1、file `54029702`（MD5
+  `372d1608f46d7fcdb9805568d1c0782a`），共 1461 日且止于 `2020-06-30`；Figshare versions
+  API 当前仅列 v1。它可被机器观察是否出现新 release，但不是逐日传感器/finalized feed。
+- 本次有边界的公开源检索没有找到从 `2020-07-01` 起、与当前 MJ/ATU 八点及
+  Rainfall+RWL 连续兼容的机器可读数据。后续论文描述了藕塘观测，但未提供兼容行级下载/API，
+  不能从图表造数或把不同 JW 点位直接拼接为当前源。
+- 因缺少 endpoint/auth/owner、权威点位与参考 epoch、日值 QC、真实时间/修订语义和连续历史，
+  本轮没有实现伪 producer、通用 HTTP adapter 或无效 Figshare ingest。既有 exact-file drop
+  boundary、R1 validator、source receipts 与自动后续链已经够用；真实单 writer 到位后再实现
+  source-specific 最薄 adapter。
+- 新发现一个 P1 source-contract 可执行性问题：v1 把 Rainfall 定义为完整自然日量，同时要求
+  record 在下一日界前 finalized，且 watermark+1 的 bundle/issue 也须在该日界前生成。真实源必须
+  明确 accumulation cutoff；若不能满足，应另建版本化 source/target 协议，不静默修改 v1 或用
+  已查看 test 选择方案。
+- 当前真实机器状态保持 `waiting_for_candidate_feed`；ConvLSTM、operational-v4、冻结
+  splits/metrics/thresholds、参数、产物与科研结论未改动。完整证据、接入必需字段和机器恢复
+  顺序见 `docs/ootang_live_feed_source_audit.md`。
+
 ## 2026-08-30 真实机器 readiness poll 与首门短路（本增量）
 
 - 在 production runtime 上只执行一次
