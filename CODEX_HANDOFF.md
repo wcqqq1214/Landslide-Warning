@@ -109,6 +109,14 @@ Five table sources are fixed to existing CSV/JSON artifacts. No figure or experi
 Next, draft the manuscript-facing method and results text from that inventory, preserving the
 negative classifier conclusion and all evidence boundaries.
 
+The manuscript-facing Chinese draft is now `docs/ootang_manuscript_methods_results_draft.md`.
+It covers ConvLSTM, four indicators, machine-only H=7 labels, site NGBoost/baselines, SHAP,
+all-time output, v4 spatial synthesis, exact results and the negative conclusion. An independent
+read-only audit matched all numbers to versioned artifacts and corrected the site-label definition
+to include fold-1-only site q20/q40/q60/q80 discretization. No experiment or figure was rerun.
+The next mechanical task is to materialize the four manuscript main tables and one acceleration
+supplement table from the already indexed CSV/JSON sources; do not select new models or folds.
+
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
