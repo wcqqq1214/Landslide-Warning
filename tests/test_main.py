@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 36)
+        self.assertEqual(len(pipeline.STAGES), 38)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -1186,7 +1186,8 @@ class PipelineTests(unittest.TestCase):
             names.index(stage.name), names.index("ootang-epoch-workset-recovery") + 1
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-active-transition"),
+            names.index(stage.name) + 1,
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -1229,6 +1230,51 @@ class PipelineTests(unittest.TestCase):
                 "ootang-epoch-settlement-cycle",
                 "ootang-operational-v4",
             ],
+        )
+
+    def test_active_transition_and_cycle_v4_are_explicit_machine_stages(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        transition = pipeline.STAGE_BY_NAME["ootang-epoch-active-transition"]
+        cycle = pipeline.STAGE_BY_NAME["ootang-prequential-cycle-v4"]
+
+        self.assertEqual(
+            names.index(transition.name),
+            names.index("ootang-epoch-settlement-cycle") + 1,
+        )
+        self.assertEqual(names.index(cycle.name), names.index(transition.name) + 1)
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(cycle.name) + 1
+        )
+        self.assertFalse(transition.enabled_by_default)
+        self.assertFalse(cycle.enabled_by_default)
+        self.assertFalse(transition.formal_warning_output)
+        self.assertFalse(cycle.formal_warning_output)
+        self.assertEqual(transition.arguments, ())
+        self.assertEqual(cycle.arguments, ())
+        self.assertEqual(
+            transition.script,
+            "code/monitoring/ootang_epoch_active_transition.py",
+        )
+        self.assertEqual(
+            cycle.script,
+            "code/monitoring/ootang_prequential_cycle_v4.py",
+        )
+        self.assertEqual(
+            transition.outputs,
+            ("runtime/ootang_epoch_registry_v1/active_transition_v1/status.json",),
+        )
+        self.assertEqual(
+            cycle.outputs,
+            ("runtime/ootang_epoch_registry_v1/scheduler_cycle_v4_v1/status.json",),
+        )
+        self.assertEqual(
+            [
+                stage.name
+                for stage in pipeline.select_stages(
+                    [cycle.name, "ootang-epoch-settlement-cycle", transition.name]
+                )
+            ],
+            ["ootang-epoch-settlement-cycle", transition.name, cycle.name],
         )
 
     def test_prequential_live_is_explicit_engineering_after_outcome_materializer(self):

@@ -141,9 +141,16 @@ run for this increment.
 The V1 drain-start and V2 bounded-closure branches are mutually exclusive, so
 the earlier plan to consume both was unreachable. The V2 scoped completion now
 uses the stable admission cut, existing bounded closure, and one fresh
-four-lock inventory without adding another intermediate authority. The next
-implementation boundary is the atomic `SEALED(old) + ACTIVE(new)` transition
-that consumes this scoped decision and defines scheduler authorization. V1
-completion must be coupled to its own writer cut or that same atomic transition;
-it must not be promoted from a staleable standalone observation. Cycle v4,
-trusted/E2 promotion, and formal warning remain later independent work.
+four-lock inventory without adding another intermediate authority. Its
+downstream atomic `SEALED(old) + ACTIVE(new)` transition and no-argument
+authorized cycle-v4 adapter are now implemented as separate explicit machine
+stages. The transition consumes the scoped decision, binds the prepared epoch
+and frozen cycle-v3 bytes, and grants only the scoped official scheduler
+entrypoint; it does not turn this settlement cache into authority.
+
+V1 completion still must be coupled to its own writer cut or a separately
+specified atomic transition; it must not be promoted from a staleable
+standalone observation. The next operational boundary is an isolated real
+machine run through settlement, transition and cycle-v4/genesis. External
+trusted-time/anti-rollback qualification, E2/formal promotion, and a
+multi-generation continuous rotation controller remain separate later work.

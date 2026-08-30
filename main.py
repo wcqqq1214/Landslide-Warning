@@ -740,6 +740,36 @@ STAGES = (
         enabled_by_default=False,
     ),
     Stage(
+        "ootang-epoch-active-transition",
+        "code/monitoring/ootang_epoch_active_transition.py",
+        "原子提交旧 epoch SEALED 与新 epoch ACTIVE，并签发限定官方调度器授权（非全局 drain/非正式）",
+        inputs=(
+            "config/ootang_epoch_registry.v1.json",
+            "config/ootang_epoch_preparation.v1.json",
+            "config/ootang_epoch_drain.v1.json",
+            "config/ootang_prequential_cycle.v3.json",
+        ),
+        outputs=("runtime/ootang_epoch_registry_v1/active_transition_v1/status.json",),
+        arguments=(),
+        warning_artifact_scope=(
+            "epoch_scoped_official_scheduler_lifecycle_transition_engineering"
+        ),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
+        "ootang-prequential-cycle-v4",
+        "code/monitoring/ootang_prequential_cycle_v4.py",
+        "按 ACTIVE 转移事件派生唯一 live/shadow root 并运行冻结 cycle-v3（官方调度入口，非正式）",
+        outputs=("runtime/ootang_epoch_registry_v1/scheduler_cycle_v4_v1/status.json",),
+        arguments=(),
+        warning_artifact_scope=(
+            "live_prequential_authorized_scheduler_cycle_engineering"
+        ),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
+    Stage(
         "ootang-operational-v4",
         "code/warning/operational_run_v4.py",
         "运行藕塘 v4 严格逐点加速度四指标/双轴空间实施版（非正式）",

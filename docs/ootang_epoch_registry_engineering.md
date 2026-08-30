@@ -59,10 +59,11 @@ R2b-1 v1 clean branch: clean-start route fence + epoch_drain_started -> DRAINING
 R2b-2a v1 clean branch: eligibility observation + stale detection -> still DRAINING
 R2b-2b-1 v2 non-clean foundation: context-bound first-blocker observation -> no lifecycle authority
 R2b-2b-2a: frozen official-writer deploy/runner lock-path cut -> no lifecycle authority
-R2b-2b next: complete manifest + keyed recovery -> later DRAINING
-R2b-assessor: independently prove bounded work closed -> DRAINED eligibility
-R2c: authoritative atomic SEALED/ACTIVE transition
-R3: cycle v4 + trusted-time qualification + scheduler authorization
+R2b-2b: bounded manifest + keyed recovery + terminal closure -> scoped completion
+R2b-assessor: independently prove official reserved workset closed -> scoped drain decision
+R2c: one-event authoritative scoped SEALED/ACTIVE transition -> implemented
+R3a: no-argument authorized cycle v4 -> implemented
+R3b: external trusted-time/anti-rollback qualification + continuous rotation -> future
 ```
 
 R2a 已保存可执行 capsule/tree/smoke 证据，但没有 drain authority。R2b 首切片在
@@ -85,11 +86,15 @@ drained/active claims 仍 false。R2b-2b-1 已用新 v2 schema 记录 context-bo
 anti-rollback 均明确 false。R2b-2b-2a 已在六锁下用 deny-write regular-file sentinel 与
 Darwin atomic swap 依序封闭 frozen official writer 的 deploy/runner lock pathname，并保持
 旧 writer bytes 不变；该 event 仍不是 complete admission fence、manifest 或 lifecycle
-authority。后续 R2b-2b-2b 已建立完整 bounded manifest/reservation；下一步做 keyed non-clean recovery；v2 不得重解释或覆写已发布的 v1 fence-prepare/intent-prefix/capsule/intent/
+authority。后续 R2b-2b-2b 及其下游现已完成 bounded manifest/reservation、keyed non-clean
+recovery、terminal closure 与 scoped completion；v2 不得重解释或覆写已发布的 v1
+fence-prepare/intent-prefix/capsule/intent/
 exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event bytes，
 历史增长需要的 chunk/Merkle 也只能由该新版本表达。
-后续 assessor 证明所有历史工作合法收口后，权威 transition 才可同时 seal old / activate
-new。若 outcome 永不到达，机器只能持续等待，不能补 outcome、人工冻结/批准或强制切换。
+后续 V2 assessor 已证明 reserved official workset 合法收口；权威 transition 现以一个 immutable
+event 同时 seal old / activate new，并绑定 no-argument cycle-v4 official scheduler adapter。该
+event 不把 scoped completion 扩写成 unqualified drain/fence，也不表示 new genesis 已初始化。
+若 outcome 永不到达，机器仍只能持续等待，不能补 outcome、人工冻结/批准或强制切换。
 
 ## 3. 机器状态机
 
@@ -194,9 +199,11 @@ ctime、大小、哈希、canonical bytes、路径 containment 和引用对象�
 本地 SHA-256 registry 仍属于 trusted-writer 完整性模型：单机 root 权限可同时删除对象、
 事件和本地 anti-rollback 状态。`.tmp` 隔离、file/parent `fsync` 覆盖已建目录内的进程
 崩溃恢复，但本切片没有证明所有首次 `mkdir` 在突然断电后的持久性；也没有抵抗恶意本地
-writer 在两次目录检查之间替换整个父目录。后续 transition 必须绑定 RFC 3161 回执；若
-需要抵抗本机根权限失陷，还需独立 operator/KMS 或远端透明日志，不能把同一主机上的两
-把 key 写成虚假的 2-of-2。
+writer 在两次目录检查之间替换整个父目录。当前 scoped local trusted-writer transition 有意
+不绑定 RFC 3161，因此 `anti_rollback_authority_implemented=false` 与
+`trusted_anchor_receipt_verified=false`。只有在要求外部或 root-resistant 资格时，后续独立
+qualification 才必须绑定 TSA 回执，并可再引入独立 operator/KMS 或远端透明日志；不能把同一
+主机上的两把 key 写成虚假的 2-of-2，也不能把该外部资格倒推成 local transition 的前置语义。
 
 ## 6. 方法依据
 
@@ -308,14 +315,16 @@ R2b-2b-1 v2 首 blocker observation 也已实现：它绑定 R1/R2a 与 old ledg
 object，并在 v1 后生 authority 时 inert；它尚未枚举或恢复 trusted-time/guard/shadow workset。
 R2b-2b-2a 已进一步在六锁下原子封闭 frozen official writer 的 deploy/runner lock pathname，
 且不修改其自绑定实现；它仍不证明 direct filesystem writer、complete workset 或 recovery。
-后续 R2b-2b-2b 已完成 bounded closed-workset manifest/reservation；下一步做 keyed recovery。v2 不得重解释、补字段或覆写 v1 fence-prepare/intent-prefix/
-capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/eligibility-observation/event
-bytes；超 64 MiB 的历史 chunk/Merkle 设计也属于该未来 v2。再后的独立 assessor
-才能证明旧 namespace 已
-收口，独立 transition 切片才可追加单个权威 `SEALED(old)+ACTIVE(new)` 事件并从 registry
-tip 恢复 active cache。closed epoch 的迟到 revision 需进入独立跨 epoch retrospective
-chain，不重开旧 online state。全程无人工日期、冻结、cleanup、批准、force 或 backdate；
-结局不到达时只能机器等待。
+后续 R2b-2b-2b 及其下游已完成 bounded closed-workset manifest/reservation、keyed recovery、
+source-derived terminal closure 与 strengthened scoped completion。v2 不得重解释、补字段或覆写
+v1 fence-prepare/intent-prefix/capsule/intent/exchange-attempt/armed-marker/boundary/drain-event/
+eligibility-observation/event bytes；超 64 MiB 的历史 chunk/Merkle 设计也只能由新版本表达。
+独立 transition 现已追加单个权威 `SEALED(old)+ACTIVE(new)` event，并通过 historical R1/R2a
+replay 恢复 scheduler authorization；no-argument cycle-v4 在 manager lease 内执行该 event 固定的
+frozen cycle-v3 bytes。它没有 active pointer，也不声称 trusted anti-rollback、continuous
+rotation 或 new genesis initialized。closed epoch 的迟到 revision 仍需进入独立跨 epoch
+retrospective chain，不重开旧 online state。全程无人工日期、冻结、cleanup、批准、force 或
+backdate；结局不到达时只能机器等待。
 
 R2a 的真实默认链试跑已在历史 feed causal gate 正确 fail closed，因此当前没有真实 R1
 candidate，也没有 R2b end-to-end PASS。这一结果不能以改时钟、合成日期或测试 override

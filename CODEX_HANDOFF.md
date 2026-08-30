@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `3bde3eb feat: complete scoped v2 drain`
+**Committed baseline before this increment:** `7133c14 fix: verify bounded drain ledger prefix`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -24,7 +24,64 @@ closure v1 亦已提交；machine settlement cycle v1 现把 workset recovery �
 coordinator 与一个 V2 scoped drain-completion assessor 接入同一 bounded scheduler poll。新事件只
 声明 official-machine reserved workset 已排空，不声明全局 `old_epoch_drained`、canonical route
 fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2 evidence、activation
-或 formal warning。
+或 formal warning。本增量进一步实现一个 scoped official-scheduler lifecycle event，
+原子表达 `SEALED(old)+ACTIVE(new)`，并以无参数 cycle-v4 adapter 执行事件授权的 frozen
+cycle-v3；其 claims 与 trusted/anti-rollback/continuous-rotation 边界见下节。
+
+## 2026-08-30 atomic `SEALED(old) + ACTIVE(new)` and authorized cycle v4
+
+The profile-free `ootang_epoch_active_transition.py` adds one create-only immutable lifecycle
+event, not two independently writable state files. First publication holds the surviving old
+`manager -> cycle -> replay -> shadow` locks, then the candidate's
+`cycle -> deploy -> runner -> replay -> shadow` writer locks before it revalidates the strengthened
+V2 completion, exact current-empty R1/R2a candidate authority, the selected new epoch, and a
+same-slot shadow root containing at most its held lock file. This closes the candidate-write
+TOCTOU before the event atomically records the old official scheduler as
+`SEALED` and the prepared epoch as `ACTIVE`; `ACTIVE` means authorized for machine genesis
+initialization, so `new_epoch_genesis_initialized=false` remains explicit. No slot is moved and no
+old or new ledger receives a lifecycle row.
+
+The event pins the bounded-completion path/hash/size, exact R1/R2a sequence/hash, old fresh ledger
+count/terminal, candidate/slot/new epoch, live and shadow roots, frozen executable tree, exact
+cycle-v3 script/config, and cycle-v4 adapter hash. After publication, repolls and scheduler leases
+deep-replay those historical R1/R2a selectors instead of reusing the pre-transition current-empty
+gate. A legitimate later genesis therefore does not invalidate the immutable transition.
+
+`ootang_prequential_cycle_v4.py` is the public no-argument official scheduler adapter. Its manager
+authorization lease spans the exact frozen cycle-v3 child, and its CLI exposes no runtime-root
+override. Missing transition authority is a normal `waiting_for_active_transition` status and
+exit 0. Child status 0 completes the poll, 3 preserves busy semantics, and any other nonzero status
+or binding drift fails closed. Its independently replaceable status is a
+`cache_authority=false` diagnostic and never joins the transition event chain.
+
+The positive authority is scoped to `official_machine_scheduler_lifecycle` and its authorized
+entrypoint. Unqualified `old_epoch_drained`, generic/canonical/direct writer fences, disabled old
+direct entrypoints, anti-rollback, trusted anchor, E2, formal warning, continuous automatic
+rotation, cross-ledger database atomicity, calibration promotion, and initialized new genesis all
+remain false. This is a local trusted-writer transition and does not bind RFC 3161; external or
+root-resistant qualification still requires independent TSA/KMS/transparency evidence.
+
+ConvLSTM, operational v4, frozen splits/metrics/thresholds, model parameters, artifacts, and
+scientific conclusions are unchanged. No training, network action, full scientific pipeline, or
+historical slow fault matrix ran. Completion/transition/cycle-v4/main focused validation passes
+`53/53` in 4.337 seconds; Ruff check/format, Python compilation, default/explicit dry-runs, diff
+checks, and the unchanged 97-path protected aggregate
+`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3` pass. Final independent
+review found and closed the candidate-write TOCTOU and a nested lock-release failure path, then
+reported no remaining P0/P1/P2. Transition, cycle-v4, their focused tests, `main.py`, and its test
+SHA-256 values are
+`443cba9c5faec370f0d87e167623ff306b8cfd6b35e5679a291fbc2a9258a484`,
+`3a65d31fed29c8bf16f9c9db4959260bc0332287101982b5fdc92ad6a2799600`,
+`ce587c2070e15b82ed55bfae714ecb72e1f9c237ca9ea2c463f61dea75fb7680`,
+`abe878d0011c89f0e33af57bc2656c9b3bf9fb6d4d1ebea25a01cd9fd14d0a55`,
+`83af0111181c4635056dfad10a8346eaebe5cd893071544b0face8a896458001`, and
+`45c2e3f8f12573903102d65dc9c6ba095073b497a3d743592e07c2128d44b4a4`.
+Detailed semantics are in `docs/ootang_epoch_active_transition_engineering.md`.
+
+The immediate next operational step is one real but isolated machine-scheduler run through
+`settlement -> transition -> cycle-v4/genesis`, followed separately by external trusted-time/
+anti-rollback qualification and a multi-generation continuous rotation controller. None should be
+represented by broadening this scoped event or by a manual waiver.
 
 ## 2026-08-30 V2 live-ledger prefix attestation correction
 
@@ -76,10 +133,11 @@ backdating ran. ConvLSTM/v4, frozen splits/metrics/thresholds, parameters, artif
 conclusions are unchanged. Detailed semantics are in
 `docs/ootang_epoch_bounded_drain_completion_engineering.md`.
 
-The next boundary is the atomic `SEALED(old) + ACTIVE(new)` transition that consumes this scoped
-V2 decision and establishes scheduler authorization. Do not add another drain-ready singleton.
-The V1 branch must be completed inside its writer-cut/atomic-transition transaction rather than
-publishing a standalone staleable drained Boolean.
+That next boundary is now implemented as the one-event scoped
+`SEALED(old) + ACTIVE(new)` transition and authorized cycle-v4 adapter described above; no extra
+drain-ready singleton was inserted. The V1 branch must still be completed inside its own
+writer-cut/atomic-transition transaction rather than publishing a standalone staleable drained
+Boolean.
 
 ## 2026-08-30 epoch scope audit and machine settlement cycle v1
 
@@ -198,8 +256,9 @@ Detailed semantics are in
 This historical next-step plan was unreachable because durable V1 authority makes the V2 branch
 inert. The implemented V2 completion instead binds the matching manifest/candidate, physical
 `both_cut` admission event, bounded closure, and a fresh zero-actionable six-family capture. It
-publishes only a scoped official-machine workset decision; active switching,
-`SEALED(old)+ACTIVE(new)`, scheduler authorization, and cycle v4 remain later stages.
+publishes only a scoped official-machine workset decision. The later one-event active transition
+and authorized cycle-v4 adapter now consume that decision without widening the historical closure
+claim.
 
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1
 
@@ -3263,13 +3322,16 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    that new version. Failure waits or
    blocks; never add human date selection, freezing, cleanup, approval, force or
    fabricated backfill.
-5. Treat the V2 scoped bounded-drain decision as implemented, but do not reinterpret its
-   `official_machine_reserved_workset` scope as unqualified `old_epoch_drained`. The next machine
-   boundary is one authoritative atomic `SEALED(old) + ACTIVE(new)` transaction that consumes the
-   scoped event and establishes scheduler authorization; do not insert another drain-ready
-   singleton. V1 completion must be coupled to its writer cut or atomic transition. Keep repeated
-   receipt/ledger scans from growing as O(N^2), and do not use historical OOF rows as future
-   predictions, select a best seed, or backdate a missed target.
+5. Treat the V2 scoped bounded-drain decision, one-event scoped
+   `SEALED(old) + ACTIVE(new)` transition, and no-argument authorized cycle-v4 adapter as
+   implemented. Do not reinterpret `official_machine_reserved_workset` as unqualified
+   `old_epoch_drained`, or the official scheduler lease as disabling every direct old entrypoint.
+   The next machine boundary is one real but isolated
+   `settlement -> transition -> cycle-v4/genesis` run. Keep external trusted-time/anti-rollback
+   qualification and a multi-generation continuous rotation controller separate; neither is
+   implied by the local event. V1 completion must be coupled to its writer cut or separately
+   defined atomic transition. Keep repeated receipt/ledger scans from growing as O(N^2), and do not
+   use historical OOF rows as future predictions, select a best seed, or backdate a missed target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already

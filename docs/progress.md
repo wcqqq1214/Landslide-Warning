@@ -5,6 +5,49 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 atomic `SEALED(old) + ACTIVE(new)` 与 authorized cycle v4（本增量）
+
+- 新增 profile-free `ootang_epoch_active_transition.py`。唯一 create-only immutable event 在同一
+  commit 中原子记录 scoped official scheduler 的 old `SEALED` 与 new `ACTIVE`；没有拆成两个
+  lifecycle 文件，没有移动 final stable slot，也没有向旧/new ledger 写 lifecycle row。`ACTIVE`
+  只授权机器 scheduler 初始化新 genesis，事件明确保留
+  `new_epoch_genesis_initialized=false`。
+- 首次发布先持有旧 `manager -> cycle -> replay -> shadow` 四锁，再持候选
+  `cycle -> deploy -> runner -> replay -> shadow` 五个 writer locks，随后重验 strengthened V2
+  completion、exact current-empty R1/R2a authority、candidate/new epoch binding 与只含 held lock 的
+  same-slot shadow；这关闭了 empty check 与 event publish 之间的候选写入竞态。事件
+  固定 completion path/hash/size、R1/R2a sequence/hash、old fresh tip、candidate/slot/new id、live/
+  shadow roots、frozen executable tree、exact cycle-v3 script/config 及 cycle-v4 adapter SHA-256。
+  发布后的 repoll/lease 改用 historical R1/R2a replay，不再要求 candidate 当前 namespace 为空，
+  因此后续合法 genesis 不会反向破坏既有 transition authority。
+- 新增公开无参数 `ootang_prequential_cycle_v4.py`。它持有 manager authorization lease 覆盖完整
+  frozen cycle-v3 child，且只使用事件授权的 script/config/live/shadow roots；公开 CLI 无 root
+  override。缺 transition 是正常 `waiting_for_active_transition` 且退出 0；child 0/3 分别表示
+  complete/busy，其他非零与任何 binding 漂移均 fail closed。cycle-v4 只写独立
+  `cache_authority=false` status，不加入 lifecycle authority chain。
+- positive claim 严格限定为 `official_machine_scheduler_lifecycle` 与 official scheduler entrypoint；
+  unqualified `old_epoch_drained`、generic/canonical/direct fences、old direct entry disabled、trusted/
+  anti-rollback、E2、formal warning、automatic calibration、continuous automatic rotation、cross-ledger
+  DB atomicity 与 new genesis initialized 均为 false。当前是 local trusted-writer transition，不绑定
+  RFC 3161；外部/root-resistant 资格留待独立 TSA/KMS/透明日志证据。
+- ConvLSTM、operational v4、冻结 splits/metrics/thresholds、参数、产物与科研结论未改动；没有
+  训练、网络、全量科研管线或历史慢速 fault matrix。completion/transition/cycle-v4/main 聚焦测试
+  `53/53` 在 4.337 秒通过；Ruff check/format、Python compile、默认/显式 dry-run、diff check 与
+  97-path protected aggregate
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3` 均通过。最终独立审查发现并
+  修复 candidate-write TOCTOU 与 candidate release 异常跳过旧锁释放两个 P1，复审无剩余
+  P0/P1/P2。transition、cycle-v4、对应 focused tests、`main.py` 与其 test SHA-256 分别为
+  `443cba9c5faec370f0d87e167623ff306b8cfd6b35e5679a291fbc2a9258a484`、
+  `3a65d31fed29c8bf16f9c9db4959260bc0332287101982b5fdc92ad6a2799600`、
+  `ce587c2070e15b82ed55bfae714ecb72e1f9c237ca9ea2c463f61dea75fb7680`、
+  `abe878d0011c89f0e33af57bc2656c9b3bf9fb6d4d1ebea25a01cd9fd14d0a55`、
+  `83af0111181c4635056dfad10a8346eaebe5cd893071544b0face8a896458001` 与
+  `45c2e3f8f12573903102d65dc9c6ba095073b497a3d743592e07c2128d44b4a4`。详细边界见
+  `docs/ootang_epoch_active_transition_engineering.md`。
+- 下一步优先做真实但隔离的机器 scheduler 运行，验证
+  `settlement -> transition -> cycle-v4/genesis` 的可观测闭环；之后分别实现外部 trusted-time/
+  anti-rollback 资格与多代 continuous rotation controller，不用人工 waiver 扩大当前 claim。
+
 ## 2026-08-30 V2 live-ledger prefix attestation correction（本增量）
 
 - transition 前的 correctness audit 发现：既有 completion 虽会拒绝 live count 回退和同 count
@@ -44,9 +87,10 @@
 - focused completion `3/3` 与 cycle/main integration `42/42` 合计 `45/45`，测试执行 1.287 秒；
   Ruff check/format、Python compile 与 diff check 均通过。没有运行训练、完整科研管线、历史
   multi-minute drain fixture、真实网络、人工冻结/批准/清理、force 或 backdate。
-- 下一步不再增加 drain-ready singleton，而是设计原子 `SEALED(old) + ACTIVE(new)` transition：
-  消费本 scoped V2 decision 并同时建立 scheduler authorization。V1 completion 应与其 writer cut
-  或同一个原子 transition 耦合，而不是提前持久化一个可过期的 drained Boolean。
+- 该条 next-step 已由本轮后续增量实现：没有增加 drain-ready singleton，而是用一个 immutable
+  event 原子提交 scoped `SEALED(old) + ACTIVE(new)` 并绑定 scheduler authorization。V1
+  completion 仍应与其 writer cut 或独立定义的原子 transition 耦合，不能提前持久化一个可过期的
+  drained Boolean。
 
 ## 2026-08-30 epoch scope audit 与 machine settlement cycle v1（本增量）
 
@@ -126,9 +170,9 @@
   `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` 与
   `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
 - 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。该条历史
-  next-step 已被后续互斥性审计替代：V2 completion 只绑定 matching manifest/candidate、V2
-  admission cut、bounded closure 与 fresh inventory；active switch、SEALED/ACTIVE transition、
-  scheduler authorization 与 cycle v4 继续留到后续独立阶段。
+  next-step 先被后续互斥性审计修正：V2 completion 只绑定 matching manifest/candidate、V2
+  admission cut、bounded closure 与 fresh inventory；再由当前增量的独立 one-event
+  SEALED/ACTIVE transition 与 no-argument authorized cycle v4 消费，不回写本历史 closure claim。
 
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1（本增量）
 

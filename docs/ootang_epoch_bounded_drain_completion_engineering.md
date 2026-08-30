@@ -92,8 +92,16 @@ real network action, manual freeze, approval, cleanup, force, or backdating ran.
 
 ## Next boundary
 
-The next meaningful increment is the atomic lifecycle transition that consumes
-this scoped V2 decision and commits `SEALED(old) + ACTIVE(new)` under the
-appropriate machine locks. It must also define scheduler authorization for the
-new epoch. It should not add another all-settled/all-successor/drain-ready
-singleton before that transaction.
+The downstream atomic lifecycle transition is now implemented. It consumes
+this exact scoped V2 decision and commits one immutable
+`SEALED(old) + ACTIVE(new)` official-scheduler event while binding the prepared
+candidate and authorized cycle-v4 entrypoint; no additional
+all-settled/all-successor/drain-ready singleton was inserted. Historical replay
+uses the event-pinned completion and R1/R2a authority, so a later legitimate
+new-epoch genesis does not reapply the pre-transition current-empty gate.
+
+The next boundary is an isolated real machine run through
+`settlement -> transition -> cycle-v4/genesis`, followed separately by external
+trusted-time/anti-rollback qualification and a multi-generation continuous
+rotation controller. None broadens this completion into unqualified
+`old_epoch_drained` or a generic filesystem fence.
