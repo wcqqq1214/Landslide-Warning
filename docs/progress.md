@@ -1,9 +1,47 @@
 # 项目工作进度
 
-> 更新日期：2026-08-29。本文件记录工程与研究实现进度；正式 v5 门禁以
+> 更新日期：2026-08-30。本文件记录工程与研究实现进度；正式 v5 门禁以
 > `v5_validation_protocol.md` 为准，机器连续预测支路以
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-30 source-derived retained-base terminal coverage v1（本增量）
+
+- 新增独立 leaf
+  `ootang_epoch_source_derived_retained_base_terminal_coverage.py` 与严格 hash-pinned
+  profile，namespace 为
+  `workset_recovery_v1/source_derived_retained_base_terminal_coverage_v1/`。authority
+  只读深回放 current source-derived overlay、recovery-v6 per-item receipt/event 与可选的
+  published source-terminal aggregate per-item evidence；自身只写 content-addressed proof、
+  singleton event 与 `cache_authority=false` 的可替换 status。
+- 分母严格定义为 frozen base 中在 current overlay 后完整
+  `key_id + natural_key + namespace_digest` 未改变的行，再排除唯一 current
+  `source_snapshot_ingested` parent。实现同时验证
+  `E = P ⊎ Qretained ⊎ D ⊎ Rnew`：旧 `R` identity 必须消失、`I` 必须被删除、
+  `D/Rnew` 不得混入 retained denominator；任何未分类 base identity 消失都会 fail closed。
+  空 `Qretained` 是合法的精确机器结果，可发布零项证明，无需人工冻结或例外。
+- 每个非空 retained target 只能由 exact recovery-v6 terminal receipt + published event，或
+  exact source-terminal aggregate proof + event 覆盖，且两种 provenance 必须不相交。whole
+  frozen-manifest boolean、status、receipt-only、aggregate proof-only、旧 `R`、`I` 均不能计数。
+  可选 source-terminal authority 只绑定实际被选中的 per-item rows，避免后来无关 aggregate
+  事件增长使既有 proof 漂移。proof-only crash 的下一 poll 只补 matching singleton event。
+- focused `6/6` 通过，用时 7.243 秒；本 authority、current overlay、frozen-manifest terminal
+  assessment 与 step-dependency authority 直接链 `20/20` 通过，用时 12.641 秒。覆盖空子集、
+  非空 recovery terminal evidence、published source-terminal per-item evidence、缺证据等待、
+  `R/I` 排除、status 重建与 proof-only crash adoption。Ruff format/E7/E9/F、Python compile、
+  strict profile load 与 diff checks 通过；未运行训练、全科研管线或真实网络。
+- 当前 implementation/profile/test、工程文档、受保护 `main.py` 与 ConvLSTM model SHA-256
+  分别为
+  `2db6b5bf204990aa3879cf90d8492a57c04e098e5ee3d8ede824af973e1308c8`、
+  `8db880133d09d785784aec029f7b84e4410b042af39a50c2eda7635e74d11456`、
+  `0b8485a7c1043d4d62cd051bf0f06276aeb9c8fd0224dbede1116d3afccabd14`、
+  `bb375b895dcc7c42ec90c22a0875c7c877f205f8c95cdcc34c9a33f6b7e5457f`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` 与
+  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄
+  增量可构建 current-effective-workset terminal coverage assessor：只合并本 retained-base
+  event、已发布 source-parent aggregate 与 current `D/R` coverage，并继续把 generic
+  recovery/transitive closure、drain/lifecycle 留在独立边界。
 
 ## 2026-08-29 source-derived source-parent terminal aggregate v1（本增量）
 

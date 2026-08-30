@@ -1,9 +1,9 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
-**Prepared:** 2026-08-29
+**Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `e2584f6 feat: prove effective outcome coverage`
+**Committed baseline before this increment:** `2e825aa feat: aggregate source parent terminality`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -17,11 +17,58 @@ dispatcher v1、source-key terminal aggregate v1、frozen-manifest terminal cove
 source-ingest derived outcome-key reservation v1、cross-freeze source-ingest writer/adoption
 v1、source-derived effective-workset overlay v1、historical-N+1 materialization dispatcher v1、
 source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
-outcome consumption v1、source-derived effective outcome terminal coverage v1 已提交；当前
-工作树新增独立 source-derived source-parent terminal aggregate v1。它仍不是完整
+outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
+source-parent terminal aggregate v1 已提交；当前工作树新增独立 source-derived retained-base
+terminal coverage v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-30 source-derived retained-base terminal coverage v1
+
+The new `ootang_epoch_source_derived_retained_base_terminal_coverage.py` is a separate leaf under
+`workset_recovery_v1/source_derived_retained_base_terminal_coverage_v1`. It deeply replays the
+current source-derived overlay and constructs a disjoint identity partition instead of reusing the
+older whole-frozen-manifest coverage boolean. With identity fixed as
+`key_id + natural_key + namespace_digest`, its denominator contains only frozen-base rows that
+survive the current overlay unchanged, excluding the unique current source-ingest parent. The
+strong checked partition is `E = P ⊎ Qretained ⊎ D ⊎ Rnew`; old `R` and removed `I` identities
+cannot count, and an unclassified disappearing base identity fails closed. An empty retained subset
+is an exact publishable machine result and requires no manual exception.
+
+Every non-empty retained target must have either a current recovery-v6 terminal receipt plus its
+exact published event, or a matching published source-terminal aggregate proof/event selected per
+identity. Those provenance sets must be disjoint. Status, receipt-only and aggregate proof-only
+frontiers, old rebound identities, invalidations, and a blanket manifest-coverage boolean never
+count. Optional source-terminal state is bound only through selected per-item rows so later
+unrelated aggregate appends cannot drift an existing proof. The authority writes only one
+content-addressed proof, one singleton event, and a replaceable `cache_authority=false` status; a
+proof-only crash forward-adopts only the matching event.
+
+Only the scoped fact `all_current_retained_base_items_terminal=true` is published. Frozen-manifest
+coverage, source-parent terminality, current `D/R` coverage, whole-effective terminality,
+recovery/transitive closure, all-lane support, drain/lifecycle/activation, trusted/E2/network, and
+formal-warning claims remain false. It mutates no upstream authority.
+
+Focused tests are `6/6` in 7.243 seconds. The direct retained/overlay/manifest-assessment/sidecar
+chain is `20/20` in 12.641 seconds. Ruff format/E7/E9/F, Python compilation, strict profile loading,
+and diff checks pass. No training, full scientific pipeline, or real-network action occurred.
+Implementation, profile, focused-test, engineering-document, protected `main.py`, and ConvLSTM
+model SHA-256 values are
+`2db6b5bf204990aa3879cf90d8492a57c04e098e5ee3d8ede824af973e1308c8`,
+`8db880133d09d785784aec029f7b84e4410b042af39a50c2eda7635e74d11456`,
+`0b8485a7c1043d4d62cd051bf0f06276aeb9c8fd0224dbede1116d3afccabd14`,
+`bb375b895dcc7c42ec90c22a0875c7c877f205f8c95cdcc34c9a33f6b7e5457f`,
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`, and
+`282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
+Detailed semantics are in
+`docs/ootang_source_derived_retained_base_terminal_coverage_engineering.md`.
+
+The next narrow increment should be a current-effective-workset terminal coverage assessor. It may
+combine only three separately published exact families: retained-base coverage, the current
+source-ingest parent aggregate, and current effective `D/R` coverage. It must reconstruct the
+current overlay identity partition again and must not promote that family union into generic
+recovery/transitive closure or drain/lifecycle authority.
 
 ## 2026-08-29 source-derived source-parent terminal aggregate v1
 
