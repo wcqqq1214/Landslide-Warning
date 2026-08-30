@@ -166,7 +166,7 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 
 指定 Word 论文要求以 MVIF 趋势项的初始稳定斜率确定逐测点基准速度，并按 `V0=MAX(1.5V, V+2σ)` 建立速度框架。当前输入上的严格 MVIF 拟合无法稳定识别有限 `t_f`，因此项目没有伪造一个“论文同款 MVIF V0”。
 
-为先跑通藕塘，v4 使用的是明确标记为 `raw_velocity_kmeans_comparator` 的项目特有比较器，并在配置和结果中保留这一来源。它可以支持工程流程演示，但不能在论文中不加限定地称为指定 Word 方法的严格复现。若最终数据集具备可解释稳定段，应重新冻结逐点稳定段、V、σ、V0、blue 边界、加速度基线和切线角参数，再进行确认性验证。
+为先跑通藕塘，v4 使用的是明确标记为 `raw_velocity_kmeans_comparator` 的项目特有比较器，并在配置和结果中保留这一来源。它可以支持工程流程演示，但不能在论文中不加限定地称为指定 Word 方法的严格复现。若最终数据集具备可解释稳定段，应由机器重新建立并版本化逐点稳定段、V、σ、V0、blue 边界、加速度基线和切线角参数，再进行确认性验证。
 
 ## 8. 当前可以与不可以写入论文的结论
 
@@ -221,3 +221,28 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 | 7 通道 rolling seed 0 产物与血缘 | [`rolling manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json) |
 | 7 通道三折 × 五种子产物与血缘 | [`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
 | 7 通道 fixed-120 管线运行记录 | [`convlstm_elevation_fixed120_v1_run.json`](../figures/pipeline/convlstm_elevation_fixed120_v1_run.json) |
+
+## 11. 论文与导师汇报的最小图表清单
+
+以下清单只复用现有版本化产物。图件不重新计算，表格后续只从所列 CSV 机械汇总，不重跑模型或
+查看新的评价折。
+
+### 11.1 核心图件
+
+| 顺序 | 图件与用途 | 使用边界 |
+| ---: | --- | --- |
+| 1 | [`ConvLSTM 8 点完整时间轴`](../figures/convlstm/forecast_all_stations.png)：展示 fit 诊断、calibration、test 预测及 P10/P50/P90 | 当前 7 通道 seed-0 单切分图，不代表三折 × 五种子总体；fit 线不是独立评价。现有 2100×3000 PNG 可用于汇报，投稿时仅需从既有 CSV 等价导出矢量版。 |
+| 2 | [`H=7 site 与 8 点逐时颜色`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)（[SVG](../figures/ngboost_auto_state_classifier_v1/warning_timeline.svg)）：回答每个时刻输出何种信号 | 自动标签是未来变形 proxy，测点模型只作诊断；固定分类器未胜 lag-7 persistence，不展示 fold 3 分类指标。 |
+| 3 | [`当前五级分类 SHAP`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf)（[SVG](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg)）：展示 site 模型依赖的测点 × 指标 | 解释量为 `sum(k*p_k)`；12 个背景日、25 个解释日 × 32 特征。平均绝对 SHAP 无方向，非因果、非 ConvLSTM 内部解释。 |
+| 4 | [`v4 全测点四指标诊断`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.pdf)（[SVG](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg)）：对齐位移与区间、速度、加速度、切线角和融合等级 | observed-after-forecast 透明规则基线，不是 NGBoost 监督结果或正式预警；正文空间不足时移至补充材料。 |
+| 5 | [`v4 多测点综合时间线`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf)（[SVG](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)）：展示 8 点候选、局部最高和 site-confirmed 双轴 | 未确认日期表示空间支撑不足，不是缺测；不能解释为事件召回、提前量或现场有效性。 |
+
+### 11.2 核心表格来源
+
+| 角色 | 版本化来源 | 正文应回答的问题 |
+| --- | --- | --- |
+| 主表 1：ConvLSTM 全站概率预测 | [`seed_stability_metrics.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_metrics.csv)、[`seed_stability_summary.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv) | 8 点及 overall 的误差、相对 persistence skill、增量响应、coverage、width 和 interval score；按五个预设 seed 汇总，不选最佳 seed。 |
+| 主表 2：H=7 自动标签定义与支持 | [`label_state_definition.csv`](../figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv)、[`site_auto_labels.csv`](../figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv)、[`label_gate.json`](../figures/ngboost_auto_state_ecdf_v2/label_gate.json) | `y` 如何由 fold-1 ECDF、两个未来结果量和 O1/O2/O3 形成，以及 fold 1/2 五级支持；不列 fold 3 支持。 |
+| 主表 3：分类器与基线公平比较 | [`classifier metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`memory metrics`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv)、[`residual metrics`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) | Panel A 报 fold-2 all-valid 280 日的 NGBoost/Logistic/prior；Panel B 报 common 273 日的 v1/memory/residual/persistence，并保留 rejected 决策。 |
+| 主表 4：多点逐时输出与空间综合 | [`station timeline`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`site timeline`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv) | 各点五色候选、加速度等级、site-confirmed 与 local-max 的覆盖和支持差异；完整逐时记录作为附件。 |
+| 补充表 S1：8 点加速度阈值 | [`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) | 每点 fit-only `A/σa/A0` 与五级边界；表注明 project operationalization、non-formal，不称为论文原阈值。 |

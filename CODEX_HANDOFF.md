@@ -102,6 +102,13 @@ ConvLSTM result, v4 result, or evaluation split was changed. The next task is ma
 figure/table and method/result consolidation from existing versioned artifacts only; do not add
 another NGBoost variant or use fold 3 for model evaluation.
 
+The minimum manuscript/advisor figure and table inventory is now in section 11 of
+`docs/ootang_stage_results_package.md`. Five existing figures were visually checked and mapped to
+the advisor requirements; all have PDF/SVG masters except the 2100×3000 ConvLSTM all-station PNG.
+Five table sources are fixed to existing CSV/JSON artifacts. No figure or experiment was rerun.
+Next, draft the manuscript-facing method and results text from that inventory, preserving the
+negative classifier conclusion and all evidence boundaries.
+
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
