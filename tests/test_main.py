@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 38)
+        self.assertEqual(len(pipeline.STAGES), 39)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -259,7 +259,41 @@ class PipelineTests(unittest.TestCase):
                 for path in stage.outputs
             )
         )
+
+    def test_ngboost_auto_state_stage_is_explicit_labels_only_and_isolated(self):
+        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-auto-state"]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "exploratory_auto_future_state_proxy",
+        )
+        self.assertEqual(stage.script, "code/warning/ootang_ngboost_auto_state.py")
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_ngboost_auto_state.v1.json"),
+        )
+        self.assertIn("config/ootang_ngboost_auto_state.v1.json", stage.inputs)
+        self.assertTrue(
+            all(
+                path.startswith("figures/ngboost_auto_state_v1/")
+                for path in stage.outputs
+            )
+        )
         self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
+        self.assertTrue(
+            all(
+                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
 
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])

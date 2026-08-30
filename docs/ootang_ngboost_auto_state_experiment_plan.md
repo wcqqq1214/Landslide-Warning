@@ -5,8 +5,8 @@
 - Origin Skill: experiment-agent
 - Origin Mode: plan
 - Origin Date: 2026-08-30
-- Verification Status: UNVERIFIED
-- Version Label: code_plan_v1
+- Verification Status: VERIFIED
+- Version Label: labels_only_v1_failed_gate
 
 ## Experiment Overview
 
@@ -20,7 +20,7 @@
 ## Setup
 
 - **Language/Framework**: Python >= 3.10；NumPy、pandas、scikit-learn；第二阶段复用 NGBoost
-- **Entry Command**: 计划新增 `uv run python main.py --stage ootang-ngboost-auto-state --labels-only`；当前尚未实现
+- **Entry Command**: `uv run python main.py --stage ootang-ngboost-auto-state`；该 explicit-only stage 默认就是 labels-only
 - **Working Directory**: `/Users/wcqqq1214/Project/Landslide-Warning`
 - **Dependencies**: 只使用现有 `pyproject.toml` 依赖；不为变点检测新增库
 - **Environment**: CPU 即可；标签诊断不训练 ConvLSTM
@@ -29,6 +29,7 @@
 
 | Input | Path | Description |
 | --- | --- | --- |
+| 运行配置 | `config/ootang_ngboost_auto_state.v1.json` | 固定 H=7、fold 1 标签器拟合、有序五聚类、非阻断支持度提示与 6 个输出路径 |
 | ConvLSTM 时间 OOF | `figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv` | 5 seeds × 3 folds × 287 日 × 8 点，共 34,440 行；五种子预先固定等权均值后为 6,888 个 OOF 测点—时刻 |
 | 逐点运动学 | `data/ootang_kinematics_long.csv` | 原始位移、真实 `Δt` 速度、`ΔV` 与严格加速度；模型只用导师要求的加速度，`ΔV` 仅审计 |
 | 空间块与 v4 基线 | `config/ootang_operational_run.v4.draft.json` | 复用固定的 O1/O2/O3 点位拓扑和 v4 基线，不复用其颜色作训练标签 |
@@ -36,8 +37,12 @@
 
 ## 固定的时间协议
 
-1. 自动标签器的标准化、变点和五级中心只使用首个 OOF 日之前的历史：`2016-08-06` 至 `2018-02-20`。因目标窗口为未来 7 日，最后一个可用于拟合标签器的锚点为 `2018-02-13`。
-2. OOF fold 1（`2018-02-21`—`2018-12-04`）用于首轮 NGBoost 拟合；fold 2（`2018-12-05`—`2019-09-17`）只用于方法验收。方案锁定后以 fold 1+2 重训，fold 3（`2019-09-18`—`2020-06-30`）只评价一次。
+### 2026-08-30 预诊断纠偏
+
+最初计划把 `2016-08-06`—`2018-02-20` 的 pre-OOF 状态中心永久固定。只读复算发现该时期的极端变形尺度明显高于后续 OOF：固定边界应用到三个 OOF 折后，测点和 site 均只剩 green/blue，yellow/orange/red 全为 0，无法训练五分类。该结果否决的是“跨时期固定绝对 taxonomy”，不是自动标签方向。v1 只在训练折 fold 1 学习统一 taxonomy、在 fold 2/3 固定应用；但由于三个折均已参与开发期诊断，后两折都只能作探索性开发评价，不能再称独立验收或确认性留出。
+
+1. 自动标签器的标准化、变点和五级中心只使用 OOF fold 1（`2018-02-21`—`2018-12-04`）内未来 7 日完整的锚点，即最后 7 日不参与。训练目标的类别定义可以由训练折结局学习，但随后固定，不能用 fold 2/3 重聚类或改边界。
+2. fold 1 同时提供自动标签器拟合和首轮 NGBoost 训练标签；fold 2（`2018-12-05`—`2019-09-17`）用于开发期评价，fold 3（`2019-09-18`—`2020-06-30`）只作历史描述。二者均已暴露，不能重新称为独立验收或未见确认集。
 3. 标签器、NGBoost 和输出均按整天组织全部 8 点；禁止同一天不同测点跨训练/评价集合。
 4. 每个 fold 末 7 日不生成目标，禁止跨 fold 借未来观测。
 5. 输入 `interval_z_t` 需要当天实测 `U_t`，因此系统语义固定为“收到时刻 `t` 的观测后，预测未来 7 日状态”，不能写成观测 `U_t` 前已经发报。
@@ -72,10 +77,10 @@ Q_{0.9}\{(a_{i,t+r})_+\}_{r=1}^{7}
 
 其中正部只表达本数据位移正方向上的加速变形。标签器拟合过程固定为：
 
-1. 每个测点分别用标签器拟合期的中位数与 IQR 标准化三维 `z`；IQR 非正则该测点标签器失败。
+1. 每个测点分别用 fold 1 标签锚点的中位数与 IQR 标准化三维 `z`；IQR 非正则该测点标签器失败。
 2. 对每点的标准化三维序列做分段常值的惩罚最小化：段内平方误差 + `β × 变点数`，其中 `β=3 log(n)`、最短段长 `7` 日。实现使用现有依赖可完成的确定性精确动态规划，不增加参数搜索。
 3. 每段严重度取三个标准化分量均值；汇总 8 点全部拟合段，按段长加权做一维 `K=5` KMeans，固定 `random_state=0`，中心从小到大对应 green、blue、yellow、orange、red，相邻中心中点为边界。
-4. OOF 日期不重新分段或聚类；当 `t+7` 的观测到齐后，机器计算当日严重度并用已经固定的边界赋值。因此在线更新也不需要人工选择日期。
+4. fold 2/3 不重新分段或聚类；当 `t+7` 的观测到齐后，机器计算当日严重度并用 fold 1 固定边界赋值。因此在线更新也不需要人工选择日期。
 
 测点标签记为 `y_auto(i,t)`。滑坡体标签不取单点最大值：先按固定拓扑计算各空间块内测点严重度等权均值：
 
@@ -96,16 +101,61 @@ X_t=[CI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
 
 ## 第一增量：只实现标签诊断
 
-这一增量不训练 NGBoost、不调参，只输出类别支持和时间线。标签器必须同时满足：
+这一增量不训练 NGBoost、不调参，只输出类别支持和时间线。标签器的阻断门禁只保留：
 
-- 拟合期五级均非空，五个中心严格递增；
-- 各级未来位移增量与未来速度的中位数整体随颜色递增；
-- site 的 yellow/orange/red 各不少于 20 日，且各自不只来自一个孤立短片段；
-- 标准化、变点、聚类中心和边界的最大输入日期早于首个 OOF 日期；
+- fold 1 与 fold 2 开发期的测点/site 五级均非空，五个中心严格递增；
+- 测点与主任务 site 的各级未来位移增量、未来速度中位数均随颜色递增；
+- 标准化、变点、聚类中心和边界不读取 fold 2/3；
 - 每个输出标签只读取 `[t+1,t+7]`，无跨 fold 目标；
-- 连续运行两次输出逐字节一致。
 
-任何一项失败时只报告原因，不为了凑五级查看 fold 3 后修改窗口、日期或边界。届时保留为失败 pilot，再评估预先单列的 challenger，而不是继续搜索 NGBoost 参数。
+逐字节复现不由单次运行进程自证：提交前在外部连续运行两次并记录六项产物集合哈希；
+后续训练 stage 必须同时读取科研 gate，而不能把 pipeline 的成功退出当作标签通过。
+
+任一类别少于 20 个测点锚点/site 日时记录 `limited_support`，但不阻断科研 pilot；相应分类指标只作描述，不声称稳定类别性能。这一收窄响应项目“避免过严边界测试”的要求，也避免用任意样本数否决自动标签本身。
+
+任何阻断项失败时只报告原因，不为了凑五级修改日期或边界。届时保留为失败 pilot，再评估预先单列的 challenger，而不是继续搜索 NGBoost 参数。
+
+## 2026-08-30 labels-only v1 执行结果
+
+正式入口 `uv run python main.py --stage ootang-ngboost-auto-state` 已在 5.1 秒内完成，
+34,440 条五种子预测等权聚合为 6,888 条测点 OOF；其中 6,720 条具备完整 H=7
+未来目标，剩余 168 条恰为 `3 folds × 8 stations × 7 terminal days`。连续两次直接运行的
+六项产物集合 SHA-256 均为
+`03659acdae63a1259af539c992e122cc9429918e1de5942e51b951c317fb4300`，时间隔离、
+五种子等权和中心递增通过；外部确定性复跑另行通过。
+
+机械结论为 `label_gate_passed=false`，因此没有训练 NGBoost：
+
+- fold 1 测点五级为 `1518/476/173/59/14`，site 五级为 `104/62/34/64/16`；
+- fold 2 测点五级为 `1730/397/80/33/0`，site 五级为 `148/96/17/12/7`，测点
+  red 缺失；
+- fold 1 的未来位移/速度中位数在 orange→red 回落，说明三分量等权严重度被未来加速度
+  主导，不能把这五类解释为有序的未来变形强度；
+- site 主任务的 fold 1 中位数也在 blue→yellow 回落：未来位移为
+  `0.1434→0.1113`，未来速度为 `0.1499→0.1220`；
+- 少于 20 个样本仍只作 `limited_support` 提示，不是新增阻断条件。
+
+这次失败否决的是“三项未来结果等权 + 变点 + KMeans”这一标签器，不否决自动标签、
+ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
+`figures/ngboost_auto_state_v1/`，不得通过覆盖产物来改写失败结论。
+
+## 预先登记的单一 challenger
+
+导师指定论文第五章采用位移区间、改进切线角、速度和变形速率增量四项指标，经多项式
+逻辑回归输出五级概率；论文没有提供可直接迁移到藕塘的外部监督真值，也没有把严格
+加速度单独当作五级真值。因而不能把论文颜色表直接冒充 NGBoost 的实测标签。
+
+下一次只评估一个固定 challenger，不搜索权重或阈值：
+
+1. 对每个测点，用 fold 1 分别建立未来 H=7 位移速率和未来正速度 Q90 的经验 CDF；
+2. 两个 fold-1 百分位等权平均为未来变形严重度，fold 1 的 20/40/60/80% 分位固定为
+   green/blue/yellow/orange/red 边界，并原样应用到 fold 2/3；
+3. site 继续按固定 O1/O2/O3 先块内等权、再三块等权，并仅用 fold 1 固定自己的五级边界；
+4. 严格加速度只从标签构造中移除，仍完整保留为时刻 `t` 的 NGBoost 输入，与置信区间、
+   速度和改进切线角共同预测未来状态；
+5. site 为综合预警主任务；测点标签用于八点诊断和 SHAP，不再要求每个单点在每折都独立
+   出现五级。若 fold 2 开发期的 site 五级非空、未来位移/速度中位数有序且时间门禁通过，才进入
+   NGBoost；否则记录为第二个失败实验并停止标签搜索。
 
 ## 第二增量：固定 NGBoost 与最小基线
 
@@ -115,7 +165,7 @@ X_t=[CI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
 2. 当前自动状态持续到未来 7 日；
 3. 使用完全相同 `X/Y` 的多项 Logistic Regression（对应导师指定论文的概率融合思路，但不声称复现论文系数）。
 
-主要看状态转折时刻的 macro-F1 与 ordinal MAE；同时报告全时刻 log-loss、Brier score、每级召回和混淆矩阵。NGBoost 进入最终历史留出评价的最低条件是：fold 2 转折 macro-F1 高于 persistence 与 Logistic、转折 ordinal MAE 至少不劣于两者，且 log-loss 优于类别先验。这里是项目 pilot 门禁，不是通用工程阈值。
+主要看状态转折时刻的 macro-F1 与 ordinal MAE；同时报告全时刻 log-loss、Brier score、每级召回和混淆矩阵。进入 fold 3 历史描述的最低开发门槛是：fold 2 转折 macro-F1 高于 persistence 与 Logistic、转折 ordinal MAE 至少不劣于两者，且 log-loss 优于类别先验。这里是已暴露数据上的项目 pilot 门禁，不是独立测试或通用工程阈值。
 
 ## Expected Outputs
 
@@ -138,7 +188,7 @@ X_t=[CI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
 
 ## Analysis Plan
 
-- **Primary metric**: 第一增量为五级支持与时间因果门禁；第二增量为 fold 2 转折 macro-F1 和 ordinal MAE
+- **Primary metric**: 第一增量为五级支持与时间因果门禁；第二增量为 fold 2 开发期转折 macro-F1 和 ordinal MAE
 - **Success threshold**: 按上述机械门禁；不以全时刻 accuracy 单独判断成功
 - **Comparison**: 旧 interval-proxy 标签分布、类别先验、状态持续、多项 Logistic Regression、v4 透明规则基线
 

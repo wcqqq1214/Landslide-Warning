@@ -1,0 +1,123 @@
+{
+  "algorithm": {
+    "assignment_policy": "fixed_fold1_boundaries",
+    "beta": "3*log(n)",
+    "beta_multiplier": 3.0,
+    "future_velocity_and_acceleration_quantile": 0.9,
+    "horizon_days": 7,
+    "label_fit_fold": 1,
+    "label_fit_policy": "fold_test_anchors_complete_future_window",
+    "min_segment_length_days": 7,
+    "n_clusters": 5,
+    "ngboost_trained": false,
+    "parameter_search": false,
+    "positive_part": true,
+    "random_state": 0,
+    "seed_aggregation": "equal_weight_mean"
+  },
+  "artifact_kind": "ootang_automatic_future_deformation_state_labels",
+  "artifact_status": "exploratory_proxy_labels_not_formal_warning",
+  "boundary_version": "fold1_h7_change_point_ordered_kmeans_v1",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "inputs": {
+    "config": {
+      "path": "config/ootang_ngboost_auto_state.v1.json",
+      "sha256": "f247d2189fd32bdfbd4a975d001f20f86659829ced0dd3ef87d10f29295ef7ff"
+    },
+    "kinematics": {
+      "path": "data/ootang_kinematics_long.csv",
+      "sha256": "50e54248082429dff286c36a5b3f401d637af1a87d56fc4657e2e3f0f06c503f"
+    },
+    "predictions": {
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv",
+      "sha256": "2627ad33c8caab5ff216ab5dd4cd6799e020625434a282300cfd149155ba6f6d"
+    },
+    "predictions_manifest": {
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json",
+      "sha256": "6e6fd0361241803a3cf5404583fd0a1be413abc227863d98d3b0bfddd653ffb5"
+    },
+    "runs": {
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_runs.csv",
+      "sha256": "21b45cb82d13a2716f3b7a5fd28b390dfb2937f7073872b5419345280dd7a788"
+    },
+    "source_code": {
+      "path": "code/warning/ootang_ngboost_auto_state.py",
+      "sha256": "2b802326d5db37c98b97b55e7f20baf0b30edf8d820f21ac4e063fc8772b491f"
+    },
+    "topology": {
+      "path": "config/ootang_operational_run.v4.draft.json",
+      "sha256": "442b6e0ac2fcfddf2637ea6a2c6823c0f516e8466ced2e05339a5389216e75ca"
+    }
+  },
+  "interpretation": "automatic_future_deformation_state_proxy_not_field_hazard_truth",
+  "label_gate_passed": false,
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "ngboost_training_or_inference",
+    "convlstm_retraining_or_replacement",
+    "vajont_use_or_validation"
+  ],
+  "outputs": {
+    "gate": {
+      "path": "figures/ngboost_auto_state_v1/label_gate.json",
+      "sha256": "edb8ce195674c471687e491a2b8c2c7a541077cb7d226794d1b20c566c04be28"
+    },
+    "site_labels": {
+      "path": "figures/ngboost_auto_state_v1/site_auto_labels.csv",
+      "sha256": "eb9e5ccafc6e2a9f23e2316281451551b8404166eb9973b3e017af7710cc4703"
+    },
+    "state_definition": {
+      "path": "figures/ngboost_auto_state_v1/label_state_definition.csv",
+      "sha256": "fff02d02908073c927c04d44df4ce73c787f1749ce76a446bfe136e765ce10e7"
+    },
+    "station_labels": {
+      "path": "figures/ngboost_auto_state_v1/station_auto_labels.csv",
+      "sha256": "f0395f55cca24e621abdbd3c6efdaf604afb5f8527083852d93fb9f58d80d0f5"
+    },
+    "timeline": {
+      "path": "figures/ngboost_auto_state_v1/auto_state_timeline.png",
+      "sha256": "56df670d1c8976f9948c7c5fc3db084244b97814ad38aaefb691f17fefb75481"
+    }
+  },
+  "row_counts": {
+    "equal_weight_oof_station_rows": 6888,
+    "seed_predictions": 34440,
+    "site_output_rows": 861,
+    "site_valid_label_rows": 840,
+    "state_definition_rows": 138,
+    "station_output_rows": 6888,
+    "station_valid_label_rows": 6720
+  },
+  "spatial_blocks": {
+    "O1": [
+      "MJ9",
+      "MJ1",
+      "MJ3"
+    ],
+    "O2": [
+      "ATU4",
+      "ATU5",
+      "ATU3"
+    ],
+    "O3": [
+      "ATU2",
+      "ATU1"
+    ]
+  },
+  "time_protocol": {
+    "first_development_evaluation_date": "2018-12-05",
+    "fold_roles": {
+      "1": "automatic_taxonomy_and_future_classifier_training",
+      "2": "development_evaluation_already_exposed",
+      "3": "historical_evaluation_already_exposed"
+    },
+    "fold_terminal_days_without_target": 7,
+    "labeler_fit_start_date": "2018-02-21",
+    "labeler_last_anchor_date": "2018-11-27",
+    "labeler_max_input_date": "2018-12-04"
+  }
+}

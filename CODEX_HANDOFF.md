@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `7c63a27 docs: record machine readiness poll`
+**Committed baseline before this increment:** `559e383 docs: restore automated ngboost research plan`
 **Current research-prototype gate:** `allowed`; the historical OOF experiment is not blocked by
 Figshare, a post-2020 live feed, or formal-v5 G1--G4.
 **Current deployment gate:** authentic post-2020 finalized source unavailable; R1 remains
@@ -45,16 +45,57 @@ block this automated historical experiment.
 
 The immediate sequence is:
 
-1. aggregate the existing five-seed, three-fold ConvLSTM OOF predictions without retraining;
-2. build a fold-causal four-indicator table for all eight stations;
-3. audit an automatic future-state labeler on folds 1--2 without reading fold 3 for method choice;
-4. only after class support and temporal-causality checks, train NGBoost and emit per-station and
-   multi-station/site probabilities and five-level timelines;
+1. **Complete:** aggregate the existing five-seed, three-fold ConvLSTM OOF predictions without
+   retraining and build the fold-causal four-indicator table for all eight stations;
+2. **Complete, failed gate:** run the fold-1-fixed labels-only v1 diagnostic and preserve its failed
+   artifacts; do not train NGBoost from them;
+3. implement the single pre-registered fold-1 empirical-CDF challenger described below, with site
+   classification as the primary multi-station task and station classifications as diagnostics;
+4. only if the challenger passes the fold-2 development site-support, outcome-ordering and
+   temporal-causality gates, train NGBoost and emit all-time probabilities/colors plus SHAP;
 5. keep v4 transparent rules as a baseline, not as the training labels or replacement for R5.
 
 Do not spend the current research increment on Figshare polling, epoch/ledger expansion, trusted
 time, or a live-feed controller. Those remain a deferred deployment branch until an authentic feed
 exists. Over-engineering cleanup is also deferred until after the next research result.
+
+### Latest labels-only result and exact next experiment
+
+The explicit `ootang-ngboost-auto-state` stage completed in 5.1 seconds. It reduced 34,440
+five-seed rows to 6,888 equal-weight station OOF rows, produced 6,720 exact H=7 labels, and left
+exactly 168 fold-terminal rows unlabeled (`3 × 8 × 7`). The six artifacts reproduced byte for byte
+with aggregate SHA-256
+`03659acdae63a1259af539c992e122cc9429918e1de5942e51b951c317fb4300`.
+
+The v1 gate failed, so no NGBoost model exists from this target. Fold 2 had station counts
+green/blue/yellow/orange/red=`1730/397/80/33/0`; fold-1 red future displacement and velocity
+medians were below orange. The causal gates, fold boundaries, five-seed equality and deterministic
+centers passed. The primary site target also failed ordering: fold-1 blue→yellow future displacement
+medians were `0.1434→0.1113`, and velocity medians were `0.1499→0.1220`. This isolates the
+problem to the equal-weight future displacement/velocity/acceleration severity definition rather
+than ConvLSTM or the four predictor inputs.
+
+The only next challenger is frozen before implementation: per station, map future H=7 displacement
+rate and future positive-velocity Q90 through fold-1 empirical CDFs, average the two percentiles,
+and use fold-1 20/40/60/80% severity quantiles as fixed five-level boundaries. Apply the same frozen
+mapping to folds 2/3. Build the site severity through fixed O1/O2/O3 equal-weight aggregation and
+fit only its fold-1 quantile boundaries. Acceleration is removed only from target construction and
+remains an advisor-required time-t NGBoost input. No alternative weight or cutoff search is allowed
+if this challenger fails.
+
+All three OOF folds have now been observed during method development. Fold 2 is a development
+evaluation and fold 3 is a historical description; neither is an independent acceptance or unseen
+confirmatory holdout. A successful labels-only process exit means the diagnostic artifacts were
+generated, not that the scientific gate passed. Every downstream training stage must read
+`label_gate_passed`; external consecutive reruns, rather than the generating process itself, record
+byte-level reproducibility.
+
+The advisor-supplied thesis was re-read at its Chapter 5 method pages. It fuses displacement
+interval, improved tangent-angle, velocity and deformation-rate-increment indicator outputs with
+multinomial logistic regression, but does not provide an external automatic Ootang ground-truth
+label and does not define strict acceleration alone as that truth. Its color thresholds therefore
+remain method references, not supervised labels to copy. ConvLSTM architecture and existing model
+artifacts remain untouched.
 
 ## 2026-08-30 authentic live-feed source audit
 

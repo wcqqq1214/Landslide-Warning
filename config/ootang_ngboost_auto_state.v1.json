@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "profile_id": "ootang_ngboost_auto_state_v1",
+  "profile_version": 1,
+  "status": "exploratory_proxy_labels_not_formal_warning",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "inputs": {
+    "predictions": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_predictions.csv",
+    "runs": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_runs.csv",
+    "predictions_manifest": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json",
+    "kinematics": "data/ootang_kinematics_long.csv",
+    "topology": "config/ootang_operational_run.v4.draft.json"
+  },
+  "output_dir": "figures/ngboost_auto_state_v1",
+  "algorithm": {
+    "horizon_days": 7,
+    "label_fit_fold": 1,
+    "label_fit_policy": "fold_test_anchors_complete_future_window",
+    "beta_multiplier": 3.0,
+    "min_segment_length": 7,
+    "n_clusters": 5,
+    "random_state": 0,
+    "seed_aggregation": "equal_weight_mean",
+    "standardization": "per_station_median_iqr",
+    "assignment_policy": "fixed_fold1_boundaries"
+  },
+  "gates": {
+    "required_nonempty_folds": [
+      1,
+      2
+    ],
+    "min_class_support_advisory": 20,
+    "block_on_limited_support": false
+  },
+  "outputs": {
+    "station_labels": "station_auto_labels.csv",
+    "site_labels": "site_auto_labels.csv",
+    "state_definition": "label_state_definition.csv",
+    "gate": "label_gate.json",
+    "timeline": "auto_state_timeline.png",
+    "manifest": "manifest.json"
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "ngboost_training_or_inference",
+    "convlstm_retraining_or_replacement",
+    "vajont_use_or_validation"
+  ]
+}

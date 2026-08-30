@@ -938,6 +938,31 @@ STAGES = (
         warning_artifact_scope="exploratory_v5_candidate_display",
         enabled_by_default=False,
     ),
+    Stage(
+        "ootang-ngboost-auto-state",
+        "code/warning/ootang_ngboost_auto_state.py",
+        "生成藕塘未来 7 日自动变形状态标签与四指标 OOF 诊断（显式、非正式）",
+        inputs=(
+            "config/ootang_ngboost_auto_state.v1.json",
+            "data/ootang_kinematics_long.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_predictions.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/seed_stability_runs.csv",
+            f"{CONVLSTM_DIAGNOSTIC_ROOT}/seed_stability_0_4/manifest.json",
+            "config/ootang_operational_run.v4.draft.json",
+        ),
+        outputs=(
+            "figures/ngboost_auto_state_v1/station_auto_labels.csv",
+            "figures/ngboost_auto_state_v1/site_auto_labels.csv",
+            "figures/ngboost_auto_state_v1/label_state_definition.csv",
+            "figures/ngboost_auto_state_v1/label_gate.json",
+            "figures/ngboost_auto_state_v1/auto_state_timeline.png",
+            "figures/ngboost_auto_state_v1/manifest.json",
+        ),
+        arguments=("--config", "config/ootang_ngboost_auto_state.v1.json"),
+        warning_artifact_scope="exploratory_auto_future_state_proxy",
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
 Runner = Callable[..., subprocess.CompletedProcess]

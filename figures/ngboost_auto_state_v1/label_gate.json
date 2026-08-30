@@ -1,0 +1,299 @@
+{
+  "advisories": [
+    {
+      "blocking": false,
+      "evidence": {
+        "1": {
+          "site": {
+            "blue": {
+              "days": 62,
+              "limited_support": false,
+              "max_run_days": 23,
+              "runs": 5
+            },
+            "green": {
+              "days": 104,
+              "limited_support": false,
+              "max_run_days": 67,
+              "runs": 2
+            },
+            "orange": {
+              "days": 64,
+              "limited_support": false,
+              "max_run_days": 29,
+              "runs": 4
+            },
+            "red": {
+              "days": 16,
+              "limited_support": true,
+              "max_run_days": 16,
+              "runs": 1
+            },
+            "yellow": {
+              "days": 34,
+              "limited_support": false,
+              "max_run_days": 10,
+              "runs": 7
+            }
+          },
+          "station": {
+            "blue": {
+              "anchors": 476,
+              "limited_support": false
+            },
+            "green": {
+              "anchors": 1518,
+              "limited_support": false
+            },
+            "orange": {
+              "anchors": 59,
+              "limited_support": false
+            },
+            "red": {
+              "anchors": 14,
+              "limited_support": true
+            },
+            "yellow": {
+              "anchors": 173,
+              "limited_support": false
+            }
+          }
+        },
+        "2": {
+          "site": {
+            "blue": {
+              "days": 96,
+              "limited_support": false,
+              "max_run_days": 30,
+              "runs": 6
+            },
+            "green": {
+              "days": 148,
+              "limited_support": false,
+              "max_run_days": 60,
+              "runs": 4
+            },
+            "orange": {
+              "days": 12,
+              "limited_support": true,
+              "max_run_days": 7,
+              "runs": 3
+            },
+            "red": {
+              "days": 7,
+              "limited_support": true,
+              "max_run_days": 7,
+              "runs": 1
+            },
+            "yellow": {
+              "days": 17,
+              "limited_support": true,
+              "max_run_days": 7,
+              "runs": 4
+            }
+          },
+          "station": {
+            "blue": {
+              "anchors": 397,
+              "limited_support": false
+            },
+            "green": {
+              "anchors": 1730,
+              "limited_support": false
+            },
+            "orange": {
+              "anchors": 33,
+              "limited_support": false
+            },
+            "red": {
+              "anchors": 0,
+              "limited_support": true
+            },
+            "yellow": {
+              "anchors": 80,
+              "limited_support": false
+            }
+          }
+        }
+      },
+      "minimum_advisory_support": 20,
+      "name": "limited_class_support",
+      "triggered": true
+    },
+    {
+      "blocking": false,
+      "evidence": {
+        "equal_seed_weights": true,
+        "parameter_search": false,
+        "random_state": 0,
+        "reason": "a single process cannot attest its own second-run artifact hashes",
+        "thread_limit": 1
+      },
+      "name": "external_reproducibility_verification_required",
+      "triggered": true
+    }
+  ],
+  "artifact_kind": "ootang_automatic_future_deformation_state_labels",
+  "artifact_status": "exploratory_proxy_labels_not_formal_warning",
+  "fold_roles": {
+    "1": "automatic_taxonomy_and_future_classifier_training",
+    "2": "development_evaluation_already_exposed",
+    "3": "historical_evaluation_already_exposed"
+  },
+  "formal_warning_output": false,
+  "gates": [
+    {
+      "evidence": {
+        "site_day_counts": {
+          "blue": 62,
+          "green": 104,
+          "orange": 64,
+          "red": 16,
+          "yellow": 34
+        },
+        "station_anchor_counts": {
+          "blue": 476,
+          "green": 1518,
+          "orange": 59,
+          "red": 14,
+          "yellow": 173
+        }
+      },
+      "name": "label_fit_fold_five_levels_nonempty",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "site_centers": [
+          -0.26665043249039044,
+          0.2657548437485731,
+          0.536322330771292,
+          0.8937304478179136,
+          2.1023335372359666
+        ],
+        "station_centers": [
+          -0.016347747771131793,
+          1.0346118449240616,
+          2.3144682650509254,
+          4.018937628853621,
+          7.495503734578889
+        ]
+      },
+      "name": "five_centers_strictly_increasing",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "blue": {
+          "future_displacement_median": 0.19948942909428524,
+          "future_velocity_median": 0.21451700000001206
+        },
+        "green": {
+          "future_displacement_median": 0.05916116027908304,
+          "future_velocity_median": 0.06274011365592283
+        },
+        "orange": {
+          "future_displacement_median": 0.38776285714285613,
+          "future_velocity_median": 0.4079360000000065
+        },
+        "red": {
+          "future_displacement_median": 0.28211071428571344,
+          "future_velocity_median": 0.32957000000000675
+        },
+        "yellow": {
+          "future_displacement_median": 0.37831285714285706,
+          "future_velocity_median": 0.406819999999982
+        }
+      },
+      "name": "fit_station_outcome_medians_monotone_by_color",
+      "passed": false
+    },
+    {
+      "evidence": {
+        "blue": {
+          "future_displacement_median": 0.1433570816380998,
+          "future_velocity_median": 0.14994694676574621
+        },
+        "green": {
+          "future_displacement_median": 0.06452779245984806,
+          "future_velocity_median": 0.0685160545360746
+        },
+        "orange": {
+          "future_displacement_median": 0.25310064169902546,
+          "future_velocity_median": 0.2710607318450169
+        },
+        "red": {
+          "future_displacement_median": 0.42216482450591286,
+          "future_velocity_median": 0.4445696314381311
+        },
+        "yellow": {
+          "future_displacement_median": 0.11127115526010184,
+          "future_velocity_median": 0.12195073772807975
+        }
+      },
+      "name": "fit_site_outcome_medians_monotone_by_color",
+      "passed": false
+    },
+    {
+      "evidence": {
+        "1": {
+          "passed": true,
+          "site_day_counts": {
+            "blue": 62,
+            "green": 104,
+            "orange": 64,
+            "red": 16,
+            "yellow": 34
+          },
+          "station_anchor_counts": {
+            "blue": 476,
+            "green": 1518,
+            "orange": 59,
+            "red": 14,
+            "yellow": 173
+          }
+        },
+        "2": {
+          "passed": false,
+          "site_day_counts": {
+            "blue": 96,
+            "green": 148,
+            "orange": 12,
+            "red": 7,
+            "yellow": 17
+          },
+          "station_anchor_counts": {
+            "blue": 397,
+            "green": 1730,
+            "orange": 33,
+            "red": 0,
+            "yellow": 80
+          }
+        }
+      },
+      "name": "required_folds_five_levels_nonempty",
+      "passed": false
+    },
+    {
+      "evidence": {
+        "first_development_evaluation_date": "2018-12-05",
+        "label_fit_fold": 1,
+        "max_labeler_fit_input_date": "2018-12-04"
+      },
+      "name": "labeler_fit_inputs_precede_first_development_evaluation_fold",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "cross_fold_targets": 0,
+        "horizon_days": 7,
+        "terminal_rows_without_label": 168,
+        "valid_station_labels": 6720
+      },
+      "name": "future_window_exact_and_fold_isolated",
+      "passed": true
+    }
+  ],
+  "interpretation": "automatic_future_deformation_state_proxy_not_field_hazard_truth",
+  "label_gate_passed": false
+}
