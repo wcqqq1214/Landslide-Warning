@@ -1,4 +1,4 @@
-"""Build the two report-specific figures from versioned project artifacts."""
+"""Build report-specific figures from the current project artifacts."""
 
 from __future__ import annotations
 
@@ -12,7 +12,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import font_manager
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
+from matplotlib.colors import BoundaryNorm, ListedColormap
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,6 +23,11 @@ SUMMARY_PATH = (
     ROOT
     / "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/"
     "seed_stability_0_4/seed_stability_summary.csv"
+)
+STATION_INDICATOR_PATH = (
+    ROOT
+    / "figures/warning_operational_draft_v4/"
+    "ootang_operational_station_timeline.csv"
 )
 
 COLORS = {
@@ -141,12 +147,12 @@ def _add_card(
 
 
 def build_process_overview() -> None:
-    fig, ax = plt.subplots(figsize=(7.2, 4.15))
+    fig, ax = plt.subplots(figsize=(8.25, 5.15))
     ax.set_axis_off()
     ax.text(
         0.03,
-        0.93,
-        "藕塘案例当前技术链与证据边界",
+        0.94,
+        "藕塘案例：当前自动预测与预警流程",
         fontsize=13,
         fontweight="bold",
         color=COLORS["ink"],
@@ -154,123 +160,118 @@ def build_process_overview() -> None:
     )
     ax.text(
         0.03,
-        0.875,
-        "从 8 个测点的物化日序列出发，分别完成概率预测/状态审计与独立模型依赖分析。",
+        0.885,
+        "目标是让系统按时序自动给出多测点的未来状态概率和预警信号；不需要人工逐时判级。",
         fontsize=7.2,
         color=COLORS["gray"],
         transform=ax.transAxes,
     )
 
-    main_cards = [
-        (
-            "数据输入",
-            ["1461 日 × 8 测点", "坐标 + 静态高程"],
-            COLORS["gray_light"],
-            COLORS["gray"],
-        ),
-        (
-            "特征与运动学",
-            ["相邻速度 / 加速度", "ΔV 审计 / 水位 / 雨量"],
-            COLORS["blue_light"],
-            COLORS["blue"],
-        ),
-        (
-            "ConvLSTM",
-            ["7 通道 × 7 日", "次日 P10 / P50 / P90"],
-            COLORS["green_light"],
-            COLORS["green"],
-        ),
-        (
-            "v4 三族融合",
-            ["I / V / A / T × 8 测点", "整体确认 / 局部最高"],
-            COLORS["red_light"],
-            COLORS["red"],
-        ),
+    cards = [
+        (0.035, 0.66, 0.265, 0.16, "数据与运动学", ["1461 日 × 8 测点", "按真实 Δt 算速度和加速度"], COLORS["gray_light"], COLORS["gray"]),
+        (0.367, 0.66, 0.265, 0.16, "ConvLSTM 概率位移预测", ["全部 8 点输出 P10 / P50 / P90", "用 PICP 和区间宽度评价"], COLORS["blue_light"], COLORS["blue"]),
+        (0.699, 0.66, 0.265, 0.16, "当前时刻四项指标 $X_t$", ["区间位置、速度、严格加速度", "改进切线角；只用当时信息"], COLORS["green_light"], COLORS["green"]),
+        (0.115, 0.435, 0.245, 0.13, "自动未来状态 $Y_{auto}$", ["以 t 后 H=7 天的多点变形", "自动生成五类代理结局"], COLORS["orange_light"], COLORS["orange"]),
+        (0.430, 0.435, 0.245, 0.13, "五分类 site NGBoost", ["输出绿/蓝/黄/橙/红概率", "与简单因果基线同步比较"], COLORS["red_light"], COLORS["red"]),
+        (0.745, 0.435, 0.215, 0.13, "逐时输出", ["测点级 + 滑坡体级", "五级概率和综合判定"], COLORS["green_light"], COLORS["green"]),
     ]
-
-    x_positions = [0.03, 0.275, 0.52, 0.765]
-    width = 0.20
-    y = 0.60
-    height = 0.20
-    for index, (title, lines, facecolor, edgecolor) in enumerate(main_cards):
-        x = float(x_positions[index])
+    for x, y, width, height, title, lines, facecolor, edgecolor in cards:
         _add_card(ax, x, y, width, height, title, lines, facecolor, edgecolor)
-        if index < len(main_cards) - 1:
-            next_x = float(x_positions[index + 1])
-            arrow = FancyArrowPatch(
-                (x + width + 0.006, y + height / 2),
-                (next_x - 0.006, y + height / 2),
+
+    arrows = [
+        ((0.306, 0.74), (0.361, 0.74), COLORS["gray"]),
+        ((0.638, 0.74), (0.693, 0.74), COLORS["gray"]),
+        ((0.83, 0.654), (0.83, 0.605), COLORS["gray"]),
+        ((0.83, 0.605), (0.24, 0.571), COLORS["gray"]),
+        ((0.366, 0.50), (0.424, 0.50), COLORS["gray"]),
+        ((0.681, 0.50), (0.739, 0.50), COLORS["gray"]),
+    ]
+    for start, end, color in arrows:
+        ax.add_patch(
+            FancyArrowPatch(
+                start,
+                end,
                 arrowstyle="-|>",
                 mutation_scale=13,
                 linewidth=1.2,
-                color=COLORS["gray"],
+                color=color,
+                connectionstyle="arc3,rad=0.0",
                 transform=ax.transAxes,
             )
-            ax.add_patch(arrow)
+        )
 
-    branch_x = 0.385
-    branch_y = 0.43
-    branch_width = 0.25
-    branch_height = 0.11
+    branch_x = 0.115
+    branch_y = 0.27
+    branch_width = 0.33
+    branch_height = 0.10
     _add_card(
         ax,
         branch_x,
         branch_y,
         branch_width,
         branch_height,
-        "独立 NGBoost–SHAP",
-        ["解释模型依赖：回归 + 历史分类"],
-        COLORS["orange_light"],
-        COLORS["orange"],
+        "NGBoost SHAP",
+        ["解释五分类模型怎样使用四项指标", "识别候选主控因素，不当作因果证明"],
+        COLORS["blue_light"],
+        COLORS["blue"],
     )
     branch_arrow = FancyArrowPatch(
-        (x_positions[1] + width / 2, y - 0.006),
+        (0.552, 0.424),
         (branch_x + branch_width / 2, branch_y + branch_height + 0.006),
         arrowstyle="-|>",
         mutation_scale=13,
         linewidth=1.2,
-        color=COLORS["orange"],
-        connectionstyle="arc3,rad=0.08",
+        color=COLORS["blue"],
+        connectionstyle="arc3,rad=0.18",
         transform=ax.transAxes,
     )
     ax.add_patch(branch_arrow)
     ax.text(
+        0.475,
         0.39,
-        0.56,
-        "独立分析支路",
+        "模型解释",
         fontsize=7,
-        color=COLORS["orange"],
+        color=COLORS["blue"],
+        transform=ax.transAxes,
+    )
+
+    ax.text(
+        0.745,
+        0.395,
+        "暖启动或缺输入会明确标记",
+        fontsize=6.8,
+        color=COLORS["gray"],
         transform=ax.transAxes,
     )
 
     bands = [
         (
             0.03,
-            0.30,
+            0.185,
             0.94,
-            0.10,
-            "已有结果",
-            "藕塘工程原型：全测点概率预测、SHAP 依赖、加速度五级与多测点空间审计",
+            0.065,
+            "当前结论",
+            "流程已跑通：全测点预测、四项指标、自动标签、五分类预警、SHAP 和逐时输出都有可复核产物。",
             COLORS["green_light"],
             COLORS["green"],
         ),
         (
             0.03,
-            0.16,
+            0.105,
             0.94,
-            0.10,
-            "尚未完成",
-            "正式稳定段 / V0、加速度阈值现场验证、独立标签 NGBoost、正式融合与前瞻评价",
+            0.065,
+            "结果边界",
+            "ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。",
             COLORS["orange_light"],
             COLORS["orange"],
         ),
         (
             0.03,
-            0.02,
+            0.025,
             0.94,
-            0.10,
-            "证据门禁",
-            "缺少原始 GNSS 与日值生成链：允许原型初跑，但确认性证据和正式预警仍阻断；Vajont 未获启动授权",
+            0.065,
+            "下一步边界",
+            "先围绕藕塘完善导师展示和证据链；Vajont 外部案例尚未启动，也不用于回调藕塘结果。",
             COLORS["gray_light"],
             COLORS["gray"],
         ),
@@ -407,12 +408,94 @@ def build_validation_summary() -> None:
     plt.close(fig)
 
 
+def build_station_indicator_overview() -> None:
+    data = pd.read_csv(STATION_INDICATOR_PATH, parse_dates=["date"])
+    station_order = ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]
+    panels = [
+        ("区间位置", "interval_level"),
+        ("速度", "velocity_level"),
+        ("严格加速度", "acceleration_level"),
+        ("改进切线角", "tangent_angle_level"),
+        ("测点融合", "candidate_level"),
+    ]
+
+    if data.duplicated(["date", "station"]).any():
+        raise ValueError("Station indicator rows must be unique by date and station")
+    if set(data["station"].unique()) != set(station_order):
+        raise ValueError("Expected the eight fixed Ootang monitoring stations")
+
+    dates = pd.DatetimeIndex(sorted(data["date"].unique()))
+    warning_colors = ["#70A66C", "#4C78A8", "#F2CF5B", "#E6923A", "#C44E52"]
+    cmap = ListedColormap(warning_colors)
+    cmap.set_bad("#E5E7E9")
+    norm = BoundaryNorm(np.arange(-0.5, 5.5, 1), cmap.N)
+
+    fig, axes = plt.subplots(
+        len(panels),
+        1,
+        figsize=(8.25, 6.4),
+        sharex=True,
+    )
+    fig.subplots_adjust(left=0.16, right=0.985, bottom=0.09, top=0.86, hspace=0.08)
+    fig.suptitle(
+        "全部 8 个测点的四项指标与测点融合",
+        fontsize=13,
+        fontweight="bold",
+        color=COLORS["ink"],
+    )
+
+    for ax, (title, column) in zip(axes, panels, strict=True):
+        matrix = (
+            data.pivot(index="station", columns="date", values=column)
+            .reindex(index=station_order, columns=dates)
+            .to_numpy(dtype=float)
+        )
+        invalid = matrix[np.isfinite(matrix)]
+        if invalid.size and (invalid.min() < 0 or invalid.max() > 4):
+            raise ValueError(f"Unexpected five-level values in {column}")
+
+        ax.imshow(
+            np.ma.masked_invalid(matrix),
+            aspect="auto",
+            interpolation="nearest",
+            cmap=cmap,
+            norm=norm,
+        )
+        ax.set_yticks(np.arange(len(station_order)), station_order)
+        ax.set_ylabel(title, rotation=0, ha="right", va="center", labelpad=24, fontweight="bold")
+        ax.tick_params(axis="y", length=0)
+        for spine in ax.spines.values():
+            spine.set_visible(False)
+
+    tick_positions = np.linspace(0, len(dates) - 1, 6, dtype=int)
+    axes[-1].set_xticks(tick_positions, [dates[i].strftime("%Y-%m") for i in tick_positions])
+    axes[-1].set_xlabel("日期")
+    fig.legend(
+        handles=[
+            Patch(facecolor=color, edgecolor="none", label=label)
+            for color, label in zip(
+                warning_colors,
+                ["green", "blue", "yellow", "orange", "red"],
+                strict=True,
+            )
+        ],
+        loc="upper center",
+        bbox_to_anchor=(0.5, 0.925),
+        ncol=5,
+        frameon=False,
+    )
+
+    _save_figure(fig, "station_indicator_overview")
+    plt.close(fig)
+
+
 def main() -> None:
     _configure_style()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     QA_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     build_process_overview()
     build_validation_summary()
+    build_station_indicator_overview()
 
 
 if __name__ == "__main__":

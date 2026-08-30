@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="416.16pt" height="244.476pt" viewBox="0 0 416.16 244.476" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="474.75pt" height="299.916pt" viewBox="0 0 474.75 299.916" xmlns="http://www.w3.org/2000/svg" version="1.1">
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
@@ -20,224 +20,329 @@
  </defs>
  <g id="figure_1">
   <g id="patch_1">
-   <path d="M 0 244.476
-L 416.16 244.476
-L 416.16 0
+   <path d="M 0 299.916
+L 474.75 299.916
+L 474.75 0
 L 0 0
 z
 " style="fill: #ffffff"/>
   </g>
   <g id="axes_1">
    <g id="patch_2">
-    <path d="M 20.05632 101.991312
-L 98.80128 101.991312
-Q 104.42592 101.991312 104.42592 98.770248
-L 104.42592 53.675352
-Q 104.42592 50.454288 98.80128 50.454288
-L 20.05632 50.454288
-Q 14.43168 50.454288 14.43168 53.675352
-L 14.43168 98.770248
-Q 14.43168 101.991312 20.05632 101.991312
+    <path d="M 24.23295 107.701632
+L 144.3843 107.701632
+Q 150.8292 107.701632 150.8292 103.704408
+L 150.8292 59.163912
+Q 150.8292 55.166688 144.3843 55.166688
+L 24.23295 55.166688
+Q 17.78805 55.166688 17.78805 59.163912
+L 17.78805 103.704408
+Q 17.78805 107.701632 24.23295 107.701632
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_3">
-    <path d="M 104.012488 76.2228
-Q 108.643609 76.2228 111.93309 76.2228
-" clip-path="url(#pc881ef03e6)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 106.73309 73.6228
-L 111.93309 76.2228
-L 106.73309 78.8228
+    <path d="M 177.06915 107.701632
+L 297.2205 107.701632
+Q 303.6654 107.701632 303.6654 103.704408
+L 303.6654 59.163912
+Q 303.6654 55.166688 297.2205 55.166688
+L 177.06915 55.166688
+Q 170.62425 55.166688 170.62425 59.163912
+L 170.62425 103.704408
+Q 170.62425 107.701632 177.06915 107.701632
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+" clip-path="url(#pbd79453743)" style="fill: #dce8f2; stroke: #416b8f; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_4">
-    <path d="M 118.48752 101.991312
-L 197.23248 101.991312
-Q 202.85712 101.991312 202.85712 98.770248
-L 202.85712 53.675352
-Q 202.85712 50.454288 197.23248 50.454288
-L 118.48752 50.454288
-Q 112.86288 50.454288 112.86288 53.675352
-L 112.86288 98.770248
-Q 112.86288 101.991312 118.48752 101.991312
+    <path d="M 329.90535 107.701632
+L 450.0567 107.701632
+Q 456.5016 107.701632 456.5016 103.704408
+L 456.5016 59.163912
+Q 456.5016 55.166688 450.0567 55.166688
+L 329.90535 55.166688
+Q 323.46045 55.166688 323.46045 59.163912
+L 323.46045 103.704408
+Q 323.46045 107.701632 329.90535 107.701632
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #dce8f2; stroke: #416b8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_5">
-    <path d="M 202.443688 76.2228
-Q 207.074809 76.2228 210.36429 76.2228
-" clip-path="url(#pc881ef03e6)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 205.16429 73.6228
-L 210.36429 76.2228
-L 205.16429 78.8228
+    <path d="M 61.06095 171.942732
+L 172.0053 171.942732
+Q 178.4502 171.942732 178.4502 167.945508
+L 178.4502 131.970492
+Q 178.4502 127.973268 172.0053 127.973268
+L 61.06095 127.973268
+Q 54.61605 127.973268 54.61605 131.970492
+L 54.61605 167.945508
+Q 54.61605 171.942732 61.06095 171.942732
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+" clip-path="url(#pbd79453743)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_6">
-    <path d="M 216.91872 101.991312
-L 295.66368 101.991312
-Q 301.28832 101.991312 301.28832 98.770248
-L 301.28832 53.675352
-Q 301.28832 50.454288 295.66368 50.454288
-L 216.91872 50.454288
-Q 211.29408 50.454288 211.29408 53.675352
-L 211.29408 98.770248
-Q 211.29408 101.991312 216.91872 101.991312
+    <path d="M 206.0712 171.942732
+L 317.01555 171.942732
+Q 323.46045 171.942732 323.46045 167.945508
+L 323.46045 131.970492
+Q 323.46045 127.973268 317.01555 127.973268
+L 206.0712 127.973268
+Q 199.6263 127.973268 199.6263 131.970492
+L 199.6263 167.945508
+Q 199.6263 171.942732 206.0712 171.942732
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #f4dede; stroke: #b64d4d; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_7">
-    <path d="M 300.874888 76.2228
-Q 305.506009 76.2228 308.79549 76.2228
-" clip-path="url(#pc881ef03e6)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 303.59549 73.6228
-L 308.79549 76.2228
-L 303.59549 78.8228
+    <path d="M 351.08145 171.942732
+L 448.2153 171.942732
+Q 454.6602 171.942732 454.6602 167.945508
+L 454.6602 131.970492
+Q 454.6602 127.973268 448.2153 127.973268
+L 351.08145 127.973268
+Q 344.63655 127.973268 344.63655 131.970492
+L 344.63655 167.945508
+Q 344.63655 171.942732 351.08145 171.942732
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+" clip-path="url(#pbd79453743)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.4; stroke-linejoin: miter"/>
    </g>
    <g id="patch_8">
-    <path d="M 315.34992 101.991312
-L 394.09488 101.991312
-Q 399.71952 101.991312 399.71952 98.770248
-L 399.71952 53.675352
-Q 399.71952 50.454288 394.09488 50.454288
-L 315.34992 50.454288
-Q 309.72528 50.454288 309.72528 53.675352
-L 309.72528 98.770248
-Q 309.72528 101.991312 315.34992 101.991312
+    <path d="M 150.066802 81.43416
+Q 160.725987 81.43416 170.043532 81.43416
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 164.843532 78.83416
+L 170.043532 81.43416
+L 164.843532 84.03416
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #f4dede; stroke: #b64d4d; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_9">
-    <path d="M 162.68112 141.104232
-L 261.51408 141.104232
-Q 267.13872 141.104232 267.13872 137.883168
-L 267.13872 113.495112
-Q 267.13872 110.274048 261.51408 110.274048
-L 162.68112 110.274048
-Q 157.05648 110.274048 157.05648 113.495112
-L 157.05648 137.883168
-Q 157.05648 141.104232 162.68112 141.104232
+    <path d="M 302.903002 81.43416
+Q 313.562187 81.43416 322.879732 81.43416
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 317.679732 78.83416
+L 322.879732 81.43416
+L 317.679732 84.03416
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.4; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_10">
-    <path d="M 159.735746 101.303966
-Q 184.155622 110.172708 208.759333 111.48733
-" clip-path="url(#pc881ef03e6)" style="fill: none; stroke: #d7832f; stroke-width: 1.2; stroke-linecap: round"/>
-    <path d="M 203.705465 108.613584
-L 208.759333 111.48733
-L 203.428015 113.806177
+    <path d="M 389.2905 107.98666
+Q 389.2905 112.982905 389.2905 116.63751
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 391.8905 111.43751
+L 389.2905 116.63751
+L 386.6905 111.43751
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #d7832f; stroke: #d7832f; stroke-width: 1.2; stroke-linecap: round"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_11">
-    <path d="M 20.85984 170.093808
-L 395.30016 170.093808
-Q 400.12128 170.093808 400.12128 167.332896
-L 400.12128 146.165904
-Q 400.12128 143.404992 395.30016 143.404992
-L 20.85984 143.404992
-Q 16.03872 143.404992 16.03872 146.165904
-L 16.03872 167.332896
-Q 16.03872 170.093808 20.85984 170.093808
+    <path d="M 387.288761 120.050365
+Q 253.483987 124.832709 121.019998 129.567131
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 126.309548 131.979737
+L 121.019998 129.567131
+L 126.123812 126.783055
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_12">
-    <path d="M 20.85984 202.304448
-L 395.30016 202.304448
-Q 400.12128 202.304448 400.12128 199.543536
-L 400.12128 178.376544
-Q 400.12128 175.615632 395.30016 175.615632
-L 20.85984 175.615632
-Q 16.03872 175.615632 16.03872 178.376544
-L 16.03872 199.543536
-Q 16.03872 202.304448 20.85984 202.304448
+    <path d="M 177.686059 149.958
+Q 189.037617 149.958 199.047534 149.958
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 193.847534 147.358
+L 199.047534 149.958
+L 193.847534 152.558
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_13">
-    <path d="M 20.85984 234.515088
-L 395.30016 234.515088
-Q 400.12128 234.515088 400.12128 231.754176
-L 400.12128 210.587184
-Q 400.12128 207.826272 395.30016 207.826272
-L 20.85984 207.826272
-Q 16.03872 207.826272 16.03872 210.587184
-L 16.03872 231.754176
-Q 16.03872 234.515088 20.85984 234.515088
+    <path d="M 322.696309 149.958
+Q 334.047867 149.958 344.057784 149.958
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 338.857784 147.358
+L 344.057784 149.958
+L 338.857784 152.558
 z
-" clip-path="url(#pc881ef03e6)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.2; stroke-linejoin: miter"/>
+" clip-path="url(#pbd79453743)" style="fill: #60676d; stroke: #60676d; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_14">
+    <path d="M 61.06095 219.052872
+L 211.13505 219.052872
+Q 217.57995 219.052872 217.57995 215.055648
+L 217.57995 187.646112
+Q 217.57995 183.648888 211.13505 183.648888
+L 61.06095 183.648888
+Q 54.61605 183.648888 54.61605 187.646112
+L 54.61605 215.055648
+Q 54.61605 219.052872 61.06095 219.052872
+z
+" clip-path="url(#pbd79453743)" style="fill: #dce8f2; stroke: #416b8f; stroke-width: 1.4; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_15">
+    <path d="M 259.364139 171.197244
+Q 196.308691 156.635527 139.107073 183.916301
+" clip-path="url(#pbd79453743)" style="fill: none; stroke: #416b8f; stroke-width: 1.2; stroke-linecap: round"/>
+    <path d="M 144.91984 184.024613
+L 139.107073 183.916301
+L 142.681383 179.331074
+z
+" clip-path="url(#pbd79453743)" style="fill: #416b8f; stroke: #416b8f; stroke-width: 1.2; stroke-linecap: round"/>
+   </g>
+   <g id="patch_16">
+    <path d="M 22.8519 242.179668
+L 451.8981 242.179668
+Q 457.4223 242.179668 457.4223 238.753476
+L 457.4223 222.479064
+Q 457.4223 219.052872 451.8981 219.052872
+L 22.8519 219.052872
+Q 17.3277 219.052872 17.3277 222.479064
+L 17.3277 238.753476
+Q 17.3277 242.179668 22.8519 242.179668
+z
+" clip-path="url(#pbd79453743)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 22.8519 265.020948
+L 451.8981 265.020948
+Q 457.4223 265.020948 457.4223 261.594756
+L 457.4223 245.320344
+Q 457.4223 241.894152 451.8981 241.894152
+L 22.8519 241.894152
+Q 17.3277 241.894152 17.3277 245.320344
+L 17.3277 261.594756
+Q 17.3277 265.020948 22.8519 265.020948
+z
+" clip-path="url(#pbd79453743)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.2; stroke-linejoin: miter"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 22.8519 287.862228
+L 451.8981 287.862228
+Q 457.4223 287.862228 457.4223 284.436036
+L 457.4223 268.161624
+Q 457.4223 264.735432 451.8981 264.735432
+L 22.8519 264.735432
+Q 17.3277 264.735432 17.3277 268.161624
+L 17.3277 284.436036
+Q 17.3277 287.862228 22.8519 287.862228
+z
+" clip-path="url(#pbd79453743)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
-    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="19.2528" y="23.30532" transform="rotate(-0 19.2528 23.30532)">藕塘案例当前技术链与证据边界</text>
+    <text style="font-weight: 700; font-size: 13px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="21.0105" y="24.33096" transform="rotate(-0 21.0105 24.33096)">藕塘案例：当前自动预测与预警流程</text>
    </g>
    <g id="text_2">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="19.2528" y="35.9595" transform="rotate(-0 19.2528 35.9595)">从 8 个测点的物化日序列出发，分别完成概率预测/状态审计与独立模型依赖分析。</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="21.0105" y="40.03434" transform="rotate(-0 21.0105 40.03434)">目标是让系统按时序自动给出多测点的未来状态概率和预警信号；不需要人工逐时判级。</text>
    </g>
    <g id="text_3">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="59.4288" y="68.036335" transform="rotate(-0 59.4288 68.036335)">数据输入</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="84.308625" y="73.303359" transform="rotate(-0 84.308625 73.303359)">数据与运动学</text>
    </g>
    <g id="text_4">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(32.515988 80.328669)">1461 日 × 8 测点</text>
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(33.725925 88.720437)">坐标 + 静态高程</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(57.395813 85.445618)">1461 日 × 8 测点</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(42.852375 93.933068)">按真实 Δt 算速度和加速度</text>
    </g>
    <g id="text_5">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="157.86" y="68.015491" transform="rotate(-0 157.86 68.015491)">特征与运动学</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="237.144825" y="73.303359" transform="rotate(-0 237.144825 73.303359)">ConvLSTM 概率位移预测</text>
    </g>
    <g id="text_6">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(129.659625 80.328669)">相邻速度 / 加速度</text>
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(124.401938 88.720437)">ΔV 审计 / 水位 / 雨量</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(188.9262 85.478637)">全部 8 点输出 P10 / P50 / P90</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(197.94195 93.932675)">用 PICP 和区间宽度评价</text>
    </g>
    <g id="text_7">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="256.2912" y="68.015491" transform="rotate(-0 256.2912 68.015491)">ConvLSTM</text>
+    <!-- 当前时刻四项指标 $X_t$ -->
+    <g style="fill: #202428" transform="translate(347.339025 73.832359)">
+     <text>
+      <tspan x="0" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">当</tspan>
+      <tspan x="9.25" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">前</tspan>
+      <tspan x="18.5" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">时</tspan>
+      <tspan x="27.75" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">刻</tspan>
+      <tspan x="37" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">四</tspan>
+      <tspan x="46.25" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">项</tspan>
+      <tspan x="55.5" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">指</tspan>
+      <tspan x="64.75" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">标</tspan>
+      <tspan x="74" y="-0.34375" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428"> </tspan>
+      <tspan x="76.569946" y="-0.34375" style="font-style: oblique; font-size: 9.2px; font-family: 'DejaVu Sans'; fill: #202428">X</tspan>
+      <tspan x="82.906738" y="1.132812" style="font-style: oblique; font-size: 6.44px; font-family: 'DejaVu Sans'; fill: #202428">t</tspan>
+     </text>
+    </g>
    </g>
    <g id="text_8">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(235.3842 80.328669)">7 通道 × 7 日</text>
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(222.874763 88.720437)">次日 P10 / P50 / P90</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(343.181025 85.15295)">区间位置、速度、严格加速度</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(346.781025 94.275237)">改进切线角；只用当时信息</text>
    </g>
    <g id="text_9">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="354.7224" y="68.094554" transform="rotate(-0 354.7224 68.094554)">v4 三族融合</text>
+    <!-- 自动未来状态 $Y_{auto}$ -->
+    <g style="fill: #202428" transform="translate(77.433125 144.372259)">
+     <text>
+      <tspan x="0" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">自</tspan>
+      <tspan x="9.25" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">动</tspan>
+      <tspan x="18.5" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">未</tspan>
+      <tspan x="27.75" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">来</tspan>
+      <tspan x="37" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">状</tspan>
+      <tspan x="46.25" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428">态</tspan>
+      <tspan x="55.5" y="-0.328125" style="font-size: 9.2px; font-family: 'Arial Unicode MS'; fill: #202428"> </tspan>
+      <tspan x="58.069946" y="-0.328125" style="font-style: oblique; font-size: 9.2px; font-family: 'DejaVu Sans'; fill: #202428">Y</tspan>
+      <tspan x="63.720215" y="1.148438" style="font-style: oblique; font-size: 6.44px; font-family: 'DejaVu Sans'; fill: #202428">a</tspan>
+      <tspan x="67.688049" y="1.148438" style="font-style: oblique; font-size: 6.44px; font-family: 'DejaVu Sans'; fill: #202428">u</tspan>
+      <tspan x="71.791833" y="1.148438" style="font-style: oblique; font-size: 6.44px; font-family: 'DejaVu Sans'; fill: #202428">t</tspan>
+      <tspan x="74.330615" y="1.148438" style="font-style: oblique; font-size: 6.44px; font-family: 'DejaVu Sans'; fill: #202428">o</tspan>
+     </text>
+    </g>
    </g>
    <g id="text_10">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(323.414775 80.27855)">I / V / A / T × 8 测点</text>
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(322.922025 88.770556)">整体确认 / 局部最高</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(76.028062 152.788488)">以 t 后 H=7 天的多点变形</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(80.533125 161.274419)">自动生成五类代理结局</text>
    </g>
    <g id="text_11">
-    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="212.0976" y="122.244405" transform="rotate(-0 212.0976 122.244405)">独立 NGBoost–SHAP</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="261.543375" y="143.797259" transform="rotate(-0 261.543375 143.797259)">五分类 site NGBoost</text>
    </g>
    <g id="text_12">
-    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="212.0976" y="131.091935" transform="rotate(-0 212.0976 131.091935)">解释模型依赖：回归 + 历史分类</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(225.142875 152.864763)">输出绿/蓝/黄/橙/红概率</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(221.943375 161.265644)">与简单因果基线同步比较</text>
    </g>
    <g id="text_13">
-    <text style="font-size: 7px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="163.8864" y="108.43344" transform="rotate(-0 163.8864 108.43344)">独立分析支路</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="399.648375" y="143.818103" transform="rotate(-0 399.648375 143.818103)">逐时输出</text>
    </g>
    <g id="text_14">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5f8c62" x="25.2792" y="159.332212" transform="rotate(-0 25.2792 159.332212)">已有结果</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(370.3455 152.734601)">测点级 + 滑坡体级</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(367.248375 161.293432)">五级概率和综合判定</text>
    </g>
    <g id="text_15">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="158.761509" transform="rotate(-0 67.464 158.761509)">藕塘工程原型：全测点概率预测、SHAP 依赖、加速度五级与多测点空间审计</text>
+    <text style="font-weight: 700; font-size: 9.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: middle; fill: #202428" x="136.098" y="197.160199" transform="rotate(-0 136.098 197.160199)">NGBoost SHAP</text>
    </g>
    <g id="text_16">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="25.2792" y="191.542852" transform="rotate(-0 25.2792 191.542852)">尚未完成</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(82.098 202.67201)">解释五分类模型怎样使用四项指标</text>
+    <text style="font-size: 7.2px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; fill: #202428" transform="translate(78.498 211.776073)">识别候选主控因素，不当作因果证明</text>
    </g>
    <g id="text_17">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="191.009063" transform="rotate(-0 67.464 191.009063)">正式稳定段 / V0、加速度阈值现场验证、独立标签 NGBoost、正式融合与前瞻评价</text>
+    <text style="font-size: 7px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #416b8f" x="225.86625" y="181.36476" transform="rotate(-0 225.86625 181.36476)">模型解释</text>
    </g>
    <g id="text_18">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="25.2792" y="223.753492" transform="rotate(-0 25.2792 223.753492)">证据门禁</text>
+    <text style="font-size: 6.8px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="350.16075" y="179.93718" transform="rotate(-0 350.16075 179.93718)">暖启动或缺输入会明确标记</text>
    </g>
    <g id="text_19">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="67.464" y="223.599977" transform="rotate(-0 67.464 223.599977)">缺少原始 GNSS 与日值生成链：允许原型初跑，但确认性证据和正式预警仍阻断；Vajont 未获启动授权</text>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5f8c62" x="27.91575" y="233.204551" transform="rotate(-0 27.91575 233.204551)">当前结论</text>
+   </g>
+   <g id="text_20">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="232.643028" transform="rotate(-0 76.2525 232.643028)">流程已跑通：全测点预测、四项指标、自动标签、五分类预警、SHAP 和逐时输出都有可复核产物。</text>
+   </g>
+   <g id="text_21">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="27.91575" y="256.040363" transform="rotate(-0 27.91575 256.040363)">结果边界</text>
+   </g>
+   <g id="text_22">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="255.680597" transform="rotate(-0 76.2525 255.680597)">ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。</text>
+   </g>
+   <g id="text_23">
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="27.91575" y="278.881642" transform="rotate(-0 27.91575 278.881642)">下一步边界</text>
+   </g>
+   <g id="text_24">
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="278.728127" transform="rotate(-0 76.2525 278.728127)">先围绕藕塘完善导师展示和证据链；Vajont 外部案例尚未启动，也不用于回调藕塘结果。</text>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="pc881ef03e6">
-   <rect x="7.2" y="7.2" width="401.76" height="230.076"/>
+  <clipPath id="pbd79453743">
+   <rect x="7.2" y="7.2" width="460.35" height="285.516"/>
   </clipPath>
  </defs>
 </svg>
