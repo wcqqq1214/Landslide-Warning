@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 39)
+        self.assertEqual(len(pipeline.STAGES), 40)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -285,6 +285,36 @@ class PipelineTests(unittest.TestCase):
         self.assertTrue(
             all(
                 "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
+            )
+        )
+        existing_outputs = {
+            path
+            for existing in pipeline.STAGES
+            if existing.name != stage.name
+            for path in existing.outputs
+        }
+        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+
+    def test_ngboost_auto_state_ecdf_stage_is_explicit_and_isolated(self):
+        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-auto-state-ecdf"]
+
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.warning_artifact_scope,
+            "exploratory_auto_future_state_ecdf_proxy",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_ngboost_auto_state_ecdf.v2.json"),
+        )
+        self.assertIn(
+            "figures/ngboost_auto_state_v1/station_auto_labels.csv", stage.inputs
+        )
+        self.assertTrue(
+            all(
+                path.startswith("figures/ngboost_auto_state_ecdf_v2/")
+                for path in stage.outputs
             )
         )
         existing_outputs = {

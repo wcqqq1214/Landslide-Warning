@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "profile_id": "ootang_ngboost_auto_state_ecdf_v2",
+  "profile_version": 2,
+  "status": "exploratory_proxy_labels_not_formal_warning",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "inputs": {
+    "v1_station_labels": "figures/ngboost_auto_state_v1/station_auto_labels.csv",
+    "v1_manifest": "figures/ngboost_auto_state_v1/manifest.json",
+    "topology": "config/ootang_operational_run.v4.draft.json"
+  },
+  "output_dir": "figures/ngboost_auto_state_ecdf_v2",
+  "algorithm": {
+    "horizon_days": 7,
+    "label_fit_fold": 1,
+    "label_fit_policy": "fold1_complete_future_windows",
+    "station_target_components": [
+      "future_displacement_rate_mm_per_day",
+      "future_velocity_q90_mm_per_day"
+    ],
+    "component_weights": [0.5, 0.5],
+    "ecdf_side": "right",
+    "station_boundaries": "fold1_pooled_station_severity_q20_q40_q60_q80_numpy_linear",
+    "site_aggregation": "equal_station_within_block_then_equal_three_blocks",
+    "site_boundaries": "fold1_site_severity_q20_q40_q60_q80_numpy_linear",
+    "assignment_policy": "fixed_fold1_boundaries",
+    "acceleration_target_role": "excluded_from_target_retained_in_features",
+    "parameter_search": false
+  },
+  "gates": {
+    "required_station_and_site_nonempty_fold": 1,
+    "required_site_nonempty_fold": 2,
+    "raw_outcome_monotone_folds": [1, 2],
+    "min_class_support_advisory": 20,
+    "block_on_limited_support": false
+  },
+  "outputs": {
+    "station_labels": "station_auto_labels.csv",
+    "site_labels": "site_auto_labels.csv",
+    "state_definition": "label_state_definition.csv",
+    "gate": "label_gate.json",
+    "timeline": "auto_state_timeline.png",
+    "manifest": "manifest.json"
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "ngboost_training_or_inference",
+    "acceleration_as_target_component",
+    "convlstm_retraining_or_replacement",
+    "vajont_use_or_validation"
+  ]
+}

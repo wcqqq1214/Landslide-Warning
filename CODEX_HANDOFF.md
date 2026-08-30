@@ -49,10 +49,11 @@ The immediate sequence is:
    retraining and build the fold-causal four-indicator table for all eight stations;
 2. **Complete, failed gate:** run the fold-1-fixed labels-only v1 diagnostic and preserve its failed
    artifacts; do not train NGBoost from them;
-3. implement the single pre-registered fold-1 empirical-CDF challenger described below, with site
-   classification as the primary multi-station task and station classifications as diagnostics;
-4. only if the challenger passes the fold-2 development site-support, outcome-ordering and
-   temporal-causality gates, train NGBoost and emit all-time probabilities/colors plus SHAP;
+3. **Complete, passed:** implement and run the single pre-registered fold-1 empirical-CDF
+   challenger, with site classification as the primary multi-station task, then externally repeat it;
+4. train the fixed-parameter NGBoost site model and diagnostic shared-station model, compare only
+   the registered prior/causal-persistence/Logistic baselines, and emit all-time probabilities,
+   colors and SHAP;
 5. keep v4 transparent rules as a baseline, not as the training labels or replacement for R5.
 
 Do not spend the current research increment on Figshare polling, epoch/ledger expansion, trusted
@@ -96,6 +97,24 @@ multinomial logistic regression, but does not provide an external automatic Oota
 label and does not define strict acceleration alone as that truth. Its color thresholds therefore
 remain method references, not supervised labels to copy. ConvLSTM architecture and existing model
 artifacts remain untouched.
+
+### ECDF challenger v2 result
+
+The explicit `ootang-ngboost-auto-state-ecdf` stage completed in 1.8 seconds and passed every
+blocking label gate. Fold-1 station counts are green/blue/yellow/orange/red=
+`447/445/450/450/448`; fold-1 site has 56 days in every class. Fold-2 site counts are
+`138/66/39/21/16`. Site future displacement-rate and positive-velocity-Q90 medians are strictly
+ordered in both folds 1 and 2, the maximum taxonomy input date is `2018-12-04`, and no H=7 target
+crosses a fold. Consecutive external reruns produced identical six-artifact set SHA-256
+`d80a12776c955b69c2ab23e6fdd2b69177d7a3d0948cfe16bf48660916d2369e`.
+
+The red support of 16 fold-2 site days and incomplete/non-monotone per-station fold-2 diagnostics
+remain non-blocking limitations. The next model therefore uses the 32 site features in fixed order
+(`8 stations × 4 advisor-required indicators`) as the primary task; the pooled station model is
+diagnostic. Use the already registered NGBoost hyperparameters without a search. The persistence
+baseline must use the latest matured label `y_(t-7)`, never the contemporaneous future-defined
+`y_t`. All reported fold-2/fold-3 model metrics remain development/historical descriptions because
+all three folds are exposed.
 
 ## 2026-08-30 authentic live-feed source audit
 

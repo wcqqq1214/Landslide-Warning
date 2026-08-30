@@ -50,6 +50,24 @@
   stage 都必须读取 `label_gate_passed`。逐字节复现由 stage 外连续复跑核验并记录集合哈希，
   不让单次进程自证第二次运行。
 
+## 2026-08-30 fold-1 ECDF 自动标签 challenger v2（本增量）
+
+- 新增 explicit-only `ootang-ngboost-auto-state-ecdf`，直接校验并消费 v1 的测点 OOF 与
+  manifest，不重复 seed 聚合。每站仅用 fold 1 对未来 H=7 位移速率和正速度 Q90 建右连续
+  经验 CDF，两者百分位等权；station/site 均用 fold 1 的 q20/q40/q60/q80 固定五级，site
+  保持 O1/O2/O3 先块内等权再三块等权。严格加速度不再进入目标，但仍是时刻 `t` 的模型输入。
+- 正式 stage 1.8 秒完成并得到 `label_gate_passed=true`。fold 1 station 为
+  `447/445/450/450/448`，site 每级 56 日；fold 2 site 为 `138/66/39/21/16`。fold 1/2
+  的 site 未来位移速率与未来速度 Q90 中位数均按色严格递增，H=7 跨折数为 0，标签器
+  最大输入日 `2018-12-04` 早于 fold 2 起点 `2018-12-05`。
+- 六项 v2 产物外部复跑逐字节一致，集合 SHA-256 为
+  `d80a12776c955b69c2ab23e6fdd2b69177d7a3d0948cfe16bf48660916d2369e`。
+  fold 2 site red 仅 16 日、逐站缺级/局部不单调只作非阻断提示；site 是后续 NGBoost 主任务，
+  测点共享模型只作八点诊断与 SHAP。所有折均已暴露，结果仍是 exploratory proxy。
+- 下一步已解除 labels-only 阻断：固定复用旧 pilot 的 NGBoost 参数，不做调参；以 8 点 ×
+  4 指标构成 32 维 site 输入，并比较类别先验、严格因果的 `y_(t-7)` persistence 与多项
+  Logistic。任何训练 stage 必须显式读取 v2 `label_gate_passed=true`。
+
 ## 2026-08-30 藕塘 live feed 真实来源审计（本增量）
 
 - 已完成 Figshare 官方 API、论文数据声明与仓库数据血缘的定向核验。当前唯一核实的公开行级

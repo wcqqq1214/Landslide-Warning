@@ -6,7 +6,7 @@
 - Origin Mode: plan
 - Origin Date: 2026-08-30
 - Verification Status: VERIFIED
-- Version Label: labels_only_v1_failed_gate
+- Version Label: ecdf_challenger_v2_verified
 
 ## Experiment Overview
 
@@ -106,7 +106,7 @@ X_t=[CI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
 - fold 1 与 fold 2 开发期的测点/site 五级均非空，五个中心严格递增；
 - 测点与主任务 site 的各级未来位移增量、未来速度中位数均随颜色递增；
 - 标准化、变点、聚类中心和边界不读取 fold 2/3；
-- 每个输出标签只读取 `[t+1,t+7]`，无跨 fold 目标；
+- 每个输出标签只读取 `[t+1,t+7]`，无跨 fold 目标。
 
 逐字节复现不由单次运行进程自证：提交前在外部连续运行两次并记录六项产物集合哈希；
 后续训练 stage 必须同时读取科研 gate，而不能把 pipeline 的成功退出当作标签通过。
@@ -157,17 +157,43 @@ ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
    出现五级。若 fold 2 开发期的 site 五级非空、未来位移/速度中位数有序且时间门禁通过，才进入
    NGBoost；否则记录为第二个失败实验并停止标签搜索。
 
+## 2026-08-30 ECDF challenger v2 执行结果
+
+正式入口 `uv run python main.py --stage ootang-ngboost-auto-state-ecdf` 在 1.8 秒内完成，
+直接消费并校验 v1 的 6,888 条四指标/H=7 测点 OOF，不重复 34,440 行 seed 管线。固定边界为：
+
+- station：`0.216071/0.400000/0.605357/0.802143`；
+- site：`0.331825/0.421925/0.572480/0.710893`。
+
+`label_gate_passed=true`：fold 1 station 五级为 `447/445/450/450/448`，site 五级各
+56 日；fold 2 site 五级为 `138/66/39/21/16`。fold 1 与 fold 2 的 site 未来位移速率、
+未来速度 Q90 中位数均随颜色严格递增；标签器最大输入日为 `2018-12-04`，fold 2 从
+`2018-12-05` 开始，H=7 跨折目标为 0。六项产物外部连续复跑逐字节一致，集合 SHA-256 为
+`d80a12776c955b69c2ab23e6fdd2b69177d7a3d0948cfe16bf48660916d2369e`。
+
+非阻断限制保持透明：fold 2 site red 只有 16 日；仅 ATU2、ATU4 在 fold 2 单点层面
+同时具备完整五级且结果有序，其余点存在缺级或局部顺序回落。因此后续 NGBoost 以 32 维
+site 综合任务为主，测点共享模型与单点颜色只作诊断和 SHAP，不把它们写成稳定的逐点五级性能。
+所有折均已暴露，v2 通过只表示开发期代理标签可训练，不是现场灾害真值或确认性验证。
+
 ## 第二增量：固定 NGBoost 与最小基线
 
-只有第一增量通过后才执行。固定复用旧 pilot 的 NGBoost 参数，不做网格搜索；比较三个最小基线：
+v2 challenger 已通过，可以执行。固定复用旧 pilot 的 NGBoost 参数：五类
+`NGBClassifier`、深度 3 的树基学习器、500 estimators、learning rate 0.01、全样本/全列、
+`random_state=0`；不做网格搜索、早停选择或概率后校准。site 主模型按固定测点顺序输入
+`8 × [interval_z, velocity, strict_acceleration, tangent_angle] = 32` 维。共享测点模型使用
+四指标加 station one-hot，仅用于八点诊断与 SHAP。比较三个最小基线：
 
 1. fold 1 的类别先验/多数类；
-2. 当前自动状态持续到未来 7 日；
+2. 最后一个已经成熟的 H=7 标签持续到当前，即以 `y_(t-7)` 预测 `y_t`，禁止把尚需
+   `[t+1,t+7]` 才能知道的 `y_t` 当输入；
 3. 使用完全相同 `X/Y` 的多项 Logistic Regression（对应导师指定论文的概率融合思路，但不声称复现论文系数）。
 
 主要看状态转折时刻的 macro-F1 与 ordinal MAE；同时报告全时刻 log-loss、Brier score、每级召回和混淆矩阵。进入 fold 3 历史描述的最低开发门槛是：fold 2 转折 macro-F1 高于 persistence 与 Logistic、转折 ordinal MAE 至少不劣于两者，且 log-loss 优于类别先验。这里是已暴露数据上的项目 pilot 门禁，不是独立测试或通用工程阈值。
 
 ## Expected Outputs
+
+### v1 失败诊断（已冻结）
 
 | Output | Path | Format | Success Criterion |
 | --- | --- | --- | --- |
@@ -178,12 +204,23 @@ ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
 | 标签时间线 | `figures/ngboost_auto_state_v1/auto_state_timeline.png` | PNG | 8 点与 site 全时间轴可视检查，不作为人工改标签入口 |
 | 运行清单 | `figures/ngboost_auto_state_v1/manifest.json` | JSON | 输入、配置、源码、输出哈希与最大拟合日期齐全 |
 
+### v2 ECDF challenger（当前通过版本）
+
+| Output | Path | Format | Success Criterion |
+| --- | --- | --- | --- |
+| 测点自动标签 | `figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv` | CSV | 四指标、ECDF 分量、未来结果、五级和边界版本逐行可追溯 |
+| site 自动标签 | `figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv` | CSV | 每日 O1/O2/O3 两层等权严重度与五级完整 |
+| ECDF/边界定义 | `figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv` | CSV | 保存每点两分量全部 unique knots/count/CDF 与 station/site 四条边界 |
+| 机械门禁摘要 | `figures/ngboost_auto_state_ecdf_v2/label_gate.json` | JSON | `label_gate_passed=true`，并保留逐点与小样本 advisory |
+| 标签时间线 | `figures/ngboost_auto_state_ecdf_v2/auto_state_timeline.png` | PNG | 八点和 site 全 OOF 时间线，无人工编辑入口 |
+| 运行清单 | `figures/ngboost_auto_state_ecdf_v2/manifest.json` | JSON | v1 来源、配置、代码和五项非 manifest 产物哈希一致 |
+
 ## Monitoring Configuration
 
 - **Timeout**: 标签诊断 5 分钟；NGBoost 第二增量 30 分钟
-- **Monitor files**: `figures/ngboost_auto_state_v1/label_gate.json`
+- **Monitor files**: `figures/ngboost_auto_state_ecdf_v2/label_gate.json`
 - **Experiment type override**: analysis（第一增量）
-- **Metric file**: `figures/ngboost_auto_state_v1/label_gate.json`
+- **Metric file**: `figures/ngboost_auto_state_ecdf_v2/label_gate.json`
 - **Metric key**: `label_gate_passed`
 
 ## Analysis Plan
@@ -199,4 +236,5 @@ ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
 - [Cheng et al., 2020](https://arxiv.org/abs/1911.01325)讨论了“先分段、再聚类相似片段”的一般路线；本项目使用欧氏段严重度与一维 KMeans，不复现其 Wasserstein/谱聚类算法。
 - [Deng et al., 2021](https://link.springer.com/article/10.1007/s10346-021-01676-8)展示了由实测速度和加速度生成运动标签、再训练机器学习分类器的滑坡实例，说明标签生成可以自动化；其 AE 传感器、8 类规则和随机切分不能直接迁移为本项目的五级时间验证。
 
-这些文献只支持方法组件与自动化方向。未来 7 日定义、五级有序 KMeans、O1/O2/O3 综合和所有数值门禁均是本项目待实验验证的设计，不能写成文献已证明有效。
+这些文献只支持方法组件与自动化方向。未来 7 日定义、v1 五级有序 KMeans、v2 ECDF
+百分位严重度、O1/O2/O3 综合和所有数值门禁均是本项目设计，不能写成文献已证明有效。

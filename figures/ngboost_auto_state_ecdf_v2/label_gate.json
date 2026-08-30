@@ -1,0 +1,238 @@
+{
+  "advisories": [
+    {
+      "blocking": false,
+      "evidence": {
+        "ATU1": {
+          "missing_levels": [
+            "red"
+          ],
+          "raw_outcome_medians_monotone": false
+        },
+        "ATU2": {
+          "missing_levels": [],
+          "raw_outcome_medians_monotone": true
+        },
+        "ATU3": {
+          "missing_levels": [
+            "red"
+          ],
+          "raw_outcome_medians_monotone": false
+        },
+        "ATU4": {
+          "missing_levels": [],
+          "raw_outcome_medians_monotone": true
+        },
+        "ATU5": {
+          "missing_levels": [
+            "red"
+          ],
+          "raw_outcome_medians_monotone": false
+        },
+        "MJ1": {
+          "missing_levels": [
+            "red"
+          ],
+          "raw_outcome_medians_monotone": false
+        },
+        "MJ3": {
+          "missing_levels": [
+            "green"
+          ],
+          "raw_outcome_medians_monotone": false
+        },
+        "MJ9": {
+          "missing_levels": [
+            "orange",
+            "red"
+          ],
+          "raw_outcome_medians_monotone": false
+        }
+      },
+      "name": "fold2_station_level_and_order_diagnostic",
+      "triggered": true
+    },
+    {
+      "blocking": false,
+      "evidence": {
+        "1": {
+          "site": {
+            "blue": 56,
+            "green": 56,
+            "orange": 56,
+            "red": 56,
+            "yellow": 56
+          },
+          "station": {
+            "blue": 445,
+            "green": 447,
+            "orange": 450,
+            "red": 448,
+            "yellow": 450
+          }
+        },
+        "2": {
+          "site": {
+            "blue": 66,
+            "green": 138,
+            "orange": 21,
+            "red": 16,
+            "yellow": 39
+          },
+          "station": {
+            "blue": 381,
+            "green": 750,
+            "orange": 365,
+            "red": 176,
+            "yellow": 568
+          }
+        }
+      },
+      "minimum_support": 20,
+      "name": "limited_class_support",
+      "triggered": true
+    },
+    {
+      "blocking": false,
+      "name": "external_repeat_byte_check",
+      "status": "not_run_in_labels_only_gate",
+      "triggered": true
+    }
+  ],
+  "artifact_kind": "ootang_automatic_future_deformation_state_ecdf_challenger",
+  "artifact_status": "exploratory_proxy_labels_not_formal_warning",
+  "fold_roles": {
+    "1": "ecdf_taxonomy_and_future_classifier_training",
+    "2": "development_evaluation_already_exposed",
+    "3": "historical_evaluation_already_exposed_not_confirmatory"
+  },
+  "formal_warning_output": false,
+  "gates": [
+    {
+      "evidence": {
+        "site": [
+          0.33182539682539686,
+          0.4219246031746032,
+          0.5724801587301587,
+          0.7108928571428572
+        ],
+        "station": [
+          0.21607142857142858,
+          0.4,
+          0.6053571428571429,
+          0.8021428571428573
+        ]
+      },
+      "name": "boundaries_strictly_increasing",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "site": {
+          "blue": 56,
+          "green": 56,
+          "orange": 56,
+          "red": 56,
+          "yellow": 56
+        },
+        "station": {
+          "blue": 445,
+          "green": 447,
+          "orange": 450,
+          "red": 448,
+          "yellow": 450
+        }
+      },
+      "name": "fold1_station_and_site_five_levels_nonempty",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "blue": 66,
+        "green": 138,
+        "orange": 21,
+        "red": 16,
+        "yellow": 39
+      },
+      "name": "fold2_site_five_levels_nonempty",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "1": {
+          "medians": {
+            "blue": {
+              "future_displacement_rate_mm_per_day": 0.07004538862527082,
+              "future_velocity_q90_mm_per_day": 0.0802521615696189
+            },
+            "green": {
+              "future_displacement_rate_mm_per_day": 0.05596290333853611,
+              "future_velocity_q90_mm_per_day": 0.058405303401580004
+            },
+            "orange": {
+              "future_displacement_rate_mm_per_day": 0.17441827025119724,
+              "future_velocity_q90_mm_per_day": 0.19195791930333278
+            },
+            "red": {
+              "future_displacement_rate_mm_per_day": 0.3624201501344434,
+              "future_velocity_q90_mm_per_day": 0.3929771517173044
+            },
+            "yellow": {
+              "future_displacement_rate_mm_per_day": 0.10908305126028056,
+              "future_velocity_q90_mm_per_day": 0.1193641015429
+            }
+          },
+          "passed": true
+        },
+        "2": {
+          "medians": {
+            "blue": {
+              "future_displacement_rate_mm_per_day": 0.08457832193974445,
+              "future_velocity_q90_mm_per_day": 0.08971771040721667
+            },
+            "green": {
+              "future_displacement_rate_mm_per_day": 0.05615149920447944,
+              "future_velocity_q90_mm_per_day": 0.05994043051748222
+            },
+            "orange": {
+              "future_displacement_rate_mm_per_day": 0.15462047677819998,
+              "future_velocity_q90_mm_per_day": 0.17656286262450002
+            },
+            "red": {
+              "future_displacement_rate_mm_per_day": 0.23059661924112224,
+              "future_velocity_q90_mm_per_day": 0.24107969454211667
+            },
+            "yellow": {
+              "future_displacement_rate_mm_per_day": 0.1028573602211778,
+              "future_velocity_q90_mm_per_day": 0.11045619204983888
+            }
+          },
+          "passed": true
+        }
+      },
+      "name": "fold1_fold2_site_raw_outcome_medians_monotone",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "fold2_start_date": "2018-12-05",
+        "max_fit_input_date": "2018-12-04"
+      },
+      "name": "fit_inputs_end_before_fold2",
+      "passed": true
+    },
+    {
+      "evidence": {
+        "cross_fold_targets": 0,
+        "horizon_days": 7,
+        "terminal_rows_without_label": 168,
+        "valid_station_labels": 6720
+      },
+      "name": "future_window_exact_and_fold_isolated",
+      "passed": true
+    }
+  ],
+  "interpretation": "automatic_future_deformation_state_proxy_not_field_hazard_truth",
+  "label_gate_passed": true,
+  "ngboost_trained": false
+}

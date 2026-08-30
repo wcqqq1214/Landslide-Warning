@@ -1,0 +1,89 @@
+{
+  "schema_version": 3,
+  "status": "completed",
+  "warning_pipeline_scope": "research_and_operational_draft_only",
+  "formal_warning_output": false,
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "started_at": "2026-08-30T23:52:47+08:00",
+  "finished_at": "2026-08-30T23:52:48+08:00",
+  "git_commit": "1fbc6124b1ae864f7e6515cc46e16b33b3d11309",
+  "git_worktree_dirty": true,
+  "source_sha256": "8a0f8298f929151ec65218056cf86e63e1bc4f282d963aea0d74d40ada2869a2",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 1.865,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "ootang-ngboost-auto-state-ecdf",
+      "script": "code/warning/ootang_ngboost_auto_state_ecdf.py",
+      "warning_artifact_scope": "exploratory_auto_future_state_ecdf_proxy",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 1.821,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "config/ootang_ngboost_auto_state_ecdf.v2.json",
+        "figures/ngboost_auto_state_v1/station_auto_labels.csv",
+        "figures/ngboost_auto_state_v1/manifest.json",
+        "config/ootang_operational_run.v4.draft.json"
+      ],
+      "input_artifacts": [
+        {
+          "path": "config/ootang_ngboost_auto_state_ecdf.v2.json",
+          "size_bytes": 2054,
+          "sha256": "92275619ea6e3c4a448eee090362792ff41447e33e1788a7e7fc87408d162beb"
+        },
+        {
+          "path": "figures/ngboost_auto_state_v1/station_auto_labels.csv",
+          "size_bytes": 3778714,
+          "sha256": "f0395f55cca24e621abdbd3c6efdaf604afb5f8527083852d93fb9f58d80d0f5"
+        },
+        {
+          "path": "figures/ngboost_auto_state_v1/manifest.json",
+          "size_bytes": 4363,
+          "sha256": "85a05d1cc9e606ff89856388546ef6c2274f4c63cc03ce1c162c7d034df2af2d"
+        },
+        {
+          "path": "config/ootang_operational_run.v4.draft.json",
+          "size_bytes": 9781,
+          "sha256": "442b6e0ac2fcfddf2637ea6a2c6823c0f516e8466ced2e05339a5389216e75ca"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+          "size_bytes": 3587296,
+          "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+          "size_bytes": 317152,
+          "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv",
+          "size_bytes": 424936,
+          "sha256": "49a6dec8e1e168c0894cfdea11d2809a00bcb7100c42fbc6471c8846b83b32df"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+          "size_bytes": 6347,
+          "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/auto_state_timeline.png",
+          "size_bytes": 65691,
+          "sha256": "804c28a9b8e75a9dc45a1d67044ba1411efd675be60113c12afbeffb4558327c"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+          "size_bytes": 4349,
+          "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}
