@@ -97,9 +97,11 @@ replaceable diagnostic cache with `cache_authority=false`.
 This v1 covers exactly one frozen/current/source-derived cut. It does not claim
 generic `bounded_workset_recovery_implemented`, `all_reserved_items_settled`,
 `all_reserved_successors_supported`, or generic terminal/transitive closure.
-Those names remain false because this proof has not yet been rebound to the
-historical drain-start boundary, canonical route fence, and a fresh no-post-
-fence-admission capture.
+Those names remain false because this proof has not yet been rebound to a
+stable branch-specific drain boundary and a fresh unresolved-runtime capture.
+The V1 historical drain-start/route-fence transaction and this V2-derived
+closure are mutually exclusive; they must not be joined by a fabricated
+success path.
 
 It also does not claim full/all-generation workset terminality, recovery-v6 key
 terminality, drain eligibility, `old_epoch_drained`, lifecycle/transition
@@ -132,10 +134,11 @@ and `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
 
 ## Next boundary
 
-The next narrow increment should be a separately versioned drain-completion
-assessor. It must deep-replay the historical drain-start transaction and route
-fence, bind this closure to the matching frozen manifest/candidate, and recapture
-that no old-epoch admission or unresolved runtime work appeared after the
-fence. Only that later assessor may consider publishing an old-epoch drained
-fact. Active switching, `SEALED(old)+ACTIVE(new)`, scheduler authorization, and
-cycle v4 must remain later independent stages.
+Reachability review corrected the earlier plan: this closure descends from the
+V2 first-blocker and admission-cut branch, while any durable V1 drain witness
+makes that branch inert. Its downstream completion must therefore consume the
+V2 `both_cut` official-writer boundary, this exact closure, and one fresh
+four-lock six-family inventory. It may publish only the scoped
+official-machine bounded-workset decision; unqualified `old_epoch_drained`
+remains false. The following independent boundary is the atomic
+`SEALED(old)+ACTIVE(new)` transition with scheduler authorization.

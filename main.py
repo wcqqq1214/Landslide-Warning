@@ -708,7 +708,7 @@ STAGES = (
     Stage(
         "ootang-epoch-settlement-cycle",
         "code/monitoring/ootang_epoch_settlement_cycle.py",
-        "自动执行 manifest 后 settlement 单次有界轮询（复用既有 authority，非 drained/非切换/非正式）",
+        "自动执行 manifest 后 settlement 与 V2 scoped drain-completion 单次有界轮询（非全局 drained/非切换/非正式）",
         inputs=(
             "config/ootang_epoch_workset_recovery.v1.json",
             "config/ootang_epoch_step_dependency_reservation.v1.json",
@@ -728,10 +728,13 @@ STAGES = (
             "config/ootang_epoch_source_derived_current_effective_workset_terminal_coverage.v1.json",
             "config/ootang_epoch_source_derived_bounded_terminal_closure.v1.json",
         ),
-        outputs=("runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",),
+        outputs=(
+            "runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",
+            "runtime/ootang_epoch_registry_v1/workset_recovery_v1/bounded_drain_completion_v1/status.json",
+        ),
         arguments=(),
         warning_artifact_scope=(
-            "epoch_post_manifest_machine_settlement_cycle_engineering"
+            "epoch_post_manifest_machine_settlement_and_v2_drain_completion_engineering"
         ),
         formal_warning_output=False,
         enabled_by_default=False,

@@ -23,6 +23,7 @@ SPEC.loader.exec_module(cycle)
 class _FakeResult:
     status: str
     current_source_derived_bounded_terminal_closure: bool = False
+    bounded_official_workset_drained: bool = False
 
 
 class EpochSettlementCycleTests(unittest.TestCase):
@@ -38,7 +39,7 @@ class EpochSettlementCycleTests(unittest.TestCase):
             stages=stages,
         )
 
-    def test_reaches_existing_bounded_closure_in_one_stage_ordered_poll(self):
+    def test_reaches_v2_bounded_drain_completion_in_one_ordered_poll(self):
         calls = []
         names = [stage.name for stage in cycle.PRODUCTION_STAGES]
         counts = dict.fromkeys(names, 0)
@@ -49,8 +50,8 @@ class EpochSettlementCycleTests(unittest.TestCase):
                 counts[name] += 1
                 return _FakeResult(
                     status="current",
-                    current_source_derived_bounded_terminal_closure=(
-                        name == "source_derived_bounded_terminal_closure"
+                    bounded_official_workset_drained=(
+                        name == "bounded_drain_completion"
                     ),
                 )
 
@@ -60,9 +61,10 @@ class EpochSettlementCycleTests(unittest.TestCase):
             result = self._run(Path(directory), self._stages(factory))
             payload = json.loads(result.status_path.read_text())
 
-        self.assertEqual(result.status, "bounded_terminal_closure_reached")
+        self.assertEqual(result.status, "bounded_official_workset_drained")
         self.assertEqual(calls, names)
         self.assertTrue(payload["current_source_derived_bounded_terminal_closure"])
+        self.assertTrue(payload["bounded_official_workset_drained"])
         self.assertFalse(payload["cache_authority"])
         self.assertEqual([item["stage"] for item in payload["stages"]], names)
 
@@ -83,6 +85,7 @@ class EpochSettlementCycleTests(unittest.TestCase):
         self.assertEqual(result.status, "settlement_poll_complete")
         self.assertTrue(all(count == 1 for count in counts.values()))
         self.assertFalse(result.current_source_derived_bounded_terminal_closure)
+        self.assertFalse(result.bounded_official_workset_drained)
 
 
 if __name__ == "__main__":

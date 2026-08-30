@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this simplification:** `667aa03 feat: automate epoch settlement polling`
+**Committed baseline before this increment:** `7ca9d3b refactor: simplify epoch settlement polling`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -20,11 +20,51 @@ source-derived effective outcome consumption v1、dependent outcome dispatch v1 
 outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
 source-parent terminal aggregate v1 与 source-derived retained-base terminal coverage v1 已提交；
 source-derived current-effective workset terminal coverage v1 与 source-derived bounded terminal
-closure v1 亦已提交；machine settlement cycle v1 已把 workset recovery 之后的 16 个既有
-coordinator 接入一个 bounded scheduler poll，本增量已将该 adapter 精简到最小真实边界。它仍不是完整
-recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
-不声明 remote exactly-once、drained、
-active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+closure v1 亦已提交；machine settlement cycle v1 现把 workset recovery 之后的 16 个既有
+coordinator 与一个 V2 scoped drain-completion assessor 接入同一 bounded scheduler poll。新事件只
+声明 official-machine reserved workset 已排空，不声明全局 `old_epoch_drained`、canonical route
+fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2 evidence、activation
+或 formal warning。
+
+## 2026-08-30 V2 scoped bounded-drain completion v1
+
+Reachability review invalidated the previous proposed V1+V2 join. The V1 clean-start
+`epoch_drain_started`/canonical-route transaction and the V2 non-clean first-blocker/admission-cut
+branch are mutually exclusive: any durable V1 witness makes V2 and admission cut inert. The V2
+manifest, recovery chain, and bounded closure can therefore never legally coexist with the
+historical V1 drain event. Tests must not fabricate that state.
+
+The new profile-free `ootang_epoch_bounded_drain_completion.py` implements only the reachable V2
+boundary. Under the surviving `manager -> cycle -> replay -> shadow` locks, it deep-replays the
+existing bounded closure, obtains the exact candidate/slot/old epoch and physical `both_cut`
+admission binding from the manifest reservation, proves the machine-current live tip is an
+append-only successor of the frozen cut, and performs one fresh six-family inventory at that tip.
+A non-empty actionable set waits without authority. An empty set publishes
+one immutable singleton event in
+`workset_recovery_v1/bounded_drain_completion_v1/`; repolls validate and preserve those bytes.
+There is no new profile, proof, head, WAL, or intermediate all-settled/all-successor authority.
+
+The only positive terminal claim is scoped as
+`authority_scope=official_machine_reserved_workset` and
+`bounded_official_workset_drained=true`. The event keeps unqualified `old_epoch_drained`, canonical
+old-issue route fence, direct-filesystem writer fence, lifecycle/transition authority, and active
+switch false. V1 remains a current eligibility observation because, without a V2-style writer
+cut, official source/outcome work may advance again after the six locks are released; its durable
+completion must be coupled to a writer cut or atomic transition.
+
+The lean settlement cycle now calls 17 static coordinators once per scheduler poll, with this
+assessor immediately after bounded closure. Its replaceable cache retains both closure and scoped
+completion flags. Focused completion `3/3` and cycle/main `42/42` pass as `45/45` in 1.287 seconds;
+Ruff, formatting, compilation, and diff checks pass. No training, full scientific pipeline,
+historical multi-minute drain suite, network action, manual freeze/approval/cleanup, force, or
+backdating ran. ConvLSTM/v4, frozen splits/metrics/thresholds, parameters, artifacts, and scientific
+conclusions are unchanged. Detailed semantics are in
+`docs/ootang_epoch_bounded_drain_completion_engineering.md`.
+
+The next boundary is the atomic `SEALED(old) + ACTIVE(new)` transition that consumes this scoped
+V2 decision and establishes scheduler authorization. Do not add another drain-ready singleton.
+The V1 branch must be completed inside its writer-cut/atomic-transition transaction rather than
+publishing a standalone staleable drained Boolean.
 
 ## 2026-08-30 epoch scope audit and machine settlement cycle v1
 
@@ -76,11 +116,11 @@ SHA-256 values are
 Detailed findings and the new test policy are in
 `docs/ootang_epoch_settlement_cycle_engineering.md`.
 
-The next increment should be the single final drain-completion decision boundary. It should consume
-the existing bounded closure, historical drain-start transaction, canonical route fence, and one
-fresh lock-protected no-post-fence-admission/unresolved-runtime capture. Persist only the final
-drained decision; do not insert more all-settled/all-successor singleton layers. Active transition,
-scheduler authorization, and cycle v4 remain subsequent independent stages.
+This historical next-step note was corrected by the following reachability audit: the V1
+drain-start/route-fence transaction and the V2 bounded-closure branch are mutually exclusive. The
+implemented downstream boundary therefore consumes only the V2 admission cut, existing bounded
+closure, and one fresh four-lock inventory, and publishes one scoped decision rather than an
+unqualified `old_epoch_drained` claim.
 
 ## 2026-08-30 source-derived bounded terminal closure v1
 
@@ -116,9 +156,10 @@ Only the matching singleton event publishes
 `current_source_derived_bounded_terminal_closure=true`. Generic bounded recovery,
 `all_reserved_items_settled`, `all_reserved_successors_supported`, generic terminal/transitive
 closure, full/all-generation workset terminality, drained/lifecycle/activation, trusted/E2/network,
-and formal-warning claims remain false. Those broader facts still require rebinding this closure
-to the historical drain-start boundary, canonical route fence, and a fresh no-post-fence-admission
-capture. Missing current-effective authority waits without own bytes; a proof-only crash appends
+and formal-warning claims remain false. A later reachability audit established that this V2 closure
+cannot be rebound to the mutually exclusive V1 drain-start/route-fence branch; its valid downstream
+consumer instead uses the V2 physical admission cut plus a fresh four-lock capture. Missing
+current-effective authority waits without own bytes; a proof-only crash appends
 only the matching event; later cut drift or evidence loss fails closed. Zero-D/R remains a separate
 machine branch because the inherited D/R leaf requires a non-empty denominator.
 
@@ -139,12 +180,11 @@ model SHA-256 values are
 Detailed semantics are in
 `docs/ootang_source_derived_bounded_terminal_closure_engineering.md`.
 
-The next narrow increment should be a separately versioned drain-completion assessor. It must
-deep-replay the historical drain-start transaction and canonical route fence, bind this closure to
-the matching frozen manifest/candidate, and recapture under the required locks that no post-fence
-old-epoch admission or unresolved runtime work exists. Only that later assessor may consider an
-old-epoch drained fact. Active switching, `SEALED(old)+ACTIVE(new)`, scheduler authorization, and
-cycle v4 remain independent later stages.
+This historical next-step plan was unreachable because durable V1 authority makes the V2 branch
+inert. The implemented V2 completion instead binds the matching manifest/candidate, physical
+`both_cut` admission event, bounded closure, and a fresh zero-actionable six-family capture. It
+publishes only a scoped official-machine workset decision; active switching,
+`SEALED(old)+ACTIVE(new)`, scheduler authorization, and cycle v4 remain later stages.
 
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1
 
@@ -3208,12 +3248,13 @@ Before committing, use an explicit path list; do not use a blind `git add .`.
    that new version. Failure waits or
    blocks; never add human date selection, freezing, cleanup, approval, force or
    fabricated backfill.
-5. Only after terminal receipts and explicit derived-work closure let a separate assessor prove
-   the bounded old work is drained, add an
-   authoritative active-transition slice, then cycle v4 with trusted-time qualification.
-   Keep broader scheduler authorization unavoidable and optimize repeated receipt/ledger
-   scans so long-lived operation does not grow as O(N^2). Do not use historical OOF rows
-   as future predictions, select a best seed, or backdate a missed target.
+5. Treat the V2 scoped bounded-drain decision as implemented, but do not reinterpret its
+   `official_machine_reserved_workset` scope as unqualified `old_epoch_drained`. The next machine
+   boundary is one authoritative atomic `SEALED(old) + ACTIVE(new)` transaction that consumes the
+   scoped event and establishes scheduler authorization; do not insert another drain-ready
+   singleton. V1 completion must be coupled to its writer cut or atomic transition. Keep repeated
+   receipt/ledger scans from growing as O(N^2), and do not use historical OOF rows as future
+   predictions, select a best seed, or backdate a missed target.
 6. If improving interval calibration, create a separately versioned,
    predeclared challenger such as SPCI/AgACI and compare it on future E2 data or
    a valid new evaluation protocol. Do not tune the current v1 from the already

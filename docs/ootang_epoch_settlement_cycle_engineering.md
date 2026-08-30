@@ -49,26 +49,28 @@ post-manifest chain through bounded terminal closure. It exposes one CLI and
 one explicit `main.py` stage, `ootang-epoch-settlement-cycle`.
 
 After the existing workset-recovery stage has run once, one settlement poll
-calls the following 16 public coordinators exactly once in topological order:
+calls the following 17 public coordinators exactly once in topological order:
 
 1. step-dependency reservation, overlay, source aggregate, and frozen-manifest
    coverage;
 2. source-ingest derived reservation and cross-freeze adoption;
 3. current source-derived overlay, source/dependent dispatch and consumption;
 4. effective, parent, retained-base, and current-effective coverage;
-5. bounded terminal closure.
+5. bounded terminal closure; and
+6. the V2 scoped bounded-drain completion assessor.
 
 The single-pass bound is deliberate. Recovery can include a bounded external
-transport, so an internal 16/64-pass loop would multiply latency and network
+transport, so an internal 17/68-call loop would multiply latency and network
 attempts. A machine scheduler may invoke this endpoint again; no human
 selection, freeze, approval, cleanup, force, or backdating is required.
 
 The cycle does not duplicate upstream profile, implementation, proof, event,
 or runtime validation. Each existing coordinator remains the owner of its own
-contract. The cycle invokes a static table of the 16 public callables once and
-atomically replaces a small status cache containing stage statuses and the
-final bounded-closure result. The cache is explicitly non-authoritative and
-creates no proof or event.
+contract. The cycle invokes a static table of the 17 public callables once and
+atomically replaces a small status cache containing stage statuses, the
+bounded-closure result, and the final scoped-drain result. The cache is
+explicitly non-authoritative; the completion assessor owns its one immutable
+decision event.
 
 There is deliberately no settlement-cycle profile. The removed profile fixed
 every value to a code constant, including the path and `passes_per_poll=1`, so
@@ -99,10 +101,12 @@ following ceremony was removed:
 - duplicate Python inputs in `main.py`, because the pipeline's global
   `source_fingerprint()` already hashes every `code/**/*.py` file.
 
-The `main.py` stage retains 17 configuration inputs: the transitive workset
-recovery profile and the 16 directly invoked coordinator profiles. The real
-filesystem boundary also remains: status publication still uses a temporary
-file plus `os.replace`, but intentionally adds no lock, `fsync`, replay log, or
+The `main.py` stage retains the transitive workset-recovery profile and the 16
+settlement coordinator profiles as explicit inputs. The profile-free completion
+module is already covered by the pipeline's global `code/**/*.py` source
+fingerprint, so it is not duplicated as a stage input. The real filesystem
+boundary also remains: cycle-status publication still uses a temporary file
+plus `os.replace`, but intentionally adds no lock, `fsync`, replay log, or
 symlink policy for this replaceable cache.
 
 The implementation fell from 414 to 230 lines, the focused test from 107 to 89
@@ -117,14 +121,14 @@ no such consumer, and README usage goes through the argument-free main stage.
 
 The orchestration behavior has two focused tests:
 
-- one ordered poll reaches an already supported bounded closure and preserves
-  the non-authoritative cache boundary;
+- one ordered poll reaches the V2 scoped drain decision and preserves both
+  upstream closure and non-authoritative cycle-cache state;
 - a nonterminal poll calls every coordinator once and yields cleanly to the
   next scheduler invocation.
 
 `tests/test_main.py` adds one integration contract for stage ordering,
 explicit-only scope, inputs, output, and its argument-free invocation. Importing
-the cycle resolves all 16 static public callables, so a separate dynamic
+the cycle resolves all 17 static public callables, so a separate dynamic
 registry test would duplicate module-import coverage. This is the complete test
 budget for this non-authoritative adapter. The main/cycle set passes in well
 under one second; Ruff, Python compilation, dry-run routing, residue search,
@@ -134,13 +138,12 @@ run for this increment.
 
 ## Next boundary
 
-The next implementation should be the single final drain-completion decision
-boundary, not another intermediate `all-settled` or `all-successor` authority.
-It should consume the existing bounded closure together with the historical
-drain-start transaction, canonical route fence, and one fresh lock-protected
-no-post-fence-admission/unresolved-runtime capture. Static pins should be
-validated once per invocation and the validated immutable cut passed in
-memory; mutable sources should be re-attested only immediately before the
-final commit. Only that final boundary may publish a durable drained decision.
-Active switching, lifecycle transition, scheduler authorization, cycle v4,
+The V1 drain-start and V2 bounded-closure branches are mutually exclusive, so
+the earlier plan to consume both was unreachable. The V2 scoped completion now
+uses the stable admission cut, existing bounded closure, and one fresh
+four-lock inventory without adding another intermediate authority. The next
+implementation boundary is the atomic `SEALED(old) + ACTIVE(new)` transition
+that consumes this scoped decision and defines scheduler authorization. V1
+completion must be coupled to its own writer cut or that same atomic transition;
+it must not be promoted from a staleable standalone observation. Cycle v4,
 trusted/E2 promotion, and formal warning remain later independent work.

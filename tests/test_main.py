@@ -1200,7 +1200,10 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertEqual(
             stage.outputs,
-            ("runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",),
+            (
+                "runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",
+                "runtime/ootang_epoch_registry_v1/workset_recovery_v1/bounded_drain_completion_v1/status.json",
+            ),
         )
         self.assertIn(
             "config/ootang_epoch_workset_recovery.v1.json",

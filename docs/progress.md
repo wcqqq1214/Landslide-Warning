@@ -5,6 +5,36 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 V2 scoped bounded-drain completion v1（本增量）
+
+- Reachability audit 纠正了上一轮 handoff 的关键假设：V1 clean-start
+  `epoch_drain_started`/canonical-route fence 与 V2 non-clean
+  admission-cut/manifest/bounded-closure 是互斥 sibling。任何 durable V1 witness 都会令 V2 与
+  admission cut inert，故不能用 synthetic fixture 拼出“V1 fence + V2 closure”的成功路径。
+- 本轮只实现当前可达且释放锁后仍稳定的 V2 分支。新增 profile-free
+  `ootang_epoch_bounded_drain_completion.py`；它在现有
+  `manager -> cycle -> replay -> shadow` 四锁内深回放 bounded closure，从 manifest reservation
+  取得 exact candidate/slot/old epoch 与 V2 `both_cut` binding，再做一次 fresh 六族只读 inventory。
+  当前 live tip 必须是 frozen admission-cut tip 的 append-only successor；只有 actionable item 为零
+  时才发布一个 immutable singleton event；waiting 仅写
+  `cache_authority=false` status。没有新增 proof、head、WAL 或 all-settled/all-successor 中间层。
+- positive claim 严格限定为
+  `authority_scope=official_machine_reserved_workset` 与
+  `bounded_official_workset_drained=true`。事件明确保留 `old_epoch_drained=false`、canonical old issue
+  route fence=false、direct-filesystem writer fence=false、lifecycle/transition=false 与 active switch=false；
+  因此不会把 reviewed official-writer threat model 偷换成全局文件系统定理。V1 仍只保留 machine-current
+  eligibility；在没有 writer cut 时，其 standalone drained event 会在六锁释放后重新变 stale。
+- lean settlement cycle 把该 assessor 作为 bounded closure 后第 17 个静态 coordinator，同一次机器
+  poll 自动推进；cycle status 同时保留 closure 与 scoped completion 两个结果。默认科研链仍是
+  `features -> convlstm -> ootang-operational-v4`，本轮未修改 ConvLSTM/v4、冻结
+  splits/metrics/thresholds、模型参数、预测产物或实验结论。
+- focused completion `3/3` 与 cycle/main integration `42/42` 合计 `45/45`，测试执行 1.287 秒；
+  Ruff check/format、Python compile 与 diff check 均通过。没有运行训练、完整科研管线、历史
+  multi-minute drain fixture、真实网络、人工冻结/批准/清理、force 或 backdate。
+- 下一步不再增加 drain-ready singleton，而是设计原子 `SEALED(old) + ACTIVE(new)` transition：
+  消费本 scoped V2 decision 并同时建立 scheduler authorization。V1 completion 应与其 writer cut
+  或同一个原子 transition 耦合，而不是提前持久化一个可过期的 drained Boolean。
+
 ## 2026-08-30 epoch scope audit 与 machine settlement cycle v1（本增量）
 
 - 目标复核结论：默认链仍严格为 `features -> convlstm -> ootang-operational-v4`，ConvLSTM、
@@ -44,9 +74,9 @@
   `4d38467077ae54e2bbeae8e04c491c1cbfc89762712eb49ca43f7bb6adcbf084` 与
   `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`；已删除的 settlement
   profile 不再有 SHA。
-- 下一步直接做唯一的 drain-completion decision boundary：消费现有 bounded closure、historical
-  drain-start、canonical route fence 与 fresh lock-protected no-post-fence/unresolved-runtime capture；
-  只在最终 drained decision 持久化，不再插入 all-settled/all-successor 等中间 singleton authority。
+- 该条历史 next-step 假设已由后续 reachability audit 纠正：V1 drain-start/route-fence 与 V2
+  bounded-closure 是互斥 sibling，不能合法合并。实际 downstream boundary 仅消费 V2 admission
+  cut、既有 closure 与 fresh four-lock inventory，并只发布 scoped official-machine decision。
 
 ## 2026-08-30 source-derived bounded terminal closure v1（本增量）
 
@@ -66,8 +96,9 @@
   terminal Rnew，I 只记录同一 source edge 的 exact invalidation supersession；每个 D/R/I successor
   也逐项绑定 terminal 或 supersession 解析。只有 matching singleton event 发布窄 claim
   `current_source_derived_bounded_terminal_closure=true`；generic bounded recovery、all-reserved、
-  all-successor、terminal/transitive closure、drained/lifecycle/activation 等仍为 false，因为尚未绑定
-  historical drain-start boundary、route fence 与 fresh no-post-fence-admission capture。
+  all-successor、terminal/transitive closure、drained/lifecycle/activation 等仍为 false。后续
+  reachability audit 已确认它不能绑定互斥的 V1 drain-start/route-fence；合法下游改为绑定 V2
+  physical cut 与 fresh four-lock capture。
 - focused `3/3` 通过，用时 16.637 秒；bounded-closure/current-effective/source-parent/
   retained-base/current-`D/R` 窄链 `18/18` 通过，用时 59.004 秒。覆盖完整两等式与幂等 status
   重建、缺 current-effective event 时不发布、proof-only crash 自动续接。Ruff E7/E9/F、Python
@@ -81,11 +112,10 @@
   `554c262dc842dae121ffdfd2d5ce0fdb7c74803fdf520c32394356c813c053a9`、
   `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` 与
   `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
-- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄
-  增量应是 separately versioned drain-completion assessor：深回放 historical drain-start transaction
-  与 route fence，把本 closure 绑定到 matching frozen manifest/candidate，并在锁内复验 fence 后无
-  old-epoch admission 或 unresolved runtime work；active switch、SEALED/ACTIVE transition、scheduler
-  authorization 与 cycle v4 继续留到后续独立阶段。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。该条历史
+  next-step 已被后续互斥性审计替代：V2 completion 只绑定 matching manifest/candidate、V2
+  admission cut、bounded closure 与 fresh inventory；active switch、SEALED/ACTIVE transition、
+  scheduler authorization 与 cycle v4 继续留到后续独立阶段。
 
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1（本增量）
 

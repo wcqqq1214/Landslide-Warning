@@ -22,6 +22,7 @@ if str(CODE_DIR) not in sys.path:
     sys.path.insert(0, str(CODE_DIR))
 
 from monitoring import (  # noqa: E402
+    ootang_epoch_bounded_drain_completion as bounded_drain_completion,
     ootang_epoch_manifest_terminal_coverage as manifest_terminal,
     ootang_epoch_source_derived_bounded_terminal_closure as bounded_closure,
     ootang_epoch_source_derived_current_effective_workset_terminal_coverage as current_coverage,
@@ -115,6 +116,10 @@ PRODUCTION_STAGES = (
         "source_derived_bounded_terminal_closure",
         bounded_closure.coordinate_source_derived_bounded_terminal_closure,
     ),
+    SettlementStage(
+        "bounded_drain_completion",
+        bounded_drain_completion.coordinate_epoch_bounded_drain_completion,
+    ),
 )
 
 
@@ -124,6 +129,7 @@ class EpochSettlementCycleResult:
     reason: str
     status_path: Path
     current_source_derived_bounded_terminal_closure: bool
+    bounded_official_workset_drained: bool
 
 
 def _write_status(path: Path, payload: dict[str, object]) -> None:
@@ -158,20 +164,28 @@ def coordinate_epoch_settlement_cycle(
 
     snapshots: list[dict[str, object]] = []
     closure = False
+    drained = False
     for stage in stages:
         stage_result = stage.run()
         snapshots.append(
             {"stage": stage.name, "status": getattr(stage_result, "status")}
         )
-        closure = bool(
+        closure = closure or bool(
             getattr(
                 stage_result,
                 "current_source_derived_bounded_terminal_closure",
                 False,
             )
         )
+        drained = drained or bool(
+            getattr(stage_result, "bounded_official_workset_drained", False)
+        )
 
-    if closure:
+    closure = closure or drained
+    if drained:
+        status = "bounded_official_workset_drained"
+        reason = "the V2 official-machine reserved workset is durably drained"
+    elif closure:
         status = "bounded_terminal_closure_reached"
         reason = "existing bounded terminal-closure authority is current"
     else:
@@ -189,9 +203,10 @@ def coordinate_epoch_settlement_cycle(
             .replace("+00:00", "Z"),
             "stages": snapshots,
             "current_source_derived_bounded_terminal_closure": closure,
+            "bounded_official_workset_drained": drained,
         },
     )
-    return EpochSettlementCycleResult(status, reason, status_path, closure)
+    return EpochSettlementCycleResult(status, reason, status_path, closure, drained)
 
 
 def main() -> int:
@@ -218,6 +233,9 @@ def main() -> int:
                 "status_path": str(result.status_path),
                 "current_source_derived_bounded_terminal_closure": (
                     result.current_source_derived_bounded_terminal_closure
+                ),
+                "bounded_official_workset_drained": (
+                    result.bounded_official_workset_drained
                 ),
             },
             sort_keys=True,
