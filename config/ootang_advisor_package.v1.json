@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "profile_id": "ootang_advisor_package_v1",
+  "case": "ootang",
+  "vajont_used": false,
+  "formal_warning_output": false,
+  "package_status": "advisor_research_demo_not_formal",
+  "inputs": {
+    "convlstm_summary": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv",
+    "auto_label_definition": "figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv",
+    "auto_site_labels": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+    "auto_label_gate": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+    "classifier_metrics": "figures/ngboost_auto_state_classifier_v1/metrics.csv",
+    "memory_metrics": "figures/ngboost_auto_state_memory_v2/comparison_metrics.csv",
+    "memory_manifest": "figures/ngboost_auto_state_memory_v2/manifest.json",
+    "residual_metrics": "figures/ngboost_auto_state_residual_v3/comparison_metrics.csv",
+    "residual_manifest": "figures/ngboost_auto_state_residual_v3/manifest.json",
+    "station_timeline": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+    "site_timeline": "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+    "acceleration_thresholds": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv"
+  },
+  "display_assets": {
+    "convlstm_all_stations": "figures/convlstm/forecast_all_stations.png",
+    "auto_state_timeline": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
+    "classifier_shap": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
+    "v4_station_diagnostic": "figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.pdf",
+    "v4_site_timeline": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf"
+  },
+  "output_dir": "figures/advisor_ootang_v1",
+  "outputs": {
+    "table1_convlstm": "table1_convlstm.csv",
+    "table2_auto_labels": "table2_auto_labels.csv",
+    "table3_classifier_comparison": "table3_classifier_comparison.csv",
+    "table4_multistation_summary": "table4_multistation_summary.csv",
+    "table_s1_acceleration_thresholds": "table_s1_acceleration_thresholds.csv",
+    "advisor_summary": "advisor_summary.md",
+    "manifest": "manifest.json"
+  }
+}

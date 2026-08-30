@@ -1,13 +1,47 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
-**Prepared:** 2026-08-30
+**Prepared:** 2026-08-31
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `559e383 docs: restore automated ngboost research plan`
+**Committed baseline before this increment:** `a98a281 docs: align research mainline`
 **Current research-prototype gate:** `allowed`; the historical OOF experiment is not blocked by
 Figshare, a post-2020 live feed, or formal-v5 G1--G4.
 **Current deployment gate:** authentic post-2020 finalized source unavailable; R1 remains
 `waiting_for_candidate_feed`.
+
+## 2026-08-31 current priority: finish Ootang before Vajont
+
+The user explicitly requires the Ootang advisor demonstration to be completed before any Vajont
+adaptation, training or result generation. A negative result is acceptable at this milestone:
+pipeline completeness, reproducible evidence and an honest limitations statement take priority
+over further parameter tuning. A prior read-only Vajont workbook inspection created no experiment
+artifact; its temporary files were deleted and the source workbook remains unchanged and
+uncommitted.
+
+The explicit five-stage Ootang pipeline has now completed in the following order:
+`ootang-operational-v4 -> ootang-ngboost-auto-state ->
+ootang-ngboost-auto-state-ecdf -> ootang-ngboost-auto-state-classifier ->
+ootang-advisor-package`. The run manifest is
+[`figures/pipeline/ootang_advisor_demo_run.json`](figures/pipeline/ootang_advisor_demo_run.json):
+status `completed`, total elapsed time `35.660 s`, all five artifact contracts `passed`, and
+`formal_warning_output=false`. This run reused the versioned ConvLSTM predictions; it did not
+retrain ConvLSTM, run the rejected memory/residual challengers, or use Vajont.
+
+The evidence boundary is unchanged. The original auto-state label gate remains false, the ECDF
+label gate is true, and the classifier decision remains `small_support_descriptive_only` because
+NGBoost did not outperform strict lag-7 persistence. These are retained negative results, not a
+reason to reopen model search. The advisor package entry point is
+[`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md),
+with five registered core figures, five CSV tables containing `27/18/33/23/8` rows, and
+[`manifest.json`](figures/advisor_ootang_v1/manifest.json). The first summary-only relative-path
+issue was corrected and the complete rerun passed.
+
+All five advisor-facing figures open correctly and contain the expected content. The bottom note
+of the v4 all-station diagnostic is slightly crowded/close to the edge, but this does not block the
+current demonstration and can remain a lightweight visual cleanup item. **Next action:** close the
+research-method/results narrative against this package. Do not tune NGBoost, add a new model,
+rerun memory/residual, or start Vajont unless the user explicitly reauthorizes it after the Ootang
+review is complete.
 
 ## 2026-08-31 lag-7 memory challenger: completed and rejected
 

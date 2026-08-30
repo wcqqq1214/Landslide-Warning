@@ -6,9 +6,21 @@
 >
 > 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
-> 状态：当前主线为藕塘自动未来状态标签 + 四指标 NGBoost 原型；v4 为规则基线；Vajont 是尚未启动的 P2 后续候选案例
+> 状态：藕塘五阶段导师展示流水线已完整跑通；负结果保留；Vajont 延后且尚未启动
 >
 > 本文档以任务与验收标准为主；只有明确标为“执行记录”或已勾选完成的条目代表相应工作已经落地，且其证据强度仍受数据与科研门禁约束。
+
+> **最新执行优先级（2026-08-31）**：用户要求在藕塘端到端流程和导师展示包完成前不得启动
+> Vajont，并明确允许阶段性结果为负。藕塘显式五阶段流水线
+> `operational-v4 -> auto-state -> ECDF -> classifier -> advisor-package` 已在 `35.660 s`
+> 内完成，五个产物合同均通过，且 `formal_warning_output=false`；运行清单见
+> [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json)。本轮复用既有
+> ConvLSTM 预测，不重训 ConvLSTM，不运行 memory/residual，也不使用 Vajont。原 auto-state
+> gate 失败、ECDF gate 通过、分类器为 `small_support_descriptive_only` 且未超过 persistence，
+> 均按原样进入展示与局限说明。展示包见
+> [`advisor_summary.md`](../figures/advisor_ootang_v1/advisor_summary.md)。5 张核心图已快速确认均可
+> 正常打开且内容齐全；v4 全测点诊断图底部说明略拥挤但不影响演示。下一步仅做方法/结果叙述
+> 收口，不开展调参、新模型或 Vajont 实验。
 
 > **2026-08-13 历史代码树快照（已被 2026-08-30/31 更新覆盖）**：当时可执行路线只保留 `features → convlstm → ootang-operational-v4`、独立 NGBoost 回归 SHAP 及 ConvLSTM 诊断。旧 30 日 `V0` 标签、旧融合、旧 v1/v2/v3 运行入口和对应测试已从工作树删除，仅在 Git 历史中保留。本文件后续出现的旧脚本名、v1/v2/v3 路径和旧数值属于执行历史，不能作为当前代码契约；当前实现以本页后续 2026-08-30/31 更新及对应版本化配置和产物为准。
 

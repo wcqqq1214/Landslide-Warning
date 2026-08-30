@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 43)
+        self.assertEqual(len(pipeline.STAGES), 44)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -409,6 +409,28 @@ class PipelineTests(unittest.TestCase):
             for path in existing.outputs
         }
         self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
+
+    def test_advisor_package_is_explicit_nonformal_and_last(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-advisor-package"]
+
+        self.assertEqual(names.index(stage.name), len(names) - 1)
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(stage.script, "code/reporting/ootang_advisor_package.py")
+        self.assertIn("config/ootang_advisor_package.v1.json", stage.inputs)
+        self.assertTrue(
+            all(
+                path.startswith("figures/advisor_ootang_v1/")
+                for path in stage.outputs
+            )
+        )
+        self.assertTrue(
+            all(
+                "vajont" not in path.lower()
+                for path in (*stage.inputs, *stage.outputs)
+            )
+        )
 
     def test_skipped_stages_are_removed(self):
         stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])

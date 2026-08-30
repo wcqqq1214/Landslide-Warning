@@ -1,0 +1,123 @@
+{
+  "artifact_kind": "ootang_advisor_research_package",
+  "case": "ootang",
+  "display_assets": {
+    "auto_state_timeline": {
+      "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
+      "sha256": "ee359254c8074a0ac3577e1a67ec76ea733bf4e5233193d50191be891d9eaa21"
+    },
+    "classifier_shap": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
+      "sha256": "c43d63fb696a10c87e895431a53b3474c6193d47563a8024adbe22dfe5f103c7"
+    },
+    "convlstm_all_stations": {
+      "path": "figures/convlstm/forecast_all_stations.png",
+      "sha256": "ee67c24fd0a2fa692e848e9bdda8000fb05dba52da376a147f52c3bb75525cb2"
+    },
+    "v4_site_timeline": {
+      "path": "figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf",
+      "sha256": "74da0892e3807ec5b41e014b26a6157365b2a1fdea6a303a9fa0b325cc02ed2f"
+    },
+    "v4_station_diagnostic": {
+      "path": "figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.pdf",
+      "sha256": "4faadc5fe47f3627dce12d19e075a03f2196aeae1747c3e20b9631d0a4bc4dcc"
+    }
+  },
+  "evidence_boundaries": [
+    "automatic_labels_are_proxy_outcomes_not_field_hazard_truth",
+    "all_ngboost_challengers_failed_registered_improvement_gates",
+    "fold3_classifier_metrics_not_reported",
+    "v4_is_transparent_nonformal_baseline",
+    "acceleration_thresholds_are_project_operationalization"
+  ],
+  "formal_warning_output": false,
+  "inputs": {
+    "acceleration_thresholds": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_thresholds.csv",
+      "sha256": "d762afe5dcf4b46a9ce351e9d4c109e4156491793c8dc9fd0e71b9cf089988ce"
+    },
+    "auto_label_definition": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv",
+      "sha256": "49a6dec8e1e168c0894cfdea11d2809a00bcb7100c42fbc6471c8846b83b32df"
+    },
+    "auto_label_gate": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+      "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+    },
+    "auto_site_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+      "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+    },
+    "classifier_metrics": {
+      "path": "figures/ngboost_auto_state_classifier_v1/metrics.csv",
+      "sha256": "9255483c780f24e4a3d2915f993b623acb985c52afa0135512d0288ff6499665"
+    },
+    "convlstm_summary": {
+      "path": "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv",
+      "sha256": "f8fba7e24b109b14ed9f9c4b452f8c5132155c5324549ebe3cd80b8157ed55a3"
+    },
+    "memory_manifest": {
+      "path": "figures/ngboost_auto_state_memory_v2/manifest.json",
+      "sha256": "40869be9e4cbee9484d67b73b04a2bc44dbbf73e5ddf9d4ce076f16f67b942c8"
+    },
+    "memory_metrics": {
+      "path": "figures/ngboost_auto_state_memory_v2/comparison_metrics.csv",
+      "sha256": "247911b7074a71358af9773ee2e2776cf061cbe5633f814c73da1a7532cd259c"
+    },
+    "residual_manifest": {
+      "path": "figures/ngboost_auto_state_residual_v3/manifest.json",
+      "sha256": "143db21d5aa9b999e6c92ea50a546b90808afc31c06ecfdf6ace57226ceb63ce"
+    },
+    "residual_metrics": {
+      "path": "figures/ngboost_auto_state_residual_v3/comparison_metrics.csv",
+      "sha256": "36a1c7e016782e999f54609aea17cd4948c83489f8b1af3b93109dbee75c8f30"
+    },
+    "site_timeline": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
+      "sha256": "e32df1e380d8c86202461e034e2063107470d2b8643fdd62746065576ad9e9dd"
+    },
+    "station_timeline": {
+      "path": "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
+      "sha256": "28452fe7369dc5845496f7048c39410f64b4ef5a234bdac3e7771562f69fad1e"
+    }
+  },
+  "outputs": {
+    "advisor_summary": {
+      "path": "figures/advisor_ootang_v1/advisor_summary.md",
+      "rows": null,
+      "sha256": "f73fb900102b0c4345f16fa3bab43599eaad4c9b737bd0d921dc11fcc608bbba"
+    },
+    "table1_convlstm": {
+      "path": "figures/advisor_ootang_v1/table1_convlstm.csv",
+      "rows": 27,
+      "sha256": "76203ce6f1bd0c6b2faa58ea2c9404937b49b27338ca5fa17ae8d5adb5fdcf0f"
+    },
+    "table2_auto_labels": {
+      "path": "figures/advisor_ootang_v1/table2_auto_labels.csv",
+      "rows": 18,
+      "sha256": "5ab1382f67dc65b63f19fb7688d7b2a3b118d339ada98bbf3d118b1d33598530"
+    },
+    "table3_classifier_comparison": {
+      "path": "figures/advisor_ootang_v1/table3_classifier_comparison.csv",
+      "rows": 33,
+      "sha256": "206c523c63381535aca32ab3141f67fd9ffdaf80136ddce5ef8b97ba328f25b6"
+    },
+    "table4_multistation_summary": {
+      "path": "figures/advisor_ootang_v1/table4_multistation_summary.csv",
+      "rows": 23,
+      "sha256": "e08999a7d71697217a1dc397feceab2d4399cb825782db03da437e67a467d874"
+    },
+    "table_s1_acceleration_thresholds": {
+      "path": "figures/advisor_ootang_v1/table_s1_acceleration_thresholds.csv",
+      "rows": 8,
+      "sha256": "8e5cdc0cdd8157a4f3b42450de4af34c7633400c95ea5b27a83caa26d7320008"
+    }
+  },
+  "package_status": "advisor_research_demo_not_formal",
+  "profile": {
+    "path": "config/ootang_advisor_package.v1.json",
+    "sha256": "919a3cdad2d1be9b928e9b03895c0c40875e4decfe4051fec42dac1644789762"
+  },
+  "schema_version": 1,
+  "vajont_used": false
+}

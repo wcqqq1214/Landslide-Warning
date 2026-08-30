@@ -9,6 +9,13 @@
 > 当前口径（2026-08-31）：v4 是透明、非正式规则基线；H=7 ECDF 五级自动标签与固定
 > NGBoost 五分类已完成，全部 `formal_warning_output=false`。Vajont 未参与本结果包。
 
+> **导师展示包已物化（2026-08-31）**：显式五阶段流水线已完成，运行清单
+> [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json) 状态为
+> `completed`、总耗时 `35.660 s`，五阶段产物合同全部通过。该运行复用现有 ConvLSTM 预测，
+> 未重训 ConvLSTM、未运行 memory/residual、未运行 Vajont。展示入口为
+> [`advisor_summary.md`](../figures/advisor_ootang_v1/advisor_summary.md)，包级血缘见
+> [`manifest.json`](../figures/advisor_ootang_v1/manifest.json)。
+
 ## 1. 阶段结论
 
 藕塘案例已经达到导师要求的“先跑通”目标。8 个测点均进入高程感知 ConvLSTM 和 v4
@@ -224,8 +231,8 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 
 ## 11. 论文与导师汇报的最小图表清单
 
-以下清单只复用现有版本化产物。图件不重新计算，表格后续只从所列 CSV 机械汇总，不重跑模型或
-查看新的评价折。
+以下清单沿用固定配置和版本化输入。本轮没有重跑 ConvLSTM；v4 与固定分类器图件由五阶段
+流水线刷新一次，表格再从所列 CSV/JSON 机械汇总，没有选择新模型或查看新的评价折。
 
 ### 11.1 核心图件
 
@@ -246,3 +253,19 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 | 主表 3：分类器与基线公平比较 | [`classifier metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`memory metrics`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv)、[`residual metrics`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) | Panel A 报 fold-2 all-valid 280 日的 NGBoost/Logistic/prior；Panel B 报 common 273 日的 v1/memory/residual/persistence，并保留 rejected 决策。 |
 | 主表 4：多点逐时输出与空间综合 | [`station timeline`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`site timeline`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv) | 各点五色候选、加速度等级、site-confirmed 与 local-max 的覆盖和支持差异；完整逐时记录作为附件。 |
 | 补充表 S1：8 点加速度阈值 | [`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) | 每点 fit-only `A/σa/A0` 与五级边界；表注明 project operationalization、non-formal，不称为论文原阈值。 |
+
+### 11.3 已物化的导师展示附件
+
+| 附件 | 行数 | 入口 |
+| --- | ---: | --- |
+| 主表 1：ConvLSTM 全站概率预测 | 27 | [`table1_convlstm.csv`](../figures/advisor_ootang_v1/table1_convlstm.csv) |
+| 主表 2：H=7 自动标签与支持 | 18 | [`table2_auto_labels.csv`](../figures/advisor_ootang_v1/table2_auto_labels.csv) |
+| 主表 3：分类器与基线比较 | 33 | [`table3_classifier_comparison.csv`](../figures/advisor_ootang_v1/table3_classifier_comparison.csv) |
+| 主表 4：多测点综合摘要 | 23 | [`table4_multistation_summary.csv`](../figures/advisor_ootang_v1/table4_multistation_summary.csv) |
+| 补充表 S1：8 点加速度阈值 | 8 | [`table_s1_acceleration_thresholds.csv`](../figures/advisor_ootang_v1/table_s1_acceleration_thresholds.csv) |
+
+展示包同时登记上述 5 张核心图。原始 auto-state label gate 为 false，ECDF gate 为 true，
+分类器结论为 `small_support_descriptive_only`；NGBoost 未超过严格 persistence。这些负结果是
+本阶段应展示的科研证据，而不是继续调参或增加模型的理由。下一步只做导师展示的视觉核对与
+研究方法、结果和局限叙述收口；Vajont 继续延后。5 张图已快速确认均能正常打开且内容齐全；
+v4 全测点诊断图底部说明略拥挤、靠边，但不影响本次流程演示，后续只需轻量调整。

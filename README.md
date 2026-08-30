@@ -209,6 +209,23 @@ uv sync
 uv run python main.py
 ```
 
+当前给导师查看的藕塘完整科研演示不重训耗时的 ConvLSTM，而是复用已经版本化的三折 × 五种子
+预测，机器刷新四指标基线、H=7 自动标签、固定 NGBoost、分类 SHAP、逐时多点结果和汇总表：
+
+```bash
+uv run python main.py \
+  --stage ootang-operational-v4 \
+  --stage ootang-ngboost-auto-state \
+  --stage ootang-ngboost-auto-state-ecdf \
+  --stage ootang-ngboost-auto-state-classifier \
+  --stage ootang-advisor-package \
+  --manifest figures/pipeline/ootang_advisor_demo_run.json
+```
+
+该命令接受并保留 NGBoost 未超过 persistence 的负结果，不运行已经拒绝的 memory/residual
+challenger，不启动 Vajont，也不做新的参数搜索。最终入口为
+[`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md)。
+
 无参数只运行 `features → convlstm → ootang-operational-v4`。其余当前诊断需显式选择：
 
 ```bash
@@ -232,6 +249,7 @@ uv run python main.py --stage ootang-trusted-time-shadow
 uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain --stage ootang-epoch-drain-eligibility
 uv run python main.py --stage ootang-epoch-workset-recovery --stage ootang-epoch-settlement-cycle
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
+uv run python main.py --stage ootang-advisor-package
 ```
 
 每个阶段声明输入输出，管线在运行前后检查文件新鲜度，并将提交、输入输出 SHA-256、状态与耗时写入 `figures/pipeline/latest_run.json`。该文件当前不存在：原有清单是 2026-08-01 的 v3 阶段残留记录，已于 2026-08-15 删除，下次完整运行会重新生成。解释任何运行清单时须核对其自身提交和源码指纹。
@@ -255,7 +273,7 @@ uv run ruff check code tests main.py
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（31 个可选阶段）
+main.py                         # 当前管线入口（44 个可选阶段）
 code/features/                  # 特征、逐点运动学、切线角
 code/convlstm/                  # 概率位移预测与时间验证诊断
 code/explainability/            # 独立 NGBoost 回归与 SHAP
@@ -275,6 +293,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/design.md`](docs/design.md) | 当前代码架构、输入输出和非正式边界 |
 | [`docs/ootang_operational_run.md`](docs/ootang_operational_run.md) | v4 四指标、加速度阈值和多测点双轴规则 |
 | [`docs/ootang_stage_results_package.md`](docs/ootang_stage_results_package.md) | 藕塘阶段性结论与可写/不可写边界 |
+| [`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md) | 藕塘端到端导师展示入口、四张主表与加速度补表索引 |
 | [`docs/advisor_review_action_plan.md`](docs/advisor_review_action_plan.md) | 导师意见逐项状态与下一步门禁 |
 | [`figures/convlstm/forecast_all_stations.png`](figures/convlstm/forecast_all_stations.png) | 全测点概率位移预测及训练/结果分段 |
 | [`figures/shap/ngboost_regression_shap.png`](figures/shap/ngboost_regression_shap.png) | 独立 NGBoost 回归的候选模型依赖 SHAP 图 |

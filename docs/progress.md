@@ -1,9 +1,33 @@
 # 项目工作进度
 
-> 更新日期：2026-08-30。本文件记录工程与研究实现进度；正式 v5 门禁以
+> 更新日期：2026-08-31。本文件记录工程与研究实现进度；正式 v5 门禁以
 > `v5_validation_protocol.md` 为准，机器连续预测支路以
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
+
+## 2026-08-31 藕塘导师展示流水线收口
+
+- 用户最新优先级是先完整跑通藕塘、允许保留负结果，Vajont 延后到藕塘展示审查完成且用户
+  再次明确启动之后。此前对 Vajont 仅有一次只读工作簿检查，临时文件已删除，源文件未修改、
+  未提交，也没有生成 Vajont 模型或实验结果。
+- 显式五阶段流水线已按
+  `ootang-operational-v4 -> ootang-ngboost-auto-state -> ootang-ngboost-auto-state-ecdf ->
+  ootang-ngboost-auto-state-classifier -> ootang-advisor-package` 完整运行。运行清单
+  [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json) 的状态为
+  `completed`，总耗时 `35.660 s`，五个阶段的产物合同均为 `passed`，且
+  `formal_warning_output=false`。
+- 本次只复用既有三折 × 五种子 ConvLSTM 预测，没有重训 ConvLSTM，没有运行已拒绝的
+  memory/residual challenger，也没有运行 Vajont。原始 auto-state label gate 仍为 false，
+  ECDF gate 为 true；分类器结论仍是 `small_support_descriptive_only`，NGBoost 未超过严格
+  lag-7 persistence，作为可复算的阶段性负结果保留。
+- 导师展示入口为 [`advisor_summary.md`](../figures/advisor_ootang_v1/advisor_summary.md)，汇总
+  5 张核心图和 5 张 CSV 表：ConvLSTM、自动标签、分类器比较、多点综合、加速度阈值分别为
+  `27/18/33/23/8` 行；包级血缘与哈希见
+  [`manifest.json`](../figures/advisor_ootang_v1/manifest.json)。首轮汇总中的相对路径问题已修复，
+  完整重跑已通过。
+- 5 张核心图已完成快速目视核对，均可正常打开且内容齐全；v4 全测点诊断图底部说明略拥挤、
+  靠边，但不影响本次流程演示，留作后续轻量视觉收口。下一步只做导师展示叙述核对，不继续
+  调参、增加新模型或启动 Vajont。
 
 ## 2026-08-31 residual challenger 正式结果
 

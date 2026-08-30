@@ -76,7 +76,7 @@
   "figures": {
     "site_shap_summary_pdf": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
-      "sha256": "5b6891b931bcbc2f716e4fd943535f400a6cf4cd82b3bc87a0de2d090514a5e2"
+      "sha256": "c43d63fb696a10c87e895431a53b3474c6193d47563a8024adbe22dfe5f103c7"
     },
     "site_shap_summary_png": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.png",
@@ -84,11 +84,11 @@
     },
     "site_shap_summary_svg": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg",
-      "sha256": "d12d3a7852398ee4d6d7e6e7b75613da99a804e06986f4d1325188726cdc7250"
+      "sha256": "6b068747a2598d37b92879d0e2cffcb0ef1a6849693c07809bf70c31d05ff0e7"
     },
     "warning_timeline_pdf": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
-      "sha256": "8e1ef8d74ae18c563bf78bc023f85b0be9306672264f242cd9588d349bb466ba"
+      "sha256": "ee359254c8074a0ac3577e1a67ec76ea733bf4e5233193d50191be891d9eaa21"
     },
     "warning_timeline_png": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
@@ -96,7 +96,7 @@
     },
     "warning_timeline_svg": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
-      "sha256": "beff7d27f2fb653200d4072e94952a1fe8ca761073d874263216b0a959bc2c5b"
+      "sha256": "4459b855325bc31ed55c70b294de7906fac869612e52389c1dc1c9638bddd831"
     }
   },
   "fold2_development_transition": {
@@ -248,7 +248,7 @@
     "site_shap_value_rows": 800,
     "station_prediction_rows": 6888
   },
-  "runtime_seconds": 26.91352575016208,
+  "runtime_seconds": 14.956429167184979,
   "schema_version": 1,
   "shap": {
     "background": "fold1_uniform_max_12_dates",
