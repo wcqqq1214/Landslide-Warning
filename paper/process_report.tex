@@ -11,18 +11,13 @@
 \usepackage{hyperref}
 
 \definecolor{reportblue}{HTML}{365F91}
-\definecolor{reportgreen}{HTML}{5E8C61}
-\definecolor{reportorange}{HTML}{D9822B}
-\definecolor{reportred}{HTML}{B64B4B}
-\definecolor{reportgray}{HTML}{5F6368}
-\definecolor{reportlight}{HTML}{F3F5F7}
 
 \hypersetup{
   colorlinks=true,
   linkcolor=reportblue,
   urlcolor=reportblue,
   pdfauthor={韦承谦},
-  pdftitle={藕塘滑坡智能概率预测与预警阶段汇报}
+  pdftitle={藕塘滑坡智能概率预测与预警：藕塘案例阶段结果}
 }
 
 \captionsetup{font=small,labelfont=bf,labelsep=quad}
@@ -32,19 +27,13 @@
 
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{藕塘滑坡阶段汇报}
+\fancyhead[L]{藕塘滑坡阶段结果}
 \fancyhead[R]{ConvLSTM--NGBoost--SHAP}
 \fancyfoot[C]{\thepage}
 \setlength{\headheight}{15pt}
 
-\newcommand{\statusbox}[2]{%
-  \noindent\colorbox{reportlight}{%
-    \parbox{0.96\linewidth}{\textbf{#1}\quad #2}%
-  }%
-}
-
-\title{\heiti\Large 藕塘滑坡智能概率预测与预警\\阶段汇报\\[0.55em]
-\large ConvLSTM--NGBoost--SHAP 藕塘案例}
+\title{\heiti\Large 藕塘滑坡智能概率预测与预警\\[0.55em]
+\large ConvLSTM--NGBoost--SHAP 藕塘案例阶段结果}
 \author{韦承谦}
 \date{2026年8月31日}
 
@@ -157,7 +146,5 @@ $\geq10A_0$。这是当前项目的自动化实现，不是论文直接给出的
 514 日中有 114 日满足跨区整体确认，其余 400 日只保留局部异常，避免单点高值直接代表
 整个滑坡体。当前流程已经完整，但 ConvLSTM 和 NGBoost 都没有稳定超过简单基线。
 \normalsize
-
-\statusbox{想请您重点确认}{未来 7 日自动标签的定义是否合适，以及四项指标和多测点综合方式是否符合您的设想。确认后再整理藕塘结果，并开展 Vajont 外部验证。}
 
 \end{document}

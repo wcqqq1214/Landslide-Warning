@@ -146,6 +146,8 @@ SHAP、v4、memory/residual 负结果或 advisor 包，也未读取 Vajont。为
 - 输出：重写 `paper/process_report.tex`，同步更新流程图、四指标热图和 `paper/README.md`，
   生成 6 页 `paper/build/process_report.pdf`。报告以图为主，包括 8 个测点全时段概率预测、
   区间评价、五分类比较、逐时结果、NGBoost SHAP 和全部测点四指标结果。
+- 表达：正文和流程图只直接陈述当前方法、结果与限制，删除第三人称的汇报说明、请示性措辞
+  和后续工作安排。
 - 结论：藕塘流程已经接通，但结果不能写成模型已经有效。ConvLSTM 跨时期表现不稳定，
   NGBoost 在当前评价段明显落后于 lag-7 状态持续基线；报告如实保留这两个负结果。
 - 局限与下一步：H=7 仍是代理标签，不是真实灾害等级；目前缺少原始 GNSS 复核材料和现场

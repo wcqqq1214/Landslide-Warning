@@ -190,43 +190,30 @@ z
 " clip-path="url(#pbd79453743)" style="fill: #416b8f; stroke: #416b8f; stroke-width: 1.2; stroke-linecap: round"/>
    </g>
    <g id="patch_16">
-    <path d="M 22.8519 242.179668
-L 451.8981 242.179668
-Q 457.4223 242.179668 457.4223 238.753476
-L 457.4223 222.479064
-Q 457.4223 219.052872 451.8981 219.052872
-L 22.8519 219.052872
-Q 17.3277 219.052872 17.3277 222.479064
-L 17.3277 238.753476
-Q 17.3277 242.179668 22.8519 242.179668
+    <path d="M 22.8519 253.600308
+L 451.8981 253.600308
+Q 457.4223 253.600308 457.4223 250.174116
+L 457.4223 233.899704
+Q 457.4223 230.473512 451.8981 230.473512
+L 22.8519 230.473512
+Q 17.3277 230.473512 17.3277 233.899704
+L 17.3277 250.174116
+Q 17.3277 253.600308 22.8519 253.600308
 z
 " clip-path="url(#pbd79453743)" style="fill: #e2eee3; stroke: #5f8c62; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="patch_17">
-    <path d="M 22.8519 265.020948
-L 451.8981 265.020948
-Q 457.4223 265.020948 457.4223 261.594756
-L 457.4223 245.320344
-Q 457.4223 241.894152 451.8981 241.894152
-L 22.8519 241.894152
-Q 17.3277 241.894152 17.3277 245.320344
-L 17.3277 261.594756
-Q 17.3277 265.020948 22.8519 265.020948
+    <path d="M 22.8519 279.296748
+L 451.8981 279.296748
+Q 457.4223 279.296748 457.4223 275.870556
+L 457.4223 259.596144
+Q 457.4223 256.169952 451.8981 256.169952
+L 22.8519 256.169952
+Q 17.3277 256.169952 17.3277 259.596144
+L 17.3277 275.870556
+Q 17.3277 279.296748 22.8519 279.296748
 z
 " clip-path="url(#pbd79453743)" style="fill: #f7e7d5; stroke: #d7832f; stroke-width: 1.2; stroke-linejoin: miter"/>
-   </g>
-   <g id="patch_18">
-    <path d="M 22.8519 287.862228
-L 451.8981 287.862228
-Q 457.4223 287.862228 457.4223 284.436036
-L 457.4223 268.161624
-Q 457.4223 264.735432 451.8981 264.735432
-L 22.8519 264.735432
-Q 17.3277 264.735432 17.3277 268.161624
-L 17.3277 284.436036
-Q 17.3277 287.862228 22.8519 287.862228
-z
-" clip-path="url(#pbd79453743)" style="fill: #eef1f3; stroke: #60676d; stroke-width: 1.2; stroke-linejoin: miter"/>
    </g>
    <g id="text_1">
     <text style="font-weight: 700; font-size: 13px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="21.0105" y="24.33096" transform="rotate(-0 21.0105 24.33096)">藕塘案例：当前自动预测与预警流程</text>
@@ -321,22 +308,16 @@ z
     <text style="font-size: 6.8px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="350.16075" y="179.93718" transform="rotate(-0 350.16075 179.93718)">暖启动或缺输入会明确标记</text>
    </g>
    <g id="text_19">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5f8c62" x="27.91575" y="233.204551" transform="rotate(-0 27.91575 233.204551)">当前结论</text>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #5f8c62" x="27.91575" y="244.625191" transform="rotate(-0 27.91575 244.625191)">当前结论</text>
    </g>
    <g id="text_20">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="232.643028" transform="rotate(-0 76.2525 232.643028)">流程已跑通：全测点预测、四项指标、自动标签、五分类预警、SHAP 和逐时输出都有可复核产物。</text>
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="244.063668" transform="rotate(-0 76.2525 244.063668)">流程已跑通：全测点预测、四项指标、自动标签、五分类预警、SHAP 和逐时输出都有可复核产物。</text>
    </g>
    <g id="text_21">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="27.91575" y="256.040363" transform="rotate(-0 27.91575 256.040363)">结果边界</text>
+    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #d7832f" x="27.91575" y="270.316163" transform="rotate(-0 27.91575 270.316163)">结果边界</text>
    </g>
    <g id="text_22">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="255.680597" transform="rotate(-0 76.2525 255.680597)">ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。</text>
-   </g>
-   <g id="text_23">
-    <text style="font-weight: 700; font-size: 10px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #60676d" x="27.91575" y="278.881642" transform="rotate(-0 27.91575 278.881642)">下一步边界</text>
-   </g>
-   <g id="text_24">
-    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="278.728127" transform="rotate(-0 76.2525 278.728127)">先围绕藕塘完善导师展示和证据链；Vajont 外部案例尚未启动，也不用于回调藕塘结果。</text>
+    <text style="font-size: 7.5px; font-family: 'Arial Unicode MS', 'DejaVu Sans', sans-serif; text-anchor: start; fill: #202428" x="76.2525" y="269.956397" transform="rotate(-0 76.2525 269.956397)">ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。</text>
    </g>
   </g>
  </g>

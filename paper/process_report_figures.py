@@ -247,7 +247,7 @@ def build_process_overview() -> None:
     bands = [
         (
             0.03,
-            0.185,
+            0.145,
             0.94,
             0.065,
             "当前结论",
@@ -257,23 +257,13 @@ def build_process_overview() -> None:
         ),
         (
             0.03,
-            0.105,
+            0.055,
             0.94,
             0.065,
             "结果边界",
             "ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。",
             COLORS["orange_light"],
             COLORS["orange"],
-        ),
-        (
-            0.03,
-            0.025,
-            0.94,
-            0.065,
-            "下一步边界",
-            "先围绕藕塘完善导师展示和证据链；Vajont 外部案例尚未启动，也不用于回调藕塘结果。",
-            COLORS["gray_light"],
-            COLORS["gray"],
         ),
     ]
     for x, y0, w, h, label, text, facecolor, edgecolor in bands:
