@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 35)
+        self.assertEqual(len(pipeline.STAGES), 36)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -1118,7 +1118,7 @@ class PipelineTests(unittest.TestCase):
             names.index(stage.name), names.index("ootang-epoch-workset-manifest") + 1
         )
         self.assertEqual(
-            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+            names.index("ootang-epoch-settlement-cycle"), names.index(stage.name) + 1
         )
         self.assertFalse(stage.enabled_by_default)
         self.assertFalse(stage.formal_warning_output)
@@ -1174,6 +1174,55 @@ class PipelineTests(unittest.TestCase):
                 "ootang-epoch-admission-cut",
                 "ootang-epoch-workset-manifest",
                 "ootang-epoch-workset-recovery",
+                "ootang-operational-v4",
+            ],
+        )
+
+    def test_epoch_settlement_cycle_is_one_machine_only_post_manifest_stage(self):
+        names = [stage.name for stage in pipeline.STAGES]
+        stage = pipeline.STAGE_BY_NAME["ootang-epoch-settlement-cycle"]
+
+        self.assertEqual(
+            names.index(stage.name), names.index("ootang-epoch-workset-recovery") + 1
+        )
+        self.assertEqual(
+            names.index("ootang-operational-v4"), names.index(stage.name) + 1
+        )
+        self.assertFalse(stage.enabled_by_default)
+        self.assertFalse(stage.formal_warning_output)
+        self.assertEqual(
+            stage.script,
+            "code/monitoring/ootang_epoch_settlement_cycle.py",
+        )
+        self.assertEqual(
+            stage.arguments,
+            ("--config", "config/ootang_epoch_settlement_cycle.v1.json"),
+        )
+        self.assertEqual(
+            stage.outputs,
+            ("runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",),
+        )
+        self.assertIn(
+            "code/monitoring/ootang_epoch_source_derived_bounded_terminal_closure.py",
+            stage.inputs,
+        )
+        self.assertIn(
+            "config/ootang_epoch_source_derived_bounded_terminal_closure.v1.json",
+            stage.inputs,
+        )
+
+        ordered = pipeline.select_stages(
+            [
+                "ootang-operational-v4",
+                "ootang-epoch-settlement-cycle",
+                "ootang-epoch-workset-recovery",
+            ]
+        )
+        self.assertEqual(
+            [selected.name for selected in ordered],
+            [
+                "ootang-epoch-workset-recovery",
+                "ootang-epoch-settlement-cycle",
                 "ootang-operational-v4",
             ],
         )

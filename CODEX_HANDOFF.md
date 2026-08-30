@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `92881f0 feat: prove current effective coverage`
+**Committed baseline before this increment:** `dfdce07 feat: prove bounded source closure`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -19,11 +19,63 @@ v1、source-derived effective-workset overlay v1、historical-N+1 materializatio
 source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
 outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
 source-parent terminal aggregate v1 与 source-derived retained-base terminal coverage v1 已提交；
-source-derived current-effective workset terminal coverage v1 亦已提交；当前工作树新增独立
-source-derived bounded terminal closure v1。它仍不是完整
+source-derived current-effective workset terminal coverage v1 与 source-derived bounded terminal
+closure v1 亦已提交；当前工作树新增 epoch scope audit 与 machine settlement cycle v1，把
+workset recovery 之后的 16 个既有 coordinator 接入一个 bounded scheduler poll。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-30 epoch scope audit and machine settlement cycle v1
+
+The scientific method remains intact: the default pipeline is still
+`features -> convlstm -> ootang-operational-v4`, and ConvLSTM/v4, frozen splits,
+metrics, thresholds, model parameters, and conclusions are unchanged. The audit did identify a
+local engineering priority drift. Before this increment the epoch subsystem contained 57,380
+production lines and 17,907 test lines; the newest four aggregate/coverage modules had no CLI, and
+bounded closure had no downstream production caller outside its focused test.
+
+An instrumented successful ready-state bounded-closure fixture also exposed repeated validation:
+one 0.623-second poll called profile loaders 418 times and `registry._read_regular` 3,535 times over
+101 unique paths, cumulatively reading about 246 MB. The same recovery config and implementation
+were read 359 and 243 times. Strict checks remain justified at external filesystem/JSON,
+append-only/CAS, lock, network/TSA and crash-forward boundaries. Recursive reconstruction of the
+same immutable cut and one proof/event/status namespace per intermediate Boolean are now treated as
+local over-defensive engineering rather than a pattern to extend.
+
+The new `ootang_epoch_settlement_cycle.py` and
+`config/ootang_epoch_settlement_cycle.v1.json` provide one explicit scheduler-facing CLI and one
+`main.py` stage. A scheduler job runs the existing workset-recovery stage once, then the settlement
+poll calls each of the following 16 public coordinators exactly once in dependency order through
+bounded terminal closure. Upstream modules continue to own
+all validation and durable writes; the cycle only writes a replaceable `cache_authority=false`
+diagnostic status. `passes_per_poll=1` prevents repeated recovery network attempts inside one
+invocation. Repeated progress is machine-scheduled and does not require human freeze, approval,
+cleanup, force, or backdating.
+
+This adapter creates no proof/event authority and keeps `old_epoch_drained`, lifecycle, active
+switch, E2 eligibility, and formal-warning claims false. Focused cycle behavior, a real 16-symbol
+registry-load check, and the main-stage integration suite passed `43/43`. Ruff, Python compilation, the 16-stage production
+registry load, dry-run routing, and diff checks passed. No training, full scientific pipeline,
+historical exhaustive fault matrix, real network, or live runtime mutation ran; the unchanged
+durable producer chain was not redundantly retested.
+
+Implementation, profile, focused-test, engineering-document, `main.py`, and ConvLSTM model
+SHA-256 values are
+`3e997f7bf7859b7f8a2091f4bc6efd92b43c07ab059601d4e9903eae5adb256a`,
+`787b72db3e4cf5be8ccc8b9aea2d5aba83aeb715e9b86f5c6e9abcc577c4e4db`,
+`3523c31746f2140251c7eba2fb6728d5e38e10aff7a8e4a9f3e627ad72f217a0`,
+`9d0a6ef0c6acebbf3e40c428c52be4b432b3f2e50f8a2363f733ec46ec3d42f5`,
+`c35bf2a18e7f1e518daf7f5f8f5ec919c701fb53d9db7719be6fbf0002ef7536`, and
+`282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
+Detailed findings and the new test policy are in
+`docs/ootang_epoch_settlement_cycle_engineering.md`.
+
+The next increment should be the single final drain-completion decision boundary. It should consume
+the existing bounded closure, historical drain-start transaction, canonical route fence, and one
+fresh lock-protected no-post-fence-admission/unresolved-runtime capture. Persist only the final
+drained decision; do not insert more all-settled/all-successor singleton layers. Active transition,
+scheduler authorization, and cycle v4 remain subsequent independent stages.
 
 ## 2026-08-30 source-derived bounded terminal closure v1
 

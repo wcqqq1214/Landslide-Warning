@@ -5,6 +5,46 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 epoch scope audit 与 machine settlement cycle v1（本增量）
+
+- 目标复核结论：默认链仍严格为 `features -> convlstm -> ootang-operational-v4`，ConvLSTM、
+  v4、冻结 splits/metrics/thresholds、模型参数与科研结论均未改动；但 epoch 工程出现局部优先级
+  偏移。审计基线有 57,380 行 epoch 生产码与 17,907 行测试，最近四个 aggregate/coverage
+  模块无 CLI，bounded closure 在本增量前只有测试调用、没有生产 consumer，属于“方向相关但尚未
+  接入机器运行路径”。
+- 确认存在局部过度防御：对既有 ready-state fixture 的一次成功 bounded-closure poll 做诊断
+  插桩时，0.623 秒内触发 418 次 profile loader、3,535 次 regular-file read，101 个 unique path
+  累计约 246 MB；同一 recovery config/implementation 分别被读取 359/243 次。外部文件、锁、
+  append-only/CAS、网络/TSA 与 crash-forward 边界继续严格防御；同一 poll 内对 immutable typed
+  cut 的递归重复重验和“一个布尔值一个 proof/event/status”从本增量起停止扩张。
+- 新增 `ootang_epoch_settlement_cycle.py`、小型 v1 profile 与 explicit-only
+  `ootang-epoch-settlement-cycle` 主入口。一次 scheduler job 先执行既有 workset recovery 一次，
+  再由 settlement poll 按拓扑顺序各调用其后 16 个既有公开 coordinator 一次，推进到 bounded
+  terminal closure；不复制任何上游
+  profile/proof/event 校验，只写 replaceable `cache_authority=false` status。固定
+  `passes_per_poll=1`，避免 recovery 的 bounded network transport 被内部循环放大；后续继续由机器
+  scheduler 重复 poll，不需要人工冻结、批准、清理、force 或 backdate。
+- 本 adapter 不新增 durable authority，明确保持 `old_epoch_drained=false`、
+  `lifecycle_authority=false`、`active_switch_performed=false`、`e2_live_evidence_eligible=false` 与
+  `formal_warning_output=false`。它让 bounded closure 首次拥有生产 caller，但不能把 closure 偷换为
+  drained/active。
+- 测试按审计后的风险预算收敛：cycle 两个核心行为测试、一个真实 16-symbol registry-load 测试，
+  加 `main.py` 一个 stage integration contract；cycle/main 合计 `43/43` 通过。Ruff
+  format/E7/E9/F、Python compile、16-stage
+  production registry load、main dry-run 与 diff checks 通过；没有运行训练、全科研管线、历史全量
+  fault matrix、真实网络或 live epoch mutation，也没有再次重复 18-test 邻接链，因为本增量未修改
+  任何 durable producer bytes。
+- implementation/profile/test、工程审计文档、`main.py` 与 ConvLSTM model SHA-256 分别为
+  `3e997f7bf7859b7f8a2091f4bc6efd92b43c07ab059601d4e9903eae5adb256a`、
+  `787b72db3e4cf5be8ccc8b9aea2d5aba83aeb715e9b86f5c6e9abcc577c4e4db`、
+  `3523c31746f2140251c7eba2fb6728d5e38e10aff7a8e4a9f3e627ad72f217a0`、
+  `9d0a6ef0c6acebbf3e40c428c52be4b432b3f2e50f8a2363f733ec46ec3d42f5`、
+  `c35bf2a18e7f1e518daf7f5f8f5ec919c701fb53d9db7719be6fbf0002ef7536` 与
+  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
+- 下一步直接做唯一的 drain-completion decision boundary：消费现有 bounded closure、historical
+  drain-start、canonical route fence 与 fresh lock-protected no-post-fence/unresolved-runtime capture；
+  只在最终 drained decision 持久化，不再插入 all-settled/all-successor 等中间 singleton authority。
+
 ## 2026-08-30 source-derived bounded terminal closure v1（本增量）
 
 - 新增独立 assessor `ootang_epoch_source_derived_bounded_terminal_closure.py` 与严格

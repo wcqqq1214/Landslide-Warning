@@ -138,6 +138,11 @@
   legacy guard completion。DER repair 是非终态，等待机器 response-link adapter；单纯时间越界
   不能冒充 backfill。完整 workset recovery、terminal closure、drained、
   lifecycle/active/trusted/E2/formal 仍全部为 false。
+- 显式阶段 `ootang-epoch-settlement-cycle` 把 workset recovery 之后的 16 个既有
+  coordinator 接入一个 scheduler-facing machine poll；每个 coordinator 每次最多调用一次，
+  避免重复放大网络/深验成本。它只写非权威 status cache，不新增 proof/event，也不声明
+  drained、lifecycle 或 active switch。审计结论与边界见
+  `docs/ootang_epoch_settlement_cycle_engineering.md`。
 - R2b-2b-2c 现另有 recovery-only live-ledger expected-pre-head CAS v1。它不改 frozen live
   writer/ledger，在同一 `BEGIN IMMEDIATE` 中验证 epoch、完整 chain 与 frozen position，只允许
   fresh exact append 或 expected pre-head 后 exact contiguous event 的 crash-forward adoption。
@@ -225,6 +230,7 @@ uv run python main.py --stage ootang-verified-live
 uv run python main.py --stage ootang-prequential-cycle-v3
 uv run python main.py --stage ootang-trusted-time-shadow
 uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain --stage ootang-epoch-drain-eligibility
+uv run python main.py --stage ootang-epoch-workset-recovery --stage ootang-epoch-settlement-cycle
 uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
 ```
 
@@ -297,6 +303,7 @@ docs/                           # 当前方法、结果边界和研究计划
 | [`docs/ootang_epoch_admission_cut_engineering.md`](docs/ootang_epoch_admission_cut_engineering.md) | R2b-2b-2a：冻结 writer 的 deploy/runner regular-file ACL 原子 lock-path cut、forward-only crash recovery 与非 manifest/lifecycle 边界 |
 | [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 frozen-observation 枚举、transition seed、singleton reservation event 与非 terminal/recovery/lifecycle 边界 |
 | [`docs/ootang_epoch_workset_recovery_engineering.md`](docs/ootang_epoch_workset_recovery_engineering.md) | R2b-2b-2c：item transition plan、create-only step intent/receipt/event、terminal dependency gate 与非完整 recovery/lifecycle 边界 |
+| [`docs/ootang_epoch_settlement_cycle_engineering.md`](docs/ootang_epoch_settlement_cycle_engineering.md) | Epoch 目标偏移/过度防御/测试审计，以及 post-recovery 16-stage 单次有界 machine poll |
 | [`docs/ootang_live_ledger_cas_v1_engineering.md`](docs/ootang_live_ledger_cas_v1_engineering.md) | Recovery-only live-ledger expected-pre-head CAS v1：同事务 frozen-position append/adoption 与非 transition authority 边界 |
 | [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
 | [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |

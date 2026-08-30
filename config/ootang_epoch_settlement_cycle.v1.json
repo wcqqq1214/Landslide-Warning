@@ -1,0 +1,21 @@
+{
+  "schema_version": "ootang_epoch_settlement_cycle_profile_v1",
+  "profile_id": "ootang-epoch-settlement-cycle-v1",
+  "artifact_status": "machine_only_engineering_not_drain_or_activation_authority",
+  "runtime": {
+    "status": "runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json"
+  },
+  "cycle": {
+    "passes_per_poll": 1
+  },
+  "claims": {
+    "machine_only": true,
+    "cache_authority": false,
+    "default_pipeline_member": false,
+    "old_epoch_drained": false,
+    "lifecycle_authority": false,
+    "active_switch_performed": false,
+    "e2_live_evidence_eligible": false,
+    "formal_warning_output": false
+  }
+}
