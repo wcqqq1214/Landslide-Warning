@@ -287,7 +287,38 @@ log-loss/Brier 没有低于 v1，且 log-loss 没有低于 `1.6094`。预注册�
 
 该负结果没有修改 ConvLSTM 主结构或导师指定的总体框架。实验在此停止直接五分类 lag-feature
 修补；下一步只允许先审查结构性 residual/transition 方法的目标、时间因果性和评价合同。
-审查结果应由机器写入拟合前协议，不设置人工冻结或批准步骤；该方法尚未预注册、拟合或运行。
+审查结果已由机器写入下节拟合前协议，不设置人工冻结或批准步骤；该方法尚未拟合或运行。
+
+## 第四增量：lag-conditioned residual NGBoost（拟合前固定）
+
+该单一 challenger 不再要求直接五分类器自己发现 persistence 结构，而让 NGBoost 分类预测
+机器状态增量 `delta_state=Y_auto(t)-Y_auto(t-7)`，再机械映射回最终五级概率。
+
+1. 仅在 fold 1 同折 lag 已成熟且当前目标 valid 的 273 日拟合。`Y_auto(t-7)` 必须满足来源
+   日期恰为 `t-7` 且来源 `target_end_date==t`。fold-1-only 自动类别为
+   `[-2,-1,0,+1]`，计数 `4/49/177/43`，固定编码为 `[0,1,2,3]`；不得根据 fold 2 扩类。
+2. X 仍为八点 × 四项当前导师指标的 32 维白名单，加 `Y_auto(t-7)` 共 33 维。residual
+   只在 lag 可得日运行，所以不使用 sentinel 或 availability 列；不得加入当前状态、未来结果、
+   severity、颜色或 target end 字段。
+3. 使用 `k_categorical(4)`，其余 NGBoost 500 estimators、learning rate 0.01、树深 3、
+   seed 0 均与 v1 相同，不搜索参数、不重采样、不校准。
+4. 给定 lag 等级 `l`，将满足 `l+delta` 不在 `[0,4]` 的类别概率置零，对可行概率重新归一，
+   再按 `k=l+delta` 汇总为五级概率。禁止 clamp、epsilon、事后混合和看 fold 2 后补类。
+   `delta=0` 总是可行，因此归一化分母必须大于零。
+5. 每折前 7 日没有成熟 lag，自动逐行复制已提交 v1 NGBoost 的五级概率，标记
+   `v1_fallback`；它只保证全部 861 时刻有输出，不进入 main comparison。其余日期标记
+   `residual_ngboost`，包括当前 truth unavailable 但 lag 已成熟的每折末 7 日。
+6. fold 2 common 273 是唯一评价集合：residual/v1/persistence 报 accuracy、fixed-five
+   macro-F1、ordinal MAE，仅 residual/v1 报 log-loss/Brier。fold 2 的 delta support 与 fold 1
+   相同，但 `delta=0` 比例由 `64.8%` 升到 `80.2%`；另有 4 个 `(lag=3, delta=-2)`
+   条件组合未出现在 fold 1。二者只作为已暴露漂移风险记录，不删除样本或改变协议。
+7. 仅当 residual macro-F1 严格高于 persistence、ordinal MAE 严格低于 persistence、
+   log-loss 与 Brier 都低于 v1，且 log-loss `<1.6094` 时接受；否则 `rejected` 并停止本轮
+   NGBoost 修补。fold 3 只输出信号，不计算指标或参与选择。
+
+输出限制为 site predictions、fold-2 comparison metrics、fold-1 delta class definition、manifest
+和一个模型；不增加第二个 residual 变体、测点模型、SHAP、图件、调参或概率校准。该协议由机器
+记录，不引入人工日期、人工标签、人工冻结或批准步骤。
 
 ## Expected Outputs
 

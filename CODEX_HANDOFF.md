@@ -25,10 +25,33 @@ lag-7 feature exactly `0`, rank 33; this is model dependency evidence, not causa
 fold-3 evaluation, field validation, or formal warning claim is available. ConvLSTM and the
 advisor-specified overall framework were not modified.
 
-Stop direct five-classification lag-feature patching here. The next research action is a pre-fit
-causal/protocol review of one structural residual/transition method, followed by machine-recorded
-pre-registration before any fit. No human freeze or approval step is introduced, and that method
-has not yet been fitted or run.
+Stop direct five-classification lag-feature patching here. The next research action is the single
+structural residual/transition method whose causal contract and machine pre-registration are
+recorded below. No human freeze or approval step is introduced, and that method has not yet been
+fitted or run.
+
+### Pre-fit protocol: lag-conditioned residual NGBoost
+
+Run exactly one structural challenger. On the 273 lag-available fold-1 dates, define the automatic
+target `delta_state = Y_auto(t) - Y_auto(t-7)`. The fold-1-only support is fixed as
+`[-2,-1,0,+1]`, with counts `4/49/177/43`, and encoded as four categorical classes. Use the same
+32 current-time eight-station advisor indicators plus the mature `Y_auto(t-7)` as 33 inputs; keep
+the NGBoost 500-tree, learning-rate 0.01, depth-3 and seed-0 protocol unchanged. No sentinel or
+availability column enters this residual model.
+
+For lag-available issues, remove delta probabilities that would place `Y_auto(t-7)+delta` outside
+0--4, renormalize the remaining categorical probabilities, and map them exactly into five final
+state probabilities. Do not clamp states, add epsilon mass, expand classes after seeing fold 2, or
+blend probabilities post hoc. Each fold's first seven issues automatically copy the committed v1
+NGBoost probability vector and are marked `v1_fallback`; they provide all-time coverage but do not
+enter the main comparison. The fold-2 delta support is the same four values, although the no-change
+share shifts from `64.8%` in fold 1 to `80.2%` in fold 2 and remains an exposed-development risk.
+
+Evaluate only the fold-2 common 273 dates against committed v1 NGBoost and hard lag-7 persistence.
+Accept only if residual macro-F1 is strictly above persistence, ordinal MAE strictly below
+persistence, log-loss and Brier both below v1, and log-loss below `1.6094`; otherwise reject and
+stop NGBoost patching. Generate fold-3 signals without fold-3 metrics or selection. Do not add a
+second residual variant, tuning, calibration, SHAP, station models or new figures.
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
