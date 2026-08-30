@@ -4,8 +4,10 @@
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
 **Committed baseline before this increment:** `7c63a27 docs: record machine readiness poll`
-**Current gate:** authentic post-2020 finalized source unavailable; R1 remains
-`waiting_for_candidate_feed`
+**Current research-prototype gate:** `allowed`; the historical OOF experiment is not blocked by
+Figshare, a post-2020 live feed, or formal-v5 G1--G4.
+**Current deployment gate:** authentic post-2020 finalized source unavailable; R1 remains
+`waiting_for_candidate_feed`.
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -29,6 +31,30 @@ fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2
 或 formal warning。本增量进一步实现一个 scoped official-scheduler lifecycle event，
 原子表达 `SEALED(old)+ACTIVE(new)`，并以无参数 cycle-v4 adapter 执行事件授权的 frozen
 cycle-v3；其 claims 与 trusted/anti-rollback/continuous-rotation 边界见下节。
+
+## 2026-08-30 current-priority override: return to the research mainline
+
+This section overrides later historical “do not start NGBoost” and live-ingest next-step notes for
+the current **research prototype** only. NGBoost requires a target `y`, but `y` does not require
+manual per-timestamp annotation. The approved prototype direction is to generate a future
+deformation-state target automatically using only development-history information, then train an
+NGBoost five-class model from the advisor-required inputs: ConvLSTM interval state, pointwise
+velocity, strict pointwise acceleration, and improved tangent angle. Independent field/event truth
+is still required before claiming confirmatory hazard-warning validity, but its absence does not
+block this automated historical experiment.
+
+The immediate sequence is:
+
+1. aggregate the existing five-seed, three-fold ConvLSTM OOF predictions without retraining;
+2. build a fold-causal four-indicator table for all eight stations;
+3. audit an automatic future-state labeler on folds 1--2 without reading fold 3 for method choice;
+4. only after class support and temporal-causality checks, train NGBoost and emit per-station and
+   multi-station/site probabilities and five-level timelines;
+5. keep v4 transparent rules as a baseline, not as the training labels or replacement for R5.
+
+Do not spend the current research increment on Figshare polling, epoch/ledger expansion, trusted
+time, or a live-feed controller. Those remain a deferred deployment branch until an authentic feed
+exists. Over-engineering cleanup is also deferred until after the next research result.
 
 ## 2026-08-30 authentic live-feed source audit
 
@@ -3006,10 +3032,13 @@ Durable continuation sources:
   read-only report CLI, and fixed-default G0--G4 production guard;
 - `docs/progress.md` -- current engineering summary.
 
-Do not start formal NGBoost/fusion work from this note. The next work requires
+For the **formal-v5 confirmatory path only**, do not start NGBoost/fusion work from this historical
+note. That path requires
 new independent labels, a genuinely unseen confirmation time block, and human
 approval of the V0-unavailable deployment policy, coverage denominator,
 numeric metric thresholds, confidence-interval method, and minimum support.
+This paragraph does not block the current automatic future-state proxy experiment described in the
+top priority override.
 The Vajont workbook and `review.md` remain outside scope and were not
 inspected.
 
