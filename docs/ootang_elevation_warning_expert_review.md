@@ -33,7 +33,7 @@
 | [`station_coords.csv`](../data/station_coords.csv) | 8 点平面坐标与高程 | `17dac7c5985891f27905e7056b45626a0d6f4dbf34f336534c17bb76ecd32f09` |
 | [`forecast_predictions.csv`](../figures/convlstm/forecast_predictions.csv) | 7 通道 ConvLSTM 的 fit/calibration/test 逐点预测 | `dafc4da5ddd4249a7f2ad69f431e209c6019aec3f9ef866af1499f8e820901e8` |
 | [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) | 高程处理、输入通道、切分和输出指纹 | `4282ff1f3c1d8e68ed581d836646a3fc82a9fb4c223d82eb518a88e19770c353` |
-| [`ootang_operational_run.v2.draft.json`](../config/ootang_operational_run.v2.draft.json) | 测点证据族和 O1/O2/O3 空间规则 | `0319c33dccb397710d886cb760a1ed16d9a278a6bfff467a301f5aaf3768035b` |
+| `ootang_operational_run.v2.draft.json`（已退役；可从 Git 基线 `b13eb8b` 恢复） | 测点证据族和 O1/O2/O3 空间规则 | `0319c33dccb397710d886cb760a1ed16d9a278a6bfff467a301f5aaf3768035b` |
 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v2/ootang_operational_station_timeline.csv) | 4,112 条逐测点状态 | `174958b0565a6b566b373e9358b10b9cecb5d6994dff3115ce033171fec4e455` |
 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v2/ootang_operational_site_timeline.csv) | 514 条滑坡体状态 | `069e47bbedbb70d39df46738e6b28521bace7c106faa9e4d7632475469a8cb56` |
 | [`物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx`](../literature/物理引导的阶跃型水库滑坡变形智能概率预测模型与预警方法研究.docx) | 用户指定的首要方法来源 | `a16b75e64c45278eb28a1379caed67e66ecc08acf597832e13aae9325c3aa13a` |

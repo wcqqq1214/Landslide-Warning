@@ -1,7 +1,7 @@
 # 藕塘 NGBoost 五分类 SHAP 协议
 
 > 当前权威口径：SHAP 解释的是滑坡体级五分类 NGBoost 主模型，不是 ConvLSTM。旧的独立
-> NGBoost 位移增量回归 SHAP 仅作为历史探索性产物保留，不能代替本协议。
+> NGBoost 位移增量回归 SHAP 执行链已经退役，不能代替本协议。
 
 ## 目的与解释对象
 
@@ -53,9 +53,10 @@ NGBoost 分类模型。SHAP 不计算 PICP，也不是 ConvLSTM 内部归因。
 
 ## 旧回归 SHAP 的历史地位
 
-`figures/shap/ngboost_regression_*` 及其旧协议描述的是独立 NGBoost 回归器对相邻观测位移
-增量的解释。该模型不输出五级预警概率，也不是当前预警主模型。旧产物可以用于方法演进
-溯源，但正文、结果图和当前证据链应优先引用上述 site 五分类 NGBoost SHAP，且不得把两类
-模型的目标、样本或重要性排名合并。
+旧阶段描述的是独立 NGBoost 回归器对相邻观测位移增量的解释。该模型不输出五级预警概率，
+也不是当前预警主模型；其源码、入口、测试、模型及完整结果已经从当前工作树退役，可从 Git
+基线 `b13eb8b` 恢复。`paper/process_report.tex` 直接嵌入的两张 stability PNG 仅为保证旧报告
+可构建而保留，不是当前 manifest 证据。正文、结果图和当前证据链只引用上述 site 五分类
+NGBoost SHAP，不得把两类模型的目标、样本或重要性排名合并。
 
 Vajont 当前暂停，未进入本协议的输入、背景样本、解释样本或结果。

@@ -29,8 +29,9 @@
 ## 解释与历史边界
 
 - 当前 SHAP 指定解释对象是五分类 site NGBoost，不是 ConvLSTM；排名只能称为候选重要因素，不能写成物理因果证明。
-- `shap/ngboost_regression_*` 是旧独立位移增量回归 SHAP，仅用于方法演进溯源，不得替代当前分类 SHAP。
-- `convlstm/` 根目录的旧 6 通道滚动、早停和容量文件属于历史快照；当前 fixed120 诊断只认上表版本化 manifests。
+- 旧独立位移增量回归 SHAP 的执行链与完整结果已退役；`shap/stability/` 中保留的两张 PNG 只服务旧 `paper/` 报告复现，不得替代当前分类 SHAP。
+- `convlstm/` 根目录保留的旧 6 通道 rolling/seed 文件属于历史快照；未启用的 inner-validation/capacity 实现与产物已退役，当前 fixed120 诊断只认上表版本化 manifests。
+- `auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png` 与 `v5_candidate_display_ootang_v1/candidate_display.png` 同样只因旧 `paper/` 直接嵌入而保留，不是当前运行入口。
 - Vajont 已暂停：不得读取、适配、训练或生成结果，直到藕塘流程收口且用户再次明确启动。
 
 删除或归档历史产物时，以 manifest 依赖为边界；不要只删除支撑表后继续引用旧图或旧结论。历史内容可从 Git 恢复，无需在当前索引重复维护。

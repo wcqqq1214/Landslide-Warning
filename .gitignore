@@ -49,6 +49,8 @@ paper/*.out
 paper/*.toc
 paper/*.synctex.gz
 figures/warning_operational_draft_v4/*.pdf
+!figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.pdf
+!figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.pdf
 
 # Project — abandoned superpowers output
 docs/superpowers/

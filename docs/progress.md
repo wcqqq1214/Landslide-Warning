@@ -65,9 +65,26 @@ SHAP 解释五分类 site NGBoost 的期望有序等级，作用类似毕业论�
 NGBoost、分类 SHAP、现有模型或当前实验结果，也不读取 Vajont。旧功能可从 Git 基线
 `c9c6917` 恢复。
 
-精简后统一入口只登记 19 个科研阶段，`config/` 工作树保留 17 个版本化文件。保留项包括
-当前藕塘主线、已登记负结果和 v5 冻结审计所需配置；不为减少文件数破坏现有 manifest
-与哈希证据链。
+第一轮精简后统一入口登记 19 个科研阶段，`config/` 保留 17 个版本化文件。第二轮在用户
+明确授权且保留 `paper/` 的前提下，进一步退役旧独立回归 SHAP、interval-proxy → auto-V0
+→ V5 gate/display、未启用的 ConvLSTM inner-validation/capacity、operational-v2 配置、旧逐日
+日期兼容 API 及无消费者产物；统一入口现为 11 个阶段，`config/` 为 10 个版本化文件。
+
+本轮没有修改当前 ConvLSTM 主模型、rolling/seed 诊断、H=7 标签、五分类 NGBoost、分类
+SHAP、v4、memory/residual 负结果或 advisor 包，也未读取 Vajont。为保持用户指定保留的
+`paper/` 可构建，只留下其直接嵌入的 4 张历史 PNG，并在产物索引中标明它们不是当前证据。
+退役执行链可从 Git 基线 `b13eb8b` 恢复；本地另清理约 203 MB 可再生缓存和已删除功能的
+孤立虚拟环境。
+
+本轮跟踪差异删除 111 个文件、约 106.5 MiB；大部分行数来自旧预测 CSV，不代表源码规模。
+同时修正 v4 PDF 的忽略规则，使 advisor 包实际依赖的 all-station diagnostic 与 full timeline
+两份 PDF 能纳入版本控制；其 SHA-256 与既有 advisor manifest 一致。验证包括 256 项全量
+`unittest`、Ruff、Python 编译检查、11 个阶段的 80 个现存输出合同，以及保留 `paper/` 的
+17 页 XeLaTeX 构建，均通过；未重训模型或重跑科研实验。
+
+清理后复审另修正两项 P3 维护残余：切线角 frame 测试现在只拒绝重复/乱序时间戳，不再把
+合法不规则间隔误写成应拒绝；协议辅助模块删除无消费者的 inner/capacity 目录常量。冻结
+配置中的两个 `rerun_now=false` 历史决策字段原样保留，50 项相关定点测试与 Ruff 通过。
 
 ## 方法实现状态
 

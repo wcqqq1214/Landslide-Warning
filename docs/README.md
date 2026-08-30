@@ -28,7 +28,7 @@ ConvLSTM 多测点概率位移预测
 
 当前 SHAP 是 **NGBoost 分类 SHAP**，解释 site 分类器的期望有序等级。它不是 ConvLSTM SHAP，
 也不是因果证明；当前定义见 [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md)。
-`figures/shap/ngboost_regression_*` 是早期独立回归任务，仅作历史对照。
+早期独立回归 SHAP 的执行链已经退役；旧报告直接嵌入的少量图件仅作历史快照。
 
 | 时间分母 | 数量 | 使用位置 |
 | --- | ---: | --- |
@@ -62,14 +62,12 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 | [`ootang_interval_calibration_expert_review.md`](ootang_interval_calibration_expert_review.md) | 预测区间校准及覆盖率审查 |
 | [`ootang_stable_segment_expert_review.md`](ootang_stable_segment_expert_review.md) | 稳定段与 V0 比较器边界审查 |
 | [`ootang_v4_acceleration_decision.md`](ootang_v4_acceleration_decision.md) | 严格加速度阈值的项目操作化依据 |
-| [`v5_validation_protocol.md`](v5_validation_protocol.md) | 仍被版本化配置绑定的 v5 验证协议 |
-| [`v5_g1_g4_preflight.md`](v5_g1_g4_preflight.md) | v5 G1–G4 预检记录；只作协议追溯 |
-| [`v5_v0_numerical_audit.md`](v5_v0_numerical_audit.md) | v5 V0 数值审计；只作协议追溯 |
 
 ## Historical：历史路线与工程记录
 
-完整旧文档见 Git 基线 `6f499cd`。它们只用于必要时追溯历史，不属于当前科研主线，也不再由
-当前文档索引维护。
+完整旧文档见 Git 基线 `6f499cd`。2026-08-31 退役的独立回归 SHAP、interval-proxy、
+auto-V0/V5 gate 与未启用 ConvLSTM inner/capacity 支路可从基线 `b13eb8b` 恢复。它们只用于
+必要时追溯历史，不属于当前科研主线，也不再由当前文档索引维护。
 
 ## Generated：机器生成证据
 

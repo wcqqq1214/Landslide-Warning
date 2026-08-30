@@ -20,7 +20,7 @@ class PipelineTests(unittest.TestCase):
     def test_default_selection_is_current_minimal_chain(self):
         stages = pipeline.select_stages()
 
-        self.assertEqual(len(pipeline.STAGES), 19)
+        self.assertEqual(len(pipeline.STAGES), 11)
         self.assertEqual(
             [stage.name for stage in stages],
             ["features", "convlstm", "ootang-operational-v4"],
@@ -35,9 +35,13 @@ class PipelineTests(unittest.TestCase):
         )
 
     def test_selected_stages_are_deduplicated_and_canonically_ordered(self):
-        stages = pipeline.select_stages(["ngboost-shap", "features", "ngboost-shap"])
+        stages = pipeline.select_stages(
+            ["convlstm-rolling", "features", "convlstm-rolling"]
+        )
 
-        self.assertEqual([stage.name for stage in stages], ["features", "ngboost-shap"])
+        self.assertEqual(
+            [stage.name for stage in stages], ["features", "convlstm-rolling"]
+        )
 
     def test_v4_is_the_only_registered_operational_stage(self):
         self.assertNotIn("ootang-operational", pipeline.STAGE_BY_NAME)
@@ -58,207 +62,6 @@ class PipelineTests(unittest.TestCase):
             stage.name for stage in pipeline.STAGES if "operational" in stage.name
         ]
         self.assertEqual(operational, ["ootang-operational-v4"])
-
-    def test_ngboost_interval_proxy_pilot_is_explicit_and_isolated(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-interval-proxy-pilot"]
-
-        self.assertFalse(stage.enabled_by_default)
-        self.assertEqual(
-            names.index(stage.name),
-            names.index("ootang-operational-v4") + 1,
-        )
-        self.assertEqual(
-            stage.script,
-            "code/warning/ootang_ngboost_interval_proxy_pilot.py",
-        )
-        self.assertIn(
-            "config/ootang_ngboost_interval_proxy_pilot.v1.json",
-            stage.inputs,
-        )
-        self.assertIn(
-            "figures/warning_operational_draft_v4/ootang_operational_run_manifest.json",
-            stage.inputs,
-        )
-        self.assertTrue(
-            all(
-                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
-            )
-        )
-        protected_outputs = {
-            path
-            for protected in pipeline.STAGES
-            if protected.name in {"convlstm", "ngboost-shap", "ootang-operational-v4"}
-            for path in protected.outputs
-        }
-        self.assertTrue(set(stage.outputs).isdisjoint(protected_outputs))
-        self.assertNotIn("models/ngboost.pkl", stage.outputs)
-        self.assertEqual(
-            pipeline.STAGE_BY_NAME["ngboost-shap"].script,
-            "code/explainability/ngboost_shap.py",
-        )
-
-    def test_ngboost_horizon_sensitivity_is_explicit_nonranking_and_isolated(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        pilot = pipeline.STAGE_BY_NAME["ootang-ngboost-interval-proxy-pilot"]
-        stage = pipeline.STAGE_BY_NAME[
-            "ootang-ngboost-interval-proxy-horizon-sensitivity"
-        ]
-
-        self.assertFalse(stage.enabled_by_default)
-        self.assertEqual(names.index(stage.name), names.index(pilot.name) + 1)
-        self.assertEqual(
-            stage.script,
-            "code/warning/ootang_ngboost_interval_proxy_horizon_sensitivity.py",
-        )
-        self.assertEqual(
-            stage.warning_artifact_scope,
-            "exploratory_proxy_horizon_sensitivity",
-        )
-        self.assertIn(
-            "config/ootang_ngboost_interval_proxy_horizon_sensitivity.v1.json",
-            stage.inputs,
-        )
-        self.assertIn(
-            "figures/ngboost_interval_proxy_pilot_ootang_v1/manifest.json",
-            stage.inputs,
-        )
-        self.assertTrue(
-            all(
-                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
-            )
-        )
-        existing_outputs = {
-            path
-            for existing in pipeline.STAGES
-            if existing.name != stage.name
-            for path in existing.outputs
-        }
-        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
-        self.assertEqual(
-            sum(path.startswith("models/") for path in stage.outputs),
-            3,
-        )
-
-    def test_ngboost_feature_ablation_is_explicit_nonranking_and_isolated(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        sensitivity_stage = pipeline.STAGE_BY_NAME[
-            "ootang-ngboost-interval-proxy-horizon-sensitivity"
-        ]
-        stage = pipeline.STAGE_BY_NAME["ootang-ngboost-interval-proxy-feature-ablation"]
-
-        self.assertFalse(stage.enabled_by_default)
-        self.assertEqual(
-            names.index(stage.name),
-            names.index(sensitivity_stage.name) + 1,
-        )
-        self.assertEqual(
-            stage.script,
-            "code/warning/ootang_ngboost_interval_proxy_feature_ablation.py",
-        )
-        self.assertEqual(
-            stage.warning_artifact_scope,
-            "exploratory_proxy_feature_ablation",
-        )
-        self.assertIn(
-            "config/ootang_ngboost_interval_proxy_feature_ablation.v1.json",
-            stage.inputs,
-        )
-        self.assertIn(
-            "config/ootang_ngboost_interval_proxy_pilot.v1.json",
-            stage.inputs,
-        )
-        self.assertIn(
-            "figures/ngboost_interval_proxy_horizon_sensitivity_ootang_v1/manifest.json",
-            stage.inputs,
-        )
-        self.assertTrue(
-            all(
-                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
-            )
-        )
-        existing_outputs = {
-            path
-            for existing in pipeline.STAGES
-            if existing.name != stage.name
-            for path in existing.outputs
-        }
-        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
-        self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
-
-    def test_auto_v0_stage_is_explicit_nonformal_and_isolated(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        ablation = pipeline.STAGE_BY_NAME[
-            "ootang-ngboost-interval-proxy-feature-ablation"
-        ]
-        stage = pipeline.STAGE_BY_NAME["ootang-auto-v0-direct-bai-perron"]
-
-        self.assertFalse(stage.enabled_by_default)
-        self.assertEqual(names.index(stage.name), names.index(ablation.name) + 1)
-        self.assertEqual(stage.script, "code/warning/auto_v0_direct_bai_perron.py")
-        self.assertEqual(stage.warning_artifact_scope, "exploratory_v0_candidate")
-        self.assertIn("config/ootang_auto_v0_direct_bai_perron.v1.json", stage.inputs)
-        self.assertIn("data/ootang_kinematics_long.csv", stage.inputs)
-        self.assertTrue(
-            all(
-                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
-            )
-        )
-        existing_outputs = {
-            path
-            for existing in pipeline.STAGES
-            if existing.name != stage.name
-            for path in existing.outputs
-        }
-        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
-        self.assertFalse(any(path.startswith("models/") for path in stage.outputs))
-
-    def test_v5_candidate_display_stage_is_explicit_nonformal_and_isolated(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        auto_v0 = pipeline.STAGE_BY_NAME["ootang-auto-v0-direct-bai-perron"]
-        stage = pipeline.STAGE_BY_NAME["ootang-v5-candidate-display"]
-
-        self.assertFalse(stage.enabled_by_default)
-        self.assertEqual(names.index(stage.name), names.index(auto_v0.name) + 1)
-        self.assertEqual(
-            stage.script,
-            "code/warning/ootang_v5_candidate_display.py",
-        )
-        self.assertEqual(
-            stage.warning_artifact_scope,
-            "exploratory_v5_candidate_display",
-        )
-        self.assertIn("config/ootang_v5_candidate_display.v1.json", stage.inputs)
-        self.assertIn(
-            "figures/auto_v0_direct_bai_perron_ootang_v1/manifest.json",
-            stage.inputs,
-        )
-        self.assertIn(
-            "figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv",
-            stage.inputs,
-        )
-        self.assertIn(
-            "figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv",
-            stage.inputs,
-        )
-        self.assertTrue(
-            all(
-                "vajont" not in path.lower() for path in (*stage.inputs, *stage.outputs)
-            )
-        )
-        existing_outputs = {
-            path
-            for existing in pipeline.STAGES
-            if existing.name != stage.name
-            for path in existing.outputs
-        }
-        self.assertTrue(set(stage.outputs).isdisjoint(existing_outputs))
-        self.assertTrue(
-            all(
-                path.startswith("figures/v5_candidate_display_ootang_v1/")
-                for path in stage.outputs
-            )
-        )
 
     def test_ngboost_auto_state_stage_is_explicit_labels_only_and_isolated(self):
         stage = pipeline.STAGE_BY_NAME["ootang-ngboost-auto-state"]
@@ -433,15 +236,15 @@ class PipelineTests(unittest.TestCase):
         )
 
     def test_skipped_stages_are_removed(self):
-        stages = pipeline.select_stages(skipped=["ngboost-shap", "convlstm"])
+        stages = pipeline.select_stages(skipped=["features", "convlstm"])
 
-        self.assertNotIn("ngboost-shap", [stage.name for stage in stages])
+        self.assertNotIn("features", [stage.name for stage in stages])
         self.assertNotIn("convlstm", [stage.name for stage in stages])
         expected = [
             stage
             for stage in pipeline.STAGES
             if stage.enabled_by_default
-            and stage.name not in {"ngboost-shap", "convlstm"}
+            and stage.name not in {"features", "convlstm"}
         ]
         self.assertEqual(stages, expected)
 
@@ -491,36 +294,6 @@ class PipelineTests(unittest.TestCase):
             seed_stage.inputs,
         )
 
-    def test_convlstm_inner_validation_follows_fixed_seed_diagnostic(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        stage = pipeline.STAGE_BY_NAME["convlstm-inner-validation"]
-
-        self.assertEqual(
-            names.index("convlstm-inner-validation"),
-            names.index("convlstm-seeds") + 1,
-        )
-        self.assertIn(
-            "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_metrics.csv",
-            stage.inputs,
-        )
-        self.assertEqual(len(stage.outputs), 7)
-        self.assertFalse(stage.enabled_by_default)
-
-    def test_convlstm_capacity_stage_follows_inner_validation(self):
-        names = [stage.name for stage in pipeline.STAGES]
-        stage = pipeline.STAGE_BY_NAME["convlstm-capacity"]
-
-        self.assertEqual(
-            names.index("convlstm-capacity"),
-            names.index("convlstm-inner-validation") + 1,
-        )
-        self.assertIn(
-            "figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/inner_validation_v1/inner_validation_metrics.csv",
-            stage.inputs,
-        )
-        self.assertEqual(len(stage.outputs), 9)
-        self.assertFalse(stage.enabled_by_default)
-
     def test_dry_run_does_not_start_subprocesses(self):
         calls = []
 
@@ -561,9 +334,9 @@ class PipelineTests(unittest.TestCase):
     def test_failure_stops_later_stages_and_returns_exit_code(self):
         calls = []
 
-        def fail_on_ngboost_shap(command, **kwargs):
+        def fail_on_rolling_validation(command, **kwargs):
             calls.append(Path(command[1]).stem)
-            if Path(command[1]).stem == "ngboost_shap":
+            if Path(command[1]).stem == "rolling_validation":
                 raise subprocess.CalledProcessError(7, command)
             return subprocess.CompletedProcess(command, 0)
 
@@ -574,19 +347,19 @@ class PipelineTests(unittest.TestCase):
                     "--stage",
                     "features",
                     "--stage",
-                    "ngboost-shap",
+                    "convlstm-rolling",
                     "--manifest",
                     str(manifest),
                 ],
-                runner=fail_on_ngboost_shap,
+                runner=fail_on_rolling_validation,
                 verify_contracts=False,
             )
             report = json.loads(manifest.read_text(encoding="utf-8"))
 
         self.assertEqual(exit_code, 7)
-        self.assertEqual(calls, ["build_features", "ngboost_shap"])
+        self.assertEqual(calls, ["build_features", "rolling_validation"])
         self.assertEqual(report["status"], "failed")
-        self.assertEqual(report["failed_stage"], "ngboost-shap")
+        self.assertEqual(report["failed_stage"], "convlstm-rolling")
         self.assertEqual(
             [stage["status"] for stage in report["stages"]],
             ["completed", "failed"],
@@ -599,7 +372,7 @@ class PipelineTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             manifest = Path(tmp_dir) / "completed.json"
             pipeline.run_pipeline(
-                pipeline.select_stages(["features", "ngboost-shap"]),
+                pipeline.select_stages(["features", "convlstm-rolling"]),
                 runner=succeed,
                 manifest_path=manifest,
                 verify_contracts=False,
@@ -613,7 +386,7 @@ class PipelineTests(unittest.TestCase):
         self.assertEqual(len(report["source_sha256"]), 64)
         self.assertEqual(
             [stage["name"] for stage in report["stages"]],
-            ["features", "ngboost-shap"],
+            ["features", "convlstm-rolling"],
         )
         self.assertTrue(all(stage["returncode"] == 0 for stage in report["stages"]))
 

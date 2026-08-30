@@ -2,7 +2,7 @@
 
 > 当前状态（2026-08-31）：本文件同时保留拟合前计划和已完成执行记录。当前主模型是
 > 五分类 site NGBoost，SHAP 解释该主模型的期望顺序等级；v4 仅为透明规则基线，旧独立
-> 位移增量回归 SHAP 仅作历史。原始发布表有 1,461 日；本文“全时刻”限定为
+> 位移增量回归 SHAP 执行链已退役并仅由 Git 历史追溯。原始发布表有 1,461 日；本文“全时刻”限定为
 > 2018-02-21—2020-06-30 的 861 个模型可用 OOF 日期（6,888 条测点诊断）；v4 基线另有
 > 2019-02-03—2020-06-30 的 514 日。Vajont 暂停且未用于本计划。当前解释协议见
 > [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md)，结果血缘见
@@ -416,7 +416,7 @@ fold 3 评价主张。下一步只做只读方法核对：审计当前自动标�
 
 - **Primary metric**: 第一增量为五级支持与时间因果门禁；第二增量为 fold 2 开发期转折 macro-F1 和 ordinal MAE
 - **Success threshold**: 按上述机械门禁；不以全时刻 accuracy 单独判断成功
-- **Comparison**: 旧 interval-proxy 标签分布、类别先验、状态持续、多项 Logistic Regression、v4 透明规则基线
+- **Comparison**: 类别先验、状态持续、多项 Logistic Regression、v4 透明规则基线；已退役的 interval-proxy 仅可从 Git 基线 `b13eb8b` 作历史核对
 
 ## 方法依据与证据边界
 

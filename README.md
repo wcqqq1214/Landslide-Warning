@@ -24,7 +24,8 @@ a_i = (v_i - v_i-1) / (t_i - t_i-1)
 ```
 
 当前 SHAP 解释的是五级 **site NGBoost 分类器**的期望预警等级，只能说明模型依赖，
-不能证明物理因果主控因素。早期独立 NGBoost 回归 SHAP 保留作历史对照，不属于当前预警主线。
+不能证明物理因果主控因素。早期独立 NGBoost 回归 SHAP 的执行链已经退役；为保持旧
+`paper/` 报告可构建而保留的少量历史图件不属于当前预警主线。
 
 ## 当前结果边界
 
@@ -83,9 +84,8 @@ main.py                         # 统一阶段入口
 code/features/                  # 逐点运动学与输入特征
 code/convlstm/                  # ConvLSTM 概率位移预测
 code/warning/                   # 自动标签、NGBoost 分类和多点输出
-code/explainability/            # 历史独立回归 SHAP
 config/                         # 版本化实验配置
 data/                           # 藕塘输入与派生数据
-figures/                        # 版本化结果、图表和运行清单
+figures/                        # 当前结果、图表、运行清单及最小历史报告快照
 docs/                           # 当前文档、参考记录与历史审计
 ```

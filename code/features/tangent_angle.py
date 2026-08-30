@@ -337,21 +337,6 @@ def validate_time_index(dates):
     return index
 
 
-def validate_daily_dates(dates):
-    """Validate the legacy daily-only public API.
-
-    New production paths use :func:`validate_time_index`; this function keeps
-    the former daily-cadence contract for external callers that explicitly ask
-    for a daily sequence.
-    """
-    index = validate_time_index(dates)
-    if len(index) > 1:
-        gaps = index[1:] - index[:-1]
-        if not np.all(gaps == pd.Timedelta(days=1)):
-            raise ValueError("日期必须保持日等间隔")
-    return index
-
-
 def _rate_statistics(rates):
     mean_rate = float(np.mean(rates))
     median_rate = float(np.median(rates))

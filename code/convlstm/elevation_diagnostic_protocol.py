@@ -211,8 +211,6 @@ FROZEN_PROTOCOL = load_and_validate_protocol()
 RUN_ROOT = ROOT / FROZEN_PROTOCOL["output_contract"]["run_root"]
 ROLLING_DIR = RUN_ROOT / FROZEN_PROTOCOL["rolling_validation"]["run_id"]
 SEED_DIR = RUN_ROOT / FROZEN_PROTOCOL["seed_stability"]["run_id"]
-INNER_DIR = RUN_ROOT / "inner_validation_v1"
-CAPACITY_DIR = RUN_ROOT / "capacity_sensitivity_v1"
 
 
 def _relative_or_absolute(path):

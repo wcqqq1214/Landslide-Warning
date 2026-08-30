@@ -13,22 +13,6 @@ from features import build_features as features  # noqa: E402
 
 
 class TangentAngleRateTests(unittest.TestCase):
-    def test_validate_daily_dates_rejects_date_gap(self):
-        dates = ["2020-01-01", "2020-01-02", "2020-01-04"]
-
-        with self.assertRaisesRegex(ValueError, "日等间隔"):
-            tangent_angle.validate_daily_dates(dates)
-
-    def test_validate_daily_dates_rejects_duplicates_and_non_monotonic_input(self):
-        with self.assertRaises(ValueError):
-            tangent_angle.validate_daily_dates(
-                ["2020-01-01", "2020-01-01", "2020-01-02"]
-            )
-        with self.assertRaises(ValueError):
-            tangent_angle.validate_daily_dates(
-                ["2020-01-02", "2020-01-01", "2020-01-03"]
-            )
-
     def test_manual_range_excludes_rate_at_start_date(self):
         dates = pd.date_range("2020-01-01", "2020-01-06")
         displacement = [0, 1, 3, 5, 7, 20]
@@ -335,9 +319,9 @@ class TangentAngleFrameTests(unittest.TestCase):
         )
         self.assertTrue(pd.api.types.is_integer_dtype(result["MJ9_alpha_level"]))
 
-    def test_build_tangent_frame_rejects_non_daily_or_unsorted_dates(self):
+    def test_build_tangent_frame_rejects_duplicate_or_unsorted_dates(self):
         invalid_dates = [
-            ["2020-01-01", "2020-01-03", "2020-01-04"],
+            ["2020-01-01", "2020-01-01", "2020-01-03"],
             ["2020-01-02", "2020-01-01", "2020-01-03"],
         ]
 
