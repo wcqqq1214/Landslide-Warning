@@ -70,8 +70,28 @@ improved hard metrics over v1, but remained far behind persistence and worsened 
 Per protocol, stop NGBoost patching: do not tune it or add a second residual variant. ConvLSTM and
 the advisor-specified framework were not modified, and there is no field-validation,
 formal-warning, or fold-3 evaluation claim. The next action is only a read-only audit of whether
-the automatic target implements the acceleration-level definition requested by the advisor and
-reference paper. Do not change labels or models during that audit.
+the acceleration-level rule and the automatic future target have correctly separated roles. The
+audit must not change labels or models.
+
+### Method-alignment audit conclusion
+
+The reference Word chapter contains no strict-acceleration threshold table. Table 5-4 defines
+speed levels around `V0`, `5V0`, and `10V0`; its fourth quantity is `ΔV`. The current strict
+acceleration levels are a project operationalization of the advisor's “same threshold structure”
+instruction: `A0=max(1.5A,A+2σa)` is fit-only and is not a threshold supplied by the paper.
+
+NGBoost target `y` is the H=7 multi-station proxy state built from future displacement rate and
+future positive-velocity Q90. Strict acceleration is one current `X_t` input alongside interval,
+velocity, and tangent angle; it is not `y`. A same-time four-indicator fusion color as `y` would
+create circular `y=F(X_t)` and is prohibited. This target is a reproducible project substitute for
+the paper's same-time MLR fusion because that paper supplies neither training labels nor fitted
+coefficients; it is not a replication. SHAP explains the independent NGBoost, not ConvLSTM internals.
+
+The advisor-requested inputs, eight-station/all-time ConvLSTM display, five-class per-time colors,
+and multi-station synthesis are substantially implemented. The classifier failed to beat
+persistence and remains rejected exploratory, not effective warning evidence. Historical v1
+fold-3 metrics remain only in the old artifact; do not rerun or cascade-rewrite them. New work
+treats fold 3 as prediction-only.
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
