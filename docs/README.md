@@ -10,10 +10,9 @@
 1. [`AGENTS.md`](../AGENTS.md) 中“导师确定的科研主线”决定研究问题、固定技术路线和禁止事项。
 2. 版本化 `config/`、对应源码以及运行 `manifest.json` 决定某次实验实际执行的方法；CSV/JSON
    结果决定可报告的数值，不以叙述性文档覆盖机器产物。
-3. [`CODEX_HANDOFF.md`](../CODEX_HANDOFF.md) 与 [`progress.md`](progress.md) 记录最近完成状态、
-   当前限制和下一步。
+3. [`progress.md`](progress.md) 记录最近完成状态、当前限制和下一步。
 4. 下列 canonical 文档负责把方法、结果与局限串成论文证据链。
-5. reference 和 historical 文档只能用于查证背景与决策过程，不得覆盖以上来源。
+5. reference 文档只能用于查证背景与决策过程，不得覆盖以上来源。
 
 ## 当前主线和时间口径
 
@@ -57,26 +56,21 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 
 | 文档 | 用途 |
 | --- | --- |
-| [`advisor_review_action_plan.md`](advisor_review_action_plan.md) | 导师意见与历次执行记录；最新科研约束仍以 `AGENTS.md` 为准 |
+| [`ootang_autonomous_research_protocol.md`](ootang_autonomous_research_protocol.md) | 自动科研运行边界与无人工逐时判级约束 |
 | [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md) | ConvLSTM 三折 × 五种子诊断 |
 | [`ootang_data_lineage_expert_review.md`](ootang_data_lineage_expert_review.md) | 数据来源、物化序列限制和证据门禁 |
+| [`ootang_elevation_warning_expert_review.md`](ootang_elevation_warning_expert_review.md) | 高程输入、空间融合和结果解释审查 |
+| [`ootang_interval_calibration_expert_review.md`](ootang_interval_calibration_expert_review.md) | 预测区间校准及覆盖率审查 |
+| [`ootang_stable_segment_expert_review.md`](ootang_stable_segment_expert_review.md) | 稳定段与 V0 比较器边界审查 |
 | [`ootang_v4_acceleration_decision.md`](ootang_v4_acceleration_decision.md) | 严格加速度阈值的项目操作化依据 |
-| [`warning-limitations.md`](warning-limitations.md) | 预警结果的使用边界与历史限制汇总 |
-| [`results_report.md`](results_report.md) | 详细数值与历次结果记录；当前论文叙述以 canonical 初稿为准 |
-| [`design.md`](design.md) | 代码与产物关系参考；若与当前主线冲突，以 canonical 文档和代码为准 |
+| [`v5_validation_protocol.md`](v5_validation_protocol.md) | 仍被版本化配置绑定的 v5 验证协议 |
+| [`v5_g1_g4_preflight.md`](v5_g1_g4_preflight.md) | v5 G1–G4 预检记录；只作协议追溯 |
+| [`v5_v0_numerical_audit.md`](v5_v0_numerical_audit.md) | v5 V0 数值审计；只作协议追溯 |
 
 ## Historical：历史路线与工程记录
 
-以下材料保留用于追溯，不是当前科研主线：
-
-- [`framework.md`](framework.md)、[`framework_status.md`](framework_status.md) 中导师纠偏前的框架与状态；
-- `figures/shap/ngboost_regression_*` 所对应的早期独立回归 SHAP；
-- `ootang_ngboost_interval_proxy_*`、`v5_*`、旧自动 V0 和已拒绝 challenger 的探索记录；
-- `ootang_prequential_*`、`ootang_epoch_*`、`ootang_*engineering.md` 等部署、账本、轮换和恢复工程记录；
-- 旧 v1/v2/v3 融合、30 日速度定义及已退役产物的描述。
-
-这些文档中的旧“当前”“下一步”只表示其写作时点，不应据此重启部署工程、改写导师主线或
-启动额外模型搜索。
+完整旧文档见 Git 基线 `6f499cd`。它们只用于必要时追溯历史，不属于当前科研主线，也不再由
+当前文档索引维护。
 
 ## Generated：机器生成证据
 

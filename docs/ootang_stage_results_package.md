@@ -3,7 +3,7 @@
 > 更新日期：2026-08-31
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
-> 方法依据：以项目根目录 [`AGENTS.md`](../AGENTS.md) 固定的导师科研主线和指定 Word 论文为主；[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)仅作历史过程记录，用户本人的藕塘毕业论文仅作角色分工参考
+> 方法依据：以项目根目录 [`AGENTS.md`](../AGENTS.md) 固定的导师科研主线和指定 Word 论文为主；用户本人的藕塘毕业论文仅作角色分工参考
 > Vajont：当前暂停；未进入数据适配、模型或实验，也未用于阈值选择或结果生成
 
 > 当前口径（2026-08-31）：v4 是透明、非正式规则基线；H=7 ECDF 五级自动标签与固定
@@ -131,6 +131,14 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 
 历史 6 通道与当前 7 通道的 15 运行平均值显示，7 通道 RMSE/MAE 分别低约 14.3%/15.7%，但逐种子仅 8/15 个 RMSE 和 9/15 个 MAE 更低，fold 3 的平均 RMSE/MAE 反而高约 1.6%/2.6%，总体正 skill 数仍同为 5/15。该差异由早期高误差折主导，且历史工件缺少当前完整输入血缘，因此只能视为版本表现变化，不能证明高程带来因果增益。由于三个外层测试折均已查看，后续不得据此选择高程尺度、网络规模、轮数、阈值或最佳种子。
 
+#### 5.1.1 14 日时间块条件性诊断
+
+当前 7 通道最后一折 `seed=0` 的预设 14 日非循环重叠 moving-block bootstrap 结果为：RMSE 差值（模型−持久性基线）`-0.00249 mm`，95% CI `[-0.00678, 0.00256]`；MAE 差值 `-0.00620 mm`，95% CI `[-0.01395, 0.00217]`；校准后 PICP `0.7696`，95% CI `[0.6755, 0.8742]`；校准后 80% interval score `1.125 mm`，95% CI `[0.648, 1.538]`。完整结果见 [`forecast_bootstrap_ci.csv`](../figures/convlstm/forecast_bootstrap_ci.csv)。两项误差差值区间均跨 0，不支持“稳定优于持久性基线”；该诊断固定已训练模型和 `qhat`，仅量化当前测试样本的条件性抽样不确定性，不覆盖其他折、其他种子、训练不确定性或未来制度变化。
+
+#### 5.1.2 八测点异质性
+
+跨三个折、五个预设种子等权汇总后，测点 RMSE 均值从 MJ9 的 `0.130 mm` 到 ATU3 的 `1.340 mm`，相差超过一个数量级；增量相关均值仅 MJ9 达 `0.324`，MJ3、ATU1 和 ATU2 为负。正 RMSE skill 主要集中于 fold 3；fold 3 的平均测点 PICP 也从 MJ9/MJ3 的约 `0.479/0.537` 到 ATU1–ATU5 的约 `0.862–0.889`。逐折、逐点、逐种子明细见 [`seed_stability_summary.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv)。总体均值会掩盖明显空间异质性；缺少独立坡体结构和原始观测资料时，不能把差异归因于高程控制或具体地质机制。
+
 ### 5.2 v4 逐点与滑坡体输出
 
 - 测点时间线：4,112 条，区间、速度、加速度和切线角四项输入均可评估；
@@ -215,7 +223,6 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 
 | 目的 | 文件 |
 | --- | --- |
-| 导师意见、来源优先级和执行边界 | [`advisor_review_action_plan.md`](advisor_review_action_plan.md) |
 | 数据来源与确认性证据门禁 | [`ootang_data_lineage_expert_review.md`](ootang_data_lineage_expert_review.md) |
 | 高程可信性、400 日成因和空间规则审查 | [`ootang_elevation_warning_expert_review.md`](ootang_elevation_warning_expert_review.md) |
 | 当前 v4 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
@@ -226,7 +233,6 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 | lag-memory 结果 | [`manifest.json`](../figures/ngboost_auto_state_memory_v2/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv) |
 | residual 结果 | [`manifest.json`](../figures/ngboost_auto_state_residual_v3/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) |
 | 当前藕塘五阶段运行记录 | [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json)；记录 v4 基线、自动标签、ECDF、NGBoost 分类与证据包五阶段合同，本轮复用既有 ConvLSTM 预测 |
-| 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
 | 代表日规则图 | [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg) |
 | 514 日完整预警状态图 | [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) |
 | 8 点位移—四指标—最终等级联合图 | [`ootang_v4_all_station_combined_diagnostic.svg`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg) |
