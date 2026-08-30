@@ -56,7 +56,6 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 
 | 文档 | 用途 |
 | --- | --- |
-| [`ootang_autonomous_research_protocol.md`](ootang_autonomous_research_protocol.md) | 自动科研运行边界与无人工逐时判级约束 |
 | [`ootang_convlstm_elevation_fixed120_review.md`](ootang_convlstm_elevation_fixed120_review.md) | ConvLSTM 三折 × 五种子诊断 |
 | [`ootang_data_lineage_expert_review.md`](ootang_data_lineage_expert_review.md) | 数据来源、物化序列限制和证据门禁 |
 | [`ootang_elevation_warning_expert_review.md`](ootang_elevation_warning_expert_review.md) | 高程输入、空间融合和结果解释审查 |

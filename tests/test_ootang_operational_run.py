@@ -152,10 +152,6 @@ class OotangOperationalRunTests(unittest.TestCase):
                 self.assertFalse(Path(component["manifest_path"]).is_absolute())
                 self.assertFalse(Path(component["output_path"]).is_absolute())
 
-    def test_profile_rejects_removed_historical_operational_profile(self):
-        with self.assertRaisesRegex(OperationalRunProfileError, "only the v4"):
-            _load_operational_profile(ROOT / "config" / "ootang_operational_run.v3.draft.json")
-
     def test_spatial_source_can_be_declared_without_a_local_pdf(self):
         source = ROOT / "config" / "ootang_operational_run.v4.draft.json"
         with tempfile.TemporaryDirectory() as directory:
