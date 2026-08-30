@@ -1,0 +1,14 @@
+fold,fold_role,scope,estimator,n,metric,value
+2,development_already_exposed,lag7_common,residual_ngboost,273,accuracy,0.355311355311
+2,development_already_exposed,lag7_common,residual_ngboost,273,macro_f1_fixed_five,0.330686744782
+2,development_already_exposed,lag7_common,residual_ngboost,273,ordinal_mae,0.70695970696
+2,development_already_exposed,lag7_common,residual_ngboost,273,multiclass_log_loss,3.7537832665
+2,development_already_exposed,lag7_common,residual_ngboost,273,multiclass_brier,1.02377874757
+2,development_already_exposed,lag7_common,v1_ngboost,273,accuracy,0.336996336996
+2,development_already_exposed,lag7_common,v1_ngboost,273,macro_f1_fixed_five,0.281322288996
+2,development_already_exposed,lag7_common,v1_ngboost,273,ordinal_mae,0.761904761905
+2,development_already_exposed,lag7_common,v1_ngboost,273,multiclass_log_loss,3.42118574076
+2,development_already_exposed,lag7_common,v1_ngboost,273,multiclass_brier,1.02150408492
+2,development_already_exposed,lag7_common,lag7_persistence,273,accuracy,0.802197802198
+2,development_already_exposed,lag7_common,lag7_persistence,273,macro_f1_fixed_five,0.672214572137
+2,development_already_exposed,lag7_common,lag7_persistence,273,ordinal_mae,0.223443223443

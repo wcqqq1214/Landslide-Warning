@@ -5,6 +5,23 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-31 residual challenger 正式结果
+
+- 正式运行使用源码提交 `1e977e4`；完整管线耗时 4.0 秒，其中 stage 为 3.9 秒，产物合同
+  通过。共生成 861 条预测，其中 840 条来自 residual 模型，21 条为 v1 fallback；每折恰好
+  7 条 fallback，且其概率逐值与已提交 v1 一致。
+- 指标表共 13 行，只覆盖 fold 2 的 273 日共同集合；fold 3 仅输出预测，不作评价。fold 2
+  residual/v1/persistence 的 accuracy 为 `0.355311/0.336996/0.802198`，fixed-five
+  macro-F1 为 `0.330687/0.281322/0.672215`，ordinal MAE 为
+  `0.706960/0.761905/0.223443`。residual/v1 的 log-loss 为
+  `3.753783/3.421186`，Brier 为 `1.023779/1.021504`。
+- 五项预注册门槛全部为 false，机械结论为 `rejected`。结构化增量相对 v1 的硬指标略有
+  改善，但仍远落后 persistence，且概率指标更差。
+- 按预注册停止 NGBoost 修补：不调参，也不增加第二 residual 变体。该增量未修改 ConvLSTM
+  或导师指定的整体框架，不构成现场验证、正式预警或 fold 3 评价主张。
+- 下一步仅只读核对自动标签是否真正落实导师与参考论文要求的加速度等级定义；此时尚不修改
+  自动标签或模型。
+
 ## 2026-08-31 residual NGBoost challenger 预注册（拟合前）
 
 - 下一步只运行一个结构性 challenger：在 fold 1 的 273 个 lag 已成熟日，用原八点四指标

@@ -1,0 +1,205 @@
+{
+  "artifact_kind": "ootang_ngboost_lag_conditioned_residual_v3",
+  "artifact_status": "exploratory_residual_challenger_not_formal_warning",
+  "case": "ootang",
+  "comparison": {
+    "common_rows": 273,
+    "decision": {
+      "brier_strictly_below": "v1_ngboost",
+      "log_loss_absolute_upper": 1.6094,
+      "log_loss_strictly_below": "v1_ngboost",
+      "macro_f1_strictly_above": "lag7_persistence",
+      "ordinal_mae_strictly_below": "lag7_persistence"
+    },
+    "decision_result": {
+      "checks": {
+        "brier_below_v1": false,
+        "log_loss_below_1_6094": false,
+        "log_loss_below_v1": false,
+        "macro_f1_above_persistence": false,
+        "ordinal_mae_below_persistence": false
+      },
+      "passed": false,
+      "status": "rejected"
+    },
+    "estimators": [
+      "residual_ngboost",
+      "v1_ngboost",
+      "lag7_persistence"
+    ],
+    "fold3_metrics_status": "prediction_only_no_metrics",
+    "metric_folds": [
+      2
+    ],
+    "prediction_only_folds": [
+      3
+    ],
+    "probability_estimators": [
+      "residual_ngboost",
+      "v1_ngboost"
+    ]
+  },
+  "feature_count": 33,
+  "feature_order": [
+    "ATU1__interval_z",
+    "ATU1__velocity_mm_per_day",
+    "ATU1__acceleration_mm_per_day_squared",
+    "ATU1__tangent_angle_degree",
+    "ATU2__interval_z",
+    "ATU2__velocity_mm_per_day",
+    "ATU2__acceleration_mm_per_day_squared",
+    "ATU2__tangent_angle_degree",
+    "ATU3__interval_z",
+    "ATU3__velocity_mm_per_day",
+    "ATU3__acceleration_mm_per_day_squared",
+    "ATU3__tangent_angle_degree",
+    "ATU4__interval_z",
+    "ATU4__velocity_mm_per_day",
+    "ATU4__acceleration_mm_per_day_squared",
+    "ATU4__tangent_angle_degree",
+    "ATU5__interval_z",
+    "ATU5__velocity_mm_per_day",
+    "ATU5__acceleration_mm_per_day_squared",
+    "ATU5__tangent_angle_degree",
+    "MJ1__interval_z",
+    "MJ1__velocity_mm_per_day",
+    "MJ1__acceleration_mm_per_day_squared",
+    "MJ1__tangent_angle_degree",
+    "MJ3__interval_z",
+    "MJ3__velocity_mm_per_day",
+    "MJ3__acceleration_mm_per_day_squared",
+    "MJ3__tangent_angle_degree",
+    "MJ9__interval_z",
+    "MJ9__velocity_mm_per_day",
+    "MJ9__acceleration_mm_per_day_squared",
+    "MJ9__tangent_angle_degree",
+    "lag7_state_level"
+  ],
+  "fit": {
+    "delta_values": [
+      -2,
+      -1,
+      0,
+      1
+    ],
+    "fold": 1,
+    "rows": 273
+  },
+  "fold2_delta_drift": {
+    "counts": {
+      "-1": 16,
+      "-2": 7,
+      "0": 219,
+      "1": 31
+    },
+    "delta_zero_fraction": 0.8021978021978022,
+    "status": "exposed_distribution_shift_advisory",
+    "unseen_fold1_condition": {
+      "delta": -2,
+      "fold2_rows": 4,
+      "lag_level": 3
+    }
+  },
+  "formal_warning_output": false,
+  "inputs": {
+    "classifier_manifest": {
+      "path": "figures/ngboost_auto_state_classifier_v1/manifest.json",
+      "sha256": "d938149e8eb981b343263419850f6ca28f687682aaa3f6f08ae38ae59fc078d6"
+    },
+    "classifier_site_predictions": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+      "sha256": "b86fb8b52800b51818cc69b6ac02ec727d8affba12bc9661c74d94ac6de88682"
+    },
+    "ecdf_label_gate": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+      "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+    },
+    "ecdf_manifest": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+      "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+    },
+    "ecdf_site_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+      "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+    },
+    "ecdf_station_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+      "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+    },
+    "source_code": {
+      "path": "code/warning/ootang_ngboost_auto_state_residual.py",
+      "sha256": "05a16378b8621f980baecb68fb671bf9edd3ce11d16c35a7bb9c729b38def17b"
+    }
+  },
+  "model": {
+    "ngboost": {
+      "base_learner": {
+        "class": "DecisionTreeRegressor",
+        "criterion": "friedman_mse",
+        "max_depth": 3,
+        "random_state": 0
+      },
+      "classes": 4,
+      "col_sample": 1.0,
+      "learning_rate": 0.01,
+      "minibatch_frac": 1.0,
+      "n_estimators": 500,
+      "natural_gradient": true,
+      "random_state": 0,
+      "score": "LogScore",
+      "verbose": false
+    }
+  },
+  "model_output": {
+    "path": "models/ootang_ngboost_auto_state_residual_v3.pkl",
+    "sha256": "2bed46ec7a52e70e7cd4c1255f2b51d958542a6747cb7e73e3ee98b9fed2ea3a",
+    "size_bytes": 1928749
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "causal_residual_effect"
+  ],
+  "outputs": {
+    "comparison_metrics": {
+      "path": "figures/ngboost_auto_state_residual_v3/comparison_metrics.csv",
+      "rows": 13,
+      "sha256": "36a1c7e016782e999f54609aea17cd4948c83489f8b1af3b93109dbee75c8f30"
+    },
+    "delta_class_definition": {
+      "path": "figures/ngboost_auto_state_residual_v3/delta_class_definition.csv",
+      "rows": 4,
+      "sha256": "564614ddc517e2ec807f698def52c9d66262d89dad29fb6b0711d54a9b4ed906"
+    },
+    "site_predictions": {
+      "path": "figures/ngboost_auto_state_residual_v3/site_predictions.csv",
+      "rows": 861,
+      "sha256": "f96fd3b0779cec4f745b4aae8e00a7ab3da025ee93ad4d31ff0960f7ba0c7fe7"
+    }
+  },
+  "profile": {
+    "id": "ootang_ngboost_auto_state_residual_v3",
+    "path": "config/ootang_ngboost_auto_state_residual.v3.json",
+    "sha256": "db02a0676aa2947ef2f7811f2354e16f63cdcb08d81f79fef1e2fb8b42eaa3f8",
+    "version": 3
+  },
+  "runtime_seconds": 1.9433511248789728,
+  "schema_version": 1,
+  "source_label_boundary_version": "fold1_h7_station_ecdf_site_quantiles_v2",
+  "source_label_gate_passed": true,
+  "state_probability_mapping": {
+    "clamp": false,
+    "epsilon": false,
+    "policy": "zero_infeasible_then_renormalize_then_sum_to_lag_plus_delta",
+    "posthoc_mixture": false,
+    "state_levels": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ]
+  }
+}

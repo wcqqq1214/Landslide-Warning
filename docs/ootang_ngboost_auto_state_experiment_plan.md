@@ -320,6 +320,27 @@ log-loss/Brier 没有低于 v1，且 log-loss 没有低于 `1.6094`。预注册�
 和一个模型；不增加第二个 residual 变体、测点模型、SHAP、图件、调参或概率校准。该协议由机器
 记录，不引入人工日期、人工标签、人工冻结或批准步骤。
 
+## 2026-08-31 residual challenger 执行结果
+
+正式运行使用源码提交 `1e977e4`。完整管线耗时 4.0 秒（stage 3.9 秒）并通过产物合同；输出
+861 条逐日预测，其中 840 条为 residual 预测，21 条为逐行 v1 fallback。fallback 每折恰好
+7 条，其五级概率与已提交 v1 逐值一致。指标表只有 13 行，严格限于 fold 2 的 273 日共同
+集合；fold 3 只输出预测，不计算指标或作评价主张。
+
+| fold 2 common 273 estimator | Accuracy | Fixed-five macro-F1 | Ordinal MAE | Log-loss | Brier |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Residual NGBoost | 0.355311 | 0.330687 | 0.706960 | 3.753783 | 1.023779 |
+| Committed v1 NGBoost | 0.336996 | 0.281322 | 0.761905 | 3.421186 | 1.021504 |
+| Strict lag-7 persistence | 0.802198 | 0.672215 | 0.223443 | N/A | N/A |
+
+Residual 结构相对 v1 的 accuracy、macro-F1 和 ordinal MAE 有小幅改善，但仍远落后严格
+persistence；log-loss 与 Brier 也比 v1 更差。五项预注册检查全部为 false，最终结论为
+`rejected`。因此按协议停止本轮 NGBoost 修补，不调参、不建立第二 residual 变体。
+
+该实验没有修改 ConvLSTM 主结构或导师指定的总体框架，也不支持现场有效性、正式预警或
+fold 3 评价主张。下一步只做只读方法核对：审计当前自动标签是否真正落实导师意见及参考论文
+中的加速度预警等级定义；在核对完成前不修改标签或模型。
+
 ## Expected Outputs
 
 ### v1 失败诊断（已冻结）

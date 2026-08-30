@@ -52,6 +52,26 @@ Accept only if residual macro-F1 is strictly above persistence, ordinal MAE stri
 persistence, log-loss and Brier both below v1, and log-loss below `1.6094`; otherwise reject and
 stop NGBoost patching. Generate fold-3 signals without fold-3 metrics or selection. Do not add a
 second residual variant, tuning, calibration, SHAP, station models or new figures.
+
+### Formal residual result: rejected
+
+The residual challenger ran from source commit `1e977e4`. The complete pipeline finished in
+4.0 seconds (stage: 3.9 seconds) and passed its artifact contract. It emitted 861 predictions:
+840 residual predictions plus 21 v1 fallbacks, exactly seven per fold and numerically identical
+row by row to the committed v1 probabilities. Its 13 metric rows are restricted to the fold-2
+common 273-day set; fold 3 remains prediction-only with no evaluation claim.
+
+Residual / v1 / persistence accuracy was `0.355311/0.336996/0.802198`, fixed-five macro-F1 was
+`0.330687/0.281322/0.672215`, and ordinal MAE was `0.706960/0.761905/0.223443`.
+Residual/v1 log-loss was `3.753783/3.421186`, and Brier was `1.023779/1.021504`. All five
+pre-registered checks were false, so the result is `rejected`. The structured increment slightly
+improved hard metrics over v1, but remained far behind persistence and worsened probability scores.
+
+Per protocol, stop NGBoost patching: do not tune it or add a second residual variant. ConvLSTM and
+the advisor-specified framework were not modified, and there is no field-validation,
+formal-warning, or fold-3 evaluation claim. The next action is only a read-only audit of whether
+the automatic target implements the acceleration-level definition requested by the advisor and
+reference paper. Do not change labels or models during that audit.
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
