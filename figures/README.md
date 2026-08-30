@@ -4,13 +4,39 @@
 
 > `convlstm/` 根目录下的 `rolling_validation_*`、`seed_stability_*`、`inner_validation_*` 与 `capacity_*` 均是加入高程前的 6 输入通道历史快照。当前 7 输入通道的 fixed120 滚动验证与五种子诊断只写入下述版本化 `runs/displacement_elevation_exog_v1/fixed120_v1/` 目录，不得跨目录混用。7 通道早停与容量敏感性尚未运行，Vajont 也未启动。
 
-> **当前代码树（2026-08-15）**：默认入口为 `features → convlstm → ootang-operational-v4`。当前可运行的解释支路仅为独立 NGBoost 回归 + SHAP；旧 30 日 `V0`、旧分类、旧融合及 v1/v2/v3 运行脚本已移出工作树，仅可通过 Git 历史恢复。schema 3 管线清单保存逐阶段输入/输出路径、大小、SHA-256、源码指纹和工作树状态。v4 仍为非正式原型，未读取或启动 Vajont。
+> **当前权威口径（2026-08-31）**：ConvLSTM 负责全部 8 点的 P10/P50/P90 位移预测，
+> P10–P90 称为 80% **预测区间**，经验覆盖率称为 PICP。五分类 site NGBoost 是主概率预警
+> 模型，当前 SHAP 解释该模型的期望顺序等级；v4 是透明、非正式规则基线，不能替代 NGBoost。
+> 旧独立位移增量回归 SHAP 只作历史。当前五阶段运行见
+> [`pipeline/ootang_advisor_demo_run.json`](pipeline/ootang_advisor_demo_run.json)，科学口径见
+> [`../docs/ootang_stage_results_package.md`](../docs/ootang_stage_results_package.md)。
+
+> **时间口径**：原始发布表为 2016-07-01—2020-06-30 的 1,461 日；NGBoost 的“全时刻”
+> 是 2018-02-21—2020-06-30 的 861 个模型可用 OOF 日期，对应 6,888 条测点诊断记录；
+> v4 的“全时刻”另指 2019-02-03—2020-06-30 的 514 个规则基线日期。Vajont 暂停，未进入
+> 这些输入或产物。
 
 > **已退役产物删除（2026-08-15）**：`ngboost/`、`warning_fusion/`、`warning_onset/`、`thresholds/`、`sensitivity/`、`warning_draft/`、`warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`、`warning_review/` 共 82 个文件，以及 `pipeline/latest_run.json`（v3 阶段残留记录）和 `pipeline/shap_stability_run.json`（已退役 `shap-stability` 阶段）已从工作树删除；恢复请查阅 Git 历史提交 `7d2e38b` 及其之前的快照。删除范围经核验不影响 v4 管线：v4 链只读 `figures/convlstm/`，写 `warning_draft_v4/` 与 `warning_operational_draft_v4/`，删除后 13 个 v4 manifest 路径哈希与 262 项测试全部通过。
 
-## 当前独立 NGBoost 回归 SHAP 产物
+## 当前 NGBoost 五分类与 SHAP 产物
 
-下列文件由当前 `ngboost-shap` 阶段生成。目标为相邻观测的位移增量，只用于描述候选模型依赖；不解释 ConvLSTM、不推断物理因果，也不是正式五级预警分类器。跨折稳定性和删组诊断未纳入当前精简原型。
+以下目录保存 32 维 site 主分类器、861 日五级概率/颜色和对该分类器的 permutation SHAP。
+SHAP 输出目标为 `E[level|X]=Σk·P(k)`，只说明模型依赖，不构成物理因果或现场有效性证明。
+
+| 文件 | 作用 | 边界 |
+| --- | --- | --- |
+| `ngboost_auto_state_classifier_v1/site_predictions.csv` | 四个估计器在 861 个模型可用 OOF 日期的 site 概率与颜色，共 3,444 行 | 只有 `estimator=ngboost` 是当前 NGBoost 主输出；其他估计器是基线 |
+| `ngboost_auto_state_classifier_v1/station_predictions.csv` | 861 日 × 8 点 = 6,888 条逐点诊断概率与颜色 | `diagnostic-only`，不以单点无条件代表滑坡体 |
+| `ngboost_auto_state_classifier_v1/{metrics,confusion_matrix}.csv` | 固定五类分类、顺序误差和概率质量评价 | 当前 NGBoost 未超过严格 lag-7 persistence，结果为探索性负结果 |
+| `ngboost_auto_state_classifier_v1/site_shap_{values,importance}.csv` | 25 个 fold-2 解释日 × 32 特征的 site NGBoost SHAP | 背景为 fold 1 的 12 个等距日期；不是 ConvLSTM-SHAP |
+| `ngboost_auto_state_classifier_v1/{warning_timeline,site_shap_summary}.{png,pdf,svg}` | 全时刻警色及 SHAP 图 | 图件内容以同目录 `manifest.json` 的哈希和样本定义为准 |
+| `ngboost_auto_state_classifier_v1/manifest.json` | 固定模型、输入、输出、样本和限制 | `formal_warning_output=false` |
+
+解释协议见 [`../docs/ngboost_shap_protocol.md`](../docs/ngboost_shap_protocol.md)。
+
+## 历史：独立 NGBoost 位移增量回归 SHAP 产物
+
+下列文件记录旧 `ngboost-shap` 支路。目标为相邻观测的位移增量，只用于方法演进溯源；它不解释 ConvLSTM、不推断物理因果，也不是当前五分类预警模型。正文不得用其排名替代上节 site 分类 SHAP。
 
 | 文件 | 作用 | 边界 |
 | --- | --- | --- |

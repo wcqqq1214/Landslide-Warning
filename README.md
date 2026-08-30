@@ -1,218 +1,56 @@
 # Landslide-Warning
 
-藕塘水库滑坡日尺度案例的位移概率预测和多测点预警原型。当前仓库只保留可执行的当前技术路线；已退役的 30 日 `V0` 标签、旧融合与旧运行入口仅在 Git 历史中保留。
+藕塘滑坡多监测点智能概率预测与预警科研原型。项目保留导师指定的 ConvLSTM 位移预测主体，
+并用自动未来状态标签训练 NGBoost 五级概率预警模型。
 
-## 当前结论边界
+## 当前科研主线
 
-- 默认链为 `features → convlstm → ootang-operational-v4`，均为藕塘内部的**非正式原型**。所有 v4 输出均标记 `formal_warning_output=false`、`vajont_used=false`。
-- ConvLSTM 独立输出全部 8 个测点的 P10/P50/P90 位移预测，以及训练、校准和测试时段的图表与覆盖率诊断。
-- 显式阶段 `ootang-prequential-monitor` 已把 5-seed、3-fold 严格时序 OOF
-  预测与 persistence 组成无需逐日人工操作的 E1 机器回放：在线专家加权、双侧
-  conformal/ACI 区间、单侧残差 anomaly、自动漂移重置/abstain 和 O1/O2/O3
-  连续空间聚合均只使用更早 outcome 更新。三折 MAE skill 均为正，但 RMSE
-  优势不稳定，区间覆盖率由 `0.791` 降至 `0.695/0.631`，因此它是内部回顾性
-  科研监测器，不是灾害真值、风险概率或正式预警。
-- 显式阶段 `ootang-prequential-calibration-bakeoff` 在完全相同的 E1 point
-  forecast 和自动 reset schedule 上，因果并列比较 ACI 控制、明确标注为非 BOA
-  的 AgACI-EWA 变体及 SPCI-QRF。AgACI-EWA 在 fold 2/3 缩小覆盖误差且三折区间
-  更窄，但 fold 1 过覆盖；固定 SPCI 配置三折均明显欠覆盖。本结果只支持把固定
-  三方法送入未来 E2 shadow 检验，其中 EWA 是改善信号；不执行回顾性排名或晋升，
-  也不改写 E1/E2 v1。
-- 显式阶段 `ootang-prequential-live` 已实现 E2-A 单次机器 poll、issue/outcome
-  隔离、SQLite append-only ledger、等待/回填/恢复/修订、数学全重放与外部锚
-  接口。E2-B1 又增加 `ootang-live-source → ootang-production-bundle →
-  ootang-issue-producer`：严格 finalized feed、内容寻址 source、固定 5-seed 安全
-  checkpoint 及内部推理签发均由机器完成；runtime 路径、activation 指针、checkpoint
-  单次字节加载、ledger persistence 和发布前后时间屏障均 fail closed。E2-B2
-  再增加机器 outcome materializer 与 fixed-point cycle：source pointer v2 由每日
-  revision receipt 和全局 snapshot receipt 链锁定，outcome 以 receipt 链、active
-  pointer 和 inbox 分层发布并可自动恢复，cycle 依固定顺序运行直到科学
-  状态不再变化。它不提供人工日期、冻结、批准或补签入口。
-- 显式阶段 `ootang-prequential-calibration-shadow` 将固定的 ACI、AgACI-EWA
-  和 SPCI-QRF 接入独立 E2 shadow ledger；每个目标先原子持久化 24 个候选 issue，
-  再允许 reveal、状态更新和预声明 readiness 计算。`ootang-prequential-cycle-v2`
-  在 source/outcome/issue 边界前后自动对账，并按 live sequence 合并积压的
-  issue、settlement、backfill 与 revision；不补造漏签 issue，也不让 revision
-  改写在线状态。该 shadow 只提供未来顺序的工程候选证据，选择、自动晋升、
-  E2 live evidence 和正式预警仍固定为 false。
-- 新增显式 `ootang-issue-replay`、`ootang-verified-live` 与
-  `ootang-prequential-cycle-v3`：独立 runner 从递归验证的 source 尾七日和五个
-  checkpoint 重建 IDW、7 通道输入、ConvLSTM forward 与 readout，再核对 40 个
-  P50；指定 live 入口在同一 `runner.lock` 临界区按 replay receipt → seal intent →
-  live append → completion 提交，并由 13 阶段 fixed-point cycle 自动编排。旧
-  live-v1 CLI 尚未由系统级授权禁用，本地账本仍是 trusted-writer chain；可信时间
-  shadow 与 immutable epoch registry R1 已作为独立显式阶段实现，但自动 rotation、
-  scheduler entry authorization 与长链扫描优化仍是门禁。因此这项能力只关闭指定机器入口的 checkpoint/input 重放门，
-  不计入 E2 live evidence，也不输出正式预警。
-- `ootang-epoch-registry` 在完整验证 feed 后先写 feed-observation/head 反回滚链，再在
-  稳定最终 slot 中预构建并公开重载 source/五 seed bundle；feed、runtime artifacts 与
-  显式 archival capsule 都进入内容寻址快照。它只追加 `candidate_ready` 记录，status
-  明确为 `immutable_candidate_record_ready`。R1 已在提交 `3d6ce8f` 固定。
-- 显式阶段 `ootang-epoch-preparation` 继续完成 R2a：从 R1 immutable tip 解析
-  exact 22-module closure，仅允许两个审核过的 package augmentation，将 R2a
-  profile/implementation 与候选文件一起内容寻址，在同一 canonical project/slot
-  物化非可迁移执行树。机器用两个 `uv --isolated --frozen` 环境重载 prerequisite，
-  并按 `atol=1e-6 mm` 复核五 seed `predict_p50` 与 `reload_replay`。每次 current
-  repoll、实现升级和 orphan receipt 恢复都会重跑当前烟测。该树固定
-  `portable_offline_runtime=false`；drain、active switch、rotation、trusted anchor、E2/
-  activation/formal claim 仍全部为 false。
-- 显式阶段 `ootang-epoch-drain` 实现 R2b 的首个 machine-only drain-start barrier：
-  它在独立 `drain_events/head/status/drain_fence_prepares/intents/capsules/drain_exchange_attempts/overlay` namespace 中
-  引用但不改写 R1/R2a。capsule 引用内容寻址 full intent-prefix（live/shadow 全 hashes 与
-  issue/outcome/guard/trusted/source inventories）；每 poll 证明 start→current append-only。
-  intent 是 durable transaction reservation/lower-bound，`candidate_at_intent` 不是
-  activation selection。append-only attempt WAL、armed marker 与 boundary 只有 recovery authority；
-  orphan prepare/prefix/intent/capsule/attempt/boundary object 没有 lifecycle
-  authority，唯一 DRAINING authority 仍是 `epoch_drain_started` event。
-  按 `manager → cycle → deploy → runner → replay → shadow` 取得全锁，并只允许没有
-  outstanding issue 或 pending guard/trusted-time/shadow 工作的 clean start。任何 tombstone
-  `mkdir` 前，机器先 create-only 发布永久 singleton `fence_prepare`，绑定历史 R1/R2a、
-  capsule/prefix、旧 route identity 与 ACL/swap policy；crash 或 tip 推进后恢复同一 transaction，
-  marker 自身无 lifecycle authority。随后才为 `0755` 空 tombstone 安装并精确复验 extended
-  ACL `everyone deny write`，且真实
-  add-file 拒写探针必须通过；随后保存 intent、复验全部绑定，并完成下述 capacity/boundary/
-  WAL/armed-marker 序列后再用 macOS
-  `renameatx_np(RENAME_SWAP)` 将旧 epoch canonical `issue_inbox` 与 tombstone 原子交换。ACL 随
-  inode 跨父目录交换后立即围栏 canonical route，再原位收紧为 exact `0555` 并复验
-  ACL/拒写。若崩溃发生在 swap→chmod 窗口，恢复只能向前加固，绝不交换回去；平台
-  不支持时也禁止退化为普通 rename。
-  物理 issue-admission boundary 是 Darwin swap 成功的瞬间；权威 state-snapshot boundary
-  则是六锁下 full-clean pre-swap replay 后由唯一 `epoch_drain_started` 引用的内容寻址对象，绑定
-  live/issue/guard/trusted/outcome/shadow/source inventories 与 staged next-epoch incoming。
-  pending 时机器跨 poll 等待，合法 settled extension 自动纳入下一边界，不做人工 freeze/
-  cleanup/backdate。manifest/staged-feed 上限分别固定 64 MiB / 16 MiB，feed 独立内容寻址，合法
-  大 feed 不会自锁。swap 前 worst-case boundary 超过 64 MiB 时返回
-  `waiting_for_drain_boundary_capacity`，route 不交换、无 event、无人工 cleanup；通过后顺序
-  固定为 final fence verify → actual queue 稳定 capture/CAS → actual capacity → publish exact
-  pre-swap full boundary → append/replay `drain_exchange_attempts` terminal → 在 fence operand
-  写入直接绑定 terminal+boundary 的 `.epoch-drain-armed-attempt.v1.json` → immediate Darwin
-  swap；marker 随 inode 原子移动。正常同 poll post-swap logical clean 必须与 pre-swap 精确
-  相等；prepared retry 只自动恢复严格单一 temp/ACL crash state。exchanged recovery 必须从
-  armed terminal 读取旧 boundary，current clean 只作合法 append-only extension gate，禁止
-  重建 boundary。WAL suffix rollback/branch/gap/extra/symlink 均 fail closed。publisher 与 event
-  前 self-replay 继续复验；超 64 MiB 仍在 swap 前机器 waiting，历史 chunk/Merkle 只能进入
-  后续 R2b-2b v2 版本，不能重解释 v1 bytes。
-  状态只进入 `DRAINING`；candidate selection、drained、active switch、rotation、trusted
-  anchor、E2 evidence、activation readiness 与正式预警声明全部为 false。
-- 显式阶段 `ootang-epoch-drain-eligibility` 实现 R2b-2a 的 machine-current
-  eligibility observation/stale detection。它从 persisted R2b event 恢复历史 R1/R2a
-  authority，在同一六锁内完整重放 fence/boundary/WAL/armed marker 与 archived old
-  runtime；deterministic 64 MiB CAS 不含 poll time 或 staged incoming。相同 clean state
-  字节级幂等，合法 settled extension 经二次 exact capture 后自动追加 previous-hash-linked
-  event，pending/capacity 状态只写 current=false 且不追加 event。crash `.tmp` 自动清理，
-  integrity failure 尽力写 `blocked_integrity/current=false` 并保留更强 rollback witness。
-  Observation/event 明确 `observation_authority_only=true`、lifecycle/transition authority
-  false；old drained、active/switch/rotation/trusted/E2/activation/formal 仍全部 false，未来
-  transition 必须在六锁下 exact recheck，不能读取 cache 直接晋升。
-- 显式阶段 `ootang-epoch-drain-v2-workset` 实现 R2b-2b-1 的 v2 首阻塞项观察。它在同一
-  六锁下调用冻结 v1 clean gate，只把首个 pending family 写成绑定 R1/R2a、candidate/slot、
-  old live epoch 与 ledger tip 的 content-addressed observation；event 每次重放都精确解引用
-  object。它不是完整 workset 枚举、reservation、admission fence 或 recovery；后生 v1
-  authority 优先并使 observation inert，head/status 也不提供 anti-rollback authority。所有
-  DRAINING/drained/active/trusted/E2/formal 声明仍为 false，且无人工日期、冻结、批准、
-  cleanup、force 或 backdate。
-- 显式阶段 `ootang-epoch-admission-cut` 实现 R2b-2b-2a 的 machine-only official-writer
-  lock-path cut。为保持历史 ledger/intent/receipt 可重放，它逐字冻结而不修改 11 个旧
-  writer/orchestrator；在六锁下准备 exact `0444` deny-write regular-file sentinel，并仅以
-  Darwin `RENAME_SWAP` 先交换 `deploy_cycle.lock`、再交换 `runner.lock`。deploy-only crash
-  会自动跳过已封闭 lock 的 acquisition、重获剩余锁、追加 current-context attempt 后向前完成；无
-  restore/unfence/人工控制。event 只证明冻结 official entrypoint 被物理切断，complete
-  manifest、reservation/recovery、泛化 admission fence、lifecycle/transition、drained/
-  active/trusted/E2/formal 仍全部为 false。
-- 显式阶段 `ootang-epoch-workset-manifest` 实现 R2b-2b-2b 的 frozen-observation workset
-  reservation。它在 official writer cut 后完整重放 cut event/attempt/context，只取得仍开放的
-  `manager → cycle → replay → shadow` 四锁，并把该冻结观测时点可见的 issue/replay、live
-  outstanding、source+outcome revision、guard、trusted-time 与 calibration shadow 六族及其
-  transition seed 写成确定排序、内容寻址、create-only 的 manifest/event。它不声称已枚举
-  terminal/transitive closure，也不预留未来 transition 才派生的 key；unknown/orphan/duplicate/
-  branch/overflow 或冻结观测依赖不闭合均整体 fail closed，不发布部分清单。该 event 是 exact-key recovery 的机器 reservation，
-  request-only TSA crash 可保留同 nonce 的 DER repair，过期/结果先到的 guard intent 自动转入
-  backfill supersede；历史 event 重放不重新要求已合法推进的 predecessor bytes 不变。
-  但 recovery、泛化 admission fence、lifecycle、drained/active/trusted/E2/formal 仍全部为 false。
-- 显式阶段 `ootang-epoch-workset-recovery` 实现 R2b-2b-2c 的 manifest-keyed 确定性本地
-  recovery 基础。机器只重放 immutable reservation，不重新枚举 workset；global intent 固定
-  每个 key 的 transition plan，每个 action 分别提交 create-only step intent/receipt/
-  previous-hash event。只有 `terminal_for_key=true` 的 receipt 能解锁 dependency；未解决的
-  derived work 不能计为 complete。首批 adapter 仍只处理同 nonce 的 TSA DER、ledger 可重建的 anchor receipt，以及具有
-  durable backfill/settlement 证据的 guard supersession；不执行 TSA 网络、旧 ledger mutation 或
-  legacy guard completion。DER repair 是非终态，等待机器 response-link adapter；单纯时间越界
-  不能冒充 backfill。完整 workset recovery、terminal closure、drained、
-  lifecycle/active/trusted/E2/formal 仍全部为 false。
-- 显式阶段 `ootang-epoch-settlement-cycle` 把 workset recovery 之后的 16 个既有
-  coordinator 接入一个 scheduler-facing machine poll；每个 coordinator 每次最多调用一次，
-  避免重复放大网络/深验成本。它只写非权威 status cache，不新增 proof/event，也不声明
-  drained、lifecycle 或 active switch。审计结论与边界见
-  `docs/ootang_epoch_settlement_cycle_engineering.md`。
-- R2b-2b-2c 现另有 recovery-only live-ledger expected-pre-head CAS v1。它不改 frozen live
-  writer/ledger，在同一 `BEGIN IMMEDIATE` 中验证 epoch、完整 chain 与 frozen position，只允许
-  fresh exact append 或 expected pre-head 后 exact contiguous event 的 crash-forward adoption。
-  adoption 后可有合法 suffix，但 adapter 必须另验 manifest/transition authority；CAS 成功不
-  等于 key terminal。当前已有第一个真实调用者：单事件 machine-only
-  `live_outstanding -> anchor_request_recorded` adapter。它完整验证 current chain，但只从
-  manifest frozen prefix 重建 seal、attempt、event key 和完整 EventSpec，并在 mutation 前用
-  create-only step intent 绑定 expected pre-head 与 EventSpec digest。
-- anchor-request adapter 不访问 TSA/HTTP endpoint，只记录一个 `anchor_requested` event。CAS
-  commit 后、receipt 前崩溃时，下一 poll 采用 frozen tip 后原位置的 exact event，不按
-  current head 增加 attempt；receipt 后、recovery event 前崩溃时，只读验证原事件并补索引
-  event。Receipt 不绑定瞬时 `created/adopted` 分支，因此两条路径生成相同 authority。
-  SQLite busy/locked 只报 machine busy；foreign head/position/content/schema/chain 则 fail closed。
-- 当前可声称 `live_anchor_request_adapter_implemented=true`、
-  `ledger_mutation_recovery_implemented=true` 与
-  `live_ledger_expected_pre_head_cas_implemented=true`，但仅代表受审的单事件路径。request step
-  为 nonterminal，后续由下面的 `anchor_result_recorded` adapter 消费。全 workset recovery、
-  all-transition/derived-work closure、network/shadow mutation 与 drained/active/trusted/E2/formal 仍为
-  false；shadow CAS 暂缓。intent/receipt/status authority 升为 v3 但仍使用
-  `workset_recovery_v1` namespace；已存在 v2 immutable authority 时 fail closed，不就地迁移。
-  精准测试 `26/26`，相邻回归 `101/101`，protected aggregate 与 11 个 frozen writer 保持
-  一致，独立审计 P0/P1=0。详细合同见
-  `docs/ootang_anchor_request_recovery_engineering.md`。
-- `anchor_result_recorded` 现已完成**请求意图、四锁外响应观测和四锁内 result ledger CAS**。机器只接受
-  manifest frozen tip 或前一步 recovery request 后紧邻的唯一 canonical `anchor_requested`
-  terminal event，并在 create-only item intent 中冻结 exact normalized HTTPS endpoint、POST
-  body/hash、stable idempotency key 与 expected result pre-head。endpoint 缺失/非法时不创建
-  intent；已有 pending intent 全局排他。四锁释放后，独立 dispatch lock 使用冻结 body/key 做
-  bounded、no-redirect HTTPS POST，并按 object→link 顺序发布 create-only、content-addressed
-  observation。临时网络歧义保留同一 key 重试；确定性 response failure 形成可重放 observation；
-  object-before-link crash 由下次 poll 先 durable re-adopt object、再零网络补 link。token 只在
-  dispatch 时从环境读取且不落盘。
-  下一 coordinator poll 在四锁内深验 exact link/object，并用非阻塞 dispatch-lock fence 按
-  object→link 顺序再次确认持久化；publisher 忙时只 machine waiting。随后构造唯一
-  `anchor_confirmed` 或 `anchor_failed` EventSpec，通过 request-position expected-pre-head CAS
-  append/adopt，再把 receipt 收窄为 confirmed→`outcome_batch_settled` 或
-  failure→`anchor_request_recorded`。failure branch 已自动以 exact failed result 为新 pre-head，追加
-  `attempt + 1` 的 request，再准备下一次 result intent；不会复用第一次请求，也不转人工。CAS 后、
-  receipt 前及 receipt 后、recovery-event 前的崩溃均可零网络接管。当前可新增
-  `live_anchor_result_adapter_implemented=true`；完整 network recovery、remote exactly-once、
-  trusted/E2 claims 仍为 false；confirmed 后仍等待 reviewed outcome settlement adapter。详见
-  `docs/ootang_anchor_result_ledger_adapter_engineering.md`。
-- 独立 NGBoost 回归 + SHAP 用于识别候选模型依赖；它不是 ConvLSTM 的 SHAP，也不构成因果主控因素或正式预警分类器。
-- 显式阶段 `ootang-ngboost-interval-proxy-pilot` 使用四项指标预测下一日五级区间风险代理状态；它不替换 ConvLSTM 或 v4，也未使用其他案例。当前 calibration/test 全时刻表现均略低于状态持续基线，故暂不引入主流程。
-- 显式敏感性阶段以完全相同的 NGBoost、输入和训练协议并列运行 h=1/3/7；三个提前量的全时刻 accuracy、macro-F1 和 ordinal MAE 均未超过各自持续基线，且概率质量随提前量增加而减弱。本结果不排名或选择 horizon。
-- 显式分组消融显示当前区间代理任务由 `interval_z` 主导；非区间指标主要在状态转移行提供增量，其中 `ΔV` 的转移贡献最一致，速度/切线角和测点控制量的单独影响较小且不稳定。消融不排名或选择特征集，也不改变“不引入主流程”的判断。
-- 显式阶段 `ootang-auto-v0-direct-bai-perron` 只用 fit 累计位移自动做 BIC 分段，生成每测点 V0 候选；当前 8 点中 2 点可用、6 点 unavailable。段内局部统计已通过负 SSE 数值审计；它不改写 v4，也不使用人工日期范围或 KMeans 回退。
-- 显式阶段 `ootang-v5-candidate-display` 保留全部 8 点 × 514 个结果时刻：MJ1/MJ3 显示自动 V0 相关速度比、`ΔV` 和连续切线角，其余 6 点明确 `not_applicable_v0_unavailable`。该阶段不运行新的 NGBoost 推断、不生成候选颜色或融合结果，也不改写 v4。
-- v4 按导师确认的逐点方法计算速度和加速度：
-  `v_i=(U_i-U_{i-1})/(t_i-t_{i-1})`，
-  `a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`。
-  加速度以每测点 fit-only 的 `A0=max(1.5A,A+2σ_a)` 为基准，沿用课题组确认的 `1×/5×/10×` 五级相对结构。
-- 当前测点候选融合使用区间、速度/改进切线角（同一运动学证据族）和加速度三族；原始 `ΔV` 仅保留审计，不重复投票。空间层输出“整体确认”和“局部最高候选”两条轴。
-- 数据源是发布的物化日序列，原始 GNSS 及完整生成血缘不可得。因此 `prototype_run_gate=allowed`，`confirmatory_evidence_gate=blocked`；不得把本案例表述为已验证的现场正式预警。
+```text
+多源监测数据与逐点运动学特征
+  → ConvLSTM 全部 8 测点概率位移预测
+  → P10–P90 预测区间及覆盖率评价
+  → 区间偏离、逐点速度、严格逐点加速度、改进切线角
+  → H=7 多测点未来状态自动标签
+  → site NGBoost 五分类概率预警
+  → NGBoost SHAP
+  → 测点级与滑坡体级逐时预警
+```
 
-截至当前 v4 结果含 4,112 条测点—时刻记录、514 条滑坡体结果和 8 行阈值。加速度单项 green/blue/yellow/orange/red 为 `4012/98/2/0/0`；滑坡体整体确认 green/blue/yellow/orange/red 为 `8/48/31/9/18`，另有 400 日因空间确认条件未满足而不发布整体颜色。
+速度与加速度使用真实相邻时间差：
 
-## 快速运行
+```text
+v_i = (U_i - U_i-1) / (t_i - t_i-1)
+a_i = (v_i - v_i-1) / (t_i - t_i-1)
+```
 
-项目使用 `uv`，Python 3.10：
+当前 SHAP 解释的是五级 **site NGBoost 分类器**的期望预警等级，只能说明模型依赖，
+不能证明物理因果主控因素。早期独立 NGBoost 回归 SHAP 保留作历史对照，不属于当前预警主线。
+
+## 当前结果边界
+
+- ConvLSTM 已输出全部 8 个测点的 P10/P50/P90、训练/校准/评价分段和区间指标。
+- 四项预警指标均进入 8 测点 × 4 指标的 32 维 site 分类输入，不划分主、副指标。
+- H=7 标签由未来多点变形代理状态自动生成，不人工逐时判级，也不以同一时刻规则颜色作为标签。
+- 固定 NGBoost 已生成五级概率、逐时颜色和分类 SHAP，但未超过严格 lag-7 persistence；该负结果保留。
+- 当前结果是公开物化历史序列上的可复算探索性结果，`formal_warning_output=false`，不代表现场正式预警。
+
+三个常见样本数使用不同时间口径，不能混写：
+
+| 口径 | 数量 | 含义 |
+| --- | ---: | --- |
+| 原始物化日序列 | 1,461 日 | 2016-07-01 至 2020-06-30 的完整数据表 |
+| NGBoost 模型可用时间 | 861 日 | 三个连续 287 日折；逐时分类任务，SHAP 从固定折内样本解释 |
+| v4 透明规则基线 | 514 日 | 满足该基线自身输入和评价窗口的结果日期 |
+
+v4 只是透明诊断基线，不替代 NGBoost 主模型。Vajont 外部案例当前暂停；在用户再次明确要求前，
+不得读取其数据进入适配、训练或结果生成。
+
+## 快速复现藕塘流程
+
+项目使用 `uv` 和 Python 3.10：
 
 ```bash
 uv sync
-uv run python main.py
-```
-
-当前给导师查看的藕塘完整科研演示不重训耗时的 ConvLSTM，而是复用已经版本化的三折 × 五种子
-预测，机器刷新四指标基线、H=7 自动标签、固定 NGBoost、分类 SHAP、逐时多点结果和汇总表：
-
-```bash
 uv run python main.py \
   --stage ootang-operational-v4 \
   --stage ootang-ngboost-auto-state \
@@ -222,146 +60,32 @@ uv run python main.py \
   --manifest figures/pipeline/ootang_advisor_demo_run.json
 ```
 
-该命令接受并保留 NGBoost 未超过 persistence 的负结果，不运行已经拒绝的 memory/residual
-challenger，不启动 Vajont，也不做新的参数搜索。最终入口为
-[`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md)。
+该命令复用已有 ConvLSTM 预测，不重训 ConvLSTM，不运行已拒绝的 memory/residual challenger，
+不启动 Vajont，也不根据负结果重新调参。
 
-无参数只运行 `features → convlstm → ootang-operational-v4`。其余当前诊断需显式选择：
+## 文档与证据入口
 
-```bash
-uv run python main.py --list
-uv run python main.py --stage ngboost-shap
-uv run python main.py --stage ootang-ngboost-interval-proxy-pilot
-uv run python main.py --stage ootang-ngboost-interval-proxy-horizon-sensitivity
-uv run python main.py --stage ootang-ngboost-interval-proxy-feature-ablation
-uv run python main.py --stage ootang-auto-v0-direct-bai-perron --stage ootang-v5-candidate-display
-uv run python main.py --stage ootang-prequential-monitor
-uv run python main.py --stage ootang-prequential-calibration-bakeoff
-uv run python main.py --stage ootang-live-source --stage ootang-production-bundle --stage ootang-issue-producer --stage ootang-prequential-live
-uv run python main.py --stage ootang-outcome-materializer
-uv run python main.py --stage ootang-prequential-cycle
-uv run python main.py --stage ootang-prequential-calibration-shadow
-uv run python main.py --stage ootang-prequential-cycle-v2
-uv run python main.py --stage ootang-issue-replay
-uv run python main.py --stage ootang-verified-live
-uv run python main.py --stage ootang-prequential-cycle-v3
-uv run python main.py --stage ootang-trusted-time-shadow
-uv run python main.py --stage ootang-epoch-registry --stage ootang-epoch-preparation --stage ootang-epoch-drain --stage ootang-epoch-drain-eligibility
-uv run python main.py --stage ootang-epoch-workset-recovery --stage ootang-epoch-settlement-cycle
-uv run python main.py --stage convlstm-rolling --stage convlstm-seeds
-uv run python main.py --stage ootang-advisor-package
-```
+- [文档导航与权威顺序](docs/README.md)
+- [当前方法与结果初稿](docs/ootang_manuscript_methods_results_draft.md)
+- [阶段结果与证据边界](docs/ootang_stage_results_package.md)
+- [H=7 自动标签及五分类实验记录](docs/ootang_ngboost_auto_state_experiment_plan.md)
+- [当前 NGBoost 分类 SHAP 图](figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf)
+- [全部 8 测点 ConvLSTM 预测图](figures/convlstm/forecast_all_stations.png)
+- [逐时五级预警图](figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)
 
-每个阶段声明输入输出，管线在运行前后检查文件新鲜度，并将提交、输入输出 SHA-256、状态与耗时写入 `figures/pipeline/latest_run.json`。该文件当前不存在：原有清单是 2026-08-01 的 v3 阶段残留记录，已于 2026-08-15 删除，下次完整运行会重新生成。解释任何运行清单时须核对其自身提交和源码指纹。
-
-Vajont 尚未启动；读取、适配或运行其数据前必须获得用户明确许可。
-
-## 验证与历史边界
-
-当前测试保护工作树中仍可执行的接口：默认链与显式阶段隔离、prequential
-同日 issue/reveal 因果顺序与审计链、fit-only 自动 V0、v5 unavailable 门禁，
-以及 v4 的非正式、fail-closed 证据与协议契约。可用以下命令复核：
-
-```bash
-.venv/bin/python -m unittest discover -s tests -p 'test_*.py'
-uv run ruff check code tests main.py
-.venv/bin/python -m compileall -q code main.py tests
-```
-
-旧 30 日 `V0`、旧预警融合 v1/v2/v3 运行入口和对应历史测试已从当前工作树移除；需要复现历史快照时，必须按提交从 Git 历史恢复，不应把旧产物当作当前 v4 接口或结果。这里不指当前 machine-prequential cycle v1/v2/v3。
+[`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md)
+是已生成证据的索引，不是当前要撰写的导师报告。
 
 ## 代码结构
 
 ```text
-main.py                         # 当前管线入口（44 个可选阶段）
-code/features/                  # 特征、逐点运动学、切线角
-code/convlstm/                  # 概率位移预测与时间验证诊断
-code/explainability/            # 独立 NGBoost 回归与 SHAP
-code/monitoring/                # 机器 prequential 预测、校准、漂移和连续异常
-code/warning/                   # v4 历史规则、自动 V0 与 v5 候选展示门禁
-data/                           # 发布物化序列、坐标和派生特征
-figures/                        # 版本化预测、规则审计和图件
-docs/                           # 当前方法、结果边界和研究计划
+main.py                         # 统一阶段入口
+code/features/                  # 逐点运动学与输入特征
+code/convlstm/                  # ConvLSTM 概率位移预测
+code/warning/                   # 自动标签、NGBoost 分类和多点输出
+code/explainability/            # 历史独立回归 SHAP
+config/                         # 版本化实验配置
+data/                           # 藕塘输入与派生数据
+figures/                        # 版本化结果、图表和运行清单
+docs/                           # 当前文档、参考记录与历史审计
 ```
-
-`code/warning/operational_spatial_fusion.py` 是 v4 当前调用的共享双轴空间融合实现；旧 v3 运行入口及其专属实现只保留在 Git 历史。
-
-## 主要文档和结果
-
-| 文件 | 内容 |
-| --- | --- |
-| [`docs/design.md`](docs/design.md) | 当前代码架构、输入输出和非正式边界 |
-| [`docs/ootang_operational_run.md`](docs/ootang_operational_run.md) | v4 四指标、加速度阈值和多测点双轴规则 |
-| [`docs/ootang_stage_results_package.md`](docs/ootang_stage_results_package.md) | 藕塘阶段性结论与可写/不可写边界 |
-| [`figures/advisor_ootang_v1/advisor_summary.md`](figures/advisor_ootang_v1/advisor_summary.md) | 藕塘端到端导师展示入口、四张主表与加速度补表索引 |
-| [`docs/advisor_review_action_plan.md`](docs/advisor_review_action_plan.md) | 导师意见逐项状态与下一步门禁 |
-| [`figures/convlstm/forecast_all_stations.png`](figures/convlstm/forecast_all_stations.png) | 全测点概率位移预测及训练/结果分段 |
-| [`figures/shap/ngboost_regression_shap.png`](figures/shap/ngboost_regression_shap.png) | 独立 NGBoost 回归的候选模型依赖 SHAP 图 |
-| [`docs/ootang_ngboost_interval_proxy_pilot.md`](docs/ootang_ngboost_interval_proxy_pilot.md) | NGBoost 下一日五级区间代理试验、基线比较和不引入主流程的当前判断 |
-| [`docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md`](docs/ootang_ngboost_interval_proxy_horizon_sensitivity.md) | 固定 NGBoost 的 h=1/3/7 非排名提前量敏感性和概率质量诊断 |
-| [`docs/ootang_ngboost_interval_proxy_feature_ablation.md`](docs/ootang_ngboost_interval_proxy_feature_ablation.md) | 七组固定输入的非排名消融及四指标增量信息边界 |
-| [`docs/v5_v0_numerical_audit.md`](docs/v5_v0_numerical_audit.md) | ATU3/MJ9 负 SSE 的复现、根因、修复和保护性验证记录 |
-| [`docs/v5_validation_protocol.md`](docs/v5_validation_protocol.md) | 正式 v5 的标签、切分、指标、V0 unavailable 与融合决策门 |
-| [`docs/ootang_autonomous_research_protocol.md`](docs/ootang_autonomous_research_protocol.md) | 不依赖逐日人工操作的 E0--E3 机器闭环协议及科学边界 |
-| [`docs/ootang_anchor_result_request_intent_engineering.md`](docs/ootang_anchor_result_request_intent_engineering.md) | `anchor_result_recorded` 的机器请求意图、pending fence 与零网络边界 |
-| [`docs/ootang_anchor_result_response_observation_engineering.md`](docs/ootang_anchor_result_response_observation_engineering.md) | 四锁外 bounded HTTPS、内容寻址 response observation、崩溃接管与 result-CAS 前边界 |
-| [`docs/ootang_anchor_result_ledger_adapter_engineering.md`](docs/ootang_anchor_result_ledger_adapter_engineering.md) | 四锁内 observation 消费、expected-pre-head result CAS、分支收据与崩溃接管 |
-| [`docs/ootang_prequential_monitor_results.md`](docs/ootang_prequential_monitor_results.md) | E1 三折回放结果、确定性/因果校验、产物哈希与当前限制 |
-| [`docs/ootang_prequential_calibration_bakeoff.md`](docs/ootang_prequential_calibration_bakeoff.md) | 固定 E1 点预测上的 ACI/AgACI-EWA/SPCI 非排名校准比较、论文边界与 E2 shadow 门禁 |
-| [`docs/ootang_prequential_live_engineering.md`](docs/ootang_prequential_live_engineering.md) | E2-A ledger/runner 实现、验证、状态语义和 E2-B 激活门禁 |
-| [`docs/ootang_prequential_deploy_engineering.md`](docs/ootang_prequential_deploy_engineering.md) | E2-B1 finalized source、五种子安全 bundle、机器 issue producer 与剩余闭环门禁 |
-| [`docs/ootang_prequential_cycle_engineering.md`](docs/ootang_prequential_cycle_engineering.md) | E2-B2 source receipt 加固、机器 outcome 物化、固定点 cycle 与恢复边界 |
-| [`docs/ootang_prequential_calibration_shadow_engineering.md`](docs/ootang_prequential_calibration_shadow_engineering.md) | E2 三校准器独立 shadow ledger、预声明评估门、cycle v2 因果屏障与非晋升边界 |
-| [`docs/ootang_checkpoint_input_replay_engineering.md`](docs/ootang_checkpoint_input_replay_engineering.md) | 五 checkpoint/input 独立重放、verified-live intent/completion 与 cycle v3 指定入口门禁 |
-| [`docs/ootang_trusted_time_shadow_engineering.md`](docs/ootang_trusted_time_shadow_engineering.md) | RFC 3161 固定 TSA/策略/证书、隔离冻结运行时的自动可信时间影子请求、live/guard-bound 离线复验、崩溃恢复与非激活边界 |
-| [`docs/ootang_epoch_registry_engineering.md`](docs/ootang_epoch_registry_engineering.md) | 不可变 epoch registry R1：稳定 slot、content-addressed archival byte capsule、candidate verified-ready 全链与非轮换边界 |
-| [`docs/ootang_epoch_preparation_engineering.md`](docs/ootang_epoch_preparation_engineering.md) | R2a exact executable closure、同源物化树、双冻结隔离环境与五种子重放烟测 |
-| [`docs/ootang_epoch_drain_engineering.md`](docs/ootang_epoch_drain_engineering.md) | R2b 首切片：全锁序、canonical route 原子 swap、full-clean boundary/event 与非切换边界 |
-| [`docs/ootang_epoch_drain_eligibility_engineering.md`](docs/ootang_epoch_drain_eligibility_engineering.md) | R2b-2a：machine-current eligibility observation、stale detection、capacity/witness fail-safe 与非 transition authority |
-| [`docs/ootang_epoch_drain_v2_engineering.md`](docs/ootang_epoch_drain_v2_engineering.md) | R2b-2b-1：context-bound 首阻塞项 observation、v1 precedence、精确对象重放与非 reservation/recovery 边界 |
-| [`docs/ootang_epoch_admission_cut_engineering.md`](docs/ootang_epoch_admission_cut_engineering.md) | R2b-2b-2a：冻结 writer 的 deploy/runner regular-file ACL 原子 lock-path cut、forward-only crash recovery 与非 manifest/lifecycle 边界 |
-| [`docs/ootang_epoch_workset_manifest_engineering.md`](docs/ootang_epoch_workset_manifest_engineering.md) | R2b-2b-2b：六族 frozen-observation 枚举、transition seed、singleton reservation event 与非 terminal/recovery/lifecycle 边界 |
-| [`docs/ootang_epoch_workset_recovery_engineering.md`](docs/ootang_epoch_workset_recovery_engineering.md) | R2b-2b-2c：item transition plan、create-only step intent/receipt/event、terminal dependency gate 与非完整 recovery/lifecycle 边界 |
-| [`docs/ootang_epoch_settlement_cycle_engineering.md`](docs/ootang_epoch_settlement_cycle_engineering.md) | Epoch 目标偏移/过度防御/测试审计，以及 post-recovery 16-stage 单次有界 machine poll |
-| [`docs/ootang_live_ledger_cas_v1_engineering.md`](docs/ootang_live_ledger_cas_v1_engineering.md) | Recovery-only live-ledger expected-pre-head CAS v1：同事务 frozen-position append/adoption 与非 transition authority 边界 |
-| [`figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png`](figures/auto_v0_direct_bai_perron_ootang_v1/candidate_diagnostics.png) | 8 个测点 fit-only 自动 BIC 分段与 V0 候选状态 |
-| [`figures/v5_candidate_display_ootang_v1/candidate_display.png`](figures/v5_candidate_display_ootang_v1/candidate_display.png) | MJ1/MJ3 候选输入与其余 6 点 unavailable 状态；无 NGBoost 推断或 v5 融合 |
-| [`figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg`](figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) | 514 个结果时刻的测点候选与滑坡体双轴状态 |
-| [`docs/progress.md`](docs/progress.md) | 当前实现进度、已清理历史代码与未完成门禁 |
-
-## 尚未完成的关键事项
-
-1. E2-B2、calibration shadow v1、runner-independent checkpoint/input replay、RFC 3161
-   shadow、R1 immutable registry、R2a same-origin executable preparation、R2b
-   clean-start drain barrier 与 R2b-2a eligibility observation/stale detection 均已有
-   machine-only additive 实现。R2b 首切片只原子撤销
-   canonical issue route，固定 full-clean boundary 并提交 `epoch_drain_started`；pending
-   工作会保持机器 waiting。R2b-2a 跨 poll 保存 publication-time observation、识别
-   stale 并自动吸收合法 settled extension，但仍未声明 drained 或切换 active。R2b-2b-1 已用
-   不可重解释 v1 bytes 的新 schema 实现 context-bound 首 blocker observation；它尚不是
-   closed workset。R2b-2b-2a 已在不修改自绑定旧 writer 的前提下，用 deny-write regular-file
-   sentinel 原子封闭 deploy/runner official lock pathname，但明确还不是完整 admission fence。
-   R2b-2b-2b 已在该稳定边界内完成单次 frozen observation 的六族 manifest 枚举、transition
-   seed 与 reservation，但没有 terminal/transitive closure 或 derived-future-work reservation；
-   R2b-2b-2c 已增加 item-specific transition plan、逐 step authority chain、terminal receipt
-   dependency gate 和首批确定性本地 crash-forward adapter。DER repair 当前是非终态；
-   recovery-only expected-pre-head CAS 已实现，且单事件 machine-only
-   `anchor_request_recorded` adapter 已从 manifest frozen prefix 重建 seal/attempt/EventSpec 并调用该 CAS。
-   该 step 零网络且非 terminal；`anchor_result_recorded` 的 create-only external request intent、
-   全局 pending fence、四锁外 bounded transport、content-addressed response observation、四锁内
-   result CAS/adoption、branch-selected receipt 和 failure→`attempt + 1` request loop 已实现。机器会在
-   缺 endpoint/token、临时网络歧义或 confirmed 后等待 outcome adapter 时稳定 waiting；failure
-   branch 则自动绑定 verified result receipt/event 并继续下一 request/result intent，不转人工操作。
-   下一切片只实现 confirmed branch 的 `outcome_batch_settled` adapter；其后才讨论其他 adapter、独立
-   drain assessor、权威 active transition、cycle v4、scheduler authorization 和长链
-   O(N²) 优化。不得添加人工日期、冻结、cleanup、批准、force 或 backdate；在这些门
-   关闭前保持 `real_activation_ready=false`。
-2. ACI、AgACI-EWA 与 SPCI 已按预声明合同进入未来 E2 shadow；最少需要 180 个
-   共同可用未来目标日并通过逐站 coverage/score/availability/rolling gate，才可
-   报告 engineering readiness。当前不会自动选择或晋升，E1 回顾性结果也不得
-   用来改写 live v1；任何后续候选变更都必须创建新协议版本与新 epoch。
-3. 正式灾害效能仍需与模型输出相互独立、机器可读且带可见时间的结局源。
-   自动化可以消除逐日人工操作，但不能从自身残差制造独立灾害真值。
-4. NGBoost 代理、自动 V0 和 v5 candidate display 仍是另一条非正式支路；其
-   G1--G4 blocked 状态不阻止 machine-only 位移预测研究，也不得被后者绕过。
-5. 只有获得用户授权后，才启动 Vajont 的数据适配与外部案例评估。

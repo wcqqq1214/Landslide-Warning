@@ -1,5 +1,13 @@
 # 藕塘自动未来状态标签与 NGBoost 五分类实验计划
 
+> 当前状态（2026-08-31）：本文件同时保留拟合前计划和已完成执行记录。当前主模型是
+> 五分类 site NGBoost，SHAP 解释该主模型的期望顺序等级；v4 仅为透明规则基线，旧独立
+> 位移增量回归 SHAP 仅作历史。原始发布表有 1,461 日；本文“全时刻”限定为
+> 2018-02-21—2020-06-30 的 861 个模型可用 OOF 日期（6,888 条测点诊断）；v4 基线另有
+> 2019-02-03—2020-06-30 的 514 日。Vajont 暂停且未用于本计划。当前解释协议见
+> [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md)，结果血缘见
+> [`classifier manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json)。
+
 ## Material Passport
 
 - Origin Skill: experiment-agent
@@ -93,11 +101,13 @@ O3 = [ATU2, ATU1]
 再对标签器拟合期的三维 `[B_O1, B_O2, B_O3]` 使用相同的“变点 → 段严重度 → 有序五聚类”流程，得到固定 site 边界与 `Y_auto(t)`。后续 NGBoost 的主任务为：
 
 \[
-X_t=[CI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
+X_t=[PI_{i,t},v_{i,t},a_{i,t},\alpha_{i,t}]_{i=1}^{8}
 \longrightarrow Y_{auto,t}.
 \]
 
-共享测点模型 `X_(i,t) → y_auto(i,t)` 用于 8 点面板与测点级 SHAP；site 模型是综合预警主输出。
+其中 `PI` 表示实测位移相对 P10–P90 **预测区间**的位置/偏离程度，不是参数置信区间。
+共享测点模型 `X_(i,t) → y_auto(i,t)` 仅用于 8 点诊断面板；site 模型是综合预警主输出，
+当前 SHAP 只解释 site 五分类 NGBoost。
 
 ## 第一增量：只实现标签诊断
 
@@ -151,9 +161,9 @@ ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
 2. 两个 fold-1 百分位等权平均为未来变形严重度，fold 1 的 20/40/60/80% 分位固定为
    green/blue/yellow/orange/red 边界，并原样应用到 fold 2/3；
 3. site 继续按固定 O1/O2/O3 先块内等权、再三块等权，并仅用 fold 1 固定自己的五级边界；
-4. 严格加速度只从标签构造中移除，仍完整保留为时刻 `t` 的 NGBoost 输入，与置信区间、
+4. 严格加速度只从标签构造中移除，仍完整保留为时刻 `t` 的 NGBoost 输入，与预测区间偏离、
    速度和改进切线角共同预测未来状态；
-5. site 为综合预警主任务；测点标签用于八点诊断和 SHAP，不再要求每个单点在每折都独立
+5. site 为综合预警主任务；测点标签用于八点诊断，不再要求每个单点在每折都独立
    出现五级。若 fold 2 开发期的 site 五级非空、未来位移/速度中位数有序且时间门禁通过，才进入
    NGBoost；否则记录为第二个失败实验并停止标签搜索。
 
@@ -173,7 +183,8 @@ ConvLSTM 或导师要求的四项 NGBoost 输入。完整结果固定在
 
 非阻断限制保持透明：fold 2 site red 只有 16 日；仅 ATU2、ATU4 在 fold 2 单点层面
 同时具备完整五级且结果有序，其余点存在缺级或局部顺序回落。因此后续 NGBoost 以 32 维
-site 综合任务为主，测点共享模型与单点颜色只作诊断和 SHAP，不把它们写成稳定的逐点五级性能。
+site 综合任务为主，测点共享模型与单点颜色只作诊断，不把它们写成稳定的逐点五级性能；
+SHAP 仅解释 32 维五分类 site NGBoost 主模型。
 所有折均已暴露，v2 通过只表示开发期代理标签可训练，不是现场灾害真值或确认性验证。
 
 ## 第二增量：固定 NGBoost 与最小基线
@@ -182,7 +193,7 @@ v2 challenger 已通过，可以执行。固定复用旧 pilot 的 NGBoost 参�
 `NGBClassifier`、深度 3 的树基学习器、500 estimators、learning rate 0.01、全样本/全列、
 `random_state=0`；不做网格搜索、早停选择或概率后校准。site 主模型按固定测点顺序输入
 `8 × [interval_z, velocity, strict_acceleration, tangent_angle] = 32` 维。共享测点模型使用
-四指标加 station one-hot，仅用于八点诊断与 SHAP。比较三个最小基线：
+四指标加 station one-hot，仅用于八点诊断；当前 SHAP 解释 32 维 site 主模型。比较三个最小基线：
 
 1. fold 1 的类别先验/多数类；
 2. 最后一个已经成熟的 H=7 标签持续到当前，即以 `y_(t-7)` 预测 `y_t`，禁止把尚需
@@ -204,7 +215,8 @@ v2 challenger 已通过，可以执行。固定复用旧 pilot 的 NGBoost 参�
   “模型是否比简单规则更有信息”；fold 2 permutation SHAP 回答“模型概率主要依赖哪些当前输入”。
 - **图型与后端**：`quantitative grid`，Python/matplotlib 单一后端；不混用其他绘图后端。
 - **导出与完整性**：两张必要图均保存 PNG、可编辑文本 SVG 和 PDF；PDF 字号不低于 5 pt，
-  运行源码、文本和碰撞审计。图件使用全部 861 个 site 日期和 6,888 个 station-date 预测，
+  运行源码、文本和碰撞审计。图件使用 2018-02-21—2020-06-30 全部 861 个模型可用
+  OOF site 日期和 6,888 个 station-date 预测，
   不为了排版删时刻；标签不可用的每折末 7 日仍显示模型信号并明确真值 unavailable。
 
 ## 2026-08-31 固定分类器执行结果
@@ -350,7 +362,8 @@ fold 3 评价主张。下一步只做只读方法核对：审计当前自动标�
 分类合同保持 X/Y 分离：`y` 是 H=7 未来位移率与未来正速度 Q90 的自动多点代理状态；严格
 加速度与 ConvLSTM 区间、速度、改进切线角是当前 `X_t`。同刻四指标融合色不能改作标签，
 否则形成 `y=F(X_t)` 循环。参考论文采用同刻 MLR 融合，但未给训练标签或拟合系数；本项目
-自动未来状态是可复现的替代口径，不声称复现论文。SHAP 解释独立 NGBoost，不是 ConvLSTM。
+自动未来状态是可复现的替代口径，不声称复现论文。SHAP 解释当前五分类 site NGBoost，
+不是 ConvLSTM，也不是旧独立位移增量回归器。
 
 导师要求的速度、严格加速度、ConvLSTM 八点全时间、四指标、NGBoost 五分类、逐时五色与
 多点综合已基本实现；分类器因未胜 persistence 而保持 rejected exploratory。旧 classifier
@@ -384,11 +397,11 @@ fold 3 评价主张。下一步只做只读方法核对：审计当前自动标�
 
 | Output | Path | Format | Success Criterion |
 | --- | --- | --- | --- |
-| site 全时刻概率/颜色 | `figures/ngboost_auto_state_classifier_v1/site_predictions.csv` | CSV | 四估计器 × 861 日；truth unavailable 与 prediction available 分离 |
-| 八点诊断概率/颜色 | `figures/ngboost_auto_state_classifier_v1/station_predictions.csv` | CSV | 8 点 × 861 日，明确 diagnostic-only |
+| site 全时刻概率/颜色 | `figures/ngboost_auto_state_classifier_v1/site_predictions.csv` | CSV | 四估计器 × 861 个模型可用 OOF 日期（2018-02-21—2020-06-30）；truth unavailable 与 prediction available 分离 |
+| 八点诊断概率/颜色 | `figures/ngboost_auto_state_classifier_v1/station_predictions.csv` | CSV | 8 点 × 861 日 = 6,888 行，明确 diagnostic-only |
 | 指标与混淆矩阵 | `figures/ngboost_auto_state_classifier_v1/{metrics,confusion_matrix}.csv` | CSV | 三折角色、全时刻/转折子集、n 与小样本状态明确 |
 | site SHAP | `figures/ngboost_auto_state_classifier_v1/site_shap_{values,importance}.csv` | CSV | 800 行期望等级 permutation SHAP，可追溯 station/indicator/date |
-| 全时刻图与 SHAP 图 | `figures/ngboost_auto_state_classifier_v1/{warning_timeline,site_shap_summary}.{png,pdf,svg}` | figure | 全 8 点、全时刻；矢量文本与碰撞审计通过 |
+| 全时刻图与 SHAP 图 | `figures/ngboost_auto_state_classifier_v1/{warning_timeline,site_shap_summary}.{png,pdf,svg}` | figure | 全 8 点、全部 861 个模型可用 OOF 日期；矢量文本与碰撞审计通过 |
 | 模型与运行清单 | `models/ootang_ngboost_auto_state_*_v1.pkl`; `figures/ngboost_auto_state_classifier_v1/manifest.json` | pickle/JSON | 固定模型、输入/输出哈希和限制完整 |
 
 ## Monitoring Configuration

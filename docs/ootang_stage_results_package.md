@@ -3,11 +3,17 @@
 > 更新日期：2026-08-31
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
-> 方法依据：以[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)和指定 Word 论文为主；用户本人的藕塘毕业论文仅作参考
-> Vajont：本轮仅按用户要求完成现有文件的只读内容盘点；未启动数据适配、模型或实验，也未用于阈值选择或结果生成
+> 方法依据：以项目根目录 [`AGENTS.md`](../AGENTS.md) 固定的导师科研主线和指定 Word 论文为主；[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)仅作历史过程记录，用户本人的藕塘毕业论文仅作角色分工参考
+> Vajont：当前暂停；未进入数据适配、模型或实验，也未用于阈值选择或结果生成
 
 > 当前口径（2026-08-31）：v4 是透明、非正式规则基线；H=7 ECDF 五级自动标签与固定
 > NGBoost 五分类已完成，全部 `formal_warning_output=false`。Vajont 未参与本结果包。
+
+> **统一对象与时间口径**：原始发布表为 2016-07-01—2020-06-30 的 1,461 个日历日；
+> “NGBoost 全时刻”专指 2018-02-21—2020-06-30 的 861 个模型可用 OOF 日期，对应
+> 6,888 条测点诊断记录（861 日 × 8 点）；“v4 全时刻”专指 2019-02-03—2020-06-30 的
+> 514 个透明规则基线日期。三种口径不得互换。P10–P90 是 80% **预测区间**，其经验覆盖率
+> 记为 PICP；它由观测值是否落入区间计算，不由 SHAP 决定。
 
 > **导师展示包已物化（2026-08-31）**：显式五阶段流水线已完成，运行清单
 > [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json) 状态为
@@ -32,13 +38,13 @@ site 输入完成 H=7 ECDF 自动五级标签、固定 NGBoost 分类、八点/�
 | --- | --- | --- | --- |
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；已完成 fixed-120 三个滚动折 × 五个预设种子及全部逐日预测 | 属于物化日序列内部探索性诊断；早停与容量敏感性尚未重跑 | [`7 通道 fixed-120 审查`](ootang_convlstm_elevation_fixed120_review.md)、[`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
-| 模型解释分工 | 导师确认由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost 回归+SHAP 负责候选模型依赖 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合，也不能单独证明物理因果主控 | [`回归 SHAP provenance`](../figures/shap/ngboost_regression_shap_provenance.json)、[`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) |
+| 模型解释分工 | ConvLSTM 负责 P10/P50/P90 预测区间与 PICP 等区间评价；SHAP 解释五分类 site NGBoost 的期望顺序等级 | 沿用用户毕业论文中“预测模型与其解释模块分工”的思路；当前是 NGBoost SHAP，不是 ConvLSTM-SHAP。SHAP 只能识别模型支持的候选贡献因素，不能单独证明物理因果主控 | [`NGBoost SHAP 协议`](ngboost_shap_protocol.md)、[`SHAP values`](../figures/ngboost_auto_state_classifier_v1/site_shap_values.csv)、[`classifier manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json) |
 | H=7 自动标签 | fold-1 ECDF 固定五级边界，site 按 O1/O2/O3 两层等权综合 | 自动多点代理状态，不是现场灾害真值 | [`ECDF manifest`](../figures/ngboost_auto_state_ecdf_v2/manifest.json)、[`site labels`](../figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv) |
 | 固定 NGBoost 五分类 | 32 维四指标 site 主模型；输出 861 个 site 日期 × 4 个估计器共 3,444 行，以及 6,888 条八点全时刻诊断和分类 SHAP | 未胜 persistence；SHAP 仅为模型依赖、不是 ConvLSTM 内部或因果解释 | [`classifier manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json)、[`metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`全时刻图`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)、[`SHAP 图`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf) |
 | v4 三族逐点判断 | 区间、运动学（速度/切线角）和严格逐点加速度进入全部 4,112 条测点—时刻记录；raw `ΔV` 保留审计 | V0 是项目特有比较器；导师确认加速度沿用指定 Word 速度 `V0` 的相对结构，v4 以加速度自身 A0 量纲一致转置，不伪称 Word 有严格加速度表 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) |
 | 多测点空间融合 | v4 使用双轴空间融合，分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv)、[`v4 配置`](../config/ootang_operational_run.v4.draft.json) |
 | 代表日审计 | v4 代表日显示 interval/velocity/acceleration/tangent/fused 证据、双轴等级和跨区支撑 | 属于观测后规则说明，不用于评价提前量或预警性能 | [`代表日诊断图`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_typical_days_manifest.json) |
-| 全时刻等级展示 | 覆盖 514 日 × 8 点候选等级，并同时显示滑坡体整体确认与局部最高双轴 | 400 个 `NC` 是空间佐证不足而非缺测；属于观测后状态审计 | [`完整时间线`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline_manifest.json) |
+| v4 基线全时刻等级展示 | 覆盖 v4 的 514 日 × 8 点候选等级，并同时显示滑坡体整体确认与局部最高双轴 | 这是透明规则基线，不是 NGBoost 主概率分类输出；400 个 `NC` 是空间佐证不足而非缺测 | [`完整时间线`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline_manifest.json) |
 | 位移—指标—等级联合展示 | 4×2 小多图逐点对齐 514 日累计位移、区间/速度/加速度/切线角和最终候选等级 | raw `ΔV` 仍只作审计；属于观测后联合诊断，不证明提前量 | [`联合诊断图`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_all_station_combined_diagnostic_manifest.json) |
 
 ## 3. 数据条件与证据门禁
@@ -78,7 +84,7 @@ formal_warning_output = false
 
 滚动 seed 0 和预设种子 `0,1,2,3,4` 的 15 个折—种子拟合均已完成，保存了 34,440 条 `seed × fold × date × station` 逐日预测；rolling seed 0 与 five-seed 中的 seed 0 逐值一致。运行对应提交为 `1e06629119e08b33ded2540a435e726c2d2da97a`。当前 7 通道尚未运行早停和容量敏感性；加入高程前的 6 通道历史诊断仍只作探索性版本对照，不能替代 7 通道复验或用于高程因果归因。预警 v4 继续使用其版本化运行输入，未用五种子结果重新选择阈值或规则。
 
-R3 的模型分工已由导师确认，并沿用毕业论文中“解释模型与概率预测模型分离”的角色先例。当前项目中，ConvLSTM 单独输出 P10/P50/P90 并评价覆盖；当前五级分类 SHAP 解释独立 site NGBoost 的期望等级，旧回归 SHAP 仅作历史对照。两者都不是 ConvLSTM 内部 SHAP，也不能称为已确定物理主控因素或正式五级预警的因果解释。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。
+R3 的模型分工按用户对导师意见的当前解释固定，并沿用毕业论文中“解释模型与概率预测模型分离”的角色先例。当前项目中，ConvLSTM 单独输出 P10/P50/P90 并评价 PICP；当前 SHAP 解释五分类 site NGBoost 的期望等级，旧回归 SHAP 仅作历史对照。两者都不是 ConvLSTM 内部 SHAP，也不能称为已确定物理主控因素或正式五级预警的因果解释。毕业论文以多次 LSTM 独立训练形成分布，当前项目采用分位数 ConvLSTM，二者不是同一不确定性算法；该先例只支持模型角色分工，不覆盖指定 Word 论文对预警指标、阈值和融合的主依据地位。
 
 ### 4.2 四指标测点规则
 
@@ -115,13 +121,13 @@ v4 在保留区间、速度/切线角运动学族和原始 `ΔV` 审计字段的
 
 每个测试折包含 287 日 × 8 点，共 2,296 条逐点记录；五种子合计 34,440 条预测。以下为总体、校准区间口径，`skill > 0` 表示优于昨日位移持久性基线：
 
-| fold | 模型 RMSE，均值 ± SD (mm) | 基线 RMSE (mm) | RMSE skill；正值种子 | MAE skill；正值种子 | 增量相关 | 增量标准差比 | coverage / 目标 | 区间宽度 (mm) | mean pinball | 80% interval score |
+| fold | 模型 RMSE，均值 ± SD (mm) | 基线 RMSE (mm) | RMSE skill；正值种子 | MAE skill；正值种子 | 增量相关 | 增量标准差比 | PICP / 目标 | 区间宽度 (mm) | mean pinball | 80% interval score |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | 1 | 1.970 ± 0.418 | 0.245 | -7.036；0/5 | -8.270；0/5 | 0.202 | 6.933 | 0.387 / 0.800 | 2.959 | 0.534 | 8.463 |
 | 2 | 0.356 ± 0.085 | 0.120 | -1.970；0/5 | -1.363；0/5 | 0.187 | 3.668 | 0.956 / 0.800 | 1.320 | 0.086 | 1.475 |
 | 3 | 0.328 ± 0.008 | 0.340 | 0.036；5/5 | 0.066；5/5 | -0.041 | 0.156 | 0.754 / 0.800 | 0.476 | 0.065 | 1.102 |
 
-fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波动；fold 3 虽对所有种子略优，但预测增量标准差约收缩 84%，相关性接近零，其增益更符合平均漂移修正和强平滑，不能解释为稳定跟踪逐日触发过程。80% 区间在三折分别明显欠覆盖、过覆盖和轻度欠覆盖，说明校准不能稳定跨时期迁移。
+fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波动；fold 3 虽对所有种子略优，但预测增量标准差约收缩 84%，相关性接近零，其增益更符合平均漂移修正和强平滑，不能解释为稳定跟踪逐日触发过程。80% 预测区间的 PICP 在三折分别表现为明显欠覆盖、过覆盖和轻度欠覆盖，说明校准不能稳定跨时期迁移。
 
 历史 6 通道与当前 7 通道的 15 运行平均值显示，7 通道 RMSE/MAE 分别低约 14.3%/15.7%，但逐种子仅 8/15 个 RMSE 和 9/15 个 MAE 更低，fold 3 的平均 RMSE/MAE 反而高约 1.6%/2.6%，总体正 skill 数仍同为 5/15。该差异由早期高误差折主导，且历史工件缺少当前完整输入血缘，因此只能视为版本表现变化，不能证明高程带来因果增益。由于三个外层测试折均已查看，后续不得据此选择高程尺度、网络规模、轮数、阈值或最佳种子。
 
@@ -219,7 +225,7 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 | 固定分类器指标、全时刻图和 SHAP | [`manifest.json`](../figures/ngboost_auto_state_classifier_v1/manifest.json)、[`metrics.csv`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`warning_timeline.pdf`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)、[`site_shap_summary.pdf`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf) |
 | lag-memory 结果 | [`manifest.json`](../figures/ngboost_auto_state_memory_v2/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv) |
 | residual 结果 | [`manifest.json`](../figures/ngboost_auto_state_residual_v3/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) |
-| schema 3 最小链路运行记录 | 原 `figures/pipeline/latest_run.json` 为 2026-08-01 的 v3 残留记录，已于 2026-08-15 删除；当前 HEAD 无端到端运行清单，需按 Git 历史提交 `7d2e38b` 查阅旧记录或重新完整运行生成 |
+| 当前藕塘五阶段运行记录 | [`ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json)；记录 v4 基线、自动标签、ECDF、NGBoost 分类与证据包五阶段合同，本轮复用既有 ConvLSTM 预测 |
 | 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
 | 代表日规则图 | [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg) |
 | 514 日完整预警状态图 | [`ootang_v4_full_warning_timeline.svg`](../figures/warning_operational_draft_v4/ootang_v4_full_warning_timeline.svg) |
@@ -248,7 +254,7 @@ false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 p
 
 | 角色 | 版本化来源 | 正文应回答的问题 |
 | --- | --- | --- |
-| 主表 1：ConvLSTM 全站概率预测 | [`seed_stability_metrics.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_metrics.csv)、[`seed_stability_summary.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv) | 8 点及 overall 的误差、相对 persistence skill、增量响应、coverage、width 和 interval score；按五个预设 seed 汇总，不选最佳 seed。 |
+| 主表 1：ConvLSTM 全站概率预测 | [`seed_stability_metrics.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_metrics.csv)、[`seed_stability_summary.csv`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/seed_stability_summary.csv) | 8 点及 overall 的误差、相对 persistence skill、增量响应、PICP、预测区间宽度和 interval score；按五个预设 seed 汇总，不选最佳 seed。 |
 | 主表 2：H=7 自动标签定义与支持 | [`label_state_definition.csv`](../figures/ngboost_auto_state_ecdf_v2/label_state_definition.csv)、[`site_auto_labels.csv`](../figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv)、[`label_gate.json`](../figures/ngboost_auto_state_ecdf_v2/label_gate.json) | `y` 如何由 fold-1 ECDF、两个未来结果量和 O1/O2/O3 形成，以及 fold 1/2 五级支持；不列 fold 3 支持。 |
 | 主表 3：分类器与基线公平比较 | [`classifier metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`memory metrics`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv)、[`residual metrics`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) | Panel A 报 fold-2 all-valid 280 日的 NGBoost/Logistic/prior；Panel B 报 common 273 日的 v1/memory/residual/persistence，并保留 rejected 决策。 |
 | 主表 4：多点逐时输出与空间综合 | [`station timeline`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`site timeline`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv) | 各点五色候选、加速度等级、site-confirmed 与 local-max 的覆盖和支持差异；完整逐时记录作为附件。 |

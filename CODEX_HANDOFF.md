@@ -1,5 +1,20 @@
 # Codex handoff: Ootang machine prequential track and prior v5 work
 
+## 当前权威状态（先读，2026-08-31）
+
+当前只做藕塘内部文档一致性收口，暂不撰写导师报告，不重跑或调参，也不启动 Vajont。
+研究链统一表述为“ConvLSTM–NGBoost–SHAP”：ConvLSTM 对全部 8 个测点输出
+`P10/P50/P90` 并用 PICP 等指标评价预测区间；四项预警指标进入五分类 site NGBoost；
+SHAP 解释该 site NGBoost，直接 ConvLSTM-SHAP 不是当前导师要求。NGBoost 未超过严格
+lag-7 persistence 的负结果继续保留，不因文档整理而更改。
+
+阅读顺序以 [`AGENTS.md`](AGENTS.md) 的科研主线为最高约束，再看
+[`docs/README.md`](docs/README.md) 的当前文档导航。现行方法与结果分别见
+[`docs/ootang_manuscript_methods_results_draft.md`](docs/ootang_manuscript_methods_results_draft.md)、
+[`docs/ootang_stage_results_package.md`](docs/ootang_stage_results_package.md) 和
+[`docs/results_report.md`](docs/results_report.md)。原有 3,798 行交接内容完整保留用于追溯；其中
+散布的旧“下一步”、旧 SHAP 口径和部署支线均不是当前执行指令，冲突时以上述当前状态为准。
+
 **Prepared:** 2026-08-31
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
