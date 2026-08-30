@@ -1,16 +1,21 @@
 # 藕塘滑坡阶段性结果与后续决策包
 
-> 更新日期：2026-08-13
+> 更新日期：2026-08-31
 > 用途：汇总导师要求下已跑通的藕塘工程案例，形成后续撰写、审查和更换数据集时的统一入口
 > 证据等级：**工程原型／内部可复算，不是确认性预测或正式预警**
 > 方法依据：以[`导师修改意见整理与后续执行计划`](advisor_review_action_plan.md)和指定 Word 论文为主；用户本人的藕塘毕业论文仅作参考
 > Vajont：本轮仅按用户要求完成现有文件的只读内容盘点；未启动数据适配、模型或实验，也未用于阈值选择或结果生成
 
-> 工程口径（2026-08-13）：v4 加速度扩展是唯一可执行预警原型。默认入口为 `features → convlstm → ootang-operational-v4`，入口 manifest 使用 schema 3；旧 30 日 V0、旧融合及 v1/v2/v3 运行入口仅留在 Git 历史。本次未启动正式 NGBoost 或 Vajont。
+> 当前口径（2026-08-31）：v4 是透明、非正式规则基线；H=7 ECDF 五级自动标签与固定
+> NGBoost 五分类已完成，全部 `formal_warning_output=false`。Vajont 未参与本结果包。
 
 ## 1. 阶段结论
 
-藕塘案例已经达到导师要求的“先跑通”目标。`features → convlstm → ootang-operational-v4` 三阶段可重复执行，8 个测点均进入高程感知 ConvLSTM、逐测点区间/运动学/加速度三族判断和滑坡体级双轴空间融合（实现沿自早期 v3 规则，但当前仅由 v4 调用），运行清单、逐时刻结果和图件均已生成。当前不需要因为拿不到原始 GNSS 而停止这条原型路线。
+藕塘案例已经达到导师要求的“先跑通”目标。8 个测点均进入高程感知 ConvLSTM 和 v4
+透明基线；另以 `8 × [interval_z, velocity, strict_acceleration, tangent_angle]` 的 32 维
+site 输入完成 H=7 ECDF 自动五级标签、固定 NGBoost 分类、八点/全时刻信号及分类 SHAP。
+但固定分类器、lag-memory 和 residual 三种方案均未胜严格 persistence，因此只构成可复算的
+探索性负结果，不证明预警有效。
 
 数据限制影响的是**结论强度**，不是“能否运行”。现有输入是公开包中的物化日序列，原始 GNSS 锚点及日值生成链不可取得；因此本案例可用于验证代码链、输出结构和规则可审计性，但不能证明模型在独立原始 GNSS 上具有确认性预测能力，也不能把当前阈值和颜色写成可直接部署的工程预警标准。
 
@@ -21,6 +26,8 @@
 | 数据与空间输入 | 8 个测点完成位移列、平面坐标和高程映射；`elev_m` 作为 7 通道模型中的一个静态输入通道 | 高程是地形先验，不是新增位移观测或力学约束 | [`station_coords.csv`](../data/station_coords.csv)、[`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | 位移概率预测 | 7 日回看、1 日预测；输出 P10/P50/P90 和逐点误差；已完成 fixed-120 三个滚动折 × 五个预设种子及全部逐日预测 | 属于物化日序列内部探索性诊断；早停与容量敏感性尚未重跑 | [`7 通道 fixed-120 审查`](ootang_convlstm_elevation_fixed120_review.md)、[`five-seed manifest`](../figures/convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) |
 | 模型解释分工 | 导师确认由 ConvLSTM 负责 P10/P50/P90 与覆盖评价，独立 NGBoost 回归+SHAP 负责候选模型依赖 | 沿用用户毕业论文中 LightGBM+SHAP 与 LSTM 分离的角色先例；当前不是 ConvLSTM-SHAP，NGBoost 目标也不是正式五级融合，也不能单独证明物理因果主控 | [`回归 SHAP provenance`](../figures/shap/ngboost_regression_shap_provenance.json)、[`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) |
+| H=7 自动标签 | fold-1 ECDF 固定五级边界，site 按 O1/O2/O3 两层等权综合 | 自动多点代理状态，不是现场灾害真值 | [`ECDF manifest`](../figures/ngboost_auto_state_ecdf_v2/manifest.json)、[`site labels`](../figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv) |
+| 固定 NGBoost 五分类 | 32 维四指标 site 主模型；输出 861 个 site 日期 × 4 个估计器共 3,444 行，以及 6,888 条八点全时刻诊断和分类 SHAP | 未胜 persistence；SHAP 仅为模型依赖、不是 ConvLSTM 内部或因果解释 | [`classifier manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json)、[`metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`全时刻图`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)、[`SHAP 图`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf) |
 | v4 三族逐点判断 | 区间、运动学（速度/切线角）和严格逐点加速度进入全部 4,112 条测点—时刻记录；raw `ΔV` 保留审计 | V0 是项目特有比较器；导师确认加速度沿用指定 Word 速度 `V0` 的相对结构，v4 以加速度自身 A0 量纲一致转置，不伪称 Word 有严格加速度表 | [`ootang_operational_station_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_station_timeline.csv)、[`ootang_operational_thresholds.csv`](../figures/warning_operational_draft_v4/ootang_operational_thresholds.csv) |
 | 多测点空间融合 | v4 使用双轴空间融合，分别输出滑坡体确认等级和局部最高候选；全局有效点与 O1/O2/O3 覆盖门禁适用于所有颜色 | 空间支撑数及融合规则是项目原型规则，不是指定 Word 的逻辑回归复现 | [`ootang_operational_site_timeline.csv`](../figures/warning_operational_draft_v4/ootang_operational_site_timeline.csv)、[`v4 配置`](../config/ootang_operational_run.v4.draft.json) |
 | 代表日审计 | v4 代表日显示 interval/velocity/acceleration/tangent/fused 证据、双轴等级和跨区支撑 | 属于观测后规则说明，不用于评价提前量或预警性能 | [`代表日诊断图`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg)、[`图件清单`](../figures/warning_operational_draft_v4/ootang_v4_typical_days_manifest.json) |
@@ -135,6 +142,20 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 
 这些日期是在观测后按当前版本化冻结的语义规则自动选择出的可用整体颜色代表日（blue、yellow、orange、red，另保留 localized blue）；它们不是独立事件样本，不能用于计算召回率、误报率、提前量或工程预警效果。
 
+### 5.4 自动标签与 NGBoost 五分类结果
+
+ECDF 标签器在 fold 1 的 site 五级各有 56 日；fold 2 为 green/blue/yellow/orange/red
+`138/66/39/21/16`。固定 32 维 site NGBoost 在 fold 2 的
+accuracy/macro-F1/ordinal MAE/log-loss/Brier 为
+`0.3536/0.2871/0.7429/3.3358/0.9960`；严格 persistence 为
+`0.8022/0.6722/0.2234`，无信息均匀概率的 log-loss 为 `1.6094`。
+
+lag-memory 在共同 273 日的硬指标与 v1 相同，概率指标更差，且 lag 特征内置重要性为 0。
+residual 在同一共同集为 `0.3553/0.3307/0.7070/3.7538/1.0238`，五项机械门槛全部为
+false。结构改造虽使部分硬指标较 v1 小幅上升，但仍远落后 persistence，概率质量也未改善。
+三种方案均未证明分类改善，按预注册停止继续修补 NGBoost；ConvLSTM 与 v4 均未因此修改。
+本节不报告 fold 3 指标。
+
 ## 6. 高程能够增加什么，不能增加什么
 
 高程能够增加的是**空间结构信息**。对于 ConvLSTM，静态高程网格使不同坡位在卷积邻域中具有可区分的地形背景，因此比只用平面坐标和位移场更符合坡体空间异质性的建模直觉。
@@ -154,6 +175,8 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 - 已建立包含静态高程先验的 7 通道 ConvLSTM，并完成 8 测点 fixed-120 三折 × 五种子内部诊断；
 - 已建立区间、速度、加速度、改进切线角的透明逐点规则输出；
 - 已建立局部候选与滑坡体整体确认分离的 v4 双轴空间融合；
+- 已建立 H=7 ECDF 自动多点代理标签、32 维四指标 NGBoost 五分类、八点/全时刻输出和分类 SHAP；
+- 固定分类器、lag-memory 与 residual 均未超过 persistence，属于可复现的探索性负结果；
 - fixed-120 结果在 fold 1/2 均劣于持久性基线，在 fold 3 仅小幅优于基线，跨时期预测与区间校准均不稳定；
 - 与历史 6 通道工件的探索性对照没有形成一致的折次和种子优势，不能据此归因于高程；
 - 现有结果适合用于方法跑通、输出设计和局限性讨论。
@@ -169,12 +192,11 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 
 ## 9. 后续技术决策
 
-当前推荐冻结 v4 和 7 通道 fixed-120 结果，不再根据已经查看的外层测试折调模型或规则。7 通道早停与容量敏感性尚未完成；若后续确需开展，应先冻结只使用训练内部时序切分的选择协议，且不得覆盖本轮 fixed-120 结果或使用外层测试折选参。正式 NGBoost 的前提是独立五级结局标签，不能用 v4 规则输出自训练。下一步重点是决定最终论文的数据角色：
+当前停止 NGBoost patching，不调参或增加第二变体，也不改 ConvLSTM/v4 历史结果。下一步只做
+结果与论文收口，并为未来独立数据建立可复现的数据与评价合同；不设置人工批准或冻结步骤。
 
-1. **藕塘保留为原型案例**：使用本文件的谨慎口径，重点展示方法链、空间双轴输出和局限性；
-2. **选择可追溯的新主数据集**：先审计原始观测、坐标、时间生成链和事件标签，再重新冻结切分、稳定段、V0、阈值和验证协议；
-3. **若最终仍以藕塘承担确认性主案例**：需要获得能够解除证据门禁的新增来源材料，否则必须收窄论文主张；
-4. **Vajont 保持独立 P2**：本轮只读内容盘点不构成案例启动授权；只有用户另行明确允许后，才建立数据适配、运行质量审计和独立结果目录；不得用其结果反调藕塘阈值或模型。
+- **结果与论文收口**：以本文件的谨慎口径统一方法、结果、图表和限制，不把负结果改写为有效性结论；
+- **未来独立数据**：优先选择原始观测、坐标、时间生成链和事件结局可追溯的数据，并建立独立的数据与评价合同；不得用未来结果反调当前藕塘阈值或模型。
 
 ## 10. 复核入口
 
@@ -186,6 +208,10 @@ fold 1/2 对所有种子均明显劣于基线，并分别过度放大增量波�
 | 当前 v4 运行与字段说明 | [`ootang_operational_run.md`](ootang_operational_run.md) |
 | ConvLSTM 运行来源、切分和输出哈希 | [`forecast_run_manifest.json`](../figures/convlstm/forecast_run_manifest.json) |
 | v4 规则、结果计数和输入哈希 | [`ootang_operational_run_manifest.json`](../figures/warning_operational_draft_v4/ootang_operational_run_manifest.json) |
+| ECDF 自动标签与门禁 | [`manifest.json`](../figures/ngboost_auto_state_ecdf_v2/manifest.json)、[`label_gate.json`](../figures/ngboost_auto_state_ecdf_v2/label_gate.json) |
+| 固定分类器指标、全时刻图和 SHAP | [`manifest.json`](../figures/ngboost_auto_state_classifier_v1/manifest.json)、[`metrics.csv`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)、[`warning_timeline.pdf`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)、[`site_shap_summary.pdf`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf) |
+| lag-memory 结果 | [`manifest.json`](../figures/ngboost_auto_state_memory_v2/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv) |
+| residual 结果 | [`manifest.json`](../figures/ngboost_auto_state_residual_v3/manifest.json)、[`comparison_metrics.csv`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv) |
 | schema 3 最小链路运行记录 | 原 `figures/pipeline/latest_run.json` 为 2026-08-01 的 v3 残留记录，已于 2026-08-15 删除；当前 HEAD 无端到端运行清单，需按 Git 历史提交 `7d2e38b` 查阅旧记录或重新完整运行生成 |
 | 代码库审查与工程门禁 | [`codebase_review_2026-08-05.md`](codebase_review_2026-08-05.md) |
 | 代表日规则图 | [`ootang_v4_typical_days.svg`](../figures/warning_operational_draft_v4/ootang_v4_typical_days.svg) |

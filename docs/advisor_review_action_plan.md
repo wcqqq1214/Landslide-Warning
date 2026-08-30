@@ -2,15 +2,15 @@
 
 > 整理日期：2026-07-16
 >
-> 最近更新：2026-08-30
+> 最近更新：2026-08-31
 >
 > 来源：`review.md`、导师指定论文及用户后续确认；Vajont 仅为需另行授权的 P2 项，不是当前证据来源
 >
-> 状态：当前主线为藕塘自动未来状态标签 + 四指标 NGBoost 原型；v4 为规则基线；Vajont 降为需另行授权并冻结角色的后续候选案例
+> 状态：当前主线为藕塘自动未来状态标签 + 四指标 NGBoost 原型；v4 为规则基线；Vajont 是尚未启动的 P2 后续候选案例
 >
 > 本文档以任务与验收标准为主；只有明确标为“执行记录”或已勾选完成的条目代表相应工作已经落地，且其证据强度仍受数据与科研门禁约束。
 
-> **当前代码树同步（2026-08-13）**：当前可执行路线只保留 `features → convlstm → ootang-operational-v4`、独立 NGBoost 回归 SHAP 及 ConvLSTM 诊断。旧 30 日 `V0` 标签、旧融合、旧 v1/v2/v3 运行入口和对应测试已从工作树删除，仅在 Git 历史中保留。本文件后续出现的旧脚本名、v1/v2/v3 路径和旧数值属于执行历史，不能作为当前代码契约；当前实现以 [`design.md`](design.md)、[`ootang_operational_run.md`](ootang_operational_run.md) 和 [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) 为准。
+> **2026-08-13 历史代码树快照（已被 2026-08-30/31 更新覆盖）**：当时可执行路线只保留 `features → convlstm → ootang-operational-v4`、独立 NGBoost 回归 SHAP 及 ConvLSTM 诊断。旧 30 日 `V0` 标签、旧融合、旧 v1/v2/v3 运行入口和对应测试已从工作树删除，仅在 Git 历史中保留。本文件后续出现的旧脚本名、v1/v2/v3 路径和旧数值属于执行历史，不能作为当前代码契约；当前实现以本页后续 2026-08-30/31 更新及对应版本化配置和产物为准。
 
 > **已退役产物删除（2026-08-15）**：按用户决定，`figures/` 下的 `ngboost/`、`warning_fusion/`、`warning_onset/`、`thresholds/`、`sensitivity/`、`warning_draft/`、`warning_operational_draft/`、`warning_operational_draft_v2/`、`warning_operational_draft_v3/`、`warning_review/` 共 82 个跟踪文件，以及 `pipeline/latest_run.json` 与 `pipeline/shap_stability_run.json` 已从工作树删除。**本文件后续所有指向这些路径的引用（4.2.3.1、4.2.3.4、4.2.3.8、4.2.6、4.2.6.1、4.2.7、4.2.10、4.2.11、4.2.12、4.2.14、4.3.3、4.3.4 及阶段 2 产物清单）均只描述当时生成的审计产物，现仅存于 Git 历史提交 `7d2e38b` 及之前，不再存在于工作树。** 这些条目记录的方法边界、失败状态和未决门禁仍然有效，特别是：8/8 测点 KMeans 候选 `rejected_for_formal_v0`、8/8 严格 MVIF `tf_multistart_unstable`、区间校准 `no_fixed_calibration_candidate_promoted`。当前有效的等效产物在 `figures/warning_draft_v4/` 与 `figures/warning_operational_draft_v4/`；删除经核验不影响 v4 管线与数值。`config/ootang_warning_protocol.v1.draft.json` 中出现的 `figures/warning_draft/mvif_initial_slope_candidates.*` 属于**拒绝写出清单**（4.2.3.7 已退役路线），不是产物指针，故未随本次清理改动——该文件的内容 SHA-256 已锁入 v4 manifest，不得修改。
 
@@ -84,17 +84,17 @@ formal_warning_output = false
 vajont_used = false
 ```
 
-`prototype_run_gate=allowed` 只授权 `features → convlstm → ootang-operational-v4` 的藕塘内部初跑、逐点状态和非监督空间融合；v3 及 v1/v2 仅为历史快照，当前工作树没有可执行的 v1/v2/v3 对照入口，若需复现必须从 Git 历史恢复对应提交或路径。`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
+`prototype_run_gate=allowed` 允许 `features → convlstm → ootang-operational-v4` 内部初跑，也允许 explicit-only 的自动状态标签与 NGBoost 探索实验；这些阶段均不产生正式预警。v3 及 v1/v2 规则入口仅为历史快照，若需复现必须从 Git 历史恢复对应提交或路径。`confirmatory_evidence_gate=blocked` 继续禁止独立原始 GNSS、确认性前瞻预测、正式阈值和工程预警主张。若最终论文更换数据集，必须在新数据上重新建立来源、切分、阈值和验证协议，不能直接移植藕塘 test 结果。
 
 ### v4 加速度决策（2026-08-11；阈值来源澄清于 2026-08-13）
 
 导师确认加速度沿用逐点导数方法：`a_i=(v_i-v_{i-1})/(t_i-t_{i-1})`，单位 `mm/day²`，使用真实相邻时间差，前三个观测点形成两行暖启动；后续确认“阈值也取相同的”。核对指定 Word 第五章式（5-3）和表 5-4 可知，它给出的是速度 `V0=max(1.5V,V+2σ)` 与 `1×/5×/10×` 五级相对结构，没有严格加速度阈值表。因此 v4 在 fit-only 稳定段计算 `A=mean(a)`、样本 `sigma_a`，用 `A0=max(1.5A,A+2sigma_a)` 量纲一致地把 `V/V0` 转为 `a/A0`：`green a<A0-sigma_a`、`blue [A0-sigma_a,A0+sigma_a]`、`yellow (A0+sigma_a,5A0)`、`orange [5A0,10A0)`、`red >=10A0`。`A0±sigma_a` 是对 Word 定性“约等于”的项目操作化；并非声称 Word 给出了藕塘的加速度数值阈值。A0 非有限或不大于零时 fail-closed。
 
-v4 将加速度作为独立 evidence family，速度与切线角合成一个 kinematic family，原始 `delta_v` 只作审计字段；滑坡体使用当前 v4 调用的中性双轴 O1/O2/O3 实现（该空间逻辑最初记录于历史 v3 草案）。v4 仍为 `operational_draft_not_formal`，NGBoost 未在本任务完成，Vajont 未读取/启动。v1 基础协议与 v2 加速度扩展协议的内容 SHA-256 必须同时写入核心及图件 manifest。
+v4 将加速度作为独立 evidence family，速度与切线角合成一个 kinematic family，原始 `delta_v` 只作审计字段；滑坡体使用当前 v4 调用的中性双轴 O1/O2/O3 实现（该空间逻辑最初记录于历史 v3 草案）。v4 仍为 `operational_draft_not_formal` 透明基线；自动 H=7 五级 NGBoost 已完成但被 persistence 基线否决，同样不是正式预警。Vajont 未读取/启动。v1 基础协议与 v2 加速度扩展协议的内容 SHA-256 必须同时写入核心及图件 manifest。
 
-### 当前解释与 NGBoost 边界（2026-08-30 纠偏）
+### 当前解释与 NGBoost 边界（2026-08-31 同步）
 
-导师确认的 R3 分工已落实为两条独立支路：ConvLSTM 输出全测点 `P10/P50/P90` 并评价区间覆盖；独立 NGBoost **回归** + SHAP 只描述候选模型依赖。旧“当日 30 日 V0 状态分类”代码和产物不再是当前路线的一部分。
+导师确认的 R3 分工已落实为两条独立支路：ConvLSTM 输出全测点 `P10/P50/P90` 并评价区间覆盖；独立 NGBoost + SHAP 只描述其候选模型依赖。当前五级分类 SHAP 解释期望等级，旧回归 SHAP 作为历史对照；二者都不是 ConvLSTM 内部 SHAP 或物理因果证据。旧“当日 30 日 V0 状态分类”代码和产物不再是当前路线的一部分。
 
 五级 NGBoost 科研原型可以在没有人工逐时刻标签时完成：其 `y` 由预先冻结、仅在开发历史上学习的自动未来变形状态生成。仍然禁止把 v4 同时刻规则颜色直接作为标签再用同一批输入拟合，因为那会构成循环验证。原型结果只能解释为“自动代理变形状态概率”；要升级为确认性灾害预警效能，仍须独立现场事件/专家记录或其他可核验结局。
 
@@ -851,21 +851,21 @@ site_fusion_rule_version, contributing_stations, integration_reason
 3. 报告相对持久性基线和旧无高程快照的真实差异，不用已查看的 test 结果调整高程尺度、阈值或网络；
 4. 将 `prototype_run_gate=allowed` 与 `confirmatory_evidence_gate=blocked` 同步到方法、结果、限制和图表说明；
 5. 完成高程可信性、400 个未空间确认状态和典型状态日的专家审查，见[`藕塘高程通道与空间预警结果专家审查`](ootang_elevation_warning_expert_review.md)。
-6. 按预先冻结协议完成 7 通道 fixed-120 的三折滚动与五随机种子诊断，并将产物与历史 6 通道结果隔离；结果审查确认 fold 1/2 的基线失败稳定存在，fold 3 的小幅点误差优势不等于动态过程捕捉。
+6. 按预先版本化协议完成 7 通道 fixed-120 的三折滚动与五随机种子诊断，并将产物与历史 6 通道结果隔离；结果审查确认 fold 1/2 的基线失败稳定存在，fold 3 的小幅点误差优势不等于动态过程捕捉。
 
 ### 审查后已处理
 
 1. [x] 修复 v2 的全局有效测点覆盖门禁，并加入“仅 2 个有效跨区 yellow 点”反例测试；
 2. [x] 保留 v2 快照，单独形成 v3 空间规则草案，同时输出跨区确认等级和局部最高候选；
-3. [x] 在 v3 中冻结当前 green/blue 原型语义，不把单区 yellow–red 静默并入 green 或降为 blue；
+3. [x] 在 v3 中版本化当前 green/blue 原型语义，不把单区 yellow–red 静默并入 green 或降为 blue；
 4. [x] 规则修改只涉及覆盖和输出语义；测点指标和阈值表与 v2 的非 profile 字段逐单元格一致；
 5. [ ] 决定继续使用藕塘作为原型，还是为最终论文选择并审计新数据集。
 
-### 正式结果前必须冻结
+### 正式结果前的机器版本化合同
 
 1. 若最终论文使用藕塘，先取得足以解除确认性证据门禁的新增材料；若改用新数据集，则在新案例上证明每折输入生成未使用边界后信息；
 2. 再使用各折允许的拟合/校准数据确定速度边界、`ΔV` 的“近零”容差及过程规则；
-3. 冻结四指标到测点、再到滑坡体的规则函数与缺失/暖启动处理；
+3. 将四指标到测点、再到滑坡体的规则函数与缺失/暖启动处理写入配置和 manifest，由机器自动执行和核验，不设置人工批准步骤；
 4. 生成正式多测点综合预警，并同步藕塘方法、结果和限制文档。
 
 ### 延后到藕塘重算完成后
@@ -873,7 +873,7 @@ site_fusion_rule_version, contributing_stations, integration_reason
 1. 等待用户明确允许启动 R6（Vajont）；未获允许时不开展后续工作；
 2. 获准后确认 Vajont 的验证范围，并建立 `10d` 只读数据适配与质量审计；
 3. 生成五曲线逐时刻及综合预警结果；
-4. 按获准后冻结的外部验证、补充案例或方法演示角色单独报告，不回调藕塘阈值或模型。
+4. 按获准后版本化的外部验证、补充案例或方法演示角色单独报告，不回调藕塘阈值或模型。
 
 ### 不建议现在做
 

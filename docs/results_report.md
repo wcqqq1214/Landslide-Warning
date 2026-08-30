@@ -1,8 +1,8 @@
 # 滑坡位移预测与预警探索性结果
 
-> 报告更新日期：2026-08-11。当前 ConvLSTM 主结果为 7 通道 `displacement_elevation_exog_v1` fixed-120 协议下的三个扩展窗口折 × 五个预设种子，共 15 次拟合和 34,440 条逐点预测；预警默认阶段已切换为 v4 严格逐点加速度扩展。原始结果快照日期为 2026-06-23，2026-07-18 已按当前 `ΔV` 定义重算独立 SHAP 产物。所有结果均属于探索性内部时间验证，不作为最终确认性测试结果。更重要的是，全部结果都相对于 Figshare 发布的物化日建模序列计算；该序列具有强自然月分段三次指纹，原始锚点和生成算法缺失，因此不构成独立原始逐日 GNSS 的确认性预测。
+> 报告更新日期：2026-08-31。当前 ConvLSTM 主结果仍为 7 通道 `displacement_elevation_exog_v1` fixed-120 协议下的三个扩展窗口折 × 五个预设种子，共 15 次拟合和 34,440 条逐点预测。基于这些既有 OOF 结果，项目已完成机器自动 H=7 ECDF 五级状态标签、固定 site NGBoost 分类、全时刻概率/颜色、分类 SHAP，以及 lag-memory 和 residual 两个预注册 challenger；三种 NGBoost 方案均未超过 lag-7 persistence，属于明确负结果。v4 保留为透明规则基线，不再被表述为唯一当前方法。所有结果均属于探索性内部时间验证，不作为最终确认性测试结果。更重要的是，全部结果都相对于 Figshare 发布的物化日建模序列计算；该序列具有强自然月分段三次指纹，原始锚点和生成算法缺失，因此不构成独立原始逐日 GNSS 的确认性预测。
 
-> **工程溯源同步（2026-08-11）**：导师确认加速度采用逐点导数方法；用户授权本轮沿用速度相对带作为加速度阈值。无参数入口为 `features → convlstm → ootang-operational-v4`；v3 数值快照保留为 explicit-only 对照，schema 3 入口清单保存逐阶段输入/输出指纹和工作树状态。NGBoost 未在本任务完成，Vajont 未启动。
+> **工程溯源同步（2026-08-31）**：导师确认加速度采用逐点导数方法；v4 的无参数入口仍为 `features → convlstm → ootang-operational-v4`，但它现在只承担透明规则基线。自动状态标签、五级 NGBoost、lag-memory 和 residual 均以 explicit-only、`formal_warning_output=false` 的独立阶段完成并保存输入/输出指纹；它们不是现场正式预警。Vajont 未启动。
 >
 > **结果版本说明**：2026-07-30 的 7 通道单次初跑在最后 287 日得到 test RMSE/持久性 RMSE=`0.338/0.340 mm`、校准覆盖率 `0.770`；它对应当前 rolling seed 0 的第三折，只是 15 次主诊断中的一个实现。第 2.7 节保留的 `0.318 mm` 单次留出、历史滚动、五种子、早停和容量结果均属于加入高程前的 6 通道版本，用于追溯而非当前主结果。7 通道早停与容量敏感性尚未运行，不能借用历史 6 通道产物补充当前证据。
 >
@@ -10,7 +10,7 @@
 >
 > **Vajont 门禁**：本报告及本轮 7 通道诊断全部只针对藕塘。Vajont 仅保留既有只读盘点记录，未开展数据适配、模型运行或结果生成，也未用于选择藕塘模型、区间或阈值；只有用户另行明确授权后才能启动。
 
-当前 7 通道 ConvLSTM 已按预先锁定的种子 0–4 完成 fixed-120 优化稳定性诊断，但未开展 7 通道内层早停或容量敏感性。NGBoost 和 SHAP permutation explainer 的模型、目标、留出解释样本和边界见 `figures/shap/shap_provenance.json` 与 `figures/shap/stability/cross_fold_protocol.csv`；`figures/pipeline/shap_stability_run.json` 仅是 2026-06-23 的历史运行清单。固定种子用于保证工程复现，多种子分布用于描述初始化敏感性，两者均不增加外部证据强度。
+当前 7 通道 ConvLSTM 已按预先锁定的种子 0–4 完成 fixed-120 优化稳定性诊断，但未开展 7 通道内层早停或容量敏感性。当前五级分类与 permutation SHAP 的证据见[`分类 manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json)和[`分类 SHAP 图`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf)；`figures/shap/` 下的回归/同日分类 SHAP 与稳定性文件属于更早的独立历史任务。固定种子用于保证工程复现，多种子分布用于描述初始化敏感性，两者均不增加外部证据强度。
 
 ## 1. 数据与任务
 
@@ -19,12 +19,12 @@
 - 当前 7 通道 ConvLSTM 主协议：输入位移 IDW 网格、静态高程 IDW 网格、`RWL`、`RWL_rate`、`Rain_cum7`、`Rain_cum15` 和 `Rain_cum30`；使用 7 日输入预测次日位移 P10/P50/P90。
 - 外层时间验证：三个互不重叠的 287 日测试折，训练历史逐折扩展，每折重新拟合预处理、模型和测点级校准量；训练历史末 20% 仅作 calibration，外层测试不参与选择。
 - fixed-120 稳定性：固定 `hidden_channels=16`、卷积核 3、学习率 `1e-3` 和 120 轮，预设种子为 `0,1,2,3,4`，未选择最佳种子。
-- NGBoost 四分类：识别当日动态 V0 状态。
-- SHAP 回归：解释独立 NGBoost 对目标观测位移增量 `U_t-U_(t-1)` 的模型依赖，单位为每个观测间隔的 mm。
-- SHAP 二分类：解释独立 NGBoost 对遗留同日测点 V0 月位移量标签 `warning_level >= 1` 的模型依赖；它不是正式五级融合预警，也不是未来 onset 标签。
-- 当前运行级预警草案：v4 以区间、运动学（速度/切线角）、加速度三个 ordinal families 取测点局部最大，再通过 v3 双轴多测点空间融合输出整体确认等级与局部最高候选；raw `ΔV` 只作审计字段。独立 NGBoost+SHAP 只作候选模型依赖分析，不是正式五级融合。
+- 当前 NGBoost 五级任务：用 fold-1-only ECDF 自动构造未来 H=7 多测点综合状态，以 8 点 × 区间偏离、逐点速度、严格逐点加速度、改进切线角共 32 个时刻 `t` 输入训练 site 分类器；不设主、副指标。
+- 当前分类 SHAP：解释五级 site NGBoost 的期望等级 `sum(k*p_k)`，只描述模型依赖，不是 ConvLSTM 内部 SHAP、致灾因果或独立物理主控因素证明。
+- 历史 NGBoost 四分类/二分类与回归 SHAP：分别识别同日动态 V0 状态或解释目标观测位移增量；这些结果保留作追溯对照，不是当前 H=7 五级任务。
+- v4 透明规则基线：以区间、运动学（速度/切线角）、加速度三个 ordinal families 取测点局部最大，再通过 v3 双轴多测点空间融合输出整体确认等级与局部最高候选；raw `ΔV` 只作审计字段。
 
-当前 NGBoost 任务是历史当日状态识别；NGBoost 未在本任务完成，不等同于未来 onset 预警。
+当前 H=7 五级 NGBoost 已完成，但没有超过严格 lag-7 persistence，也不等同于未来灾害 onset 或经现场验证的工程预警。
 
 ### 1.1 数据血缘门禁
 
@@ -264,29 +264,45 @@ RMSE 和 MAE 差值区间均跨 0，因此该单折、单种子条件性重采�
 
 最终只有折 3 同时达到多数种子的 RMSE 和 MAE 正 skill，未满足历史 6 通道预注册的“至少两个外层折”门槛，因此该轮停止扩大超参数搜索。该结论不是“ConvLSTM 在所有数据上无效”，也不能替代当前 7 通道的早停或容量诊断；它只说明当时的样本、特征、结构和已查看时间折不足以支持继续用更多参数组合追逐测试表现。
 
-## 3. NGBoost 当日四级状态分类
+## 3. 当前 H=7 自动 ECDF 五级状态与 NGBoost
 
-### 3.1 标签分布
+### 3.1 自动标签与固定输入
 
-- 全时段：green 1131、yellow 263、orange 30、red 7。
-- 留出段：green 269、yellow 18、orange 0、red 0。
+当前标签不是人工逐时刻指定，也不复用 v4 颜色。每个测点的未来 H=7 位移速率和正速度 Q90 仅通过 fold 1 经验 CDF 转为百分位并等权形成 severity；site 先在 O1/O2/O3 内等权，再对三个区块等权。五级边界同样只由 fold 1 的 q20/q40/q60/q80 确定，之后固定应用。fold 1 site 每级均为 56 日；已暴露的 fold 2 开发集 green/blue/yellow/orange/red=`138/66/39/21/16`，标签门禁通过。该标签仍是未来变形状态代理，不是独立灾害或现场事件真值。完整合同见[`ECDF label gate`](../figures/ngboost_auto_state_ecdf_v2/label_gate.json)和[`ECDF manifest`](../figures/ngboost_auto_state_ecdf_v2/manifest.json)。
 
-橙色和红色全部位于训练期，当前留出段不能评价高等级状态的召回能力。
+site 主模型固定使用 8 个测点各自的四项时刻 `t` 输入：ConvLSTM 区间偏离 `interval_z`、逐点速度、严格逐点加速度和改进切线角，共 32 维。模型只在 fold 1 的 280 个 valid 日期拟合；fold 2 只作已经暴露的开发评价，不用于调参。NGBoost 固定为 500 estimators、learning rate 0.01、深度 3、seed 0，不搜索参数、不重采样、不做事后概率校准。
 
-### 3.2 分类结果
+### 3.2 固定五级分类器：明确负结果
 
-| 指标 | 结果 |
-| --- | ---: |
-| Accuracy | 0.958 |
-| 完整四分类 macro-F1 | 0.432 |
-| Weighted-F1 | 0.963 |
-| 多分类 Brier score | 0.088 |
-| Green recall | 0.955（n=269） |
-| Yellow recall | 1.000（n=18） |
-| Orange recall | 不可评价（n=0） |
-| Red recall | 不可评价（n=0） |
+fold 2 全部 280 个 valid 日期上，固定 NGBoost 的结果为：
 
-Accuracy 和 weighted-F1 主要反映 green/yellow 两类表现，不能作为四级预警系统已经有效的证据。Orange/red 的代码输出值为 0，但因支持数为 0，论文中应报告“不可评价”，而不是解释为召回率 0。
+| 指标 | NGBoost | fold-1 uniform prior | 解释 |
+| --- | ---: | ---: | --- |
+| Accuracy | 0.3536 | 0.4929 | 分类正确率较低 |
+| fixed-five macro-F1 | 0.2871 | 0.1321 | 只作五级平衡描述 |
+| ordinal MAE | 0.7429 | 0.9679 | 等级平均绝对误差 |
+| multiclass log-loss | 3.3358 | 1.6094 | 概率明显差于无信息均匀先验 |
+| multiclass Brier | 0.9960 | 0.8000 | 概率质量同样较差 |
+
+严格同折 `Y_auto(t-7)` persistence 在其可用的 fold 2 common 273 日取得 accuracy/macro-F1/ordinal-MAE=`0.8022/0.6722/0.2234`，显著优于固定 NGBoost。该比较表明当前特征到自动状态的概率映射没有超过简单状态持续性，不能写成模型改善。逐项指标与审计矩阵见[`classifier metrics`](../figures/ngboost_auto_state_classifier_v1/metrics.csv)和[`classifier manifest`](../figures/ngboost_auto_state_classifier_v1/manifest.json)。
+
+### 3.3 全时刻与全部测点输出
+
+分类阶段生成 861 个 site 日期 × 4 个估计器共 3,444 行 site 输出；NGBoost、Logistic 和 prior 在每个日期均给出五级概率与颜色，严格 persistence 的每折前 7 日因成熟标签不存在而保持 unavailable。共享测点模型另生成 6,888 条 `861 日 × 8 点` 诊断预测。每折末 7 日仍输出模型信号，但 retrospective truth 明确为 unavailable，不进入评价。完整时间线同时显示 site 自动标签、site NGBoost 和全部 8 点的逐时等级，见[`warning timeline`](../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf)；测点模型只作诊断，不替代多测点 site 主任务。
+
+### 3.4 当前五级分类 SHAP
+
+当前 permutation SHAP 用 fold 1 的 12 个均匀背景日解释 fold 2 的 25 个均匀日期，目标标量是五级概率的期望等级 `sum(k*p_k)`；`25 × 32=800` 个值覆盖全部 site 输入。平均绝对 SHAP 前四项为 ATU2 改进切线角 `0.5440`、ATU1 改进切线角 `0.4815`、ATU5 速度 `0.2094` 和 ATU2 速度 `0.1799`。这些数值只表示当前分类器在指定解释样本上的预测依赖，不是 ConvLSTM 内部 SHAP，也不能证明切线角、速度或任何测点是致灾因果主控因素。证据见[`site SHAP importance`](../figures/ngboost_auto_state_classifier_v1/site_shap_importance.csv)和[`site SHAP summary`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf)。
+
+### 3.5 lag-memory 与 residual challenger：均被拒绝
+
+直接增加一个成熟 `Y_auto(t-7)` 特征后，memory NGBoost 在 fold 2 common 273 日的 accuracy/macro-F1/ordinal-MAE 与无 memory v1 完全相同，均为 `0.3370/0.2813/0.7619`；log-loss/Brier 反而由 `3.4212/1.0215` 变为 `3.4346/1.0282`，lag 特征内置重要性为 0。该方案按预注册门禁拒绝，见[`memory metrics`](../figures/ngboost_auto_state_memory_v2/comparison_metrics.csv)和[`memory manifest`](../figures/ngboost_auto_state_memory_v2/manifest.json)。
+
+单一 residual challenger 改为分类 `delta=Y_auto(t)-Y_auto(t-7)`，再机械重构五级概率。在相同 273 日上，它的 accuracy/macro-F1/ordinal-MAE 为 `0.3553/0.3307/0.7070`，虽较 v1 硬分类略好，仍远差于 persistence 的 `0.8022/0.6722/0.2234`；其 log-loss/Brier=`3.7538/1.0238`，也差于 v1 的 `3.4212/1.0215`。预注册的五项通过条件全部为 false，因此 residual 同样被拒绝，见[`residual metrics`](../figures/ngboost_auto_state_residual_v3/comparison_metrics.csv)和[`residual manifest`](../figures/ngboost_auto_state_residual_v3/manifest.json)。至此停止继续给 NGBoost 增加 lag、residual、校准或参数变体。
+
+### 3.6 历史遗留同日四级 V0 分类（非当前主任务）
+
+早期同日动态 V0 四级标签的全时段分布为 green 1131、yellow 263、orange 30、red 7；其旧留出段为 green 269、yellow 18、orange 0、red 0。对应历史分类结果为 accuracy `0.958`、完整四分类 macro-F1 `0.432`、weighted-F1 `0.963` 和 Brier `0.088`。这些高总体指标主要反映 green/yellow，orange/red 在该旧留出段不可评价；该任务既不是当前自动 H=7 五级状态，也不能作为五级 NGBoost 或 v4 的监督验证。
 
 ## 4. 独立 NGBoost 的遗留同日二分类与持续性基线
 
@@ -316,9 +332,9 @@ Accuracy 和 weighted-F1 主要反映 green/yellow 两类表现，不能作为�
 
 只有 2 个测试折同时含正负类，说明警戒状态在时间上高度聚集。不能对 5 折 AUC 做普通平均，也不能据此声称跨时期稳定。
 
-## 5. 独立 NGBoost 的 SHAP 候选模型依赖
+## 5. 历史独立 NGBoost 的 SHAP 候选模型依赖
 
-单次 SHAP 使用 25 个均匀覆盖留出期的日期及全部 8 个测点（200 行）作为解释样本，并使用训练期 12 个均匀日期及全部测点（96 行）作为背景。旧的“训练集尾部 200 行”抽样已废弃，因为它会偏向最后一个测点。图题、CSV 和 `shap_provenance.json` 均明确：被解释模型是 NGBoost，不是 ConvLSTM；结果只描述模型依赖，不是因果效应、物理主控因素结论或预警提前量。
+本节保留的是早于当前五级任务的位移增量回归和同日 V0 分类 SHAP；当前五级 site 分类 SHAP 见第 3.4 节，二者不得混读。历史单次 SHAP 使用 25 个均匀覆盖留出期的日期及全部 8 个测点（200 行）作为解释样本，并使用训练期 12 个均匀日期及全部测点（96 行）作为背景。旧的“训练集尾部 200 行”抽样已废弃，因为它会偏向最后一个测点。图题、CSV 和 `shap_provenance.json` 均明确：被解释模型是历史独立 NGBoost，不是 ConvLSTM；结果只描述模型依赖，不是因果效应、物理主控因素结论或预警提前量。
 
 | 排名 | 位移增量回归 | 当日状态分类 |
 | ---: | --- | --- |
@@ -328,7 +344,7 @@ Accuracy 和 weighted-F1 主要反映 green/yellow 两类表现，不能作为�
 | 4 | disp_delta_v_lag5 | GWT_lag4 |
 | 5 | disp_delta_v_lag2 | minT_lag3 |
 
-在当前模型和样本中，近期位移速率和 `ΔV` 对目标位移增量预测的平均绝对 SHAP 较高；遗留分类模型还使用地下水位、温度等滞后量。上述结果描述模型依赖关系，不证明地下水位、`ΔV` 或其他变量具有因果作用。
+在这些历史模型和样本中，近期位移速率和 `ΔV` 对目标位移增量预测的平均绝对 SHAP 较高；遗留分类模型还使用地下水位、温度等滞后量。上述结果描述模型依赖关系，不证明地下水位、`ΔV` 或其他变量具有因果作用。
 
 ### 5.1 五折稳定性
 
@@ -362,7 +378,7 @@ Accuracy 和 weighted-F1 主要反映 green/yellow 两类表现，不能作为�
 
 `disp_rate_lag1` 在回归中五折中位排名第 1，方向相关在 5/5 折为正；分类中 `disp_rate_lag5` 五折均进入 top 10，方向在 5/5 折为正。`disp_delta_v_lag1` 在回归中五折均进入 top 10 且方向为正，`disp_delta_v_lag5` 在遗留分类中 4/5 折进入 top 10 且方向为负。部分相关滞后量出现相反方向，说明 SHAP 贡献会在共线变量之间重新分配，不应逐变量作机理解释。
 
-切线角当前不直接输入 NGBoost，而是在融合层执行可审计复核。
+这些历史回归/同日分类模型没有直接输入切线角；当前 H=7 五级 site NGBoost 已把 8 个测点的改进切线角与区间、速度、严格加速度共同作为 32 维输入。
 
 ## 6. v4 加速度逐点与空间结果
 
@@ -370,7 +386,7 @@ v4 在 v3 双轴空间规则上增加严格逐点加速度。对每个测点使�
 
 v4 测点融合将 interval、kinematic（velocity+tangent）和 acceleration 作为三个独立 ordinal family，局部候选取三族最大；raw `delta_v` 不参加五级投票。v3 的 O1/O2/O3 双轴规则原样复用，site-confirmed 与 local-max 两轴不混写。物化结果为 4,112 条测点记录、514 条滑坡体记录和 8 行阈值表，加速度 green/blue/yellow/orange/red=`4012/98/2/0/0`；滑坡体整体色仍为 `8/48/31/9/18`，400 日保留局部候选而不发布整体色。所有 v4 核心/图件 manifest 均记录输出哈希、行数、实现来源、v1/v2 双协议哈希、`formal_warning_output=false` 和 `vajont_used=false`。
 
-v4 仍属于 `operational_draft_not_formal`。NGBoost 未在本任务完成，不能把历史当日状态识别或 SHAP 结果写成 v4 监督验证；Vajont 仍未读取或启动。
+v4 仍属于 `operational_draft_not_formal`，并作为透明规则基线保留。当前 H=7 五级 NGBoost 虽已完成，但其标签是自动未来变形状态代理且结果未超过 lag-7 persistence，因此不能把它、历史当日状态识别或任何 SHAP 结果写成 v4 的监督验证；Vajont 仍未读取或启动。
 
 ## 7. 历史切线角与旧融合结果
 
@@ -416,7 +432,7 @@ v4 仍属于 `operational_draft_not_formal`。NGBoost 未在本任务完成，�
 | 3 日 | 1131 | 9 | 1122 | 3 |
 | 7 日 | 1131 | 21 | 1110 | 3 |
 
-正日期数量随预测窗口扩大，但互不相连的标签事件始终只有 3 个；这不证明它们在统计或地质上相互独立。当前数据可以验证标签与评价代码，不能支持稳定的嵌套时间调参、可靠事件级置信区间或期刊级未来预警性能结论。因此本轮没有继续调节 NGBoost，也没有生成容易被误解的未来 onset 性能分数。
+正日期数量随预测窗口扩大，但互不相连的标签事件始终只有 3 个；这不证明它们在统计或地质上相互独立。本节的旧 event-onset 标签回答“未来窗口内是否进入事件”，与第 3 节连续五级 H=7 未来变形状态代理不是同一目标。当前数据可以验证两类标签与评价代码，不能支持稳定的嵌套时间调参、可靠事件级置信区间或期刊级未来预警性能结论；当前五级 NGBoost 的负结果也不能改写为 event-onset 性能。
 
 ## 9. 当前可以与不可以得出的结论
 
@@ -432,10 +448,12 @@ v4 仍属于 `operational_draft_not_formal`。NGBoost 未在本任务完成，�
 6. 预测误差、增量相关和区间覆盖均存在明显测点异质性；总体汇总不能替代全部 8 个测点结果。
 7. 与历史 6 通道相比，当前 7 通道部分平均指标较低，但逐折、逐种子方向不一致且总体正 skill 数不变；该结果只支持版本表现对照，不支持高程因果归因。
 8. 历史 6 通道早停和容量诊断说明优化设定会影响失败幅度，但这些结果不是当前 7 通道早停或容量证据。
-9. NGBoost 能识别探索性留出段的 green/yellow 当日状态，但没有超过昨日状态持续性规则；orange/red 在该留出段不可评价。
-10. 五折 SHAP 与删组消融中，位移运动学组在两个任务均显示一致模型依赖；分类组级依赖随时期变化，不能升级为物理因果主控结论。
-11. 当前 v4 已形成区间、速度/切线角运动学、加速度和 raw `ΔV` 审计字段的逐点输出，以及整体确认与局部最高候选分离的多测点空间结果；它仍是 `operational_draft_not_formal`。v3 核心数值 CSV 未改，仅刷新共享实现哈希。
-12. 未来 1/3/7 日 onset 标签与事件清单已经实现，但只有 3 个可预测标签事件，只足以验证代码和样本充分性门禁。
+9. fold-1-only ECDF 已自动生成 H=7 五级 site 未来变形状态，且通过固定标签门禁；它证明机器标签流程可运行，不证明灾害真值有效。
+10. 固定五级 NGBoost、lag-memory 和 residual 三种方案均未超过 lag-7 persistence；memory 与 v1 硬指标相同，residual 虽较 v1 硬分类略好但五项预注册门禁全部失败。
+11. 当前分类器已输出 861 个 site 日期和 6,888 条八测点诊断信号；当前分类 SHAP 说明切线角和速度在指定样本中有较强模型依赖，但不能升级为物理因果主控结论。
+12. 历史同日四级/二分类及回归 SHAP 仍可追溯，但不是当前 H=7 五级任务，也不能替代当前负结果。
+13. 当前 v4 已形成区间、速度/切线角运动学、加速度和 raw `ΔV` 审计字段的逐点输出，以及整体确认与局部最高候选分离的多测点空间结果；它仍是 `operational_draft_not_formal` 的透明规则基线。v3 核心数值 CSV 未改，仅刷新共享实现哈希。
+14. 未来 1/3/7 日 onset 标签与事件清单已经实现，但只有 3 个可预测标签事件，只足以验证代码和样本充分性门禁；它与连续五级 H=7 状态代理不是同一目标。
 
 ### 不可以得出
 
@@ -453,16 +471,15 @@ v4 仍属于 `operational_draft_not_formal`。NGBoost 未在本任务完成，�
 12. 不能把逐日速度、`ΔV`、加速度和切线角直接解释为原始地质运动，也不能把当前区间解释为原始传感器观测不确定性。
 13. 不能声称当前模型已具备跨滑坡部署或跨案例泛化能力；Vajont 尚未获得启动授权，也未产生任何数据适配、模型运行或实验结果。
 14. 不能把现有 MJ/ATU 坐标空间关系写成已验证的 GPS/FJ 映射。
+15. 不能把 fold-1-only ECDF 自动标签称为独立灾害、失稳或现场预警真值，也不能把标签门禁通过写成模型有效。
+16. 不能声称当前五级 NGBoost、lag-memory 或 residual 改善了预警分类；三者均未超过严格 lag-7 persistence，且概率结果没有通过预注册门禁。
+17. 不能把当前五级分类 SHAP 写成 ConvLSTM 内部解释、致灾因果关系或已经确定的主控因素。
+18. 不能把已暴露的 fold 2 开发评价写成独立确认性检验，也不能据此继续选择 lag、residual、概率校准或模型参数。
 
 ## 10. 下一步验证
 
-1. 冻结并归档当前 7 通道 fixed-120 结果，以本节三折 × 五种子结果作为 ConvLSTM 主报告，不再用已查看外层测试折选择高程尺度、网络、轮数、种子或区间参数。
-2. 保持方法、结果和限制文档与版本化产物同步；历史 6 通道细节继续保留为可追溯版本对照，但不得混入当前主表或结论。
-3. 当前不启动 7 通道早停或容量敏感性。若后续确有方法学需要，应先冻结只使用各折训练内部时序切分的选择协议，单独版本化产物，并保持 fixed-120 外层结果不变。
-4. 决定最终论文是否保留藕塘作为原型案例；若更换主数据集，先审计原始来源、时间生成链、坐标、外部驱动和事件标签，再冻结新案例协议。
-5. 只有在可追溯数据上，才先切分原始观测、按折生成派生量，并重跑 ConvLSTM、稳定段、`V0`、区间校准、速度、`ΔV`、改进切线角和多测点融合。
-6. 若需要确认性预警评价，应补充更多互不相连且有现场依据的加速事件，再评价事件召回率、首次命中提前量、误报持续时间和对应不确定性。
-7. 当前物化序列上停止扩大 ConvLSTM 超参数搜索和机理性神经消融；不根据历史 6 通道早停/容量结果或当前 6/7 通道差异选择新模型。
-8. 结合可追溯累计位移与宏观变形资料复核各测点稳定阶段、`V0`、`ΔV≈0` 容差和切线角比较器；在这些量冻结前，v3 保持非正式运行草案。
-9. 在血缘清楚的新时段或跨滑坡数据上确认 SHAP 组级稳定性，不用当前五折继续选择特征或推断物理因果。
-10. Vajont 保持用户授权门禁；只有用户另行明确允许后，才开展数据适配、质量审计或实验，且不得用其结果反向调整藕塘方案。
+1. 只做当前结果收口：同步方法、结果、图件链接和限制表述，保持 ConvLSTM、自动标签、三个 NGBoost 方案及 v4 产物的版本化可追溯性。
+2. 停止在当前已暴露数据上继续追加 lag、residual、概率校准、超参数、SHAP 变体或额外边界测试；负结果原样进入论文结果与讨论。
+3. 历史 6 通道、旧四级/二分类和旧 SHAP 继续作为明确标注的版本对照，不混入当前 H=7 五级主表或改善结论。
+4. 后续科研输入只来自新的可追溯独立时段、跨滑坡数据或现场事件真值；新数据到位后由机器按版本化协议自动接入，不设置人工逐时标签、人工日期选择、人工冻结或批准步骤。
+5. 在独立证据到位前，藕塘只作为探索性原型案例，v4 只作为透明规则基线，所有输出继续保持 `formal_warning_output=false`。

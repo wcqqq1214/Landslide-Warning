@@ -35,6 +35,17 @@
 - 旧 classifier 的 fold 3 指标仅留作历史产物，不重跑或级联改写；后续 fold 3 统一为
   prediction-only。本审计不设置人工批准或冻结，也不修改标签或模型。
 
+## 2026-08-31 当前结果报告收口
+
+- 已同步 `ootang_stage_results_package.md` 与 `results_report.md`：当前主任务统一为 H=7 ECDF
+  自动五级标签、32 维四指标 site NGBoost、八点/全时刻输出和分类 SHAP；旧四级 V0 分类及旧
+  回归/二分类 SHAP 明确降为历史对照。
+- 报告保留固定分类器、lag-memory 与 residual 均未超过 lag-7 persistence 的负结论，并停止
+  NGBoost patching；没有重跑或修改模型、标签、ConvLSTM、v4、产物或评价切分，也没有新增
+  fold 3 评价。
+- 下一步只基于现有版本化产物整理论文用图表索引与方法/结果叙述，不增加模型变体、调参或额外
+  边界测试。
+
 ## 2026-08-31 residual NGBoost challenger 预注册（拟合前）
 
 - 下一步只运行一个结构性 challenger：在 fold 1 的 273 个 lag 已成熟日，用原八点四指标
@@ -62,8 +73,8 @@
 - lag-7 特征的 NGBoost 内置重要性为 `0`、排名 33；它只能解释当前模型依赖，不能解释为
   因果主控因素。此次增量未修改 ConvLSTM 或导师指定的整体方法框架，也不构成现场验证或
   正式预警证据。
-- 至此停止继续给直接五分类器追加 lag 特征。下一步仅进行结构性 residual/transition 方法的
-  拟合前审查；其机器协议已记录在上节，不设置人工冻结或批准步骤。该方法尚未拟合或运行。
+- 至此停止继续给直接五分类器追加 lag 特征；随后仅运行上方已记录的结构性
+  residual/transition 方法，该方法同样被拒绝，且没有引入人工冻结或批准步骤。
 
 ## 2026-08-30 科研主线恢复（当前优先级）
 

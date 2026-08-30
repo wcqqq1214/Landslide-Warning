@@ -25,10 +25,9 @@ lag-7 feature exactly `0`, rank 33; this is model dependency evidence, not causa
 fold-3 evaluation, field validation, or formal warning claim is available. ConvLSTM and the
 advisor-specified overall framework were not modified.
 
-Stop direct five-classification lag-feature patching here. The next research action is the single
-structural residual/transition method whose causal contract and machine pre-registration are
-recorded below. No human freeze or approval step is introduced, and that method has not yet been
-fitted or run.
+Direct five-classification lag-feature patching stopped here. The single structural
+residual/transition method recorded below was subsequently run and rejected; it introduced no
+human freeze or approval step.
 
 ### Pre-fit protocol: lag-conditioned residual NGBoost
 
@@ -92,6 +91,17 @@ and multi-station synthesis are substantially implemented. The classifier failed
 persistence and remains rejected exploratory, not effective warning evidence. Historical v1
 fold-3 metrics remain only in the old artifact; do not rerun or cascade-rewrite them. New work
 treats fold 3 as prediction-only.
+
+### Current results package synchronized
+
+`docs/ootang_stage_results_package.md` and `docs/results_report.md` now describe the H=7 ECDF
+labels, fixed 32-input site classifier, all-time site/station outputs, classification SHAP, and
+the rejected memory/residual challengers. Historical four-class and regression-SHAP material is
+explicitly marked as historical. This was documentation-only: no model, label, artifact,
+ConvLSTM result, v4 result, or evaluation split was changed. The next task is manuscript-facing
+figure/table and method/result consolidation from existing versioned artifacts only; do not add
+another NGBoost variant or use fold 3 for model evaluation.
+
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
