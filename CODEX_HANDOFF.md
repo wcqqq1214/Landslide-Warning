@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `dfdce07 feat: prove bounded source closure`
+**Committed baseline before this simplification:** `667aa03 feat: automate epoch settlement polling`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -20,8 +20,8 @@ source-derived effective outcome consumption v1、dependent outcome dispatch v1 
 outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
 source-parent terminal aggregate v1 与 source-derived retained-base terminal coverage v1 已提交；
 source-derived current-effective workset terminal coverage v1 与 source-derived bounded terminal
-closure v1 亦已提交；当前工作树新增 epoch scope audit 与 machine settlement cycle v1，把
-workset recovery 之后的 16 个既有 coordinator 接入一个 bounded scheduler poll。它仍不是完整
+closure v1 亦已提交；machine settlement cycle v1 已把 workset recovery 之后的 16 个既有
+coordinator 接入一个 bounded scheduler poll，本增量已将该 adapter 精简到最小真实边界。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
@@ -43,30 +43,35 @@ append-only/CAS, lock, network/TSA and crash-forward boundaries. Recursive recon
 same immutable cut and one proof/event/status namespace per intermediate Boolean are now treated as
 local over-defensive engineering rather than a pattern to extend.
 
-The new `ootang_epoch_settlement_cycle.py` and
-`config/ootang_epoch_settlement_cycle.v1.json` provide one explicit scheduler-facing CLI and one
+The lean `ootang_epoch_settlement_cycle.py` provides one explicit scheduler-facing CLI and one
 `main.py` stage. A scheduler job runs the existing workset-recovery stage once, then the settlement
-poll calls each of the following 16 public coordinators exactly once in dependency order through
-bounded terminal closure. Upstream modules continue to own
-all validation and durable writes; the cycle only writes a replaceable `cache_authority=false`
-diagnostic status. `passes_per_poll=1` prevents repeated recovery network attempts inside one
-invocation. Repeated progress is machine-scheduled and does not require human freeze, approval,
-cleanup, force, or backdating.
+poll calls 16 public coordinators exactly once in dependency order through bounded terminal closure.
+Upstream modules continue to own all validation and durable writes; the cycle only atomically
+replaces a `cache_authority=false` diagnostic status. Repeated progress is machine-scheduled and
+does not require human freeze, approval, cleanup, force, or backdating.
 
-This adapter creates no proof/event authority and keeps `old_epoch_drained`, lifecycle, active
-switch, E2 eligibility, and formal-warning claims false. Focused cycle behavior, a real 16-symbol
-registry-load check, and the main-stage integration suite passed `43/43`. Ruff, Python compilation, the 16-stage production
-registry load, dry-run routing, and diff checks passed. No training, full scientific pipeline,
-historical exhaustive fault matrix, real network, or live runtime mutation ran; the unchanged
-durable producer chain was not redundantly retested.
+The simplification audit found that every field in the settlement profile was fixed again by code,
+while result/progress digests and eight duplicated capability claims had no repository consumer.
+The profile, loader, digest chain, stringly dynamic registry, three exception layers, and unused
+result fields were deleted. Direct static imports now expose the 16 consumers to tooling. Duplicate
+Python entries were removed from the main-stage inputs because the pipeline already hashes all
+`code/**/*.py`; the transitive recovery profile and 16 coordinator profiles remain explicit inputs.
+Atomic `tempfile + os.replace` publication remains the minimal real cross-process boundary, without
+adding a lock, fsync, replay log, or symlink policy.
 
-Implementation, profile, focused-test, engineering-document, `main.py`, and ConvLSTM model
+The implementation fell from 414 to 230 lines, its focused test from 107 to 89, `main.py` lost 22
+duplicate contract lines, and the 21-line profile was deleted: 245 lines removed across those four
+files, or 244 net across code/config/tests/main after the one-line integration-test adjustment. Two
+cycle behavior tests plus the main integration suite pass `42/42` in 0.164 seconds.
+Ruff, Python compilation, the 16-callable static import check, dry-run, residue search, and diff
+checks pass. The focused independent review found no P0/P1/P2 regression. No training, full
+scientific pipeline, historical fault matrix, real network, or live runtime mutation ran.
+Implementation/test/engineering-document, `main.py`, and the unchanged ConvLSTM model artifact
 SHA-256 values are
-`3e997f7bf7859b7f8a2091f4bc6efd92b43c07ab059601d4e9903eae5adb256a`,
-`787b72db3e4cf5be8ccc8b9aea2d5aba83aeb715e9b86f5c6e9abcc577c4e4db`,
-`3523c31746f2140251c7eba2fb6728d5e38e10aff7a8e4a9f3e627ad72f217a0`,
-`9d0a6ef0c6acebbf3e40c428c52be4b432b3f2e50f8a2363f733ec46ec3d42f5`,
-`c35bf2a18e7f1e518daf7f5f8f5ec919c701fb53d9db7719be6fbf0002ef7536`, and
+`ce720a287f64c1a4de75ed2a11c64bca40ed0d82d6737874e7a887aedac647ec`,
+`44e8bda5151e71643a0cf2dc57f3e4de67b054ec695dccc0f87c8fef716e7460`,
+`5ef9b986a16dac8d8dfbe7a533eaefea98f1f4e7fc69db8e801cd87b73d0b46b`,
+`4d38467077ae54e2bbeae8e04c491c1cbfc89762712eb49ca43f7bb6adcbf084`, and
 `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
 Detailed findings and the new test policy are in
 `docs/ootang_epoch_settlement_cycle_engineering.md`.

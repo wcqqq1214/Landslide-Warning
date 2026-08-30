@@ -1196,20 +1196,21 @@ class PipelineTests(unittest.TestCase):
         )
         self.assertEqual(
             stage.arguments,
-            ("--config", "config/ootang_epoch_settlement_cycle.v1.json"),
+            (),
         )
         self.assertEqual(
             stage.outputs,
             ("runtime/ootang_epoch_registry_v1/settlement_cycle_v1/status.json",),
         )
         self.assertIn(
-            "code/monitoring/ootang_epoch_source_derived_bounded_terminal_closure.py",
+            "config/ootang_epoch_workset_recovery.v1.json",
             stage.inputs,
         )
         self.assertIn(
             "config/ootang_epoch_source_derived_bounded_terminal_closure.v1.json",
             stage.inputs,
         )
+        self.assertTrue(all(path.startswith("config/") for path in stage.inputs))
 
         ordered = pipeline.select_stages(
             [

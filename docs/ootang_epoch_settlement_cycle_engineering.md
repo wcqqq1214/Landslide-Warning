@@ -1,4 +1,4 @@
-# Ootang epoch scope audit and settlement cycle v1
+# Ootang epoch scope audit and lean settlement cycle v1
 
 ## Audit verdict
 
@@ -65,42 +65,72 @@ selection, freeze, approval, cleanup, force, or backdating is required.
 
 The cycle does not duplicate upstream profile, implementation, proof, event,
 or runtime validation. Each existing coordinator remains the owner of its own
-contract. The cycle merely records stable result digests in a replaceable
-diagnostic status file. It creates no new proof or event authority, and its
-profile fixes:
+contract. The cycle invokes a static table of the 16 public callables once and
+atomically replaces a small status cache containing stage statuses and the
+final bounded-closure result. The cache is explicitly non-authoritative and
+creates no proof or event.
 
-- `passes_per_poll=1`;
-- `cache_authority=false`;
-- `default_pipeline_member=false`;
-- `old_epoch_drained=false`;
-- `lifecycle_authority=false`;
-- `active_switch_performed=false`;
-- `e2_live_evidence_eligible=false`;
-- `formal_warning_output=false`.
+There is deliberately no settlement-cycle profile. The removed profile fixed
+every value to a code constant, including the path and `passes_per_poll=1`, so
+it provided no runtime choice. There are also no result/progress digests: no
+consumer compared them or used them for continuation, and they hashed returned
+dataclass summaries rather than the referenced artifact bytes. Drain,
+lifecycle, active-switch, E2, and formal-warning authority remain absent by
+construction and are documented at the owning stage boundary instead of being
+copied into eight status fields.
 
 Keeping the stage explicit-only is intentional: the default scientific
 pipeline is a reproducible offline model run, while this stage mutates the
 separate live epoch runtime. Explicit-only does not imply manual daily
 operation; it is a scheduler-facing machine endpoint.
 
+## Simplification receipt
+
+This was a focused change-mode simplification of the settlement adapter only.
+The reachability audit found no repository consumer for its profile, profile
+hash, per-result hash, progress token, or duplicated capability claims. The
+following ceremony was removed:
+
+- the 21-line constant-only profile, its loader, exact-key validation, and
+  `--config` interface;
+- canonical reconstruction and hashing of trusted same-process return values;
+- a stringly `importlib/getattr` registry and its dedicated resolver test;
+- three exception layers and result fields with no consumer;
+- duplicate Python inputs in `main.py`, because the pipeline's global
+  `source_fingerprint()` already hashes every `code/**/*.py` file.
+
+The `main.py` stage retains 17 configuration inputs: the transitive workset
+recovery profile and the 16 directly invoked coordinator profiles. The real
+filesystem boundary also remains: status publication still uses a temporary
+file plus `os.replace`, but intentionally adds no lock, `fsync`, replay log, or
+symlink policy for this replaceable cache.
+
+The implementation fell from 414 to 230 lines, the focused test from 107 to 89
+lines, `main.py` lost 22 duplicate contract lines, and the 21-line profile was
+deleted. Those four files remove 245 lines; including the one-line main
+integration-test adjustment, code/config/tests/main remove 244 lines net. The
+known compatibility risk is limited to an unknown out-of-repository caller of
+the removed `--config` option or rich status fields; repository search found
+no such consumer, and README usage goes through the argument-free main stage.
+
 ## Verification policy applied
 
-The new orchestration behavior has three focused tests:
+The orchestration behavior has two focused tests:
 
 - one ordered poll reaches an already supported bounded closure and preserves
-  all drain/lifecycle false claims;
+  the non-authoritative cache boundary;
 - a nonterminal poll calls every coordinator once and yields cleanly to the
   next scheduler invocation.
-- the production registry resolves the exact 16 public module/function pairs
-  without running them.
 
 `tests/test_main.py` adds one integration contract for stage ordering,
-explicit-only scope, inputs, output, and CLI arguments. This is the complete
-test budget for this non-authoritative adapter. The main/cycle set passes in
-well under one second; Ruff, Python compilation, production stage-registry
-loading, dry-run routing, and diff checks are also used. No model training,
-full scientific pipeline, historical exhaustive fault matrix, real network,
-or live epoch mutation is run for this increment.
+explicit-only scope, inputs, output, and its argument-free invocation. Importing
+the cycle resolves all 16 static public callables, so a separate dynamic
+registry test would duplicate module-import coverage. This is the complete test
+budget for this non-authoritative adapter. The main/cycle set passes in well
+under one second; Ruff, Python compilation, dry-run routing, residue search,
+and diff checks are also used. No model training, full scientific pipeline,
+historical exhaustive fault matrix, real network, or live epoch mutation is
+run for this increment.
 
 ## Next boundary
 

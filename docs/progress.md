@@ -17,30 +17,33 @@
   累计约 246 MB；同一 recovery config/implementation 分别被读取 359/243 次。外部文件、锁、
   append-only/CAS、网络/TSA 与 crash-forward 边界继续严格防御；同一 poll 内对 immutable typed
   cut 的递归重复重验和“一个布尔值一个 proof/event/status”从本增量起停止扩张。
-- 新增 `ootang_epoch_settlement_cycle.py`、小型 v1 profile 与 explicit-only
-  `ootang-epoch-settlement-cycle` 主入口。一次 scheduler job 先执行既有 workset recovery 一次，
-  再由 settlement poll 按拓扑顺序各调用其后 16 个既有公开 coordinator 一次，推进到 bounded
-  terminal closure；不复制任何上游
-  profile/proof/event 校验，只写 replaceable `cache_authority=false` status。固定
-  `passes_per_poll=1`，避免 recovery 的 bounded network transport 被内部循环放大；后续继续由机器
-  scheduler 重复 poll，不需要人工冻结、批准、清理、force 或 backdate。
-- 本 adapter 不新增 durable authority，明确保持 `old_epoch_drained=false`、
-  `lifecycle_authority=false`、`active_switch_performed=false`、`e2_live_evidence_eligible=false` 与
-  `formal_warning_output=false`。它让 bounded closure 首次拥有生产 caller，但不能把 closure 偷换为
-  drained/active。
-- 测试按审计后的风险预算收敛：cycle 两个核心行为测试、一个真实 16-symbol registry-load 测试，
-  加 `main.py` 一个 stage integration contract；cycle/main 合计 `43/43` 通过。Ruff
-  format/E7/E9/F、Python compile、16-stage
-  production registry load、main dry-run 与 diff checks 通过；没有运行训练、全科研管线、历史全量
-  fault matrix、真实网络或 live epoch mutation，也没有再次重复 18-test 邻接链，因为本增量未修改
-  任何 durable producer bytes。
-- implementation/profile/test、工程审计文档、`main.py` 与 ConvLSTM model SHA-256 分别为
-  `3e997f7bf7859b7f8a2091f4bc6efd92b43c07ab059601d4e9903eae5adb256a`、
-  `787b72db3e4cf5be8ccc8b9aea2d5aba83aeb715e9b86f5c6e9abcc577c4e4db`、
-  `3523c31746f2140251c7eba2fb6728d5e38e10aff7a8e4a9f3e627ad72f217a0`、
-  `9d0a6ef0c6acebbf3e40c428c52be4b432b3f2e50f8a2363f733ec46ec3d42f5`、
-  `c35bf2a18e7f1e518daf7f5f8f5ec919c701fb53d9db7719be6fbf0002ef7536` 与
-  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
+- `ootang_epoch_settlement_cycle.py` 与 explicit-only
+  `ootang-epoch-settlement-cycle` 主入口让一次 scheduler job 先执行既有 workset recovery 一次，
+  再按静态拓扑表各调用其后 16 个既有公开 coordinator 一次，推进到 bounded terminal closure。
+  adapter 不复制上游 profile/proof/event 校验，只用 `tempfile + os.replace` 发布 replaceable
+  `cache_authority=false` status；后续由机器 scheduler 重复 poll，不需要人工冻结、批准、清理、
+  force 或 backdate。
+- 针对用户提出的过度工程化复核，删除了零可配置性的 21 行 settlement profile、约 50 行
+  loader/精确字段校验、无人消费且不绑定 artifact bytes 的 result/progress SHA 链、8 项 profile
+  capability 声明的重复传播、字符串动态 registry、三层异常和无 consumer 的 Result 字段；status
+  仅保留一个 `cache_authority=false` 边界。`main.py` 删除
+  已被全局 `source_fingerprint()` 覆盖的 18 个 Python input，仅保留 transitive recovery profile
+  与 16 个 coordinator profile。实现从 414 减至 230 行，focused test 从 107 减至 89 行，
+  `main.py` 减少 22 行并删除 21 行配置，上述四文件净删 245 行；计入 main integration test 的
+  1 行合同调整后，code/config/tests/main 合计净删 244 行。ordered single-pass、原子 cache 和上游
+  durable authority 均保留。
+- 本 adapter 仍不产生 drained/lifecycle/active/E2/formal authority；这些边界由 owning stage 与文档
+  表达，不再复制成无人读取的状态字段。测试预算收敛为 cycle 两个行为测试和 `main.py` 一个 stage
+  contract；cycle/main 合计 `42/42` 在 0.164 秒通过。Ruff format/check、Python compile、
+  static callable import、main dry-run、residue 与 diff checks 均通过；没有运行训练、全科研管线、
+  历史 fault matrix、真实网络或 live epoch mutation。
+- 当前 implementation/test、工程审计文档、`main.py` 与未改动 ConvLSTM model artifact SHA-256
+  分别为 `ce720a287f64c1a4de75ed2a11c64bca40ed0d82d6737874e7a887aedac647ec`、
+  `44e8bda5151e71643a0cf2dc57f3e4de67b054ec695dccc0f87c8fef716e7460`、
+  `5ef9b986a16dac8d8dfbe7a533eaefea98f1f4e7fc69db8e801cd87b73d0b46b`、
+  `4d38467077ae54e2bbeae8e04c491c1cbfc89762712eb49ca43f7bb6adcbf084` 与
+  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`；已删除的 settlement
+  profile 不再有 SHA。
 - 下一步直接做唯一的 drain-completion decision boundary：消费现有 bounded closure、historical
   drain-start、canonical route fence 与 fresh lock-protected no-post-fence/unresolved-runtime capture；
   只在最终 drained decision 持久化，不再插入 all-settled/all-successor 等中间 singleton authority。
