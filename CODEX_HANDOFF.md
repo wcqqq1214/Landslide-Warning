@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `7133c14 fix: verify bounded drain ledger prefix`
+**Committed baseline before this increment:** `3cc4a90 feat: add atomic epoch transition`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -27,6 +27,43 @@ fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2
 或 formal warning。本增量进一步实现一个 scoped official-scheduler lifecycle event，
 原子表达 `SEALED(old)+ACTIVE(new)`，并以无参数 cycle-v4 adapter 执行事件授权的 frozen
 cycle-v3；其 claims 与 trusted/anti-rollback/continuous-rotation 边界见下节。
+
+## 2026-08-30 real machine readiness poll and first-gate short-circuit
+
+The first real production-root readiness poll was executed once with the exact command
+
+```bash
+uv run python main.py --stage ootang-epoch-registry \
+  --manifest runtime/ootang_epoch_registry_v1/machine_readiness_poll_v1/run.json
+```
+
+It completed in 0.088 seconds and refreshed R1 to
+`registry_status=waiting_for_candidate_feed`, with reason
+`candidate finalized feed is absent`, zero feed observations, zero registry events, no candidate,
+and no slot. The status and run-manifest SHA-256 values are
+`c3c65bb1cc453b9d098bea7bf118c0e4aa0f8168f71910bdfd310e812f681318` and
+`3191e5212d7b9672cea2c8302fa3489433e44e350462f0159a0f9f0c67d4e5c1`.
+These runtime files are ignored diagnostic evidence, not committed authority.
+
+The poll intentionally stopped at this first unmet gate. It did not run R2a, recovery,
+settlement, transition, cycle-v4, training, or network work, and did not create downstream waiting
+caches. The earlier proposed downstream run was therefore too late in the dependency graph for
+this cold runtime. A status file is used only as the fresh result of this successful call; each
+downstream coordinator must still replay its own immutable authority before acting.
+
+No generic lifecycle controller was added. R2b-v1 clean-start and V2 non-clean are mutually
+exclusive siblings, admission-cut changes the deploy/runner lock-path state, and R2a current
+re-attestation includes an expensive five-seed smoke. Blindly replaying `main.py` stages would both
+waste work and mis-handle those branches because normal `waiting_*` results exit zero. Also keep
+current ACTIVE scheduling separate from next-candidate rotation: once a transition exists,
+cycle-v4 must continue from that immutable ACTIVE authority even if the next R1 feed is absent.
+
+The next legitimate machine input is the authentic future
+`runtime/ootang_prequential_live_v1/incoming/daily_finalized_feed.json`. Do not synthesize it from
+the historical Ootang table, backdate it, or create it by hand. Until that producer supplies a
+valid finalized feed, repeated R1 polls may only report the same wait. ConvLSTM, operational-v4,
+all frozen scientific contracts, and tracked code remain unchanged. The 97-path protected
+aggregate remains `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`.
 
 ## 2026-08-30 atomic `SEALED(old) + ACTIVE(new)` and authorized cycle v4
 
@@ -78,10 +115,11 @@ SHA-256 values are
 `45c2e3f8f12573903102d65dc9c6ba095073b497a3d743592e07c2128d44b4a4`.
 Detailed semantics are in `docs/ootang_epoch_active_transition_engineering.md`.
 
-The immediate next operational step is one real but isolated machine-scheduler run through
-`settlement -> transition -> cycle-v4/genesis`, followed separately by external trusted-time/
-anti-rollback qualification and a multi-generation continuous rotation controller. None should be
-represented by broadening this scoped event or by a manual waiver.
+This historical next-step assumption was corrected by the real readiness poll above. The current
+runtime has no R1 candidate or downstream authority, so `settlement -> transition -> cycle-v4`
+would only create cascading waiting caches. Resume from R1 when an authentic finalized feed is
+available; keep external trusted-time/anti-rollback qualification and any multi-generation
+controller separate, and do not replace either with a manual waiver.
 
 ## 2026-08-30 V2 live-ledger prefix attestation correction
 

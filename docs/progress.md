@@ -5,6 +5,31 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 真实机器 readiness poll 与首门短路（本增量）
+
+- 在 production runtime 上只执行一次
+  `uv run python main.py --stage ootang-epoch-registry --manifest runtime/ootang_epoch_registry_v1/machine_readiness_poll_v1/run.json`。
+  总耗时 0.088 秒，R1 registry 完整性检查与空链重放后的新鲜诊断为
+  `registry_status=waiting_for_candidate_feed`、`reason=candidate finalized feed is absent`；
+  feed observation/event/candidate/slot 数分别为 `0/0/0/0`。
+- 本轮在第一个真实未满足 gate 立即停止，没有运行 R2a、recovery、settlement、transition、
+  cycle-v4、训练或网络，也没有生成下游级联 waiting cache。status 只作为“本次 exit 0 调用后的
+  短路提示”，不替代下游各自对 immutable event/receipt 的 authority replay。
+- R1 status 与 pipeline manifest SHA-256 分别为
+  `c3c65bb1cc453b9d098bea7bf118c0e4aa0f8168f71910bdfd310e812f681318` 和
+  `3191e5212d7b9672cea2c8302fa3489433e44e350462f0159a0f9f0c67d4e5c1`；二者位于 ignored
+  runtime，仅作本机运行证据，不提交为科研 authority。
+- 审计否决了立即增加“线性全生命周期 wrapper”：R2b-v1 clean-start 与 V2 non-clean 是互斥
+  sibling，admission-cut 会改变 deploy/runner lock path，R2a repoll 还会重复五种子 smoke；而
+  `main.py` 把正常 `waiting_*` 的 exit 0 当阶段完成，盲目串联既浪费时间又会误判语义。
+  已有 ACTIVE epoch 的 cycle-v4 调度与下一候选轮换也必须分责，不能因下一 R1 feed 缺失阻断
+  当前 ACTIVE scheduler。
+- 下一真实机器输入只能是未来、合法、finalized 的
+  `runtime/ootang_prequential_live_v1/incoming/daily_finalized_feed.json`。不得从历史藕塘表伪造、
+  backdate 或人工补文件；feed 未到时，机器重复 poll 只能保持等待。ConvLSTM、operational-v4、
+  冻结 splits/metrics/thresholds、参数、产物和科研结论均未改动；97-path aggregate 仍为
+  `6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`。
+
 ## 2026-08-30 atomic `SEALED(old) + ACTIVE(new)` 与 authorized cycle v4（本增量）
 
 - 新增 profile-free `ootang_epoch_active_transition.py`。唯一 create-only immutable event 在同一
@@ -44,9 +69,10 @@
   `83af0111181c4635056dfad10a8346eaebe5cd893071544b0face8a896458001` 与
   `45c2e3f8f12573903102d65dc9c6ba095073b497a3d743592e07c2128d44b4a4`。详细边界见
   `docs/ootang_epoch_active_transition_engineering.md`。
-- 下一步优先做真实但隔离的机器 scheduler 运行，验证
-  `settlement -> transition -> cycle-v4/genesis` 的可观测闭环；之后分别实现外部 trusted-time/
-  anti-rollback 资格与多代 continuous rotation controller，不用人工 waiver 扩大当前 claim。
+- 该条历史 next-step 已由上方真实 readiness poll 修正：当前 runtime 连 R1 candidate 都不存在，
+  直接执行 `settlement -> transition -> cycle-v4` 只会产生级联等待。应在合法 finalized feed 到达后
+  从 R1 自动恢复；external trusted-time/anti-rollback 与多代 controller 仍保持独立，不用人工
+  waiver 扩大当前 claim。
 
 ## 2026-08-30 V2 live-ledger prefix attestation correction（本增量）
 

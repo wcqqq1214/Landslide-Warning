@@ -99,7 +99,15 @@ Transition、cycle-v4、对应 focused tests、`main.py` 与其 test SHA-256 分
 `83af0111181c4635056dfad10a8346eaebe5cd893071544b0face8a896458001` 与
 `45c2e3f8f12573903102d65dc9c6ba095073b497a3d743592e07c2128d44b4a4`。
 
-下一步应先让机器 scheduler 在真实但隔离的 runtime 上完成一次
-`settlement -> transition -> cycle-v4/genesis` 可观测运行，并核对 scoped status 与 ledger genesis；
-随后再分别处理外部 trusted-time/anti-rollback 资格和多代 continuous rotation controller。两项都
-不能通过扩大本事件 claim 或人工 waiver 代替。
+2026-08-30 的首次真实 production-root readiness poll 已从最上游 R1 执行，并在 0.088 秒内得到
+`waiting_for_candidate_feed`：当前没有 feed observation、registry event、candidate 或 slot。
+因此没有继续运行 R2a 或 `settlement -> transition -> cycle-v4`，也没有制造级联 waiting cache。
+该次 status 与 run manifest SHA-256 分别为
+`c3c65bb1cc453b9d098bea7bf118c0e4aa0f8168f71910bdfd310e812f681318` 和
+`3191e5212d7b9672cea2c8302fa3489433e44e350462f0159a0f9f0c67d4e5c1`。
+
+R1 分支下一次有效推进需等待机器 producer 提供合法的未来 finalized feed。不得使用历史表伪造
+future feed、backdate 或人工补文件。若已有 ACTIVE transition，cycle-v4 必须独立继续调度当前
+epoch，不能被下一候选缺 feed 阻断。其他独立工程工作也无需停摆。全生命周期 controller 还必须
+先正确区分互斥的 R2b-v1 clean-start 与 V2 non-clean 分支；外部 trusted-time/anti-rollback 资格
+也仍是独立事项，不能通过扩大本事件 claim 或人工 waiver 代替。
