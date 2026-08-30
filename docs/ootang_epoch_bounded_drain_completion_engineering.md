@@ -29,8 +29,10 @@ head, WAL, or capability layer. Under the existing surviving lock order
 3. thereby replays the V2 first blocker and admission-cut prepare, intent,
    attempts, physical `both_cut` sentinels and event through the existing
    manifest loader;
-4. reads the machine-current old live tip and proves that it is an append-only
-   successor of the frozen admission-cut tip;
+4. reads the machine-current old live tip and requires the fresh inventory's
+   independently replayed ordered live-entry hashes to contain the frozen
+   admission-cut terminal at its exact historical index, proving a real
+   append-only prefix rather than merely comparing counts and current heads;
 5. performs one fresh six-family read-only inventory at that current tip and
    requires zero actionable old-runtime items; and
 6. publishes one immutable singleton decision event while the four locks are
@@ -69,19 +71,19 @@ and scientific conclusions are untouched.
 
 The focused budget is intentionally small: successful publication plus
 byte-idempotent replay, unresolved fresh inventory waiting without authority,
+rejection of a longer live-ledger fork that does not contain the frozen tip,
 and refusal if actionable work reappears after publication. Existing upstream
 tests own V1/V2 mutual exclusion, admission-cut, manifest, recovery, closure,
-crash-window, and tamper matrices; they are not copied here. The
-settlement-cycle tests verify only the new 17th call and the two aggregate
-status flags.
+crash-window, and tamper matrices; they are not copied here. The settlement-
+cycle tests verify only the new 17th call and the two aggregate status flags.
 
-The focused completion `3/3` and cycle/main `42/42` pass as `45/45` in 1.287
+The focused completion `4/4` and cycle/main `42/42` pass as `46/46` in 1.533
 seconds. Ruff check/format, Python compilation, diff checks, the unchanged
 97-path protected aggregate (`6ec304b153b2c31e54d631abc25b450033393b73b052b12464b24418ac4cd6d3`),
 and protected-source diff checks pass. Implementation, focused test,
 settlement adapter, settlement test, and `main.py` SHA-256 values are
-`218cecd70bfeae7a12780f5a4024a322101548c07f05e73309ca1440c01e4731`,
-`ed8ad7d984ce896246f94be8cc5d24f74e87acca47278204d458b72e94ae1126`,
+`4458a475b18061f50824fe9c29839e5c3f77289778c9bb2b21b50342802ba47e`,
+`953585253da7baa7e975d070358ccdf12144650718cf230b040224a0e7b7cc02`,
 `1cc35300bf6690b581659f6d4039831e50571b1b205e95d8514e8d7e2b179637`,
 `8d2aed3102b74912de03a44fa106893bfdaa849ad03eb9cb355e9e5870685eef`,
 and `93f7976924d59e84ea14ab964bbfcb64d93adcf2a7a7ea1822b06cff3618e913`.

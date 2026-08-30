@@ -141,7 +141,16 @@ class BoundedDrainCompletionTests(unittest.TestCase):
         *,
         context: drain_v2.WorksetContext | None = None,
         actionable: bool = False,
+        prefix_matches: bool = True,
     ) -> manifest.WorksetInspection:
+        inspected_context = context or cut.context
+        live_hashes = [
+            f"{index + 5:064x}" for index in range(inspected_context.live_event_count)
+        ]
+        live_hashes[cut.context.live_event_count - 1] = (
+            cut.context.live_terminal_sha256 if prefix_matches else "f" * 64
+        )
+        live_hashes[-1] = inspected_context.live_terminal_sha256
         items: tuple[manifest.WorksetItem, ...] = ()
         actionable_artifacts: tuple[manifest.ArtifactObligation, ...] = ()
         if actionable:
@@ -169,11 +178,28 @@ class BoundedDrainCompletionTests(unittest.TestCase):
                 actionable_artifacts if family == "guard" else (),
                 record_count=1 if actionable and family == "guard" else 0,
                 actionable_count=1 if actionable and family == "guard" else 0,
-                authority={"synthetic_complete_inventory": True},
+                authority={
+                    "synthetic_complete_inventory": True,
+                    **(
+                        {
+                            "frozen_live_logical_chain": {
+                                "schema": "ootang_prequential_live_logical_chain_v1",
+                                "epoch_id": inspected_context.old_live_epoch_id,
+                                "event_count": inspected_context.live_event_count,
+                                "terminal_entry_sha256": (
+                                    inspected_context.live_terminal_sha256
+                                ),
+                                "ordered_entry_sha256s": live_hashes,
+                            }
+                        }
+                        if family == "shadow"
+                        else {}
+                    ),
+                },
             )
             for family in manifest.FAMILIES
         )
-        return manifest.WorksetInspection(context or cut.context, items, families)
+        return manifest.WorksetInspection(inspected_context, items, families)
 
     def _run(self, **kwargs: object) -> completion.BoundedDrainCompletionResult:
         handle = object()
@@ -278,6 +304,26 @@ class BoundedDrainCompletionTests(unittest.TestCase):
         self.assertFalse(status["bounded_official_workset_drained"])
         self.assertFalse(status["cache_authority"])
         self.assertEqual(tuple(self._paths().events.glob("*.json")), ())
+
+    def test_fresh_capture_rejects_a_longer_forked_live_chain(self) -> None:
+        cut = self._cut()
+        current = replace(
+            cut.context,
+            live_event_count=cut.context.live_event_count + 1,
+            live_terminal_sha256="4" * 64,
+        )
+        forked = self._inspection(cut, context=current, prefix_matches=False)
+
+        with self.assertRaisesRegex(
+            completion.BoundedDrainCompletionIntegrityError,
+            "does not extend the frozen admission-cut prefix",
+        ):
+            self._run(
+                clock=lambda: NOW,
+                load_closure=lambda _paths, _now: cut,
+                load_current_context=lambda _paths, _cut, _now: current,
+                inspect_fresh_workset=lambda _paths, _binding, _now: forked,
+            )
 
     def test_published_event_rejects_reappearing_actionable_work(self) -> None:
         cut = self._cut()

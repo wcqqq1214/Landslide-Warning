@@ -234,6 +234,7 @@ def _default_current_context(
 
 
 def _fresh_capture(
+    frozen_context: drain_v2.WorksetContext,
     current_context: drain_v2.WorksetContext,
     manifest_paths: manifest.WorksetManifestPaths,
     inspection: manifest.WorksetInspection,
@@ -245,6 +246,33 @@ def _fresh_capture(
     if inspection.context != current_context:
         raise BoundedDrainCompletionIntegrityError(
             "Fresh workset capture changed the current old-epoch context"
+        )
+    shadow = [family for family in inspection.families if family.family == "shadow"]
+    chain = (
+        shadow[0].authority.get("frozen_live_logical_chain")
+        if len(shadow) == 1
+        else None
+    )
+    hashes = chain.get("ordered_entry_sha256s") if isinstance(chain, Mapping) else None
+    if (
+        not isinstance(hashes, list)
+        or len(hashes) != current_context.live_event_count
+        or any(
+            not isinstance(value, str)
+            or len(value) != 64
+            or any(char not in "0123456789abcdef" for char in value)
+            for value in hashes
+        )
+        or chain.get("schema") != "ootang_prequential_live_logical_chain_v1"
+        or chain.get("epoch_id") != current_context.old_live_epoch_id
+        or chain.get("event_count") != current_context.live_event_count
+        or chain.get("terminal_entry_sha256") != current_context.live_terminal_sha256
+        or hashes[-1] != current_context.live_terminal_sha256
+        or hashes[frozen_context.live_event_count - 1]
+        != frozen_context.live_terminal_sha256
+    ):
+        raise BoundedDrainCompletionIntegrityError(
+            "Fresh live ledger does not extend the frozen admission-cut prefix"
         )
     families = tuple(
         {
@@ -464,7 +492,7 @@ def _coordinate_epoch_bounded_drain_completion(
             cut.manifest_paths, current_binding, now
         )
         families, actionable_count = _fresh_capture(
-            current_context, cut.manifest_paths, inspection
+            cut.context, current_context, cut.manifest_paths, inspection
         )
         if actionable_count:
             if own_event_exists:

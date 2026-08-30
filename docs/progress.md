@@ -5,6 +5,19 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 V2 live-ledger prefix attestation correction（本增量）
+
+- transition 前的 correctness audit 发现：既有 completion 虽会拒绝 live count 回退和同 count
+  换 head，但在 count 增加时还未证明 frozen admission-cut terminal 是 current ledger 的真实
+  prefix。测试也曾用任意新 head 表示 count+5，不能支持文档中的 append-only successor 声明。
+- 修正复用 fresh 六族 inventory 已独立重放的 `frozen_live_logical_chain`，要求 ordered entry
+  hashes 的长度/current terminal 与 current context 精确一致，并要求 frozen terminal 出现在 frozen
+  count 的 exact index；更长但分叉的合法自洽 ledger 现在 fail closed。没有增加新的 I/O、profile、
+  proof/event/head/WAL 或额外 ledger replay。
+- completion focused `4/4` 与 cycle/main `42/42` 合计 `46/46`，测试执行 1.533 秒；Ruff、格式、
+  Python compile 与 diff check 通过。该修正是 atomic transition 消费 scoped event 前的必要证据
+  加固，不修改 ConvLSTM/v4、冻结 splits/metrics/thresholds、参数、产物或科研结论。
+
 ## 2026-08-30 V2 scoped bounded-drain completion v1（本增量）
 
 - Reachability audit 纠正了上一轮 handoff 的关键假设：V1 clean-start

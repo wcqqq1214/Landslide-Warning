@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `7ca9d3b refactor: simplify epoch settlement polling`
+**Committed baseline before this increment:** `3bde3eb feat: complete scoped v2 drain`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -25,6 +25,21 @@ coordinator 与一个 V2 scoped drain-completion assessor 接入同一 bounded s
 声明 official-machine reserved workset 已排空，不声明全局 `old_epoch_drained`、canonical route
 fence、direct-filesystem fence、active switch、rotation、trusted anchor、E2 evidence、activation
 或 formal warning。
+
+## 2026-08-30 V2 live-ledger prefix attestation correction
+
+A transition-readiness audit found one correctness gap in the newly committed scoped completion:
+count monotonicity plus a changed terminal hash did not prove that the frozen admission-cut tip was
+actually a prefix of a longer current ledger. The completion assessor now consumes the fresh
+inventory's independently replayed `frozen_live_logical_chain`, verifies its full ordered hash list
+against the current context, and requires the frozen terminal at the exact frozen-count index. A
+longer self-consistent fork therefore fails closed before any completion event can be published.
+
+This reuses evidence already produced by the six-family inventory and adds no profile, I/O pass,
+proof, event, head, WAL, or intermediate authority. Completion `4/4` plus cycle/main `42/42` pass as
+`46/46` in 1.533 seconds; Ruff, formatting, compilation, and diff checks pass. ConvLSTM/v4 and all
+frozen scientific contracts remain unchanged. The atomic transition must consume only this
+strengthened scoped event semantics.
 
 ## 2026-08-30 V2 scoped bounded-drain completion v1
 
