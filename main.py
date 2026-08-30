@@ -1051,6 +1051,34 @@ STAGES = (
         formal_warning_output=False,
         enabled_by_default=False,
     ),
+    Stage(
+        "ootang-ngboost-auto-state-residual",
+        "code/warning/ootang_ngboost_auto_state_residual.py",
+        "训练藕塘 lag-conditioned residual NGBoost 并重构全时刻五级概率（显式、非正式）",
+        inputs=(
+            "config/ootang_ngboost_auto_state_residual.v3.json",
+            "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+            "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+            "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+            "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+            "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+            "figures/ngboost_auto_state_classifier_v1/manifest.json",
+        ),
+        outputs=(
+            "figures/ngboost_auto_state_residual_v3/site_predictions.csv",
+            "figures/ngboost_auto_state_residual_v3/comparison_metrics.csv",
+            "figures/ngboost_auto_state_residual_v3/delta_class_definition.csv",
+            "figures/ngboost_auto_state_residual_v3/manifest.json",
+            "models/ootang_ngboost_auto_state_residual_v3.pkl",
+        ),
+        arguments=(
+            "--config",
+            "config/ootang_ngboost_auto_state_residual.v3.json",
+        ),
+        warning_artifact_scope=("exploratory_auto_future_state_residual_challenger"),
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
 Runner = Callable[..., subprocess.CompletedProcess]
