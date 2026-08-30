@@ -5,6 +5,45 @@
 > `ootang_autonomous_research_protocol.md` 为准，结果数值以版本化 CSV 和 manifest
 > 为准。历史条目保留其原始日期和门禁数字，不与当前工程门禁混读。
 
+## 2026-08-30 source-derived bounded terminal closure v1（本增量）
+
+- 新增独立 assessor `ootang_epoch_source_derived_bounded_terminal_closure.py` 与严格
+  hash-pinned profile，namespace 为
+  `workset_recovery_v1/source_derived_bounded_terminal_closure_v1/`。它在既有机器锁序下深验同一
+  immutable source edge 的 frozen manifest/reservation、cross completion、完整 D/R/I reservation、
+  overlay 与已发布 current-effective terminal coverage；自身只写 content-addressed proof、singleton
+  event 和 `cache_authority=false` status。
+- identity 仍固定为完整 `key_id + natural_key + namespace_digest`，发布前同时证明
+  `B = {P} ⊎ Qretained ⊎ Rold ⊎ I` 与
+  `E = {P} ⊎ Qretained ⊎ D ⊎ Rnew`。derived reservation 中 D/R 行在 overlay 前没有最终
+  `key_id`，本 assessor 使用直接 hash-pin 的 overlay normalizer 与 frozen manifest SHA-256 重建
+  final identity；不允许 natural-key-only 比较。D/R/I 内部唯一、按 natural key 两两不交、count 与
+  keyset digest 均重新计算。
+- 每个 frozen item 都有显式 resolution row：P/retained 绑定 current terminal row，Rold 绑定 exact
+  terminal Rnew，I 只记录同一 source edge 的 exact invalidation supersession；每个 D/R/I successor
+  也逐项绑定 terminal 或 supersession 解析。只有 matching singleton event 发布窄 claim
+  `current_source_derived_bounded_terminal_closure=true`；generic bounded recovery、all-reserved、
+  all-successor、terminal/transitive closure、drained/lifecycle/activation 等仍为 false，因为尚未绑定
+  historical drain-start boundary、route fence 与 fresh no-post-fence-admission capture。
+- focused `3/3` 通过，用时 16.637 秒；bounded-closure/current-effective/source-parent/
+  retained-base/current-`D/R` 窄链 `18/18` 通过，用时 59.004 秒。覆盖完整两等式与幂等 status
+  重建、缺 current-effective event 时不发布、proof-only crash 自动续接。Ruff E7/E9/F、Python
+  compile、strict profile load、protected model 与 diff checks 通过；未运行训练、全科研管线、真实
+  网络或任何人工冻结/批准/清理。
+- 当前 implementation/profile/test、工程文档、受保护 `main.py` 与 ConvLSTM model SHA-256
+  分别为
+  `9784bebbf9fa560851c1a7184cb9f8bf98a97ae848b8575bff090ff77d62a81f`、
+  `6f149b0d4aea0906de3e9df27a6159d16bafc57d5fa531602849ae6126a52261`、
+  `d84f372c788485a4c240bd083c1f2e1cf07dc5b86c37d7ea8dfffca8b3882615`、
+  `554c262dc842dae121ffdfd2d5ce0fdb7c74803fdf520c32394356c813c053a9`、
+  `02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898` 与
+  `282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`。
+- 本增量不修改 ConvLSTM、v4、冻结 splits/metrics/thresholds、模型参数或实验结论。下一窄
+  增量应是 separately versioned drain-completion assessor：深回放 historical drain-start transaction
+  与 route fence，把本 closure 绑定到 matching frozen manifest/candidate，并在锁内复验 fence 后无
+  old-epoch admission 或 unresolved runtime work；active switch、SEALED/ACTIVE transition、scheduler
+  authorization 与 cycle v4 继续留到后续独立阶段。
+
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1（本增量）
 
 - 新增独立 assessor

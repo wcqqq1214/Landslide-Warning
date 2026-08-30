@@ -3,7 +3,7 @@
 **Prepared:** 2026-08-30
 **Repository:** `/Users/wcqqq1214/Project/Landslide-Warning`
 **Branch:** `main`
-**Committed baseline before this increment:** `ddf8f33 feat: prove retained base coverage`
+**Committed baseline before this increment:** `92881f0 feat: prove current effective coverage`
 **State:** R1/R2a/R2b/R2b-2a/R2b-2b-1/R2b-2b-2a/R2b-2b-2b/R2b-2b-2c
 expected-pre-head CAS、单事件 machine-only `anchor_request_recorded` adapter 与
 `anchor_result_recorded` request intent/四锁外 response observation、四锁内 result CAS、自动 retry
@@ -19,10 +19,75 @@ v1、source-derived effective-workset overlay v1、historical-N+1 materializatio
 source-derived effective outcome consumption v1、dependent outcome dispatch v1 与 dependent
 outcome consumption v1、source-derived effective outcome terminal coverage v1、source-derived
 source-parent terminal aggregate v1 与 source-derived retained-base terminal coverage v1 已提交；
-当前工作树新增独立 source-derived current-effective workset terminal coverage v1。它仍不是完整
+source-derived current-effective workset terminal coverage v1 亦已提交；当前工作树新增独立
+source-derived bounded terminal closure v1。它仍不是完整
 recovery、terminal/transitive closure、泛化 admission fence 或 DRAINING lifecycle authority；
 不声明 remote exactly-once、drained、
 active switch、rotation、trusted anchor、E2 evidence、activation 或 formal warning。
+
+## 2026-08-30 source-derived bounded terminal closure v1
+
+The new `ootang_epoch_source_derived_bounded_terminal_closure.py` is an independent assessor under
+`workset_recovery_v1/source_derived_bounded_terminal_closure_v1`. It deeply replays one immutable
+source-snapshot cut: the frozen manifest/reservation, cross-freeze completion, complete D/R/I
+reservation, current overlay, and published current-effective terminal-coverage proof/event. Its
+only writes are one content-addressed proof, one singleton event, and a replaceable
+`cache_authority=false` status in its own namespace.
+
+With exact identity fixed as `key_id + natural_key + namespace_digest`, publication proves both
+pairwise-disjoint equations:
+
+`B = {P} ⊎ Qretained ⊎ Rold ⊎ I`
+
+`E = {P} ⊎ Qretained ⊎ D ⊎ Rnew`.
+
+The source-derived reservation's D/R rows are canonical pre-overlay rows and do not yet contain
+their final key ids. The assessor therefore invokes the directly hash-pinned overlay normalizer
+with the frozen manifest SHA-256 before any identity comparison. It recomputes D/R/I uniqueness,
+natural-key disjointness, counts, and keyset digests, and requires the source parent to agree across
+manifest, derived reservation, cross-freeze, retained exclusion, and current-effective authority.
+
+Every frozen identity receives an ordered resolution row: parent/retained rows bind exact current
+terminal rows; each old rebound binds its exact terminal replacement; each invalidation is recorded
+only as exact supersession under this source edge. Every D/R/I classification also receives an
+ordered resolution row: D/R bind exact current terminal rows, while I binds the exact frozen
+identity it supersedes without inventing a terminal receipt. The proof binds all row digests to the
+immutable manifest, cross receipt/event, derived reservation/event, overlay object/event, and
+current-effective proof/event.
+
+Only the matching singleton event publishes
+`current_source_derived_bounded_terminal_closure=true`. Generic bounded recovery,
+`all_reserved_items_settled`, `all_reserved_successors_supported`, generic terminal/transitive
+closure, full/all-generation workset terminality, drained/lifecycle/activation, trusted/E2/network,
+and formal-warning claims remain false. Those broader facts still require rebinding this closure
+to the historical drain-start boundary, canonical route fence, and a fresh no-post-fence-admission
+capture. Missing current-effective authority waits without own bytes; a proof-only crash appends
+only the matching event; later cut drift or evidence loss fails closed. Zero-D/R remains a separate
+machine branch because the inherited D/R leaf requires a non-empty denominator.
+
+Focused tests are `3/3` in 16.637 seconds. The narrow bounded-closure/current-effective/source-
+parent/retained-base/current-D/R chain is `18/18` in 59.004 seconds. Ruff E7/E9/F, Python
+compilation, strict profile loading, protected model checks, and diff checks pass. No training,
+full scientific pipeline, real-network action, manual freeze, manual approval, cleanup, force, or
+fabricated backfill occurred.
+
+Implementation, profile, focused-test, engineering-document, protected `main.py`, and ConvLSTM
+model SHA-256 values are
+`9784bebbf9fa560851c1a7184cb9f8bf98a97ae848b8575bff090ff77d62a81f`,
+`6f149b0d4aea0906de3e9df27a6159d16bafc57d5fa531602849ae6126a52261`,
+`d84f372c788485a4c240bd083c1f2e1cf07dc5b86c37d7ea8dfffca8b3882615`,
+`554c262dc842dae121ffdfd2d5ce0fdb7c74803fdf520c32394356c813c053a9`,
+`02cda8f065949c96654f11329eb150cd8d54fec22f59c05fe61416f93df02898`, and
+`282c8f6f67c7676470d65653a5f21e2a2b27321aeedc6a44031d4bd6674ad858`.
+Detailed semantics are in
+`docs/ootang_source_derived_bounded_terminal_closure_engineering.md`.
+
+The next narrow increment should be a separately versioned drain-completion assessor. It must
+deep-replay the historical drain-start transaction and canonical route fence, bind this closure to
+the matching frozen manifest/candidate, and recapture under the required locks that no post-fence
+old-epoch admission or unresolved runtime work exists. Only that later assessor may consider an
+old-epoch drained fact. Active switching, `SEALED(old)+ACTIVE(new)`, scheduler authorization, and
+cycle v4 remain independent later stages.
 
 ## 2026-08-30 source-derived current-effective workset terminal coverage v1
 
