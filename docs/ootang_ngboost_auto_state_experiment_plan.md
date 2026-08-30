@@ -189,7 +189,56 @@ v2 challenger 已通过，可以执行。固定复用旧 pilot 的 NGBoost 参�
    `[t+1,t+7]` 才能知道的 `y_t` 当输入；
 3. 使用完全相同 `X/Y` 的多项 Logistic Regression（对应导师指定论文的概率融合思路，但不声称复现论文系数）。
 
-主要看状态转折时刻的 macro-F1 与 ordinal MAE；同时报告全时刻 log-loss、Brier score、每级召回和混淆矩阵。进入 fold 3 历史描述的最低开发门槛是：fold 2 转折 macro-F1 高于 persistence 与 Logistic、转折 ordinal MAE 至少不劣于两者，且 log-loss 优于类别先验。这里是已暴露数据上的项目 pilot 门禁，不是独立测试或通用工程阈值。
+主要看状态转折时刻的 macro-F1 与 ordinal MAE；同时报告全时刻 log-loss、Brier score、
+每级召回和混淆矩阵。训练前按固定标签复算发现，fold 2 仅有 11 个“相邻有效日等级发生
+变化”的转折日。该样本量不足以承担硬性模型淘汰或 fold 3 准入门禁，因此撤销原定硬门槛，
+把转折指标连同样本数作为小样本描述性结果。模型参数仍固定且不根据 fold 2/3 选择；fold 3
+照常给出完整逐时刻预测和历史指标，但只标记为已暴露的 historical description，不能称为
+独立测试或确认性证据。此修订发生在任何新模型拟合前，避免事后按性能放宽标准。
+
+### 图件合同（训练前固定）
+
+- **核心结论**：固定 NGBoost 能在收到时刻 `t` 的八点四指标后，为未来 H=7 状态输出
+  全时刻五级概率/颜色，并用开发期 SHAP 显示模型最依赖的“测点 × 指标”，但不作因果解释。
+- **证据链**：全时刻 site/八点颜色时间线回答“何时发出何种信号”；与三个基线的指标回答
+  “模型是否比简单规则更有信息”；fold 2 permutation SHAP 回答“模型概率主要依赖哪些当前输入”。
+- **图型与后端**：`quantitative grid`，Python/matplotlib 单一后端；不混用其他绘图后端。
+- **导出与完整性**：两张必要图均保存 PNG、可编辑文本 SVG 和 PDF；PDF 字号不低于 5 pt，
+  运行源码、文本和碰撞审计。图件使用全部 861 个 site 日期和 6,888 个 station-date 预测，
+  不为了排版删时刻；标签不可用的每折末 7 日仍显示模型信号并明确真值 unavailable。
+
+## 2026-08-31 固定分类器执行结果
+
+正式入口
+`uv run python main.py --stage ootang-ngboost-auto-state-classifier --manifest figures/pipeline/ngboost_auto_state_classifier_v1_run.json`
+在 29.8 秒内完成。模型严格只拟合 fold 1 的 280 个有效 site 日期，输出如下：
+
+| fold 2 estimator | n | Accuracy | Macro-F1 | Ordinal MAE | Log-loss | Brier |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| NGBoost | 280 | 0.3536 | 0.2871 | 0.7429 | 3.3358 | 0.9960 |
+| Multinomial Logistic | 280 | 0.2500 | 0.1964 | 0.8321 | 2.2732 | 1.0771 |
+| Fold-1 prior | 280 | 0.4929 | 0.1321 | 0.9679 | 1.6094 | 0.8000 |
+| Strict `y_(t-7)` persistence | 273 | 0.8022 | 0.6722 | 0.2234 | N/A | N/A |
+
+NGBoost 的顺序误差和 macro-F1 优于 Logistic/prior，但没有超过严格因果 persistence，且
+log-loss 明显劣于无信息先验，说明概率过度自信。本增量因此是可复现的负结果，不是“模型已
+改善”。fold 2 仅 11 个相邻日转折，在共同 persistence-available mask 上 NGBoost 的
+macro-F1/MAE 为 `0.0800/1.0909`，Logistic 为 `0.1071/0.9091`，persistence 为
+`0.0571/1.0909`；继续保持 `small_support_descriptive_only`。fold 3 NGBoost macro-F1
+`0.4635` 仅作已暴露历史描述。
+
+site SHAP 使用 fold 1 的 12 个等距背景日期、fold 2 的 25 个等距解释日期和 65 次/样本
+permutation 评估，解释输出为 `E[level|X]=Σk·P(k)`。前四项 mean absolute SHAP 是
+ATU2 切线角 `0.5440`、ATU1 切线角 `0.4815`、ATU5 速度 `0.2094`、ATU2 速度
+`0.1799`。由于自动标签本身由未来位移速率和速度构造，这些结果只能说明模型依赖，不能写成
+独立的因果主控因素。
+
+图件使用 Python/matplotlib 单一后端。静态预检为 16 pass、0 fail；PNG 仅作 300 dpi
+预览，PDF/SVG 为矢量主件。最终 SHAP/时间线 PDF 的最小字号分别为 7/6 pt，碰撞审计均为
+`0 fail, 0 warn`。预检的 TIFF、600 dpi、missing-data/uncertainty 四项 warning 不阻断：
+本轮没有栅格投稿需求，标签 unavailable 行数已在 manifest 明示，且图中不声称随机重复不确定性。
+SHAP masker 内部另出现 3 条 sklearn 矩阵数值 warning；最终概率、概率和与 800 个 SHAP
+值均通过有限性检查，因此保留为运行提示，不增加会掩盖数值结果的兼容代码。
 
 ## Expected Outputs
 
@@ -214,6 +263,17 @@ v2 challenger 已通过，可以执行。固定复用旧 pilot 的 NGBoost 参�
 | 机械门禁摘要 | `figures/ngboost_auto_state_ecdf_v2/label_gate.json` | JSON | `label_gate_passed=true`，并保留逐点与小样本 advisory |
 | 标签时间线 | `figures/ngboost_auto_state_ecdf_v2/auto_state_timeline.png` | PNG | 八点和 site 全 OOF 时间线，无人工编辑入口 |
 | 运行清单 | `figures/ngboost_auto_state_ecdf_v2/manifest.json` | JSON | v1 来源、配置、代码和五项非 manifest 产物哈希一致 |
+
+### 固定 NGBoost 分类器 v1（当前负结果）
+
+| Output | Path | Format | Success Criterion |
+| --- | --- | --- | --- |
+| site 全时刻概率/颜色 | `figures/ngboost_auto_state_classifier_v1/site_predictions.csv` | CSV | 四估计器 × 861 日；truth unavailable 与 prediction available 分离 |
+| 八点诊断概率/颜色 | `figures/ngboost_auto_state_classifier_v1/station_predictions.csv` | CSV | 8 点 × 861 日，明确 diagnostic-only |
+| 指标与混淆矩阵 | `figures/ngboost_auto_state_classifier_v1/{metrics,confusion_matrix}.csv` | CSV | 三折角色、全时刻/转折子集、n 与小样本状态明确 |
+| site SHAP | `figures/ngboost_auto_state_classifier_v1/site_shap_{values,importance}.csv` | CSV | 800 行期望等级 permutation SHAP，可追溯 station/indicator/date |
+| 全时刻图与 SHAP 图 | `figures/ngboost_auto_state_classifier_v1/{warning_timeline,site_shap_summary}.{png,pdf,svg}` | figure | 全 8 点、全时刻；矢量文本与碰撞审计通过 |
+| 模型与运行清单 | `models/ootang_ngboost_auto_state_*_v1.pkl`; `figures/ngboost_auto_state_classifier_v1/manifest.json` | pickle/JSON | 固定模型、输入/输出哈希和限制完整 |
 
 ## Monitoring Configuration
 

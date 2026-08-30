@@ -1,0 +1,263 @@
+{
+  "artifact_kind": "ootang_ngboost_ecdf_auto_state_classifier",
+  "artifact_status": "exploratory_probability_classifier_not_formal_warning",
+  "baselines": {
+    "fold1_prior": [
+      0.2,
+      0.2,
+      0.2,
+      0.2,
+      0.2
+    ],
+    "lag7_persistence": "strict_same_fold_y_t_minus_7_first_7_days_unavailable",
+    "lag7_persistence_probability_metrics": false,
+    "lag7_probability_columns_role": "one_hot_display_only_not_probabilistic_forecast",
+    "multinomial_logistic_same_X": true
+  },
+  "case": "ootang",
+  "features": {
+    "future_target_or_label_fields_in_X": false,
+    "scientific_feature_whitelist": [
+      "interval_z",
+      "velocity_mm_per_day",
+      "acceleration_mm_per_day_squared",
+      "tangent_angle_degree"
+    ],
+    "site_feature_count": 32,
+    "site_feature_order": [
+      "ATU1__interval_z",
+      "ATU1__velocity_mm_per_day",
+      "ATU1__acceleration_mm_per_day_squared",
+      "ATU1__tangent_angle_degree",
+      "ATU2__interval_z",
+      "ATU2__velocity_mm_per_day",
+      "ATU2__acceleration_mm_per_day_squared",
+      "ATU2__tangent_angle_degree",
+      "ATU3__interval_z",
+      "ATU3__velocity_mm_per_day",
+      "ATU3__acceleration_mm_per_day_squared",
+      "ATU3__tangent_angle_degree",
+      "ATU4__interval_z",
+      "ATU4__velocity_mm_per_day",
+      "ATU4__acceleration_mm_per_day_squared",
+      "ATU4__tangent_angle_degree",
+      "ATU5__interval_z",
+      "ATU5__velocity_mm_per_day",
+      "ATU5__acceleration_mm_per_day_squared",
+      "ATU5__tangent_angle_degree",
+      "MJ1__interval_z",
+      "MJ1__velocity_mm_per_day",
+      "MJ1__acceleration_mm_per_day_squared",
+      "MJ1__tangent_angle_degree",
+      "MJ3__interval_z",
+      "MJ3__velocity_mm_per_day",
+      "MJ3__acceleration_mm_per_day_squared",
+      "MJ3__tangent_angle_degree",
+      "MJ9__interval_z",
+      "MJ9__velocity_mm_per_day",
+      "MJ9__acceleration_mm_per_day_squared",
+      "MJ9__tangent_angle_degree"
+    ],
+    "station_feature_order": [
+      "interval_z",
+      "velocity_mm_per_day",
+      "acceleration_mm_per_day_squared",
+      "tangent_angle_degree",
+      "station_ATU1",
+      "station_ATU2",
+      "station_ATU3",
+      "station_ATU4",
+      "station_ATU5",
+      "station_MJ1",
+      "station_MJ3",
+      "station_MJ9"
+    ]
+  },
+  "figures": {
+    "site_shap_summary_pdf": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
+      "sha256": "5b6891b931bcbc2f716e4fd943535f400a6cf4cd82b3bc87a0de2d090514a5e2"
+    },
+    "site_shap_summary_png": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.png",
+      "sha256": "c86e1e2c8ec827153310c8502b45895293c6ff290f40584e92b6dc332d703b44"
+    },
+    "site_shap_summary_svg": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg",
+      "sha256": "d12d3a7852398ee4d6d7e6e7b75613da99a804e06986f4d1325188726cdc7250"
+    },
+    "warning_timeline_pdf": {
+      "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
+      "sha256": "8e1ef8d74ae18c563bf78bc023f85b0be9306672264f242cd9588d349bb466ba"
+    },
+    "warning_timeline_png": {
+      "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
+      "sha256": "a7789397442cbb3027dd37b6adee45aca8b7832907386052b31b8fe4a3f7f41a"
+    },
+    "warning_timeline_svg": {
+      "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
+      "sha256": "beff7d27f2fb653200d4072e94952a1fe8ca761073d874263216b0a959bc2c5b"
+    }
+  },
+  "fold2_development_transition": {
+    "scientific_pass_fail_decision": false,
+    "status": "small_support_descriptive_only",
+    "transition_days_common_persistence_available_mask": 11,
+    "values": {
+      "fold1_prior__macro_f1_fixed_five": 0.06153846153846154,
+      "fold1_prior__ordinal_mae": 1.6363636363636365,
+      "lag7_persistence__macro_f1_fixed_five": 0.05714285714285714,
+      "lag7_persistence__ordinal_mae": 1.0909090909090908,
+      "multinomial_logistic__macro_f1_fixed_five": 0.10714285714285714,
+      "multinomial_logistic__ordinal_mae": 0.9090909090909091,
+      "ngboost__macro_f1_fixed_five": 0.08,
+      "ngboost__ordinal_mae": 1.0909090909090908
+    }
+  },
+  "fold3_metrics_status": "reported_historical_already_exposed_not_confirmatory",
+  "fold_roles": {
+    "1": "fit",
+    "2": "development_already_exposed",
+    "3": "historical_already_exposed_not_confirmatory"
+  },
+  "formal_warning_output": false,
+  "inputs": {
+    "label_gate": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+      "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+    },
+    "labels_manifest": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+      "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+    },
+    "site_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+      "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+    },
+    "source_code": {
+      "path": "code/warning/ootang_ngboost_auto_state_classifier.py",
+      "sha256": "080da47879ea1a0761f1bb35bb217cb8065aec83ad1fae7a208e9c843edfa6d7"
+    },
+    "station_labels": {
+      "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+      "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+    }
+  },
+  "model_outputs": {
+    "site_model": {
+      "path": "models/ootang_ngboost_auto_state_site_v1.pkl",
+      "sha256": "5d9f2f2ab10a5866af5fdb1f33677d7e17e2b777dbc4747d3c70a82fc9296703",
+      "size_bytes": 2421712
+    },
+    "station_model": {
+      "path": "models/ootang_ngboost_auto_state_station_diagnostic_v1.pkl",
+      "sha256": "096738404e48b312d062017a118de39c1d5e2f36ada42dc3fcf5048017395c13",
+      "size_bytes": 2612027
+    }
+  },
+  "models": {
+    "fit_fold": 1,
+    "hyperparameter_search": false,
+    "logistic_baseline": {
+      "C": 1.0,
+      "class": "LogisticRegression",
+      "max_iter": 2000,
+      "penalty": "l2",
+      "random_state": 0,
+      "scaling": "StandardScaler_fold1_fit_only",
+      "solver": "lbfgs"
+    },
+    "ngboost": {
+      "base_learner": {
+        "class": "DecisionTreeRegressor",
+        "criterion": "friedman_mse",
+        "max_depth": 3,
+        "random_state": 0
+      },
+      "classes": 5,
+      "col_sample": 1.0,
+      "learning_rate": 0.01,
+      "minibatch_frac": 1.0,
+      "n_estimators": 500,
+      "natural_gradient": true,
+      "random_state": 0,
+      "score": "LogScore",
+      "verbose": false
+    },
+    "posthoc_probability_calibration": false,
+    "shared_station_model_role": "diagnostic_only",
+    "site_model_role": "primary"
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "posthoc_calibration",
+    "hyperparameter_optimization",
+    "causal_feature_importance"
+  ],
+  "outputs": {
+    "confusion_matrix": {
+      "path": "figures/ngboost_auto_state_classifier_v1/confusion_matrix.csv",
+      "rows": 600,
+      "sha256": "7b33d0ee7749ecd8ac26a3944bda2bae5d68d46ae4c7f6d0c2df6169e7ca7630"
+    },
+    "feature_importance": {
+      "path": "figures/ngboost_auto_state_classifier_v1/feature_importance.csv",
+      "rows": 176,
+      "sha256": "1fdc53ee679942b91b5876b6d35f4a1e525b290dbeb5e9ae4ff60834d1039d1b"
+    },
+    "metrics": {
+      "path": "figures/ngboost_auto_state_classifier_v1/metrics.csv",
+      "rows": 150,
+      "sha256": "9255483c780f24e4a3d2915f993b623acb985c52afa0135512d0288ff6499665"
+    },
+    "site_predictions": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+      "rows": 3444,
+      "sha256": "b86fb8b52800b51818cc69b6ac02ec727d8affba12bc9661c74d94ac6de88682"
+    },
+    "site_shap_importance": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_importance.csv",
+      "rows": 32,
+      "sha256": "8bbfb8e28220c75a762e9e027b0dbdad3a5456801a106190b7170535d9168d51"
+    },
+    "site_shap_values": {
+      "path": "figures/ngboost_auto_state_classifier_v1/site_shap_values.csv",
+      "rows": 800,
+      "sha256": "d98d7691d1104d3d055d7a12a6e037771e70a5402156842b7d6c8aee4884dda8"
+    },
+    "station_predictions": {
+      "path": "figures/ngboost_auto_state_classifier_v1/station_predictions.csv",
+      "rows": 6888,
+      "sha256": "a513bf094375ad7334c7efa19d616491a7651105d8521cf0f66cc68acf01e144"
+    }
+  },
+  "profile": {
+    "id": "ootang_ngboost_auto_state_classifier_v1",
+    "path": "config/ootang_ngboost_auto_state_classifier.v1.json",
+    "sha256": "57ffff31cc8026f4a85ab460bcf5b199e718b749c41f57a22876bc252c50901b",
+    "version": 1
+  },
+  "row_counts": {
+    "confusion_rows": 600,
+    "metrics_rows": 150,
+    "site_dates": 861,
+    "site_prediction_rows": 3444,
+    "site_shap_value_rows": 800,
+    "station_prediction_rows": 6888
+  },
+  "runtime_seconds": 26.91352575016208,
+  "schema_version": 1,
+  "shap": {
+    "background": "fold1_uniform_max_12_dates",
+    "computed": true,
+    "explanation": "fold2_uniform_max_25_dates",
+    "interpretation": "model_dependency_not_causal_not_convlstm_internal_shap",
+    "max_evals": 65,
+    "method": "permutation_shap_ngboost_expected_ordinal_level"
+  },
+  "source_label_boundary_version": "fold1_h7_station_ecdf_site_quantiles_v2",
+  "source_label_gate_passed": true
+}

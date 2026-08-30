@@ -1,0 +1,108 @@
+{
+  "schema_version": 1,
+  "profile_id": "ootang_ngboost_auto_state_classifier_v1",
+  "profile_version": 1,
+  "status": "exploratory_probability_classifier_not_formal_warning",
+  "case": "ootang",
+  "formal_warning_output": false,
+  "default_pipeline_member": false,
+  "inputs": {
+    "station_labels": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+    "site_labels": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+    "label_gate": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+    "labels_manifest": "figures/ngboost_auto_state_ecdf_v2/manifest.json"
+  },
+  "output_dir": "figures/ngboost_auto_state_classifier_v1",
+  "stations": ["ATU1", "ATU2", "ATU3", "ATU4", "ATU5", "MJ1", "MJ3", "MJ9"],
+  "scientific_feature_whitelist": [
+    "interval_z",
+    "velocity_mm_per_day",
+    "acceleration_mm_per_day_squared",
+    "tangent_angle_degree"
+  ],
+  "site_task": {
+    "feature_layout": "station_major_then_scientific_feature",
+    "feature_count": 32,
+    "target": "site_auto_state_level"
+  },
+  "fold_roles": {
+    "1": "fit",
+    "2": "development_already_exposed",
+    "3": "historical_already_exposed_not_confirmatory"
+  },
+  "ngboost": {
+    "classes": 5,
+    "score": "LogScore",
+    "base_learner": {
+      "class": "DecisionTreeRegressor",
+      "max_depth": 3,
+      "criterion": "friedman_mse",
+      "random_state": 0
+    },
+    "n_estimators": 500,
+    "learning_rate": 0.01,
+    "minibatch_frac": 1.0,
+    "col_sample": 1.0,
+    "natural_gradient": true,
+    "random_state": 0,
+    "verbose": false
+  },
+  "logistic_baseline": {
+    "class": "LogisticRegression",
+    "scaling": "StandardScaler_fold1_fit_only",
+    "solver": "lbfgs",
+    "penalty": "l2",
+    "C": 1.0,
+    "max_iter": 2000,
+    "random_state": 0
+  },
+  "persistence_baseline": {
+    "kind": "strict_causal_label_lag",
+    "lag_days": 7,
+    "first_lag_days_status": "unavailable"
+  },
+  "training_policy": {
+    "hyperparameter_search": false,
+    "posthoc_probability_calibration": false,
+    "resampling": false,
+    "use_only_valid_labels_for_fit_and_metrics": true,
+    "predict_all_dates": true
+  },
+  "importance": {
+    "site_method": "permutation_shap_expected_ordinal_level",
+    "site_background_fold1_uniform_dates_max": 12,
+    "site_explanation_fold2_uniform_dates_max": 25,
+    "site_max_evals": 65,
+    "site_seed": 0,
+    "station_diagnostic_method": "ngboost_builtin_feature_importances_non_shap"
+  },
+  "model_outputs": {
+    "site_model": "models/ootang_ngboost_auto_state_site_v1.pkl",
+    "station_model": "models/ootang_ngboost_auto_state_station_diagnostic_v1.pkl"
+  },
+  "outputs": {
+    "site_predictions": "site_predictions.csv",
+    "station_predictions": "station_predictions.csv",
+    "metrics": "metrics.csv",
+    "confusion_matrix": "confusion_matrix.csv",
+    "feature_importance": "feature_importance.csv",
+    "site_shap_values": "site_shap_values.csv",
+    "site_shap_importance": "site_shap_importance.csv",
+    "site_shap_summary_png": "site_shap_summary.png",
+    "site_shap_summary_pdf": "site_shap_summary.pdf",
+    "site_shap_summary_svg": "site_shap_summary.svg",
+    "warning_timeline_png": "warning_timeline.png",
+    "warning_timeline_pdf": "warning_timeline.pdf",
+    "warning_timeline_svg": "warning_timeline.svg",
+    "manifest": "manifest.json"
+  },
+  "not_claimed": [
+    "independent_field_or_event_truth",
+    "formal_warning_output",
+    "operational_deployment",
+    "confirmatory_unseen_holdout",
+    "posthoc_calibration",
+    "hyperparameter_optimization",
+    "causal_feature_importance"
+  ]
+}

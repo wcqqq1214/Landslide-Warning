@@ -986,6 +986,43 @@ STAGES = (
         formal_warning_output=False,
         enabled_by_default=False,
     ),
+    Stage(
+        "ootang-ngboost-auto-state-classifier",
+        "code/warning/ootang_ngboost_auto_state_classifier.py",
+        "训练藕塘固定 NGBoost 五级概率模型并输出全时刻 site/八点诊断（显式、非正式）",
+        inputs=(
+            "config/ootang_ngboost_auto_state_classifier.v1.json",
+            "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+            "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+            "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+            "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+        ),
+        outputs=(
+            "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+            "figures/ngboost_auto_state_classifier_v1/station_predictions.csv",
+            "figures/ngboost_auto_state_classifier_v1/metrics.csv",
+            "figures/ngboost_auto_state_classifier_v1/confusion_matrix.csv",
+            "figures/ngboost_auto_state_classifier_v1/feature_importance.csv",
+            "figures/ngboost_auto_state_classifier_v1/site_shap_values.csv",
+            "figures/ngboost_auto_state_classifier_v1/site_shap_importance.csv",
+            "figures/ngboost_auto_state_classifier_v1/site_shap_summary.png",
+            "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
+            "figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg",
+            "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
+            "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
+            "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
+            "figures/ngboost_auto_state_classifier_v1/manifest.json",
+            "models/ootang_ngboost_auto_state_site_v1.pkl",
+            "models/ootang_ngboost_auto_state_station_diagnostic_v1.pkl",
+        ),
+        arguments=(
+            "--config",
+            "config/ootang_ngboost_auto_state_classifier.v1.json",
+        ),
+        warning_artifact_scope="exploratory_auto_future_state_ngboost_classifier",
+        formal_warning_output=False,
+        enabled_by_default=False,
+    ),
 )
 STAGE_BY_NAME = {stage.name: stage for stage in STAGES}
 Runner = Callable[..., subprocess.CompletedProcess]

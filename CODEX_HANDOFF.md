@@ -114,7 +114,36 @@ remain non-blocking limitations. The next model therefore uses the 32 site featu
 diagnostic. Use the already registered NGBoost hyperparameters without a search. The persistence
 baseline must use the latest matured label `y_(t-7)`, never the contemporaneous future-defined
 `y_t`. All reported fold-2/fold-3 model metrics remain development/historical descriptions because
-all three folds are exposed.
+all three folds are exposed. A pre-fit count found only 11 adjacent-state transition days in fold 2,
+so transition macro-F1/ordinal MAE remain highlighted but descriptive; they no longer form an
+underpowered hard gate for whether fold 3 can be reported. No model parameter is selected from
+fold 2 or fold 3.
+
+### Fixed NGBoost classifier result
+
+The explicit `ootang-ngboost-auto-state-classifier` stage now consumes the passed v2 label gate and
+fits only fold 1. It emits 861 site dates for each of NGBoost, multinomial Logistic, fold-1 prior and
+strict same-fold `y_(t-7)` persistence, plus 6,888 all-time station diagnostic predictions. Every
+NGBoost/Logistic/prior date has probabilities and a color, including each fold's seven terminal dates
+whose retrospective truth is unavailable. The station model remains diagnostic; only the 32-feature
+site model is the primary research task.
+
+This first fixed model is a transparent negative result, not an improvement claim. On fold 2,
+NGBoost accuracy/macro-F1/ordinal-MAE/log-loss/Brier are
+`0.3536/0.2871/0.7429/3.3358/0.9960`; strict lag-7 persistence obtains
+`0.8022/0.6722/0.2234` on its 273 available days. The uniform fold-1 prior has log-loss `1.6094`,
+so NGBoost probabilities are also worse than the no-information prior. On the 11 common adjacent
+transition days, NGBoost macro-F1/ordinal-MAE are `0.0800/1.0909`, versus Logistic
+`0.1071/0.9091` and persistence `0.0571/1.0909`; these are small-support descriptions only. Fold 3
+is reported solely as already-exposed historical context (NGBoost macro-F1 `0.4635`).
+
+Permutation SHAP explains the fold-2 expected ordinal level `sum(k*p_k)` using a fold-1 background.
+The strongest model dependencies are ATU2 tangent angle (`0.5440`), ATU1 tangent angle (`0.4815`),
+ATU5 velocity (`0.2094`) and ATU2 velocity (`0.1799`). These are predictive dependencies, not
+causal control factors, and not ConvLSTM-internal SHAP. Both required figures include all site/station
+times and passed the 5-pt PDF text floor and rendered collision audit. The immediate next research
+question is whether one fixed, strictly available lag-7 state-memory feature lets NGBoost learn
+corrections to persistence; do not start a hyperparameter, horizon, calibration or ablation sweep.
 
 ## 2026-08-30 authentic live-feed source audit
 

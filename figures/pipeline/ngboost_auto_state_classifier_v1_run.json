@@ -1,0 +1,145 @@
+{
+  "schema_version": 3,
+  "status": "completed",
+  "warning_pipeline_scope": "research_and_operational_draft_only",
+  "formal_warning_output": false,
+  "formal_warning_entry": "code/warning/formal_warning.py",
+  "started_at": "2026-08-31T00:10:51+08:00",
+  "finished_at": "2026-08-31T00:11:21+08:00",
+  "git_commit": "7a943aea2999e413d78e28e8a24a71568d5c1fb5",
+  "git_worktree_dirty": true,
+  "source_sha256": "450017ded0aadd5413f7139c84f81403037fecc47d98b9d3542d852f507fc5d2",
+  "python_executable": "/Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python3",
+  "python_version": "3.10.20",
+  "total_elapsed_seconds": 29.816,
+  "failed_stage": null,
+  "stages": [
+    {
+      "name": "ootang-ngboost-auto-state-classifier",
+      "script": "code/warning/ootang_ngboost_auto_state_classifier.py",
+      "warning_artifact_scope": "exploratory_auto_future_state_ngboost_classifier",
+      "formal_warning_output": false,
+      "status": "completed",
+      "elapsed_seconds": 29.755,
+      "returncode": 0,
+      "contract_status": "passed",
+      "inputs": [
+        "config/ootang_ngboost_auto_state_classifier.v1.json",
+        "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+        "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+        "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+        "figures/ngboost_auto_state_ecdf_v2/manifest.json"
+      ],
+      "input_artifacts": [
+        {
+          "path": "config/ootang_ngboost_auto_state_classifier.v1.json",
+          "size_bytes": 3570,
+          "sha256": "57ffff31cc8026f4a85ab460bcf5b199e718b749c41f57a22876bc252c50901b"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/station_auto_labels.csv",
+          "size_bytes": 3587296,
+          "sha256": "f1c2ece6ea8161bfc6413b3cc254e5a621fa076b6c36057d3f6d6263f821dd24"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/site_auto_labels.csv",
+          "size_bytes": 317152,
+          "sha256": "d00968aa5b441ec8bfd41b700d2d2a97c0df3c5f7ce9be003d16e0de3c4b252f"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/label_gate.json",
+          "size_bytes": 6347,
+          "sha256": "d4af69712d7c70afe071693ed90a2a7e00ef2608c8dace531344456fa631b5e0"
+        },
+        {
+          "path": "figures/ngboost_auto_state_ecdf_v2/manifest.json",
+          "size_bytes": 4349,
+          "sha256": "badbe35ab3a33c2978ba41bbc995fb5349f91856ef6da52a2f127334fbd9dcd7"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_predictions.csv",
+          "size_bytes": 463247,
+          "sha256": "b86fb8b52800b51818cc69b6ac02ec727d8affba12bc9661c74d94ac6de88682"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/station_predictions.csv",
+          "size_bytes": 1019107,
+          "sha256": "a513bf094375ad7334c7efa19d616491a7651105d8521cf0f66cc68acf01e144"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/metrics.csv",
+          "size_bytes": 16167,
+          "sha256": "9255483c780f24e4a3d2915f993b623acb985c52afa0135512d0288ff6499665"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/confusion_matrix.csv",
+          "size_bytes": 49348,
+          "sha256": "7b33d0ee7749ecd8ac26a3944bda2bae5d68d46ae4c7f6d0c2df6169e7ca7630"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/feature_importance.csv",
+          "size_bytes": 22631,
+          "sha256": "1fdc53ee679942b91b5876b6d35f4a1e525b290dbeb5e9ae4ff60834d1039d1b"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_shap_values.csv",
+          "size_bytes": 176815,
+          "sha256": "d98d7691d1104d3d055d7a12a6e037771e70a5402156842b7d6c8aee4884dda8"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_shap_importance.csv",
+          "size_bytes": 7546,
+          "sha256": "8bbfb8e28220c75a762e9e027b0dbdad3a5456801a106190b7170535d9168d51"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.png",
+          "size_bytes": 112424,
+          "sha256": "c86e1e2c8ec827153310c8502b45895293c6ff290f40584e92b6dc332d703b44"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
+          "size_bytes": 23973,
+          "sha256": "5b6891b931bcbc2f716e4fd943535f400a6cf4cd82b3bc87a0de2d090514a5e2"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg",
+          "size_bytes": 15191,
+          "sha256": "d12d3a7852398ee4d6d7e6e7b75613da99a804e06986f4d1325188726cdc7250"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
+          "size_bytes": 93358,
+          "sha256": "a7789397442cbb3027dd37b6adee45aca8b7832907386052b31b8fe4a3f7f41a"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
+          "size_bytes": 32960,
+          "sha256": "8e1ef8d74ae18c563bf78bc023f85b0be9306672264f242cd9588d349bb466ba"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
+          "size_bytes": 1385927,
+          "sha256": "beff7d27f2fb653200d4072e94952a1fe8ca761073d874263216b0a959bc2c5b"
+        },
+        {
+          "path": "figures/ngboost_auto_state_classifier_v1/manifest.json",
+          "size_bytes": 9378,
+          "sha256": "d938149e8eb981b343263419850f6ca28f687682aaa3f6f08ae38ae59fc078d6"
+        },
+        {
+          "path": "models/ootang_ngboost_auto_state_site_v1.pkl",
+          "size_bytes": 2421712,
+          "sha256": "5d9f2f2ab10a5866af5fdb1f33677d7e17e2b777dbc4747d3c70a82fc9296703"
+        },
+        {
+          "path": "models/ootang_ngboost_auto_state_station_diagnostic_v1.pkl",
+          "size_bytes": 2612027,
+          "sha256": "096738404e48b312d062017a118de39c1d5e2f36ada42dc3fcf5048017395c13"
+        }
+      ],
+      "contract_error": null
+    }
+  ]
+}

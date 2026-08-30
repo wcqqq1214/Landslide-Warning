@@ -66,7 +66,38 @@
   测点共享模型只作八点诊断与 SHAP。所有折均已暴露，结果仍是 exploratory proxy。
 - 下一步已解除 labels-only 阻断：固定复用旧 pilot 的 NGBoost 参数，不做调参；以 8 点 ×
   4 指标构成 32 维 site 输入，并比较类别先验、严格因果的 `y_(t-7)` persistence 与多项
-  Logistic。任何训练 stage 必须显式读取 v2 `label_gate_passed=true`。
+  Logistic。任何训练 stage 必须显式读取 v2 `label_gate_passed=true`。新模型拟合前确认
+  fold 2 的相邻日状态转折只有 11 天，故撤销以该小样本作 fold 3 准入的硬门禁；仍重点报告
+  转折指标和样本数，但 fold 2/3 都只作开发期/历史描述，且不参与参数选择。
+
+## 2026-08-31 固定 NGBoost 五级概率分类器（本增量）
+
+- 新增 explicit-only `ootang-ngboost-auto-state-classifier`。stage 读取并校验 v2
+  `label_gate_passed=true`，site 主模型只使用固定站序的 `8 点 × 4 个时刻 t 指标 = 32` 维
+  白名单，fold 1 的 280 日训练；共享测点模型使用四指标和 station one-hot，只作诊断。
+  未读取 future outcome、severity、auto label 或 target end date 作为 X，未改 ConvLSTM。
+- 固定比较 NGBoost、fold-1-only 标准化 multinomial Logistic、fold 1 prior 和同折严格
+  `y_(t-7)` persistence，不搜索参数、不校准概率、不重采样。输出 3,444 条 site 预测与
+  6,888 条八点诊断预测；NGBoost/Logistic/prior 覆盖全部 3×287 日，末 7 日仍发模型信号，
+  但 retrospective truth 明确 unavailable。persistence 每折首 7 日 unavailable。
+- fold 2 NGBoost 的 accuracy/macro-F1/ordinal MAE/log-loss/Brier 为
+  `0.3536/0.2871/0.7429/3.3358/0.9960`；persistence 在 273 日为
+  `0.8022/0.6722/0.2234`，prior log-loss 为 `1.6094`。因此本模型没有证明改善，尤其概率
+  过度自信且未超过简单状态持续性。fold 2 的 11 个相邻转折日只作描述：NGBoost
+  macro-F1/MAE=`0.0800/1.0909`，Logistic=`0.1071/0.9091`，persistence=`0.0571/1.0909`。
+  fold 3 NGBoost macro-F1=`0.4635`，仅为已暴露历史描述，不能反向选择模型。
+- site permutation SHAP 用 fold 1 的 12 个等距背景日解释 fold 2 的 25 个等距日期，输出
+  `25×32=800` 行，标量为期望等级 `Σk·P(k)`。前四项依赖为 ATU2 切线角 `0.5440`、ATU1
+  切线角 `0.4815`、ATU5 速度 `0.2094`、ATU2 速度 `0.1799`；只表示模型依赖，不是因果
+  主控因素，也不是 ConvLSTM 内部 SHAP。
+- 正式 pipeline stage 用时 29.8 秒。时间线同时展示 site 自动标签、site NGBoost 与全部
+  8 点的 861 日颜色；SHAP/时间线均导出 PNG/PDF/SVG。源码图件预检无 fail，PDF 最小字号
+  分别 7/6 pt，两个最终 PDF 的碰撞审计均为 `0 fail, 0 warn`。300 dpi PNG 是预览，PDF/SVG
+  是矢量主件；未额外生成无必要 TIFF。SHAP masker 运行时由 sklearn 发出 3 条矩阵数值
+  warning，但所有最终概率、SHAP 值及概率和均通过 finite/归一检查，未为消除提示增加兼容层。
+- 下一步只预注册一个因果状态记忆 challenger：把 issue 时刻已成熟的 `y_(t-7)` 作为一项
+  机器可得状态记忆，与原 32 个导师指标联合训练 NGBoost，判断能否在保持 persistence 的
+  同时改善转折；不启动 horizon、消融、概率校准或参数网格。
 
 ## 2026-08-30 藕塘 live feed 真实来源审计（本增量）
 
