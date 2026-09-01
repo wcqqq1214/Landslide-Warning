@@ -13,12 +13,19 @@ import matplotlib as mpl
 
 mpl.use("Agg")
 
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from matplotlib import font_manager
 from matplotlib.colors import BoundaryNorm, ListedColormap
+from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
+
+try:
+    from audit_panel_alignment import require_matplotlib_panel_alignment
+except ModuleNotFoundError:
+    require_matplotlib_panel_alignment = None
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +41,7 @@ STATION_INDICATOR_PATH = (
     / "figures/warning_operational_draft_v4/"
     "ootang_operational_station_timeline.csv"
 )
+FORECAST_PREDICTIONS_PATH = ROOT / "figures/convlstm/forecast_predictions.csv"
 
 COLORS = {
     "gray": "#60676D",
@@ -76,6 +84,15 @@ def _configure_style() -> None:
 
 
 def _save_figure(fig: plt.Figure, stem: str) -> None:
+    if require_matplotlib_panel_alignment is not None:
+        require_matplotlib_panel_alignment(
+            fig,
+            json_out=QA_OUTPUT_DIR / f"{stem}.alignment-audit.json",
+            overlay_svg=QA_OUTPUT_DIR / f"{stem}.alignment-overlay.svg",
+            tolerance_pt=1.5,
+            gutter_tolerance_pt=1.5,
+            strict=True,
+        )
     fig.savefig(
         OUTPUT_DIR / f"{stem}.png",
         dpi=300,
@@ -190,6 +207,211 @@ def build_validation_summary() -> None:
     plt.close(fig)
 
 
+def build_forecast_station_figures() -> None:
+    data = pd.read_csv(FORECAST_PREDICTIONS_PATH, parse_dates=["date"])
+    station_order = ["MJ9", "MJ1", "MJ3", "ATU4", "ATU5", "ATU3", "ATU2", "ATU1"]
+    required_columns = {
+        "date",
+        "station",
+        "split",
+        "actual",
+        "persistence",
+        "p10",
+        "p50",
+        "p90",
+        "calibrated_p10",
+        "calibrated_p90",
+    }
+    missing = required_columns - set(data.columns)
+    if missing:
+        raise ValueError(f"Missing forecast columns: {sorted(missing)}")
+    if data.duplicated(["date", "station"]).any():
+        raise ValueError("Forecast rows must be unique by date and station")
+    if set(data["station"].unique()) != set(station_order):
+        raise ValueError("Expected the eight fixed Ootang monitoring stations")
+    if not data.groupby("date")["station"].nunique().eq(len(station_order)).all():
+        raise ValueError("Every forecast date must include all eight monitoring stations")
+
+    split_by_date = data.groupby("date", sort=True)["split"].agg(lambda values: set(values))
+    if any(len(values) != 1 for values in split_by_date):
+        raise ValueError("Every date must belong to exactly one forecast split")
+    split_sequence = [next(iter(values)) for values in split_by_date]
+    split_transitions = [
+        split
+        for index, split in enumerate(split_sequence)
+        if index == 0 or split != split_sequence[index - 1]
+    ]
+    if split_transitions != ["fit", "calibration", "test"]:
+        raise ValueError("Expected ordered fit, calibration and test periods")
+
+    interval_columns = {
+        "fit": ("p10", "p90"),
+        "calibration": ("calibrated_p10", "calibrated_p90"),
+        "test": ("calibrated_p10", "calibrated_p90"),
+    }
+    for split, (lower_column, upper_column) in interval_columns.items():
+        rows = data.loc[data["split"] == split]
+        values = rows[[lower_column, "p50", upper_column]].to_numpy(dtype=float)
+        if not np.isfinite(values).all():
+            raise ValueError(f"Non-finite {split} prediction interval")
+        if np.any(values[:, 0] > values[:, 1]) or np.any(values[:, 1] > values[:, 2]):
+            raise ValueError(f"Invalid ordered {split} prediction interval")
+
+    calibration_start = data.loc[data["split"] == "calibration", "date"].min()
+    test_start = data.loc[data["split"] == "test", "date"].min()
+    split_styles = {
+        "fit": {
+            "color": "#377EB8",
+            "alpha": 0.24,
+        },
+        "calibration": {
+            "color": "#4C9F50",
+            "alpha": 0.28,
+        },
+        "test": {
+            "color": "#D84A4A",
+            "alpha": 0.30,
+        },
+    }
+    legend_handles = [
+        Line2D([], [], color="#111111", linewidth=1.8, label="实测位移"),
+        Line2D([], [], color=split_styles["fit"]["color"], linewidth=1.25,
+               linestyle=(0, (3, 3)), label="拟合段 P50"),
+        Line2D([], [], color=split_styles["calibration"]["color"], linewidth=1.25,
+               linestyle=(0, (3, 3)), label="校准段 P50"),
+        Line2D([], [], color=split_styles["test"]["color"], linewidth=1.25,
+               linestyle=(0, (3, 3)), label="测试段 P50"),
+    ]
+
+    for station in station_order:
+        fig, (ax, ax_increment) = plt.subplots(
+            2,
+            1,
+            figsize=(7.2, 7.5),
+            gridspec_kw={"height_ratios": [1.25, 1.0]},
+        )
+        fig.subplots_adjust(left=0.13, right=0.985, bottom=0.09, top=0.76, hspace=0.43)
+        fig.suptitle(
+            f"{station} 测点位移预测",
+            y=0.985,
+            fontsize=13,
+            fontweight="bold",
+            color=COLORS["ink"],
+        )
+
+        station_data = data.loc[data["station"] == station].sort_values("date")
+        ax.plot(
+            station_data["date"],
+            station_data["actual"],
+            color="#111111",
+            linewidth=1.8,
+            alpha=1.0,
+            zorder=4,
+        )
+
+        for split in ("fit", "calibration", "test"):
+            split_data = station_data.loc[station_data["split"] == split]
+            style = split_styles[split]
+            lower_column, upper_column = interval_columns[split]
+            ax.fill_between(
+                split_data["date"],
+                split_data[lower_column],
+                split_data[upper_column],
+                color=style["color"],
+                alpha=style["alpha"],
+                linewidth=0,
+                zorder=1,
+            )
+            ax.plot(
+                split_data["date"],
+                split_data["p50"],
+                color=style["color"],
+                linewidth=1.25,
+                linestyle=(0, (3, 3)),
+                zorder=5,
+            )
+
+        for boundary in (calibration_start, test_start):
+            ax.axvline(
+                boundary,
+                color="#747B80",
+                linewidth=1.0,
+                linestyle=":",
+                zorder=2,
+            )
+        ax.set_ylabel("位移 U（mm）")
+        ax.set_xlabel("日期")
+        ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+        ax.grid(axis="y", color="#D9DEE2", linewidth=0.65, alpha=0.75)
+        ax.set_axisbelow(True)
+        ax.margins(x=0)
+
+        test_data = station_data.loc[station_data["split"] == "test"]
+        actual_increment = test_data["actual"] - test_data["persistence"]
+        predicted_increment = test_data["p50"] - test_data["persistence"]
+        lower_increment = test_data["calibrated_p10"] - test_data["persistence"]
+        upper_increment = test_data["calibrated_p90"] - test_data["persistence"]
+        ax_increment.fill_between(
+            test_data["date"],
+            lower_increment,
+            upper_increment,
+            color=split_styles["test"]["color"],
+            alpha=0.22,
+            linewidth=0,
+            zorder=1,
+            label="P10-P90 增量区间",
+        )
+        ax_increment.plot(
+            test_data["date"],
+            actual_increment,
+            color="#111111",
+            linewidth=1.45,
+            zorder=4,
+            label="实测日增量",
+        )
+        ax_increment.plot(
+            test_data["date"],
+            predicted_increment,
+            color=split_styles["test"]["color"],
+            linewidth=1.3,
+            linestyle=(0, (3, 3)),
+            zorder=5,
+            label="P50 日增量",
+        )
+        ax_increment.axhline(0, color="#747B80", linewidth=0.8, zorder=2)
+        ax_increment.set_ylabel("日增量 ΔU（mm/d）")
+        ax_increment.set_xlabel("测试段日期")
+        ax_increment.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+        ax_increment.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+        ax_increment.grid(axis="y", color="#D9DEE2", linewidth=0.65, alpha=0.75)
+        ax_increment.set_axisbelow(True)
+        ax_increment.margins(x=0)
+        ax_increment.legend(
+            loc="lower center",
+            bbox_to_anchor=(0.5, 1.01),
+            ncol=3,
+            frameon=False,
+            fontsize=8.5,
+            handlelength=2.5,
+            columnspacing=1.4,
+        )
+        fig.legend(
+            handles=legend_handles,
+            loc="upper center",
+            bbox_to_anchor=(0.5, 0.88),
+            ncol=4,
+            frameon=False,
+            fontsize=9,
+            handlelength=2.8,
+            columnspacing=1.5,
+            handletextpad=0.6,
+        )
+
+        _save_figure(fig, f"forecast_{station.lower()}")
+        plt.close(fig)
+
+
 def build_station_indicator_overview() -> None:
     data = pd.read_csv(STATION_INDICATOR_PATH, parse_dates=["date"])
     station_order = ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]
@@ -275,6 +497,7 @@ def main() -> None:
     _configure_style()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     QA_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    build_forecast_station_figures()
     build_validation_summary()
     build_station_indicator_overview()
 

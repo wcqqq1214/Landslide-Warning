@@ -37,11 +37,77 @@
 
 \section{全部测点位移预测}
 
+各图上栏显示全时段累计位移及 P10/P50/P90，下栏显示测试段日增量。
+模型按实测 $U(t-1)$ 作一步预测，累计曲线重合不代表长期预测准确。
+
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth,height=0.77\textheight,keepaspectratio]{../figures/convlstm/forecast_all_stations.png}
-  \caption{8 个测点的完整位移时间轴。黑线为实测值，彩色线为 P50，浅色带为 P10--P90 预测区间；拟合、校准和测试阶段均已标出。}
-  \label{fig:all-stations}
+  \includegraphics[width=\textwidth]{figures/forecast_mj9.png}
+  \caption{MJ9 测点一步位移预测。}
+  \label{fig:forecast-mj9}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_mj1.png}
+  \caption{MJ1 测点一步位移预测。}
+  \label{fig:forecast-mj1}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_mj3.png}
+  \caption{MJ3 测点一步位移预测。}
+  \label{fig:forecast-mj3}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_atu4.png}
+  \caption{ATU4 测点一步位移预测。}
+  \label{fig:forecast-atu4}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_atu5.png}
+  \caption{ATU5 测点一步位移预测。}
+  \label{fig:forecast-atu5}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_atu3.png}
+  \caption{ATU3 测点一步位移预测。}
+  \label{fig:forecast-atu3}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_atu2.png}
+  \caption{ATU2 测点一步位移预测。}
+  \label{fig:forecast-atu2}
+\end{figure}
+
+\clearpage
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{figures/forecast_atu1.png}
+  \caption{ATU1 测点一步位移预测。}
+  \label{fig:forecast-atu1}
 \end{figure}
 
 \clearpage
@@ -118,23 +184,28 @@ SHAP 的解释目标为 $\sum_{k=0}^{4}kP(y=k\mid X_t)$。它说明模型依赖�
   a_i=\frac{v_i-v_{i-1}}{t_i-t_{i-1}}.
 \]
 
-本页是透明规则诊断基线，覆盖 514 日，与 NGBoost 的 861 日模型输出时间域不同，
-也不替代 NGBoost 主输出。
+本页展示校准段与测试段，共 514 日；拟合段仅用于估计规则参数。其时间域不同于
+NGBoost 的 861 日模型输出，二者不能直接比较；本页也不替代 NGBoost 主输出。
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=0.64\textheight,keepaspectratio]{figures/station_indicator_overview.png}
-  \caption{透明规则诊断基线在 514 日内的全部 8 个测点结果。前四组为区间位置、速度、严格加速度和改进切线角，最下一组为测点候选融合；四项指标全部保留，不分主次。}
+  \caption{透明规则诊断基线在 514 日内的全部 8 个测点结果。前四组为区间位置、速度、严格加速度和改进切线角，最下一组为各测点内部的四指标候选融合（取最高等级）；四项指标全部保留，不分主次。}
   \label{fig:station-indicators}
 \end{figure}
 
 \small
+区间位置按实测位移高出 P50 的程度作单侧偏差诊断，不等同于 PICP。速度基线 $V_0$
+由拟合段的 K-means 低速前缀自动估计。测点候选取区间、加速度及速度--切线角家族的
+最高等级，不按多数投票。
+
 加速度分级采用 $A_0=\max(1.5A,\ A+2\sigma_a)$：green $<A_0-\sigma_a$，blue 为
-$[A_0-\sigma_a,A_0+\sigma_a]$，yellow 到 $5A_0$，orange 为 $[5A_0,10A_0)$，red
+$[A_0-\sigma_a,A_0+\sigma_a]$，yellow 为 $(A_0+\sigma_a,5A_0)$，orange 为 $[5A_0,10A_0)$，red
 $\geq10A_0$。这是当前项目的自动化实现，不是论文直接给出的加速度阈值，也不是现场标准。
 
-在这 514 日诊断窗口中，114 日满足跨区整体确认，400 日仅保留局部异常。该规则用于检查
-多点空间一致性，不是正式预警模型，也不替代滑坡体级 NGBoost。
+514 日中，106 日达到至少 2 个测点、2 个分区的跨区确认；8 日仅有局部 blue，整体轴仍为
+green；400 日存在局部 yellow 及以上候选，但未获跨区佐证，不能视为 400 次异常或预警
+事件。该规则仅检查多点空间一致性，不替代滑坡体级 NGBoost。
 \normalsize
 
 \end{document}
