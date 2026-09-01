@@ -47,7 +47,15 @@ from threadpoolctl import threadpool_limits  # noqa: E402
 plt.rcParams.update(
     {
         "font.family": "sans-serif",
-        "font.sans-serif": ["Arial", "Helvetica", "DejaVu Sans", "sans-serif"],
+        "font.sans-serif": [
+            "Arial Unicode MS",
+            "PingFang SC",
+            "Songti SC",
+            "Arial",
+            "Helvetica",
+            "DejaVu Sans",
+            "sans-serif",
+        ],
         "font.size": 7,
         "pdf.fonttype": 42,
         "svg.fonttype": "none",
@@ -842,10 +850,10 @@ def _plot_shap_summary(
 ) -> None:
     overall = importance.nlargest(15, "mean_abs_shap")
     indicator_labels = {
-        "interval_z": "Interval z",
-        "velocity_mm_per_day": "Velocity",
-        "acceleration_mm_per_day_squared": "Acceleration",
-        "tangent_angle_degree": "Tangent angle",
+        "interval_z": "区间位置 z",
+        "velocity_mm_per_day": "速度",
+        "acceleration_mm_per_day_squared": "严格加速度",
+        "tangent_angle_degree": "改进切线角",
     }
     display_labels = [
         f"{row.station} · {indicator_labels[row.indicator]}"
@@ -853,8 +861,8 @@ def _plot_shap_summary(
     ]
     fig, axis = plt.subplots(figsize=(7.2, 5.4), constrained_layout=True)
     axis.barh(display_labels[::-1], overall["mean_abs_shap"][::-1], color="#4472C4")
-    axis.set_xlabel("Mean |permutation SHAP| for expected ordinal level")
-    axis.set_title("Fold 2 site-model dependence (non-causal)")
+    axis.set_xlabel("期望五级等级的平均绝对 permutation SHAP")
+    axis.set_title("第 2 时间折：滑坡体级 NGBoost 的模型依赖（非因果）")
     _save_figure(fig, paths)
     plt.close(fig)
 
@@ -879,8 +887,8 @@ def _plot_timeline(
         lambda value: pd.NA if pd.isna(value) else WARNING_COLORS[int(value)]
     )
     panels = [
-        ("site auto-label", truth, "display_color"),
-        ("site NGBoost", site_ngboost, "predicted_color"),
+        ("未来代理标签", truth, "display_color"),
+        ("滑坡体级 NGBoost", site_ngboost, "predicted_color"),
     ]
     for station_name in artifact_io.OOTANG_STATIONS:
         panels.append(
@@ -916,7 +924,7 @@ def _plot_timeline(
         axis.set_yticks([])
         axis.set_ylim(-1, 1)
         axis.grid(axis="x", alpha=0.2)
-    axes[0].set_title("Ootang site and all-station fixed NGBoost outputs")
+    axes[0].set_title("藕塘滑坡体级与 8 测点 NGBoost 逐时输出")
     axes[0].grid(False)
     axes[0].legend(
         handles=[
@@ -934,7 +942,7 @@ def _plot_timeline(
         handlelength=1.0,
         columnspacing=0.8,
     )
-    axes[-1].set_xlabel("Date")
+    axes[-1].set_xlabel("日期")
     _save_figure(fig, paths)
     plt.close(fig)
 

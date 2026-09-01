@@ -36,16 +36,7 @@ STATION_INDICATOR_PATH = (
 )
 
 COLORS = {
-    "blue": "#416B8F",
-    "blue_light": "#DCE8F2",
-    "green": "#5F8C62",
-    "green_light": "#E2EEE3",
-    "orange": "#D7832F",
-    "orange_light": "#F7E7D5",
-    "red": "#B64D4D",
-    "red_light": "#F4DEDE",
     "gray": "#60676D",
-    "gray_light": "#EEF1F3",
     "ink": "#202428",
 }
 

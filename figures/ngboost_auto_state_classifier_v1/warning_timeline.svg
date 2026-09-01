@@ -2638,7 +2638,7 @@ L 0 3.5
    </g>
    <g id="matplotlib.axis_2">
     <g id="text_1">
-     <text style="font-size: 6.5px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="43.466803" y="37.429358" transform="rotate(-0 43.466803 37.429358)">site auto-label</text>
+     <text style="font-size: 6.5px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="43.466803" y="37.429358" transform="rotate(-0 43.466803 37.429358)">未来代理标签</text>
     </g>
    </g>
    <g id="patch_3">
@@ -2662,7 +2662,7 @@ L 515.39976 15.120428
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_2">
-    <text style="font-size: 8.4px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="281.433281" y="9.120428" transform="rotate(-0 281.433281 9.120428)">Ootang site and all-station fixed NGBoost outputs</text>
+    <text style="font-size: 8.4px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="281.433281" y="9.120428" transform="rotate(-0 281.433281 9.120428)">藕塘滑坡体级与 8 测点 NGBoost 逐时输出</text>
    </g>
    <g id="legend_1">
     <g id="patch_7">
@@ -5440,7 +5440,7 @@ L 494.624724 65.878065
    </g>
    <g id="matplotlib.axis_4">
     <g id="text_8">
-     <text style="font-size: 6.5px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="43.466803" y="88.186995" transform="rotate(-0 43.466803 88.186995)">site NGBoost</text>
+     <text style="font-size: 6.5px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="60.000000" y="88.186995" transform="rotate(-0 43.466803 88.186995)">滑坡体级 NGBoost</text>
     </g>
    </g>
    <g id="patch_13">
@@ -27404,7 +27404,7 @@ L 494.624724 471.939165
      </g>
     </g>
     <g id="text_26">
-     <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="281.433281" y="535.60851" transform="rotate(-0 281.433281 535.60851)">Date</text>
+     <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="281.433281" y="535.60851" transform="rotate(-0 281.433281 535.60851)">日期</text>
     </g>
    </g>
    <g id="matplotlib.axis_20">

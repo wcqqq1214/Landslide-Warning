@@ -224,7 +224,7 @@ L 0 3.5
      </g>
     </g>
     <g id="text_7">
-     <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="296.424688" y="384.326479" transform="rotate(-0 296.424688 384.326479)">Mean |permutation SHAP| for expected ordinal level</text>
+     <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="296.424688" y="384.326479" transform="rotate(-0 296.424688 384.326479)">期望五级等级的平均绝对 permutation SHAP</text>
     </g>
    </g>
    <g id="matplotlib.axis_2">
@@ -240,7 +240,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_8">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="340.055728" transform="rotate(-0 70.449615 340.055728)">ATU5 · Acceleration</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="340.055728" transform="rotate(-0 70.449615 340.055728)">ATU5 · 严格加速度</text>
      </g>
     </g>
     <g id="ytick_2">
@@ -250,7 +250,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_9">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="318.758812" transform="rotate(-0 70.449615 318.758812)">ATU4 · Acceleration</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="318.758812" transform="rotate(-0 70.449615 318.758812)">ATU4 · 严格加速度</text>
      </g>
     </g>
     <g id="ytick_3">
@@ -260,7 +260,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_10">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="297.472286" transform="rotate(-0 70.449615 297.472286)">ATU3 · Velocity</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="297.472286" transform="rotate(-0 70.449615 297.472286)">ATU3 · 速度</text>
      </g>
     </g>
     <g id="ytick_4">
@@ -270,7 +270,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_11">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="276.175369" transform="rotate(-0 70.449615 276.175369)">ATU3 · Tangent angle</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="276.175369" transform="rotate(-0 70.449615 276.175369)">ATU3 · 改进切线角</text>
      </g>
     </g>
     <g id="ytick_5">
@@ -280,7 +280,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_12">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="254.868062" transform="rotate(-0 70.449615 254.868062)">ATU1 · Interval z</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="254.868062" transform="rotate(-0 70.449615 254.868062)">ATU1 · 区间位置 z</text>
      </g>
     </g>
     <g id="ytick_6">
@@ -290,7 +290,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_13">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="233.571146" transform="rotate(-0 70.449615 233.571146)">MJ1 · Acceleration</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="233.571146" transform="rotate(-0 70.449615 233.571146)">MJ1 · 严格加速度</text>
      </g>
     </g>
     <g id="ytick_7">
@@ -300,7 +300,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_14">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="212.274229" transform="rotate(-0 70.449615 212.274229)">ATU2 · Interval z</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="212.274229" transform="rotate(-0 70.449615 212.274229)">ATU2 · 区间位置 z</text>
      </g>
     </g>
     <g id="ytick_8">
@@ -310,7 +310,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_15">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="190.977313" transform="rotate(-0 70.449615 190.977313)">ATU4 · Velocity</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="190.977313" transform="rotate(-0 70.449615 190.977313)">ATU4 · 速度</text>
      </g>
     </g>
     <g id="ytick_9">
@@ -320,7 +320,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_16">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="169.680396" transform="rotate(-0 70.449615 169.680396)">MJ9 · Acceleration</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="169.680396" transform="rotate(-0 70.449615 169.680396)">MJ9 · 严格加速度</text>
      </g>
     </g>
     <g id="ytick_10">
@@ -330,7 +330,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_17">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="148.383479" transform="rotate(-0 70.449615 148.383479)">MJ3 · Acceleration</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="148.383479" transform="rotate(-0 70.449615 148.383479)">MJ3 · 严格加速度</text>
      </g>
     </g>
     <g id="ytick_11">
@@ -340,7 +340,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_18">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="127.086563" transform="rotate(-0 70.449615 127.086563)">ATU5 · Tangent angle</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="127.086563" transform="rotate(-0 70.449615 127.086563)">ATU5 · 改进切线角</text>
      </g>
     </g>
     <g id="ytick_12">
@@ -350,7 +350,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_19">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="105.800037" transform="rotate(-0 70.449615 105.800037)">ATU2 · Velocity</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="105.800037" transform="rotate(-0 70.449615 105.800037)">ATU2 · 速度</text>
      </g>
     </g>
     <g id="ytick_13">
@@ -360,7 +360,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_20">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="84.49273" transform="rotate(-0 70.449615 84.49273)">ATU5 · Velocity</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="84.49273" transform="rotate(-0 70.449615 84.49273)">ATU5 · 速度</text>
      </g>
     </g>
     <g id="ytick_14">
@@ -370,7 +370,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_21">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="63.206204" transform="rotate(-0 70.449615 63.206204)">ATU1 · Tangent angle</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="63.206204" transform="rotate(-0 70.449615 63.206204)">ATU1 · 改进切线角</text>
      </g>
     </g>
     <g id="ytick_15">
@@ -380,7 +380,7 @@ L -3.5 0
       </g>
      </g>
      <g id="text_22">
-      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="41.909287" transform="rotate(-0 70.449615 41.909287)">ATU2 · Tangent angle</text>
+      <text style="font-size: 7px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: end" x="70.449615" y="41.909287" transform="rotate(-0 70.449615 41.909287)">ATU2 · 改进切线角</text>
      </g>
     </g>
    </g>
@@ -405,7 +405,7 @@ L 515.39976 15.115178
 " style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
    </g>
    <g id="text_23">
-    <text style="font-size: 8.4px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="296.424688" y="9.115178" transform="rotate(-0 296.424688 9.115178)">Fold 2 site-model dependence (non-causal)</text>
+    <text style="font-size: 8.4px; font-family: 'Arial', 'Helvetica', 'DejaVu Sans', sans-serif; text-anchor: middle" x="296.424688" y="9.115178" transform="rotate(-0 296.424688 9.115178)">第 2 时间折：滑坡体级 NGBoost 的模型依赖（非因果）</text>
    </g>
   </g>
  </g>
