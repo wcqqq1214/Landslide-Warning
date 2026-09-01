@@ -23,8 +23,17 @@ latexmk -C -outdir=build process_report.tex
 ## 图件逻辑
 
 流程总览由 Draw.io 维护：可编辑源文件为 `figures/process_overview.drawio`，报告使用其导出的
-`figures/process_overview.png`。`process_report_figures.py` 只生成其余数据驱动图件，避免
-重新运行脚本时覆盖 Draw.io 流程图。
+`figures/process_overview.png`。`process_report_figures.py` 生成 8 张测点预测图、ConvLSTM
+三折汇总图和四指标图，不会覆盖 Draw.io 流程图。逐时预警图和完整 32 项 SHAP 图直接使用
+`../figures/ngboost_auto_state_classifier_v1/` 中的版本化产物，编译报告不会重训 NGBoost。
+
+如需从既有 CSV 免训练重绘本目录的数据图，在仓库根目录执行：
+
+```bash
+PYTHONPATH=code uv run python paper/process_report_figures.py
+```
+
+如需修改流程图，在 Draw.io 中编辑源文件后重新导出 PNG；不要把流程图改回 Python 生成。
 
 报告按展示顺序组织：
 

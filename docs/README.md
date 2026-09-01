@@ -28,15 +28,18 @@ ConvLSTM 多测点概率位移预测
 
 当前 SHAP 是 **NGBoost 分类 SHAP**，解释 site 分类器的期望有序等级。它不是 ConvLSTM SHAP，
 也不是因果证明；当前定义见 [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md)。
-早期独立回归 SHAP 的执行链已经退役；旧报告直接嵌入的少量图件仅作历史快照。
+当前汇总图展示全部 8 点 × 4 指标的 32 项依赖；早期独立回归 SHAP 的执行链已经退役，
+保留图件仅作历史快照。
 
 | 时间分母 | 数量 | 使用位置 |
 | --- | ---: | --- |
-| 原始物化序列 | 1,461 日 | 完整藕塘输入历史 |
+| 原始物化序列 | 1,461 日 | 完整藕塘输入历史；运动学长表为 `1461×8` 行 |
+| ConvLSTM 一步预测 | 1,425 日 | 2016-08-06 至 2020-06-30；fit/calibration/test 为 911/227/287 日 |
 | NGBoost 模型可用时间 | 861 日 | 三折分类与逐时概率；SHAP 从固定折内样本解释 |
-| v4 透明规则基线 | 514 日 | 基线自己的有效输入/结果窗口 |
+| v4 透明规则基线 | 514 日 | 基线自己的有效输入/结果窗口；测点表为 `514×8` 行 |
 
-三者不能互相替代。“全部时刻”必须写清是全部 861 个模型可用时刻，还是 v4 的 514 个基线时刻。
+这些口径不能互相替代。“全部时刻”必须写清是全部 861 个模型可用时刻，还是 v4 的 514 个
+基线时刻。861 日中有 840 日成熟 H=7 标签；每折末端合计 21 日标签尚未成熟，但仍保留模型输出。
 
 Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可读取其数据进入适配、训练或结果生成。
 
@@ -51,6 +54,7 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 | [`ngboost_shap_protocol.md`](ngboost_shap_protocol.md) | 当前五分类 site NGBoost 的 SHAP 对象、样本和解释边界 |
 | [`ootang_operational_run.md`](ootang_operational_run.md) | 四指标计算与 v4 透明规则基线；不替代 NGBoost |
 | [`ootang_warning_data_dictionary.md`](ootang_warning_data_dictionary.md) | 指标、状态、单位和输出字段定义 |
+| [`../paper/process_report.tex`](../paper/process_report.tex) / [`编译说明`](../paper/README.md) | 当前以图为主的阶段报告；数值仍以配置、manifest 和 CSV 为准 |
 
 ## Reference：辅助核对材料
 
@@ -62,6 +66,8 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 | [`ootang_interval_calibration_expert_review.md`](ootang_interval_calibration_expert_review.md) | 预测区间校准及覆盖率审查 |
 | [`ootang_stable_segment_expert_review.md`](ootang_stable_segment_expert_review.md) | 稳定段与 V0 比较器边界审查 |
 | [`ootang_v4_acceleration_decision.md`](ootang_v4_acceleration_decision.md) | 严格加速度阈值的项目操作化依据 |
+| [`current_method_reference_register.md`](current_method_reference_register.md) | 当前方法所用文献、合法来源和引用边界 |
+| [`advisor_review_action_plan.md`](advisor_review_action_plan.md) | 被 v1/v2 协议配置引用的导师意见快照；当前约束以 `AGENTS.md` 为准 |
 
 ## Historical：历史路线与工程记录
 
@@ -76,9 +82,9 @@ auto-V0/V5 gate 与未启用 ConvLSTM inner/capacity 支路可从基线 `b13eb8b
 | [`figures/pipeline/ootang_advisor_demo_run.json`](../figures/pipeline/ootang_advisor_demo_run.json) | 藕塘五阶段运行清单与产物合同 |
 | [`figures/convlstm/`](../figures/convlstm/) | 全 8 测点预测、区间、覆盖率和滚动评价 |
 | [`figures/ngboost_auto_state_ecdf_v2/`](../figures/ngboost_auto_state_ecdf_v2/) | H=7 自动标签、边界及时间线 |
-| [`figures/ngboost_auto_state_classifier_v1/`](../figures/ngboost_auto_state_classifier_v1/) | 五级概率、基线指标、分类 SHAP 及逐时预警 |
+| [`figures/ngboost_auto_state_classifier_v1/`](../figures/ngboost_auto_state_classifier_v1/) | 五级概率、基线指标、完整 32 项分类 SHAP 及 861 日逐时预警 |
 | [`figures/warning_operational_draft_v4/`](../figures/warning_operational_draft_v4/) | 514 日透明规则基线和多点诊断 |
 | [`figures/advisor_ootang_v1/advisor_summary.md`](../figures/advisor_ootang_v1/advisor_summary.md) | 已生成核心图表和表格的索引 |
 
-`advisor_summary.md` 只是生成证据索引，不是正在撰写或已经定稿的导师报告。解释任何结果时，
-应同时核对对应配置、manifest、CSV 指标和当前局限说明。
+`advisor_summary.md` 只是机械生成的证据索引，不替代当前 `paper/process_report.tex`。解释任何
+结果时，应同时核对对应配置、manifest、CSV 指标和当前局限说明。
