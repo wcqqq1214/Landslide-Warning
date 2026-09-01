@@ -83,7 +83,12 @@ def _configure_style() -> None:
     )
 
 
-def _save_figure(fig: plt.Figure, stem: str) -> None:
+def _save_figure(
+    fig: plt.Figure,
+    stem: str,
+    *,
+    alignment_options: dict[str, object] | None = None,
+) -> None:
     if require_matplotlib_panel_alignment is not None:
         require_matplotlib_panel_alignment(
             fig,
@@ -92,6 +97,7 @@ def _save_figure(fig: plt.Figure, stem: str) -> None:
             tolerance_pt=1.5,
             gutter_tolerance_pt=1.5,
             strict=True,
+            **(alignment_options or {}),
         )
     fig.savefig(
         OUTPUT_DIR / f"{stem}.png",
@@ -138,7 +144,7 @@ def build_validation_summary() -> None:
 
     folds = overall["fold"].to_numpy(dtype=int)
     x = np.arange(len(folds))
-    fold_colors = ["#416B8F", "#779AB6", "#B65B53"]
+    fold_colors = ["#365F73", "#6E8FA3", "#A7BAC6"]
 
     fig, axes = plt.subplots(2, 2, figsize=(7.2, 4.7), constrained_layout=True)
     axes = axes.ravel()
@@ -152,8 +158,16 @@ def build_validation_summary() -> None:
     axes[0].set_xticks(x, [f"折 {fold}" for fold in folds])
     axes[0].set_xlim(-0.45, 2.85)
     axes[0].set_ylim(0, max(rmse_ratio + rmse_ratio_err) * 1.16)
-    for xi, value in zip(x, rmse_ratio, strict=True):
-        axes[0].text(xi, value + 0.18, f"{value:.2f}×", ha="center", va="bottom", fontsize=8)
+    for xi, value, spread in zip(x, rmse_ratio, rmse_ratio_err, strict=True):
+        axes[0].annotate(
+            f"{value:.2f}×",
+            xy=(xi, value + spread),
+            xytext=(0, 4),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
     axes[0].text(2.42, 1.03, "基线 = 1", ha="left", va="bottom", fontsize=7.5, color=COLORS["gray"])
     _panel_label(axes[0], "a")
 
@@ -166,8 +180,16 @@ def build_validation_summary() -> None:
     axes[1].set_xticks(x, [f"折 {fold}" for fold in folds])
     axes[1].set_xlim(-0.45, 2.85)
     axes[1].set_ylim(0, 1.08)
-    for xi, value in zip(x, coverage, strict=True):
-        axes[1].text(xi, min(value + 0.035, 1.02), f"{value:.3f}", ha="center", va="bottom", fontsize=8)
+    for xi, value, spread in zip(x, coverage, coverage_err, strict=True):
+        axes[1].annotate(
+            f"{value:.3f}",
+            xy=(xi, value + spread),
+            xytext=(0, 6),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
     axes[1].text(2.42, 0.81, "目标 = 0.80", ha="left", va="bottom", fontsize=7.5, color=COLORS["gray"])
     _panel_label(axes[1], "b")
 
@@ -175,13 +197,22 @@ def build_validation_summary() -> None:
     correlation_err = overall["increment_correlation_std"].to_numpy()
     axes[2].bar(x, correlation, yerr=correlation_err, color=fold_colors, capsize=4, width=0.62)
     axes[2].axhline(0.0, color=COLORS["gray"], linewidth=1.0)
-    axes[2].set_ylabel("预测与实际日增量相关")
-    axes[2].set_title("逐日动态跟踪能力有限")
+    axes[2].set_ylabel("Pearson r（预测与实际日增量）")
+    axes[2].set_title("日增量线性相关")
     axes[2].set_xticks(x, [f"折 {fold}" for fold in folds])
     axes[2].set_ylim(-0.3, 0.42)
-    for xi, value in zip(x, correlation, strict=True):
-        y_text = value + 0.04 if value >= 0 else value - 0.06
-        axes[2].text(xi, y_text, f"{value:.3f}", ha="center", va="center", fontsize=8)
+    for xi, value, spread in zip(x, correlation, correlation_err, strict=True):
+        y_anchor = value + spread if value >= 0 else value - spread
+        y_offset = 4 if value >= 0 else -4
+        axes[2].annotate(
+            f"{value:.3f}",
+            xy=(xi, y_anchor),
+            xytext=(0, y_offset),
+            textcoords="offset points",
+            ha="center",
+            va="bottom" if value >= 0 else "top",
+            fontsize=8,
+        )
     _panel_label(axes[2], "c")
 
     std_ratio = overall["increment_std_ratio_mean"].to_numpy()
@@ -192,12 +223,20 @@ def build_validation_summary() -> None:
     axes[3].axhline(1.0, color=COLORS["gray"], linestyle="--", linewidth=1.1)
     axes[3].set_yscale("log")
     axes[3].set_ylabel("预测 / 实际日增量标准差")
-    axes[3].set_title("前两折放大，第三折强平滑")
+    axes[3].set_title("日增量标准差比")
     axes[3].set_xticks(x, [f"折 {fold}" for fold in folds])
     axes[3].set_xlim(-0.45, 2.85)
     axes[3].set_ylim(0.09, 12.5)
-    for xi, value in zip(x, std_ratio, strict=True):
-        axes[3].text(xi, value * 1.28, f"{value:.3f}", ha="center", va="bottom", fontsize=8)
+    for xi, value, spread in zip(x, std_ratio, std_ratio_err, strict=True):
+        axes[3].annotate(
+            f"{value:.3f}",
+            xy=(xi, value + spread),
+            xytext=(0, 12),
+            textcoords="offset points",
+            ha="center",
+            va="bottom",
+            fontsize=8,
+        )
     axes[3].text(2.42, 1.07, "幅度比 = 1", ha="left", va="bottom", fontsize=7.5, color=COLORS["gray"])
     _panel_label(axes[3], "d")
 
@@ -491,11 +530,11 @@ def build_station_indicator_overview() -> None:
     data = pd.read_csv(STATION_INDICATOR_PATH, parse_dates=["date"])
     station_order = ["MJ9", "MJ1", "MJ3", "ATU1", "ATU2", "ATU3", "ATU4", "ATU5"]
     panels = [
-        ("区间位置", "interval_level"),
-        ("速度", "velocity_level"),
-        ("严格加速度", "acceleration_level"),
+        ("位移区间偏离", "interval_level"),
+        ("逐点速度", "velocity_level"),
+        ("逐点加速度", "acceleration_level"),
         ("改进切线角", "tangent_angle_level"),
-        ("测点融合", "candidate_level"),
+        ("测点候选等级\n（四指标融合）", "candidate_level"),
     ]
 
     if data.duplicated(["date", "station"]).any():
@@ -504,20 +543,44 @@ def build_station_indicator_overview() -> None:
         raise ValueError("Expected the eight fixed Ootang monitoring stations")
 
     dates = pd.DatetimeIndex(sorted(data["date"].unique()))
+    split_by_date = data.groupby("date", sort=True)["split"].agg(lambda values: set(values))
+    if any(len(values) != 1 for values in split_by_date):
+        raise ValueError("Every indicator date must belong to exactly one split")
+    split_sequence = [next(iter(values)) for values in split_by_date]
+    split_transitions = [
+        split
+        for index, split in enumerate(split_sequence)
+        if index == 0 or split != split_sequence[index - 1]
+    ]
+    if split_transitions != ["calibration", "test"]:
+        raise ValueError("Expected ordered calibration and test indicator periods")
+    test_start = data.loc[data["split"] == "test", "date"].min()
+    test_start_index = dates.get_loc(test_start)
+    if not isinstance(test_start_index, (int, np.integer)) or test_start_index <= 0:
+        raise ValueError("Expected the test period to start after calibration")
+    boundary_x = float(test_start_index) - 0.5
+
     warning_colors = ["#70A66C", "#4C78A8", "#F2CF5B", "#E6923A", "#C44E52"]
     cmap = ListedColormap(warning_colors)
     cmap.set_bad("#E5E7E9")
     norm = BoundaryNorm(np.arange(-0.5, 5.5, 1), cmap.N)
 
-    fig, axes = plt.subplots(
-        len(panels),
+    fig = plt.figure(figsize=(8.25, 6.65))
+    grid = fig.add_gridspec(
+        6,
         1,
-        figsize=(8.25, 6.4),
-        sharex=True,
+        height_ratios=[1, 1, 1, 1, 0.20, 1],
+        hspace=0.10,
     )
-    fig.subplots_adjust(left=0.16, right=0.985, bottom=0.09, top=0.86, hspace=0.08)
+    axes = np.asarray(
+        [fig.add_subplot(grid[row, 0]) for row in (0, 1, 2, 3, 5)],
+        dtype=object,
+    )
+    for ax in axes[1:]:
+        ax.sharex(axes[0])
+    fig.subplots_adjust(left=0.18, right=0.985, bottom=0.09, top=0.84)
     fig.suptitle(
-        "全部 8 个测点的四项指标与测点融合",
+        "全部 8 个测点的四项指标与测点候选等级",
         fontsize=13,
         fontweight="bold",
         color=COLORS["ink"],
@@ -543,18 +606,67 @@ def build_station_indicator_overview() -> None:
         ax.set_yticks(np.arange(len(station_order)), station_order)
         ax.set_ylabel(title, rotation=0, ha="right", va="center", labelpad=24, fontweight="bold")
         ax.tick_params(axis="y", length=0)
+        ax.axvline(
+            boundary_x,
+            color="#343A40",
+            linewidth=0.9,
+            linestyle=(0, (3.5, 2.5)),
+            zorder=4,
+        )
         for spine in ax.spines.values():
             spine.set_visible(False)
+
+    calibration_center = (test_start_index - 1) / 2
+    test_center = (test_start_index + len(dates) - 1) / 2
+    axes[0].annotate(
+        "校准",
+        xy=(calibration_center, 1),
+        xycoords=("data", "axes fraction"),
+        xytext=(0, 4),
+        textcoords="offset points",
+        ha="center",
+        va="bottom",
+        fontsize=8.5,
+        color="#52606A",
+        annotation_clip=False,
+    )
+    axes[0].annotate(
+        "测试",
+        xy=(test_center, 1),
+        xycoords=("data", "axes fraction"),
+        xytext=(0, 4),
+        textcoords="offset points",
+        ha="center",
+        va="bottom",
+        fontsize=8.5,
+        color="#52606A",
+        annotation_clip=False,
+    )
+    axes[0].annotate(
+        f"校准/测试边界  {test_start:%Y-%m-%d}",
+        xy=(boundary_x, 1),
+        xycoords=("data", "axes fraction"),
+        xytext=(0, 17),
+        textcoords="offset points",
+        ha="center",
+        va="bottom",
+        fontsize=7.5,
+        color="#343A40",
+        annotation_clip=False,
+    )
 
     tick_positions = np.linspace(0, len(dates) - 1, 6, dtype=int)
     axes[-1].set_xticks(tick_positions, [dates[i].strftime("%Y-%m") for i in tick_positions])
     axes[-1].set_xlabel("日期")
+    for ax in axes[:-1]:
+        ax.tick_params(axis="x", which="both", bottom=False, labelbottom=False)
+    axes[-1].tick_params(axis="x", which="both", bottom=True, labelbottom=True)
     fig.legend(
         handles=[
             Patch(facecolor=color, edgecolor="none", label=label)
             for color, label in zip(
                 warning_colors,
-                ["green", "blue", "yellow", "orange", "red"],
+                ["正常", "蓝", "黄", "橙", "红"],
                 strict=True,
             )
         ],
@@ -564,7 +676,24 @@ def build_station_indicator_overview() -> None:
         frameon=False,
     )
 
-    _save_figure(fig, "station_indicator_overview")
+    _save_figure(
+        fig,
+        "station_indicator_overview",
+        alignment_options={
+            "axes": list(axes),
+            "panel_ids": ["interval", "velocity", "acceleration", "tangent", "candidate"],
+            "column_groups": [
+                ["interval", "velocity", "acceleration", "tangent", "candidate"]
+            ],
+            "exemptions": [
+                {
+                    "panels": ["candidate"],
+                    "checks": ["vertical-gutter"],
+                    "reason": "Candidate-level summary is intentionally separated from the four indicators",
+                }
+            ],
+        },
+    )
     plt.close(fig)
 
 

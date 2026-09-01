@@ -14,7 +14,7 @@
 | 滚动与种子诊断 | [`convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json`](convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/rolling_seed0/manifest.json) / [`seed_stability_0_4/manifest.json`](convlstm/runs/displacement_elevation_exog_v1/fixed120_v1/seed_stability_0_4/manifest.json) | 当前 7 通道 fixed120 内部诊断 |
 | ECDF 自动标签 | [`ngboost_auto_state_ecdf_v2/manifest.json`](ngboost_auto_state_ecdf_v2/manifest.json) | `H=7` 未来多点变形代理状态及开发折边界 |
 | NGBoost 五分类 | [`ngboost_auto_state_classifier_v1/manifest.json`](ngboost_auto_state_classifier_v1/manifest.json) | site 概率、基线比较及测点诊断 |
-| NGBoost SHAP | [`site_shap_summary.png`](ngboost_auto_state_classifier_v1/site_shap_summary.png) / [`site_shap_importance.csv`](ngboost_auto_state_classifier_v1/site_shap_importance.csv) | 解释期望顺序等级，仅表示模型依赖 |
+| NGBoost SHAP | [`site_shap_summary.png`](ngboost_auto_state_classifier_v1/site_shap_summary.png) / [`site_shap_importance.csv`](ngboost_auto_state_classifier_v1/site_shap_importance.csv) | 8 点 × 4 指标全量依赖；解释期望顺序等级，不表示因果 |
 | v4 透明基线 | [`warning_operational_draft_v4/ootang_operational_run_manifest.json`](warning_operational_draft_v4/ootang_operational_run_manifest.json) | 四指标测点结果和多点规则融合，不替代 NGBoost |
 | 证据包 | [`advisor_ootang_v1/manifest.json`](advisor_ootang_v1/manifest.json) / [`advisor_summary.md`](advisor_ootang_v1/advisor_summary.md) | 当前图表与汇总表入口，不是导师报告 |
 

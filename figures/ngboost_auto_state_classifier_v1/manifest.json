@@ -76,28 +76,34 @@
   "figures": {
     "site_shap_summary_pdf": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf",
-      "sha256": "d2e97e2c06782853bbdcaf1b9540a4e0948a5fc9887b7645a0e2e2bd3907fdc7"
+      "sha256": "d5ccf580f5c36f1f0cba73691bde78431776c05439832ec42bd4c94a2934f33c"
     },
     "site_shap_summary_png": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.png",
-      "sha256": "c32187e8222eb16272772db657a5caa568b8a75d4e22345f5b94d3890e74a00c"
+      "sha256": "93a36ec9399219821c1fe449e6c72274a1c9da75834e1d96286dec87b6c06036"
     },
     "site_shap_summary_svg": {
       "path": "figures/ngboost_auto_state_classifier_v1/site_shap_summary.svg",
-      "sha256": "284c417cac523eaf5d0db0ca92427b471058b765056a254a7e9164149c2861b5"
+      "sha256": "c5103cdbbcecdf0787809457c62d5a3f7f7daa35172d9f44f73a0c16e7861465"
     },
     "warning_timeline_pdf": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
-      "sha256": "bb1f5c2c69c9c775e1ec213f72d85b25e47446ec44e8ba85be2c76ea780d0f9b"
+      "sha256": "2378bc7dc7fa41597f8c3cbeba976ff18bf204da0113ab215187f95ed9675cc5"
     },
     "warning_timeline_png": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
-      "sha256": "fb5af97f1614f1a9891301d52d31df43fb634f38ff56879bb82e89785ab7fc49"
+      "sha256": "fd9ac552a69243a1e01adea294171385fb0dd22ae828b04a80fbd30a44cdd93a"
     },
     "warning_timeline_svg": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
-      "sha256": "f154756b626950bbfdb28444ee0c1034c5e273d6ab6804806bea4de670ef41c6"
+      "sha256": "8264ab121605bf9aeb07c22f0e7c6da0d026911116887eba2dae3154ee94a29b"
     }
+  },
+  "figure_refresh": {
+    "date": "2026-09-01",
+    "mode": "existing_csv_plot_only_no_retraining",
+    "numerical_outputs_changed": false,
+    "plotting_source_sha256": "457aa66ed5fae497fcbc7963b01280c33c4eaf522a983e9cd9d4a64de62a1f1c"
   },
   "fold2_development_transition": {
     "scientific_pass_fail_decision": false,

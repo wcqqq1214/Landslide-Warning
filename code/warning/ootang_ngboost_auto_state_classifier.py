@@ -22,7 +22,9 @@ import warnings
 import matplotlib
 
 matplotlib.use("Agg")
+import matplotlib.dates as mdates  # noqa: E402
 import matplotlib.pyplot as plt  # noqa: E402
+from matplotlib.colors import BoundaryNorm, ListedColormap  # noqa: E402
 from matplotlib.patches import Patch  # noqa: E402
 from ngboost import NGBClassifier  # noqa: E402
 from ngboost.distns import k_categorical  # noqa: E402
@@ -842,29 +844,121 @@ def _save_figure(fig: plt.Figure, paths: tuple[Path, Path, Path]) -> None:
             "Figure outputs must be ordered as PNG, PDF, and SVG"
         )
     for path in paths:
-        fig.savefig(path, dpi=300, metadata={"Creator": "Landslide-Warning"})
+        fig.savefig(
+            path,
+            dpi=600,
+            bbox_inches="tight",
+            facecolor="white",
+            metadata={"Creator": "Landslide-Warning"},
+        )
+
+
+def _format_shap_cell(value: float) -> str:
+    if value == 0.0:
+        return "0"
+    if value < 0.001:
+        return "<0.001"
+    return f"{value:.3f}"
 
 
 def _plot_shap_summary(
     importance: pd.DataFrame, paths: tuple[Path, Path, Path]
 ) -> None:
-    overall = importance.nlargest(15, "mean_abs_shap")
     indicator_labels = {
-        "interval_z": "区间位置 z",
-        "velocity_mm_per_day": "速度",
-        "acceleration_mm_per_day_squared": "严格加速度",
+        "interval_z": "位移区间偏离",
+        "velocity_mm_per_day": "逐点速度",
+        "acceleration_mm_per_day_squared": "逐点加速度",
         "tangent_angle_degree": "改进切线角",
     }
-    display_labels = [
-        f"{row.station} · {indicator_labels[row.indicator]}"
-        for row in overall.itertuples()
-    ]
-    fig, axis = plt.subplots(figsize=(7.2, 5.4), constrained_layout=True)
-    axis.barh(display_labels[::-1], overall["mean_abs_shap"][::-1], color="#4472C4")
-    axis.set_xlabel("期望五级等级的平均绝对 permutation SHAP")
-    axis.set_title("第 2 时间折：滑坡体级 NGBoost 的模型依赖（非因果）")
+    expected_index = pd.MultiIndex.from_product(
+        [artifact_io.OOTANG_STATIONS, SCIENTIFIC_FEATURES],
+        names=("station", "indicator"),
+    )
+    observed = importance.set_index(["station", "indicator"])
+    if observed.index.has_duplicates or set(observed.index) != set(expected_index):
+        raise artifact_io.AutoStateInputError(
+            "Site SHAP heatmap requires one importance value for each of the "
+            "fixed 8 stations x 4 indicators"
+        )
+    matrix = (
+        observed["mean_abs_shap"]
+        .unstack("indicator")
+        .reindex(index=artifact_io.OOTANG_STATIONS, columns=SCIENTIFIC_FEATURES)
+    )
+    values = matrix.to_numpy(dtype=float)
+    if not np.isfinite(values).all() or (values < 0.0).any():
+        raise artifact_io.AutoStateInputError(
+            "Site SHAP importance must be finite and non-negative"
+        )
+
+    fig, axis = plt.subplots(figsize=(7.2, 4.6), constrained_layout=True)
+    image = axis.imshow(values, cmap="Blues", vmin=0.0, aspect="auto")
+    color_limit = float(values.max())
+    text_threshold = 0.45 * color_limit
+    for row_index in range(values.shape[0]):
+        for column_index in range(values.shape[1]):
+            value = values[row_index, column_index]
+            axis.text(
+                column_index,
+                row_index,
+                _format_shap_cell(value),
+                ha="center",
+                va="center",
+                fontsize=6,
+                color="white" if value >= text_threshold else "#202020",
+            )
+    axis.set_xticks(
+        np.arange(len(SCIENTIFIC_FEATURES)),
+        labels=[indicator_labels[indicator] for indicator in SCIENTIFIC_FEATURES],
+    )
+    axis.set_yticks(
+        np.arange(len(artifact_io.OOTANG_STATIONS)),
+        labels=artifact_io.OOTANG_STATIONS,
+    )
+    axis.set_xticks(np.arange(-0.5, len(SCIENTIFIC_FEATURES), 1), minor=True)
+    axis.set_yticks(np.arange(-0.5, len(artifact_io.OOTANG_STATIONS), 1), minor=True)
+    axis.grid(which="minor", color="white", linewidth=0.8)
+    axis.tick_params(which="minor", bottom=False, left=False)
+    axis.set_xlabel("四项预警指标")
+    axis.set_ylabel("监测点")
+    axis.set_title("滑坡体级 NGBoost：32 项特征依赖（非因果）")
+    colorbar = fig.colorbar(image, ax=axis, pad=0.025, shrink=0.9)
+    colorbar.set_label("平均 |SHAP值|（期望等级）")
     _save_figure(fig, paths)
     plt.close(fig)
+
+
+def _date_bin_edges(dates: pd.Series) -> np.ndarray:
+    numbers = mdates.date2num(pd.to_datetime(dates).array.to_pydatetime())
+    if len(numbers) < 2 or not np.all(np.diff(numbers) > 0.0):
+        raise artifact_io.AutoStateInputError(
+            "Warning timeline dates must be strictly increasing"
+        )
+    interior = (numbers[:-1] + numbers[1:]) / 2.0
+    return np.concatenate(
+        (
+            [numbers[0] - (interior[0] - numbers[0])],
+            interior,
+            [numbers[-1] + (numbers[-1] - interior[-1])],
+        )
+    )
+
+
+def _prediction_timeline_codes(
+    frame: pd.DataFrame, dates: pd.Series, *, missing_code: int
+) -> np.ndarray:
+    aligned = frame.copy()
+    aligned["date"] = pd.to_datetime(aligned["date"])
+    if aligned["date"].duplicated().any():
+        raise artifact_io.AutoStateInputError(
+            "Warning timeline prediction rows must be unique by date"
+        )
+    aligned = aligned.set_index("date").reindex(pd.DatetimeIndex(dates))
+    codes = aligned["predicted_color"].map(
+        {color: level for level, color in enumerate(WARNING_COLORS)}
+    )
+    available = aligned["prediction_status"].eq("available") & codes.notna()
+    return codes.where(available, missing_code).to_numpy(dtype=int)
 
 
 def _plot_timeline(
@@ -879,70 +973,185 @@ def _plot_timeline(
         "orange": "#ff7f0e",
         "red": "#d62728",
     }
+    warning_labels = {
+        "green": "绿色（0）",
+        "blue": "蓝色（1）",
+        "yellow": "黄色（2）",
+        "orange": "橙色（3）",
+        "red": "红色（4）",
+    }
+    fold_stage_labels = {
+        "fit": "拟合",
+        "development_already_exposed": "开发",
+        "historical_already_exposed_not_confirmatory": "历史回顾",
+    }
+    immature_color = "#D9D9D9"
+    missing_color = "#595959"
+    immature_code = len(WARNING_COLORS)
+    missing_code = immature_code + 1
+
     site_ngboost = site_predictions.loc[
         site_predictions["estimator"].eq("ngboost")
     ].copy()
-    truth = site_ngboost.copy()
-    truth["display_color"] = truth["actual_level"].map(
-        lambda value: pd.NA if pd.isna(value) else WARNING_COLORS[int(value)]
+    site_ngboost["date"] = pd.to_datetime(site_ngboost["date"])
+    if site_ngboost["date"].duplicated().any():
+        raise artifact_io.AutoStateInputError(
+            "Warning timeline requires one site NGBoost row per date"
+        )
+    site_ngboost = site_ngboost.sort_values("date", kind="stable").reset_index(
+        drop=True
     )
-    panels = [
-        ("未来代理标签", truth, "display_color"),
-        ("滑坡体级 NGBoost", site_ngboost, "predicted_color"),
+    dates = site_ngboost["date"]
+    date_edges = _date_bin_edges(dates)
+
+    truth_codes = np.full(len(site_ngboost), missing_code, dtype=int)
+    truth_status = site_ngboost["truth_status"].astype("string")
+    actual_level = pd.to_numeric(site_ngboost["actual_level"], errors="coerce")
+    mature = truth_status.eq("valid") & actual_level.notna()
+    mature_levels = actual_level.loc[mature]
+    if (
+        not mature_levels.between(0, len(WARNING_COLORS) - 1).all()
+        or not np.equal(mature_levels, np.floor(mature_levels)).all()
+    ):
+        raise artifact_io.AutoStateInputError(
+            "Mature automatic labels must be integer levels from 0 through 4"
+        )
+    truth_codes[mature.to_numpy()] = mature_levels.to_numpy(dtype=int)
+    immature = truth_status.eq("unavailable_fold_terminal")
+    truth_codes[immature.to_numpy()] = immature_code
+
+    row_labels = ["H=7 自动代理标签", "滑坡体级 NGBoost"]
+    row_codes = [
+        truth_codes,
+        _prediction_timeline_codes(
+            site_ngboost, dates, missing_code=missing_code
+        ),
     ]
     for station_name in artifact_io.OOTANG_STATIONS:
-        panels.append(
-            (
-                station_name,
-                station_predictions.loc[
-                    station_predictions["station"].eq(station_name)
-                ],
-                "predicted_color",
+        station_frame = station_predictions.loc[
+            station_predictions["station"].eq(station_name)
+        ]
+        row_labels.append(station_name)
+        row_codes.append(
+            _prediction_timeline_codes(
+                station_frame, dates, missing_code=missing_code
             )
         )
-    fig, axes = plt.subplots(
-        len(panels), 1, figsize=(7.2, 7.5), sharex=True, constrained_layout=True
-    )
-    for axis, (name, frame, color_column) in zip(axes, panels, strict=True):
-        valid = frame.loc[frame[color_column].notna()]
-        axis.scatter(
-            valid["date"],
-            np.zeros(len(valid)),
-            c=valid[color_column].map(palette),
-            marker="|",
-            s=45,
-            linewidths=1.2,
+
+    timeline = np.vstack(row_codes)
+    expected_shape = (2 + len(artifact_io.OOTANG_STATIONS), len(dates))
+    if timeline.shape != expected_shape:
+        raise artifact_io.AutoStateInputError(
+            f"Unexpected warning timeline shape: {timeline.shape}"
         )
-        axis.set_ylabel(
-            name,
-            rotation=0,
-            rotation_mode="anchor",
-            ha="right",
-            va="center",
+
+    colors = [palette[color] for color in WARNING_COLORS] + [
+        immature_color,
+        missing_color,
+    ]
+    color_map = ListedColormap(colors)
+    normalization = BoundaryNorm(
+        np.arange(-0.5, len(colors) + 0.5, 1.0), color_map.N
+    )
+    fig, axis = plt.subplots(figsize=(7.2, 4.4), constrained_layout=True)
+    axis.pcolormesh(
+        date_edges,
+        np.arange(timeline.shape[0] + 1),
+        timeline,
+        cmap=color_map,
+        norm=normalization,
+        shading="flat",
+        rasterized=True,
+    )
+    axis.set_xlim(date_edges[0], date_edges[-1])
+    axis.set_ylim(timeline.shape[0], 0)
+    axis.set_yticks(np.arange(timeline.shape[0]) + 0.5, labels=row_labels)
+    axis.tick_params(axis="y", length=0)
+    axis.hlines(
+        np.arange(1, timeline.shape[0]),
+        date_edges[0],
+        date_edges[-1],
+        color="white",
+        linewidth=0.7,
+    )
+
+    fold_spans = (
+        site_ngboost.groupby("fold", sort=False)["date"]
+        .agg(start="min", end="max")
+        .sort_values("start")
+    )
+    if set(fold_spans.index) != set(FOLD_ROLES):
+        raise artifact_io.AutoStateInputError(
+            "Warning timeline requires fold 1, fold 2, and fold 3"
+        )
+    span_rows = list(fold_spans.itertuples())
+    for previous, current in zip(span_rows, span_rows[1:], strict=False):
+        boundary = (
+            mdates.date2num(previous.end) + mdates.date2num(current.start)
+        ) / 2.0
+        axis.axvline(boundary, color="#303030", linestyle="--", linewidth=0.8)
+    for span in span_rows:
+        role = FOLD_ROLES[int(span.Index)]
+        midpoint = span.start + (span.end - span.start) / 2
+        axis.text(
+            mdates.date2num(midpoint),
+            1.015,
+            f"折 {int(span.Index)} · {fold_stage_labels[role]}",
+            transform=axis.get_xaxis_transform(),
+            ha="center",
+            va="bottom",
             fontsize=6.5,
+            color="#303030",
         )
-        axis.set_yticks([])
-        axis.set_ylim(-1, 1)
-        axis.grid(axis="x", alpha=0.2)
-    axes[0].set_title("藕塘滑坡体级与 8 测点 NGBoost 逐时输出")
-    axes[0].grid(False)
-    axes[0].legend(
-        handles=[
+
+    date_locator = mdates.AutoDateLocator(minticks=5, maxticks=9)
+    axis.xaxis.set_major_locator(date_locator)
+    date_formatter = mdates.ConciseDateFormatter(date_locator)
+    date_formatter.formats = ["%Y", "%m月", "%m-%d", "%H:%M", "%H:%M", "%S"]
+    date_formatter.zero_formats = [
+        "",
+        "%Y",
+        "%m月",
+        "%m-%d",
+        "%H:%M",
+        "%H:%M",
+    ]
+    axis.xaxis.set_major_formatter(date_formatter)
+    axis.set_xlabel("日期")
+    axis.set_title("藕塘滑坡体级与 8 测点 NGBoost 逐日输出", pad=24)
+
+    immature_count = int((truth_codes == immature_code).sum())
+    legend_handles = [
+        Patch(
+            facecolor=palette[color],
+            edgecolor="none",
+            label=warning_labels[color],
+        )
+        for color in WARNING_COLORS
+    ]
+    legend_handles.extend(
+        [
             Patch(
-                facecolor=palette[color],
+                facecolor=immature_color,
+                edgecolor="#A6A6A6",
+                label=f"H=7 标签未成熟（{immature_count}日）",
+            ),
+            Patch(
+                facecolor=missing_color,
                 edgecolor="none",
-                label=color.capitalize(),
-            )
-            for color in WARNING_COLORS
-        ],
-        loc="upper right",
-        ncol=5,
-        fontsize=6,
-        frameon=False,
-        handlelength=1.0,
-        columnspacing=0.8,
+                label="其他缺失/不可用",
+            ),
+        ]
     )
-    axes[-1].set_xlabel("日期")
+    fig.legend(
+        handles=legend_handles,
+        loc="outside lower center",
+        ncol=7,
+        fontsize=5.8,
+        frameon=False,
+        handlelength=1.1,
+        columnspacing=0.7,
+    )
     _save_figure(fig, paths)
     plt.close(fig)
 

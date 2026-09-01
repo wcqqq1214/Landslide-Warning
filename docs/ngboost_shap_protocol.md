@@ -39,6 +39,7 @@ NGBoost 分类模型。SHAP 不计算 PICP，也不是 ConvLSTM 内部归因。
 [`site_shap_values.csv`](../figures/ngboost_auto_state_classifier_v1/site_shap_values.csv)、
 [`site_shap_importance.csv`](../figures/ngboost_auto_state_classifier_v1/site_shap_importance.csv)和
 [`site_shap_summary.pdf`](../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf)。
+汇总图按 8 个测点 $\times$ 4 项指标展示全部 32 项平均绝对 SHAP，不截取 Top-$k$。
 实现位于
 [`ootang_ngboost_auto_state_classifier.py`](../code/warning/ootang_ngboost_auto_state_classifier.py)。
 
