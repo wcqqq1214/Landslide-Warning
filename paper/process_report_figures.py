@@ -114,14 +114,16 @@ def _save_figure(fig: plt.Figure, stem: str) -> None:
 
 
 def _panel_label(ax: plt.Axes, label: str) -> None:
-    ax.text(
-        -0.13,
-        1.08,
+    ax.annotate(
         label,
-        transform=ax.transAxes,
+        xy=(0, 1),
+        xycoords="axes fraction",
+        xytext=(-38, 8),
+        textcoords="offset points",
         fontsize=12,
         fontweight="bold",
         va="top",
+        ha="left",
     )
 
 
@@ -259,38 +261,43 @@ def build_forecast_station_figures() -> None:
 
     calibration_start = data.loc[data["split"] == "calibration", "date"].min()
     test_start = data.loc[data["split"] == "test", "date"].min()
-    split_styles = {
-        "fit": {
-            "color": "#377EB8",
-            "alpha": 0.24,
-        },
-        "calibration": {
-            "color": "#4C9F50",
-            "alpha": 0.28,
-        },
-        "test": {
-            "color": "#D84A4A",
-            "alpha": 0.30,
-        },
+    prediction_color = "#D6544D"
+    interval_color = "#E9A6A2"
+    split_backgrounds = {
+        "fit": ("#F2F4F5", "拟合"),
+        "calibration": ("#EAF1F6", "校准"),
+        "test": ("#FAEEE9", "测试"),
     }
     legend_handles = [
-        Line2D([], [], color="#111111", linewidth=1.8, label="实测位移"),
-        Line2D([], [], color=split_styles["fit"]["color"], linewidth=1.25,
-               linestyle=(0, (3, 3)), label="拟合段 P50"),
-        Line2D([], [], color=split_styles["calibration"]["color"], linewidth=1.25,
-               linestyle=(0, (3, 3)), label="校准段 P50"),
-        Line2D([], [], color=split_styles["test"]["color"], linewidth=1.25,
-               linestyle=(0, (3, 3)), label="测试段 P50"),
+        Line2D(
+            [],
+            [],
+            color="#111111",
+            linewidth=1.0,
+            marker="o",
+            markerfacecolor="white",
+            markersize=3.4,
+            label="实测",
+        ),
+        Line2D(
+            [],
+            [],
+            color=prediction_color,
+            linewidth=1.5,
+            linestyle=(0, (4, 2.5)),
+            label="P50",
+        ),
+        Patch(facecolor=interval_color, edgecolor="none", alpha=0.32, label="P10-P90 区间"),
     ]
 
     for station in station_order:
-        fig, (ax, ax_increment) = plt.subplots(
-            2,
+        fig, (ax, ax_increment, ax_residual) = plt.subplots(
+            3,
             1,
-            figsize=(7.2, 7.5),
-            gridspec_kw={"height_ratios": [1.25, 1.0]},
+            figsize=(7.2, 8.2),
+            gridspec_kw={"height_ratios": [0.85, 1.35, 0.80]},
         )
-        fig.subplots_adjust(left=0.13, right=0.985, bottom=0.09, top=0.76, hspace=0.43)
+        fig.subplots_adjust(left=0.13, right=0.985, bottom=0.075, top=0.89, hspace=0.48)
         fig.suptitle(
             f"{station} 测点位移预测",
             y=0.985,
@@ -300,36 +307,46 @@ def build_forecast_station_figures() -> None:
         )
 
         station_data = data.loc[data["station"] == station].sort_values("date")
+        marker_step_full = max(1, len(station_data) // 42)
+
+        for split in ("fit", "calibration", "test"):
+            split_data = station_data.loc[station_data["split"] == split]
+            background_color, split_label = split_backgrounds[split]
+            split_start = split_data["date"].min()
+            split_end = split_data["date"].max()
+            ax.axvspan(split_start, split_end, color=background_color, zorder=0)
+            ax.annotate(
+                split_label,
+                xy=(split_start + (split_end - split_start) / 2, 1),
+                xycoords=("data", "axes fraction"),
+                xytext=(0, 2),
+                textcoords="offset points",
+                color="#60676D",
+                fontsize=7.5,
+                ha="center",
+                va="bottom",
+            )
+
         ax.plot(
             station_data["date"],
             station_data["actual"],
             color="#111111",
-            linewidth=1.8,
-            alpha=1.0,
+            linewidth=0.9,
+            marker="o",
+            markevery=marker_step_full,
+            markersize=2.8,
+            markerfacecolor="white",
+            markeredgewidth=0.7,
+            zorder=5,
+        )
+        ax.plot(
+            station_data["date"],
+            station_data["p50"],
+            color=prediction_color,
+            linewidth=1.45,
+            linestyle=(0, (4, 2.5)),
             zorder=4,
         )
-
-        for split in ("fit", "calibration", "test"):
-            split_data = station_data.loc[station_data["split"] == split]
-            style = split_styles[split]
-            lower_column, upper_column = interval_columns[split]
-            ax.fill_between(
-                split_data["date"],
-                split_data[lower_column],
-                split_data[upper_column],
-                color=style["color"],
-                alpha=style["alpha"],
-                linewidth=0,
-                zorder=1,
-            )
-            ax.plot(
-                split_data["date"],
-                split_data["p50"],
-                color=style["color"],
-                linewidth=1.25,
-                linestyle=(0, (3, 3)),
-                zorder=5,
-            )
 
         for boundary in (calibration_start, test_start):
             ax.axvline(
@@ -339,8 +356,8 @@ def build_forecast_station_figures() -> None:
                 linestyle=":",
                 zorder=2,
             )
+        ax.set_title("全时段累计位移（背景）", loc="left", pad=5)
         ax.set_ylabel("位移 U（mm）")
-        ax.set_xlabel("日期")
         ax.xaxis.set_major_locator(mdates.MonthLocator(interval=6))
         ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
         ax.grid(axis="y", color="#D9DEE2", linewidth=0.65, alpha=0.75)
@@ -352,59 +369,117 @@ def build_forecast_station_figures() -> None:
         predicted_increment = test_data["p50"] - test_data["persistence"]
         lower_increment = test_data["calibrated_p10"] - test_data["persistence"]
         upper_increment = test_data["calibrated_p90"] - test_data["persistence"]
+        marker_step_test = max(1, len(test_data) // 24)
         ax_increment.fill_between(
             test_data["date"],
             lower_increment,
             upper_increment,
-            color=split_styles["test"]["color"],
-            alpha=0.22,
+            color=interval_color,
+            alpha=0.32,
             linewidth=0,
             zorder=1,
-            label="P10-P90 增量区间",
         )
         ax_increment.plot(
             test_data["date"],
             actual_increment,
             color="#111111",
-            linewidth=1.45,
+            linewidth=1.15,
+            marker="o",
+            markevery=marker_step_test,
+            markersize=3.0,
+            markerfacecolor="white",
+            markeredgewidth=0.7,
             zorder=4,
-            label="实测日增量",
         )
         ax_increment.plot(
             test_data["date"],
             predicted_increment,
-            color=split_styles["test"]["color"],
-            linewidth=1.3,
-            linestyle=(0, (3, 3)),
+            color=prediction_color,
+            linewidth=1.45,
+            linestyle=(0, (4, 2.5)),
             zorder=5,
-            label="P50 日增量",
         )
         ax_increment.axhline(0, color="#747B80", linewidth=0.8, zorder=2)
+        ax_increment.set_title("测试段日增量及 80% 预测区间", loc="left", pad=5)
         ax_increment.set_ylabel("日增量 ΔU（mm/d）")
-        ax_increment.set_xlabel("测试段日期")
         ax_increment.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
         ax_increment.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
         ax_increment.grid(axis="y", color="#D9DEE2", linewidth=0.65, alpha=0.75)
         ax_increment.set_axisbelow(True)
         ax_increment.margins(x=0)
-        ax_increment.legend(
-            loc="lower center",
-            bbox_to_anchor=(0.5, 1.01),
-            ncol=3,
-            frameon=False,
-            fontsize=8.5,
-            handlelength=2.5,
-            columnspacing=1.4,
+
+        residual = test_data["actual"] - test_data["p50"]
+        lower_residual_bound = test_data["calibrated_p10"] - test_data["p50"]
+        upper_residual_bound = test_data["calibrated_p90"] - test_data["p50"]
+        covered = (
+            (test_data["actual"] >= test_data["calibrated_p10"])
+            & (test_data["actual"] <= test_data["calibrated_p90"])
         )
+        picp = float(covered.mean())
+
+        ax_residual.fill_between(
+            test_data["date"],
+            lower_residual_bound,
+            upper_residual_bound,
+            color=interval_color,
+            alpha=0.32,
+            linewidth=0,
+            zorder=1,
+        )
+        ax_residual.plot(
+            test_data["date"],
+            residual,
+            color="#111111",
+            linewidth=1.05,
+            marker="o",
+            markevery=marker_step_test,
+            markersize=2.8,
+            markerfacecolor="white",
+            markeredgewidth=0.7,
+            zorder=4,
+        )
+        ax_residual.axhline(0, color="#747B80", linewidth=0.8, zorder=2)
+        residual_extent = float(
+            np.nanmax(
+                np.abs(
+                    np.concatenate(
+                        [
+                            residual.to_numpy(dtype=float),
+                            lower_residual_bound.to_numpy(dtype=float),
+                            upper_residual_bound.to_numpy(dtype=float),
+                        ]
+                    )
+                )
+            )
+        )
+        if not np.isfinite(residual_extent) or residual_extent <= 0:
+            raise ValueError(f"Invalid residual extent for {station}")
+        ax_residual.set_ylim(-1.08 * residual_extent, 1.08 * residual_extent)
+        ax_residual.set_title(
+            f"测试段残差与区间覆盖（PICP={picp:.3f}）",
+            loc="left",
+            pad=5,
+        )
+        ax_residual.set_ylabel("实测-P50（mm）")
+        ax_residual.set_xlabel("测试段日期")
+        ax_residual.xaxis.set_major_locator(mdates.MonthLocator(interval=2))
+        ax_residual.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m"))
+        ax_residual.grid(axis="y", color="#D9DEE2", linewidth=0.65, alpha=0.75)
+        ax_residual.set_axisbelow(True)
+        ax_residual.margins(x=0)
+
+        for panel, label in zip((ax, ax_increment, ax_residual), "abc", strict=True):
+            _panel_label(panel, label)
+
         fig.legend(
             handles=legend_handles,
             loc="upper center",
-            bbox_to_anchor=(0.5, 0.88),
-            ncol=4,
+            bbox_to_anchor=(0.5, 0.95),
+            ncol=3,
             frameon=False,
-            fontsize=9,
-            handlelength=2.8,
-            columnspacing=1.5,
+            fontsize=8.7,
+            handlelength=2.6,
+            columnspacing=1.8,
             handletextpad=0.6,
         )
 
