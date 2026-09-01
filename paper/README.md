@@ -22,6 +22,10 @@ latexmk -C -outdir=build process_report.tex
 
 ## 图件逻辑
 
+流程总览由 Draw.io 维护：可编辑源文件为 `figures/process_overview.drawio`，报告使用其导出的
+`figures/process_overview.png`。`process_report_figures.py` 只生成其余数据驱动图件，避免
+重新运行脚本时覆盖 Draw.io 流程图。
+
 报告按实际汇报顺序组织，不按代码模块罗列：
 
 1. 一张总览图说明 ConvLSTM、四项指标、H=7 自动标签、NGBoost、SHAP 和逐时输出的关系；

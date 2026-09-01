@@ -7,7 +7,6 @@
 \usepackage{booktabs}
 \usepackage{caption}
 \usepackage{float}
-\usepackage{fancyhdr}
 \usepackage{hyperref}
 
 \definecolor{reportblue}{HTML}{365F91}
@@ -15,31 +14,17 @@
 \hypersetup{
   colorlinks=true,
   linkcolor=reportblue,
-  urlcolor=reportblue,
-  pdfauthor={韦承谦},
-  pdftitle={藕塘滑坡智能概率预测与预警：藕塘案例阶段结果}
+  urlcolor=reportblue
 }
 
 \captionsetup{font=small,labelfont=bf,labelsep=quad}
 \setlength{\parindent}{2em}
 \setlength{\parskip}{0.35em}
+\setlength{\footskip}{16mm}
 \renewcommand{\arraystretch}{1.25}
 
-\pagestyle{fancy}
-\fancyhf{}
-\fancyhead[L]{藕塘滑坡阶段结果}
-\fancyhead[R]{ConvLSTM--NGBoost--SHAP}
-\fancyfoot[C]{\thepage}
-\setlength{\headheight}{15pt}
-
-\title{\heiti\Large 藕塘滑坡智能概率预测与预警\\[0.55em]
-\large ConvLSTM--NGBoost--SHAP 藕塘案例阶段结果}
-\author{韦承谦}
-\date{2026年8月31日}
-
 \begin{document}
-
-\maketitle
+\pagestyle{plain}
 
 \begin{figure}[H]
   \centering
@@ -54,7 +39,7 @@
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth,height=0.81\textheight,keepaspectratio]{../figures/convlstm/forecast_all_stations.png}
+  \includegraphics[width=\textwidth,height=0.77\textheight,keepaspectratio]{../figures/convlstm/forecast_all_stations.png}
   \caption{8 个测点的完整位移时间轴。黑线为实测值，彩色线为 P50，浅色带为 P10--P90 预测区间；拟合、校准和测试阶段均已标出。}
   \label{fig:all-stations}
 \end{figure}

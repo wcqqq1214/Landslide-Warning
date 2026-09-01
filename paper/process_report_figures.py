@@ -1,4 +1,9 @@
-"""Build report-specific figures from the current project artifacts."""
+"""Build data-driven report figures from the current project artifacts.
+
+The process overview is maintained as an editable Draw.io document at
+``paper/figures/process_overview.drawio`` and is intentionally not generated
+by this script.
+"""
 
 from __future__ import annotations
 
@@ -13,7 +18,7 @@ import numpy as np
 import pandas as pd
 from matplotlib import font_manager
 from matplotlib.colors import BoundaryNorm, ListedColormap
-from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
+from matplotlib.patches import Patch
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -98,210 +103,6 @@ def _save_figure(fig: plt.Figure, stem: str) -> None:
         encoding="utf-8",
     )
     fig.savefig(QA_OUTPUT_DIR / f"{stem}.pdf", bbox_inches="tight")
-
-
-def _add_card(
-    ax: plt.Axes,
-    x: float,
-    y: float,
-    width: float,
-    height: float,
-    title: str,
-    lines: list[str],
-    facecolor: str,
-    edgecolor: str,
-) -> None:
-    card = FancyBboxPatch(
-        (x, y),
-        width,
-        height,
-        boxstyle="round,pad=0.012,rounding_size=0.014",
-        linewidth=1.4,
-        edgecolor=edgecolor,
-        facecolor=facecolor,
-        transform=ax.transAxes,
-    )
-    ax.add_patch(card)
-    ax.text(
-        x + width / 2,
-        y + height * 0.73,
-        title,
-        ha="center",
-        va="center",
-        fontsize=9.2,
-        fontweight="bold",
-        color=COLORS["ink"],
-        transform=ax.transAxes,
-    )
-    ax.text(
-        x + width / 2,
-        y + height * 0.36,
-        "\n".join(lines),
-        ha="center",
-        va="center",
-        fontsize=7.2,
-        linespacing=1.35,
-        color=COLORS["ink"],
-        transform=ax.transAxes,
-    )
-
-
-def build_process_overview() -> None:
-    fig, ax = plt.subplots(figsize=(8.25, 5.15))
-    ax.set_axis_off()
-    ax.text(
-        0.03,
-        0.94,
-        "藕塘案例：当前自动预测与预警流程",
-        fontsize=13,
-        fontweight="bold",
-        color=COLORS["ink"],
-        transform=ax.transAxes,
-    )
-    ax.text(
-        0.03,
-        0.885,
-        "目标是让系统按时序自动给出多测点的未来状态概率和预警信号；不需要人工逐时判级。",
-        fontsize=7.2,
-        color=COLORS["gray"],
-        transform=ax.transAxes,
-    )
-
-    cards = [
-        (0.035, 0.66, 0.265, 0.16, "数据与运动学", ["1461 日 × 8 测点", "按真实 Δt 算速度和加速度"], COLORS["gray_light"], COLORS["gray"]),
-        (0.367, 0.66, 0.265, 0.16, "ConvLSTM 概率位移预测", ["全部 8 点输出 P10 / P50 / P90", "用 PICP 和区间宽度评价"], COLORS["blue_light"], COLORS["blue"]),
-        (0.699, 0.66, 0.265, 0.16, "当前时刻四项指标 $X_t$", ["区间位置、速度、严格加速度", "改进切线角；只用当时信息"], COLORS["green_light"], COLORS["green"]),
-        (0.115, 0.435, 0.245, 0.13, "自动未来状态 $Y_{auto}$", ["以 t 后 H=7 天的多点变形", "自动生成五类代理结局"], COLORS["orange_light"], COLORS["orange"]),
-        (0.430, 0.435, 0.245, 0.13, "五分类 site NGBoost", ["输出绿/蓝/黄/橙/红概率", "与简单因果基线同步比较"], COLORS["red_light"], COLORS["red"]),
-        (0.745, 0.435, 0.215, 0.13, "逐时输出", ["测点级 + 滑坡体级", "五级概率和综合判定"], COLORS["green_light"], COLORS["green"]),
-    ]
-    for x, y, width, height, title, lines, facecolor, edgecolor in cards:
-        _add_card(ax, x, y, width, height, title, lines, facecolor, edgecolor)
-
-    arrows = [
-        ((0.306, 0.74), (0.361, 0.74), COLORS["gray"]),
-        ((0.638, 0.74), (0.693, 0.74), COLORS["gray"]),
-        ((0.83, 0.654), (0.83, 0.605), COLORS["gray"]),
-        ((0.83, 0.605), (0.24, 0.571), COLORS["gray"]),
-        ((0.366, 0.50), (0.424, 0.50), COLORS["gray"]),
-        ((0.681, 0.50), (0.739, 0.50), COLORS["gray"]),
-    ]
-    for start, end, color in arrows:
-        ax.add_patch(
-            FancyArrowPatch(
-                start,
-                end,
-                arrowstyle="-|>",
-                mutation_scale=13,
-                linewidth=1.2,
-                color=color,
-                connectionstyle="arc3,rad=0.0",
-                transform=ax.transAxes,
-            )
-        )
-
-    branch_x = 0.115
-    branch_y = 0.27
-    branch_width = 0.33
-    branch_height = 0.10
-    _add_card(
-        ax,
-        branch_x,
-        branch_y,
-        branch_width,
-        branch_height,
-        "NGBoost SHAP",
-        ["解释五分类模型怎样使用四项指标", "识别候选主控因素，不当作因果证明"],
-        COLORS["blue_light"],
-        COLORS["blue"],
-    )
-    branch_arrow = FancyArrowPatch(
-        (0.552, 0.424),
-        (branch_x + branch_width / 2, branch_y + branch_height + 0.006),
-        arrowstyle="-|>",
-        mutation_scale=13,
-        linewidth=1.2,
-        color=COLORS["blue"],
-        connectionstyle="arc3,rad=0.18",
-        transform=ax.transAxes,
-    )
-    ax.add_patch(branch_arrow)
-    ax.text(
-        0.475,
-        0.39,
-        "模型解释",
-        fontsize=7,
-        color=COLORS["blue"],
-        transform=ax.transAxes,
-    )
-
-    ax.text(
-        0.745,
-        0.395,
-        "暖启动或缺输入会明确标记",
-        fontsize=6.8,
-        color=COLORS["gray"],
-        transform=ax.transAxes,
-    )
-
-    bands = [
-        (
-            0.03,
-            0.145,
-            0.94,
-            0.065,
-            "当前结论",
-            "流程已跑通：全测点预测、四项指标、自动标签、五分类预警、SHAP 和逐时输出都有可复核产物。",
-            COLORS["green_light"],
-            COLORS["green"],
-        ),
-        (
-            0.03,
-            0.055,
-            0.94,
-            0.065,
-            "结果边界",
-            "ConvLSTM 和 NGBoost 目前都没有稳定超过简单基线；这是试跑结论，不能当作正式预警效果。",
-            COLORS["orange_light"],
-            COLORS["orange"],
-        ),
-    ]
-    for x, y0, w, h, label, text, facecolor, edgecolor in bands:
-        patch = FancyBboxPatch(
-            (x, y0),
-            w,
-            h,
-            boxstyle="round,pad=0.008,rounding_size=0.012",
-            linewidth=1.2,
-            edgecolor=edgecolor,
-            facecolor=facecolor,
-            transform=ax.transAxes,
-        )
-        ax.add_patch(patch)
-        ax.text(
-            x + 0.015,
-            y0 + h / 2,
-            label,
-            va="center",
-            ha="left",
-            fontsize=10,
-            fontweight="bold",
-            color=edgecolor,
-            transform=ax.transAxes,
-        )
-        ax.text(
-            x + 0.12,
-            y0 + h / 2,
-            text,
-            va="center",
-            ha="left",
-            fontsize=7.5,
-            color=COLORS["ink"],
-            transform=ax.transAxes,
-        )
-
-    _save_figure(fig, "process_overview")
-    plt.close(fig)
 
 
 def _panel_label(ax: plt.Axes, label: str) -> None:
@@ -483,7 +284,6 @@ def main() -> None:
     _configure_style()
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     QA_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    build_process_overview()
     build_validation_summary()
     build_station_indicator_overview()
 
