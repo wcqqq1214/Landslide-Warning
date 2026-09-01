@@ -88,22 +88,22 @@
     },
     "warning_timeline_pdf": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf",
-      "sha256": "2378bc7dc7fa41597f8c3cbeba976ff18bf204da0113ab215187f95ed9675cc5"
+      "sha256": "da1e7f9afdd0cda1a7a532900b77964af2cf39877e3bb9cacf40e7a730b6ab30"
     },
     "warning_timeline_png": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.png",
-      "sha256": "fd9ac552a69243a1e01adea294171385fb0dd22ae828b04a80fbd30a44cdd93a"
+      "sha256": "92bc9917e049df98baf2bb4a29cf6515de198c28cb400e095d3eff766c305f6b"
     },
     "warning_timeline_svg": {
       "path": "figures/ngboost_auto_state_classifier_v1/warning_timeline.svg",
-      "sha256": "8264ab121605bf9aeb07c22f0e7c6da0d026911116887eba2dae3154ee94a29b"
+      "sha256": "0ddd5ce501e07f12d3a807ff85128e142c51a8d968cd82f171d389717db0ea79"
     }
   },
   "figure_refresh": {
     "date": "2026-09-01",
     "mode": "existing_csv_plot_only_no_retraining",
     "numerical_outputs_changed": false,
-    "plotting_source_sha256": "457aa66ed5fae497fcbc7963b01280c33c4eaf522a983e9cd9d4a64de62a1f1c"
+    "plotting_source_sha256": "a05ee3f8af13ccedd9d5f2373aee1103fe7f32cc645b7c2b9e8a2a01151da28f"
   },
   "fold2_development_transition": {
     "scientific_pass_fail_decision": false,

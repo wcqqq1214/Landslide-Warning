@@ -26,25 +26,32 @@
 \begin{document}
 \pagestyle{plain}
 
+\section{研究方法}
+
+本研究以藕塘滑坡 8 个测点为对象。ConvLSTM 逐点预测下一日位移及 P10--P90 预测区间，
+四项预警指标组成 32 维多点输入，NGBoost 据此预测未来 7 日五级变形代理状态，SHAP
+用于解释 NGBoost 对各测点和指标的依赖。
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/process_overview.png}
-  \caption{当前技术路线。ConvLSTM 输出 8 个测点的 P10/P50/P90 位移预测；滑坡体级 NGBoost 读取 8 点 $\times$ 4 项指标的 32 维输入，预测未来 7 日五级变形代理状态；SHAP 解释 NGBoost。}
+  \caption{藕塘滑坡概率预测与预警流程。}
   \label{fig:overview}
 \end{figure}
 
-\clearpage
+每个时刻的模型输入只使用当时及以前的数据。未来 7 日代理标签由随后 7 日的多测点变形
+自动生成，只作为当前试跑的训练目标，不是人工逐日判级，也不是现场灾害真值。
 
 \section{全部测点位移预测}
 
-各图依次显示全时段累计位移、测试段日增量及残差，背景区分拟合、校准和测试阶段。
-模型以实测 $U(t-1)$ 作一步预测，因此累计曲线重合不能说明长期预测准确。残差为实测值减 P50，
-落在色带内表示实测值位于 P10--P90 区间。
+每个测点单独成图。上图显示拟合、校准和测试三个阶段的累计位移，中图放大测试段的
+日增量，下图显示残差和 P10--P90 预测区间。模型使用前一日实测位移 $U(t-1)$ 作一步预测，
+因此累计曲线重合不代表长期预测准确。残差为实测值减 P50，落在色带内表示区间覆盖。
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_mj9.png}
-  \caption{MJ9 测点一步位移预测。}
+  \caption{MJ9 测点一步位移预测，测试段 PICP 为 0.495。}
   \label{fig:forecast-mj9}
 \end{figure}
 
@@ -53,7 +60,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_mj1.png}
-  \caption{MJ1 测点一步位移预测。}
+  \caption{MJ1 测点一步位移预测，测试段 PICP 为 0.672。}
   \label{fig:forecast-mj1}
 \end{figure}
 
@@ -62,7 +69,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_mj3.png}
-  \caption{MJ3 测点一步位移预测。}
+  \caption{MJ3 测点一步位移预测，测试段 PICP 为 0.540。}
   \label{fig:forecast-mj3}
 \end{figure}
 
@@ -71,7 +78,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_atu4.png}
-  \caption{ATU4 测点一步位移预测。}
+  \caption{ATU4 测点一步位移预测，测试段 PICP 为 0.889。}
   \label{fig:forecast-atu4}
 \end{figure}
 
@@ -80,7 +87,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_atu5.png}
-  \caption{ATU5 测点一步位移预测。}
+  \caption{ATU5 测点一步位移预测，测试段 PICP 为 0.889。}
   \label{fig:forecast-atu5}
 \end{figure}
 
@@ -89,7 +96,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_atu3.png}
-  \caption{ATU3 测点一步位移预测。}
+  \caption{ATU3 测点一步位移预测，测试段 PICP 为 0.889。}
   \label{fig:forecast-atu3}
 \end{figure}
 
@@ -98,7 +105,7 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_atu2.png}
-  \caption{ATU2 测点一步位移预测。}
+  \caption{ATU2 测点一步位移预测，测试段 PICP 为 0.892。}
   \label{fig:forecast-atu2}
 \end{figure}
 
@@ -107,30 +114,75 @@
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{figures/forecast_atu1.png}
-  \caption{ATU1 测点一步位移预测。}
+  \caption{ATU1 测点一步位移预测，测试段 PICP 为 0.892。}
   \label{fig:forecast-atu1}
 \end{figure}
 
+MJ 系列 3 个测点的 PICP 为 0.495--0.672，ATU 系列 5 个测点为 0.889--0.892。
+但 MJ3 和全部 ATU 测点在测试末 30 日均高出预测区间上界，末期加速仍未被模型捕捉。
+
 \clearpage
 
-\section{ConvLSTM 评价}
+\section{ConvLSTM 跨时期评价}
 
 采用 3 个测试窗口和 5 个预设随机种子，比较对象为前一日位移持久性基线。
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=0.82\textwidth]{figures/convlstm_validation_summary.png}
-  \caption{ConvLSTM 跨时期验证。柱为 5 个预设随机种子的均值，误差线为 $\pm1$ SD；虚线表示持久性基线或 80\% 目标覆盖率。三折区间宽度为 2.959、1.320、0.476 mm，interval score 为 8.463、1.475、1.102。前两折点误差高于基线，第三折日增量明显平滑。}
+  \caption{ConvLSTM 跨时期验证。柱表示 5 个预设随机种子的均值，误差线表示 $\pm1$ SD；虚线表示持久性基线或 80\% 目标覆盖率。}
   \label{fig:convlstm-validation}
 \end{figure}
 
+三个时间折的 PICP 分别为 0.387、0.956 和 0.754，平均区间宽度分别为 2.959、1.320 和
+0.476 mm。前两折点预测误差高于持久性基线，第三折日增量预测明显偏平滑。区间覆盖和
+点预测表现随时期变化，当前结果没有显示出稳定的跨时期优势。
+
+\section{四项预警指标}
+
+每个测点均计算位移区间偏离、逐点速度、逐点加速度和改进切线角。速度与加速度按实际
+相邻观测时间计算：
+\[
+  v_i=\frac{U_i-U_{i-1}}{t_i-t_{i-1}}, \qquad
+  a_i=\frac{v_i-v_{i-1}}{t_i-t_{i-1}}.
+\]
+
+图~\ref{fig:station-indicators} 展示校准段与测试段，共 514 日；拟合段只用于估计规则参数。
+该时间范围不同于 NGBoost 的 861 日输出，二者不能直接比较。
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth,height=0.64\textheight,keepaspectratio]{figures/station_indicator_overview.png}
+  \caption{8 个测点的四项预警指标及透明规则诊断结果，竖线区分校准段和测试段。}
+  \label{fig:station-indicators}
+\end{figure}
+
+\small
+透明规则只作为对照。速度基线由拟合段的低速稳定数据自动估计。加速度阈值由拟合段
+自动计算：
+\[
+  A_0=\max(1.5A,\ A+2\sigma_a),
+\]
+再按 1、5 和 10 倍划分等级。该分级是当前项目的自动化实现，不是文献直接给出的
+加速度阈值，也不是现场标准。
+
+514 日中，106 日得到至少 2 个测点和 2 个分区的共同支持；8 日仅出现局部蓝色，滑坡体
+仍为正常；另有 400 日出现局部黄色及以上信号，但没有跨区支持，不能直接算作滑坡体预警。
+透明规则只检查多点空间一致性，不替代滑坡体级 NGBoost。
+\normalsize
+
+\clearpage
+
 \section{NGBoost 五分类}
+
+当前没有现场五级预警真值，因此根据时刻 $t$ 之后 7 日的多测点变形自动生成五级代理标签。
+标签边界只在第 1 时间折确定；NGBoost 使用当前时刻 8 个测点的 32 项指标预测未来状态。
 
 \begin{table}[H]
   \centering
   \scriptsize
   \renewcommand{\arraystretch}{1.05}
-  \caption{第 2 时间折五分类比较。滑坡体级 NGBoost 使用 8 点 $\times$ 4 指标的 32 维输入，目标为未来 7 日五级变形代理状态。}
+  \caption{第 2 时间折的五分类结果。}
   \label{tab:classifier-results}
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{llrrrrrr}
@@ -147,67 +199,38 @@
   \end{tabular}}
 \end{table}
 
-标签边界只由第 1 时间折确定，自动标签不是现场灾害真值；“共同”指 NGBoost 与 7 日状态
-持续基线均可计算的 273 日。
+NGBoost 的 macro-F1 为 0.287，高于类别先验和多项逻辑回归，但准确率与概率质量没有整体
+优势。在共同的 273 日上，7 日状态持续基线的 macro-F1 为 0.672，明显高于 NGBoost 的
+0.281。当前分类流程已经跑通，但模型尚未超过简单时序基线。上述标签仍是自动生成的
+变形代理状态，不是现场灾害等级。
 
-\clearpage
-
-\section{逐时预警结果}
+\section{各时刻预警结果（按日）}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=0.82\textheight,keepaspectratio]{../figures/ngboost_auto_state_classifier_v1/warning_timeline.pdf}
-  \caption{前两行分别为 $H=7$ 自动代理标签和滑坡体级 NGBoost 预测，其后 8 行为测点级诊断。竖线区分第 1 折拟合、第 2 折开发和第 3 折历史描述；灰色表示标签尚未成熟。共 861 日有预测，其中 840 日有成熟标签；颜色不是现场核验后的灾害等级。}
+  \caption{藕塘滑坡逐日五级状态。前两行为未来 7 日代理标签和滑坡体级 NGBoost 预测，后 8 行为测点级 NGBoost 诊断。}
   \label{fig:ngboost-timeline}
 \end{figure}
 
+共有 861 日得到模型预测，其中 840 日已有成熟代理标签。灰色表示未来 7 日标签尚未成熟。
+第 1 时间折用于拟合，第 2 时间折用于开发评价，第 3 时间折只作历史展示；图中的颜色不是
+经现场核验的灾害等级。
+
 \clearpage
 
-\section{NGBoost SHAP}
+\section{NGBoost 的 SHAP 解释}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth,height=0.68\textheight,keepaspectratio]{../figures/ngboost_auto_state_classifier_v1/site_shap_summary.pdf}
-  \caption{滑坡体级 NGBoost 的完整测点--指标依赖。热图展示 8 个测点 $\times$ 4 项指标的全部 32 个平均绝对 permutation SHAP；颜色越深表示模型越依赖该输入，不表示作用方向或物理因果。背景样本为第 1 折 12 日，解释样本为第 2 折 25 日。}
+  \caption{滑坡体级 NGBoost 的置换 SHAP 热图，覆盖 8 个测点和 4 项指标，共 32 项输入。颜色越深，平均绝对 SHAP 值越大。}
   \label{fig:ngboost-shap}
 \end{figure}
 
-SHAP 的解释目标为 $\sum_{k=0}^{4}kP(y=k\mid X_t)$；预测区间覆盖由 PICP 另行评价。
-当前样本中，模型最依赖 ATU2 和 ATU1 的改进切线角，其次是 ATU5 和 ATU2 的逐点速度；
-这些只能作为候选主控因素，不能直接解释为物理因果。
-
-\clearpage
-
-\section{四项指标与透明规则诊断}
-
-速度和加速度均按真实相邻时间差计算：
-\[
-  v_i=\frac{U_i-U_{i-1}}{t_i-t_{i-1}}, \qquad
-  a_i=\frac{v_i-v_{i-1}}{t_i-t_{i-1}}.
-\]
-
-本页展示校准段与测试段，共 514 日；拟合段仅用于估计规则参数。其时间域不同于
-NGBoost 的 861 日模型输出，二者不能直接比较。
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth,height=0.64\textheight,keepaspectratio]{figures/station_indicator_overview.png}
-  \caption{透明规则诊断基线在 514 日内的全部 8 个测点结果。前四组为位移区间偏离、逐点速度、逐点加速度和改进切线角，末组为各测点内部的四指标候选等级；竖线区分校准段和测试段。四项指标全部保留，不分主次。}
-  \label{fig:station-indicators}
-\end{figure}
-
-\small
-区间位置按实测位移高出 P50 的程度作单侧偏差诊断，不等同于 PICP。速度基线 $V_0$
-由拟合段的 K-means 低速前缀自动估计。测点候选取区间、加速度及速度--切线角家族的
-最高等级，不按多数投票。
-
-加速度分级采用 $A_0=\max(1.5A,\ A+2\sigma_a)$：正常 $<A_0-\sigma_a$，蓝色为
-$[A_0-\sigma_a,A_0+\sigma_a]$，黄色为 $(A_0+\sigma_a,5A_0)$，橙色为 $[5A_0,10A_0)$，红色
-$\geq10A_0$。这是当前项目的自动化实现，不是论文直接给出的加速度阈值，也不是现场标准。
-
-514 日中，106 日达到至少 2 个测点、2 个分区的跨区确认；8 日仅有局部蓝色，滑坡体仍为
-正常；400 日存在局部黄色及以上候选，但未获跨区佐证，不能视为 400 次异常或预警
-事件。该规则仅检查多点空间一致性，不替代滑坡体级 NGBoost。
-\normalsize
+SHAP 解释的是 NGBoost 五级概率的期望等级 $\sum_{k=0}^{4}kP(y=k\mid X_t)$，PICP 仍单独
+评价 ConvLSTM 预测区间。第 2 时间折中，ATU2 和 ATU1 的改进切线角，以及 ATU5 和 ATU2
+的逐点速度排在前列。这些结果只能说明模型更依赖哪些输入；尤其在 NGBoost 尚未超过持续
+基线的情况下，不能把该排序写成物理因果或已确认的主控因素。
 
 \end{document}

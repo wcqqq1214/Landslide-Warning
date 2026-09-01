@@ -1053,7 +1053,7 @@ def _plot_timeline(
     normalization = BoundaryNorm(
         np.arange(-0.5, len(colors) + 0.5, 1.0), color_map.N
     )
-    fig, axis = plt.subplots(figsize=(7.2, 4.4), constrained_layout=True)
+    fig, axis = plt.subplots(figsize=(7.2, 6.0), constrained_layout=True)
     axis.pcolormesh(
         date_edges,
         np.arange(timeline.shape[0] + 1),
@@ -1065,7 +1065,11 @@ def _plot_timeline(
     )
     axis.set_xlim(date_edges[0], date_edges[-1])
     axis.set_ylim(timeline.shape[0], 0)
-    axis.set_yticks(np.arange(timeline.shape[0]) + 0.5, labels=row_labels)
+    axis.set_yticks(
+        np.arange(timeline.shape[0]) + 0.5,
+        labels=row_labels,
+        fontsize=8.2,
+    )
     axis.tick_params(axis="y", length=0)
     axis.hlines(
         np.arange(1, timeline.shape[0]),
@@ -1100,7 +1104,7 @@ def _plot_timeline(
             transform=axis.get_xaxis_transform(),
             ha="center",
             va="bottom",
-            fontsize=6.5,
+            fontsize=8.0,
             color="#303030",
         )
 
@@ -1117,8 +1121,13 @@ def _plot_timeline(
         "%H:%M",
     ]
     axis.xaxis.set_major_formatter(date_formatter)
-    axis.set_xlabel("日期")
-    axis.set_title("藕塘滑坡体级与 8 测点 NGBoost 逐日输出", pad=24)
+    axis.tick_params(axis="x", labelsize=8.0)
+    axis.set_xlabel("日期", fontsize=9.0)
+    axis.set_title(
+        "藕塘滑坡体级与 8 测点 NGBoost 逐日输出",
+        pad=26,
+        fontsize=10.5,
+    )
 
     immature_count = int((truth_codes == immature_code).sum())
     legend_handles = [
@@ -1146,11 +1155,11 @@ def _plot_timeline(
     fig.legend(
         handles=legend_handles,
         loc="outside lower center",
-        ncol=7,
-        fontsize=5.8,
+        ncol=4,
+        fontsize=7.2,
         frameon=False,
-        handlelength=1.1,
-        columnspacing=0.7,
+        handlelength=1.2,
+        columnspacing=1.0,
     )
     _save_figure(fig, paths)
     plt.close(fig)
