@@ -7,14 +7,15 @@
 
 发生冲突时按以下规则判断：
 
-1. [`AGENTS.md`](../AGENTS.md) 中“导师确定的科研主线”决定研究问题、固定技术路线和禁止事项。
+1. 当前用户请求及其明确修正决定任务范围；[`AGENTS.md`](../AGENTS.md) 规定项目协作、
+   授权、验证和记录规则。原导师要求已于 2026-09-05 按用户说明退役，不再限定后续研究路线。
 2. 版本化 `config/`、对应源码以及运行 `manifest.json` 决定某次实验实际执行的方法；CSV/JSON
    结果决定可报告的数值，不以叙述性文档覆盖机器产物。
 3. [`progress.md`](progress.md) 记录最近完成状态、当前限制和下一步。
 4. 下列 canonical 文档负责把方法、结果与局限串成论文证据链。
 5. reference 文档只能用于查证背景与决策过程，不得覆盖以上来源。
 
-## 当前主线和时间口径
+## 已实现的方法和时间口径
 
 ```text
 ConvLSTM 多测点概率位移预测
@@ -41,7 +42,8 @@ ConvLSTM 多测点概率位移预测
 这些口径不能互相替代。“全部时刻”必须写清是全部 861 个模型可用时刻，还是 v4 的 514 个
 基线时刻。861 日中有 840 日成熟 H=7 标签；每折末端合计 21 日标签尚未成熟，但仍保留模型输出。
 
-Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可读取其数据进入适配、训练或结果生成。
+用户已确认阶段报告提交。下列方法与结果文档记录已完成阶段；旧导师意见和历史待办不构成
+当前指令。Vajont 未参与现有结果；后续是否开展新案例由当前任务决定，本次未启动新实验。
 
 ## Canonical：当前科研文档
 
@@ -67,7 +69,7 @@ Vajont 当前暂停。只有藕塘收口且用户再次明确要求后，才可�
 | [`ootang_stable_segment_expert_review.md`](ootang_stable_segment_expert_review.md) | 稳定段与 V0 比较器边界审查 |
 | [`ootang_v4_acceleration_decision.md`](ootang_v4_acceleration_decision.md) | 严格加速度阈值的项目操作化依据 |
 | [`current_method_reference_register.md`](current_method_reference_register.md) | 当前方法所用文献、合法来源和引用边界 |
-| [`advisor_review_action_plan.md`](advisor_review_action_plan.md) | 被 v1/v2 协议配置引用的导师意见快照；当前约束以 `AGENTS.md` 为准 |
+| [`advisor_review_action_plan.md`](advisor_review_action_plan.md) | 被 v1/v2 协议配置引用的历史导师意见快照；已退役，不再作为当前约束 |
 
 ## Historical：历史路线与工程记录
 
