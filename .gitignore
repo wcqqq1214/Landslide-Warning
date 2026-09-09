@@ -35,6 +35,9 @@ runtime/*
 *.fdb_latexmk
 *.fls
 *.log
+# Preserve raw logs for the versioned B+ research runs.
+!results/ootang_bplus_v1_1/**/*.log
+!results/ootang_bplus_v1_2/**/*.log
 *.out
 *.toc
 *.synctex.gz
