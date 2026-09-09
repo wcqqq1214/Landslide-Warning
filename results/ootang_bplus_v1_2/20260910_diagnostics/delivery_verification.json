@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "tests_passed": 6,
+  "skipped": 0,
+  "row_counts": {
+    "predictions": 35136,
+    "metrics": 100,
+    "growth": 192
+  },
+  "source_and_protected_hashes_rechecked": true,
+  "protected_file_count": 323,
+  "figures_visually_checked": [
+    "rolling_432.png",
+    "rolling_612.png"
+  ],
+  "markdown_local_links_checked": 61,
+  "ruff": "passed",
+  "git_diff_check": "passed",
+  "scientific_claim": "stable four-point improvement not established",
+  "user_acceptance": "pending"
+}

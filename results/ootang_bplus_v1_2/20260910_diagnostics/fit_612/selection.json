@@ -1,0 +1,101 @@
+{
+  "baseline": {
+    "selected_start": "B",
+    "rule": "training objective only; tie <=1e-12 chooses A",
+    "candidates": {
+      "A": {
+        "valid": true,
+        "objective": 23.751132590215352,
+        "zero_trajectory_max_error_mm": 1.1368683772161603e-13,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 50624,
+        "min_x": 0.0,
+        "min_w": -4.725400517362284e-14,
+        "max_normalized_complementarity": 3.881691801549138e-16,
+        "min_slip_tolerance_margin": 3.3072288259667363e-07,
+        "active_set_changes": 25,
+        "near_bound_indices": [
+          23,
+          24,
+          44,
+          45,
+          46
+        ]
+      },
+      "B": {
+        "valid": true,
+        "objective": 13.247489392809692,
+        "zero_trajectory_max_error_mm": 2.2737367544323206e-13,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 50624,
+        "min_x": 0.0,
+        "min_w": -9.626457111409082e-14,
+        "max_normalized_complementarity": 8.422075657780715e-17,
+        "min_slip_tolerance_margin": 3.3000000000000007e-07,
+        "active_set_changes": 83,
+        "near_bound_indices": [
+          2,
+          5,
+          17,
+          23,
+          26,
+          33,
+          40,
+          44,
+          46,
+          47
+        ]
+      }
+    }
+  },
+  "continued": {
+    "selected_start": "B",
+    "rule": "training objective only; tie <=1e-12 chooses A",
+    "candidates": {
+      "A": {
+        "valid": true,
+        "objective": 23.640274518641828,
+        "zero_trajectory_max_error_mm": 0.0,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 50624,
+        "min_x": -5.181079887379395e-09,
+        "min_w": -2.4114387497734274e-13,
+        "max_normalized_complementarity": 6.886053936029143e-16,
+        "min_slip_tolerance_margin": 3.303756319276534e-07,
+        "active_set_changes": 22,
+        "near_bound_indices": [
+          23,
+          24,
+          44,
+          45,
+          46
+        ]
+      },
+      "B": {
+        "valid": true,
+        "objective": 13.111521786505298,
+        "zero_trajectory_max_error_mm": 0.0,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 50624,
+        "min_x": 0.0,
+        "min_w": -1.002776802088739e-13,
+        "max_normalized_complementarity": 8.297810913443018e-17,
+        "min_slip_tolerance_margin": 3.3000000000000007e-07,
+        "active_set_changes": 84,
+        "near_bound_indices": [
+          2,
+          5,
+          7,
+          17,
+          23,
+          26,
+          33,
+          40,
+          44,
+          46,
+          47
+        ]
+      }
+    }
+  }
+}

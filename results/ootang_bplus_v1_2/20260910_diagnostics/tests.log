@@ -1,0 +1,95 @@
+test_completed_artifacts_independently (test_physics_guided_diagnostics.DiagnosticsArtifactTests) ... /Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: divide by zero encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: overflow encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+/Users/wcqqq1214/Project/Landslide-Warning/tests/test_physics_guided_diagnostics.py:150: RuntimeWarning: invalid value encountered in matmul
+  arrays["coordinates"] @ arrays["observation_matrix"].T
+ok
+test_metrics_and_growth_use_correct_days_and_axes (test_physics_guided_diagnostics.DiagnosticsUnitTests) ... /Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:222: RuntimeWarning: divide by zero encountered in matmul
+  background = state["background"] @ obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:222: RuntimeWarning: overflow encountered in matmul
+  background = state["background"] @ obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:222: RuntimeWarning: invalid value encountered in matmul
+  background = state["background"] @ obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:223: RuntimeWarning: divide by zero encountered in matmul
+  other = (state["coordinates"] - state["background"]) @ obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:223: RuntimeWarning: overflow encountered in matmul
+  other = (state["coordinates"] - state["background"]) @ obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_diagnostics/core.py:223: RuntimeWarning: invalid value encountered in matmul
+  other = (state["coordinates"] - state["background"]) @ obs.T
+ok
+test_reader_does_not_parse_future_rows (test_physics_guided_diagnostics.DiagnosticsUnitTests) ... ok
+test_terminal_weight_and_bound_aware_derivative (test_physics_guided_diagnostics.DiagnosticsUnitTests) ... ok
+test_training_api_rejects_longer_labels_and_origin_changes (test_physics_guided_diagnostics.DiagnosticsUnitTests) ... ok
+test_training_selection_excludes_failure_and_does_not_see_forecast (test_physics_guided_diagnostics.DiagnosticsUnitTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 1.462s
+
+OK

@@ -1,0 +1,84 @@
+{
+  "baseline": {
+    "selected_start": "B",
+    "rule": "training objective only; tie <=1e-12 chooses A",
+    "candidates": {
+      "A": {
+        "valid": true,
+        "objective": 14.691817664596574,
+        "zero_trajectory_max_error_mm": 0.0,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 39104,
+        "min_x": 0.0,
+        "min_w": -1.8029378913779204e-13,
+        "max_normalized_complementarity": 6.854692324629261e-17,
+        "min_slip_tolerance_margin": 3.7670335223971807e-07,
+        "active_set_changes": 16,
+        "near_bound_indices": [
+          24,
+          39,
+          44,
+          45
+        ]
+      },
+      "B": {
+        "valid": true,
+        "objective": 9.121829611638294,
+        "zero_trajectory_max_error_mm": 1.1368683772161603e-13,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 39104,
+        "min_x": 0.0,
+        "min_w": -8.995482042289889e-14,
+        "max_normalized_complementarity": 6.509292960064357e-17,
+        "min_slip_tolerance_margin": 7.081677941132895e-07,
+        "active_set_changes": 76,
+        "near_bound_indices": [
+          5,
+          17,
+          43
+        ]
+      }
+    }
+  },
+  "continued": {
+    "selected_start": "B",
+    "rule": "training objective only; tie <=1e-12 chooses A",
+    "candidates": {
+      "A": {
+        "valid": true,
+        "objective": 14.677207577730128,
+        "zero_trajectory_max_error_mm": 0.0,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 39104,
+        "min_x": 0.0,
+        "min_w": -1.5202768855606247e-13,
+        "max_normalized_complementarity": 6.727289871484464e-17,
+        "min_slip_tolerance_margin": 3.6792377605901815e-07,
+        "active_set_changes": 18,
+        "near_bound_indices": [
+          24,
+          39,
+          44,
+          45
+        ]
+      },
+      "B": {
+        "valid": true,
+        "objective": 9.011946210941295,
+        "zero_trajectory_max_error_mm": 0.0,
+        "prefix_error_mm": 0.0,
+        "substeps_checked": 39104,
+        "min_x": -8.799127780046617e-11,
+        "min_w": -1.3873994099994767e-13,
+        "max_normalized_complementarity": 5.4414458813941396e-17,
+        "min_slip_tolerance_margin": 6.006700173972969e-07,
+        "active_set_changes": 79,
+        "near_bound_indices": [
+          5,
+          17,
+          43
+        ]
+      }
+    }
+  }
+}

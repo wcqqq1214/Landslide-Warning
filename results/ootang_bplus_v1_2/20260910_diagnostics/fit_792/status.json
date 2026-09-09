@@ -1,0 +1,9 @@
+{
+  "fit_days": 792,
+  "prediction_days": 0,
+  "status": "complete",
+  "selection": {
+    "baseline": "B",
+    "continued": "B"
+  }
+}

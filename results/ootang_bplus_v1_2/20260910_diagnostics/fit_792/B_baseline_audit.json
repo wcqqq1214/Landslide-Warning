@@ -1,0 +1,20 @@
+{
+  "valid": true,
+  "objective": 53.47094161330276,
+  "zero_trajectory_max_error_mm": 0.0,
+  "prefix_error_mm": 0.0,
+  "substeps_checked": 50624,
+  "min_x": -6.130203708952909e-09,
+  "min_w": -1.4428848548743685e-13,
+  "max_normalized_complementarity": 2.257346514575803e-17,
+  "min_slip_tolerance_margin": 3.31324742524296e-07,
+  "active_set_changes": 57,
+  "near_bound_indices": [
+    5,
+    10,
+    19,
+    20,
+    21,
+    39
+  ]
+}
