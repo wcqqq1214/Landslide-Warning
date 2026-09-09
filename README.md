@@ -1,12 +1,33 @@
 # Landslide-Warning
 
-藕塘滑坡多监测点智能概率预测与预警科研原型。现有实现采用 ConvLSTM 位移预测，
-并用自动未来状态标签训练 NGBoost 五级概率预警模型。
+藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
+比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-阶段状态（2026-09-05）：用户已确认阶段报告提交，原导师要求已结束其约束效力。下文描述
-已实现的方法和现有结果，不限定后续研究路线；后续工作范围以当前用户任务为准。
+最新完成 [v1.2 前缀标定与滚动外推诊断](docs/ootang_bplus_diagnostics_plan.v1.2.md)，
+仅使用前 792 日，未获得稳定改善四点外推的参考模型，见
+[诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md)。结果独立保存，没有新增神经网络训练。
+已完成的三模型规格为[实验计划 v1.1](docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
+开发、验证及结果见[实施记录](docs/ootang_bplus_probabilistic_implementation.v1_1.md)。
+本阶段不做预警、不换案例。旧 ConvLSTM–NGBoost–SHAP 结果保留为历史阶段证据。
+本轮有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
 
-## 已实现的方法流程
+## 当前四点 B+ 实验
+
+```bash
+PYTHONPATH=code .venv/bin/python -m physics_guided_diagnostics.run --run-id example_diagnostic_run
+```
+
+诊断结果写入 `results/ootang_bplus_v1_2/<run_id>/`。下列命令保留用于独立复现 v1.1：
+
+```bash
+PYTHONPATH=code .venv/bin/python -m physics_guided.run \
+  --run-id example_new_run --phase all
+```
+
+每次实验使用独立 `run_id`。结果写入 `results/ootang_bplus_v1_1/<run_id>/`；分阶段入口、
+所需原始 ZIP、标签隔离、历史回测边界及失败处理见实施记录。该入口与旧默认流程独立。
+
+## 历史阶段：八点预测与代理预警流程
 
 ```text
 多源监测数据与逐点运动学特征

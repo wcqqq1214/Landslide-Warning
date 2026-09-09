@@ -19,9 +19,10 @@
 # Current Stage Plan
 
 @docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md
+@docs/ootang_bplus_diagnostics_plan.v1.2.md
 
-- 当前范围：**藕塘一个现有案例、四点位移概率预测，暂不做预警、不换新案例**。具体实现、验收及分工按 v1.1 的 M0/M1/M2 有限比较执行；计划默认不冒充导师已确认的决定。
-- 开始或恢复本阶段工作时，先读下列导师目标、v1.1 和 `docs/progress.md` 最新本阶段记录，再实施、验证或报告；研究目标不等于已有结果。
+- 当前范围：**藕塘一个现有案例、四点位移概率预测，暂不做预警、不换新案例**。v1.1 的 M0/M1/M2 有限比较和 v1.2 的训练前缀标定与滚动外推诊断均已完成，未实现稳定的四点提升；保留各版负结果。后续目标/模型变化须另记版本，不自动追加预算或神经训练。计划默认不冒充导师已确认的决定。
+- 开始或恢复本阶段工作时，先读下列导师目标、对应版本计划与结果，以及 `docs/progress.md` 最新本阶段记录，再实施、验证或报告；研究目标不等于已有结果。
 - 旧报告、旧导师要求和旧待办仅为历史背景。阶段结束或替换时更新本入口，保留可追溯记录。
 
 ## 导师资料（当前阶段原始依据）
@@ -48,6 +49,7 @@
 
 # Git Rules
 
+- Commit a backup after each completed, verifiable step. Split distinct implementation, experiment-result, and documentation steps into separate commits; keep related tests with their feature/fix and exclude unrelated user files. A commit request does not by itself request a push.
 - Do NOT add `Co-Authored-By` lines to any commit messages.
 - Format: `type: description` — English, lowercase, concise.
 

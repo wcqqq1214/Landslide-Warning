@@ -8,7 +8,8 @@
 发生冲突时按以下规则判断：
 
 1. 当前用户请求及其明确修正决定任务范围；[`AGENTS.md`](../AGENTS.md) 规定项目协作、
-   授权、验证和记录规则。原导师要求已于 2026-09-05 按用户说明退役，不再限定后续研究路线。
+   授权、验证和记录规则。旧导师要求已于 2026-09-05 退役；当前四点阶段依据为 2026-09-10
+   更新的导师目标和 v1.1，不把旧预警任务带入新阶段。
 2. 版本化 `config/`、对应源码以及运行 `manifest.json` 决定某次实验实际执行的方法；CSV/JSON
    结果决定可报告的数值，不以叙述性文档覆盖机器产物。
 3. [`progress.md`](progress.md) 记录最近完成状态、当前限制和下一步。
@@ -17,9 +18,14 @@
 
 ## 当前阶段：四点 B+ 概率位移预测
 
-当前执行入口是[实验计划 v1.1](ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
-已由 `AGENTS.md` 引用。它规定 M0/M1/M2 三组比较、数据与递推接口、时间验证、训练/选模、
-数值验收和输出；本轮仅补全计划，尚未产生新模型结果。
+当前阶段的 [v1.2 前缀标定与滚动外推诊断](ootang_bplus_diagnostics_plan.v1.2.md) 已完成，
+[结果记录](ootang_bplus_diagnostics_results.v1.2.md) 保留未稳定改善外推的结论。
+代码为 `code/physics_guided_diagnostics/`，结果另存 `results/ootang_bplus_v1_2/`。
+已完成的[实验计划 v1.1](ootang_bplus_probabilistic_experiment_plan.v1.1.md)
+规定 M0/M1/M2 三组比较、数据与递推接口、时间验证、训练/选模、
+数值验收和输出；独立代码位于 `code/physics_guided/`，实际运行与验证状态见
+[实施记录](ootang_bplus_probabilistic_implementation.v1_1.md)，结果位于
+[`results/ootang_bplus_v1_1/`](../results/ootang_bplus_v1_1/)。
 [v1](ootang_bplus_probabilistic_experiment_plan.v1.md) 和
 [前期讨论](ootang_bplus_model_route_discussion.v1.md) 保留为历史设计依据。
 下文的 ConvLSTM–NGBoost–SHAP 描述属于已完成阶段，不是当前阶段的新增预警任务。
