@@ -15,6 +15,15 @@
 4. 下列 canonical 文档负责把方法、结果与局限串成论文证据链。
 5. reference 文档只能用于查证背景与决策过程，不得覆盖以上来源。
 
+## 当前阶段：四点 B+ 概率位移预测
+
+当前执行入口是[实验计划 v1.1](ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
+已由 `AGENTS.md` 引用。它规定 M0/M1/M2 三组比较、数据与递推接口、时间验证、训练/选模、
+数值验收和输出；本轮仅补全计划，尚未产生新模型结果。
+[v1](ootang_bplus_probabilistic_experiment_plan.v1.md) 和
+[前期讨论](ootang_bplus_model_route_discussion.v1.md) 保留为历史设计依据。
+下文的 ConvLSTM–NGBoost–SHAP 描述属于已完成阶段，不是当前阶段的新增预警任务。
+
 ## 已实现的方法和时间口径
 
 ```text
