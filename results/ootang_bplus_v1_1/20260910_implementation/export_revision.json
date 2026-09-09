@@ -1,0 +1,9 @@
+{
+  "reason": "Prediction zoom axes use forecast-only bounds; failed-route acceptance uses null and not_evaluated",
+  "changed_source": "code/physics_guided/reporting.py",
+  "source_sha256": "a5193656aac21c514b9674f6c84ab901a2326e44517a77392a7bad5475969a83",
+  "all_prediction_and_metric_csv_hashes_unchanged": true,
+  "training_and_checkpoint_selection_unchanged": true,
+  "scientific_execution_source_snapshot": "source_snapshot/",
+  "validation": "18 targeted tests passed after export fix; original full suite 268 tests passed; all CSV hashes unchanged after completed rerender; four latest PNGs visually checked"
+}

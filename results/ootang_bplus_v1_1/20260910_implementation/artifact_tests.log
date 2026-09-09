@@ -1,0 +1,10 @@
+test_complete_rows_axes_and_warmup (test_physics_guided_artifacts.PhysicsGuidedArtifactTests) ... ok
+test_every_station_mean_metric_recomputed_from_observations (test_physics_guided_artifacts.PhysicsGuidedArtifactTests) ... ok
+test_final_epochs_were_locked_and_all_seeds_completed (test_physics_guided_artifacts.PhysicsGuidedArtifactTests) ... ok
+test_m2_full_trajectory_constraint_records (test_physics_guided_artifacts.PhysicsGuidedArtifactTests) ... ok
+test_mixture_moments_and_cdf_quantiles (test_physics_guided_artifacts.PhysicsGuidedArtifactTests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 1.755s
+
+OK

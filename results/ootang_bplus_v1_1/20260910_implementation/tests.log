@@ -1,0 +1,70 @@
+................................................................................................................usage: python -m unittest [-h]
+                          [--stage {features,convlstm,convlstm-rolling,convlstm-seeds,ootang-operational-v4,ootang-ngboost-auto-state,ootang-ngboost-auto-state-ecdf,ootang-ngboost-auto-state-classifier,ootang-ngboost-auto-state-memory,ootang-ngboost-auto-state-residual,ootang-advisor-package}]
+                          [--skip {features,convlstm,convlstm-rolling,convlstm-seeds,ootang-operational-v4,ootang-ngboost-auto-state,ootang-ngboost-auto-state-ecdf,ootang-ngboost-auto-state-classifier,ootang-ngboost-auto-state-memory,ootang-ngboost-auto-state-residual,ootang-advisor-package}]
+                          [--dry-run] [--list] [--manifest MANIFEST]
+python -m unittest: error: argument --stage: invalid choice: 'unknown' (choose from 'features', 'convlstm', 'convlstm-rolling', 'convlstm-seeds', 'ootang-operational-v4', 'ootang-ngboost-auto-state', 'ootang-ngboost-auto-state-ecdf', 'ootang-ngboost-auto-state-classifier', 'ootang-ngboost-auto-state-memory', 'ootang-ngboost-auto-state-residual', 'ootang-advisor-package')
+.[pipeline] 执行顺序: demo
+
+[pipeline] [1/1] demo: demo stage
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/tmp10dzyd5d/demo.py
+.[pipeline] 完成: demo (0.0s)
+
+[pipeline] 全部完成 (0.4s): demo=0.0s
+[pipeline] 执行顺序: demo
+
+[pipeline] [1/1] demo: demo stage
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/tmpofqt5afn/demo.py
+.[pipeline] 执行顺序: demo
+
+[pipeline] [1/1] demo: demo stage
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/tmpzjt8oa8d/demo.py
+.[pipeline] 执行顺序: demo
+
+[pipeline] [1/1] demo: demo stage
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/tmpbxp1zeol/demo.py
+....[pipeline] 执行顺序: features
+
+[pipeline] [1/1] features: 生成统一特征表、时间感知运动学长表和切线角参数
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/features/build_features.py
+.
+[pipeline] dry-run 完成，未执行任何脚本
+[pipeline] 执行顺序: features -> convlstm-rolling
+
+[pipeline] [1/2] features: 生成统一特征表、时间感知运动学长表和切线角参数
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/features/build_features.py
+[pipeline] 完成: features (0.0s)
+
+[pipeline] [2/2] convlstm-rolling: 执行 ConvLSTM 扩展窗口滚动时间验证
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/convlstm/rolling_validation.py
+[pipeline] 失败: convlstm-rolling (0.0s)
+[pipeline] 已完成 1/2 个阶段，总耗时 0.1s
+......[pipeline] 执行顺序: features
+
+[pipeline] [1/1] features: 生成统一特征表、时间感知运动学长表和切线角参数
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/features/build_features.py
+...[pipeline] 完成: features (0.0s)
+
+[pipeline] 全部完成 (0.1s): features=0.0s
+[pipeline] 执行顺序: features -> convlstm-rolling
+
+[pipeline] [1/2] features: 生成统一特征表、时间感知运动学长表和切线角参数
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/features/build_features.py
+[pipeline] 完成: features (0.0s)
+
+[pipeline] [2/2] convlstm-rolling: 执行 ConvLSTM 扩展窗口滚动时间验证
+[pipeline] 命令: /Users/wcqqq1214/Project/Landslide-Warning/.venv/bin/python /Users/wcqqq1214/Project/Landslide-Warning/code/convlstm/rolling_validation.py
+..........................................................[pipeline] 完成: convlstm-rolling (0.0s)
+[pipeline] 运行清单: /var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/tmpi_3hhpg_/completed.json
+
+[pipeline] 全部完成 (0.2s): features=0.0s, convlstm-rolling=0.0s
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+................................................................................
+----------------------------------------------------------------------
+Ran 268 tests in 851.281s
+
+OK

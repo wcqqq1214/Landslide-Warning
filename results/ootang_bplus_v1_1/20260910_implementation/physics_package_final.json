@@ -1,0 +1,165 @@
+{
+  "physics_version": "advisor_frozen_1168",
+  "fit_end": "2019-09-11",
+  "parameter_sha256": "a024a46afa7a721d74790173fddb2e29648e59fe6c9cca474f12feffd10b1db3",
+  "theta": [
+    -0.5190791224418199,
+    -0.6880944288691213,
+    -0.6931368258089932,
+    -0.6838892189302184,
+    1.08144697556051,
+    0.8311476457045797,
+    0.6458116574719774,
+    1.1631780365581899,
+    -5.612858849991927,
+    -7.2205810112892985,
+    -7.449691064843441,
+    -7.600765086340097,
+    -5.5442203248869335,
+    -5.5213296459412256,
+    -5.120767489643124,
+    -3.9608726223401196,
+    5.795651377748255,
+    7.022247805374157,
+    8.20761185251592,
+    7.041463509238687,
+    2.05005033772184,
+    3.3456475483477046,
+    3.5095972443519483,
+    -0.6930913277220848,
+    0.045631089095960906,
+    0.09040517675811512,
+    0.01905762519709477,
+    0.1445836073076524,
+    64.0026069925243,
+    54.4753257600333,
+    41.19852815975521,
+    -15.799120267577788,
+    5.449595176362123,
+    3.1355790494739746,
+    5.468261341276079,
+    3.828953809525201,
+    3.250870338818547,
+    0.1788809819299435,
+    0.021319098021680964,
+    -13.47668675219793,
+    -8.550944295096864,
+    2.5849181864268567,
+    7.971669298772836,
+    8.292247321726581,
+    14.999999833103956,
+    14.99991661417568,
+    10.484754882642584,
+    0.12864418577548092,
+    0.28982243716497297,
+    0.013160571410680189,
+    0.04119698378109589,
+    1.669933084809924,
+    1.3860523822541346,
+    5.084006926711831
+  ],
+  "y0": [
+    0.0,
+    0.0,
+    944.5426666666664,
+    673.7466666666666
+  ],
+  "initial_state": {
+    "q": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "z": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "p": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "rb": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "rc": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "rE": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "b": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "rain_head": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "moisture": [
+      0.5,
+      0.5,
+      0.5,
+      0.5
+    ],
+    "H": 150.2
+  },
+  "reference_provenance": {
+    "archive_sha256": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "source_hashes": {
+      "work/monitoring.csv": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+      "results/geometry_ground_interpretation.csv": "666740a0dd45869d17ca11c8dfdbcfa3638066e9a8e336830c71baaa2d91405e",
+      "results/geometry_O3_interpretation.csv": "53e72c3431c9b1aa8bbe8af3fd0757974f75a59a1fa68f99e268919fb3d21849",
+      "results/geometry_O2_interpretation.csv": "961b6725a3bcb4f53371fa0e925b8f9e5e99ca50bfa006f8c129817767178256",
+      "results/geometry_O1_interpretation.csv": "063d3e060aaab1c1638b06082acc6cf1e3ee2885267c0f803820ecafd82901c6",
+      "section2d_v4/physical_model.py": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09",
+      "section2d_v4/physical_solver.c": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+      "section2d_v4/geometry.py": "88e16279186087cc939cf9343539c0f583977abce324ff7208b81d3eca525a4e",
+      "section2d_v4/calibrate_boundary.py": "42473a3e60573774cc10da381a6beea3f52c3ca2b6407c884727d494f03f68d4",
+      "section2d_v4/predict.py": "ef14e4ec45eeb8b7844ab6bd2493f334981447210bb98a659b045548e6773ae0",
+      "section2d_v4/results/calibrated.json": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2",
+      "section2d_v4/results/calibration_lock.json": "2692527a5be3fa1248c03d43e525e6b754234a4ccaa870d957e33aa3e60952a8",
+      "section2d_v4/results/protocol.json": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c",
+      "section2d_v4/results/metrics.json": "a96942342da72050199cfe2083b7e343addf365163900ff45257398a2b561b68",
+      "section2d_v4/results/curves.npz": "a9d06f75fd1eb2a1238b95ca24a8ca83e4fab94f72e07ffa98b8eb8f1873a862",
+      "section2d_v4/results/geometry_matrices.npz": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9",
+      "section2d_v4/results/reservoir_force_lookup_final.npz": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e",
+      "section2d_v4/output/future_prediction.csv": "7be248b042f581885357e1240f31e32e4e92ba74ce933fead05bbf9af261f037"
+    },
+    "adapted_python_sha256": "f39ed6e936f937f77dab554d91d6f35cfda878814d93c1f47c2c8f036d85877e",
+    "library_sha256": "bcb5283b3dd3fd0841404d413f5ad933f632590feb8b417ba06c48b9a616c5e1",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+    "command": [
+      "cc",
+      "-O3",
+      "-fPIC",
+      "-shared",
+      "/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_solver.c",
+      "-o",
+      "/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_solver.dylib"
+    ],
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "adaptations": [
+      "dynamic library suffix",
+      "package-relative geometry import"
+    ]
+  },
+  "source_metadata_timing": "post-calibration capture; original optimization stage records retained"
+}

@@ -1,0 +1,210 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+development M1 seed=0 mean epoch=0 elapsed=0.1s
+development M1 seed=0 mean epoch=10 elapsed=2.1s
+development M1 seed=0 mean epoch=20 elapsed=4.0s
+development M1 seed=0 mean epoch=30 elapsed=6.0s
+development M1 seed=0 mean epoch=40 elapsed=8.0s
+development M1 seed=0 mean epoch=50 elapsed=10.1s
+development M1 seed=0 mean epoch=60 elapsed=12.2s
+development M1 seed=0 mean epoch=70 elapsed=14.2s
+development M1 seed=0 mean epoch=80 elapsed=16.3s
+development M1 seed=0 mean epoch=90 elapsed=18.3s
+development M1 seed=0 mean epoch=100 elapsed=20.3s
+development M1 seed=0 mean epoch=110 elapsed=22.7s
+development M1 seed=0 mean epoch=120 elapsed=25.7s
+development M1 seed=0 mean epoch=130 elapsed=28.5s
+development M1 seed=0 mean epoch=140 elapsed=32.2s
+development M1 seed=0 mean epoch=150 elapsed=37.8s
+development M1 seed=0 mean epoch=160 elapsed=43.7s
+development M1 seed=0 mean epoch=170 elapsed=50.3s
+development M1 seed=0 mean epoch=180 elapsed=57.0s
+development M1 seed=0 mean epoch=190 elapsed=64.8s
+development M1 seed=0 mean epoch=200 elapsed=72.0s
+development M1 seed=1 mean epoch=0 elapsed=0.5s
+development M1 seed=1 mean epoch=10 elapsed=9.3s
+development M1 seed=1 mean epoch=20 elapsed=26.0s
+development M1 seed=1 mean epoch=30 elapsed=42.9s
+development M1 seed=1 mean epoch=40 elapsed=56.5s
+development M1 seed=1 mean epoch=50 elapsed=69.1s
+development M1 seed=1 mean epoch=60 elapsed=75.8s
+development M1 seed=1 mean epoch=70 elapsed=81.7s
+development M1 seed=1 mean epoch=80 elapsed=87.8s
+development M1 seed=1 mean epoch=90 elapsed=95.3s
+development M1 seed=1 mean epoch=100 elapsed=100.4s
+development M1 seed=1 mean epoch=110 elapsed=109.0s
+development M1 seed=1 mean epoch=120 elapsed=119.6s
+development M1 seed=1 mean epoch=130 elapsed=129.3s
+development M1 seed=1 mean epoch=140 elapsed=137.6s
+development M1 seed=1 mean epoch=150 elapsed=145.1s
+development M1 seed=1 mean epoch=160 elapsed=156.2s
+development M1 seed=1 mean epoch=170 elapsed=176.3s
+development M1 seed=1 mean epoch=180 elapsed=195.1s
+development M1 seed=1 mean epoch=190 elapsed=200.7s
+development M1 seed=1 mean epoch=200 elapsed=211.5s
+development M1 seed=2 mean epoch=0 elapsed=0.6s
+development M1 seed=2 mean epoch=10 elapsed=14.3s
+development M1 seed=2 mean epoch=20 elapsed=37.2s
+development M1 seed=2 mean epoch=30 elapsed=47.0s
+development M1 seed=2 mean epoch=40 elapsed=63.5s
+development M1 seed=2 mean epoch=50 elapsed=92.2s
+development M1 seed=2 mean epoch=60 elapsed=108.8s
+development M1 seed=2 mean epoch=70 elapsed=124.8s
+development M1 seed=2 mean epoch=80 elapsed=156.8s
+development M1 seed=2 mean epoch=90 elapsed=176.3s
+development M1 seed=2 mean epoch=100 elapsed=196.2s
+development M1 seed=2 mean epoch=110 elapsed=209.1s
+development M1 seed=2 mean epoch=120 elapsed=226.8s
+development M1 seed=2 mean epoch=130 elapsed=238.1s
+development M1 seed=2 mean epoch=140 elapsed=254.4s
+development M1 seed=2 mean epoch=150 elapsed=271.1s
+development M1 seed=2 mean epoch=160 elapsed=297.0s
+development M1 seed=2 mean epoch=170 elapsed=312.6s
+development M1 seed=2 mean epoch=180 elapsed=327.2s
+development M1 seed=2 mean epoch=190 elapsed=340.6s
+development M1 seed=2 mean epoch=200 elapsed=363.6s
+development M2 seed=0 mean epoch=0 elapsed=1.0s
+development M2 seed=0 mean epoch=10 elapsed=7.1s
+development M2 seed=0 mean epoch=20 elapsed=13.0s
+development M2 seed=0 mean epoch=30 elapsed=18.8s
+development M2 seed=0 mean epoch=40 elapsed=24.6s
+development M2 seed=0 mean epoch=50 elapsed=33.1s
+development M2 seed=0 mean epoch=60 elapsed=37.7s
+development M2 seed=0 mean epoch=70 elapsed=43.0s
+development M2 seed=0 mean epoch=80 elapsed=47.0s
+development M2 seed=0 mean epoch=90 elapsed=51.2s
+development M2 seed=0 mean epoch=100 elapsed=55.9s
+development M2 seed=0 mean epoch=110 elapsed=60.1s
+development M2 seed=0 mean epoch=120 elapsed=65.0s
+development M2 seed=0 mean epoch=130 elapsed=69.6s
+development M2 seed=0 mean epoch=140 elapsed=74.8s
+development M2 seed=0 mean epoch=150 elapsed=79.1s
+development M2 seed=0 mean epoch=160 elapsed=83.4s
+development M2 seed=0 mean epoch=170 elapsed=87.6s
+development M2 seed=0 mean epoch=180 elapsed=93.1s
+development M2 seed=0 mean epoch=190 elapsed=97.0s
+development M2 seed=0 mean epoch=200 elapsed=101.6s
+development M2 seed=1 mean epoch=0 elapsed=0.9s
+development M2 seed=1 mean epoch=10 elapsed=5.1s
+development M2 seed=1 mean epoch=20 elapsed=9.3s
+development M2 seed=1 mean epoch=30 elapsed=14.1s
+development M2 seed=1 mean epoch=40 elapsed=18.1s
+development M2 seed=1 mean epoch=50 elapsed=22.3s
+development M2 seed=1 mean epoch=60 elapsed=26.7s
+development M2 seed=1 mean epoch=70 elapsed=31.3s
+development M2 seed=1 mean epoch=80 elapsed=36.2s
+development M2 seed=1 mean epoch=90 elapsed=42.8s
+development M2 seed=1 mean epoch=100 elapsed=48.9s
+development M2 seed=1 mean epoch=110 elapsed=53.1s
+development M2 seed=1 mean epoch=120 elapsed=57.3s
+development M2 seed=1 mean epoch=130 elapsed=61.5s
+development M2 seed=1 mean epoch=140 elapsed=66.1s
+development M2 seed=1 mean epoch=150 elapsed=70.7s
+development M2 seed=1 mean epoch=160 elapsed=75.2s
+development M2 seed=1 mean epoch=170 elapsed=80.3s
+development M2 seed=1 mean epoch=180 elapsed=88.0s
+development M2 seed=1 mean epoch=190 elapsed=93.6s
+development M2 seed=1 mean epoch=200 elapsed=100.6s
+development M2 seed=2 mean epoch=0 elapsed=0.2s
+development M2 seed=2 mean epoch=10 elapsed=5.9s
+development M2 seed=2 mean epoch=20 elapsed=10.6s
+development M2 seed=2 mean epoch=30 elapsed=15.1s
+development M2 seed=2 mean epoch=40 elapsed=19.2s
+development M2 seed=2 mean epoch=50 elapsed=23.3s
+development M2 seed=2 mean epoch=60 elapsed=26.9s
+development M2 seed=2 mean epoch=70 elapsed=30.9s
+development M2 seed=2 mean epoch=80 elapsed=38.4s
+development M2 seed=2 mean epoch=90 elapsed=42.4s
+development M2 seed=2 mean epoch=100 elapsed=45.8s
+development M2 seed=2 mean epoch=110 elapsed=49.6s
+development M2 seed=2 mean epoch=120 elapsed=54.3s
+development M2 seed=2 mean epoch=130 elapsed=59.0s
+development M2 seed=2 mean epoch=140 elapsed=64.3s
+development M2 seed=2 mean epoch=150 elapsed=69.5s
+development M2 seed=2 mean epoch=160 elapsed=75.2s
+development M2 seed=2 mean epoch=170 elapsed=80.8s
+development M2 seed=2 mean epoch=180 elapsed=93.6s
+development M2 seed=2 mean epoch=190 elapsed=99.7s
+development M2 seed=2 mean epoch=200 elapsed=106.0s
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T

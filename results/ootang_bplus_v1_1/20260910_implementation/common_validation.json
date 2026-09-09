@@ -1,0 +1,17 @@
+{
+  "probability": {
+    "analytic_crps": 1.325418136995078,
+    "numerical_crps": 1.3254181369954559,
+    "absolute_error": 3.779199175824033e-13
+  },
+  "dates": {
+    "development": {
+      "train": 762,
+      "prediction": 376
+    },
+    "final": {
+      "train": 1138,
+      "prediction": 293
+    }
+  }
+}

@@ -1,0 +1,71 @@
+[
+  {
+    "seed": 0,
+    "min_multiplier": 1.0,
+    "max_multiplier": 1.0,
+    "near_lower_fraction": 0.0,
+    "near_upper_fraction": 0.0,
+    "saturation_definition": "within 1% of 0.5/2 bounds; diagnostic only",
+    "substeps_checked": 93440,
+    "max_normalized_complementarity": 3.198208902795135e-16,
+    "active_set_changes": 82,
+    "zero_dry_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "zero_wet_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  {
+    "seed": 1,
+    "min_multiplier": 1.0,
+    "max_multiplier": 1.0,
+    "near_lower_fraction": 0.0,
+    "near_upper_fraction": 0.0,
+    "saturation_definition": "within 1% of 0.5/2 bounds; diagnostic only",
+    "substeps_checked": 93440,
+    "max_normalized_complementarity": 3.198208902795135e-16,
+    "active_set_changes": 82,
+    "zero_dry_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "zero_wet_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  {
+    "seed": 2,
+    "min_multiplier": 1.0,
+    "max_multiplier": 1.0,
+    "near_lower_fraction": 0.0,
+    "near_upper_fraction": 0.0,
+    "saturation_definition": "within 1% of 0.5/2 bounds; diagnostic only",
+    "substeps_checked": 93440,
+    "max_normalized_complementarity": 3.198208902795135e-16,
+    "active_set_changes": 82,
+    "zero_dry_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "zero_wet_coefficients": [
+      false,
+      false,
+      false,
+      false
+    ]
+  }
+]

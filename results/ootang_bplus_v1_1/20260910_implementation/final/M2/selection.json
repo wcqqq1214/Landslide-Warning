@@ -1,0 +1,15 @@
+{
+  "route": "M2",
+  "stage": "final",
+  "status": "complete",
+  "e_mu": 0,
+  "e_sigma": 0,
+  "mean_candidate_rmse_mm": {},
+  "scale_candidate_crps_mm": {},
+  "parameter_count": 1317,
+  "seeds": [
+    0,
+    1,
+    2
+  ]
+}
