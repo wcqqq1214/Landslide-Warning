@@ -42,6 +42,7 @@ runtime/*
 !results/ootang_bplus_v1_4/**/*.log
 !results/ootang_bplus_v1_5/**/*.log
 !results/ootang_bplus_v1_6/**/*.log
+!results/ootang_bplus_v1_7/**/*.log
 *.out
 *.toc
 *.synctex.gz
