@@ -1,0 +1,49 @@
+{
+  "task": "A",
+  "status": "complete",
+  "fitting_seconds": 60.02285370789468,
+  "new_optimizer_nfev": 1600,
+  "optimization_forward_calls": 80415,
+  "accounting": "exact for completed stages; last durable checkpoint lower bound for interrupted stage",
+  "incomplete_stages": [],
+  "cap_nfev": 1600,
+  "combined_nfev": 1600,
+  "combined_fitting_seconds": 60.02285370789468,
+  "precheck_forward_calls": 4,
+  "postcheck_forward_calls": 2,
+  "user_acceptance": "pending",
+  "neural_training": false,
+  "effectiveness": "not inferred from execution",
+  "prefixes": {
+    "432": {
+      "fit_days": 432,
+      "selected_anchor": "v1.3_B",
+      "retained": "attempt",
+      "reason": "training objective improved by more than 1e-7",
+      "anchor_objective": 16.367884340900286,
+      "retained_objective": 16.160747352791432,
+      "objective_reduction": 0.20713698810885361,
+      "attempt_valid": true,
+      "retained_optimality": 2.129082448907828,
+      "attempt_optimality": 2.129082448907827,
+      "attempt_message": "The maximum number of function evaluations is exceeded.",
+      "attempt_nfev": 800,
+      "relative_improvement_percent": 1.2655086252733163
+    },
+    "612": {
+      "fit_days": 612,
+      "selected_anchor": "v1.2_B",
+      "retained": "attempt",
+      "reason": "training objective improved by more than 1e-7",
+      "anchor_objective": 32.444117042390545,
+      "retained_objective": 31.497798510887858,
+      "objective_reduction": 0.946318531502687,
+      "attempt_valid": true,
+      "retained_optimality": 136.90060420471508,
+      "attempt_optimality": 136.90060420471667,
+      "attempt_message": "The maximum number of function evaluations is exceeded.",
+      "attempt_nfev": 800,
+      "relative_improvement_percent": 2.9167646333733
+    }
+  }
+}

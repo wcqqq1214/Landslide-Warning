@@ -1,0 +1,12 @@
+{
+  "valid": true,
+  "forward_calls": 1,
+  "custom_trajectory_calls": 1,
+  "zero_trajectory_max_error_mm": 0.0,
+  "substeps_checked": 39104,
+  "min_x": -5.181079887379395e-09,
+  "min_w": -2.4114387497734274e-13,
+  "max_normalized_complementarity": 1.6343169441876047e-16,
+  "min_slip_tolerance_margin": 3.303756319276534e-07,
+  "active_set_changes": 16
+}

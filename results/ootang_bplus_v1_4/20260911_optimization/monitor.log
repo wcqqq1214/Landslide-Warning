@@ -1,0 +1,3 @@
+{"elapsed_seconds": 0.0034286659210920334, "active": {"A_432": {"pid": 86892, "stall_advisory": false}, "A_612": {"pid": 86893, "stall_advisory": false}}, "pending": []}
+{"elapsed_seconds": 30.008735790848732, "active": {"A_432": {"pid": 86892, "stall_advisory": false}, "A_612": {"pid": 86893, "stall_advisory": false}}, "pending": []}
+{"elapsed_seconds": 60.02172791585326, "active": {}, "pending": []}

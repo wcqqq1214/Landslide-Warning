@@ -1,0 +1,24 @@
+{
+  "record_source": "Observed command tool results before commit 7a6db5d; not a reconstructed raw stdout transcript",
+  "checks": [
+    {
+      "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_physics_guided_optimization_selection.py' -v",
+      "tests": 12,
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_physics_guided_diagnostics.py' -v",
+      "tests": 6,
+      "exit_code": 0
+    },
+    {
+      "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_physics_guided_increment.py' -v",
+      "tests": 7,
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/ruff check code/physics_guided_optimization_selection tests/test_physics_guided_optimization_selection.py",
+      "exit_code": 0
+    }
+  ]
+}

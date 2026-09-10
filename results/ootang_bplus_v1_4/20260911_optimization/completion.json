@@ -1,0 +1,15 @@
+{
+  "status": "complete",
+  "fitting_seconds": 60.02285370789468,
+  "new_optimizer_nfev": 1600,
+  "optimization_forward_calls": 80415,
+  "accounting": "exact for completed stages; last durable checkpoint lower bound for interrupted stage",
+  "incomplete_stages": [],
+  "cap_nfev": 1600,
+  "combined_nfev": 1600,
+  "combined_fitting_seconds": 60.02285370789468,
+  "precheck_forward_calls": 4,
+  "postcheck_forward_calls": 2,
+  "user_acceptance": "pending",
+  "neural_training": false
+}

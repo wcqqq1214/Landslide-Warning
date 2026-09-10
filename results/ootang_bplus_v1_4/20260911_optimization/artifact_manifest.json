@@ -1,0 +1,284 @@
+{
+  "files": {
+    "A_432/anchor_locked.json": {
+      "sha256": "7636f0923fdcbe038affc9ee573125b8b98ee6d7f0dcad2c2766b8e9a3ab2f54",
+      "bytes": 34646
+    },
+    "A_432/attempt.audit.json": {
+      "sha256": "a65cac370bd67e0c99865766fd4bca657d68e286be36265cc9d88082802a73c3",
+      "bytes": 354
+    },
+    "A_432/attempt.npz": {
+      "sha256": "45422bb7aab5ee065401d5e2c749d35ca99310640bdb08f997c7b28b1565c547",
+      "bytes": 132942
+    },
+    "A_432/retained_gradient.json": {
+      "sha256": "6698dd493d8efd0a8fe3b62fef33d257df6af776c40c624ecb882218e42f45e8",
+      "bytes": 2833
+    },
+    "A_432/retained_locked.json": {
+      "sha256": "b75a289290ecafbdaeecddc3c6ba0a38f47ca85fe221d77e94c46b3ec7056a4f",
+      "bytes": 1613
+    },
+    "A_432/stage1.json": {
+      "sha256": "efdfa4e6a19a5e97371d381f0ce46d15df90ab801833f2413f3077e72d3518d9",
+      "bytes": 5213
+    },
+    "A_432/v1.2_A.audit.json": {
+      "sha256": "410887800b0a0a59b2576cdf2ff85697d5af1614235f4750d6ce8fd05a7cde3d",
+      "bytes": 336
+    },
+    "A_432/v1.2_A.npz": {
+      "sha256": "cf7e04264c0421ffdb8799d7cb80115ac236a19f1794f4f6b63bd2ef026e7aae",
+      "bytes": 129407
+    },
+    "A_432/v1.2_B.audit.json": {
+      "sha256": "4450cf5b6cf0d748e7c224a74ed3ffd4379d4831687b981749c92b69d78356ee",
+      "bytes": 355
+    },
+    "A_432/v1.2_B.npz": {
+      "sha256": "26602ae9afb93f1752fba386d4367e2bc1737ea25e4089299b1ed7dfc7f2b43c",
+      "bytes": 130204
+    },
+    "A_432/v1.3_A.audit.json": {
+      "sha256": "89219e51008dd7b1ad2bc7103b55021572d9f941d36b74d70a0c9925ad80f2cb",
+      "bytes": 336
+    },
+    "A_432/v1.3_A.npz": {
+      "sha256": "09783f107329011e8548176ecae7bae5505636c4f889eb410d103221ad90b369",
+      "bytes": 129784
+    },
+    "A_432/v1.3_B.audit.json": {
+      "sha256": "b2207f9acdd561d94c84dde5e907116d7f0baa70b3cbf1b0361ff80cfc273ab0",
+      "bytes": 336
+    },
+    "A_432/v1.3_B.npz": {
+      "sha256": "65e5c798b1de52dbf5bce3df94c0b24745d8bbe80f39ae9c3f43ed2467b268c0",
+      "bytes": 134896
+    },
+    "A_432.log": {
+      "sha256": "dcf43e3d132923badf6a005cc562c37df89b97f7d33dc7502ecdc0f25c59d4f4",
+      "bytes": 13642
+    },
+    "A_432.progress.json": {
+      "sha256": "b964bc9075395235be4d1dd744855181059512fad6fd59809779b5dd97161a58",
+      "bytes": 3089
+    },
+    "A_432.status.json": {
+      "sha256": "aa8ae1ef8f5f91f3041865c00c2b0c126aae4465563d95a3105c8af3f0a0a45e",
+      "bytes": 1783
+    },
+    "A_612/anchor_locked.json": {
+      "sha256": "b727452f890a785bedff462b6aee9045ff2722e9fbc2bc7b04c90ba7c016a324",
+      "bytes": 34826
+    },
+    "A_612/attempt.audit.json": {
+      "sha256": "168fabaaeb28c726e2db494cce10ea5be47e8c4e9c96cbf220588f4555356c22",
+      "bytes": 353
+    },
+    "A_612/attempt.npz": {
+      "sha256": "f76c37356a288a0ee8cd96669c2c973bc75b47b61ab150ba84c2c8e3e61c94b6",
+      "bytes": 189715
+    },
+    "A_612/retained_gradient.json": {
+      "sha256": "cc9b4db69b37439eb00daa0861a4d8842a8b63f28e3fb023ff02b152c91850ee",
+      "bytes": 2803
+    },
+    "A_612/retained_locked.json": {
+      "sha256": "d6a677eefae3a593a23f4aa386e82981916f9718b631979c3c40dee41a8ca36a",
+      "bytes": 1620
+    },
+    "A_612/stage1.json": {
+      "sha256": "f39be45c7b69e6975236a16a273e6fe2eef56e71f0de89ab80ea6bc18df4b9cb",
+      "bytes": 5271
+    },
+    "A_612/v1.2_A.audit.json": {
+      "sha256": "1915b96a0c387e35f0e06e2f1ba31e736bd252a7408ae09b1b75445cc8806f5b",
+      "bytes": 355
+    },
+    "A_612/v1.2_A.npz": {
+      "sha256": "bc8ceb91e1bbd322906910020c6e987fa7aef0fe0729835e93d1377a7f7a4be7",
+      "bytes": 182142
+    },
+    "A_612/v1.2_B.audit.json": {
+      "sha256": "427af5bb0af83abe4ac1f0044fbea85e648e764e6b38ab081350cc3b1854832f",
+      "bytes": 335
+    },
+    "A_612/v1.2_B.npz": {
+      "sha256": "393ec45580d06b7e84e26647a6620887ad117d692eca55fbaffee3837ce641f1",
+      "bytes": 189285
+    },
+    "A_612/v1.3_A.audit.json": {
+      "sha256": "c4e0e07ce6e861084c107e9ddbe832eabd518bf031bf4d5b645cbef4bcfa6c2f",
+      "bytes": 335
+    },
+    "A_612/v1.3_A.npz": {
+      "sha256": "50350d7c277bf4d47be8f1051973b9d5cf9927f8cc2ba961cee95b24ee26993b",
+      "bytes": 183438
+    },
+    "A_612/v1.3_B.audit.json": {
+      "sha256": "f2b67b2663b7f0fdea3c37fb57c7087ae8ead3732771c775249843f51a1087c1",
+      "bytes": 354
+    },
+    "A_612/v1.3_B.npz": {
+      "sha256": "81810b2e75f9aaff073b33c7e94e5d6d5b89ac56e98878edc06345fc780836e2",
+      "bytes": 185101
+    },
+    "A_612.log": {
+      "sha256": "898f96e4e79789c1cae8b5b0a71a8649bb5ccd6bb9c71682b9de72138699ce14",
+      "bytes": 13564
+    },
+    "A_612.progress.json": {
+      "sha256": "adef0a2ec840c982f9ff5c07aa9329f43770d1d56579c576b4652ffb5ea1990b",
+      "bytes": 3114
+    },
+    "A_612.status.json": {
+      "sha256": "0c9df4fbc3cfa297ec8e5f9459582f406ba1ce89144a569a92878bcd13c44a27",
+      "bytes": 1790
+    },
+    "README.md": {
+      "sha256": "a10452b65d2df0e9a7c37da605c9e45a1c85f9196ce39be24095af65db20745a",
+      "bytes": 1494
+    },
+    "completion.json": {
+      "sha256": "394c30b282f5ff708c46b7930951faa9623bacecb37ba222e19befb35c4699ef",
+      "bytes": 485
+    },
+    "config.json": {
+      "sha256": "c4f34eaf46402e790f07df61b3a0c52e966c65208a2962fdce94ce36f7f016d4",
+      "bytes": 1899
+    },
+    "execution.log": {
+      "sha256": "37b33fd9cf15980f6d2f78e00073f64e35b1a74c9bf808c35b2151ce2bbeb0de",
+      "bytes": 270
+    },
+    "input_prefix_792.csv": {
+      "sha256": "36530375ac825473cb2534c1aee721117d680ba1abb236f51b0b90ea4bd391f9",
+      "bytes": 74121
+    },
+    "jobs_completed.json": {
+      "sha256": "33c03110ef064b052f42151c17da58693dbdb1e6c5c334ab98f0fe2f1ab95138",
+      "bytes": 3914
+    },
+    "manifest.json": {
+      "sha256": "d72ed8fc83d5fc315170f2cbed15672014ba2534dbf26f1c1e9d239bc7e3e4b5",
+      "bytes": 8654
+    },
+    "monitor.log": {
+      "sha256": "6386e6243ce2594f4ec3f69989233c6b1b87e51fdbcdc0dcb1a7241e556aecf8",
+      "bytes": 405
+    },
+    "monitor_progress.json": {
+      "sha256": "b6a5b4dc4d3051a2f8fa94e1f3c2fb1ca2e9bf05b0eb96238e92337e4bc2db6c",
+      "bytes": 4893
+    },
+    "plan_before_execution.md": {
+      "sha256": "6aa5080636390ed819eed6e1bfca3d892b29b1d9ca7489d19a0c2f63025fbeb8",
+      "bytes": 10720
+    },
+    "pre_execution_checks.json": {
+      "sha256": "1853744ce24c95a076626edeb291bb5f4cd765bb88ca4092635f55cfefb703c5",
+      "bytes": 852
+    },
+    "preservation.json": {
+      "sha256": "42b48ca88fc763bae0092a89fcd14720ef2b6799f977cd76fe731996680f908d",
+      "bytes": 93
+    },
+    "protected_before.json": {
+      "sha256": "9cb7082494477a0ad1c411ce4c105c29a965fdac969d8f96d8549d7de8eb2b0d",
+      "bytes": 81333
+    },
+    "report.log": {
+      "sha256": "f3377ead305c4711341c66ae3442a898d3075f5c6dc37639c9886ffdbe7837aa",
+      "bytes": 1569
+    },
+    "source_snapshot/code/physics_guided/__init__.py": {
+      "sha256": "dc10cce819c578e1038b26ca2314b87ec84544a802ad79b7c93f4604f789817d",
+      "bytes": 69
+    },
+    "source_snapshot/code/physics_guided/calibration.py": {
+      "sha256": "7e01c27594d2ecad2e26fe268200ac14210f2857ab09ac87369f349487631c1e",
+      "bytes": 6036
+    },
+    "source_snapshot/code/physics_guided/data.py": {
+      "sha256": "a55a278a9b6abc12eedda33998ad1ce1d3474ba0b4ec96e0ab4642370d5360bb",
+      "bytes": 1891
+    },
+    "source_snapshot/code/physics_guided/mechanics.c": {
+      "sha256": "ce9f07674d3f1cbab1a5e3e54761c970ebc83c9b330870dd49aaa9257fa9a692",
+      "bytes": 3322
+    },
+    "source_snapshot/code/physics_guided/mechanics.py": {
+      "sha256": "6cfe904a25840cad6aef84d2e455d0b6d59908a3272591a255d1fd02ccc14d40",
+      "bytes": 4487
+    },
+    "source_snapshot/code/physics_guided/reference.py": {
+      "sha256": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+      "bytes": 4351
+    },
+    "source_snapshot/code/physics_guided_diagnostics/__init__.py": {
+      "sha256": "c7a16a3bd393d12770e08bef82207c89fb237fa65d271ff41e584dd32ef08019",
+      "bytes": 65
+    },
+    "source_snapshot/code/physics_guided_diagnostics/core.py": {
+      "sha256": "5b33c2d9e280fa9d3a60ceb4b21fd8e5bc380e98e14ce8607a60b1a21f24569c",
+      "bytes": 8293
+    },
+    "source_snapshot/code/physics_guided_diagnostics/run.py": {
+      "sha256": "25fd9e604e9991ea9695fdc2e7322a1afd28db54983311c99aba8d6aee067255",
+      "bytes": 15326
+    },
+    "source_snapshot/code/physics_guided_increment/__init__.py": {
+      "sha256": "a0982b29d2977f1f8e0374986abdcd9d60c5e36d660c76799707dc4818cf5601",
+      "bytes": 75
+    },
+    "source_snapshot/code/physics_guided_increment/objective.py": {
+      "sha256": "985347d1d6e52d9b96e881f1f8f214f26bac145e6a64a8afb6c17b33fc6a0b24",
+      "bytes": 6552
+    },
+    "source_snapshot/code/physics_guided_increment/report.py": {
+      "sha256": "58f5290480a1462bb61c9a0e0d742cfe2d008af4a480e75027e6357701d82648",
+      "bytes": 10565
+    },
+    "source_snapshot/code/physics_guided_increment/run.py": {
+      "sha256": "5088e5e41aef1aa479d9a1ce829dd66e40085c730c5b8046fe5c667d824aa14c",
+      "bytes": 15205
+    },
+    "source_snapshot/code/physics_guided_optimization_selection/__init__.py": {
+      "sha256": "2fe4add75003acd275bb54e349275a4b81015f31c9ae42ce5ef1166da6552c6d",
+      "bytes": 74
+    },
+    "source_snapshot/code/physics_guided_optimization_selection/core.py": {
+      "sha256": "a13d7508ff41c662af9eb9997c75d33d65d0ea42321d4679158a8425de9031f0",
+      "bytes": 11269
+    },
+    "source_snapshot/code/physics_guided_optimization_selection/report.py": {
+      "sha256": "101a282bf55b0aca9c621835dcca024dc891ba38efac457be86c9c74b97aead5",
+      "bytes": 7444
+    },
+    "source_snapshot/code/physics_guided_optimization_selection/run.py": {
+      "sha256": "a2e00a84b777f2f2ae71e0fe7ec32ec686b32b2fa4b6b1f2344248c0d0b7d8a1",
+      "bytes": 27461
+    },
+    "source_snapshot/code/physics_guided_optimization_selection/verify.py": {
+      "sha256": "17c384a5728d03ea06122f8a6bfd82c8966db2272d1e346411f172b33371f2f3",
+      "bytes": 12745
+    },
+    "source_snapshot/tests/test_physics_guided_optimization_selection.py": {
+      "sha256": "ec23230dac9019d2a02e5f38dad5e3ae690764c56f30347d992fa225ed1d498f",
+      "bytes": 13592
+    },
+    "summary.json": {
+      "sha256": "c5f2d0fea2eea953b7133c0c1bbba6a973d9107eaa2df5b9879747b8c03c082c",
+      "bytes": 1783
+    },
+    "verification.json": {
+      "sha256": "42fe3939160095f41ce2317a2005ef4f26982439a4440d6630261e8379887559",
+      "bytes": 372
+    },
+    "verification.log": {
+      "sha256": "4d40f1488e722bd4f95f1c94d24f288b60372a6ea1f3db239faa8ac32c737763",
+      "bytes": 24840
+    }
+  }
+}

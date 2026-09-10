@@ -1,0 +1,6 @@
+elapsed=0s active=['A_432', 'A_612'] pending=[]
+elapsed=30s active=['A_432', 'A_612'] pending=[]
+A_432 complete
+A_612 complete
+elapsed=60s active=[] pending=[]
+Finished /Users/wcqqq1214/Project/Landslide-Warning/results/ootang_bplus_v1_4/20260911_optimization: complete
