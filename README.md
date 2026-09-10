@@ -3,7 +3,13 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-最新完成 [v1.5 ConvLSTM 样本来源对照](docs/ootang_bplus_sample_learning_results.v1.5.md)：
+最新完成 [v1.6 新旧 B+ 同日对照](docs/ootang_bplus_teacher_transfer_results.v1.6.md)：
+固定网络和尺度，4 次原物理前向及 2 条独立力学核验，约 9.21 秒，无新训练。
+旧教师下修正也未稳定改善四点；部分点更换教师后 B+ 已改善，网络仍保留相近的正修正，
+导致过度修正。下一步需另版把教师与修正器同步重拟合，并检验受限增量与概率校准。
+[执行前方案](docs/ootang_bplus_teacher_transfer_plan.v1.6.md)及全部负结果保持。
+
+此前完成 [v1.5 ConvLSTM 样本来源对照](docs/ootang_bplus_sample_learning_results.v1.5.md)：
 同一网络以拟合误差/过去外推误差训练，各两窗三种子 100 轮，共 1,200 次更新。
 严格逐点同时改善分别为 2/8、0/8；外推样本组两窗平均预测 RMSE 58.1161/42.1026 mm，
 B+ 为 58.0122/22.2448 mm，仍未稳定改善四点。尺度迁移与概率覆盖局限保留。
@@ -23,7 +29,13 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 v1.5 的已存 checkpoint、尺度和指标，不重新训练：
+复核最新 v1.6 的同日对照、checkpoint、尺度和指标，不重训或新增物理前向：
+
+```bash
+PYTHONPATH=code .venv/bin/python -m physics_guided_teacher_transfer.verify --run-id 20260911_teacher_transfer
+```
+
+复核 v1.5 的已存 checkpoint、尺度和指标，不重新训练：
 
 ```bash
 PYTHONPATH=code .venv/bin/python -m physics_guided_sample_learning.verify --run-id 20260911_sample_learning
