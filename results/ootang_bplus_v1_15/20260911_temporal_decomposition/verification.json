@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "protected_files": 2011,
+  "numeric_values_checked": 488796,
+  "max_difference_mm": 5.684341886080802e-14,
+  "max_mixed_absolute_difference": 9.094947017729282e-13,
+  "table_rows": {
+    "group": 336,
+    "total": 72,
+    "ranges": 288,
+    "range_groups": 66
+  },
+  "original_metric_rows_verified": 72,
+  "decompositions_verified": 9,
+  "new_fits": 0,
+  "new_neural_calls": 0,
+  "new_physical_calls": 0
+}

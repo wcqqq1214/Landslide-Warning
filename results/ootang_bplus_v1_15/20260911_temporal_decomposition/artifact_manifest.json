@@ -1,0 +1,92 @@
+{
+  "files": {
+    "completed.json": {
+      "sha256": "9cfc916b58c4e6e321c98a7d45ca3435347f496cfff2baf644bbad118f556d23",
+      "bytes": 163
+    },
+    "execution.json": {
+      "sha256": "49416a1d8fc0dfd717b079be73a25933a76f56d6273cb345a8a314550250848d",
+      "bytes": 250
+    },
+    "group.csv": {
+      "sha256": "b6b71b5b1501f7307a0c0567d0f2b071761763915758f58b4e6170a9e1212af3",
+      "bytes": 52004
+    },
+    "group_means.png": {
+      "sha256": "6d1c162e785229baaaffbb40148bb463cc6293c5d6cd08f86bf9ae4e13d21c9e",
+      "bytes": 157250
+    },
+    "launcher.json": {
+      "sha256": "bbf84a31a3337882250a9f475ece7bd864485245f59f95c1938f5abcb41e87c8",
+      "bytes": 58
+    },
+    "manifest.json": {
+      "sha256": "938855effc8cdc961ee0443df082923487aeca12778fb8a4d737510e8954b513",
+      "bytes": 3229
+    },
+    "prefix_252.npz": {
+      "sha256": "2e5fd4c94fe8485018ba2ec8e1eb5849e2df0bf1076f44d14fc2b1f193d3f81b",
+      "bytes": 271799
+    },
+    "prefix_342.npz": {
+      "sha256": "d123cf5206bbf81e7868c20d8c99af352fae31238f0860110d45b95b66ef8080",
+      "bytes": 349756
+    },
+    "prefix_432.npz": {
+      "sha256": "3cb60ed55b7657f0b95784fbb9ce6405603db7de26cf226b38b5d340e54c9eef",
+      "bytes": 502818
+    },
+    "protected_before.json": {
+      "sha256": "82c65a367aa869091a6758cf412e7d1339a51e96376953e60db2b2246a77a8ab",
+      "bytes": 301383
+    },
+    "range_groups.csv": {
+      "sha256": "f729035deb73ea77f4c954084ccdbb6ae53c50d4cac7552adec738bfa87b7610",
+      "bytes": 2709
+    },
+    "ranges.csv": {
+      "sha256": "67b48b651731b95ff50b4838f5dba845c21e3f30967f008e87a174e1d87be0ba",
+      "bytes": 46026
+    },
+    "run.log": {
+      "sha256": "610d73879d900404d90acfbd2fd0d99162f318f37fd471fd2354cf2cca55ea98",
+      "bytes": 117
+    },
+    "sources/code/physics_guided_temporal_decomposition/__init__.py": {
+      "sha256": "7b980836ed3ce4bd5f8e3575ade2eaf6278470545d966d3dc0db4067c2710c11",
+      "bytes": 76
+    },
+    "sources/code/physics_guided_temporal_decomposition/core.py": {
+      "sha256": "5d7bc46e5c6d98d958e879493833bb856af0004594934a71ee63e30511a2d4a0",
+      "bytes": 7149
+    },
+    "sources/code/physics_guided_temporal_decomposition/run.py": {
+      "sha256": "9b784e57c1ecb598bd31f74aee9369065664953b5035da2226bff8e728159073",
+      "bytes": 4640
+    },
+    "sources/code/physics_guided_temporal_decomposition/workflow.py": {
+      "sha256": "e57d9f50b290314ad27d55538cd04a480ffaa08e9a83c104bdb63b2522894649",
+      "bytes": 11341
+    },
+    "sources/config/ootang_bplus_temporal_decomposition.v1_15.json": {
+      "sha256": "060f5317ac4327c7372029081ec47923ba07631b332416b5985dc6705e7fc830",
+      "bytes": 840
+    },
+    "sources/docs/ootang_bplus_temporal_decomposition_plan.v1.15.md": {
+      "sha256": "0e843adb2a4270cb01173380dc6e130aa4e5232b230014c6d86d7192b8bdeb96",
+      "bytes": 4309
+    },
+    "sources/tests/test_physics_guided_temporal_decomposition.py": {
+      "sha256": "6a397dd783fa0616657bec47a63a47e1f785be3db11e66cd359e58f9ef61b54f",
+      "bytes": 3519
+    },
+    "total.csv": {
+      "sha256": "d364f72c7e05763cb7d4427f7697cc7029b1a60aee05f563766f2d86314c1807",
+      "bytes": 12870
+    },
+    "verification.json": {
+      "sha256": "87e527f9fc4a086784285a2889ea9cbf321b6e9ad0f2e6122130b05a5a22143f",
+      "bytes": 428
+    }
+  }
+}
