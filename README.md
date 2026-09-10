@@ -7,6 +7,9 @@
 仅使用前 792 日。两个历史窗口的平均预测误差均变差，逐点同时改善为 1/8，见
 [v1.3 结果](docs/ootang_bplus_increment_results.v1.3.md)。本次未新增神经网络训练。
 前版 [v1.2 前缀诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md) 独立保留。
+后续 [v1.4 优化检查](docs/ootang_bplus_optimization_review.v1.4.md) 与
+[优化及内部选模方案](docs/ootang_bplus_optimization_selection_plan.v1.4.md) 已确定，
+该方案的新增拟合尚未实施或执行。
 已完成的三模型规格为[实验计划 v1.1](docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
 开发、验证及结果见[实施记录](docs/ootang_bplus_probabilistic_implementation.v1_1.md)。
 本阶段不做预警、不换案例。旧 ConvLSTM–NGBoost–SHAP 结果保留为历史阶段证据。

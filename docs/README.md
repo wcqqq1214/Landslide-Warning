@@ -18,6 +18,10 @@
 
 ## 当前阶段：四点 B+ 概率位移预测
 
+已完成 [v1.4 只读优化检查](ootang_bplus_optimization_review.v1.4.md)，并确定
+[同前缀续算与训练内选模方案](ootang_bplus_optimization_selection_plan.v1.4.md)。
+当前仅有检查证据和执行规格，尚未实施新拟合；不能把计划当作改进结果。
+
 最新的 [v1.3 位移与增量目标对照](ootang_bplus_increment_plan.v1.3.md) 已完成，
 [结果记录](ootang_bplus_increment_results.v1.3.md) 保留两个窗口平均预测误差变差、逐点同时改善
 1/8 的结论，以及新拟合未优于已知可行参数的新目标值这一优化限制。
