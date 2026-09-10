@@ -6,8 +6,9 @@
 最新完成 [v1.7 同步重拟合与受限修正](docs/ootang_bplus_synchronized_correction_results.v1.7.md)：
 18 个模型共 1,800 次更新、19.27 分钟，无新物理拟合/前向。普通/受限修正均只达到
 3/8 点窗严格改善；训练拟合明显改善，但预测和概率评分仍未超过 B+。
-[v1.8 PINN 方程接口](docs/ootang_bplus_pinn_equation_validation.v1.8.md)已实现并通过合成
-代数/梯度检查，尚未完成真实子步核验或 PINN 训练；不能称 PINN 已实现精度提升。
+[v1.8 PINN 真实子步核验](docs/ootang_bplus_pinn_substep_audit_results.v1.8.md)已完成：
+三次积分、123,072 子步通过方程/活动集检查，日末四点均值与原保存值差为 0 mm。
+尚无新 PINN 训练或精度提升结论；下一步确定可学习物理偏差及有限训练方案。
 
 此前完成 [v1.6 新旧 B+ 同日对照](docs/ootang_bplus_teacher_transfer_results.v1.6.md)：
 固定网络和尺度，4 次原物理前向及 2 条独立力学核验，约 9.21 秒，无新训练。
@@ -34,6 +35,13 @@ B+ 为 58.0122/22.2448 mm，仍未稳定改善四点。尺度迁移与概率覆�
 v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
 
 ## 当前四点 B+ 实验
+
+复核 v1.8 的已保存子步、原活动集代数与 PINN 残差，不重新积分或训练：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONPATH=code .venv/bin/python -m physics_guided_pinn.run_substep_audit --run-id 20260911_substep_audit --verify
+```
 
 复核最新 v1.7 的同步重拟合、checkpoint、尺度和指标，不重训或新增物理前向：
 
