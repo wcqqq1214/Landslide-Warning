@@ -3,12 +3,19 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.9 状态 PINN 实验与补充核验](docs/ootang_bplus_state_pinn_results.v1.9.md)：
+最新完成 [v1.10 冻结 PINN 梯度与轨迹诊断](docs/ootang_bplus_pinn_consistency_results.v1.10.md)：
+52 次网络求值、324 次梯度、9 组代数分解，约 8 秒，0 训练更新/力学调用，数值检查通过。
+342 日最终物理梯度约为数据梯度的 4,136–6,002 倍；612 日 ATU1/ATU5 的大 P/R 差
+主要对应塑性状态差，不能只据此增大运动残差权重。旧 M2 已通过求解器训练但泛化失败。
+下一步先验证同一速率网络下训练与最终输出共用力学路径，再独立登记有限训练对照。
+本诊断没有新的预测改善结果，整体目标仍未完成。
+
+此前完成 [v1.9 状态 PINN 实验与补充核验](docs/ootang_bplus_state_pinn_results.v1.9.md)：
 1,800 次训练更新、9 次原力学回放，约 7.68 分钟至核验前。原进程因保存前后检查项数
 不同而退出 1，失败记录保留；独立补充核验通过，没有追加训练/积分或修改物理门限。
 主输出 R 两窗预测平均 RMSE 为 57.7985/45.8646 mm，B+ 为 58.0122/22.2448；
-严格改善 2/8，整体目标未实现。第二窗网络状态与力学回放明显分离，下一步先诊断该差距
-及训练目标恶化，再确定新版本方案。[均值对比图](results/ootang_bplus_v1_9/20260911_state_pinn_summary/forecast_means.png)。
+严格改善 2/8，整体目标未实现。第二窗网络状态与力学回放明显分离，后续诊断见 v1.10。
+[均值对比图](results/ootang_bplus_v1_9/20260911_state_pinn_summary/forecast_means.png)。
 
 此前完成 [v1.7 同步重拟合与受限修正](docs/ootang_bplus_synchronized_correction_results.v1.7.md)：
 18 个模型共 1,800 次更新、19.27 分钟，无新物理拟合/前向。普通/受限修正均只达到
@@ -44,7 +51,14 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 v1.9 已保存模型与全部结果，保留原进程失败，不重训、不积分、不写文件：
+复核最新 v1.10 保存的梯度、差分和运动分解，不调用网络/力学求解器，不写文件：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python -m physics_guided_pinn_consistency.verify --run-id 20260911_pinn_consistency
+```
+
+复核 v1.9 已保存模型与全部结果，保留原进程失败，不重训、不积分、不写文件：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
