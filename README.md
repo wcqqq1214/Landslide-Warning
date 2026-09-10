@@ -8,7 +8,9 @@
 3/8 点窗严格改善；训练拟合明显改善，但预测和概率评分仍未超过 B+。
 [v1.8 PINN 真实子步核验](docs/ootang_bplus_pinn_substep_audit_results.v1.8.md)已完成：
 三次积分、123,072 子步通过方程/活动集检查，日末四点均值与原保存值差为 0 mm。
-尚无新 PINN 训练或精度提升结论；下一步确定可学习物理偏差及有限训练方案。
+[v1.9 状态 PINN 核心](docs/ootang_bplus_state_pinn_implementation.v1.9.md)已实现并通过
+6 项工程检查；[有限方案](docs/ootang_bplus_state_pinn_plan.v1.9.md)固定原力学回放为主输出。
+训练器、回放/校准流程尚待接入，没有新 PINN 训练或精度提升结论。
 
 此前完成 [v1.6 新旧 B+ 同日对照](docs/ootang_bplus_teacher_transfer_results.v1.6.md)：
 固定网络和尺度，4 次原物理前向及 2 条独立力学核验，约 9.21 秒，无新训练。
