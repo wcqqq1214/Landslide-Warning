@@ -1,0 +1,44 @@
+{
+  "files": {
+    "completed.json": {
+      "sha256": "d00033b9d70a3302d49dd5fd325c674c748efe22ac1ba3d1bf9e9e15efd45460",
+      "bytes": 244
+    },
+    "forecast_intervals.png": {
+      "sha256": "ce220b65347742f7d25dd7ab991a631aec38592af4148d56f0a4d2470f80cb71",
+      "bytes": 360954
+    },
+    "forecast_means.png": {
+      "sha256": "8cd8e3dc3f92bf2978e44428cd6f7e9cdf5164c190bfc8ca1f0c97b5f49d5d94",
+      "bytes": 333751
+    },
+    "manifest.json": {
+      "sha256": "aa6f192895b5cbc8c8ab65438a3703c98538355651dcfe8cb02b1f5c17aff8d8",
+      "bytes": 670
+    },
+    "mean_metrics.csv": {
+      "sha256": "f274f8e897b2417634898f04754ebee930fade90f0071d3a25ea6bdc50a1b11f",
+      "bytes": 4546
+    },
+    "mechanical_summary.csv": {
+      "sha256": "fce99eef9846fb370ce95bb2bd9ff026b1001f8b9bf5d4fbc88b4a6db614cbbd",
+      "bytes": 989
+    },
+    "sources/code/physics_guided_state_pinn/summarize.py": {
+      "sha256": "7ae890aeccb473f29a758d882932043ea2516dc419eee52c1c4d3ecfb4d99705",
+      "bytes": 9969
+    },
+    "state_replay_discrepancy.csv": {
+      "sha256": "3346bd5d1378ec53b72ed639bb9050d4fb46c90893fa437a3428010447025f29",
+      "bytes": 4111
+    },
+    "strict_improvement.csv": {
+      "sha256": "0b5ec03e09a7f27423316bffb77ff5be89894726367c6ec84a8b354db990855b",
+      "bytes": 98
+    },
+    "training_objectives.csv": {
+      "sha256": "20de77daf6e299ef909bfb32a71cfe371518a61aeb245df312790435c4396fc0",
+      "bytes": 1075
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "kind": "descriptive_summary_of_saved_predictions",
+  "source_run": "results/ootang_bplus_v1_9/20260911_state_pinn",
+  "source_index_sha256": "98dd5f68d2dac9c23c06913ef9d2a713b1ac7e8c40cc9586d55229a02f3e5fd2",
+  "verification_run": "results/ootang_bplus_v1_9/20260911_state_pinn_postcheck",
+  "verification_index_sha256": "7bcb59310dab3c449b5fdb01d1d8381083ed3bea265fc5bdb5ba72bab3151b75",
+  "sources": {
+    "code/physics_guided_state_pinn/summarize.py": "7ae890aeccb473f29a758d882932043ea2516dc419eee52c1c4d3ecfb4d99705"
+  },
+  "created_utc": "2026-09-10T21:00:09.320990+00:00",
+  "aggregation": "equal arithmetic mean of four point metrics; no model selection"
+}
