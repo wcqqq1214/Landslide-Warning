@@ -1,0 +1,33 @@
+{"prefix": 342, "seed": 0, "elapsed_seconds": 1.5669298749417067, "neural_evaluations": 12, "gradient_calls": 36, "algebraic_decompositions": 1, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 342, "seed": 1, "elapsed_seconds": 2.039349624887109, "neural_evaluations": 16, "gradient_calls": 72, "algebraic_decompositions": 2, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 342, "seed": 2, "elapsed_seconds": 2.4536249581724405, "neural_evaluations": 20, "gradient_calls": 108, "algebraic_decompositions": 3, "optimizer_updates": 0, "native_calls": 0}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: divide by zero encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: overflow encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: invalid value encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: divide by zero encountered in matmul
+  daily["actual_observed"] = (
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: overflow encountered in matmul
+  daily["actual_observed"] = (
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: invalid value encountered in matmul
+  daily["actual_observed"] = (
+{"prefix": 432, "seed": 0, "elapsed_seconds": 2.9922246248461306, "neural_evaluations": 24, "gradient_calls": 144, "algebraic_decompositions": 4, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 432, "seed": 1, "elapsed_seconds": 3.4582051672041416, "neural_evaluations": 28, "gradient_calls": 180, "algebraic_decompositions": 5, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 432, "seed": 2, "elapsed_seconds": 3.9082429171539843, "neural_evaluations": 32, "gradient_calls": 216, "algebraic_decompositions": 6, "optimizer_updates": 0, "native_calls": 0}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: divide by zero encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: overflow encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:182: RuntimeWarning: invalid value encountered in matmul
+  daily[key + "_observed"] = daily[key] @ observation.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: divide by zero encountered in matmul
+  daily["actual_observed"] = (
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: overflow encountered in matmul
+  daily["actual_observed"] = (
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn_consistency/core.py:183: RuntimeWarning: invalid value encountered in matmul
+  daily["actual_observed"] = (
+{"prefix": 612, "seed": 0, "elapsed_seconds": 4.810535499826074, "neural_evaluations": 44, "gradient_calls": 252, "algebraic_decompositions": 7, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 612, "seed": 1, "elapsed_seconds": 5.966016583144665, "neural_evaluations": 48, "gradient_calls": 288, "algebraic_decompositions": 8, "optimizer_updates": 0, "native_calls": 0}
+{"prefix": 612, "seed": 2, "elapsed_seconds": 6.769529582932591, "neural_evaluations": 52, "gradient_calls": 324, "algebraic_decompositions": 9, "optimizer_updates": 0, "native_calls": 0}
