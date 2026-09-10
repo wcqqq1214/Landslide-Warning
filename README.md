@@ -3,7 +3,9 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-最新完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
+最新完成 [v1.5 外推误差与样本诊断](docs/ootang_bplus_error_structure_results.v1.5.md)：
+误差方向跨窗口变化，训练内部有效日期有限；本步没有新增物理拟合或神经训练。
+此前完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
 仅使用前 792 日。同前缀续算的训练目标小幅下降，但未达既定梯度容差；内部选模在一个
 历史窗口改善预测、另一个窗口变差，逐点严格同时改善为 **0/8**。本次未新增神经网络训练。
 [v1.4 检查](docs/ootang_bplus_optimization_review.v1.4.md) 与
