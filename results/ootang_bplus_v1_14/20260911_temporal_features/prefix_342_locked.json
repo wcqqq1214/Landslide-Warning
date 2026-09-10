@@ -1,0 +1,19 @@
+{
+  "origin": 342,
+  "locked_utc": "2026-09-10T23:35:11.556976+00:00",
+  "training_label_sha256": "23446d62a074b91c0d1211950a04f34a80d8989d7f1695a75c287344720f14ae",
+  "outputs": {
+    "case_342.npz": "97e42f6b5836da286f5f22e99ae697da4382cc5f4541dd074bc8fb2a8d25d536",
+    "teacher_342.json": "a90d23ef69f3a59272dce8c327da4a3faef3bc835e83f0f34e17e507df7f854f",
+    "scaler_342.npz": "38e062ae801da242b0dfa4cc45c633a33df7c890889cfd781a514037dfcb40f4",
+    "constant_342.npz": "8f29284759476931c75e76554549c173601dba0ecb51a6dbaa7e2f36b3437fa9",
+    "model_342_H.npz": "06e8d8c93b6d25acd8cdf26e43c19f5705ba28ee4a0bb866d132b12e4ed93b80",
+    "model_342_HH.npz": "27093bba8c7c96619bd207d204e72668106fb1cfe17b8e4b18ef146d806887f3",
+    "model_342_HHS.npz": "51d7371d6692b1195e4bd8dd013a6c141f6e1ee6842263278e0720688c02a7da"
+  },
+  "counts": {
+    "ridge_fits": 6,
+    "constant_estimates": 2,
+    "feature_scalers": 2
+  }
+}

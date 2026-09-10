@@ -1,0 +1,90 @@
+{
+  "passed": true,
+  "protected_files": 1954,
+  "numeric_values_checked": 187593,
+  "max_difference_mm": 2.2737367544323206e-13,
+  "max_mixed_absolute_difference": 2.3021584638627246e-12,
+  "max_normal_equation_residual": 2.102381287303235e-16,
+  "fits_verified": [
+    {
+      "origin": 252,
+      "representation": "H",
+      "normal_equation_max_abs": 7.247891523065597e-17,
+      "data": 0.000918581415745478,
+      "penalty": 0.0001942402227798535,
+      "total": 0.0011128216385253315
+    },
+    {
+      "origin": 252,
+      "representation": "HH",
+      "normal_equation_max_abs": 2.860599669467223e-17,
+      "data": 0.00045189783794966255,
+      "penalty": 7.347050298533195e-05,
+      "total": 0.0005253683409349944
+    },
+    {
+      "origin": 252,
+      "representation": "HHS",
+      "normal_equation_max_abs": 6.724763974841341e-17,
+      "data": 0.00026758839217513186,
+      "penalty": 0.0001150726802452644,
+      "total": 0.00038266107242039625
+    },
+    {
+      "origin": 342,
+      "representation": "H",
+      "normal_equation_max_abs": 1.0251131540850444e-16,
+      "data": 0.003909471224130123,
+      "penalty": 0.0007140279247217814,
+      "total": 0.004623499148851904
+    },
+    {
+      "origin": 342,
+      "representation": "HH",
+      "normal_equation_max_abs": 1.3097162243624894e-16,
+      "data": 0.002300988875809037,
+      "penalty": 0.0004544328824710695,
+      "total": 0.0027554217582801068
+    },
+    {
+      "origin": 342,
+      "representation": "HHS",
+      "normal_equation_max_abs": 1.1535911115245767e-16,
+      "data": 0.0017927144078363694,
+      "penalty": 0.0003034275048873574,
+      "total": 0.0020961419127237266
+    },
+    {
+      "origin": 432,
+      "representation": "H",
+      "normal_equation_max_abs": 7.738493006115288e-17,
+      "data": 0.009850451368966992,
+      "penalty": 0.00031857204985170825,
+      "total": 0.0101690234188187
+    },
+    {
+      "origin": 432,
+      "representation": "HH",
+      "normal_equation_max_abs": 8.174884380540703e-17,
+      "data": 0.007098109100868523,
+      "penalty": 0.00033100008993568615,
+      "total": 0.007429109190804209
+    },
+    {
+      "origin": 432,
+      "representation": "HHS",
+      "normal_equation_max_abs": 2.102381287303235e-16,
+      "data": 0.0009650477290309236,
+      "penalty": 0.0005386164576936463,
+      "total": 0.0015036641867245699
+    }
+  ],
+  "metric_rows_verified": 120,
+  "comparison_rows_verified": 36,
+  "chronological_prefixes_verified": 3,
+  "original_scalers_verified": 2,
+  "new_regression_fits": 0,
+  "new_neural_calls": 0,
+  "new_physical_calls": 0,
+  "new_scale_fits": 0
+}
