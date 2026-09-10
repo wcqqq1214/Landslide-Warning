@@ -18,7 +18,12 @@
 
 ## 当前阶段：四点 B+ 概率位移预测
 
-当前阶段的 [v1.2 前缀标定与滚动外推诊断](ootang_bplus_diagnostics_plan.v1.2.md) 已完成，
+最新的 [v1.3 位移与增量目标对照](ootang_bplus_increment_plan.v1.3.md) 已完成，
+[结果记录](ootang_bplus_increment_results.v1.3.md) 保留两个窗口平均预测误差变差、逐点同时改善
+1/8 的结论，以及新拟合未优于已知可行参数的新目标值这一优化限制。
+代码为 `code/physics_guided_increment/`，结果另存 `results/ootang_bplus_v1_3/`，没有新增神经网络训练。
+
+[v1.2 前缀标定与滚动外推诊断](ootang_bplus_diagnostics_plan.v1.2.md) 已完成，
 [结果记录](ootang_bplus_diagnostics_results.v1.2.md) 保留未稳定改善外推的结论。
 代码为 `code/physics_guided_diagnostics/`，结果另存 `results/ootang_bplus_v1_2/`。
 已完成的[实验计划 v1.1](ootang_bplus_probabilistic_experiment_plan.v1.1.md)

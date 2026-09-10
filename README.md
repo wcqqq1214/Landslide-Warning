@@ -3,21 +3,23 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-最新完成 [v1.2 前缀标定与滚动外推诊断](docs/ootang_bplus_diagnostics_plan.v1.2.md)，
-仅使用前 792 日，未获得稳定改善四点外推的参考模型，见
-[诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md)。结果独立保存，没有新增神经网络训练。
+最新完成 [v1.3 位移与 30 日增量目标对照](docs/ootang_bplus_increment_plan.v1.3.md)，
+仅使用前 792 日。两个历史窗口的平均预测误差均变差，逐点同时改善为 1/8，见
+[v1.3 结果](docs/ootang_bplus_increment_results.v1.3.md)。本次未新增神经网络训练。
+前版 [v1.2 前缀诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md) 独立保留。
 已完成的三模型规格为[实验计划 v1.1](docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
 开发、验证及结果见[实施记录](docs/ootang_bplus_probabilistic_implementation.v1_1.md)。
 本阶段不做预警、不换案例。旧 ConvLSTM–NGBoost–SHAP 结果保留为历史阶段证据。
-本轮有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
+v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
 
 ## 当前四点 B+ 实验
 
 ```bash
-PYTHONPATH=code .venv/bin/python -m physics_guided_diagnostics.run --run-id example_diagnostic_run
+PYTHONPATH=code .venv/bin/python -m physics_guided_increment.run --run-id example_increment_run
 ```
 
-诊断结果写入 `results/ootang_bplus_v1_2/<run_id>/`。下列命令保留用于独立复现 v1.1：
+v1.3 复用经哈希核验的 v1.2 控制组，结果写入 `results/ootang_bplus_v1_3/<run_id>/`。
+前版诊断的复现方式见其结果记录。下列命令保留用于独立复现 v1.1：
 
 ```bash
 PYTHONPATH=code .venv/bin/python -m physics_guided.run \
@@ -113,6 +115,9 @@ uv run python main.py \
 main.py                         # 统一阶段入口
 code/features/                  # 逐点运动学与输入特征
 code/convlstm/                  # ConvLSTM 概率位移预测
+code/physics_guided/            # 当前四点 B+、ConvLSTM 残差与方程内修正比较
+code/physics_guided_diagnostics/ # v1.2 前缀标定与滚动诊断
+code/physics_guided_increment/   # v1.3 固定位移/增量目标对照
 code/warning/                   # 自动标签、NGBoost 分类和多点输出
 code/reporting/                 # 既有证据的机械汇总
 config/                         # 版本化实验配置
