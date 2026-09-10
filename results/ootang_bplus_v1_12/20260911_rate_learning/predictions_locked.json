@@ -1,0 +1,10 @@
+{
+  "primary_output": "S",
+  "epochs": 200,
+  "locked_utc": "2026-09-10T22:30:02.743161+00:00",
+  "prefix_locks": {
+    "342": "716afd5545e89b7d010d126e62b3ddc338a98b5b6791e9a5a0393b297cf2800e",
+    "432": "ac72bdd9587ed67aad318cf4642019e0d7c71252f1e2ecc6c8d7ec6308b11b9d",
+    "612": "26ae9714830d1b330221d74c678090d3e5ce7bd3d02fcf5571de038dfaf76928"
+  }
+}

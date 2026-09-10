@@ -1,0 +1,369 @@
+{
+  "physical": {
+    "passed": true,
+    "days": 522,
+    "substeps": 33344,
+    "checks": {
+      "all_activity_steps_valid": {
+        "passed": true
+      },
+      "activity_masks_in_range": {
+        "passed": true
+      },
+      "no_native_failures": {
+        "passed": true
+      },
+      "initial_state_zero": {
+        "passed": true
+      },
+      "substep_continuity_exact": {
+        "passed": true
+      },
+      "initial_coordinates_zero": {
+        "passed": true
+      },
+      "initial_plastic_zero": {
+        "passed": true
+      },
+      "initial_contact_zero": {
+        "passed": true
+      },
+      "initial_bulk_reaction_zero": {
+        "passed": true
+      },
+      "initial_basal_reaction_zero": {
+        "passed": true
+      },
+      "force_schedule_exact": {
+        "passed": true
+      },
+      "elastic_schedule_exact": {
+        "passed": true
+      },
+      "background_interpolation": {
+        "passed": true,
+        "max_absolute_error": 3.552713678800501e-15,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 3.552713678800501e-07,
+        "unit": "mm",
+        "values": 133376
+      },
+      "background_load": {
+        "passed": true,
+        "max_absolute_error": 3.552713678800501e-15,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 3.552713678800501e-07,
+        "unit": "mm",
+        "values": 133376
+      },
+      "native_rhs_numpy_identity": {
+        "passed": true,
+        "max_absolute_error": 3.637978807091713e-12,
+        "max_allowed": 1.0056588865095244e-07,
+        "max_error_to_bound": 3.618551707068762e-05,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_gap_numpy_identity": {
+        "passed": true,
+        "max_absolute_error": 3.637978807091713e-12,
+        "max_allowed": 1.0056565383176536e-07,
+        "max_error_to_bound": 3.61956810953378e-05,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_du_numpy_identity": {
+        "passed": true,
+        "max_absolute_error": 1.4209987353464015e-14,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 1.4209987353464015e-06,
+        "unit": "mm",
+        "values": 133376
+      },
+      "native_update_motion": {
+        "passed": true,
+        "max_absolute_error": 7.105427357601002e-15,
+        "max_allowed": 1.0021195898953638e-08,
+        "max_error_to_bound": 7.101896582752774e-07,
+        "unit": "mm",
+        "values": 133376
+      },
+      "native_update_plastic": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1.0021016042196663e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 133376
+      },
+      "native_update_basal": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1.0024501051552224e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_update_contact": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1.0000007908727254e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_update_bulk": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1.00038549420614e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "pinn_motion": {
+        "passed": true,
+        "max_absolute_error": 1.4209119991726027e-14,
+        "max_allowed": 1.0021213298279219e-08,
+        "max_error_to_bound": 1.4181929996870646e-06,
+        "unit": "mm",
+        "values": 133376
+      },
+      "pinn_basal_memory": {
+        "passed": true,
+        "max_absolute_error": 4.547473508864641e-13,
+        "max_allowed": 1.0079962434323525e-07,
+        "max_error_to_bound": 4.519580961890534e-06,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "pinn_contact_memory": {
+        "passed": true,
+        "max_absolute_error": 1.1934897514720433e-15,
+        "max_allowed": 1.000008776860206e-07,
+        "max_error_to_bound": 1.1934793458739458e-08,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "pinn_bulk_memory": {
+        "passed": true,
+        "max_absolute_error": 1.2789769243681803e-12,
+        "max_allowed": 1.0085476445873858e-07,
+        "max_error_to_bound": 1.268547262976425e-05,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "pinn_background": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1.0020512030394847e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 133376
+      },
+      "pinn_dx_identity": {
+        "passed": true,
+        "max_absolute_error": 4.618701254788249e-17,
+        "max_allowed": 1.0000058687858359e-08,
+        "max_error_to_bound": 4.618675312568465e-09,
+        "unit": "mm",
+        "values": 133376
+      },
+      "pinn_gap_identity": {
+        "passed": true,
+        "max_absolute_error": 4.831200138449018e-12,
+        "max_allowed": 1.067725111515826e-07,
+        "max_error_to_bound": 4.5585228638216e-05,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_negative_dx": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 133376
+      },
+      "native_negative_gap": {
+        "passed": true,
+        "max_absolute_error": 2.9685679805958884e-14,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 2.968567980595889e-07,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "pinn_negative_dx": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 2.000005868785836e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 133376
+      },
+      "pinn_negative_gap": {
+        "passed": true,
+        "max_absolute_error": 4.831690603168681e-12,
+        "max_allowed": 2.067725111515826e-07,
+        "max_error_to_bound": 2.3456892264159707e-05,
+        "unit": "original generalized reaction units",
+        "values": 133376
+      },
+      "native_normalized_complementarity": {
+        "passed": true,
+        "max_absolute_error": 1.1104545285382388e-17,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 1.1104545285382388e-09,
+        "unit": "normalized source convention",
+        "values": 33344
+      },
+      "pinn_complementarity_identity": {
+        "passed": true,
+        "max_absolute_error": 5.516586588261186e-15,
+        "max_allowed": 9.951145846060866e-05,
+        "max_error_to_bound": 4.5584763258410355e-05,
+        "unit": "mm times original generalized reaction units",
+        "values": 133376
+      },
+      "native_active_dx_zero": {
+        "passed": true
+      },
+      "daily_saved_coordinates": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_recorded_coordinates": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_saved_plastic": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_recorded_plastic": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_saved_basal_reaction": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_recorded_basal_reaction": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_saved_contact": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_recorded_contact": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_saved_bulk_reaction": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_recorded_bulk_reaction": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-07,
+        "max_error_to_bound": 0.0,
+        "unit": "original generalized reaction units",
+        "values": 2088
+      },
+      "daily_saved_background": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_recorded_background": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      },
+      "daily_observation": {
+        "passed": true,
+        "max_absolute_error": 0.0,
+        "max_allowed": 1e-08,
+        "max_error_to_bound": 0.0,
+        "unit": "mm",
+        "values": 2088
+      }
+    },
+    "native": {
+      "min_dx": 0.0,
+      "min_gap": -2.9685679805958884e-14,
+      "max_normalized_complementarity": 1.1104545285382388e-17,
+      "active_steps_by_domain": {
+        "O3": 32960,
+        "O2": 33344,
+        "O1_up": 27555,
+        "O1_down": 32960
+      },
+      "min_dx_by_domain": [
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "min_gap_by_domain": [
+        -1.961628460006036e-14,
+        3149.4250902909234,
+        -2.0674974804085456e-14,
+        -2.9685679805958884e-14
+      ]
+    },
+    "pinn": {
+      "min_dx": 0.0,
+      "min_gap": -4.831690603168681e-12,
+      "max_absolute_complementarity": 5.4631561259643384e-15,
+      "max_roundoff_dx": 5.868785835893272e-14,
+      "max_roundoff_gap": 6.772511151582611e-09
+    }
+  },
+  "mean_max_difference_mm": 4.547473508864641e-13,
+  "mixed_max_difference": 5.229594535194337e-12,
+  "changed_active_substeps": 0
+}

@@ -1,0 +1,18 @@
+{
+  "reference_forwards": 3,
+  "neural_evaluations": 1845,
+  "trajectories": 1845,
+  "day_forwards": 852165,
+  "day_backwards": 829800,
+  "reverse_passes": 1800,
+  "neural_updates": 1800,
+  "checkpoint_replays": 36,
+  "recorded_integrations": 9,
+  "parameter_fits": 0,
+  "scale_neural_updates": 0,
+  "reference_substeps": 123072,
+  "recorded_substeps": 369216,
+  "constant_scale_fits": 2,
+  "constant_scale_components": 6,
+  "elapsed_seconds_before_verification": 348.2472585826181
+}

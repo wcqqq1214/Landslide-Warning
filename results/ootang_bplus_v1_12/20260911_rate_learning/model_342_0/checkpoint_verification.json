@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "rows": [
+    {
+      "epoch": 0,
+      "checkpoint_sha256": "ca93a1d5a153f14e7889ab1fb54377cc6f10e7e3c9e2ad766a10c54e659dd913",
+      "reference_sha256": "7116948c290c4861cd994c67de1b94bbde2388ea7ab1b603ba94dd2fc7e36520",
+      "replay_sha256": "7116948c290c4861cd994c67de1b94bbde2388ea7ab1b603ba94dd2fc7e36520",
+      "values": 13680,
+      "max_mean_difference_mm": 0.0,
+      "max_mixed_absolute_difference": 0.0,
+      "changed_active_substeps": 0,
+      "max_audit_absolute_difference": 0.0
+    },
+    {
+      "epoch": 50,
+      "checkpoint_sha256": "541648324176a87aed7cb23429f3733bba49aa51afc8dd13758219b172ee86d2",
+      "reference_sha256": "f5da2a31bbaa94b3bdb555b1aa1de3fc2cd0411c8e8dedbcb5feaacb7803a95a",
+      "replay_sha256": "f5da2a31bbaa94b3bdb555b1aa1de3fc2cd0411c8e8dedbcb5feaacb7803a95a",
+      "values": 13680,
+      "max_mean_difference_mm": 0.0,
+      "max_mixed_absolute_difference": 0.0,
+      "changed_active_substeps": 0,
+      "max_audit_absolute_difference": 0.0
+    },
+    {
+      "epoch": 100,
+      "checkpoint_sha256": "fdf1732cc28d18f11bb0270f4e876620979046c76757c579219d4582a12fc8cd",
+      "reference_sha256": "306e6ad9893f5b4b910d3d6c6aa738736ae461806f47cb1e561b8d82008fb357",
+      "replay_sha256": "306e6ad9893f5b4b910d3d6c6aa738736ae461806f47cb1e561b8d82008fb357",
+      "values": 13680,
+      "max_mean_difference_mm": 0.0,
+      "max_mixed_absolute_difference": 0.0,
+      "changed_active_substeps": 0,
+      "max_audit_absolute_difference": 0.0
+    },
+    {
+      "epoch": 200,
+      "checkpoint_sha256": "c4e999195c7e439787457e8d364914d69665bbf5aa0b4d7a8d8ca8f10b74f330",
+      "reference_sha256": "3946c42ffd733071f72b9dc9cab7d40bdcd02a8410e65ad52eca5f66fdcf79b0",
+      "replay_sha256": "6280baaffa6f86c04f0aeb976f10889dd007672aa3bbe9dab35c914fefe1ad38",
+      "values": 13680,
+      "max_mean_difference_mm": 1.1368683772161603e-13,
+      "max_mixed_absolute_difference": 1.1368683772161603e-13,
+      "changed_active_substeps": 0,
+      "max_audit_absolute_difference": 0.0
+    }
+  ]
+}

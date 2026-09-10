@@ -1,0 +1,28 @@
+{
+  "prefix": 612,
+  "end_index_exclusive": 792,
+  "locked_utc": "2026-09-10T22:30:02.741189+00:00",
+  "predictions": {
+    "0": {
+      "e200.pt": "752f6250ad8b15ae93c6ad72f6ce56dff4d1ba3fcf8b54c250be72c7a7f12806",
+      "S.npz": "f876072c2b5ee394026734dcfe67ed822467160a78cbc29fb1bda9b49d2f88cd",
+      "R_check.npz": "276f88d740973ab6bf24f9be9022355aa2b36c243746f6f551c60730bc1a9e12",
+      "checkpoint_verification.json": "9c90801c9762acfa0186924be162dfaf6d1065f8b153fbe8cad78451748ad792",
+      "mechanical_verification.json": "1ae8c24ea522f77c9ef7aaffc37a21829eafb138bb3ba46ca56163139b86bbc6"
+    },
+    "1": {
+      "e200.pt": "0f0366a235d81dac133f689c6f17ae52d0c3b060e0b227fd9e279bca95bbe07f",
+      "S.npz": "cd552ff7f82611a6c1b724cc842c7dcdcfecaeb2b511ca4e13ca055397b692fe",
+      "R_check.npz": "6e4216bc4924f4e5589f6d2ae3818c8f1401567309d0e3b3316de4cf35a26dbb",
+      "checkpoint_verification.json": "29aca96c54041c88023e900f365d2018e84112892e775fa7614d186d8e85643e",
+      "mechanical_verification.json": "62c5736c9ec011a373ad85100a585cb59acb7f120000050aead17243c58144c6"
+    },
+    "2": {
+      "e200.pt": "8c7287b1ed9220e3caf80eae690713d4c32fc120f1b67735abfbbba80126e878",
+      "S.npz": "708e1850f402c04afe505399da82489a47fdc44645c546380e70004babe19935",
+      "R_check.npz": "95ef60f68894cfdb7bb4b7638d171a3dc99d8150e1e7151564d8fea4d58635d3",
+      "checkpoint_verification.json": "c33f2dc6451780edcef6deaa70feea858a4192c384f1e89b88c92fe555b4657a",
+      "mechanical_verification.json": "a011a2c1bb1e80c823786d0df87c950ab0c086bd60a3f1f52bb7a6900e82fde0"
+    }
+  }
+}

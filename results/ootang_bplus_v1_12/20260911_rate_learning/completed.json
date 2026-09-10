@@ -1,0 +1,19 @@
+{
+  "execution_complete": true,
+  "numerical_verification": true,
+  "completed_utc": "2026-09-10T22:30:25.351652+00:00",
+  "elapsed_seconds": 361.5210006656125,
+  "reference_forwards": 3,
+  "neural_evaluations": 1845,
+  "trajectories": 1845,
+  "day_forwards": 852165,
+  "day_backwards": 829800,
+  "reverse_passes": 1800,
+  "neural_updates": 1800,
+  "checkpoint_replays": 36,
+  "recorded_integrations": 9,
+  "parameter_fits": 0,
+  "scale_neural_updates": 0,
+  "reference_substeps": 123072,
+  "recorded_substeps": 369216
+}

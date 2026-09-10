@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "checkpoint_replays_verified": 36,
+  "mechanical_replays_verified": 9,
+  "training_rows": 1800,
+  "metric_rows": 48,
+  "seed_metric_rows": 112,
+  "comparison_rows": 8,
+  "protected_files": 1634,
+  "numeric_values_checked": 532665,
+  "max_checkpoint_mean_difference_mm": 1.1368683772161603e-13,
+  "max_original_replay_mean_difference_mm": 4.547473508864641e-13,
+  "max_mean_difference_mm": 1.1368683772161603e-13,
+  "max_mixed_absolute_difference": 2.0375064195832238e-06,
+  "checkpoint_branch_changes": 0,
+  "native_min_dx": -7.616162161874834e-09,
+  "native_min_gap": -1.9577983221893193e-13,
+  "native_max_normalized_complementarity": 2.1952456163452976e-16,
+  "final_objectives": [
+    {
+      "prefix": 342,
+      "seed": 0,
+      "total": 0.002328954694641099,
+      "data": 0.0020356092342407126,
+      "rate_prior": 0.29334546040038634
+    },
+    {
+      "prefix": 342,
+      "seed": 1,
+      "total": 0.002365590171351308,
+      "data": 0.0020663758145277804,
+      "rate_prior": 0.29921435682352765
+    },
+    {
+      "prefix": 342,
+      "seed": 2,
+      "total": 0.002327490467064603,
+      "data": 0.002036985628527923,
+      "rate_prior": 0.29050483853667963
+    },
+    {
+      "prefix": 432,
+      "seed": 0,
+      "total": 0.0024881333055026982,
+      "data": 0.0021890903621028975,
+      "rate_prior": 0.2990429433998008
+    },
+    {
+      "prefix": 432,
+      "seed": 1,
+      "total": 0.002450568135595031,
+      "data": 0.002143201702852348,
+      "rate_prior": 0.307366432742683
+    },
+    {
+      "prefix": 432,
+      "seed": 2,
+      "total": 0.0024533029083581167,
+      "data": 0.002142708763845541,
+      "rate_prior": 0.3105941445125755
+    },
+    {
+      "prefix": 612,
+      "seed": 0,
+      "total": 0.004929925246906455,
+      "data": 0.004884116183180046,
+      "rate_prior": 0.04580906372640919
+    },
+    {
+      "prefix": 612,
+      "seed": 1,
+      "total": 0.004920930349303523,
+      "data": 0.004866049550338406,
+      "rate_prior": 0.05488079896511775
+    },
+    {
+      "prefix": 612,
+      "seed": 2,
+      "total": 0.005047901104289043,
+      "data": 0.004997289866874711,
+      "rate_prior": 0.05061123741433216
+    }
+  ],
+  "strict_mean_improvements": 2,
+  "new_neural_evaluations": 0,
+  "new_native_calls": 0,
+  "new_optimizer_updates": 0
+}
