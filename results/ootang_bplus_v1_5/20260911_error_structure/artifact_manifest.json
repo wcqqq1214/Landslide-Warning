@@ -1,0 +1,84 @@
+{
+  "files": {
+    "completion.json": {
+      "sha256": "7bf5fe6ed93bb60cb8326efd43bdae512aad258f2531b9690f000e459baeb05f",
+      "bytes": 252
+    },
+    "daily_errors.csv": {
+      "sha256": "fc0ef97b8e2f21f8b43e09b2ad1ae8eadd799927cbf144fbf9d913110fc510b6",
+      "bytes": 1027748
+    },
+    "driver_correlations.csv": {
+      "sha256": "88e7b2fd38bc4e51c9fd1d14e1e56ced5aebb4c8befa9b9c7805d8f0434d9992",
+      "bytes": 6558
+    },
+    "error_metrics.csv": {
+      "sha256": "675fd21c925d88852f6b0481c0e96adefa64ed68bbb0e1d1e72f7da693696152",
+      "bytes": 15131
+    },
+    "input_prefix_792.csv": {
+      "sha256": "36530375ac825473cb2534c1aee721117d680ba1abb236f51b0b90ea4bd391f9",
+      "bytes": 74121
+    },
+    "manifest.json": {
+      "sha256": "b8cf14d225340b5002462049e60c844117538e282ea85e09488d2523797e1f58",
+      "bytes": 2762
+    },
+    "protected_before.json": {
+      "sha256": "ac551b96b5db0121681da2b5554cf06e2708fc385747506d3163b95d52c49b57",
+      "bytes": 111911
+    },
+    "run.log": {
+      "sha256": "d482ffaa303e3c01d0b2f8c864c82b2e56fe2fd836f698869ccf51eef86e3faf",
+      "bytes": 291
+    },
+    "sample_inventory.json": {
+      "sha256": "720fecfca56d29def3db9b466421cb31f7fa6a2c50fe4ae14e3c639dc93d2ea1",
+      "bytes": 29414
+    },
+    "selected_forecast_errors.png": {
+      "sha256": "a1e0f258ff27724cecd3bdeff678cdc992eb64f5c48b0d9aceb36b2d8d26edd3",
+      "bytes": 235764
+    },
+    "sources/code/physics_guided_forecast_error/__init__.py": {
+      "sha256": "9234236519f7f7fa25809650a5ce7f1ef26c79b1f669c0324161037bd74b1949",
+      "bytes": 77
+    },
+    "sources/code/physics_guided_forecast_error/artifacts.py": {
+      "sha256": "724ac9ed26fc68bba51ef3b8c992af29bf3d9122a6d53b191729e505c7ada0ac",
+      "bytes": 3658
+    },
+    "sources/code/physics_guided_forecast_error/core.py": {
+      "sha256": "bd35d2dda0902b42db9152dfdc56dca4ab347bd36fad48b2fefc093bc34ccadf",
+      "bytes": 6672
+    },
+    "sources/code/physics_guided_forecast_error/run.py": {
+      "sha256": "c31d65061bd838183fd83a379d883add4251b8fadd96dfd9c4d10411ecf2f24b",
+      "bytes": 9959
+    },
+    "sources/code/physics_guided_forecast_error/verify.py": {
+      "sha256": "7dade04ac9a197a2a004b350afd6e3759a138814d2a6db7ff462ea0a3c7e30f0",
+      "bytes": 12445
+    },
+    "sources/config/ootang_bplus_error_structure.v1_5.json": {
+      "sha256": "ee6d8e7057731456192961637af2f5daf56a061d4e84083bed34ca212af0bd96",
+      "bytes": 885
+    },
+    "sources/docs/ootang_bplus_error_structure_protocol.v1.5.md": {
+      "sha256": "d5557a4ab2c2e1176257c9c224d00381fc9c3cd79def93d9da26de5df85ff69f",
+      "bytes": 5007
+    },
+    "sources/tests/test_physics_guided_forecast_error.py": {
+      "sha256": "2374133aa1f01f4c22e75650cb400a8f914e5f2c5cf70d426247ec8856854c99",
+      "bytes": 5748
+    },
+    "teacher_selection.json": {
+      "sha256": "042943a9e08944a2ceada5283381b68efa55e01794c60556b9b08bab910bfbae",
+      "bytes": 495
+    },
+    "verification.json": {
+      "sha256": "b9dc3e0e4be910b9bca0b2048dddf483aa886973cb413a6bd7acc67ee999ca97",
+      "bytes": 483
+    }
+  }
+}

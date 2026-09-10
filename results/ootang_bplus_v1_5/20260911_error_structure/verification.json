@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "metric_rows": 32,
+  "daily_rows": 5760,
+  "correlation_rows": 128,
+  "inventory_cases": 4,
+  "numeric_values_checked": 64416,
+  "max_absolute_recomputation_difference": 4.547473508864641e-13,
+  "protected_files_checked": 753,
+  "source_files_checked": 6,
+  "physical_forward_calls": 0,
+  "new_optimizer_nfev": 0,
+  "neural_training": false,
+  "limitation": "Arithmetic and provenance checks do not establish forecast improvement or independent replication."
+}

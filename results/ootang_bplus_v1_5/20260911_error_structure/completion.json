@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "elapsed_seconds": 16.736501459032297,
+  "new_optimizer_nfev": 0,
+  "physical_forward_calls": 0,
+  "neural_training": false,
+  "metrics_rows": 32,
+  "daily_rows": 5760,
+  "correlation_rows": 128,
+  "verification_passed": true
+}
