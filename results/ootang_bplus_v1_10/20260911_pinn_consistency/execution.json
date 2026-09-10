@@ -1,0 +1,14 @@
+{
+  "neural_evaluations": 52,
+  "gradient_calls": 324,
+  "algebraic_decompositions": 9,
+  "optimizer_updates": 0,
+  "native_calls": 0,
+  "label_prefixes": [
+    342,
+    432,
+    612
+  ],
+  "elapsed_seconds": 6.778731375001371,
+  "original_checkpoint_max_mean_difference_mm": 2.5224267119483557e-13
+}

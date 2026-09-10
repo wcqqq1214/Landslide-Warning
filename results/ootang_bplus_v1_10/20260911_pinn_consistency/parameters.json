@@ -1,0 +1,116 @@
+[
+  {
+    "name": "rate_net.0.weight",
+    "shape": [
+      16,
+      12
+    ],
+    "start": 0,
+    "stop": 192,
+    "group": "G"
+  },
+  {
+    "name": "rate_net.0.bias",
+    "shape": [
+      16
+    ],
+    "start": 192,
+    "stop": 208,
+    "group": "G"
+  },
+  {
+    "name": "rate_net.2.weight",
+    "shape": [
+      16,
+      16
+    ],
+    "start": 208,
+    "stop": 464,
+    "group": "G"
+  },
+  {
+    "name": "rate_net.2.bias",
+    "shape": [
+      16
+    ],
+    "start": 464,
+    "stop": 480,
+    "group": "G"
+  },
+  {
+    "name": "rate_net.4.weight",
+    "shape": [
+      4,
+      16
+    ],
+    "start": 480,
+    "stop": 544,
+    "group": "G"
+  },
+  {
+    "name": "rate_net.4.bias",
+    "shape": [
+      4
+    ],
+    "start": 544,
+    "stop": 548,
+    "group": "G"
+  },
+  {
+    "name": "state_net.0.weight",
+    "shape": [
+      32,
+      40
+    ],
+    "start": 548,
+    "stop": 1828,
+    "group": "H"
+  },
+  {
+    "name": "state_net.0.bias",
+    "shape": [
+      32
+    ],
+    "start": 1828,
+    "stop": 1860,
+    "group": "H"
+  },
+  {
+    "name": "state_net.2.weight",
+    "shape": [
+      32,
+      32
+    ],
+    "start": 1860,
+    "stop": 2884,
+    "group": "H"
+  },
+  {
+    "name": "state_net.2.bias",
+    "shape": [
+      32
+    ],
+    "start": 2884,
+    "stop": 2916,
+    "group": "H"
+  },
+  {
+    "name": "state_net.4.weight",
+    "shape": [
+      20,
+      32
+    ],
+    "start": 2916,
+    "stop": 3556,
+    "group": "H"
+  },
+  {
+    "name": "state_net.4.bias",
+    "shape": [
+      20
+    ],
+    "start": 3556,
+    "stop": 3576,
+    "group": "H"
+  }
+]

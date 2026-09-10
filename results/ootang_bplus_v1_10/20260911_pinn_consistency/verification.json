@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checkpoint_gradient_matrices": 36,
+  "gradient_vectors": 324,
+  "small_step_directions_passed": 4,
+  "motion_groups": 9,
+  "closed_form_knots_checked": 27,
+  "max_closed_form_difference_mm": 7.105427357601002e-14,
+  "mean_reconstruction_max_difference_mm": 1.3429257705865894e-12,
+  "protected_files": 1470,
+  "new_neural_evaluations": 0,
+  "new_gradient_calls": 0,
+  "new_native_calls": 0
+}

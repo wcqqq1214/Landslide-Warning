@@ -1,0 +1,11 @@
+{
+  "diagnostic_complete": true,
+  "numerical_verification": true,
+  "completed_utc": "2026-09-10T21:25:35.035667+00:00",
+  "elapsed_seconds": 7.999445749912411,
+  "neural_evaluations": 52,
+  "gradient_calls": 324,
+  "algebraic_decompositions": 9,
+  "optimizer_updates": 0,
+  "native_calls": 0
+}

@@ -1,0 +1,59 @@
+{
+  "specification": {
+    "version": "1.10",
+    "protocol": "docs/ootang_bplus_pinn_consistency_plan.v1.10.md",
+    "source_run": "results/ootang_bplus_v1_9/20260911_state_pinn",
+    "verification_run": "results/ootang_bplus_v1_9/20260911_state_pinn_postcheck",
+    "summary_run": "results/ootang_bplus_v1_9/20260911_state_pinn_summary",
+    "m2_source": "results/ootang_bplus_v1_1/20260910_implementation",
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "checkpoints": [
+      0,
+      50,
+      100,
+      200
+    ],
+    "direction_prefixes": [
+      342,
+      612
+    ],
+    "direction_seed": 0,
+    "direction_epoch": 200,
+    "direction_steps": [
+      1e-05,
+      1e-06
+    ],
+    "zero_gradient_threshold": 1e-12,
+    "fallback_direction_seed": 31415,
+    "direction_atol": 1e-06,
+    "direction_rtol": 0.01,
+    "max_neural_evaluations": 52,
+    "max_gradient_calls": 324,
+    "algebraic_decompositions": 9,
+    "max_optimizer_updates": 0,
+    "max_native_calls": 0,
+    "reconstruction_atol_mm": 1e-08,
+    "timeout_seconds": 300,
+    "threads": 1,
+    "dtype": "float64"
+  },
+  "sources": {
+    "code/physics_guided_pinn_consistency/run.py": "5b45b99b2a48ce62a98299efa851245bb6d381806e876dcb87486cc215590872",
+    "code/physics_guided_pinn_consistency/__init__.py": "c6b9a20b65c43b8bfc666b9a83e92cc3cd2594da02a602f5b1343c39fd1250e2",
+    "code/physics_guided_pinn_consistency/core.py": "71b21bf2b14b9d0dc3d454a525800c82e5e07a51265baaa8d48c9da5ebf14230",
+    "code/physics_guided_pinn_consistency/verify.py": "fe7d88b75de3c4315671b5bddde411fee39bf47e3c7ab29f9f4faafa928468a4",
+    "tests/test_physics_guided_pinn_consistency.py": "cba601a5bd16324c9a7c190772e5190a6ff2f093e98a8c64ee3e881cb6ee3653"
+  },
+  "config_sha256": "f7086cb2b1beba9588eaef41893ee277a48d5ad1c8cb0cf6666a6da03f59bc77",
+  "plan_sha256": "e3bd8bb273761215bdaea4d41f01eb5b2f51b013f68a59c54276827f2462b8bb",
+  "started_utc": "2026-09-10T21:25:28.081286+00:00"
+}
