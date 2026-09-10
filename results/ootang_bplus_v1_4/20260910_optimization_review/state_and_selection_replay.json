@@ -1,0 +1,27 @@
+{
+  "state": {
+    "candidate": "612/C1/B/final",
+    "domain": "O1_up",
+    "training_days": 612,
+    "source": "results/ootang_bplus_v1_3/20260910_increment/fit_612/C1_B_final.npz",
+    "plastic_max_abs_mm": 0.0,
+    "positive_plastic_increment_days": 0
+  },
+  "replay": {
+    "type": "retrospective replay of existing fixed forecasts; no fitting",
+    "inner_fit_days": 432,
+    "inner_validation_days": 180,
+    "outer_fit_days": 612,
+    "outer_prediction_days": 180,
+    "candidate_family": "v1.2 continued J0 A/B initial recipes",
+    "inner_rmse_mm": {
+      "A": 25.46630477454709,
+      "B": 58.012174498847216
+    },
+    "selected_recipe": "A",
+    "outer_selected_rmse_mm": 63.39870267704184,
+    "outer_training_selected_start": "B",
+    "outer_training_selected_rmse_mm": 22.244794833549623,
+    "warning": "One recent internal validation fold selects A and worsens the next fixed historical forecast. This does not demonstrate that multi-fold selection will improve it."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "candidate_count": 8,
+  "jacobian_column_rows": 432,
+  "optimizer_calls": 0,
+  "recorded_forward_calls": 2158,
+  "source_hashes_checked": 13,
+  "protected_hashes_checked": 525,
+  "repeated_forward_max_error_mm": 0,
+  "replay_independently_verified": true,
+  "full_optimization_rerun": false,
+  "fix_verified": false,
+  "neural_training": false,
+  "limits": "Local numerical and saved-metric checks; no identifiability proof or new blind forecast.",
+  "external_references": [
+    "https://docs.scipy.org/doc/scipy-1.15.3/reference/generated/scipy.optimize.least_squares.html",
+    "https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation-of-time-series-data"
+  ],
+  "source_access_date": "2026-09-10"
+}
