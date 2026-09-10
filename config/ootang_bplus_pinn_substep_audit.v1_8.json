@@ -1,0 +1,31 @@
+{
+  "version": "1.8",
+  "protocol": "docs/ootang_bplus_pinn_substep_audit_plan.v1.8.md",
+  "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+  "protected_source": "results/ootang_bplus_v1_7/20260911_synchronized_correction",
+  "input_file": "input_prefix_792.csv",
+  "trajectories": [
+    {"name": "342A", "cutoff": 342, "days": 522, "file": "inner_612_342_A.npz"},
+    {"name": "432B", "cutoff": 432, "days": 612, "file": "outer_432_B.npz"},
+    {"name": "612B", "cutoff": 612, "days": 792, "file": "outer_612_B.npz"}
+  ],
+  "substeps_per_day": 64,
+  "max_recorded_integrations": 3,
+  "total_substeps": 123072,
+  "max_original_forward_calls": 0,
+  "max_independent_integrations": 0,
+  "max_parameter_fits": 0,
+  "max_neural_updates": 0,
+  "timeout_seconds": 600,
+  "compile_timeout_seconds": 30,
+  "threads": 1,
+  "dtype": "float64",
+  "tolerances": {
+    "displacement_absolute": 1e-8,
+    "reaction_absolute": 1e-7,
+    "roundoff_factor": 256,
+    "native_min_dx": -1e-8,
+    "native_min_gap": -1e-7,
+    "normalized_complementarity": 1e-8
+  }
+}
