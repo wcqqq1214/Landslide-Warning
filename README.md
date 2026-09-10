@@ -5,6 +5,8 @@
 
 最新完成 [v1.5 外推误差与样本诊断](docs/ootang_bplus_error_structure_results.v1.5.md)：
 误差方向跨窗口变化，训练内部有效日期有限；本步没有新增物理拟合或神经训练。
+[v1.5 学习方案](docs/ootang_bplus_sample_learning_plan.v1.5.md) 已固定，待实现同一 ConvLSTM
+的拟合/外推误差样本对照，总预算 1,200 次更新；方案不代表已运行或有效。
 此前完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
 仅使用前 792 日。同前缀续算的训练目标小幅下降，但未达既定梯度容差；内部选模在一个
 历史窗口改善预测、另一个窗口变差，逐点严格同时改善为 **0/8**。本次未新增神经网络训练。
