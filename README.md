@@ -3,10 +3,12 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-最新完成 [v1.5 外推误差与样本诊断](docs/ootang_bplus_error_structure_results.v1.5.md)：
-误差方向跨窗口变化，训练内部有效日期有限；本步没有新增物理拟合或神经训练。
-[v1.5 学习方案](docs/ootang_bplus_sample_learning_plan.v1.5.md) 已固定，待实现同一 ConvLSTM
-的拟合/外推误差样本对照，总预算 1,200 次更新；方案不代表已运行或有效。
+最新完成 [v1.5 ConvLSTM 样本来源对照](docs/ootang_bplus_sample_learning_results.v1.5.md)：
+同一网络以拟合误差/过去外推误差训练，各两窗三种子 100 轮，共 1,200 次更新。
+严格逐点同时改善分别为 2/8、0/8；外推样本组两窗平均预测 RMSE 58.1161/42.1026 mm，
+B+ 为 58.0122/22.2448 mm，仍未稳定改善四点。尺度迁移与概率覆盖局限保留。
+[执行前学习方案](docs/ootang_bplus_sample_learning_plan.v1.5.md) 与
+[误差诊断结果](docs/ootang_bplus_error_structure_results.v1.5.md) 独立保留；本版按预算结束。
 此前完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
 仅使用前 792 日。同前缀续算的训练目标小幅下降，但未达既定梯度容差；内部选模在一个
 历史窗口改善预测、另一个窗口变差，逐点严格同时改善为 **0/8**。本次未新增神经网络训练。
@@ -20,6 +22,12 @@
 v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
 
 ## 当前四点 B+ 实验
+
+复核最新 v1.5 的已存 checkpoint、尺度和指标，不重新训练：
+
+```bash
+PYTHONPATH=code .venv/bin/python -m physics_guided_sample_learning.verify --run-id 20260911_sample_learning
+```
 
 复算已归档 v1.4 结果，不重新拟合或写入：
 

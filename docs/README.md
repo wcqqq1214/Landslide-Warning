@@ -18,11 +18,12 @@
 
 ## 当前阶段：四点 B+ 概率位移预测
 
-最新完成 [v1.5 外推误差与样本诊断](ootang_bplus_error_structure_results.v1.5.md)，
-保留 [执行前协议](ootang_bplus_error_structure_protocol.v1.5.md)；无新增拟合或神经训练。
-误差方向跨窗变化、重复窗口未等量增加可用观测，下一步先固定同一 ConvLSTM 的样本来源对照。
-[学习对照方案](ootang_bplus_sample_learning_plan.v1.5.md) 已固定，尚未实施/训练：
-两窗、两策略、三种子各 100 轮，共 1,200 次更新；无新的物理拟合或 M2/PINN。
+最新完成 [v1.5 ConvLSTM 样本来源对照](ootang_bplus_sample_learning_results.v1.5.md)：
+两窗、两策略、三种子各 100 轮，共 1,200 次更新；IN/OOF 严格改善 2/8、0/8，
+仍未稳定改善四点，无新的物理拟合或 M2/PINN。按预算结束，教师/尺度迁移和概率覆盖局限保留。
+[学习方案](ootang_bplus_sample_learning_plan.v1.5.md)、
+[误差诊断结果](ootang_bplus_error_structure_results.v1.5.md) 及
+[诊断执行前协议](ootang_bplus_error_structure_protocol.v1.5.md) 独立保留。
 此前已完成 [v1.4 同前缀续算与训练内选模](ootang_bplus_optimization_selection_results.v1.4.md)。
 训练目标续算小幅下降但未达既定梯度容差；内部选模的两个窗口预测一好一坏，严格逐点同时
 改善 0/8，仍未稳定改善四点。实际新 nfev 12,470/14,800，没有新增神经训练。
