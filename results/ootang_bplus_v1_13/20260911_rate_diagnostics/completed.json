@@ -1,0 +1,11 @@
+{
+  "execution_complete": true,
+  "numerical_verification": true,
+  "completed_utc": "2026-09-10T22:55:02.975646+00:00",
+  "elapsed_seconds": 57.56944779120386,
+  "new_neural_evaluations": 0,
+  "new_gradients": 0,
+  "new_native_calls": 0,
+  "new_optimizer_updates": 0,
+  "new_scale_fits": 0
+}

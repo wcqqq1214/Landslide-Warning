@@ -1,0 +1,7 @@
+prefix,part,start_index,end_index_exclusive,days,outside_days,outside_fraction
+342,train,30,342,312,0,0.0
+342,forward,342,432,90,19,0.2111111111111111
+432,train,30,432,402,0,0.0
+432,forward,432,612,180,109,0.6055555555555555
+612,train,30,612,582,0,0.0
+612,forward,612,792,180,7,0.03888888888888889

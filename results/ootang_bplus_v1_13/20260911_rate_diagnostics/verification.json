@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "protected_files": 1921,
+  "numeric_values_checked": 319237,
+  "max_mean_difference_mm": 3.0819791163594346e-13,
+  "max_mixed_absolute_difference": 7.275957614183426e-12,
+  "table_rows": {
+    "point": 96,
+    "multiplier": 72,
+    "feature": 72,
+    "joint_feature": 6,
+    "calibration": 24
+  },
+  "original_objectives_verified": 9,
+  "original_point_metric_rows_verified": 64,
+  "new_neural_evaluations": 0,
+  "new_gradients": 0,
+  "new_native_calls": 0,
+  "new_optimizer_updates": 0,
+  "new_scale_fits": 0
+}

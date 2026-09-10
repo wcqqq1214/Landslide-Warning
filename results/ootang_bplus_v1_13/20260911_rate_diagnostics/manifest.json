@@ -1,0 +1,63 @@
+{
+  "specification": {
+    "version": "1.13",
+    "protocol": "docs/ootang_bplus_rate_diagnostics_plan.v1.13.md",
+    "source_run": "results/ootang_bplus_v1_12/20260911_rate_learning",
+    "source_index_sha256": "a6e7c6a206bf322dd5fd19f0fb2fae787a2ef5288bb51b0047872f7a4ce9112b",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "driver_source": "results/ootang_bplus_v1_8/20260911_substep_audit/drivers.npz",
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "ends": [
+      432,
+      612,
+      792
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "warmup_days": 30,
+    "direction_tolerance_mm": 1e-06,
+    "log_multiplier_edge": 0.95,
+    "feature_range_tolerance_z": 1e-12,
+    "sigma_floor_mm": 0.001,
+    "numeric_atol": 1e-08,
+    "numeric_rtol": 1e-10,
+    "point_rows": 96,
+    "multiplier_rows": 72,
+    "feature_rows": 72,
+    "joint_feature_rows": 6,
+    "calibration_rows": 24,
+    "new_neural_evaluations": 0,
+    "new_gradients": 0,
+    "new_native_calls": 0,
+    "new_optimizer_updates": 0,
+    "new_scale_fits": 0
+  },
+  "config_sha256": "5ed0138ec863b3c8de4d2f110bbd964a7585b7dfa935ece66c38480cadbc2ba5",
+  "plan_sha256": "64423cb89194cd8c90fe1989419cc8ed6c2408393a2150e8ea7bcdd3205578e1",
+  "sources": {
+    "code/physics_guided_rate_diagnostics/__init__.py": "007380a5408c83a9527b7ff09ad65f9eebbcf354a73bf3e22ad961392efecc6a",
+    "code/physics_guided_rate_diagnostics/core.py": "51ce901ae075048cffe8c4b195c6e1435555b858723670e853fa42615c3de666",
+    "code/physics_guided_rate_diagnostics/run.py": "7a0b68c059f0a8ad393a57d602c8ba71bbb60711e49e6d454d6800c85ed25024",
+    "code/physics_guided_rate_diagnostics/verify.py": "329e4472f73ff39ef83bbaa5f2e88ca210e7e46e63449081162cd603e2832b2a",
+    "code/physics_guided_rate_diagnostics/workflow.py": "04e410c614f3f12218a68711c9c7fd31e38abd5b6e8b779afd082f9141fa7bf6",
+    "tests/test_physics_guided_rate_diagnostics.py": "98526bda9b0311fd666f0c78fe644e480446228aa7468c25f658e6df63959939",
+    "config/ootang_bplus_rate_diagnostics.v1_13.json": "5ed0138ec863b3c8de4d2f110bbd964a7585b7dfa935ece66c38480cadbc2ba5",
+    "docs/ootang_bplus_rate_diagnostics_plan.v1.13.md": "64423cb89194cd8c90fe1989419cc8ed6c2408393a2150e8ea7bcdd3205578e1"
+  },
+  "source_run": "results/ootang_bplus_v1_12/20260911_rate_learning",
+  "source_index_sha256": "a6e7c6a206bf322dd5fd19f0fb2fae787a2ef5288bb51b0047872f7a4ce9112b",
+  "git_commit": "453ebd86ee6d93c52a4590d8fd56bb87a21c9ee7",
+  "started_utc": "2026-09-10T22:54:25.789851+00:00",
+  "versions": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "matplotlib": "3.10.9"
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "files": {
+    "calibration.csv": {
+      "sha256": "8e37cf4d6474f87475d0346f64607298f107ebc938f1242d30eb455a11afb67a",
+      "bytes": 7634
+    },
+    "completed.json": {
+      "sha256": "1484759e9889113918ebbed5e0215e337d033d21463649ea614fe77e300783ce",
+      "bytes": 293
+    },
+    "correction_demand.png": {
+      "sha256": "14b0184e2777df1f8e20a6e3619df30ba83c77342c39cf37eb71078836d25962",
+      "bytes": 348251
+    },
+    "feature.csv": {
+      "sha256": "75d58074a28c0f2254794247ad82fd57846203503964fe97a5ddb64248aa24eb",
+      "bytes": 11845
+    },
+    "joint_feature.csv": {
+      "sha256": "8367d4e9da06f1b1072f7f1c18b6e8d64c958a21d4e03be150b60ac5544680e1",
+      "bytes": 298
+    },
+    "launcher.json": {
+      "sha256": "1704eb97630ac2ef32bb1f7e9cb4727dd24a4ebfdfe261ffe71591e16c74629c",
+      "bytes": 57
+    },
+    "manifest.json": {
+      "sha256": "1b8ca18a64131e6200b490ffef8f4b4ef8afa5e260fe95e66a07e3890a0ca591",
+      "bytes": 2622
+    },
+    "multiplier.csv": {
+      "sha256": "246a85b4d7e1547be85b3dc2b598f7f1dcf38a052bb122b5c1be0be81557ebd5",
+      "bytes": 14523
+    },
+    "point.csv": {
+      "sha256": "79beeb3e55ffb47e07765e6d5027e99b1097b217680aafa9dbe19b88e97571a8",
+      "bytes": 36312
+    },
+    "prefix_342.npz": {
+      "sha256": "bff9a61a165c29084c213b46eee4fcec0c2d147f898c8a687f4cc305bcb6c58b",
+      "bytes": 338546
+    },
+    "prefix_432.npz": {
+      "sha256": "1339fe54cbe12852537b36e9ab649496e802a6c1ff4911563cba2396f016a2a6",
+      "bytes": 474681
+    },
+    "prefix_612.npz": {
+      "sha256": "977b2eb06b0ec4eed91507b72b3454bf278e30844846ba0bad0703a173ff3b08",
+      "bytes": 638681
+    },
+    "protected_before.json": {
+      "sha256": "c50ce9aaee032bec081c21a2b8bbc7eab7dd0c0f4ba9ea4a926f945ed2d8ed67",
+      "bytes": 288241
+    },
+    "run.log": {
+      "sha256": "5dba09b7e8789006961283acc77dbf5d8635fc00e281f78779a966d3ae2159ed",
+      "bytes": 111
+    },
+    "sources/code/physics_guided_rate_diagnostics/__init__.py": {
+      "sha256": "007380a5408c83a9527b7ff09ad65f9eebbcf354a73bf3e22ad961392efecc6a",
+      "bytes": 67
+    },
+    "sources/code/physics_guided_rate_diagnostics/core.py": {
+      "sha256": "51ce901ae075048cffe8c4b195c6e1435555b858723670e853fa42615c3de666",
+      "bytes": 5696
+    },
+    "sources/code/physics_guided_rate_diagnostics/run.py": {
+      "sha256": "7a0b68c059f0a8ad393a57d602c8ba71bbb60711e49e6d454d6800c85ed25024",
+      "bytes": 3879
+    },
+    "sources/code/physics_guided_rate_diagnostics/verify.py": {
+      "sha256": "329e4472f73ff39ef83bbaa5f2e88ca210e7e46e63449081162cd603e2832b2a",
+      "bytes": 8893
+    },
+    "sources/code/physics_guided_rate_diagnostics/workflow.py": {
+      "sha256": "04e410c614f3f12218a68711c9c7fd31e38abd5b6e8b779afd082f9141fa7bf6",
+      "bytes": 11318
+    },
+    "sources/config/ootang_bplus_rate_diagnostics.v1_13.json": {
+      "sha256": "5ed0138ec863b3c8de4d2f110bbd964a7585b7dfa935ece66c38480cadbc2ba5",
+      "bytes": 961
+    },
+    "sources/docs/ootang_bplus_rate_diagnostics_plan.v1.13.md": {
+      "sha256": "64423cb89194cd8c90fe1989419cc8ed6c2408393a2150e8ea7bcdd3205578e1",
+      "bytes": 5832
+    },
+    "sources/tests/test_physics_guided_rate_diagnostics.py": {
+      "sha256": "98526bda9b0311fd666f0c78fe644e480446228aa7468c25f658e6df63959939",
+      "bytes": 4770
+    },
+    "verification.json": {
+      "sha256": "151c797af0baf1a1b609d0e7058180b290bf3150d93961112154b325ab2b62db",
+      "bytes": 534
+    }
+  }
+}
