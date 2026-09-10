@@ -3,7 +3,15 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.13 修正与尺度诊断](docs/ootang_bplus_rate_diagnostics_results.v1.13.md)：
+最新完成 [v1.14 训练内时序输入对照](docs/ootang_bplus_temporal_features_results.v1.14.md)：
+固定 9 次岭回归，约 8.419 秒，0 新神经/力学调用。增加 30 日历史和 B+ 状态的 HHS
+三窗预测平均 RMSE 为 16.3382/24.6583/72.1319 mm，P0 为 18.2392/29.5090/58.0122；
+前两窗改善，第三窗明显恶化，不能据此直接扩充原神经模型。11 项测试、九组正规
+方程及完整时序/指标复核通过，整体目标未实现。下一步先分解辅助修正和输入跨期变化。
+[执行前方案](docs/ootang_bplus_temporal_features_plan.v1.14.md)及
+[十二面板对照图](results/ootang_bplus_v1_14/20260911_temporal_features/temporal_corrections.png)保留。
+
+此前完成 [v1.13 修正与尺度诊断](docs/ootang_bplus_rate_diagnostics_results.v1.13.md)：
 只读冻结数组，0 新训练/力学调用。第一预测窗 ATU1/ATU5 的修正大多与实际需求反向，
 第二窗 MJ3 三种子均整窗反向；第二窗没有倍率接近边界，单维输入越界也仅 7/180 日，
 不能据此直接放宽倍率。原尺度跨期同时存在过大与不足，下一步先检查训练内修正信息
@@ -71,7 +79,14 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 v1.13 保存的修正、倍率、输入和尺度诊断，不调用模型或写文件：
+复核最新 v1.14 的九组回归系数、输入、时序和指标，只代入检查，不重新拟合或写文件：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python -m physics_guided_temporal_features.verify --run-id 20260911_temporal_features
+```
+
+复核 v1.13 保存的修正、倍率、输入和尺度诊断，不调用模型或写文件：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
