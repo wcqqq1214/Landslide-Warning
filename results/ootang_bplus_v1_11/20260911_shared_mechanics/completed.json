@@ -1,0 +1,14 @@
+{
+  "validation_complete": true,
+  "numerical_verification": true,
+  "completed_utc": "2026-09-10T21:56:07.091544+00:00",
+  "elapsed_seconds": 7.944761124905199,
+  "reference_forwards": 3,
+  "neural_evaluations": 32,
+  "trajectories": 36,
+  "day_forwards": 19116,
+  "day_backwards": 1904,
+  "reverse_passes": 4,
+  "reference_substeps": 123072,
+  "optimizer_updates": 0
+}

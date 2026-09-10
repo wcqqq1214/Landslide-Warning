@@ -1,0 +1,15 @@
+{
+  "reference_forwards": 3,
+  "neural_evaluations": 32,
+  "trajectories": 36,
+  "day_forwards": 19116,
+  "day_backwards": 1904,
+  "reverse_passes": 4,
+  "reference_substeps": 123072,
+  "optimizer_updates": 0,
+  "label_prefixes": [
+    342,
+    612
+  ],
+  "elapsed_seconds": 5.477278042118996
+}

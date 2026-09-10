@@ -1,0 +1,63 @@
+{
+  "specification": {
+    "version": "1.11",
+    "protocol": "docs/ootang_bplus_shared_mechanics_plan.v1.11.md",
+    "source_run": "results/ootang_bplus_v1_9/20260911_state_pinn",
+    "diagnostic_run": "results/ootang_bplus_v1_10/20260911_pinn_consistency",
+    "reference_directory": "runtime/ootang_bplus_v1_1/reference",
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "direction_prefixes": [
+      342,
+      612
+    ],
+    "direction_seed": 0,
+    "direction_epoch": 200,
+    "random_direction_seed": 31415,
+    "direction_steps": [
+      1e-05,
+      1e-06
+    ],
+    "early_day": 1,
+    "early_step": 1e-06,
+    "direction_atol": 1e-06,
+    "direction_rtol": 0.01,
+    "nonzero_gradient_threshold": 1e-12,
+    "future_perturbation": 100,
+    "rate_prior_weight": 0.001,
+    "displacement_atol": 1e-08,
+    "reaction_atol": 1e-07,
+    "roundoff_factor": 256,
+    "multiplier_atol": 1e-10,
+    "max_reference_forwards": 3,
+    "reference_substeps": 123072,
+    "max_neural_evaluations": 32,
+    "max_trajectories": 36,
+    "max_day_forwards": 19116,
+    "max_day_backwards": 1904,
+    "max_reverse_passes": 4,
+    "optimizer_updates": 0,
+    "timeout_seconds": 600,
+    "threads": 1,
+    "dtype": "float64"
+  },
+  "sources": {
+    "code/physics_guided_shared_mechanics/run.py": "d040034166ccfd440ac5277d3f43868325c8cd1ea3eb209c567e8331753556f8",
+    "code/physics_guided_shared_mechanics/__init__.py": "21efd43e056f23264aa9433ad4a110535962b6a7342924ac808a87ffa8df20e3",
+    "code/physics_guided_shared_mechanics/core.py": "9f1d2a5688bf4cb9df4580ede7a28d2fa311cea6d00827f44495465f4a919644",
+    "code/physics_guided_shared_mechanics/verify.py": "60c5614924340b5a450ed608c5b41cdd3b8d456548b99deeac35195cc3c3d13b",
+    "tests/test_physics_guided_shared_mechanics.py": "bce861b7212f6aee19acf02688effe2ff2a747475bf30f458f69894d313ec8a3"
+  },
+  "config_sha256": "c34b4f7733bf4c5942834fc73be2398b2d807f3dfbccc4fa70417481922fdd76",
+  "plan_sha256": "72271010ca7b34dfe4f11692e06201a353aa2e5be4acced439b7c7c460e21288",
+  "started_utc": "2026-09-10T21:56:01.050192+00:00",
+  "source_index_sha256": "98dd5f68d2dac9c23c06913ef9d2a713b1ac7e8c40cc9586d55229a02f3e5fd2"
+}

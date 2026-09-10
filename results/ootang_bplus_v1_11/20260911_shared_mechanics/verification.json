@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "full_trajectories_matched": 12,
+  "all_saved_trajectories": 36,
+  "required_small_step_directions_passed": 6,
+  "future_isolation_prefixes": [
+    342,
+    612
+  ],
+  "max_mean_difference_mm": 2.2737367544323206e-13,
+  "max_state_displacement_difference_mm": 1.7053025658242404e-13,
+  "max_reaction_difference_original_units": 2.8990143619012088e-12,
+  "max_direction_absolute_error": 0.00017453042898860072,
+  "native_min_dx": -9.288044534819924e-09,
+  "native_min_gap": -1.516964746737447e-13,
+  "native_max_normalized_complementarity": 2.0101292007738048e-16,
+  "original_branch_changes": [
+    {
+      "prefix": 342,
+      "seed": 0,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 342,
+      "seed": 1,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 342,
+      "seed": 2,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 432,
+      "seed": 0,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 432,
+      "seed": 1,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 432,
+      "seed": 2,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 612,
+      "seed": 0,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 612,
+      "seed": 1,
+      "changed_substeps": 0
+    },
+    {
+      "prefix": 612,
+      "seed": 2,
+      "changed_substeps": 0
+    }
+  ],
+  "protected_files": 1568,
+  "new_neural_evaluations": 0,
+  "new_native_calls": 0,
+  "new_optimizer_updates": 0
+}
