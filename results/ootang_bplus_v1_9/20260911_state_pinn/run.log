@@ -1,0 +1,293 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+{"prefix": 342, "seed": 0, "epoch": 25, "data": 0.007295482129606197, "physics": 15.330651718365512, "total": 15.337947780216018, "elapsed_seconds": 10.765144750010222}
+{"prefix": 342, "seed": 0, "epoch": 50, "data": 0.007021348125298199, "physics": 5.044236046585232, "total": 5.05125808923565, "elapsed_seconds": 13.705021042376757}
+{"prefix": 342, "seed": 0, "epoch": 75, "data": 0.0071225285507556645, "physics": 1.3515623345264984, "total": 1.3586855879085942, "elapsed_seconds": 16.301097792107612}
+{"prefix": 342, "seed": 0, "epoch": 100, "data": 0.007472073437214168, "physics": 1.4151429330983751, "total": 1.4226157755048177, "elapsed_seconds": 18.642560000065714}
+{"prefix": 342, "seed": 0, "epoch": 125, "data": 0.008013403324717757, "physics": 1.7098949931517713, "total": 1.7179096045580509, "elapsed_seconds": 21.54657983314246}
+{"prefix": 342, "seed": 0, "epoch": 150, "data": 0.0089240324471462, "physics": 0.4007155038434475, "total": 0.4096433432167091, "elapsed_seconds": 24.257367083337158}
+{"prefix": 342, "seed": 0, "epoch": 175, "data": 0.010431817141621006, "physics": 0.25699292444600247, "total": 0.2674367500932091, "elapsed_seconds": 27.135397958103567}
+{"prefix": 342, "seed": 0, "epoch": 200, "data": 0.011032712185036778, "physics": 0.16363555426205734, "total": 0.1747018893576883, "elapsed_seconds": 30.1548990001902}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: divide by zero encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: overflow encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: invalid value encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+{"prefix": 342, "seed": 1, "epoch": 25, "data": 0.007419879468732893, "physics": 9.850964889511589, "total": 9.858385762848009, "elapsed_seconds": 34.873699500225484}
+{"prefix": 342, "seed": 1, "epoch": 50, "data": 0.007592868911510202, "physics": 1.2432358047435113, "total": 1.2508302795301116, "elapsed_seconds": 38.324610750190914}
+{"prefix": 342, "seed": 1, "epoch": 75, "data": 0.007994259331148175, "physics": 0.7936748963360442, "total": 0.8016716821449623, "elapsed_seconds": 40.76862020837143}
+{"prefix": 342, "seed": 1, "epoch": 100, "data": 0.008815244207388847, "physics": 0.4664965914086805, "total": 0.47531691039987656, "elapsed_seconds": 42.86148325027898}
+{"prefix": 342, "seed": 1, "epoch": 125, "data": 0.010081032412927207, "physics": 0.46402483949000656, "total": 0.47411777220383433, "elapsed_seconds": 44.968340792227536}
+{"prefix": 342, "seed": 1, "epoch": 150, "data": 0.01101193048065576, "physics": 0.09943072274729317, "total": 0.11045914566734465, "elapsed_seconds": 46.833499333355576}
+{"prefix": 342, "seed": 1, "epoch": 175, "data": 0.010661762470726402, "physics": 0.12060297615002016, "total": 0.1312873474706249, "elapsed_seconds": 51.79061554232612}
+{"prefix": 342, "seed": 1, "epoch": 200, "data": 0.010079662787553414, "physics": 0.043844079556054516, "total": 0.05396287148589253, "elapsed_seconds": 54.63872800022364}
+{"prefix": 342, "seed": 2, "epoch": 25, "data": 0.007991401195713831, "physics": 10.693298611124408, "total": 10.701291001396122, "elapsed_seconds": 58.32702299999073}
+{"prefix": 342, "seed": 2, "epoch": 50, "data": 0.007527630958100773, "physics": 3.930535506648869, "total": 3.938064508972125, "elapsed_seconds": 59.7295772084035}
+{"prefix": 342, "seed": 2, "epoch": 75, "data": 0.007459647351016998, "physics": 2.2172616394735485, "total": 2.224723035428101, "elapsed_seconds": 61.24769950006157}
+{"prefix": 342, "seed": 2, "epoch": 100, "data": 0.007588185727520143, "physics": 0.3853004527448864, "total": 0.3928911263824682, "elapsed_seconds": 62.61299025034532}
+{"prefix": 342, "seed": 2, "epoch": 125, "data": 0.008054468670122298, "physics": 0.6373623088915432, "total": 0.64542019950153, "elapsed_seconds": 64.20035479217768}
+{"prefix": 342, "seed": 2, "epoch": 150, "data": 0.008845210160261983, "physics": 1.0067116765006363, "total": 1.0155634141789902, "elapsed_seconds": 66.70454212510958}
+{"prefix": 342, "seed": 2, "epoch": 175, "data": 0.00939213336737709, "physics": 0.5355707863537953, "total": 0.5449727983877489, "elapsed_seconds": 68.04541158303618}
+{"prefix": 342, "seed": 2, "epoch": 200, "data": 0.009765851789367492, "physics": 0.24963489320358825, "total": 0.25942492140254964, "elapsed_seconds": 69.32395641738549}
+{"prefix": 342, "status": "forecasts_locked", "updates": 600, "replays": 3}
+{"prefix": 432, "seed": 0, "epoch": 25, "data": 0.00470237686864869, "physics": 0.016086167363717437, "total": 0.02078911190019804, "elapsed_seconds": 72.79747112514451}
+{"prefix": 432, "seed": 0, "epoch": 50, "data": 0.004648543181228466, "physics": 0.012626703626758209, "total": 0.017277617979107502, "elapsed_seconds": 75.23165600001812}
+{"prefix": 432, "seed": 0, "epoch": 75, "data": 0.0040793129138946595, "physics": 0.003356317291511199, "total": 0.007449859965352546, "elapsed_seconds": 77.55854229209945}
+{"prefix": 432, "seed": 0, "epoch": 100, "data": 0.003065113646112578, "physics": 0.0030078996978154388, "total": 0.006164360275724177, "elapsed_seconds": 79.88461420824751}
+{"prefix": 432, "seed": 0, "epoch": 125, "data": 0.0024631654309625844, "physics": 0.0034670797604131223, "total": 0.0061134685332688435, "elapsed_seconds": 81.42745937500149}
+{"prefix": 432, "seed": 0, "epoch": 150, "data": 0.002228007344028672, "physics": 0.0018124617060280008, "total": 0.004258893520353902, "elapsed_seconds": 84.05152854230255}
+{"prefix": 432, "seed": 0, "epoch": 175, "data": 0.002029502762967628, "physics": 0.0007947277613491261, "total": 0.003074018555583882, "elapsed_seconds": 92.63496779231355}
+{"prefix": 432, "seed": 0, "epoch": 200, "data": 0.0018498465820769425, "physics": 0.001447669336694301, "total": 0.0035806239540091037, "elapsed_seconds": 102.86272645834833}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: divide by zero encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: overflow encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: invalid value encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+{"prefix": 432, "seed": 1, "epoch": 25, "data": 0.004517692283410991, "physics": 0.048946747144653364, "total": 0.05346582439695664, "elapsed_seconds": 110.6484977081418}
+{"prefix": 432, "seed": 1, "epoch": 50, "data": 0.004557867118748574, "physics": 0.004041397740952142, "total": 0.008601320919565067, "elapsed_seconds": 119.40164204221219}
+{"prefix": 432, "seed": 1, "epoch": 75, "data": 0.004076210430177264, "physics": 0.0034682927079932695, "total": 0.007553997617269967, "elapsed_seconds": 122.91956237517297}
+{"prefix": 432, "seed": 1, "epoch": 100, "data": 0.0029922907405000817, "physics": 0.001766041897994449, "total": 0.004832872969368585, "elapsed_seconds": 127.33506966708228}
+{"prefix": 432, "seed": 1, "epoch": 125, "data": 0.0024696727704264024, "physics": 0.001308470496532577, "total": 0.003952192568030647, "elapsed_seconds": 134.39601962501183}
+{"prefix": 432, "seed": 1, "epoch": 150, "data": 0.002261967270159245, "physics": 0.0022329089687293316, "total": 0.004709074811445567, "elapsed_seconds": 140.7453398751095}
+{"prefix": 432, "seed": 1, "epoch": 175, "data": 0.002076891954513896, "physics": 0.003621397235219105, "total": 0.0059308227042036135, "elapsed_seconds": 145.25275450013578}
+{"prefix": 432, "seed": 1, "epoch": 200, "data": 0.0019795226875360234, "physics": 0.0013799870789094515, "total": 0.0036029702184825004, "elapsed_seconds": 152.18278900021687}
+{"prefix": 432, "seed": 2, "epoch": 25, "data": 0.004628405714898137, "physics": 0.014626303303751234, "total": 0.019255928472582586, "elapsed_seconds": 163.08058779221028}
+{"prefix": 432, "seed": 2, "epoch": 50, "data": 0.004595269808850765, "physics": 0.008280951494313954, "total": 0.01287880901647212, "elapsed_seconds": 171.0838940832764}
+{"prefix": 432, "seed": 2, "epoch": 75, "data": 0.004045892028896662, "physics": 0.005796552302876254, "total": 0.009854962172111292, "elapsed_seconds": 179.50581866735592}
+{"prefix": 432, "seed": 2, "epoch": 100, "data": 0.0031495826238383665, "physics": 0.005214555002448684, "total": 0.008434635817817301, "elapsed_seconds": 199.23254570830613}
+{"prefix": 432, "seed": 2, "epoch": 125, "data": 0.0026039699886637856, "physics": 0.0021426883356478643, "total": 0.004896860664687303, "elapsed_seconds": 205.34791529225186}
+{"prefix": 432, "seed": 2, "epoch": 150, "data": 0.002282158259349411, "physics": 0.0021957206502648116, "total": 0.004701432368135225, "elapsed_seconds": 215.51623595831916}
+{"prefix": 432, "seed": 2, "epoch": 175, "data": 0.0020590329685958486, "physics": 0.0010470902018239598, "total": 0.003370402840159149, "elapsed_seconds": 253.5327811674215}
+{"prefix": 432, "seed": 2, "epoch": 200, "data": 0.0018634319054169838, "physics": 0.00048153913771481927, "total": 0.0026328759103019933, "elapsed_seconds": 262.1727341674268}
+{"prefix": 432, "status": "forecasts_locked", "updates": 1200, "replays": 6}
+{"prefix": 612, "seed": 0, "epoch": 25, "data": 0.004816931637816504, "physics": 0.007521946815500903, "total": 0.01233990901828307, "elapsed_seconds": 321.06967508327216}
+{"prefix": 612, "seed": 0, "epoch": 50, "data": 0.004414553837667318, "physics": 0.0010519529499724426, "total": 0.0054822740029614675, "elapsed_seconds": 354.61275720829144}
+{"prefix": 612, "seed": 0, "epoch": 75, "data": 0.004145399997061629, "physics": 0.0006356260590904217, "total": 0.004820440627603569, "elapsed_seconds": 386.1257192082703}
+{"prefix": 612, "seed": 0, "epoch": 100, "data": 0.0038682609813210657, "physics": 0.000379364792434164, "total": 0.004311521222901881, "elapsed_seconds": 391.508261250332}
+{"prefix": 612, "seed": 0, "epoch": 125, "data": 0.0036253308633694644, "physics": 0.0004803992802472016, "total": 0.004194716040857184, "elapsed_seconds": 397.49701862502843}
+{"prefix": 612, "seed": 0, "epoch": 150, "data": 0.0034578066104085574, "physics": 0.0003554511704015575, "total": 0.003915350596250667, "elapsed_seconds": 402.4145498331636}
+{"prefix": 612, "seed": 0, "epoch": 175, "data": 0.003255756566507937, "physics": 0.00035222009163104844, "total": 0.0037173758245706585, "elapsed_seconds": 407.2994886673987}
+{"prefix": 612, "seed": 0, "epoch": 200, "data": 0.003072062523770076, "physics": 0.0006143680695600741, "total": 0.003797998511083617, "elapsed_seconds": 410.4798251669854}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: divide by zero encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: overflow encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: invalid value encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+{"prefix": 612, "seed": 1, "epoch": 25, "data": 0.00462165108616285, "physics": 0.004362943461073433, "total": 0.00899011166533574, "elapsed_seconds": 415.52622666722164}
+{"prefix": 612, "seed": 1, "epoch": 50, "data": 0.0043911214695799925, "physics": 0.0014552725341899174, "total": 0.0058738889933232915, "elapsed_seconds": 418.26599579211324}
+{"prefix": 612, "seed": 1, "epoch": 75, "data": 0.004193797983543317, "physics": 0.00035232313634889765, "total": 0.004591287210139613, "elapsed_seconds": 420.8136622081511}
+{"prefix": 612, "seed": 1, "epoch": 100, "data": 0.0039547923391692, "physics": 0.000320604802030288, "total": 0.004344923822366759, "elapsed_seconds": 423.24251116719097}
+{"prefix": 612, "seed": 1, "epoch": 125, "data": 0.00373988491476159, "physics": 0.00024125312760633728, "total": 0.004080276870069835, "elapsed_seconds": 425.6535663329996}
+{"prefix": 612, "seed": 1, "epoch": 150, "data": 0.003566489106114303, "physics": 0.00026979155953315914, "total": 0.003951114581965184, "elapsed_seconds": 428.2920721671544}
+{"prefix": 612, "seed": 1, "epoch": 175, "data": 0.0034139599033191997, "physics": 0.0002875236123137638, "total": 0.003822161274304253, "elapsed_seconds": 430.8720841673203}
+{"prefix": 612, "seed": 1, "epoch": 200, "data": 0.003248837363524339, "physics": 0.0005092933214325694, "total": 0.0038822088558479453, "elapsed_seconds": 433.8439422920346}
+{"prefix": 612, "seed": 2, "epoch": 25, "data": 0.0045056736531878545, "physics": 0.0006571375299864893, "total": 0.005169221356134847, "elapsed_seconds": 439.04760550009087}
+{"prefix": 612, "seed": 2, "epoch": 50, "data": 0.004215821736069271, "physics": 0.00031534529415551323, "total": 0.004568719826565934, "elapsed_seconds": 441.71287166699767}
+{"prefix": 612, "seed": 2, "epoch": 75, "data": 0.003940695339736109, "physics": 0.00031582750848934045, "total": 0.0043045476696036596, "elapsed_seconds": 444.18594762543216}
+{"prefix": 612, "seed": 2, "epoch": 100, "data": 0.0036130158802975105, "physics": 0.00036893052387242207, "total": 0.004052022055554808, "elapsed_seconds": 447.34437404200435}
+{"prefix": 612, "seed": 2, "epoch": 125, "data": 0.003372175762390487, "physics": 0.00039090173101675026, "total": 0.0038496177981688193, "elapsed_seconds": 449.98047558311373}
+{"prefix": 612, "seed": 2, "epoch": 150, "data": 0.0032241973398319454, "physics": 0.0007835116443717781, "total": 0.004098793178940583, "elapsed_seconds": 452.6149339172989}
+{"prefix": 612, "seed": 2, "epoch": 175, "data": 0.0031698562891670935, "physics": 0.0007988058833675292, "total": 0.004064566791556402, "elapsed_seconds": 455.5240013333969}
+{"prefix": 612, "seed": 2, "epoch": 200, "data": 0.0030603607801959537, "physics": 0.0005795595876397855, "total": 0.0037407163067868497, "elapsed_seconds": 457.4562332080677}
+{"prefix": 612, "status": "forecasts_locked", "updates": 1800, "replays": 9}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: divide by zero encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: overflow encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: invalid value encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/run.py", line 425, in worker
+    execute(out, state, started)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/run.py", line 391, in execute
+    verified = verify(out, sealed=False)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/verify.py", line 398, in verify
+    raise ValueError("R mechanical audit differs or fails")
+ValueError: R mechanical audit differs or fails

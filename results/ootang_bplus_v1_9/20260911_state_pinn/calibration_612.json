@@ -1,0 +1,11 @@
+{
+  "locked_utc": "2026-09-10T20:40:52.963821+00:00",
+  "prefix": 612,
+  "source_prefix": 432,
+  "days": 180,
+  "files": {
+    "P0": "3cbb9f754b6652391ad13613f6908c4932f24e0ab59043a828fd111caf7a5f9e",
+    "P": "68d90d898d0ed0c116e2d3871eb566b5cc2365f818e9be32953fc829ca635791",
+    "R": "43aeca4d12a959dc1f2721d391c4754b344003d8e2614ba12070a5a479c9e46f"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "error": "ValueError('R mechanical audit differs or fails')",
+  "failed_utc": "2026-09-10T20:44:05.505544+00:00",
+  "elapsed_seconds": 461.5028899172321,
+  "update_attempts": 1800,
+  "optimizer_step_calls": 1800,
+  "completed_updates": 1800,
+  "training_evaluations": 1800,
+  "zero_check_evaluations": 9,
+  "final_prediction_evaluations": 9,
+  "recorded_integrations": 9,
+  "recorded_substeps": 369216,
+  "constant_scale_fits": 6,
+  "parameter_fits": 0,
+  "scale_neural_updates": 0
+}

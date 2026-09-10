@@ -1,0 +1,11 @@
+{
+  "locked_utc": "2026-09-10T20:44:02.973055+00:00",
+  "epochs": 200,
+  "primary_output": "R",
+  "diagnostic_output": "P",
+  "prefix_locks": {
+    "342": "aa3a4347ef49d14a83766a099fe4be38c67fc301282bb07f88d93a52c72b8bc7",
+    "432": "961294a170609bf2b271aff0d59848ec8db0def939628a6cde241348c1d83f9a",
+    "612": "1943e8beda5523ef1af4a1a4ce41a628918ee52b2300b0515d9a6183141e0386"
+  }
+}
