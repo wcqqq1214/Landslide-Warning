@@ -3,11 +3,17 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.10 冻结 PINN 梯度与轨迹诊断](docs/ootang_bplus_pinn_consistency_results.v1.10.md)：
+最新完成 [v1.11 共享力学路径验证](docs/ootang_bplus_shared_mechanics_results.v1.11.md)：
+保留同一 G，让训练与预测使用原 Day 递推。36 条验证轨迹、4 次完整历史反向约 7.945 秒，
+0 训练更新；12 组完整输出与旧 B+/R 的四点均值最大差 2.274e-13 mm，6/6 指定小步长
+导数及未来隔离检查通过。尚无新的精度改善，下一步独立固定直接约束最终输出的有限
+训练对照。[执行前方案](docs/ootang_bplus_shared_mechanics_plan.v1.11.md)与旧负结果保持。
+
+此前完成 [v1.10 冻结 PINN 梯度与轨迹诊断](docs/ootang_bplus_pinn_consistency_results.v1.10.md)：
 52 次网络求值、324 次梯度、9 组代数分解，约 8 秒，0 训练更新/力学调用，数值检查通过。
 342 日最终物理梯度约为数据梯度的 4,136–6,002 倍；612 日 ATU1/ATU5 的大 P/R 差
 主要对应塑性状态差，不能只据此增大运动残差权重。旧 M2 已通过求解器训练但泛化失败。
-下一步先验证同一速率网络下训练与最终输出共用力学路径，再独立登记有限训练对照。
+同一速率网络下共享力学路径的原型验证见 v1.11；有限训练另行登记。
 本诊断没有新的预测改善结果，整体目标仍未完成。
 
 此前完成 [v1.9 状态 PINN 实验与补充核验](docs/ootang_bplus_state_pinn_results.v1.9.md)：
@@ -51,7 +57,14 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 v1.10 保存的梯度、差分和运动分解，不调用网络/力学求解器，不写文件：
+复核最新 v1.11 已保存轨迹与导数证据，不新调用网络/力学求解器，不写文件：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python -m physics_guided_shared_mechanics.verify --run-id 20260911_shared_mechanics
+```
+
+复核 v1.10 保存的梯度、差分和运动分解，不调用网络/力学求解器，不写文件：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
