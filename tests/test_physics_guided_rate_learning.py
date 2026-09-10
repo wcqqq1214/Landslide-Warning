@@ -1,11 +1,13 @@
 from pathlib import Path
 from types import SimpleNamespace
 import sys
+import tempfile
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 import numpy as np
 import pandas as pd
+import torch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from physics_guided_forecast_error.artifacts import ROOT
@@ -20,6 +22,12 @@ from physics_guided_rate_learning.workflow import (
     training_solver,
 )
 from physics_guided_state_pinn.workflow import load_bundle, specification
+from physics_guided_shared_mechanics.core import Budget, RateReplay
+from physics_guided_rate_learning.run import apply_update, save_checkpoint
+from physics_guided_rate_learning.verify import check_optimizer
+from physics_guided_rate_learning.workflow import (
+    specification as learning_specification,
+)
 
 
 class RateLearningTests(unittest.TestCase):
@@ -124,6 +132,33 @@ class RateLearningTests(unittest.TestCase):
         self.assertEqual(cropped["state"].shape, (342, 24))
         self.assertEqual(cropped["masks"].shape, (341, 64))
         np.testing.assert_array_equal(cropped["mean"], self.prediction["mean"][:342])
+
+    def test_optimizer_budget_rejects_before_backward_or_update(self):
+        total, model, optimizer = Mock(), Mock(), Mock()
+        budget = Budget({"neural_updates": 0, "reverse_passes": 1})
+        with self.assertRaises(RuntimeError):
+            apply_update(total, model, optimizer, budget, learning_specification())
+        total.backward.assert_not_called()
+        optimizer.step.assert_not_called()
+        self.assertEqual(budget.counts["reverse_passes"], 0)
+
+    def test_adam_checkpoint_roundtrip_and_setting_corruption(self):
+        model = RateReplay()
+        initial = {"state_dict": {k: v.clone() for k, v in model.state_dict().items()}}
+        op = torch.optim.Adam(
+            model.parameters(), lr=0.001, betas=(0.9, 0.999), eps=1e-8
+        )
+        case = SimpleNamespace(constants={"training_days": 342}, h=342)
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "e0.pt"
+            save_checkpoint(path, model, op, case, 0, 0, "synthetic metadata fixture")
+            saved = torch.load(path, weights_only=True, map_location="cpu")
+            check_optimizer(saved, initial, learning_specification(), 0)
+            saved["optimizer_state"]["param_groups"][0]["lr"] = 0.01
+            with self.assertRaises(ValueError):
+                check_optimizer(saved, initial, learning_specification(), 0)
+            with self.assertRaises(FileExistsError):
+                save_checkpoint(path, model, op, case, 0, 0, "cannot overwrite")
 
 
 if __name__ == "__main__":
