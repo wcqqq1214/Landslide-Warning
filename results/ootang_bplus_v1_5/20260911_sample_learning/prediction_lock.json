@@ -1,0 +1,12 @@
+{
+  "locked_utc": "2026-09-10T18:04:53.096066+00:00",
+  "files": {
+    "prediction_432_IN.npz": "c93e018304d4a31be4b0d23cd548ede9c7d428d964633bbfb1c9243a36cc7e8d",
+    "prediction_432_OOF.npz": "7046727e31690805b99e59ba3443e156fce76432529cbc0e4f3ab73f181e2f55",
+    "prediction_432_P0.npz": "95f781c4a42d699da76a662d89173697229a71a01ba308aeefe776c9b0d47785",
+    "prediction_612_IN.npz": "3d62f5cf5ff8b0df9c850c68909fc789b91fe0cfc1495b4fd0856add582fa727",
+    "prediction_612_OOF.npz": "c32bb79324384e3ef8eecbff92f8f7d871656051d5a8ccf825845ac84bc196f3",
+    "prediction_612_P0.npz": "4d703090643afdd263d4cfac0d0622aec6862ee6482b0af42b05467a0ed2a5dd"
+  },
+  "scale_lock_sha256": "d0a61d9ed1ad890429b567937f0e6a5e72ff662e87861d7ab9f336a9c0de29a3"
+}

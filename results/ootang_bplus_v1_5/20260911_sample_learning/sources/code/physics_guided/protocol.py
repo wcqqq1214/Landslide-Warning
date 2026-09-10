@@ -1,0 +1,102 @@
+"""Machine-readable v1.1 contract. Changed defaults require a new protocol version."""
+
+from .data import POINTS, DOMAINS
+from .features import M1_NAMES, M2_NAMES
+
+
+def specification():
+    return dict(
+        version="ootang_bplus_probabilistic.v1_1",
+        plan="docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md",
+        points=list(POINTS),
+        domains=list(DOMAINS),
+        stages={
+            "development": {"fit_days": 792, "end_days": 1168, "fit_end": "2018-08-31"},
+            "final": {"fit_days": 1168, "end_days": 1461, "fit_end": "2019-09-11"},
+        },
+        warmup_days=30,
+        substeps_per_day=64,
+        seeds=[0, 1, 2],
+        scale_seed_offset=10000,
+        device="cpu",
+        dtype="float64",
+        deterministic_algorithms=True,
+        optimizer={
+            "name": "Adam",
+            "lr": 0.001,
+            "betas": [0.9, 0.999],
+            "eps": 1e-8,
+            "weight_decay": 0,
+            "gradient_norm_limit": 1,
+        },
+        mean_epochs=list(range(0, 201, 10)),
+        scale_epochs=list(range(0, 101, 10)),
+        mean_loss="mean(((mu-y)/100)^2)",
+        scale_loss="mean(log(sigma/100)+0.5*((y-mu)/sigma)^2)",
+        m1={
+            "features": M1_NAMES,
+            "window": 30,
+            "input_shape": ["batch", 30, 20, 1, 4],
+            "hidden": 16,
+            "kernel": [1, 3],
+            "reset": "each window",
+            "residual_scale_mm": 100,
+            "gradient_accumulation_chunk": 128,
+        },
+        m2={
+            "features": M2_NAMES,
+            "widths": [38, 16, 16, 4],
+            "activation": "tanh",
+            "correction": "exp(log(2)*tanh(f_theta))",
+            "calls_per_day": 1,
+            "full_history_gradient": True,
+            "physics_parameters_frozen": True,
+        },
+        scale={
+            "widths": [20, 16, 1],
+            "shared_across_points": True,
+            "sigma": "0.001+100*softplus(a)",
+            "mean_frozen": True,
+            "initial_sigma": "max(seed pooled training RMSE,0.002)",
+        },
+        calibration={
+            "starts": ["A", "B"],
+            "initials_source": "plan section 3.2; calibration.initial",
+            "lambda_T": [0, 792, 79200],
+            "max_nfev": [900, 800, 800],
+            "method": "trf",
+            "loss": "linear",
+            "x_scale": "jac",
+            "ftol": 1e-9,
+            "xtol": 1e-10,
+            "gtol": 1e-7,
+            "jacobian_step": "2e-6*max(1,abs(theta_j)); reverse at upper bound",
+            "tie_tolerance": 1e-12,
+        },
+        probability={
+            "distribution": "equal-weight three-component Gaussian mixture",
+            "interval_levels": [80, 90, 95],
+            "primary_level": 90,
+            "quantile_atol_mm": 1e-6,
+            "M0": "not_applicable",
+        },
+        selection={
+            "mean": "four-point mean RMSE of ensemble mean",
+            "scale": "mixture mean CRPS",
+            "epoch_tie_atol": 1e-12,
+            "route_rmse_proximity": 0.01,
+            "route_tiebreak": ["CRPS", "parameter_count", "M1"],
+        },
+        acceptance={
+            "all_point_train_and_prediction_RMSE_MAE_improvement_mm": 1e-6,
+            "coverage_is_nominal": True,
+            "user_acceptance": "separate",
+        },
+        excluded=[
+            "warning",
+            "new cases",
+            "SHAP",
+            "full-field PINN",
+            "test-period displacement feedback",
+        ],
+    )

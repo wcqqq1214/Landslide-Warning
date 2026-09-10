@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checkpoints_replayed": 12,
+  "optimizer_log_rows": 1200,
+  "metric_rows": 48,
+  "numeric_values_checked": 179304,
+  "max_absolute_recomputation_difference": 2.9521568939427922e-09,
+  "protected_files_checked": 776,
+  "source_files_checked": 24,
+  "new_optimizer_updates": 0,
+  "physical_forward_calls": 0,
+  "scope": "Checkpoint/scale replay, prefix identities, lock order and independent probability/point arithmetic; no independent retraining or effectiveness claim."
+}

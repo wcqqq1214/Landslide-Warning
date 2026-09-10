@@ -1,0 +1,12 @@
+{
+  "locked_utc": "2026-09-10T18:04:47.672474+00:00",
+  "files": {
+    "calibration_432_IN.npz": "7ea5d8967577adfcbc20ad1eec09ecae90c4068eeffd7f2f7dda6cc97881cefc",
+    "calibration_432_OOF.npz": "71b5671602c68ab395b77e6278de591fbc4c020ff84b73a7ca1305e73b66b783",
+    "calibration_432_P0.npz": "a74a3fad79c0146eabd036829cc179919a1ed493c586f52ca95d1014456b9c5e",
+    "calibration_612_IN.npz": "d9b74b6e787c376979076b7622d0d888a6248ff6992287c93042ccfffd916df9",
+    "calibration_612_OOF.npz": "0b1454122049e27969ac57e397e596d51412da84eb22658242188032e2180c4c",
+    "calibration_612_P0.npz": "bb895d682f734f121f04920f3cfce7af4c073d7e50aeffd15a96075e53168220"
+  },
+  "mean_lock_sha256": "9dfd20e9c179256bf82ff24609f7953232445f0b359295821ba8cf7db3efdf98"
+}

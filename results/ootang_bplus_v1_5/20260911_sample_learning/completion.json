@@ -1,0 +1,14 @@
+{
+  "complete": true,
+  "finished_utc": "2026-09-10T18:05:06.239363+00:00",
+  "elapsed_seconds": 248.86840970814228,
+  "optimizer_updates": 1200,
+  "physical_forward_calls": 0,
+  "physical_nfev": 0,
+  "neural_scale_updates": 0,
+  "strict_mean_improvements": {
+    "IN": 2,
+    "OOF": 0
+  },
+  "effectiveness": "See all per-point errors and probability metrics; execution success alone is not effectiveness."
+}
