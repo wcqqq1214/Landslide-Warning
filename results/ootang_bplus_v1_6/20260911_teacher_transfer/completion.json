@@ -1,0 +1,11 @@
+{
+  "complete": true,
+  "finished_utc": "2026-09-10T18:40:08.711916+00:00",
+  "elapsed_seconds": 9.212544625159353,
+  "reference_trajectory_calls": 4,
+  "independent_mechanical_trajectories": 2,
+  "independent_substeps": 89728,
+  "optimizer_nfev": 0,
+  "neural_updates": 0,
+  "scale_refits": 0
+}

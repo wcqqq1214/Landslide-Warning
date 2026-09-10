@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "metrics_rows": 192,
+  "daily_rows": 4320,
+  "shift_summary_rows": 24,
+  "comparisons_rows": 32,
+  "numeric_values_checked": 448230,
+  "max_absolute_difference": 2.9521568939427922e-09,
+  "protected_files_checked": 924,
+  "source_files_checked": 32,
+  "new_reference_trajectory_calls": 0,
+  "new_neural_updates": 0,
+  "scope": "Prefix, stored physical audits, checkpoint replay, NEW v1.5 identity, independent scores/CDF and same-day decomposition; no physical or neural retraining."
+}

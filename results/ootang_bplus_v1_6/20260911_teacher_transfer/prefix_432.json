@@ -1,0 +1,22 @@
+{
+  "prior": "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz",
+  "differences": {
+    "mean": 0.0,
+    "theta": 0.0,
+    "observation_matrix": 0.0,
+    "substep_audit": 0.0,
+    "coordinates": 0.0,
+    "plastic": 0.0,
+    "contact": 0.0,
+    "bulk_reaction": 0.0,
+    "basal_reaction": 0.0,
+    "rain_head": 0.0,
+    "reservoir_head": 0.0,
+    "force": 0.0,
+    "kc": 0.0,
+    "ke": 0.0,
+    "moisture": 0.0,
+    "background": 0.0,
+    "background_rate": 0.0
+  }
+}

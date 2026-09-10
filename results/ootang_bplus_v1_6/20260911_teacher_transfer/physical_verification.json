@@ -1,0 +1,9 @@
+{
+  "reference_replay_errors_mm": {
+    "432": 0.0,
+    "612": 0.0
+  },
+  "reference_trajectory_calls": 4,
+  "independent_mechanical_trajectories": 2,
+  "independent_substeps": 89728
+}
