@@ -19,6 +19,17 @@ from physics_guided_pinn_consistency.core import (
 
 
 class ConsistencyTests(unittest.TestCase):
+    def test_exhausted_budget_rejects_before_calling_model(self):
+        from physics_guided_pinn_consistency.run import evaluate
+
+        def forbidden(_):
+            self.fail("An exhausted diagnostic must not evaluate a model")
+
+        state = {"neural_evaluations": 52}
+        with self.assertRaisesRegex(RuntimeError, "budget exhausted"):
+            evaluate(forbidden, None, state, {"max_neural_evaluations": 52})
+        self.assertEqual(state["neural_evaluations"], 52)
+
     def test_nonzero_group_gradients_match_analytic_derivatives(self):
         model = nn.Module()
         model.rate_net = nn.Linear(2, 1, dtype=torch.float64)
