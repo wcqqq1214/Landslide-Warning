@@ -1,0 +1,11 @@
+{
+  "trajectory": {
+    "name": "432B",
+    "cutoff": 432,
+    "days": 612,
+    "file": "outer_432_B.npz"
+  },
+  "source_sha256": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+  "started_utc": "2026-09-10T19:51:59.296209+00:00",
+  "ordinal": 2
+}

@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "trajectories": {
+    "342A": true,
+    "432B": true,
+    "612B": true
+  },
+  "substeps": 123072,
+  "reports_match_exactly": true,
+  "protected_files": 1209,
+  "scientific_sources": 12,
+  "native_calls_during_verification": 0
+}

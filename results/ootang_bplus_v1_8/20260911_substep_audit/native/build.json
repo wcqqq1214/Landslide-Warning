@@ -1,0 +1,19 @@
+{
+  "original_sha256": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+  "derived_sha256": "59d7e96a44a6601ed9ecc98c87caf40e22de3a96ae2c9300b35073769b41af4c",
+  "command": [
+    "cc",
+    "-O3",
+    "-fPIC",
+    "-shared",
+    "/Users/wcqqq1214/Project/Landslide-Warning/results/ootang_bplus_v1_8/20260911_substep_audit/native/physical_solver.trace.c",
+    "-o",
+    "/Users/wcqqq1214/Project/Landslide-Warning/results/ootang_bplus_v1_8/20260911_substep_audit/native/physical_solver.trace.dylib"
+  ],
+  "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "returncode": 0,
+  "stdout": "",
+  "stderr": "",
+  "library_sha256": "052556743a508562f81b330c7a5bb7baa1207c21f30977d3f4bd0755b645e0a8",
+  "restored_function_matches_original": true
+}

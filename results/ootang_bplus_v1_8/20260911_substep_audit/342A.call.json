@@ -1,0 +1,11 @@
+{
+  "trajectory": {
+    "name": "342A",
+    "cutoff": 342,
+    "days": 522,
+    "file": "inner_612_342_A.npz"
+  },
+  "source_sha256": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+  "started_utc": "2026-09-10T19:51:58.500574+00:00",
+  "ordinal": 1
+}

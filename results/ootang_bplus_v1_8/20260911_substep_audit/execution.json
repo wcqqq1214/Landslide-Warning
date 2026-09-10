@@ -1,0 +1,9 @@
+{
+  "recorded_integrations": 3,
+  "substeps": 123072,
+  "elapsed_seconds_before_replay": 3.0531867500394583,
+  "original_forward_calls": 0,
+  "independent_integrations": 0,
+  "parameter_fits": 0,
+  "neural_updates": 0
+}

@@ -1,0 +1,356 @@
+{
+  "passed": true,
+  "days": 522,
+  "substeps": 33344,
+  "checks": {
+    "all_activity_steps_valid": {
+      "passed": true
+    },
+    "activity_masks_in_range": {
+      "passed": true
+    },
+    "no_native_failures": {
+      "passed": true
+    },
+    "initial_state_zero": {
+      "passed": true
+    },
+    "substep_continuity_exact": {
+      "passed": true
+    },
+    "initial_coordinates_zero": {
+      "passed": true
+    },
+    "initial_plastic_zero": {
+      "passed": true
+    },
+    "initial_contact_zero": {
+      "passed": true
+    },
+    "initial_bulk_reaction_zero": {
+      "passed": true
+    },
+    "initial_basal_reaction_zero": {
+      "passed": true
+    },
+    "force_schedule_exact": {
+      "passed": true
+    },
+    "elastic_schedule_exact": {
+      "passed": true
+    },
+    "background_interpolation": {
+      "passed": true,
+      "max_absolute_error": 3.552713678800501e-15,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 3.552713678800501e-07,
+      "unit": "mm",
+      "values": 133376
+    },
+    "background_load": {
+      "passed": true,
+      "max_absolute_error": 3.552713678800501e-15,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 3.552713678800501e-07,
+      "unit": "mm",
+      "values": 133376
+    },
+    "native_rhs_numpy_identity": {
+      "passed": true,
+      "max_absolute_error": 3.637978807091713e-12,
+      "max_allowed": 1.0057272601931614e-07,
+      "max_error_to_bound": 3.62086429893326e-05,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_gap_numpy_identity": {
+      "passed": true,
+      "max_absolute_error": 3.637978807091713e-12,
+      "max_allowed": 1.0057272522001897e-07,
+      "max_error_to_bound": 3.6208643706278855e-05,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_du_numpy_identity": {
+      "passed": true,
+      "max_absolute_error": 1.4209987353464015e-14,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 1.4209987353464015e-06,
+      "unit": "mm",
+      "values": 133376
+    },
+    "native_update_motion": {
+      "passed": true,
+      "max_absolute_error": 1.4210854715202004e-14,
+      "max_allowed": 1.0020723740508221e-08,
+      "max_error_to_bound": 1.4194597633073232e-06,
+      "unit": "mm",
+      "values": 133376
+    },
+    "native_update_plastic": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1.0020547109349457e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 133376
+    },
+    "native_update_basal": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1.0023967392204654e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_update_contact": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1.0000008604186838e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_update_bulk": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1.000452137195562e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "pinn_motion": {
+      "passed": true,
+      "max_absolute_error": 1.4210854715202004e-14,
+      "max_allowed": 1.0020740752240584e-08,
+      "max_error_to_bound": 1.4184861667051279e-06,
+      "unit": "mm",
+      "values": 133376
+    },
+    "pinn_basal_memory": {
+      "passed": true,
+      "max_absolute_error": 4.547473508864641e-13,
+      "max_allowed": 1.0078073037389447e-07,
+      "max_error_to_bound": 4.519694603510423e-06,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "pinn_contact_memory": {
+      "passed": true,
+      "max_absolute_error": 1.2212453270876722e-15,
+      "max_allowed": 1.0000094261474802e-07,
+      "max_error_to_bound": 1.2212353811704545e-08,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "pinn_bulk_memory": {
+      "passed": true,
+      "max_absolute_error": 1.3073986337985843e-12,
+      "max_allowed": 1.008687009007596e-07,
+      "max_error_to_bound": 1.2964832905057399e-05,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "pinn_background": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1.0022705210251726e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 133376
+    },
+    "pinn_dx_identity": {
+      "passed": true,
+      "max_absolute_error": 5.355958732078392e-17,
+      "max_allowed": 1.0000068642468876e-08,
+      "max_error_to_bound": 5.3559262583316375e-09,
+      "unit": "mm",
+      "values": 133376
+    },
+    "pinn_gap_identity": {
+      "passed": true,
+      "max_absolute_error": 5.633092523418149e-12,
+      "max_allowed": 1.0783238774868003e-07,
+      "max_error_to_bound": 5.291479298077211e-05,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_negative_dx": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 133376
+    },
+    "native_negative_gap": {
+      "passed": true,
+      "max_absolute_error": 3.5485550792585384e-14,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 3.5485550792585386e-07,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "pinn_negative_dx": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 2.0000068642468875e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 133376
+    },
+    "pinn_negative_gap": {
+      "passed": true,
+      "max_absolute_error": 5.6274984672199935e-12,
+      "max_allowed": 2.0783238774868004e-07,
+      "max_error_to_bound": 2.7257628148560094e-05,
+      "unit": "original generalized reaction units",
+      "values": 133376
+    },
+    "native_normalized_complementarity": {
+      "passed": true,
+      "max_absolute_error": 1.4409041363091755e-17,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 1.4409041363091754e-09,
+      "unit": "normalized source convention",
+      "values": 33344
+    },
+    "pinn_complementarity_identity": {
+      "passed": true,
+      "max_absolute_error": 8.135320782680192e-15,
+      "max_allowed": 0.00010075557783652032,
+      "max_error_to_bound": 5.291442658626443e-05,
+      "unit": "mm times original generalized reaction units",
+      "values": 133376
+    },
+    "native_active_dx_zero": {
+      "passed": true
+    },
+    "daily_saved_coordinates": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    },
+    "daily_recorded_coordinates": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    },
+    "daily_saved_plastic": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    },
+    "daily_recorded_plastic": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    },
+    "daily_saved_basal_reaction": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_recorded_basal_reaction": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_saved_contact": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_recorded_contact": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_saved_bulk_reaction": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_recorded_bulk_reaction": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-07,
+      "max_error_to_bound": 0.0,
+      "unit": "original generalized reaction units",
+      "values": 2088
+    },
+    "daily_saved_background": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    },
+    "daily_observation": {
+      "passed": true,
+      "max_absolute_error": 0.0,
+      "max_allowed": 1e-08,
+      "max_error_to_bound": 0.0,
+      "unit": "mm",
+      "values": 2088
+    }
+  },
+  "native": {
+    "min_dx": 0.0,
+    "min_gap": -3.5485550792585384e-14,
+    "max_normalized_complementarity": 1.4409041363091755e-17,
+    "active_steps_by_domain": {
+      "O3": 32960,
+      "O2": 33344,
+      "O1_up": 27414,
+      "O1_down": 32960
+    },
+    "min_dx_by_domain": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "min_gap_by_domain": [
+      -1.9455895837841557e-14,
+      3149.475611321687,
+      -1.7425117313821562e-14,
+      -3.5485550792585384e-14
+    ]
+  },
+  "pinn": {
+    "min_dx": 0.0,
+    "min_gap": -5.6274984672199935e-12,
+    "max_absolute_complementarity": 8.127241838217777e-15,
+    "max_roundoff_dx": 6.864246887576014e-14,
+    "max_roundoff_gap": 7.832387748680035e-09
+  }
+}

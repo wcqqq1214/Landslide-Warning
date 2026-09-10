@@ -1,0 +1,144 @@
+{
+  "files": {
+    "342A.audit.json": {
+      "sha256": "19e381692da9db801f14924f0ac5492d4d15ba7826a1ac4c86bcda70170c2e4b",
+      "bytes": 9948
+    },
+    "342A.call.json": {
+      "sha256": "6c54ac2e78211fab8f1cd9544fd5b91d8d2a03aa8e81a7049c38fe33a5f4d0c5",
+      "bytes": 272
+    },
+    "342A.npz": {
+      "sha256": "8fcb9c577492965a64d8945a40a2f1bbaf0294767ce7934aebd00a643f5a055b",
+      "bytes": 10477320
+    },
+    "432B.audit.json": {
+      "sha256": "4e88010e271c359ed9592add4d0d9f4d6847c4dc44ec96967ab978525d8b6a75",
+      "bytes": 10076
+    },
+    "432B.call.json": {
+      "sha256": "1343ae71a1b5ea700e29d0bd3d89d191058eec901bf383fa99c5ab413cb19259",
+      "bytes": 268
+    },
+    "432B.npz": {
+      "sha256": "ffe017fbc120a280b218becd17eeb62d244002cbeacbe640faba126254286b9e",
+      "bytes": 12738730
+    },
+    "612B.audit.json": {
+      "sha256": "b8bcda51e69ab4476da542e0c2feff4dceaf51a978899b78b58769ebf3ab28ea",
+      "bytes": 9942
+    },
+    "612B.call.json": {
+      "sha256": "323e7e10dde85821a22d217bb1e1f6a245b081bca923838b0c0fd196c09e994f",
+      "bytes": 268
+    },
+    "612B.npz": {
+      "sha256": "70a9a42c30b67aa52e2d636bd2df26e3e393e937cf3e8a326eee226e615556ae",
+      "bytes": 17342848
+    },
+    "completed.json": {
+      "sha256": "e176df900909247edbfdcd4f74114d73108ced3c59af832721b63c75382d7180",
+      "bytes": 333
+    },
+    "drivers.npz": {
+      "sha256": "1e6b7de9dc29b9fa9acbb542d8d2d5444d87e775e4428272af45dc86e00d0ec1",
+      "bytes": 6244
+    },
+    "execution.json": {
+      "sha256": "b8e9043d307841a69227ac9e9d88c175115550dda88d3ff68c6ad3dbc9039b78",
+      "bytes": 220
+    },
+    "launcher.json": {
+      "sha256": "f07844a388da6bddc86436c5712d9690f81056997b6ede3c2cc6341e10c28bf0",
+      "bytes": 57
+    },
+    "manifest.json": {
+      "sha256": "3af9e9ff16c0a639e615c3d7588d3fb71be92d2758611602d149357be60cc6fa",
+      "bytes": 6160
+    },
+    "native/build.json": {
+      "sha256": "3f18fa57a25cbc707edce2b09e16e653f18926f30c39000b504f0b9d399aa21d",
+      "bytes": 888
+    },
+    "native/physical_solver.original.c": {
+      "sha256": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+      "bytes": 3393
+    },
+    "native/physical_solver.trace.c": {
+      "sha256": "59d7e96a44a6601ed9ecc98c87caf40e22de3a96ae2c9300b35073769b41af4c",
+      "bytes": 6865
+    },
+    "native/physical_solver.trace.dylib": {
+      "sha256": "052556743a508562f81b330c7a5bb7baa1207c21f30977d3f4bd0755b645e0a8",
+      "bytes": 33624
+    },
+    "protected_before.json": {
+      "sha256": "46570179821e8115c53584c603528b5f77557e20e5f1df715c9b606033480ba4",
+      "bytes": 181489
+    },
+    "run.log": {
+      "sha256": "b88a8392fefa31717ed29341a6d862069d4700da3c41aef01892ecc4b01c26aa",
+      "bytes": 9214
+    },
+    "sources/code/physics_guided/data.py": {
+      "sha256": "a55a278a9b6abc12eedda33998ad1ce1d3474ba0b4ec96e0ab4642370d5360bb",
+      "bytes": 1891
+    },
+    "sources/code/physics_guided/reference.py": {
+      "sha256": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+      "bytes": 4351
+    },
+    "sources/code/physics_guided_diagnostics/run.py": {
+      "sha256": "25fd9e604e9991ea9695fdc2e7322a1afd28db54983311c99aba8d6aee067255",
+      "bytes": 15326
+    },
+    "sources/code/physics_guided_forecast_error/artifacts.py": {
+      "sha256": "724ac9ed26fc68bba51ef3b8c992af29bf3d9122a6d53b191729e505c7ada0ac",
+      "bytes": 3658
+    },
+    "sources/code/physics_guided_forecast_error/core.py": {
+      "sha256": "bd35d2dda0902b42db9152dfdc56dca4ab347bd36fad48b2fefc093bc34ccadf",
+      "bytes": 6672
+    },
+    "sources/code/physics_guided_pinn/__init__.py": {
+      "sha256": "82e44964d545f440b90b7a125f843cdda4519a4613aca369e083346a81c947a6",
+      "bytes": 82
+    },
+    "sources/code/physics_guided_pinn/equations.py": {
+      "sha256": "64ef8cc370dd9a10d4df873cf7322abf022de118230d0c519f1fa59fd4928b9b",
+      "bytes": 5093
+    },
+    "sources/code/physics_guided_pinn/run_substep_audit.py": {
+      "sha256": "27066e454f467e6cbd18ace5f89193419a10c636876d53c886891912ff0fd6eb",
+      "bytes": 14998
+    },
+    "sources/code/physics_guided_pinn/substep_audit.py": {
+      "sha256": "e25f3f3a22019975512b47595f09ea16740ebdab84792d5140b225f3b2e44502",
+      "bytes": 10560
+    },
+    "sources/code/physics_guided_pinn/trace.py": {
+      "sha256": "838adc24ca62394cd513068de98911f511b96a3ddaf454b9260ae3c524cb81ce",
+      "bytes": 8474
+    },
+    "sources/config/ootang_bplus_pinn_substep_audit.v1_8.json": {
+      "sha256": "a8b121fb1d5cac56e08333302a931eef2f84dc1a1a48acd1b9cfae057efed867",
+      "bytes": 1066
+    },
+    "sources/docs/ootang_bplus_pinn_substep_audit_plan.v1.8.md": {
+      "sha256": "4e34b807ba2dadc54faad053d950d4f6e1006980f220474155e3ed5d0e1c94c3",
+      "bytes": 6229
+    },
+    "sources/tests/test_physics_guided_pinn_equations.py": {
+      "sha256": "a74749220a7de3150d225032e97a144bac81f0e19c59433792671a910f96cc29",
+      "bytes": 6171
+    },
+    "sources/tests/test_physics_guided_pinn_trace.py": {
+      "sha256": "9e499095542f6170b855bf4661925c9eb2c23266f9f3f9c461c9f1b1d2e7e4bb",
+      "bytes": 5354
+    },
+    "verification.json": {
+      "sha256": "146a5632cd0ee4187d676d5322f76242c1f151f1b4ea13a726328638989a3344",
+      "bytes": 250
+    }
+  }
+}
