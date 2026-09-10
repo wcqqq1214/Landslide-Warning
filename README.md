@@ -6,8 +6,10 @@
 最新完成 [v1.11 共享力学路径验证](docs/ootang_bplus_shared_mechanics_results.v1.11.md)：
 保留同一 G，让训练与预测使用原 Day 递推。36 条验证轨迹、4 次完整历史反向约 7.945 秒，
 0 训练更新；12 组完整输出与旧 B+/R 的四点均值最大差 2.274e-13 mm，6/6 指定小步长
-导数及未来隔离检查通过。尚无新的精度改善，下一步独立固定直接约束最终输出的有限
-训练对照。[执行前方案](docs/ootang_bplus_shared_mechanics_plan.v1.11.md)与旧负结果保持。
+导数及未来隔离检查通过。尚无新的精度改善，下一步的
+[v1.12 有限训练对照](docs/ootang_bplus_rate_learning_plan.v1.12.md)已固定：1,800 更新、
+30 分钟上限，尚未实现训练器或运行。
+[v1.11 执行前方案](docs/ootang_bplus_shared_mechanics_plan.v1.11.md)与旧负结果保持。
 
 此前完成 [v1.10 冻结 PINN 梯度与轨迹诊断](docs/ootang_bplus_pinn_consistency_results.v1.10.md)：
 52 次网络求值、324 次梯度、9 组代数分解，约 8 秒，0 训练更新/力学调用，数值检查通过。
