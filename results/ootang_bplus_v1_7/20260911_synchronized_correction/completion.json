@@ -1,0 +1,10 @@
+{
+  "complete": true,
+  "finished_utc": "2026-09-10T19:22:16.615115+00:00",
+  "elapsed_seconds": 1156.346106582787,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "scale_network_updates": 0,
+  "neural_updates": 1800,
+  "scale_fits": 6
+}

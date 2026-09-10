@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checkpoint_replays": 18,
+  "saved_checkpoints": 90,
+  "training_updates": 1800,
+  "metrics_rows": 48,
+  "seed_metrics_rows": 112,
+  "comparison_rows": 16,
+  "bound_diagnostics": 18,
+  "numeric_values_checked": 287376,
+  "max_absolute_difference": 1.98650036509207e-06,
+  "protected_files_checked": 1011,
+  "source_files_checked": 37,
+  "new_physical_forwards": 0,
+  "new_neural_updates": 0,
+  "scope": "Prefix locks, all scalers and bounds, paired initialization, checkpoint/raw-output replay, independent NumPy limiter, scales, CDF/CRPS/point metrics and strict acceptance; single-normal interval scores allow propagated 1e-6 mm quantile tolerance."
+}
