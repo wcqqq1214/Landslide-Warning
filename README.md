@@ -3,13 +3,13 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型和方程内蠕变修正模型。
 
-最新完成 [v1.3 位移与 30 日增量目标对照](docs/ootang_bplus_increment_plan.v1.3.md)，
-仅使用前 792 日。两个历史窗口的平均预测误差均变差，逐点同时改善为 1/8，见
-[v1.3 结果](docs/ootang_bplus_increment_results.v1.3.md)。本次未新增神经网络训练。
+最新完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
+仅使用前 792 日。同前缀续算的训练目标小幅下降，但未达既定梯度容差；内部选模在一个
+历史窗口改善预测、另一个窗口变差，逐点严格同时改善为 **0/8**。本次未新增神经网络训练。
+[v1.4 检查](docs/ootang_bplus_optimization_review.v1.4.md) 与
+[执行前方案](docs/ootang_bplus_optimization_selection_plan.v1.4.md) 独立保留。
+[v1.3 结果](docs/ootang_bplus_increment_results.v1.3.md) 保留两个窗口预测误差变差、1/8 的结论。
 前版 [v1.2 前缀诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md) 独立保留。
-后续 [v1.4 优化检查](docs/ootang_bplus_optimization_review.v1.4.md) 与
-[优化及内部选模方案](docs/ootang_bplus_optimization_selection_plan.v1.4.md) 已确定，
-该方案的新增拟合尚未实施或执行。
 已完成的三模型规格为[实验计划 v1.1](docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
 开发、验证及结果见[实施记录](docs/ootang_bplus_probabilistic_implementation.v1_1.md)。
 本阶段不做预警、不换案例。旧 ConvLSTM–NGBoost–SHAP 结果保留为历史阶段证据。
@@ -17,12 +17,15 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
+复算已归档 v1.4 结果，不重新拟合或写入：
+
 ```bash
-PYTHONPATH=code .venv/bin/python -m physics_guided_increment.run --run-id example_increment_run
+PYTHONPATH=code .venv/bin/python -m physics_guided_optimization_selection.verify results/ootang_bplus_v1_4/20260911_optimization
+PYTHONPATH=code .venv/bin/python -m physics_guided_optimization_selection.verify results/ootang_bplus_v1_4/20260911_selection
 ```
 
-v1.3 复用经哈希核验的 v1.2 控制组，结果写入 `results/ootang_bplus_v1_3/<run_id>/`。
-前版诊断的复现方式见其结果记录。下列命令保留用于独立复现 v1.1：
+两项实验的来源、固定预算、新拟合入口和结果边界见 v1.4 结果记录；新实验使用独立 run id。
+前版诊断的复现方式见各自结果记录。下列命令保留用于独立复现 v1.1：
 
 ```bash
 PYTHONPATH=code .venv/bin/python -m physics_guided.run \

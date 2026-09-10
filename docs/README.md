@@ -18,11 +18,14 @@
 
 ## 当前阶段：四点 B+ 概率位移预测
 
-已完成 [v1.4 只读优化检查](ootang_bplus_optimization_review.v1.4.md)，并确定
-[同前缀续算与训练内选模方案](ootang_bplus_optimization_selection_plan.v1.4.md)。
-当前仅有检查证据和执行规格，尚未实施新拟合；不能把计划当作改进结果。
+已完成 [v1.4 同前缀续算与训练内选模](ootang_bplus_optimization_selection_results.v1.4.md)。
+训练目标续算小幅下降但未达既定梯度容差；内部选模的两个窗口预测一好一坏，严格逐点同时
+改善 0/8，仍未稳定改善四点。实际新 nfev 12,470/14,800，没有新增神经训练。
+[执行前检查](ootang_bplus_optimization_review.v1.4.md) 与
+[固定方案](ootang_bplus_optimization_selection_plan.v1.4.md) 保留为版本依据；
+代码为 `code/physics_guided_optimization_selection/`，两项结果分别存于 `results/ootang_bplus_v1_4/`。
 
-最新的 [v1.3 位移与增量目标对照](ootang_bplus_increment_plan.v1.3.md) 已完成，
+前版 [v1.3 位移与增量目标对照](ootang_bplus_increment_plan.v1.3.md) 已完成，
 [结果记录](ootang_bplus_increment_results.v1.3.md) 保留两个窗口平均预测误差变差、逐点同时改善
 1/8 的结论，以及新拟合未优于已知可行参数的新目标值这一优化限制。
 代码为 `code/physics_guided_increment/`，结果另存 `results/ootang_bplus_v1_3/`，没有新增神经网络训练。
