@@ -1,0 +1,28 @@
+{
+  "files": {
+    "completed.json": {
+      "sha256": "7afe4024f88b2eec6d47987b948d6b32bd30bdd0cf45ffa33b7a35be237842aa",
+      "bytes": 194
+    },
+    "manifest.json": {
+      "sha256": "0e70898887a731e551b5286a2e075fafc2f989f0da13062cf7bd23796a095043",
+      "bytes": 616
+    },
+    "run.log": {
+      "sha256": "b23587bd8a0728b7ae162fa94b302124d652bc83d211a29aec983956310343f3",
+      "bytes": 4223
+    },
+    "sources/code/physics_guided_state_pinn/postcheck.py": {
+      "sha256": "d37721cbf87cbabe42dd39b29e2f032aa2cee48975a2ce68c344a80955c820b7",
+      "bytes": 6853
+    },
+    "sources/tests/test_physics_guided_state_pinn_postcheck.py": {
+      "sha256": "0d03319da563a825363afe69720aa4e6fab584fdcf3db69fce87e338d53ff688",
+      "bytes": 3352
+    },
+    "verification.json": {
+      "sha256": "b10aac039c708bd406446f46afa51a895bdd13eccf3603b962c1d9de3c5c6918",
+      "bytes": 4172
+    }
+  }
+}

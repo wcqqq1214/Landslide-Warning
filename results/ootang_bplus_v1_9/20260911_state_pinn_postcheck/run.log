@@ -1,0 +1,42 @@
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: divide by zero encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: overflow encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_state_pinn/workflow.py:139: RuntimeWarning: invalid value encountered in matmul
+  result["mean"] = recorded["coordinates"] @ saved["observation_matrix"].T + y0
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: divide by zero encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: overflow encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:123: RuntimeWarning: invalid value encountered in matmul
+  + abs(k0) @ abs(stiffness).T
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: divide by zero encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: overflow encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:134: RuntimeWarning: invalid value encountered in matmul
+  reaction + rounding * (abs(rhs) + abs(dx_native) @ abs(a).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: divide by zero encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: overflow encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:143: RuntimeWarning: invalid value encountered in matmul
+  rc_expected = ac * (rc0 + du_native @ c["kc"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: divide by zero encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: overflow encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:144: RuntimeWarning: invalid value encountered in matmul
+  re_expected = ae * (re0 + du_native @ c["ke"].T)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: divide by zero encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: overflow encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:172: RuntimeWarning: invalid value encountered in matmul
+  "contact_memory": abs(rc) + ac * (abs(rc0) + q_scale @ abs(c["kc"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: divide by zero encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: overflow encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_pinn/substep_audit.py:173: RuntimeWarning: invalid value encountered in matmul
+  "bulk_memory": abs(re) + ae * (abs(re0) + q_scale @ abs(c["ke"]).T),

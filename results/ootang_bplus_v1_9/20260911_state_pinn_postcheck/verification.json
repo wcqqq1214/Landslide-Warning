@@ -1,0 +1,168 @@
+{
+  "passed": true,
+  "original_process_exitcode": 1,
+  "original_failure_preserved": true,
+  "new_optimizer_updates": 0,
+  "new_native_integrations": 0,
+  "verification": {
+    "passed": true,
+    "checkpoints_checked": 36,
+    "neural_evaluations_during_verification": 36,
+    "native_integrations_during_verification": 0,
+    "substeps_checked": 369216,
+    "protected_files": 1257,
+    "scientific_sources": 51,
+    "numerical_values": 10737384,
+    "max_absolute_difference_mixed_units": 2.0254028640920296e-06,
+    "max_mean_difference_mm": 0.0,
+    "metrics_rows": 48,
+    "seed_metric_rows": 112,
+    "comparison_rows": 16
+  },
+  "schema_reconciliations": [
+    {
+      "prefix": 342,
+      "seed": 0,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2088
+        }
+      }
+    },
+    {
+      "prefix": 342,
+      "seed": 1,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2088
+        }
+      }
+    },
+    {
+      "prefix": 342,
+      "seed": 2,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2088
+        }
+      }
+    },
+    {
+      "prefix": 432,
+      "seed": 0,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2448
+        }
+      }
+    },
+    {
+      "prefix": 432,
+      "seed": 1,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2448
+        }
+      }
+    },
+    {
+      "prefix": 432,
+      "seed": 2,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 2448
+        }
+      }
+    },
+    {
+      "prefix": 612,
+      "seed": 0,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 3168
+        }
+      }
+    },
+    {
+      "prefix": 612,
+      "seed": 1,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 3168
+        }
+      }
+    },
+    {
+      "prefix": 612,
+      "seed": 2,
+      "checks_before_save": 48,
+      "checks_after_load": 49,
+      "retained_additional_check": {
+        "daily_recorded_background": {
+          "passed": true,
+          "max_absolute_error": 0.0,
+          "max_allowed": 1e-08,
+          "max_error_to_bound": 0.0,
+          "unit": "mm",
+          "values": 3168
+        }
+      }
+    }
+  ]
+}

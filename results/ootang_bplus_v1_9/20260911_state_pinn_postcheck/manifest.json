@@ -1,0 +1,11 @@
+{
+  "kind": "read_only_postrun_verification",
+  "source_run": "results/ootang_bplus_v1_9/20260911_state_pinn",
+  "source_index_sha256": "98dd5f68d2dac9c23c06913ef9d2a713b1ac7e8c40cc9586d55229a02f3e5fd2",
+  "source_failure_sha256": "767fe01f4b756dbf617fe12082f5be52f92badf9c210c70af3acb6c6df4f78e9",
+  "sources": {
+    "code/physics_guided_state_pinn/postcheck.py": "d37721cbf87cbabe42dd39b29e2f032aa2cee48975a2ce68c344a80955c820b7",
+    "tests/test_physics_guided_state_pinn_postcheck.py": "0d03319da563a825363afe69720aa4e6fab584fdcf3db69fce87e338d53ff688"
+  },
+  "created_utc": "2026-09-10T20:55:26.404839+00:00"
+}
