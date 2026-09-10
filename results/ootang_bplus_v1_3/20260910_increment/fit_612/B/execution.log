@@ -1,0 +1,65 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+612/B/stage1: calls=10000 seconds=17.9
+612/B/stage1: calls=20000 seconds=32.9
+612/B/stage1: calls=30000 seconds=47.9
+612/B/stage1: calls=40000 seconds=62.7
+612/B/stage1: objective=52.56515 optimality=5.097 The maximum number of function evaluations is exceeded.
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+612/B/stage2: calls=10000 seconds=12.7
+612/B/stage2: calls=20000 seconds=28.4
+612/B/stage2: calls=30000 seconds=46.8
+612/B/stage2: objective=53.13522 optimality=65.06 The maximum number of function evaluations is exceeded.
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+612/B/stage3: calls=10000 seconds=16.6
+612/B/stage3: calls=20000 seconds=29.5
+612/B/stage3: calls=30000 seconds=41.3
+612/B/stage3: objective=53.00391 optimality=3.554 The maximum number of function evaluations is exceeded.
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+612/B/stage4: calls=10000 seconds=13.2
+612/B/stage4: calls=20000 seconds=27.0
+612/B/stage4: calls=30000 seconds=41.4
+612/B/stage4: objective=52.78869 optimality=7.964 The maximum number of function evaluations is exceeded.

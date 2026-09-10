@@ -1,0 +1,205 @@
+test_completed_artifacts_independently (test_physics_guided_increment.IncrementArtifactTests) ... /Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_bplus_v1_1/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+ok
+test_acceptance_requires_all_four_displacement_metrics (test_physics_guided_increment.IncrementUnitTests) ... ok
+test_alpha_zero_exactly_reproduces_original_residual_and_jacobian (test_physics_guided_increment.IncrementUnitTests) ... ok
+test_constant_offset_cancels_and_ramp_has_known_30_day_error (test_physics_guided_increment.IncrementUnitTests) ... ok
+test_fitter_accepts_only_the_training_prefix_and_fixed_budget (test_physics_guided_increment.IncrementUnitTests) ... fixture: objective=761748.3 optimality=1 unit fixture
+ok
+test_fixed_spec_matches_versioned_config (test_physics_guided_increment.IncrementUnitTests) ... ok
+test_increment_derivative_and_boundary_target_dates (test_physics_guided_increment.IncrementUnitTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.973s
+
+OK

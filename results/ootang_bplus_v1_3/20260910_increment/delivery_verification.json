@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "tests_passed": 7,
+  "skipped": 0,
+  "row_counts": {
+    "predictions": 33696,
+    "metrics": 120,
+    "increment_metrics": 120,
+    "growth": 240,
+    "comparison": 60,
+    "acceptance": 24,
+    "convergence": 16,
+    "objective_components": 12
+  },
+  "source_and_protected_hashes_rechecked": true,
+  "protected_file_count": 427,
+  "scientific_source_count": 13,
+  "test_sha256": "96fdc6ede148f86e9ca3c22045ee067535b7603112c63151bca02f2605e6e7d4",
+  "figures_visually_checked": [
+    "increment_432.png",
+    "increment_612.png"
+  ],
+  "ruff": "passed",
+  "format": "passed",
+  "trajectory_count": 12,
+  "substeps_checked": 538368,
+  "zero_trajectory_max_error_mm": 2.2737367544323206e-13,
+  "prefix_max_error_mm": 0.0,
+  "max_normalized_complementarity": 6.886053936029143e-16,
+  "selected_simultaneously_improved": 1,
+  "selected_total": 8,
+  "user_acceptance": "pending"
+}

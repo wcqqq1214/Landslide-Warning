@@ -1,0 +1,17 @@
+{
+  "valid": true,
+  "objective": 40.83267048210673,
+  "trajectory_objective": 23.822995056335643,
+  "terminal_objective": 0.0053867340282487556,
+  "increment_objective": 17.004288691742836,
+  "original_objective": 23.828381790363892,
+  "joint_objective": 40.83267048210673,
+  "zero_trajectory_max_error_mm": 0.0,
+  "prefix_error_mm": 0.0,
+  "substeps_checked": 39104,
+  "min_x": 0.0,
+  "min_w": -7.715605114362847e-14,
+  "max_normalized_complementarity": 4.0909967360291404e-17,
+  "min_slip_tolerance_margin": 1.3550137927941554e-06,
+  "active_set_changes": 31
+}

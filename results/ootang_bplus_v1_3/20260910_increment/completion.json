@@ -1,0 +1,7 @@
+{
+  "status": "complete",
+  "seconds": 511.47324245842174,
+  "optimization_forward_calls": 623036,
+  "new_optimizer_nfev": 13086,
+  "user_acceptance": "pending"
+}

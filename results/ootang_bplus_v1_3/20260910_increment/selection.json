@@ -1,0 +1,240 @@
+{
+  "432": {
+    "C0_final": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 14.67720757773013,
+          "trajectory_objective": 14.676281652253484,
+          "terminal_objective": 0.0009259254766452054,
+          "increment_objective": 19.28554527419107,
+          "original_objective": 14.67720757773013,
+          "joint_objective": 33.962752851921195,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": 0.0,
+          "min_w": -1.5202768855606247e-13,
+          "max_normalized_complementarity": 6.727289871484464e-17,
+          "min_slip_tolerance_margin": 3.6792377605901815e-07,
+          "active_set_changes": 18
+        },
+        "B": {
+          "valid": true,
+          "objective": 9.011946210941293,
+          "trajectory_objective": 9.011158859888807,
+          "terminal_objective": 0.0007873510524852547,
+          "increment_objective": 9.275646056670896,
+          "original_objective": 9.011946210941293,
+          "joint_objective": 18.28759226761219,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": -8.799127780046617e-11,
+          "min_w": -1.3873994099994767e-13,
+          "max_normalized_complementarity": 5.4414458813941396e-17,
+          "min_slip_tolerance_margin": 6.006700173972969e-07,
+          "active_set_changes": 79
+        }
+      },
+      "selected_start": "B"
+    },
+    "C1_stage3": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 40.83267048210673,
+          "trajectory_objective": 23.822995056335643,
+          "terminal_objective": 0.0053867340282487556,
+          "increment_objective": 17.004288691742836,
+          "original_objective": 23.828381790363892,
+          "joint_objective": 40.83267048210673,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": 0.0,
+          "min_w": -7.715605114362847e-14,
+          "max_normalized_complementarity": 4.0909967360291404e-17,
+          "min_slip_tolerance_margin": 1.3550137927941554e-06,
+          "active_set_changes": 31
+        },
+        "B": {
+          "valid": true,
+          "objective": 16.666203954181107,
+          "trajectory_objective": 9.099383620063648,
+          "terminal_objective": 0.0012080119183098753,
+          "increment_objective": 7.565612322199148,
+          "original_objective": 9.100591631981958,
+          "joint_objective": 16.666203954181107,
+          "zero_trajectory_max_error_mm": 1.1368683772161603e-13,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": 0.0,
+          "min_w": -1.9271568922861598e-13,
+          "max_normalized_complementarity": 2.693838523682284e-17,
+          "min_slip_tolerance_margin": 2.085088224696704e-06,
+          "active_set_changes": 107
+        }
+      },
+      "selected_start": "B"
+    },
+    "C1_final": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 34.010309315954764,
+          "trajectory_objective": 20.79947474260342,
+          "terminal_objective": 0.005380869516946416,
+          "increment_objective": 13.205453703834399,
+          "original_objective": 20.804855612120367,
+          "joint_objective": 34.010309315954764,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": 0.0,
+          "min_w": -8.076050625580536e-14,
+          "max_normalized_complementarity": 4.5800771311082556e-17,
+          "min_slip_tolerance_margin": 1.7686596383194964e-06,
+          "active_set_changes": 34
+        },
+        "B": {
+          "valid": true,
+          "objective": 16.367884340900286,
+          "trajectory_objective": 8.93128751425096,
+          "terminal_objective": 0.0009502768911378174,
+          "increment_objective": 7.4356465497581885,
+          "original_objective": 8.932237791142096,
+          "joint_objective": 16.367884340900286,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 39104,
+          "min_x": 0.0,
+          "min_w": -3.6297698910056716e-14,
+          "max_normalized_complementarity": 1.6965145872913665e-17,
+          "min_slip_tolerance_margin": 2.308655745288144e-06,
+          "active_set_changes": 127
+        }
+      },
+      "selected_start": "B"
+    }
+  },
+  "612": {
+    "C0_final": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 23.640274518641824,
+          "trajectory_objective": 23.638226572143193,
+          "terminal_objective": 0.002047946498632286,
+          "increment_objective": 31.51236146859624,
+          "original_objective": 23.640274518641824,
+          "joint_objective": 55.152635987238064,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": -5.181079887379395e-09,
+          "min_w": -2.4114387497734274e-13,
+          "max_normalized_complementarity": 6.886053936029143e-16,
+          "min_slip_tolerance_margin": 3.303756319276534e-07,
+          "active_set_changes": 22
+        },
+        "B": {
+          "valid": true,
+          "objective": 13.111521786505296,
+          "trajectory_objective": 13.11071518070292,
+          "terminal_objective": 0.0008066058023759742,
+          "increment_objective": 19.33259525588525,
+          "original_objective": 13.111521786505296,
+          "joint_objective": 32.444117042390545,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": 0.0,
+          "min_w": -1.002776802088739e-13,
+          "max_normalized_complementarity": 8.297810913443018e-17,
+          "min_slip_tolerance_margin": 3.3000000000000007e-07,
+          "active_set_changes": 84
+        }
+      },
+      "selected_start": "B"
+    },
+    "C1_stage3": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 42.10399096684179,
+          "trajectory_objective": 20.855991730150766,
+          "terminal_objective": 0.0021468178329907077,
+          "increment_objective": 21.245852418858036,
+          "original_objective": 20.858138547983756,
+          "joint_objective": 42.10399096684179,
+          "zero_trajectory_max_error_mm": 2.842170943040401e-14,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": 0.0,
+          "min_w": -2.016250863077814e-13,
+          "max_normalized_complementarity": 7.295108559948462e-17,
+          "min_slip_tolerance_margin": 3.300289057681107e-07,
+          "active_set_changes": 45
+        },
+        "B": {
+          "valid": true,
+          "objective": 53.00390965665128,
+          "trajectory_objective": 32.16104878348645,
+          "terminal_objective": 0.003976784891814262,
+          "increment_objective": 20.83888408827302,
+          "original_objective": 32.16502556837826,
+          "joint_objective": 53.00390965665128,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": 0.0,
+          "min_w": -2.440690441071153e-13,
+          "max_normalized_complementarity": 1.2242648809190525e-17,
+          "min_slip_tolerance_margin": 3.310120642413005e-07,
+          "active_set_changes": 44
+        }
+      },
+      "selected_start": "A"
+    },
+    "C1_final": {
+      "candidates": {
+        "A": {
+          "valid": true,
+          "objective": 41.801141857572986,
+          "trajectory_objective": 20.663095918440817,
+          "terminal_objective": 0.0019615860159188955,
+          "increment_objective": 21.13608435311625,
+          "original_objective": 20.665057504456737,
+          "joint_objective": 41.801141857572986,
+          "zero_trajectory_max_error_mm": 0.0,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": 0.0,
+          "min_w": -1.4336294046829417e-13,
+          "max_normalized_complementarity": 6.461389144050371e-17,
+          "min_slip_tolerance_margin": 3.300007098316254e-07,
+          "active_set_changes": 55
+        },
+        "B": {
+          "valid": true,
+          "objective": 52.78869383252883,
+          "trajectory_objective": 31.9740389305212,
+          "terminal_objective": 0.0037934689408246933,
+          "increment_objective": 20.810861433066805,
+          "original_objective": 31.977832399462024,
+          "joint_objective": 52.78869383252883,
+          "zero_trajectory_max_error_mm": 2.2737367544323206e-13,
+          "prefix_error_mm": 0.0,
+          "substeps_checked": 50624,
+          "min_x": 0.0,
+          "min_w": -1.9450934068228674e-13,
+          "max_normalized_complementarity": 1.915919222021851e-17,
+          "min_slip_tolerance_margin": 3.309252368530397e-07,
+          "active_set_changes": 43
+        }
+      },
+      "selected_start": "A"
+    }
+  }
+}

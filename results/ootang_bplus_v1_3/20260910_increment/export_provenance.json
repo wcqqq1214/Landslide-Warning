@@ -1,0 +1,7 @@
+{
+  "source": "code/physics_guided_increment/report.py",
+  "source_sha256": "58f5290480a1462bb61c9a0e0d742cfe2d008af4a480e75027e6357701d82648",
+  "source_completion_sha256": "c8e3579062e6fc4fd7bc830bbbecc3cf907ac1eac3dd8fd51c9bd02ff025ad7b",
+  "matplotlib_version": "3.10.9",
+  "pandas_version": "2.3.3"
+}

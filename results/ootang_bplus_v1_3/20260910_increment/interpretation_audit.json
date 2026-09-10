@@ -1,0 +1,63 @@
+{
+  "coverage": "11/11 checked",
+  "statistical_inference": "none",
+  "interpretation": "exploratory; no new blind test or general effectiveness claim",
+  "checks": [
+    {
+      "type": "simpson_paradox",
+      "assessment": "aggregation caution",
+      "evidence": "Four-point means and all station metrics are both retained; 432-day ATU5 improves while the four-point forecast mean worsens. This alone is not a Simpson reversal."
+    },
+    {
+      "type": "ecological_fallacy",
+      "assessment": "scope restricted",
+      "evidence": "No inference from the four-point mean to each station, a new section or another landslide; simultaneous improvement is checked per station and fold."
+    },
+    {
+      "type": "berkson_selection",
+      "assessment": "exploratory limitation",
+      "evidence": "One pre-existing case and previously inspected windows are reused; no population correlation or representative sampling claim."
+    },
+    {
+      "type": "collider_bias",
+      "assessment": "not applicable to this claim",
+      "evidence": "No causal adjustment or treatment-effect regression is performed. Forcing and internal states are model inputs, not causal identification."
+    },
+    {
+      "type": "base_rate_neglect",
+      "assessment": "not applicable",
+      "evidence": "No warning classification, event probability, sensitivity or prevalence estimate is reported."
+    },
+    {
+      "type": "regression_to_mean",
+      "assessment": "historical reuse limitation",
+      "evidence": "The increment hypothesis follows unfavorable v1.2 diagnostics. Matched C0 results are retained; the repeated historical windows are not a new independent validation."
+    },
+    {
+      "type": "survivorship_bias",
+      "assessment": "checked",
+      "evidence": "All four scheduled fitting chains, sixteen stages and twelve evaluated trajectories are retained, including budget and xtol stops; no failed candidates or retries were omitted."
+    },
+    {
+      "type": "look_elsewhere",
+      "assessment": "checked with limitation",
+      "evidence": "All points, both fixed folds, both prescribed starts and the unselected candidates are retained. No p-values, significance claims or selective positive reporting."
+    },
+    {
+      "type": "forking_paths",
+      "assessment": "exploratory and versioned",
+      "evidence": "The 30-day window, weight 1, normalization, budgets and training-only selectors were committed before optimization. v1.1/v1.2 negative findings remain; no retrospective weight, stage or forecast-based selection."
+    },
+    {
+      "type": "correlation_causation",
+      "assessment": "scope restricted",
+      "evidence": "The fixed algorithm comparison describes error changes under this implementation and budget. Internal component changes do not establish the true physical cause of landslide motion."
+    },
+    {
+      "type": "reverse_causality",
+      "assessment": "scope restricted",
+      "evidence": "Predictions use prior fitted parameters and observed forcing without future displacement feedback. This temporal data boundary is verified, but does not establish causal direction in nature."
+    }
+  ],
+  "additional_optimization_limit": "For 612 days, old C0 B has recalculated J1=32.444117, lower than the best fresh C1 J1=41.801142. No final chain meets gtol. This is a bounded optimization outcome, not proof that all increment objectives are ineffective."
+}
