@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-11",
+  "status": "passed",
+  "optimizer_rerun": false,
+  "fitted_source_records_checked": 8,
+  "parameter_selection_scoring_chronology_checked": true,
+  "native_library_and_original_archive_provenance_rechecked": true,
+  "related_unittest_tests_passed": 25,
+  "pytest_startup": "unavailable; no fitting or tests executed by that invocation",
+  "ruff_check": "passed",
+  "ruff_format_check": "passed",
+  "readable_figures_visually_checked": [
+    "figures/selection_432.png",
+    "figures/selection_612.png"
+  ],
+  "figure_data_hashes_unchanged": true,
+  "statistical_interpretation": {
+    "coverage": "11/11",
+    "simpson_and_ecological": "Per-window and per-station metrics retained; no population inference.",
+    "berkson_and_collider": "Single existing case; no representative sampling or causal adjustment claim.",
+    "base_rate": "No event classifier, prevalence or warning claim.",
+    "regression_to_mean": "Paired fixed recipe comparisons; no causal pre/post improvement claim.",
+    "survivorship": "All four chains and stages preserved, including termination limits.",
+    "look_elsewhere_and_forking_paths": "Frozen windows, recipes, budgets and acceptance; no p-values, new blind-test or post-result tuning claim.",
+    "causation_and_reverse_causality": "Parameter/objective changes and conditional forecasts do not identify natural causes."
+  },
+  "effectiveness": "0 of 8 station-window pairs meet all four error improvements; not stable improvement.",
+  "user_acceptance": "pending"
+}

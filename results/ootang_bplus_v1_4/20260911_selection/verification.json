@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "task": "B",
+  "optimizer_rerun": false,
+  "stages_checked": 16,
+  "trajectories_checked": 16,
+  "substeps_checked": 568064,
+  "saved_curve_max_error_mm": 0.0,
+  "nfev": 10870,
+  "optimization_forward_calls": 535240,
+  "selected_improved": 0,
+  "protected_files_checked": 611,
+  "scientific_sources_checked": 19,
+  "user_acceptance": "pending"
+}

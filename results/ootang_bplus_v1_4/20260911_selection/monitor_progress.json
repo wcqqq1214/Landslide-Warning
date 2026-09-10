@@ -1,0 +1,705 @@
+{
+  "samples": [
+    {
+      "elapsed_seconds": 0.012893666978925467,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 30.02071658335626,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 60.02989687491208,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 90.25193258328363,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 120.29636429203674,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 150.4497621669434,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 180.84765041712672,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 211.01666708290577,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 241.17949675023556,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 271.3616320001893,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 301.391362125054,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 331.41102195810527,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 361.4375619171187,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 391.46071245800704,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 421.53863475006074,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 451.6762743750587,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 481.74755045818165,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 511.8687799172476,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_252_B": {
+          "pid": 87467,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 541.9896467500366,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        }
+      },
+      "pending": [
+        "B_342_B"
+      ]
+    },
+    {
+      "elapsed_seconds": 572.1002876251005,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 602.2287820419297,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 632.2755444170907,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 662.3188766250387,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 693.5030145421624,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 723.9145914171822,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 754.1528257923201,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 784.3942820830271,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 814.4520765831694,
+      "active": {
+        "B_252_A": {
+          "pid": 87466,
+          "stall_advisory": false
+        },
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 844.663576667197,
+      "active": {
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 874.7204313329421,
+      "active": {
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 904.7462043329142,
+      "active": {
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 934.7553153750487,
+      "active": {
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 964.7667634170502,
+      "active": {
+        "B_342_A": {
+          "pid": 87468,
+          "stall_advisory": false
+        },
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 994.7860951670446,
+      "active": {
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 1024.7908980422653,
+      "active": {
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 1054.7984655830078,
+      "active": {
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 1084.805465708021,
+      "active": {
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 1114.8123165830038,
+      "active": {
+        "B_342_B": {
+          "pid": 89215,
+          "stall_advisory": false
+        }
+      },
+      "pending": []
+    },
+    {
+      "elapsed_seconds": 1144.8201250000857,
+      "active": {},
+      "pending": []
+    }
+  ],
+  "finished": {
+    "B_252_B": {
+      "status": "complete",
+      "result": {
+        "fit_days": 252,
+        "recipe": "B",
+        "objective": 1.3102072030069714
+      },
+      "returncode": 0
+    },
+    "B_252_A": {
+      "status": "complete",
+      "result": {
+        "fit_days": 252,
+        "recipe": "A",
+        "objective": 1.3139644191305795
+      },
+      "returncode": 0
+    },
+    "B_342_A": {
+      "status": "complete",
+      "result": {
+        "fit_days": 342,
+        "recipe": "A",
+        "objective": 14.786262879956316
+      },
+      "returncode": 0
+    },
+    "B_342_B": {
+      "status": "complete",
+      "result": {
+        "fit_days": 342,
+        "recipe": "B",
+        "objective": 17.57561266272866
+      },
+      "returncode": 0
+    }
+  }
+}

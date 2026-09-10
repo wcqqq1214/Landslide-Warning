@@ -1,0 +1,63 @@
+{
+  "locked_utc": "2026-09-10T17:01:36.786630+00:00",
+  "parameter_lock_sha256": "91e58cae851c45c07c7083e16e6b1f566ebd77a884e675c9f2cab20f05820268",
+  "inner_scores_sha256": "3e41e52819765b04414f4923cfed2431a4e92bc543d6d614f984d0397714baf9",
+  "selections": {
+    "432": {
+      "T": "B",
+      "V": {
+        "selected_recipe": "A",
+        "candidates": {
+          "A": {
+            "valid": true,
+            "rmse_mm": 57.507418036751474,
+            "mae_mm": 44.77685571875658
+          },
+          "B": {
+            "valid": true,
+            "rmse_mm": 60.739047651648285,
+            "mae_mm": 47.175889942332674
+          }
+        }
+      },
+      "training": {
+        "A": {
+          "valid": true,
+          "objective": 14.67720757773013
+        },
+        "B": {
+          "valid": true,
+          "objective": 9.011946210941293
+        }
+      }
+    },
+    "612": {
+      "T": "B",
+      "V": {
+        "selected_recipe": "A",
+        "candidates": {
+          "A": {
+            "valid": true,
+            "rmse_mm": 57.866983931474216,
+            "mae_mm": 47.1438832837419
+          },
+          "B": {
+            "valid": true,
+            "rmse_mm": 72.82727275043247,
+            "mae_mm": 61.308869964243094
+          }
+        }
+      },
+      "training": {
+        "A": {
+          "valid": true,
+          "objective": 23.640274518641824
+        },
+        "B": {
+          "valid": true,
+          "objective": 13.111521786505296
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "inputs_sha256": {
+    "predictions.csv": "158ff147a896189cfac15622257ce333d011f39556efac9a4926edc702f611cd",
+    "selection_locked.json": "7d1b7034b2b1670b52c2c04fc84a3e18c7da5edcda9d0f1b11d88169404c90ad"
+  },
+  "change": "Two-month date labels and margins; identical saved curves and 60+180 day display.",
+  "original_exports_preserved": true
+}

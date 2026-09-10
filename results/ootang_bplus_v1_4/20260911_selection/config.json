@@ -1,0 +1,51 @@
+{
+  "version": "1.4",
+  "status": "planned_not_executed",
+  "plan": "docs/ootang_bplus_optimization_selection_plan.v1.4.md",
+  "review": "docs/ootang_bplus_optimization_review.v1.4.md",
+  "input_days": 792,
+  "outer_training_days": [432, 612],
+  "prediction_days": 180,
+  "warmup_days": 30,
+  "optimization_diagnostic": {
+    "objective": "v1.3 J1, alpha=1, increment_days=30, lambda_T=100*n",
+    "anchor_pool": ["v1.2_A_continued", "v1.2_B_continued", "v1.3_A_stage4", "v1.3_B_stage4"],
+    "anchor_selection": "lowest independently recomputed same-prefix J1; listed order for absolute ties <=1e-12",
+    "training_days": [432, 612],
+    "nfev_per_prefix": 800,
+    "max_nfev": 1600,
+    "forecast_scoring": false,
+    "retain_incumbent": true,
+    "incumbent_tie_tolerance": 1e-7
+  },
+  "temporal_selection": {
+    "objective": "v1.2 J0",
+    "recipes": ["A", "B"],
+    "new_training_days": [252, 342],
+    "reused_training_days": [432, 612],
+    "inner_training_days_by_outer": {"432": [252], "612": [252, 342, 432]},
+    "inner_prediction_days": 180,
+    "stage_nfev": [900, 800, 800, 800],
+    "stage_terminal_weight_multipliers": [0, 1, 100, 100],
+    "max_nfev": 13200,
+    "selector": "mean RMSE over inner folds and four stations; MAE tie-break; then A",
+    "selector_tie_tolerance_mm": 0.000001,
+    "acceptance": "each station requires outer-train and prediction RMSE and MAE lower than training-objective selector by >1e-6 mm"
+  },
+  "optimizer": {
+    "method": "trf",
+    "loss": "linear",
+    "x_scale": "jac",
+    "jacobian": "unchanged v1.2 bound-aware one-sided difference, 2e-6*max(1,abs(theta_j))",
+    "ftol": 1e-9,
+    "xtol": 1e-10,
+    "gtol": 1e-7
+  },
+  "max_total_new_nfev": 14800,
+  "max_optimization_forward_calls": 828800,
+  "max_local_processes": 3,
+  "hard_timeout_minutes": 30,
+  "monitor_interval_seconds": 30,
+  "neural_training": false,
+  "exploratory": true
+}

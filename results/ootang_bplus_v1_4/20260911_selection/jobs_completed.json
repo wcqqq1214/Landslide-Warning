@@ -1,0 +1,38 @@
+{
+  "B_252_B": {
+    "status": "complete",
+    "result": {
+      "fit_days": 252,
+      "recipe": "B",
+      "objective": 1.3102072030069714
+    },
+    "returncode": 0
+  },
+  "B_252_A": {
+    "status": "complete",
+    "result": {
+      "fit_days": 252,
+      "recipe": "A",
+      "objective": 1.3139644191305795
+    },
+    "returncode": 0
+  },
+  "B_342_A": {
+    "status": "complete",
+    "result": {
+      "fit_days": 342,
+      "recipe": "A",
+      "objective": 14.786262879956316
+    },
+    "returncode": 0
+  },
+  "B_342_B": {
+    "status": "complete",
+    "result": {
+      "fit_days": 342,
+      "recipe": "B",
+      "objective": 17.57561266272866
+    },
+    "returncode": 0
+  }
+}
