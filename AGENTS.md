@@ -20,8 +20,8 @@
 
 @docs/ootang_route_review_2026-09-11.md
 @docs/progress.md
-@docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md
-@docs/ootang_bplus_sequence_learning_results.v1.25.md
+
+历史规格与结果按 `docs/README.md` 查证；不把其中形成时的“当前计划”自动加载为当前任务。
 
 - **当前有效状态：按用户 2026-09-11“先修正”要求，暂停自动扩展实验与诊断。** 当前工作是汇总既有模型效果、保留失败证据、纠正推进策略；旧持续目标及各版预算不能覆盖本次暂停决定。
 - 范围保持：**藕塘一个现有案例、MJ3/MJ1/ATU5/ATU1 四点位移概率预测，暂不做预警、不换新案例**。导师目标仍是均值误差低于改进 B+，同时改善概率预测。实现、测试、提交与训练损失下降都不能代替效果达标。
