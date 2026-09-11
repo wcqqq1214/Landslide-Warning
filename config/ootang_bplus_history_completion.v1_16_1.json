@@ -1,0 +1,15 @@
+{
+  "version": "1.16.1",
+  "protocol": "docs/ootang_bplus_history_completion_plan.v1.16.1.md",
+  "failed_run": "results/ootang_bplus_v1_16/20260911_history_availability",
+  "failed_index_sha256": "e93490b465e1a2655d51e900da9fd2e32c079d9b261083bd00d003369b734b58",
+  "original_config": "config/ootang_bplus_history_availability.v1_16.json",
+  "original_config_sha256": "b7eee431815c53cc98964e14ac2ca22809202bf88428a572cce46547f7caba10",
+  "published_pair_required": true,
+  "mentor_pairs_report_original_failure": true,
+  "timeout_seconds": 120,
+  "new_fits": 0,
+  "new_neural_calls": 0,
+  "new_physical_calls": 0,
+  "new_predictions": 0
+}
