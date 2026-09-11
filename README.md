@@ -3,8 +3,8 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前状态：按用户要求只限定 ConvLSTM/PINN，执行一次有界的 ConvLSTM 候选；效果尚未达标。**
-本次[v2.0 方案](docs/ootang_convlstm_direct_plan.v2.0.md)固定完整均值/概率判据、120 分钟总投入与失败退出。
+**当前状态：方法只限定 ConvLSTM/PINN；v2.0 候选未达标，已停止，保留 B+。**
+最新[v2.0 结果](docs/ootang_convlstm_direct_results.v2.0.md)严格均值改善 5/8，但第一窗误差和两窗 CRPS 变差。
 八轮主要学习的 16 个变体中，没有一个同时降低两个预测窗的平均 RMSE，严格四项改善最高 3/8。
 完整误差、概率评分与失败证据见[路线复盘](docs/ootang_route_review_2026-09-11.md)。
 
@@ -13,7 +13,7 @@
 | [AGENTS.md](AGENTS.md) | 当前范围、导师目标与协作规则 |
 | [当前进度](docs/progress.md) | 当前状态、最近维护与后续边界 |
 | [文档导航](docs/README.md) | 当前决策、四点实验和历史八点成果的来源 |
-| [v1.25 结果](docs/ootang_bplus_sequence_learning_results.v1.25.md) | 最近完成的连续预测对照，四组均未达标 |
+| [v2.0 结果](docs/ootang_convlstm_direct_results.v2.0.md) | 一次有界 ConvLSTM 实验的效果、完整判据与停止决定 |
 
 最初三组为 M0 改进 B+、M1 ConvLSTM、M2 方程内修正混合模型；后续另有状态 PINN。
 M2 不是经典 PINN。原始日值当时的可用性仍未知，未来降雨/库水位作为给定驱动，
@@ -21,8 +21,8 @@ M2 不是经典 PINN。原始日值当时的可用性仍未知，未来降雨/�
 
 | 目录/文件 | 用途 |
 | --- | --- |
-| `code/physics_guided*/`、`config/` | 各版四点方法、诊断实现与冻结配置，按对应版本查证 |
-| `results/ootang_bplus_v1_*/` | 已完成四点实验的权重、日志、指标、核验与负结果 |
+| `code/physics_guided*`、`config/` | 各版四点方法、诊断实现与冻结配置，按对应版本查证 |
+| `results/ootang_bplus_v1_*/`、`results/ootang_convlstm_v2_0/` | 已完成四点实验的权重、日志、指标、核验与负结果 |
 | `docs/` | 当前入口及必须保留的版本化方法、结果和来源记录 |
 | `main.py`、`code/convlstm/`、`code/warning/` | 历史八点预测及代理预警流程，不是当前四点实验入口 |
 | `figures/`、`models/`、`paper/` | 历史八点阶段产物、权重与已提交报告 |

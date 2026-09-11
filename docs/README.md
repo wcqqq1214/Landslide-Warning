@@ -1,6 +1,6 @@
 # 项目文档导航
 
-本页只维护入口，不重复记录各版结果或下一步。当前只执行用户限定 ConvLSTM/PINN 下的一个 v2.0 候选；
+本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN，v2.0 单候选未达标并已停止；
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
 
 ## 当前入口
@@ -8,11 +8,10 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
-| [v2.0 方案](ootang_convlstm_direct_plan.v2.0.md) | 一个直接多步 ConvLSTM 候选、完整判据和总时限 |
+| [v2.0 结果](ootang_convlstm_direct_results.v2.0.md) / [冻结方案](ootang_convlstm_direct_plan.v2.0.md) | 5/8 严格均值改善，整体未达标；一次有界实验已停止 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
 | [路线复盘](ootang_route_review_2026-09-11.md) | 八轮学习的效果总表、失败证据和停止决定 |
 | [汇总指标](ootang_route_review_2026-09-11_metrics.csv) / [来源记录](ootang_route_review_2026-09-11_sources.json) | 由既有指标计算的跨版本对照及 Git 来源 |
-| [v1.25 结果](ootang_bplus_sequence_learning_results.v1.25.md) | 最新完成的四组连续预测对照；效果仍未达标 |
 
 任务范围依当前用户请求与明确修正。某次实验的方法由对应冻结配置、源码和 manifest 决定，
 数值以保存的指标与预测产物为准；文档汇总不能覆盖原结果。测试、实现完成与研究效果分别判断。
