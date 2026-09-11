@@ -1,0 +1,52 @@
+{"fit_days": 342, "checkpoints": 30, "calls": {"gradient_calls": 90, "difference_calls": 72, "forward_calls": 162, "backward_calls": 90}, "neural_updates": 0}
+{"fit_days": 432, "checkpoints": 30, "calls": {"gradient_calls": 240, "difference_calls": 192, "forward_calls": 432, "backward_calls": 240}, "neural_updates": 0}
+{"fit_days": 612, "checkpoints": 30, "calls": {"gradient_calls": 480, "difference_calls": 384, "forward_calls": 864, "backward_calls": 480}, "neural_updates": 0}
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: divide by zero encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: overflow encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: invalid value encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: divide by zero encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: overflow encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: invalid value encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: divide by zero encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: overflow encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: invalid value encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: divide by zero encountered in matmul
+  else float(gradients[block] @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: overflow encountered in matmul
+  else float(gradients[block] @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: invalid value encountered in matmul
+  else float(gradients[block] @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: divide by zero encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: overflow encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:164: RuntimeWarning: invalid value encountered in matmul
+  dot = float(a @ p)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: divide by zero encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: overflow encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:168: RuntimeWarning: invalid value encountered in matmul
+  da = np.nan if zt else float(a @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: divide by zero encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: overflow encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:169: RuntimeWarning: invalid value encountered in matmul
+  dp = np.nan if zt else float(p @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: divide by zero encountered in matmul
+  else float(gradients[block] @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: overflow encountered in matmul
+  else float(gradients[block] @ direction)
+/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_origin_gradients/core.py:234: RuntimeWarning: invalid value encountered in matmul
+  else float(gradients[block] @ direction)
+{"status": "completed", "numerical_verification": true, "neural_updates": 0}

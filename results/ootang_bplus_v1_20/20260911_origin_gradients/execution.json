@@ -1,0 +1,11 @@
+{
+  "gradient_calls": 480,
+  "difference_calls": 384,
+  "forward_calls": 864,
+  "backward_calls": 480,
+  "neural_updates": 0,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "scaler_fits": 0,
+  "probability_scale_fits": 0
+}

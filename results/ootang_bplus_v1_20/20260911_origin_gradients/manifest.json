@@ -1,0 +1,84 @@
+{
+  "specification": {
+    "version": "1.20",
+    "protocol": "docs/ootang_bplus_origin_gradients_plan.v1.20.md",
+    "source_run": "results/ootang_bplus_v1_19/20260911_origin_learning",
+    "source_index_sha256": "fd567efabfa9461563b578246949654e906a6007a9319291e3fe02859c48d1b3",
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "strategies": [
+      "IN",
+      "OOF"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "parameter_groups": [
+      "all",
+      "gates",
+      "output"
+    ],
+    "parameters": 7569,
+    "primary_batch": 128,
+    "replay_batch": 53,
+    "primary_gradient_calls": 480,
+    "primary_difference_calls": 384,
+    "replay_gradient_calls": 960,
+    "replay_difference_calls": 768,
+    "finite_steps": [
+      0.0001,
+      1e-05
+    ],
+    "zero_norm_tolerance": 1e-12,
+    "cosine_conflict_threshold": -1e-06,
+    "norm_ratio_threshold": 10.0,
+    "directional_increase_threshold": 1e-10,
+    "gradient_atol": 1e-09,
+    "gradient_rtol": 1e-09,
+    "loss_atol": 1e-10,
+    "loss_rtol": 1e-10,
+    "finite_atol": 1e-08,
+    "finite_rtol": 0.001,
+    "neural_updates": 0,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "scaler_fits": 0,
+    "probability_scale_fits": 0,
+    "cpu_threads": 1,
+    "hard_timeout_seconds": 600,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "e27fd7b45d0a329e3215f4091f37683607f50bf2ef53f3515aa95b46c83e4296",
+  "plan_sha256": "97a562f96f4e681d8a7687298289c03416c472b7874a4d5b77bf3c7ce1f745fe",
+  "sources": {
+    "code/physics_guided_origin_gradients/__init__.py": "dacc6e74df588508a013105cf1cb2a24960eb8ac0c38d50ddb51b0e7031f4103",
+    "code/physics_guided_origin_gradients/core.py": "b23aa9c7d4c956be7f9b570136ed31f215cff058015d38aec439c2c35b696834",
+    "code/physics_guided_origin_gradients/run.py": "5f3c9b2ad6772ae9e34904e41d79da33c5123be36288527e129058dbad57dd10",
+    "code/physics_guided_origin_gradients/verify.py": "4b02e73667b5a28425e91cd78ad659a27d15340d058ba8e72e6cd8e8437ac385",
+    "code/physics_guided_origin_gradients/workflow.py": "303833e9cbbe7464edc841c0ce41f6c6db21715b6bde1ed8c4d92a2f0eef7b32",
+    "tests/test_physics_guided_origin_gradients.py": "72d2cc188e30393cc769e0457c171b25c66aaba2e0769d1bb77f7cb104319f9e",
+    "config/ootang_bplus_origin_gradients.v1_20.json": "e27fd7b45d0a329e3215f4091f37683607f50bf2ef53f3515aa95b46c83e4296",
+    "docs/ootang_bplus_origin_gradients_plan.v1.20.md": "97a562f96f4e681d8a7687298289c03416c472b7874a4d5b77bf3c7ce1f745fe"
+  },
+  "started_utc": "2026-09-11T02:43:07.182048+00:00",
+  "git_commit": "75d9dad95bb329da9a1342834eb8ba97e525004e",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "matplotlib": "3.10.9"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checkpoint_replays": 90,
+  "gradient_rows": 270,
+  "difference_rows": 72,
+  "finite_skipped_models": 0,
+  "finite_max_absolute_error": 1.0322752541647162e-07,
+  "numeric_values_checked": 1363770,
+  "max_absolute_difference": 2.7755575615628914e-16,
+  "input_fingerprint_values": 8362800,
+  "original_log_checks": 72,
+  "final_loss_checks": 18,
+  "protected_files_checked": 2510,
+  "source_files_checked": 8,
+  "replay_calls": {
+    "gradient_calls": 960,
+    "difference_calls": 768,
+    "forward_calls": 1728,
+    "backward_calls": 960
+  },
+  "new_neural_updates": 0,
+  "new_physical_forwards": 0,
+  "raw_observation_as_of_verified": "unknown"
+}

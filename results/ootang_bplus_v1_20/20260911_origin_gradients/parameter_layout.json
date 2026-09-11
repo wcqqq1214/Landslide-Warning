@@ -1,0 +1,40 @@
+[
+  {
+    "name": "gates.weight",
+    "shape": [
+      64,
+      39,
+      1,
+      3
+    ],
+    "start": 0,
+    "stop": 7488
+  },
+  {
+    "name": "gates.bias",
+    "shape": [
+      64
+    ],
+    "start": 7488,
+    "stop": 7552
+  },
+  {
+    "name": "output.weight",
+    "shape": [
+      1,
+      16,
+      1,
+      1
+    ],
+    "start": 7552,
+    "stop": 7568
+  },
+  {
+    "name": "output.bias",
+    "shape": [
+      1
+    ],
+    "start": 7568,
+    "stop": 7569
+  }
+]

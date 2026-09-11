@@ -1,0 +1,12 @@
+{
+  "scalar_geometry_passed": true,
+  "rows": 270,
+  "values_checked": 2160,
+  "max_absolute_difference": 2.842170943040401e-14,
+  "source_index_sha256": "eea694ef27ccc188f0c2aec37996caf58a2ec41e30138233aa1878a39af89818",
+  "checker_sha256": "15169a6cf323968177f2474ecfead5c7ad94d7b1f842604ac277274009e62dfb",
+  "method": "python math.fsum and math.sqrt; no matrix products",
+  "warning_trigger_cause": "not determined",
+  "new_network_calls": 0,
+  "new_updates": 0
+}

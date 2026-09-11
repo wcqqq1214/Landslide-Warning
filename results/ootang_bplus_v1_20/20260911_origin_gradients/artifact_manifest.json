@@ -1,0 +1,108 @@
+{
+  "files": {
+    "completed.json": {
+      "sha256": "3fa2402275b3d46c9a22002d3d9212e9b0f9e65a7a6ce22365f9cd28e609b91a",
+      "bytes": 235
+    },
+    "execution.json": {
+      "sha256": "e19ffe67cc3198c5f6444939f297cfb3e82feeb5a8812fdad6134281fcf5339d",
+      "bytes": 241
+    },
+    "finite_differences.csv": {
+      "sha256": "559486d4ccf6d6e75effcb14ed2edd144be2e730dbc72c56bdd448ffc1f9af4e",
+      "bytes": 7661
+    },
+    "gradients.csv": {
+      "sha256": "baedb81b42e10ca85ccab75b45c28d53badfe21d537087a9b3fc3bd62d9da1eb",
+      "bytes": 76955
+    },
+    "inputs_342.json": {
+      "sha256": "b0bf3159216f80b430b5e4cd0eb24f6bb99d48aae247edd36efb64a60725a59b",
+      "bytes": 491
+    },
+    "inputs_432.json": {
+      "sha256": "0c5f2a55878d5fd6701e858bdef39d8970830751823a8f3772a054f1830d4d0c",
+      "bytes": 492
+    },
+    "inputs_612.json": {
+      "sha256": "69db83aeab6b11b70bde6350574061de08a2fbce3f77e714468dc74c79486c08",
+      "bytes": 492
+    },
+    "launcher.json": {
+      "sha256": "9f1f97c29fcf4a61a9adc97d25b189665ab21941dc0a8413f77349f2612f8d91",
+      "bytes": 57
+    },
+    "manifest.json": {
+      "sha256": "4278ded772158c894517d53050d258b18c699cf143e0a7437d1519571e540f1c",
+      "bytes": 2830
+    },
+    "objective_gradients.png": {
+      "sha256": "c40f0fb79461310c28bff8a4c403c98b8646f34355f0c79912c57efe2b5286d8",
+      "bytes": 433253
+    },
+    "output_lock.json": {
+      "sha256": "3e142bee33da672dc6b49f4c0fd30d5fa2b4bc82cfdab568fbdb031c30437258",
+      "bytes": 615
+    },
+    "parameter_layout.json": {
+      "sha256": "09ee2afb253c599f4aa6c6844ed46f738e9360eec630368d1154432596c34f9f",
+      "bytes": 468
+    },
+    "prefix_342.npz": {
+      "sha256": "ea7e759b1a05624412db6882ec88c15a1e698777d9ec91a02c496dc3ea9dbd65",
+      "bytes": 2691568
+    },
+    "prefix_432.npz": {
+      "sha256": "9af944bb44bbcff6c0f84a25b177995c85c7b1efab5908085cbe9960f1392b96",
+      "bytes": 2687886
+    },
+    "prefix_612.npz": {
+      "sha256": "deba37972c30d7fb4310c979d3972df1f1ebbc4693eb047a245c938db96652a8",
+      "bytes": 2686091
+    },
+    "protected_before.json": {
+      "sha256": "46b92b463e4644bb1ed0dc76c850d3e9ab7a733b5b76e93a10383f0ae94a6293",
+      "bytes": 374566
+    },
+    "run.log": {
+      "sha256": "5d05967f73a7d3df1e6425cc62af2f8aa0478256c63cd032a08822b2ad05bbdc",
+      "bytes": 4944
+    },
+    "sources/code/physics_guided_origin_gradients/__init__.py": {
+      "sha256": "dacc6e74df588508a013105cf1cb2a24960eb8ac0c38d50ddb51b0e7031f4103",
+      "bytes": 81
+    },
+    "sources/code/physics_guided_origin_gradients/core.py": {
+      "sha256": "b23aa9c7d4c956be7f9b570136ed31f215cff058015d38aec439c2c35b696834",
+      "bytes": 10046
+    },
+    "sources/code/physics_guided_origin_gradients/run.py": {
+      "sha256": "5f3c9b2ad6772ae9e34904e41d79da33c5123be36288527e129058dbad57dd10",
+      "bytes": 6936
+    },
+    "sources/code/physics_guided_origin_gradients/verify.py": {
+      "sha256": "4b02e73667b5a28425e91cd78ad659a27d15340d058ba8e72e6cd8e8437ac385",
+      "bytes": 9586
+    },
+    "sources/code/physics_guided_origin_gradients/workflow.py": {
+      "sha256": "303833e9cbbe7464edc841c0ce41f6c6db21715b6bde1ed8c4d92a2f0eef7b32",
+      "bytes": 9591
+    },
+    "sources/config/ootang_bplus_origin_gradients.v1_20.json": {
+      "sha256": "e27fd7b45d0a329e3215f4091f37683607f50bf2ef53f3515aa95b46c83e4296",
+      "bytes": 1186
+    },
+    "sources/docs/ootang_bplus_origin_gradients_plan.v1.20.md": {
+      "sha256": "97a562f96f4e681d8a7687298289c03416c472b7874a4d5b77bf3c7ce1f745fe",
+      "bytes": 5126
+    },
+    "sources/tests/test_physics_guided_origin_gradients.py": {
+      "sha256": "72d2cc188e30393cc769e0457c171b25c66aaba2e0769d1bb77f7cb104319f9e",
+      "bytes": 9875
+    },
+    "verification.json": {
+      "sha256": "e27b4e524588aadf5f040422098bf9a8c1374df98400eeab844a66c5b1f92d6c",
+      "bytes": 670
+    }
+  }
+}
