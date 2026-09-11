@@ -1,0 +1,65 @@
+{
+  "specification": {
+    "version": "1.16",
+    "protocol": "docs/ootang_bplus_history_availability_plan.v1.16.md",
+    "source_run": "results/ootang_bplus_v1_15/20260911_temporal_decomposition",
+    "source_index_sha256": "6aac1cddab0c0815b274fa2ea4d3e2efb68d1d439685453f55f326e0f2c9842e",
+    "csv": "data/monitoring_data.csv",
+    "xlsx": "data/monitoring_data.xlsx",
+    "zip": "section2d_v4.zip",
+    "zip_member": "section2d_v4/work/delivery_final/outang_repro/work/monitoring.csv",
+    "zip_member_sha256": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+    "lineage_manifest": "figures/data_lineage/ootang_data_lineage_manifest.json",
+    "fingerprints": "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv",
+    "source_hashes": {
+      "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+      "data/monitoring_data.xlsx": "a28a6a09ea660132eafe9508848dcb2958ba892f425489f63c81a7c31b2e4a3d",
+      "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+      "figures/data_lineage/ootang_data_lineage_manifest.json": "a9a8c7991a77420abff52ced51009e41bbe573023b6a58eaf2a94643287fd42c",
+      "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv": "ac89970e18d686fbcc78acf2f9596945244ebf02c507d47fc7aed8c7971a41af",
+      "docs/ootang_data_lineage_expert_review.md": "1b77439dcd21347bf0866df21fcca033126c43a59d0b72a12ba08b87154c1fa4",
+      "code/convlstm/data_lineage_audit.py": "46e0edeea2635799ada5686b8aa0af015f1723ddd6be8f6bb8c80101c7353f78"
+    },
+    "origins": [
+      252,
+      342,
+      432,
+      612
+    ],
+    "history_days": 30,
+    "max_label_prefix": 612,
+    "source_numeric_atol": 1e-12,
+    "numeric_atol": 1e-10,
+    "table_rows": {
+      "origins": 4,
+      "monthly_links": 16,
+      "history": 480
+    },
+    "timeout_seconds": 120,
+    "new_fits": 0,
+    "new_neural_calls": 0,
+    "new_physical_calls": 0,
+    "new_predictions": 0
+  },
+  "config_sha256": "b7eee431815c53cc98964e14ac2ca22809202bf88428a572cce46547f7caba10",
+  "plan_sha256": "95501230528e1e9ecb7036b1c208da988ec4c2e08f57208d11194033015913a9",
+  "sources": {
+    "code/physics_guided_history_availability/__init__.py": "c145d5384e8c0002a01225829787b52d72d165e271fc802f007f9525eb86f105",
+    "code/physics_guided_history_availability/core.py": "6f9f1dd959644f514ec646a145d7badb4a76abdab4095e8782c41d93dc8567ed",
+    "code/physics_guided_history_availability/run.py": "77354baa3cb263ee1a64e49c0666428e5d92e8e41bbe40e82eb9233d6939102c",
+    "code/physics_guided_history_availability/verify.py": "0e4a945bafaa9d1c64e856714e2ead7597eae3f9d070932213d8e2f865f735e0",
+    "code/physics_guided_history_availability/workflow.py": "93bafcc69555424255384f3b006cd91ba7e6b77ed351f5f522033ef1b5098785",
+    "tests/test_physics_guided_history_availability.py": "98cc3e792a1f4add542486af1793687864e6cd2840c0f808d77fa05722581ae9",
+    "config/ootang_bplus_history_availability.v1_16.json": "b7eee431815c53cc98964e14ac2ca22809202bf88428a572cce46547f7caba10",
+    "docs/ootang_bplus_history_availability_plan.v1.16.md": "95501230528e1e9ecb7036b1c208da988ec4c2e08f57208d11194033015913a9"
+  },
+  "started_utc": "2026-09-11T00:23:08.396818+00:00",
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 13:50:33) [Clang 22.1.3 ]",
+    "executable": "/Users/wcqqq1214/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "platform": "macOS-26.5.1-arm64-arm-64bit"
+  },
+  "git_commit": "e9b78b8e0c530c16045017b052aad982f4d9f102"
+}

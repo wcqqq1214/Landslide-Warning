@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_history_availability/run.py", line 122, in worker
+    execute(out)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_history_availability/run.py", line 78, in execute
+    seal(out / "source_checks.json", source_audit(spec))
+                                     ^^^^^^^^^^^^^^^^^^
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_history_availability/workflow.py", line 69, in source_audit
+    raise ValueError("Source prefix values differ beyond the frozen tolerance")
+ValueError: Source prefix values differ beyond the frozen tolerance
