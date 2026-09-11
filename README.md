@@ -3,11 +3,18 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.15 冻结修正分组与范围诊断](docs/ootang_bplus_temporal_decomposition_results.v1.15.md)：
+最新完成 [v1.16 历史信息审计及补充接口核验](docs/ootang_bplus_history_availability_results.v1.16.md)：
+原三来源等值核对失败，导师 CSV 有最大约 5e-12 mm 的末位差异；原门限和失败保留。
+公开 CSV/XLSX 前 612 日六列一致，按[补充方案](docs/ootang_bplus_history_completion_plan.v1.16.1.md)
+生成四起点各 30 日的历史位移/增量，补充执行 3.440 秒，0 新拟合或预测。
+14 项测试及逐格核验通过。接口只读取过去，原始日值当时可用性仍未知；下一步另版
+固定历史编码与 B+ 的有限对照。接口完成不代表整体四点精度/概率目标已实现。
+
+此前完成 [v1.15 冻结修正分组与范围诊断](docs/ootang_bplus_temporal_decomposition_results.v1.15.md)：
 762 行、3.237 秒，0 新拟合/神经/力学调用。第三窗 ATU1 的大负修正在数值上主要
 对应 s/p 线性项，扣开超范围部分后均值仍反向；不能据此把限幅当成修复。6 项测试
 与全部分解/原指标复核通过，整体目标仍未实现。源码核对发现当前四点 M1 的 u/du
-来自 B+；下一步先审计预测起点可用的实测历史，再决定有限的历史观测编码对照。
+来自 B+；后续预测起点历史信息审计见 v1.16，历史编码效果尚未验证。
 [执行前方案](docs/ootang_bplus_temporal_decomposition_plan.v1.15.md)与
 [分组热图](results/ootang_bplus_v1_15/20260911_temporal_decomposition/group_means.png)保留。
 
@@ -87,7 +94,17 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 v1.15 的有符号分组、范围与原指标，不新增拟合/神经/力学调用或写文件：
+复核最新历史接口及来源差异（保留原三来源比较失败），只读且不调用模型。
+使用本机已配置的 bundled Python：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code \
+/Users/wcqqq1214/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3 \
+  -m physics_guided_history_completion.run --run-id 20260911_history_completion --verify
+```
+
+复核 v1.15 的有符号分组、范围与原指标，不新增拟合/神经/力学调用或写文件：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
