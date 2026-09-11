@@ -1,0 +1,4 @@
+{"fit_days": 342, "choices_locked": true, "queries": 180, "neural_updates": 0}
+{"fit_days": 432, "choices_locked": true, "queries": 360, "neural_updates": 0}
+{"fit_days": 612, "choices_locked": true, "queries": 360, "neural_updates": 0}
+{"status": "completed", "verified": true, "candidate_edges": 1800, "neural_updates": 0}

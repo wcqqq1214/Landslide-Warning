@@ -1,0 +1,115 @@
+{
+  "specification": {
+    "version": "1.22",
+    "protocol": "docs/ootang_bplus_input_transfer_plan.v1.22.md",
+    "source_run": "results/ootang_bplus_v1_21/20260911_balanced_origin",
+    "source_index_sha256": "92e834158a3a1fd9e57552e386718f3e15f8d572bfa9b1ef75103f88ab8c026b",
+    "source_results": "docs/ootang_bplus_balanced_origin_results.v1.21.md",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "horizons": {
+      "342": 90,
+      "432": 180,
+      "612": 180
+    },
+    "strategies": [
+      "IN",
+      "OOF"
+    ],
+    "groups": {
+      "displacement": [
+        0,
+        2
+      ],
+      "hydrology": [
+        2,
+        16
+      ],
+      "static": [
+        16,
+        20
+      ],
+      "history": [
+        20,
+        22
+      ],
+      "lead": [
+        22,
+        23
+      ]
+    },
+    "candidate_block": 1,
+    "same_lead_only": true,
+    "neighbors": 1,
+    "distance": "full_frozen_input_rms",
+    "tie_break": [
+      "squared_distance",
+      "origin",
+      "target"
+    ],
+    "segments": {
+      "all": [
+        0,
+        180
+      ],
+      "days_1_30": [
+        0,
+        30
+      ],
+      "days_31_90": [
+        30,
+        90
+      ],
+      "days_91_180": [
+        90,
+        180
+      ]
+    },
+    "zero_tolerance_mm": 1e-06,
+    "comparison_tolerance_mm": 1e-06,
+    "numeric_atol": 1e-10,
+    "numeric_rtol": 1e-10,
+    "candidate_edges": 1800,
+    "point_edges": 7200,
+    "point_queries": 3600,
+    "metric_rows": 88,
+    "neural_updates": 0,
+    "neural_forward_calls": 0,
+    "gradient_calls": 0,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "regression_fits": 0,
+    "scaler_fits": 0,
+    "scale_fits": 0,
+    "cpu_threads": 1,
+    "max_processes": 1,
+    "hard_timeout_seconds": 300,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "e8ecc15a83bc505a616cb4046345cea18a6ba358214a589cf0c6765899ff8f76",
+  "plan_sha256": "836262d8c17fdc8cfb22e0ead93882ff98a5d5ec5e8b61158796dcdc8ebf4d75",
+  "sources": {
+    "code/physics_guided_input_transfer/__init__.py": "c7a36ac61ab6a79cc766aa32ae1454dd124a8fdcc5a5eddfd828a7a5ce4ade13",
+    "code/physics_guided_input_transfer/core.py": "595789fda287ece18e033cacdb6831ed24d132e680f6e93b4264b68f07e9a942",
+    "code/physics_guided_input_transfer/run.py": "b68006366a2e377225e0d94b2b87871df35bab8efaf002be9ba672e52e7020be",
+    "code/physics_guided_input_transfer/verify.py": "424c4d038d16106a2b430d340ef648d5fc652c2949f7797405788b77e522c2fe",
+    "code/physics_guided_input_transfer/workflow.py": "27b29342212900ab8227940bb524e5e1d589eed9ef4171ab326b0fda0269bce3",
+    "tests/test_physics_guided_input_transfer.py": "5341f27d1b7a8e9938d5abe0dc8b2ed6674c4311304da9eb6a6934e1324cdc80",
+    "config/ootang_bplus_input_transfer.v1_22.json": "e8ecc15a83bc505a616cb4046345cea18a6ba358214a589cf0c6765899ff8f76",
+    "docs/ootang_bplus_input_transfer_plan.v1.22.md": "836262d8c17fdc8cfb22e0ead93882ff98a5d5ec5e8b61158796dcdc8ebf4d75"
+  },
+  "started_utc": "2026-09-11T04:03:10.992172+00:00",
+  "git_commit": "1e92bcb030535f4d6b4f90a8e4094c156016b8ab",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "matplotlib": "3.10.9"
+  }
+}

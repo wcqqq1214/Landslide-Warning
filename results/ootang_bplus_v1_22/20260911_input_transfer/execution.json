@@ -1,0 +1,12 @@
+{
+  "neural_updates": 0,
+  "neural_forward_calls": 0,
+  "gradient_calls": 0,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "regression_fits": 0,
+  "scaler_fits": 0,
+  "scale_fits": 0,
+  "candidate_edges": 1800,
+  "past_reference_pairs": 1260
+}

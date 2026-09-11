@@ -1,0 +1,124 @@
+{
+  "files": {
+    "completed.json": {
+      "sha256": "9f4fd83ec07aed3abb294bfdb2e80a00179f804ab7e18977b9e979b4ccdec8b3",
+      "bytes": 163
+    },
+    "correction_transfer.png": {
+      "sha256": "02f5e44e5e3dc961fd1f7f999ddc1dd619f60c9da9d15972376c7b45e919844d",
+      "bytes": 451415
+    },
+    "edges.csv": {
+      "sha256": "260078d74a34790ac73ecb3b1a4dc9dd44531b1bb7cc43fe8f9d35fa3765d627",
+      "bytes": 1272085
+    },
+    "execution.json": {
+      "sha256": "88dc9dda738fc4a10bd0ff8ee40ab6da74ce17436c77c16c00151b3e577abe62",
+      "bytes": 263
+    },
+    "inputs_342.json": {
+      "sha256": "49b7e5108254fd1e43338b9fe2e478406f176e19a5eec7826371d4a53a7f9a9f",
+      "bytes": 506
+    },
+    "inputs_432.json": {
+      "sha256": "38b83db704ec2af7cc62dcef2302da5bec7b03480d1b61f035bb8bcf58f88076",
+      "bytes": 506
+    },
+    "inputs_612.json": {
+      "sha256": "ef2650c78ca39411ff437f3f86be2dbfa6ad5936e56366ab45eb6c66c299e9f3",
+      "bytes": 506
+    },
+    "launcher.json": {
+      "sha256": "a824443b0a7e6c7abb72e4ebe14dab51307979f84dd98c32c066ff8f2d3343d4",
+      "bytes": 58
+    },
+    "manifest.json": {
+      "sha256": "7885e93a9a3746d32816251a39f13e08323b7bf7c3a7da42d7389d5abefc0c00",
+      "bytes": 3313
+    },
+    "metrics.csv": {
+      "sha256": "9456529381de2a51cabc130e57f2104c8c82da6fdd820d085fb41a491c9a24e2",
+      "bytes": 14651
+    },
+    "prefix_342_IN.npz": {
+      "sha256": "38d5659d69ec1ae268349d56238eeb9a640643e496a111cf80c643f39b9d01a9",
+      "bytes": 12912
+    },
+    "prefix_342_OOF.npz": {
+      "sha256": "933c7efd269cc21cb19d97819a42a2b089d12a2db3de569bda423785ee88c4d4",
+      "bytes": 12938
+    },
+    "prefix_432_IN.npz": {
+      "sha256": "68c3375019d3685ec883d5ff98af19e560f58a3dad833122b6913fe2600ffb6b",
+      "bytes": 26451
+    },
+    "prefix_432_OOF.npz": {
+      "sha256": "81e064a1dbb983d68ade25dba8bc00d1544cf9c9f575d1de59d1c452dcd5d4de",
+      "bytes": 29168
+    },
+    "prefix_612_IN.npz": {
+      "sha256": "4967462ee5ff576a7dcb21e4da4cac6489077b667bee2fe4852511482b44f96c",
+      "bytes": 42757
+    },
+    "prefix_612_OOF.npz": {
+      "sha256": "ab78c70d5c72f09110d39dacfeda916101a7b5459429fa3f589d0bcf9a0a3569",
+      "bytes": 48050
+    },
+    "protected_before.json": {
+      "sha256": "992920f9f39f614a305122d7e51f417d98e65e3e5e59fbcf2a4991dd67bce240",
+      "bytes": 407252
+    },
+    "queries.csv": {
+      "sha256": "7a0ff22707ca04e32aef56ee33c3c3c34bc3e31eaa0ed771b43b15ccf3a6fc30",
+      "bytes": 533625
+    },
+    "run.log": {
+      "sha256": "64169a4c23f3ba13f81da4e0be19171b0b24c982f1e6dad2bbec264b4df89fad",
+      "bytes": 325
+    },
+    "scoring.json": {
+      "sha256": "af864eb8927fb2ed918c8fd0a6d773b56a3c0506780baeaad90d78d227cbdcd0",
+      "bytes": 262
+    },
+    "selection_lock.json": {
+      "sha256": "66f7e46f9d98adfe6ac9559f7592c5f99b5a25c28f3253033b1cac9b32c6e52e",
+      "bytes": 906
+    },
+    "sources/code/physics_guided_input_transfer/__init__.py": {
+      "sha256": "c7a36ac61ab6a79cc766aa32ae1454dd124a8fdcc5a5eddfd828a7a5ce4ade13",
+      "bytes": 71
+    },
+    "sources/code/physics_guided_input_transfer/core.py": {
+      "sha256": "595789fda287ece18e033cacdb6831ed24d132e680f6e93b4264b68f07e9a942",
+      "bytes": 7648
+    },
+    "sources/code/physics_guided_input_transfer/run.py": {
+      "sha256": "b68006366a2e377225e0d94b2b87871df35bab8efaf002be9ba672e52e7020be",
+      "bytes": 7045
+    },
+    "sources/code/physics_guided_input_transfer/verify.py": {
+      "sha256": "424c4d038d16106a2b430d340ef648d5fc652c2949f7797405788b77e522c2fe",
+      "bytes": 18429
+    },
+    "sources/code/physics_guided_input_transfer/workflow.py": {
+      "sha256": "27b29342212900ab8227940bb524e5e1d589eed9ef4171ab326b0fda0269bce3",
+      "bytes": 6133
+    },
+    "sources/config/ootang_bplus_input_transfer.v1_22.json": {
+      "sha256": "e8ecc15a83bc505a616cb4046345cea18a6ba358214a589cf0c6765899ff8f76",
+      "bytes": 1471
+    },
+    "sources/docs/ootang_bplus_input_transfer_plan.v1.22.md": {
+      "sha256": "836262d8c17fdc8cfb22e0ead93882ff98a5d5ec5e8b61158796dcdc8ebf4d75",
+      "bytes": 6940
+    },
+    "sources/tests/test_physics_guided_input_transfer.py": {
+      "sha256": "5341f27d1b7a8e9938d5abe0dc8b2ed6674c4311304da9eb6a6934e1324cdc80",
+      "bytes": 9619
+    },
+    "verification.json": {
+      "sha256": "a7774d93e5d26632ccd9399d03ed1992851a8b80426b531b26624b998d59209b",
+      "bytes": 469
+    }
+  }
+}
