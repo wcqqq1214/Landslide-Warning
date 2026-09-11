@@ -1,0 +1,27 @@
+{
+  "passed": true,
+  "independently_enumerated_samples": [
+    {
+      "fit_days": 342,
+      "independently_enumerated_rows": 226,
+      "max_weight_error": 0.0
+    },
+    {
+      "fit_days": 432,
+      "independently_enumerated_rows": 458,
+      "max_weight_error": 0.0
+    },
+    {
+      "fit_days": 612,
+      "independently_enumerated_rows": 831,
+      "max_weight_error": 0.0
+    }
+  ],
+  "window_slot_checks": 117900,
+  "protected_files_checked": 2774,
+  "parameter_vectors_checked": 4,
+  "zero_new_model_evaluations": true,
+  "zero_new_fits": true,
+  "raw_observation_as_of_verified": "unknown",
+  "scope": "Metadata enumeration, source identity and window dates; no effectiveness evaluation"
+}

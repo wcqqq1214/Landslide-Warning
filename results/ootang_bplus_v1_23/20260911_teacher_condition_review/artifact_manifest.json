@@ -1,0 +1,44 @@
+{
+  "files": {
+    "coverage_by_block.csv": {
+      "sha256": "17c535f7362c2aea63d89dc2763a1c3f70b7293f16d2df7be7ecc58f82f4b35c",
+      "bytes": 1797
+    },
+    "coverage_by_teacher.csv": {
+      "sha256": "904d8befde4356f76b8e8a74fe06682a58635b20bb98137a536088219a5b35d1",
+      "bytes": 2004
+    },
+    "paired_support.csv": {
+      "sha256": "d3646723e9ef2011078217415f6111203939dfe66c827502e7f96d65537c354d",
+      "bytes": 226
+    },
+    "parameter_names.csv": {
+      "sha256": "f7f17a4f45b50caac65241786de2e8c3d91db4f1e8895b9ac777621e1fa28881",
+      "bytes": 1325
+    },
+    "teacher_identity.json": {
+      "sha256": "6e0272828f13e099ac9697f401ff3462db05c9f7bf1092feffb2bdc5731982dd",
+      "bytes": 2029
+    },
+    "window_offsets.csv": {
+      "sha256": "d283b4938dce5221c6b4c4c7e121b2f5f4c5cc952f42c30c94f1d12b6e3f275a",
+      "bytes": 4516
+    },
+    "source_registry.json": {
+      "sha256": "9b937865279b1b623265eb9855d3e42109b06f3e8cf1ab5d9cef2166983fe2f1",
+      "bytes": 5843
+    },
+    "mentor_sources.json": {
+      "sha256": "b9d1c9717fbe31f9d4f4e5fd2c30bffe8e36db7d67959eba4e62e4ead7fa557b",
+      "bytes": 2642
+    },
+    "verification.json": {
+      "sha256": "f3300ce863165c80bd628650c8dd171cedc3ae8077c38da1cbc606bd1f82942e",
+      "bytes": 704
+    },
+    "audit_source.py": {
+      "sha256": "0a66694ab3ce9f73c1820762f6664223ea0d0cfc5872437be9c019595aa27cfb",
+      "bytes": 17187
+    }
+  }
+}

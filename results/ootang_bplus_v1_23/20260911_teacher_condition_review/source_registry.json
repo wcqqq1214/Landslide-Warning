@@ -1,0 +1,135 @@
+{
+  "plan": "docs/ootang_bplus_teacher_condition_review_plan.v1.23.md",
+  "plan_sha256": "815dbe230a68686b963a5b779ebd7b657a97428180854d30cc29ac1952bf83a7",
+  "files": {
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/pairs_342.csv": "83271b8bdf348dfc009f6a1011e55152da8c713e98239c34fe708dfc50ba13c6",
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/pairs_432.csv": "74cea2df71c19278b98ceddfe96fba7a97b4a4265f5f70470d5b808d02284e60",
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/pairs_612.csv": "7756606b2bb84d4885f38137fd7a69b54c30d17099d7f0137d3b9d9b581fd1ce",
+    "code/physics_guided/features.py": "625b6a8987237b6311b3fa1cd6d1b66b01aa46c2ab803c32aa0d996933a52324",
+    "code/physics_guided/models.py": "7269b1c52112f42436c46c41969ef01dcb2675516c9b825ba9bb8e6930ed91e3",
+    "code/physics_guided_history_learning/core.py": "ba6f25112d1ae50893887ddcacd6d34f5b3df2eb74ac3c881cac3bab98adffa4",
+    "code/physics_guided_origin_learning/core.py": "abf1bdbd4b6b0d3a8f28d4b58f7de857f2577b5ff506f0fade15835d1f5be9b7",
+    "code/physics_guided_state_pinn/core.py": "5aed0ebbc50d70ae536a8f5b3719587a6d6d6fb490252c89b3ab720c7c5af458",
+    "code/physics_guided_shared_mechanics/core.py": "9f1d2a5688bf4cb9df4580ede7a28d2fa311cea6d00827f44495465f4a919644",
+    "results/ootang_bplus_v1_1/20260910_implementation/source_pdf_preflight.json": "bb5e76e4ff2ba0e296ca79728a87fa49b162bc73593057c9168b2815fecb6561",
+    "manuscript.pdf": "9b2785eb9c1795afe66a380b0fa972c0c6370953a1febd33fcb68315bbe9c367",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/teachers.json": "0c40f5daa03327105bf8d97d1024c316c8bde9b29d65d47ead5efabe29908ce5",
+    "results/ootang_bplus_v1_4/20260911_selection/B_252_B/stage4.json": "df5b53a3408029e05145490f0590baaa6269f30808d9349fcb93d3ce0f86de32",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz": "751a5471b53d9cb8a8833410a839d8971bfb0a215ab8d89849dd7f5f1278da63",
+    "results/ootang_bplus_v1_4/20260911_selection/B_342_A/stage4.json": "6f672839298e538b1aa61a697ce8d51966ae8cc8a8c036df0a8725dee51ca10f",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+    "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json": "8712931b4e383b57d9755e7ad52d794b86f080c20f048e4075adf190e6f1838d",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+    "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json": "e4c004ceb01009e7498e82f38c63b3e7e44102700610c2d749fd310ceab9451b",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz": "882f6f1bc59ef9361982ca371f99e14adbb63067ddb82e1112824e232d5e65e7"
+  },
+  "code_symbols": {
+    "code/physics_guided/features.py": {
+      "sha256": "625b6a8987237b6311b3fa1cd6d1b66b01aa46c2ab803c32aa0d996933a52324",
+      "symbols": {
+        "point_features": {
+          "start": 64,
+          "end": 76
+        },
+        "dynamic_reference": {
+          "start": 79,
+          "end": 94
+        }
+      }
+    },
+    "code/physics_guided/models.py": {
+      "sha256": "7269b1c52112f42436c46c41969ef01dcb2675516c9b825ba9bb8e6930ed91e3",
+      "symbols": {
+        "M1.forward": {
+          "start": 29,
+          "end": 38
+        },
+        "M1.predict": {
+          "start": 40,
+          "end": 48
+        },
+        "M2.predict": {
+          "start": 63,
+          "end": 105
+        }
+      }
+    },
+    "code/physics_guided_history_learning/core.py": {
+      "sha256": "ba6f25112d1ae50893887ddcacd6d34f5b3df2eb74ac3c881cac3bab98adffa4",
+      "symbols": {
+        "HistoryM1": {
+          "start": 18,
+          "end": 25
+        },
+        "training_pairs": {
+          "start": 33,
+          "end": 39
+        },
+        "history_values": {
+          "start": 51,
+          "end": 66
+        },
+        "windows": {
+          "start": 78,
+          "end": 121
+        },
+        "predict": {
+          "start": 133,
+          "end": 176
+        }
+      }
+    },
+    "code/physics_guided_origin_learning/core.py": {
+      "sha256": "abf1bdbd4b6b0d3a8f28d4b58f7de857f2577b5ff506f0fade15835d1f5be9b7",
+      "symbols": {
+        "query_table": {
+          "start": 16,
+          "end": 40
+        },
+        "make_samples": {
+          "start": 60,
+          "end": 106
+        }
+      }
+    },
+    "code/physics_guided_state_pinn/core.py": {
+      "sha256": "5aed0ebbc50d70ae536a8f5b3719587a6d6d6fb490252c89b3ab720c7c5af458",
+      "symbols": {
+        "daily_features": {
+          "start": 31,
+          "end": 44
+        },
+        "Case": {
+          "start": 89,
+          "end": 137
+        },
+        "StatePINN.forward": {
+          "start": 182,
+          "end": 228
+        }
+      }
+    },
+    "code/physics_guided_shared_mechanics/core.py": {
+      "sha256": "9f1d2a5688bf4cb9df4580ede7a28d2fa311cea6d00827f44495465f4a919644",
+      "symbols": {
+        "RateInputs": {
+          "start": 62,
+          "end": 100
+        },
+        "RateReplay.forward": {
+          "start": 108,
+          "end": 148
+        }
+      }
+    }
+  },
+  "zip_root": "section2d_v4/work/delivery_final/outang_repro/section2d_v4/",
+  "zip_members": {
+    "physical_model.py": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09",
+    "predict.py": "ef14e4ec45eeb8b7844ab6bd2493f334981447210bb98a659b045548e6773ae0",
+    "results/protocol.json": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c",
+    "results/calibrated.json": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2",
+    "results/calibration_lock.json": "2692527a5be3fa1248c03d43e525e6b754234a4ccaa870d957e33aa3e60952a8"
+  }
+}

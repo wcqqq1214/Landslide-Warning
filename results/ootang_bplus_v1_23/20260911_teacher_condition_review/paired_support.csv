@@ -1,0 +1,7 @@
+fit_days,strategy,current_teacher_has_paired_rows,paired_teachers,paired_origins,max_origins_per_paired_teacher
+342,IN,True,1,1,1
+342,OOF,False,1,1,1
+432,IN,True,1,2,2
+432,OOF,False,2,2,1
+612,IN,True,1,3,3
+612,OOF,False,3,3,1

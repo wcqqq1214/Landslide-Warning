@@ -1,0 +1,46 @@
+[
+  {
+    "fit_days": 252,
+    "recipe": "B",
+    "parameter_count": 54,
+    "theta_float64_le_sha256": "b69ce5b4b9ab9658bc8a7ac44017c20b7ffceb552241833910f4e0db3d1e41ea",
+    "source": "results/ootang_bplus_v1_4/20260911_selection/B_252_B/stage4.json",
+    "source_sha256": "df5b53a3408029e05145490f0590baaa6269f30808d9349fcb93d3ce0f86de32",
+    "trajectory": "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz",
+    "exact_final_record_match": true,
+    "exact_trajectory_match": true
+  },
+  {
+    "fit_days": 342,
+    "recipe": "A",
+    "parameter_count": 54,
+    "theta_float64_le_sha256": "e176a20bd42e54c2d2cf8b527a4a3213c5de2efa58f6642a913676327f6f4e10",
+    "source": "results/ootang_bplus_v1_4/20260911_selection/B_342_A/stage4.json",
+    "source_sha256": "6f672839298e538b1aa61a697ce8d51966ae8cc8a8c036df0a8725dee51ca10f",
+    "trajectory": "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz",
+    "exact_final_record_match": true,
+    "exact_trajectory_match": true
+  },
+  {
+    "fit_days": 432,
+    "recipe": "B",
+    "parameter_count": 54,
+    "theta_float64_le_sha256": "74f0c0689ddd747b26b8742b4dba0c8af5fcc37d259d0eb5648fbcf6d8164d03",
+    "source": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "source_sha256": "8712931b4e383b57d9755e7ad52d794b86f080c20f048e4075adf190e6f1838d",
+    "trajectory": "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz",
+    "exact_final_record_match": true,
+    "exact_trajectory_match": true
+  },
+  {
+    "fit_days": 612,
+    "recipe": "B",
+    "parameter_count": 54,
+    "theta_float64_le_sha256": "87c280446575eb9849b1ca1a85739876b769d0ba3ffa350f901b9f38c9e08ef9",
+    "source": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "source_sha256": "e4c004ceb01009e7498e82f38c63b3e7e44102700610c2d749fd310ceab9451b",
+    "trajectory": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "exact_final_record_match": true,
+    "exact_trajectory_match": true
+  }
+]

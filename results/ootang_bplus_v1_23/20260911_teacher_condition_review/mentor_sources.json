@@ -1,0 +1,85 @@
+{
+  "pdf_preflight_reused": "results/ootang_bplus_v1_1/20260910_implementation/source_pdf_preflight.json",
+  "preflight_scope": "structure_only",
+  "pdf": {
+    "schema": "pdf_read_preflight/1",
+    "verdict": "PASS",
+    "file": "manuscript.pdf",
+    "sha256": "9b2785eb9c1795afe66a380b0fa972c0c6370953a1febd33fcb68315bbe9c367",
+    "declared_page_count": 26,
+    "enumerated_page_count": 26,
+    "reader_page_count": 26,
+    "warnings": [],
+    "generated_at": "2026-09-09T17:36:19.684433+00:00",
+    "tool": "pdf_read_preflight/1.0.0"
+  },
+  "current_page_count": 26,
+  "text_parser": "pymupdf 1.28.2",
+  "pages_read": [
+    {
+      "page": 4,
+      "characters": 525,
+      "text_sha256": "fbcedcacac40b8fda1d4182fbdc4a949b229d883756d50ba066feee3dbe230e1"
+    },
+    {
+      "page": 11,
+      "characters": 931,
+      "text_sha256": "28e2c8bfc22592be99dda55fcd3786ff7dced704c915c7f451b61220144bf134"
+    },
+    {
+      "page": 19,
+      "characters": 642,
+      "text_sha256": "2951e7e3efa52aa2e9ae6a0b3a8499750a0dfc182f36d83f7ab00ec3076c6b80"
+    },
+    {
+      "page": 20,
+      "characters": 368,
+      "text_sha256": "b14a415f70f166d51d63d58aaa3f4609bc482e1e953b2e41ebd3376bffc79eb1"
+    }
+  ],
+  "zip_lock_members_checked": 9,
+  "original_protocol": {
+    "fit_start": "2016-07-01",
+    "fit_end": "2019-09-11",
+    "fit_days": 1168,
+    "prediction_start": "2019-09-12",
+    "prediction_end": "2020-06-30",
+    "prediction_days": 293,
+    "points": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "inputs": [
+      "Rainfall",
+      "RWL"
+    ],
+    "temperature": false,
+    "DA": false,
+    "ML": false,
+    "fractures": false,
+    "substeps": 64,
+    "main": "continuous no reset or offset at split",
+    "comparison": "reused historical 80:20 conditional hindcast; test previously seen, not blind validation",
+    "fitting": "joint four-point least squares plus fitting-terminal penalty, weight116800; no future displacement in parameter objective",
+    "development": "Terminal calibration protocol introduced after viewing the unconstrained B+ hindcast; development-set historical comparison, not blind model selection.",
+    "fixed": {
+      "storage": 0.1,
+      "fast_drain_days": 0.5,
+      "moisture_capacity_mm": 40,
+      "initial_moisture": 0.5,
+      "nu": 0.3,
+      "phi_degrees": [
+        9.5,
+        9.3,
+        9.3,
+        9.3
+      ],
+      "normal_tangent_stiffness_ratio": 3
+    },
+    "parameter_count": 54
+  },
+  "original_final_theta_float64_le_sha256": "a024a46afa7a721d74790173fddb2e29648e59fe6c9cca474f12feffd10b1db3",
+  "original_final_theta_used_as_development_teacher": false
+}
