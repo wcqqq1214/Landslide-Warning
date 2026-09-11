@@ -9,6 +9,7 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [网页版路线审查提示词](ootang_web_route_review_prompt.md) | 固定 GitHub 来源与独立评估任务；不替代实验方案 |
 | [v2.1 待实施方案](ootang_probability_pinn_plan.v2.1.md) / [冻结配置](../config/ootang_probability_pinn.v2_1.json) | 受限广义力偏差与末层贝叶斯 PINN；首模型失败即停止，尚无训练结果 |
 | [v2.0 结果](ootang_convlstm_direct_results.v2.0.md) / [冻结方案](ootang_convlstm_direct_plan.v2.0.md) | 5/8 严格均值改善，整体未达标；一次有界实验已停止 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
