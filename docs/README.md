@@ -1,6 +1,7 @@
 # 项目文档导航
 
-本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN，v2.0 单候选未达标并已停止；
+本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN；v2.1 方案完成、未实现或训练，
+最新已完成实验 v2.0 未达标并已停止。
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
 
 ## 当前入口
@@ -8,6 +9,7 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [v2.1 待实施方案](ootang_probability_pinn_plan.v2.1.md) / [冻结配置](../config/ootang_probability_pinn.v2_1.json) | 受限广义力偏差与末层贝叶斯 PINN；首模型失败即停止，尚无训练结果 |
 | [v2.0 结果](ootang_convlstm_direct_results.v2.0.md) / [冻结方案](ootang_convlstm_direct_plan.v2.0.md) | 5/8 严格均值改善，整体未达标；一次有界实验已停止 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
 | [路线复盘](ootang_route_review_2026-09-11.md) | 八轮学习的效果总表、失败证据和停止决定 |
