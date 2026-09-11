@@ -71,6 +71,10 @@
 @docs/ootang_bplus_teacher_condition_review.v1.23.md
 @docs/ootang_bplus_sequence_interface_plan.v1.24.md
 @docs/ootang_bplus_sequence_interface_results.v1.24.md
+@docs/ootang_bplus_sequence_learning_plan.v1.25.md
+@docs/ootang_bplus_sequence_learning_implementation.v1.25.md
+
+- v1.25 已按持续目标独立登记四组 IN/OOF × CARRY/RESET 有限学习：`ddb2c35` 方案、`8c748f6` 实现/19 项测试。固定 3,600 更新及 1,800 秒硬超时，唯一运行目录 `results/ootang_bplus_v1_25/20260911_sequence_learning/` 已启动；恢复时先核对实际进程、日志和终态，不能因观察超时重启。当前没有新预测效果结论，真实产物核验及封存尚待完成；本版结束不自动追加预算或意味着整体目标达成。
 
 - 当前范围：**藕塘一个现有案例、四点位移概率预测，暂不做预警、不换新案例**。v1.1/v1.2/v1.3 的有限实验已完成，均未实现稳定四点提升，保留负结果。v1.3 两窗平均预测误差变差、逐点同时改善 1/8，且 612 日旧参数的新目标值优于新拟合最佳值；见对应结果和 progress。后续优化稳定性、训练内时序选模或神经模型变化须另记版本，不自动追加预算或训练。计划默认不冒充导师已确认的决定。
 - v1.4 已按用户“继续进行下一步”完成实现、两项有限实验与数值核验：同前缀 J1 续算下降约 1.27%/2.92%，均未达 gtol；固定 J0 的内部选模在 432 日预测改善、612 日预测变差，严格逐点同时改善 0/8。实际新 nfev 12,470/14,800、拟合约 20.1 分钟，无新增神经训练。**v1.4 已结束，未实现稳定四点提升**；后续训练内误差分析、概率修正目标或模型变化须另记版本并依当前用户请求，不自动续算或追加预算。
