@@ -1,0 +1,13 @@
+{
+  "name": "h342_IN_o252",
+  "fit_days": 342,
+  "strategy": "IN",
+  "origin": 252,
+  "teacher": 342,
+  "horizon": 90,
+  "zero_mean_exact": true,
+  "short_prefix_exact": true,
+  "suffix_isolated": true,
+  "segmented_decoder_exact": true,
+  "max_reference_difference_mm": 6.661338147750939e-16
+}

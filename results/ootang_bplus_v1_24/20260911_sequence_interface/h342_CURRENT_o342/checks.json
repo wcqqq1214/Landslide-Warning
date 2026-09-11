@@ -1,0 +1,13 @@
+{
+  "name": "h342_CURRENT_o342",
+  "fit_days": 342,
+  "strategy": "CURRENT",
+  "origin": 342,
+  "teacher": 342,
+  "horizon": 180,
+  "zero_mean_exact": true,
+  "short_prefix_exact": true,
+  "suffix_isolated": true,
+  "segmented_decoder_exact": true,
+  "max_reference_difference_mm": 9.992007221626409e-16
+}

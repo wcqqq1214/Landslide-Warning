@@ -1,0 +1,92 @@
+{
+  "specification": {
+    "version": "1.24",
+    "protocol": "docs/ootang_bplus_sequence_interface_plan.v1.24.md",
+    "source_run": "results/ootang_bplus_v1_23/20260911_teacher_condition_review",
+    "source_index_sha256": "66c625ba94335ca6b549a2abab9eb86c4d1c40a2844d70e1f83fc615c0d32237",
+    "learning_source": "results/ootang_bplus_v1_21/20260911_balanced_origin",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "paired_origins": {
+      "342": [
+        252
+      ],
+      "432": [
+        252,
+        342
+      ],
+      "612": [
+        252,
+        342,
+        432
+      ]
+    },
+    "input_channels": 23,
+    "hidden_channels": 16,
+    "model_parameters": 7569,
+    "history_days": 30,
+    "max_forecast_days": 180,
+    "seed": 0,
+    "probe_head_min": -0.01,
+    "probe_head_max": 0.01,
+    "prefix_check_days": 30,
+    "suffix_physical_perturbation": 0.125,
+    "finite_difference_epsilon": 1e-05,
+    "finite_difference_atol": 1e-07,
+    "finite_difference_rtol": 1e-05,
+    "reference_atol_mm": 1e-10,
+    "reference_rtol": 1e-12,
+    "limits_per_validation": {
+      "model_calls": 150,
+      "sequence_segments": 320,
+      "cell_sample_steps": 16000,
+      "readout_sample_steps": 12000,
+      "gradient_calls": 200,
+      "reference_sample_steps": 3000
+    },
+    "expected_counts_per_validation": {
+      "model_calls": 120,
+      "sequence_segments": 285,
+      "cell_sample_steps": 13920,
+      "readout_sample_steps": 9870,
+      "gradient_calls": 180,
+      "reference_sample_steps": 2790
+    },
+    "neural_updates": 0,
+    "physical_forward_calls": 0,
+    "scaler_fits": 0,
+    "probability_scale_fits": 0,
+    "cpu_threads": 1,
+    "hard_timeout_seconds": 300,
+    "automatic_retry": false,
+    "effectiveness_evaluation": false
+  },
+  "sources": {
+    "code/physics_guided_sequence/run.py": "a83959490cb66cde42449561cde77190eb916738e30cf41d0f6fa4f29f1b6e09",
+    "code/physics_guided_sequence/__init__.py": "e593b69313090576efcf74f14f57f1a79ac32a638ffaf53ab25702cf2eb451fb",
+    "code/physics_guided_sequence/core.py": "1f40251492757dd4b5db330823f645cae5a1e1aad46bb6beaeed58719d5d284e",
+    "code/physics_guided_sequence/reference.py": "1110f533a2497a6a8514da2bf9ebff4110c2a2f7c26cbc5a081478fe678a93b1",
+    "code/physics_guided_sequence/validation.py": "5fbef616e4d4935de4c9fc437245ae118c4cdf45ec6c970398ab40cbd1bcd9ef",
+    "tests/test_physics_guided_sequence.py": "1fe0304228380742ea9aaafb2ae9198cd68acb9ae97270358236f2cb09106dd9",
+    "config/ootang_bplus_sequence_interface.v1_24.json": "949b4a4e3eda9d96c697b0a56c159c583eedf31fe08ff9493acac019c2555bd8",
+    "docs/ootang_bplus_sequence_interface_plan.v1.24.md": "4bb04fdf95805ae94ab9ae577569acc42270e8dfce37e7505bc79ee975e16f73"
+  },
+  "started_utc": "2026-09-11T05:01:55.160252+00:00",
+  "git_commit": "6ea31a41a807bee23add5a1de30e5561560ab75e",
+  "dependencies": {
+    "python": "3.10.20",
+    "numpy": "2.2.6",
+    "torch": "2.12.0",
+    "pandas": "2.3.3"
+  }
+}

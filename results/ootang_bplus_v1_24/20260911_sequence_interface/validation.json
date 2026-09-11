@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "cases": 15,
+  "source_queries": 3030,
+  "input_values_checked": 30815400,
+  "model_parameters": 7569,
+  "counts": {
+    "model_calls": 120,
+    "sequence_segments": 285,
+    "cell_sample_steps": 13920,
+    "readout_sample_steps": 9870,
+    "gradient_calls": 180,
+    "reference_sample_steps": 2790
+  },
+  "neural_updates": 0,
+  "physical_calls": 0,
+  "scaler_fits": 0,
+  "probability_scale_fits": 0,
+  "raw_observation_as_of_verified": "unknown",
+  "effectiveness_evaluated": false
+}

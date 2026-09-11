@@ -1,0 +1,13 @@
+{
+  "name": "h432_OOF_o342",
+  "fit_days": 432,
+  "strategy": "OOF",
+  "origin": 342,
+  "teacher": 342,
+  "horizon": 90,
+  "zero_mean_exact": true,
+  "short_prefix_exact": true,
+  "suffix_isolated": true,
+  "segmented_decoder_exact": true,
+  "max_reference_difference_mm": 7.4593109467002705e-16
+}

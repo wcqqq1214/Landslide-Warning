@@ -1,0 +1,31 @@
+{
+  "recorded_utc": "2026-09-11 05:04:44 UTC",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python -m physics_guided_sequence.run --run-id 20260911_sequence_interface --verify",
+  "provenance": "Recorded from the completed, exit-code-zero verification command stdout; the sealed run archive is unchanged.",
+  "archive_index_sha256": "b85931ae2a37975942eb3cb76298bcea4809d2d1ed9b1404678801e207f7ad48",
+  "result": {
+    "passed": true,
+    "cases": 15,
+    "source_queries": 3030,
+    "input_values_checked": 30815400,
+    "model_parameters": 7569,
+    "counts": {
+      "model_calls": 120,
+      "sequence_segments": 285,
+      "cell_sample_steps": 13920,
+      "readout_sample_steps": 9870,
+      "gradient_calls": 180,
+      "reference_sample_steps": 2790
+    },
+    "neural_updates": 0,
+    "physical_calls": 0,
+    "scaler_fits": 0,
+    "probability_scale_fits": 0,
+    "raw_observation_as_of_verified": "unknown",
+    "effectiveness_evaluated": false,
+    "replayed_array_values": 294120,
+    "max_replay_difference": 0,
+    "protected_files_checked": 2787,
+    "source_files_checked": 8
+  }
+}
