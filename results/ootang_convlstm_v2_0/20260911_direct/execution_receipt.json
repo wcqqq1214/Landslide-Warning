@@ -1,0 +1,31 @@
+{
+  "implementation_commit": "b3ba6c7",
+  "plan_commit": "e49ac92",
+  "command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python -u code/run_ootang_convlstm_direct.py --output results/ootang_convlstm_v2_0/20260911_direct",
+  "run_exit_code": 0,
+  "verification_exit_code": 0,
+  "verification_command": "OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python code/run_ootang_convlstm_direct.py --output results/ootang_convlstm_v2_0/20260911_direct --verify",
+  "synthetic_validation": {
+    "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p test_physics_guided_direct.py -v",
+    "tests": 7,
+    "passed": true,
+    "last_suite_seconds": 0.542,
+    "note": "Synthetic fixtures only; two development test invocations, no real-data trial or hyperparameter selection."
+  },
+  "ruff": {
+    "files": [
+      "code/physics_guided_direct.py",
+      "code/run_ootang_convlstm_direct.py",
+      "tests/test_physics_guided_direct.py"
+    ],
+    "passed": true
+  },
+  "main_experiment_runs": 1,
+  "additional_training_after_results": 0,
+  "verification_completed_utc": "2026-09-11T08:00:09.578646+00:00",
+  "implementation_status": "complete",
+  "validation_status": "passed",
+  "effectiveness_status": "failed frozen criteria",
+  "user_or_adviser_effectiveness_acceptance": null,
+  "follow_up": "stop this candidate; retain B+; only ConvLSTM/PINN allowed for any separately decided future method"
+}

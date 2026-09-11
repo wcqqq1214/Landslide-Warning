@@ -1,0 +1,9 @@
+{
+  "prefix": 432,
+  "artifacts": {
+    "scale_432_0.pt": "fadce827eabd38335069b12fc4b54187d4b7e45da80de8acc20f17149750229b",
+    "scale_432_1.pt": "05216b3bed21a1ba15fb7785063f559f328ec9ee284fdc3f29a27c0d9179ce77",
+    "scale_432_2.pt": "3e068d8632b1f409d8c441d0c13a641cb4f1c7bbddd5dc4734aafe743998f51e",
+    "prediction_432_DIRECT.npz": "0e9b8bc8a0c0849443ff31f3002934f568c858ba3605fa1d1480342aa0239c31"
+  }
+}

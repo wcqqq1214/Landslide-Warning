@@ -1,0 +1,12 @@
+{
+  "status": "complete",
+  "automatic_retry": false,
+  "effectiveness_passed": false,
+  "strict_mean_improvement_count": 5,
+  "counts": {
+    "mean_updates": 900,
+    "scale_updates": 600
+  },
+  "elapsed_run_seconds": 34.20089408289641,
+  "finished_utc": "2026-09-11T07:58:06.477818+00:00"
+}

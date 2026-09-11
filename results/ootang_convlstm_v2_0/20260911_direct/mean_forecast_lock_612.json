@@ -1,0 +1,9 @@
+{
+  "prefix": 612,
+  "artifacts": {
+    "mean_612_0.pt": "cbd4549a2bc7f0cb9f267fb7e7cff397c2804cf63e74f52ce85759d536f21fa8",
+    "mean_612_1.pt": "270c12f59c1f7dc9ad308bf86927b7055786136f48c178248eb674d937dc0622",
+    "mean_612_2.pt": "ea73728e9e9ead25f4920a74bb8e314fb31c26a52622e1ad047b60b5b09026a7",
+    "means_612.npz": "0e71df1304133006c903fd1c8df0274d26f12814da2c9268c32c66a6c860d74a"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "max_mean_reload_error_mm": 0.0,
+  "max_scale_reload_error_mm": 0.0,
+  "mean_models_reloaded": 9,
+  "scale_models_reloaded": 6,
+  "checked": "source hashes, temporal locks, update counts, P0 equality, all model reloads, saved scores and decision",
+  "effectiveness_passed": false
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "prefix": 432,
+    "seed": 0,
+    "initial_anchor": 0.005981883076662482,
+    "initial_paired": 0.2376597968818887,
+    "final_anchor": 0.0015550142510301025,
+    "final_paired": 0.09167709179421146
+  },
+  {
+    "prefix": 432,
+    "seed": 1,
+    "initial_anchor": 0.005981883076662482,
+    "initial_paired": 0.2376597968818887,
+    "final_anchor": 0.001781457685820716,
+    "final_paired": 0.09319009164826317
+  },
+  {
+    "prefix": 432,
+    "seed": 2,
+    "initial_anchor": 0.005981883076662482,
+    "initial_paired": 0.2376597968818887,
+    "final_anchor": 0.0016759816124560915,
+    "final_paired": 0.08711993415053923
+  }
+]

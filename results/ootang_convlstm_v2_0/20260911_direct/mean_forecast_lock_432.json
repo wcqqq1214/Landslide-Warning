@@ -1,0 +1,9 @@
+{
+  "prefix": 432,
+  "artifacts": {
+    "mean_432_0.pt": "73380270c14072d9774f8a580f1deaf48b14aa173c23b22a5a35da67bee2f861",
+    "mean_432_1.pt": "c54cdaf38751324b81cf1a9f4c319956ac84ee08034775cad9d5adfa2983802c",
+    "mean_432_2.pt": "d871c895e33e39cac79840b037124c96bc80ea0958b2cb2607647dbacd73042f",
+    "means_432.npz": "0903d88fb5715864857548aeb1b93a5b64322dff240add738f7b57e914c59a51"
+  }
+}
