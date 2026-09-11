@@ -1,0 +1,134 @@
+{
+  "specification": {
+    "version": "1.17",
+    "protocol": "docs/ootang_bplus_history_learning_plan.v1.17.md",
+    "history_source": "results/ootang_bplus_v1_16/20260911_history_completion",
+    "history_index_sha256": "9c837930d62d39a30341c060cb596813f6c2abd37c414b43bd94a43bf15baedd",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "learning_source": "results/ootang_bplus_v1_5/20260911_sample_learning",
+    "input_csv": "data/monitoring_data.csv",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      {
+        "days": 342,
+        "recipe": "A"
+      },
+      {
+        "days": 432,
+        "recipe": "B"
+      },
+      {
+        "days": 612,
+        "recipe": "B"
+      }
+    ],
+    "folds": [
+      {
+        "outer_days": 432,
+        "calibration_origin": 342
+      },
+      {
+        "outer_days": 612,
+        "calibration_origin": 432
+      }
+    ],
+    "strategies": [
+      "P0",
+      "A",
+      "C",
+      "H"
+    ],
+    "neural_strategies": [
+      "C",
+      "H"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "history_days": 30,
+    "first_query_origin": 31,
+    "training_origin_stride": 14,
+    "training_leads": [
+      0,
+      6,
+      29,
+      59,
+      89,
+      119,
+      149,
+      179
+    ],
+    "training_pair_counts": {
+      "342": 136,
+      "432": 188,
+      "612": 291
+    },
+    "warmup_days": 30,
+    "forecast_days": 180,
+    "history_scaler_floors": [
+      1.0,
+      0.01
+    ],
+    "input_channels": 23,
+    "hidden_channels": 16,
+    "model_parameters": 7569,
+    "epochs": 100,
+    "checkpoint_epochs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "learning_rate": 0.001,
+    "gradient_clip": 1.0,
+    "loss_scale_mm": 100.0,
+    "sigma_floor_mm": 0.001,
+    "interval_levels": [
+      80,
+      90,
+      95
+    ],
+    "primary_interval": 90,
+    "strict_mean_tolerance_mm": 1e-06,
+    "max_neural_updates": 1800,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "scale_network_updates": 0,
+    "scale_fits": 8,
+    "cpu_threads": 1,
+    "max_processes": 1,
+    "hard_timeout_seconds": 1800,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "e34dc46f265cd86cf1a0f086f38e6978229c74fcbe00c171e5f6ab15a67e462b",
+  "plan_sha256": "23ef8e5091d0876d363de74f7a9b326194da3d11e2e8df4dfe042cce9565bdb7",
+  "sources": {
+    "code/physics_guided_history_learning/__init__.py": "dd8f6fd68d14b66e7e00fff3946f758405f942ad8a433e1b5bf43738cf3ac233",
+    "code/physics_guided_history_learning/core.py": "ba6f25112d1ae50893887ddcacd6d34f5b3df2eb74ac3c881cac3bab98adffa4",
+    "code/physics_guided_history_learning/run.py": "695a89c1bedca9c2941ba0d0e1a89a60ef6fb283d6a57a6a79b1e78ecfa1a949",
+    "code/physics_guided_history_learning/support.py": "63d7e68f45da4f680a795d4ada5b9d7a4f5262dea6de86c07bd099fe808c1d6c",
+    "code/physics_guided_history_learning/verify.py": "0786202d607e64f74fb4d034ae6b65322dc87428e4bce704fec1eb237b4ac276",
+    "tests/test_physics_guided_history_learning.py": "82e5085b7ccdccd52449bcdd87218af74986ea22a17d0f557c0e586254763f6d",
+    "config/ootang_bplus_history_learning.v1_17.json": "e34dc46f265cd86cf1a0f086f38e6978229c74fcbe00c171e5f6ab15a67e462b",
+    "docs/ootang_bplus_history_learning_plan.v1.17.md": "23ef8e5091d0876d363de74f7a9b326194da3d11e2e8df4dfe042cce9565bdb7"
+  },
+  "started_utc": "2026-09-11T00:57:12.489953+00:00",
+  "input_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "git_commit": "b99639dc37b8f8b06e56c571a91aaa861148e535",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  }
+}
