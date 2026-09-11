@@ -3,7 +3,15 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.18 固定历史网络依赖诊断](docs/ootang_bplus_history_diagnostics_results.v1.18.md)：
+最新完成 [v1.19 起点历史 IN/OOF 有限学习](docs/ootang_bplus_origin_learning_results.v1.19.md)：
+1,800 更新、506.138 秒，无新物理拟合/积分。两窗预测平均 RMSE：IN 58.9612/25.1138、
+OOF 59.6529/33.6124，仍高于 B+ 的 58.0122/22.2448 mm；严格改善为 2/8、1/8。
+总训练损失下降，但 612 日 OOF 一个种子的拟合块损失增加 13.7187%。15 项测试及
+独立 checkpoint/样本/概率核验通过，整体目标未实现。下一步另版检查两训练块的
+梯度大小与方向，再决定是否调整训练；[执行前方案](docs/ootang_bplus_origin_learning_plan.v1.19.md)
+与全部旧失败、条件历史回测边界保持。
+
+此前完成 [v1.18 固定历史网络依赖诊断](docs/ootang_bplus_history_diagnostics_results.v1.18.md)：
 固定九个 H 权重，科学求值 408 次、12.480 秒，0 训练/物理拟合。历史响应非零，但
 保留历史相对同权重屏蔽仅 3/8 点窗预测误差同时下降；432 日 ATU1/ATU5 全窗反向，
 ATU5 预测修正需求 RMS 为训练样本的 32.2119 倍，612 日 MJ3 为 11.2766 倍。
@@ -108,7 +116,15 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新固定历史网络诊断，不训练、改参数或写入产物：
+复核最新 IN/OOF 的 checkpoint、样本、时序和概率指标，不训练或写入产物：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python \
+  -m physics_guided_origin_learning.run --run-id 20260911_origin_learning --verify
+```
+
+复核此前固定历史网络诊断，不训练、改参数或写入产物：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
