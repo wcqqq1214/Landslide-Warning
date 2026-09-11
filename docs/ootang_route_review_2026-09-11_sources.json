@@ -1,0 +1,210 @@
+{
+  "date": "2026-09-11",
+  "source_git_commit": "7fc5f297c128c4c3e7409806d51b95b2cfd1721d",
+  "scope": "read-only aggregation of versioned saved metrics; no model execution or fitting",
+  "new_model_calls": 0,
+  "new_parameter_updates": 0,
+  "learning_stages": [
+    {
+      "version": "v1.5",
+      "metrics_path": "results/ootang_bplus_v1_5/20260911_sample_learning/metrics.csv",
+      "strategies": [
+        "IN",
+        "OOF"
+      ]
+    },
+    {
+      "version": "v1.7",
+      "metrics_path": "results/ootang_bplus_v1_7/20260911_synchronized_correction/metrics.csv",
+      "strategies": [
+        "U",
+        "L"
+      ]
+    },
+    {
+      "version": "v1.9",
+      "metrics_path": "results/ootang_bplus_v1_9/20260911_state_pinn/metrics.csv",
+      "strategies": [
+        "R"
+      ]
+    },
+    {
+      "version": "v1.12",
+      "metrics_path": "results/ootang_bplus_v1_12/20260911_rate_learning/metrics.csv",
+      "strategies": [
+        "S"
+      ]
+    },
+    {
+      "version": "v1.17",
+      "metrics_path": "results/ootang_bplus_v1_17/20260911_history_learning/metrics.csv",
+      "strategies": [
+        "C",
+        "H"
+      ]
+    },
+    {
+      "version": "v1.19",
+      "metrics_path": "results/ootang_bplus_v1_19/20260911_origin_learning/metrics.csv",
+      "strategies": [
+        "IN",
+        "OOF"
+      ]
+    },
+    {
+      "version": "v1.21",
+      "metrics_path": "results/ootang_bplus_v1_21/20260911_balanced_origin/metrics.csv",
+      "strategies": [
+        "IN",
+        "OOF"
+      ]
+    },
+    {
+      "version": "v1.25",
+      "metrics_path": "results/ootang_bplus_v1_25/20260911_sequence_learning/metrics.csv",
+      "strategies": [
+        "IN_CARRY",
+        "IN_RESET",
+        "OOF_CARRY",
+        "OOF_RESET"
+      ]
+    }
+  ],
+  "source_files": {
+    "results/ootang_bplus_v1_5/20260911_sample_learning/metrics.csv": {
+      "bytes": 10752,
+      "sha256": "109ef21cc42960fe6243d1ac2b0f57135737e52daaf79613aed68c0f3200f6a6"
+    },
+    "results/ootang_bplus_v1_7/20260911_synchronized_correction/metrics.csv": {
+      "bytes": 10467,
+      "sha256": "0fffde8e5969ea8e5c93d369de6718e775b19567674f5d8bfa60aede51883576"
+    },
+    "results/ootang_bplus_v1_7/20260911_synchronized_correction/comparisons.csv": {
+      "bytes": 3589,
+      "sha256": "4e7a3d3a2345ed35729e4a614cbc321e66f3c2816251b32ff0cc68a8fc08c5c0"
+    },
+    "results/ootang_bplus_v1_9/20260911_state_pinn/metrics.csv": {
+      "bytes": 10503,
+      "sha256": "1e9075a01fa0b7d69568fb8ebaaf02afa0accb872eeced4f22490e344738a8dd"
+    },
+    "results/ootang_bplus_v1_9/20260911_state_pinn/comparisons.csv": {
+      "bytes": 6313,
+      "sha256": "ea4e6a73ad8d6ddb9cfd4fb90ad2cd03f69840908e9ad7428883da61bd94c6eb"
+    },
+    "results/ootang_bplus_v1_12/20260911_rate_learning/metrics.csv": {
+      "bytes": 10513,
+      "sha256": "41cfb42fb1545c48f8dceba1a04f898222d356f19bfcdc3775a97cdb726bbd8a"
+    },
+    "results/ootang_bplus_v1_12/20260911_rate_learning/comparisons.csv": {
+      "bytes": 2346,
+      "sha256": "1dfeabeafd55a4931e60cee688e4f849329ac795251b497373f8786e5f595e04"
+    },
+    "results/ootang_bplus_v1_17/20260911_history_learning/metrics.csv": {
+      "bytes": 13997,
+      "sha256": "4b870f0bd426e8b85913afdc84e7f4c4aafe7c8a4b7a0ed320de16d7c32c9d0e"
+    },
+    "results/ootang_bplus_v1_17/20260911_history_learning/comparisons.csv": {
+      "bytes": 7755,
+      "sha256": "b8a8c1a95b00b3008455a3579693c27860ab14073a6b48d85d3dd16d08f500d4"
+    },
+    "results/ootang_bplus_v1_19/20260911_origin_learning/metrics.csv": {
+      "bytes": 10627,
+      "sha256": "eb47247f9eaface2ef1dde417f8b6161076a0901ea2bda502188313b4aff2bb5"
+    },
+    "results/ootang_bplus_v1_19/20260911_origin_learning/comparisons.csv": {
+      "bytes": 3577,
+      "sha256": "81dc0078a510d6a2f3c4770259641ec70948edec72d201513b5bc494a28c5869"
+    },
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/metrics.csv": {
+      "bytes": 10614,
+      "sha256": "f9000b6fc9403e070b29385e3bd460ee049e182a8a4127f36e1ff9b5f99b06ad"
+    },
+    "results/ootang_bplus_v1_21/20260911_balanced_origin/comparisons.csv": {
+      "bytes": 3633,
+      "sha256": "dc83945b55a6ad0fe81950a8dcd2ad6698c899965df832416c2d3907faec4859"
+    },
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/metrics.csv": {
+      "bytes": 17962,
+      "sha256": "bc437b4e967f6042c770a7322c828be0bf403d7b0fde6290612a8ffabc356623"
+    },
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/comparisons.csv": {
+      "bytes": 11026,
+      "sha256": "d5296776a22b96a07637ad82f6bd7f501f9205840b8b60122904abe71a92a860"
+    },
+    "results/ootang_bplus_v1_1/20260910_implementation/metrics.csv": {
+      "bytes": 312082,
+      "sha256": "93a45baa98109ca28b146a58c4fdfdd0643fdf69fb85349be14b339c8ae2eae2"
+    },
+    "results/ootang_bplus_v1_1/20260910_implementation/selection.json": {
+      "bytes": 4959,
+      "sha256": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c"
+    },
+    "results/ootang_bplus_v1_3/20260910_increment/metrics.csv": {
+      "bytes": 10907,
+      "sha256": "1661b1a6d67360cf25f49213f962d02ade709f4086441eaf921f527d56f03e4e"
+    },
+    "results/ootang_bplus_v1_3/20260910_increment/comparison.csv": {
+      "bytes": 19265,
+      "sha256": "306f8aee5cb5382c03d848fc53bee72d869d7312e73a6cff142057256e11a30a"
+    },
+    "results/ootang_bplus_v1_4/20260911_selection/metrics.csv": {
+      "bytes": 3301,
+      "sha256": "9c17e526b0e03b601b7c7496e239300ef1a8979d77bdb394e848a7771db3acc0"
+    },
+    "results/ootang_bplus_v1_4/20260911_selection/comparison.csv": {
+      "bytes": 3160,
+      "sha256": "d1fee946f9031625d9f1b4110934bb6be38ce928879ef96230380fe7fb975008"
+    },
+    "docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md": {
+      "bytes": 27499,
+      "sha256": "f82b4d94ed91872cecc47d21524cde7d5f57db8318af538b2f019d179109ff28"
+    },
+    "docs/ootang_bplus_sample_learning_plan.v1.5.md": {
+      "bytes": 9886,
+      "sha256": "2a9f68c6f4e69493cb638f9dcdeb55ec8bad7fb2591ed282060cf33831535432"
+    },
+    "docs/ootang_bplus_sequence_learning_plan.v1.25.md": {
+      "bytes": 6377,
+      "sha256": "a57953ee83f5f814eab2e4644d165b7db43e6a00e83ea2f416c39530d66741df"
+    },
+    "docs/ootang_bplus_sequence_learning_results.v1.25.md": {
+      "bytes": 11468,
+      "sha256": "d36969c48e09f3a6d6e2efa11114a2a08d967aed2dbca93a6bd43a6b30904d7d"
+    },
+    "docs/ootang_bplus_state_pinn_results.v1.9.md": {
+      "bytes": 11923,
+      "sha256": "99974084aebb6da04f6a417a9e8ea9a6508c159955472c7cc53ee36a18e48a31"
+    },
+    "docs/ootang_bplus_history_diagnostics_results.v1.18.md": {
+      "bytes": 9587,
+      "sha256": "5f20d7fa2224997c30fd54b75f20100c914d1828e6d7b404a1c01e932b5a5b8a"
+    },
+    "docs/ootang_bplus_teacher_condition_review.v1.23.md": {
+      "bytes": 13540,
+      "sha256": "165d6f84670c12cc4d8ccbc2c8d5d4f638123fa56919dc9683fc97842bd8bcc0"
+    },
+    "docs/ootang_bplus_temporal_features_results.v1.14.md": {
+      "bytes": 8372,
+      "sha256": "cfd711b927c0dacf65f8b8a9e72d3fa3ad28f0d1aadd53e8e391610ce007e7c3"
+    },
+    "docs/ootang_bplus_sequence_state_diagnostics_plan.v1.26.md": {
+      "bytes": 5667,
+      "sha256": "438c8a0466ffd655a6c0f3223758b24ed536fdab32ef53e9598b145e263c832a"
+    },
+    "config/ootang_bplus_sequence_state_diagnostics.v1_26.json": {
+      "bytes": 1614,
+      "sha256": "bcbe272adb93ef9171b39c77b9861476e48d5ed6e3c87832308b348dcf6801de"
+    }
+  },
+  "validation": {
+    "learning_stage_count": 8,
+    "learned_method_count": 16,
+    "summary_rows": 34,
+    "common_P0_verified_abs_rel_tolerance": 1e-12,
+    "strict_threshold_mm": 1e-06,
+    "existing_comparison_flags_checked": 112,
+    "highest_strict_count_out_of_8": 3,
+    "methods_improving_both_windows_rmse_mm": 0,
+    "methods_improving_both_windows_crps_mm": 0
+  }
+}

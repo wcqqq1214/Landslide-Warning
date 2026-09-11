@@ -1,165 +1,30 @@
 # Landslide-Warning
 
-藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
-比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
+藕塘滑坡位移概率预测科研原型。当前范围为同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
+目标是通过改进 B+ 物理引导，降低预测误差并改善概率区间。
 
-最新完成 [v1.25 连续预测有限学习](docs/ootang_bplus_sequence_learning_results.v1.25.md)：
-四组 IN/OOF × CARRY/RESET，3,600 次更新、约 14.6 分钟，0 新物理拟合。
-四组严格改善均 **2/8**；IN_CARRY 两窗预测平均 RMSE 为 59.2967/25.4071，
-OOF_CARRY 为 59.4546/28.8947 mm，均高于 B+ 的 58.0122/22.2448。
-拟合目标下降，预测 CRPS 仍未超过 B+；远期历史梯度仍弱。19 项相关测试及两次
-有限数值核验通过，全部 36 个训练实例、概率结果和负结果已分步备份。
-下一步先固定现有权重检查状态传递与不同步长的修正，当前无后续训练预算。
-[执行前方案](docs/ootang_bplus_sequence_learning_plan.v1.25.md)和
-[实现/运行入口](docs/ootang_bplus_sequence_learning_implementation.v1.25.md)可追溯；整体目标未完成。
+**2026-09-11：按用户要求暂停自动追加实验与诊断，先完成路线纠偏。**
+[路线复盘与效果总表](docs/ootang_route_review_2026-09-11.md) 汇总八轮主要学习、16 个变体：
+没有一个同时降低两个预测窗的平均 RMSE，也没有一个同时降低两窗平均 CRPS；严格四项改善最高 3/8。
+当前保留 B+ 基线，整体精度与概率目标未完成。实现核验通过不代表预测有效。
 
-此前完成 [v1.24 历史编码与连续预测接口](docs/ootang_bplus_sequence_interface_results.v1.24.md)：
-同一 7,569 参数网络按日历编码历史、连续展开未来；15 个真实案例的 B+ 基线、
-前缀/分段一致性、独立 NumPy 参考和方向梯度核验通过，0 训练更新或物理拟合。
-未训练探针的长期历史梯度明显衰减，不能将接口通过当成预测有效。
-15 项合成测试及一次封存复核通过，后续有限学习见 v1.25，整体目标未完成。
-[执行前方案](docs/ootang_bplus_sequence_interface_plan.v1.24.md)及全部旧结果保持。
+最新 [v1.25 结果](docs/ootang_bplus_sequence_learning_results.v1.25.md)：四组严格改善均 2/8；
+IN_CARRY 两窗预测平均 RMSE 为 59.2967/25.4071 mm，高于 B+ 的 58.0122/22.2448 mm，
+四组两窗平均 CRPS 均未改善。全部旧模型、种子与负结果保留。
 
-此前完成 [v1.23 教师条件与时序表达审查](docs/ootang_bplus_teacher_condition_review.v1.23.md)：
-1,515 条样本、四组 54 维参数和 117,900 个窗口时间位置核对通过，0 新模型求值/拟合。
-OOF paired 的旧教师各绑定一个预测起点；当前网络按目标日分别编码两个不同时间基准的窗口。
-推荐下一版验证历史/未来日期对齐和编码状态连续传递，暂不选择新增教师参数学习。
-该审查当时提出有原文依据的结构候选，后续实现和学习见 v1.24/v1.25；整体目标未实现。
-[执行前方案](docs/ootang_bplus_teacher_condition_review_plan.v1.23.md)与全部旧结果保持。
+v1.26 未完成草稿已[封存](archive/paused/ootang_sequence_state_v1_26/README.md)，未运行。
+后续只有在一个具体候选的依据、总时间上限及失败退出条件确定后才考虑执行；当前没有新实验授权。
+详细状态见 [progress](docs/progress.md)，逐窗概率与误差汇总见
+[汇总数据](docs/ootang_route_review_2026-09-11_metrics.csv)。
 
-此前完成 [v1.22 同 lead 输入与修正迁移诊断](docs/ootang_bplus_input_transfer_results.v1.22.md)：
-固定距离单邻居探针，11.682 秒，0 新训练/网络求值/物理拟合。OOF 两窗预测平均
-RMSE 为 57.3992/98.5816 mm，P0 为 58.0122/22.2448；IN/OOF 预测两项同降均 2/8。
-第二窗的输入距离相对过去参考较近，但修正迁移失败；不能据此断言输入无信息。
-14 项测试及两次独立核验通过，整体目标未实现。[执行前方案](docs/ootang_bplus_input_transfer_plan.v1.22.md)
-保持；下一步先审查模型对物理教师条件和阶段变化的表达，本版不追加训练。
+原三组为 M0 改进 B+、M1 ConvLSTM、M2 方程内修正混合模型，后续另有状态 PINN。
+M2 不是经典 PINN；早期八点 ConvLSTM–NGBoost–SHAP 属于历史阶段，不纳入当前四点比较。
+所有旧方案、原始结果与方法边界保留在版本文档、产物与 Git 历史中。
 
-此前完成 [v1.21 逐步梯度平衡对照](docs/ootang_bplus_balanced_origin_results.v1.21.md)：
-1,800 更新、552.014 秒，0 新物理拟合/积分。OOF 拟合 RMSE 降至 1.4150/1.6353 mm，
-预测仍为 59.1106/26.9027，高于 B+ 的 58.0122/22.2448；IN/OOF 严格改善均 3/8。
-1,796/1,800 步两块实际同降，但恢复拟合伴随旧起点配对块误差增大，概率目标也未实现。
-15 项测试及两次独立数值核验通过；[执行前方案](docs/ootang_bplus_balanced_origin_plan.v1.21.md)
-和全部负结果保持。下一步检查输入与修正需求的跨期关系，本版不追加训练。
+## 历史四点实验的复现参考
 
-此前完成 [v1.20 固定两目标梯度诊断](docs/ootang_bplus_origin_gradients_results.v1.20.md)：
-90 checkpoint、74.144 秒，0 训练/物理拟合。612 日 OOF 最终三个种子的配对块
-梯度为拟合块的约 12–17 倍，共同负梯度方向均使拟合块局部上升，支持另版检验
-目标尺度平衡；不代表原 Adam 实际方向或预测失败的唯一原因。13 项测试、72 项
-差分及独立回放通过，整体目标未实现。原 NumPy 数值警告保留，另做标量复查一致。
-[执行前方案](docs/ootang_bplus_origin_gradients_plan.v1.20.md)与全部负结果保持。
-
-此前完成 [v1.19 起点历史 IN/OOF 有限学习](docs/ootang_bplus_origin_learning_results.v1.19.md)：
-1,800 更新、506.138 秒，无新物理拟合/积分。两窗预测平均 RMSE：IN 58.9612/25.1138、
-OOF 59.6529/33.6124，仍高于 B+ 的 58.0122/22.2448 mm；严格改善为 2/8、1/8。
-总训练损失下降，但 612 日 OOF 一个种子的拟合块损失增加 13.7187%。15 项测试及
-独立 checkpoint/样本/概率核验通过，整体目标未实现。下一步另版检查两训练块的
-梯度大小与方向，再决定是否调整训练；[执行前方案](docs/ootang_bplus_origin_learning_plan.v1.19.md)
-与全部旧失败、条件历史回测边界保持。
-
-此前完成 [v1.18 固定历史网络依赖诊断](docs/ootang_bplus_history_diagnostics_results.v1.18.md)：
-固定九个 H 权重，科学求值 408 次、12.480 秒，0 训练/物理拟合。历史响应非零，但
-保留历史相对同权重屏蔽仅 3/8 点窗预测误差同时下降；432 日 ATU1/ATU5 全窗反向，
-ATU5 预测修正需求 RMS 为训练样本的 32.2119 倍，612 日 MJ3 为 11.2766 倍。
-13 项测试及独立回放/数值核验通过，整体目标未实现。下一步另版固定带历史和起点
-步长的 IN/OOF 样本对照，保留 v1.5 旧 OOF 失败和全部条件历史回测限制。
-
-此前完成 [v1.17 起点历史编码学习对照](docs/ootang_bplus_history_learning_results.v1.17.md)：
-固定 1,800 更新、215.982 秒，无新物理拟合/积分。H 加入历史后相对同结构 C 的预测
-误差在 7/8 点窗下降，但严格超过 B+ 仅 3/8，预测平均 RMSE 58.9127/24.8298 mm
-仍高于 B+ 的 58.0122/22.2448；概率评分也未改善。13 项测试与全部 checkpoint/
-时序/数值核验通过，整体目标未实现。[执行前方案](docs/ootang_bplus_history_learning_plan.v1.17.md)
-和全部种子、负结果保持，下一步先检查固定模型对历史的依赖及修正需求差异。
-
-此前完成 [v1.16 历史信息审计及补充接口核验](docs/ootang_bplus_history_availability_results.v1.16.md)：
-原三来源等值核对失败，导师 CSV 有最大约 5e-12 mm 的末位差异；原门限和失败保留。
-公开 CSV/XLSX 前 612 日六列一致，按[补充方案](docs/ootang_bplus_history_completion_plan.v1.16.1.md)
-生成四起点各 30 日的历史位移/增量，补充执行 3.440 秒，0 新拟合或预测。
-14 项测试及逐格核验通过。接口只读取过去，原始日值当时可用性仍未知；后续有限
-学习对照见 v1.17。接口完成不代表整体四点精度/概率目标已实现。
-
-此前完成 [v1.15 冻结修正分组与范围诊断](docs/ootang_bplus_temporal_decomposition_results.v1.15.md)：
-762 行、3.237 秒，0 新拟合/神经/力学调用。第三窗 ATU1 的大负修正在数值上主要
-对应 s/p 线性项，扣开超范围部分后均值仍反向；不能据此把限幅当成修复。6 项测试
-与全部分解/原指标复核通过，整体目标仍未实现。源码核对发现当前四点 M1 的 u/du
-来自 B+；后续预测起点历史信息审计见 v1.16，历史编码效果尚未验证。
-[执行前方案](docs/ootang_bplus_temporal_decomposition_plan.v1.15.md)与
-[分组热图](results/ootang_bplus_v1_15/20260911_temporal_decomposition/group_means.png)保留。
-
-此前完成 [v1.14 训练内时序输入对照](docs/ootang_bplus_temporal_features_results.v1.14.md)：
-固定 9 次岭回归，约 8.419 秒，0 新神经/力学调用。增加 30 日历史和 B+ 状态的 HHS
-三窗预测平均 RMSE 为 16.3382/24.6583/72.1319 mm，P0 为 18.2392/29.5090/58.0122；
-前两窗改善，第三窗明显恶化，不能据此直接扩充原神经模型。11 项测试、九组正规
-方程及完整时序/指标复核通过，整体目标未实现。下一步先分解辅助修正和输入跨期变化。
-[执行前方案](docs/ootang_bplus_temporal_features_plan.v1.14.md)及
-[十二面板对照图](results/ootang_bplus_v1_14/20260911_temporal_features/temporal_corrections.png)保留。
-
-此前完成 [v1.13 修正与尺度诊断](docs/ootang_bplus_rate_diagnostics_results.v1.13.md)：
-只读冻结数组，0 新训练/力学调用。第一预测窗 ATU1/ATU5 的修正大多与实际需求反向，
-第二窗 MJ3 三种子均整窗反向；第二窗没有倍率接近边界，单维输入越界也仅 7/180 日，
-不能据此直接放宽倍率。原尺度跨期同时存在过大与不足，下一步先检查训练内修正信息
-与时序关系，再决定有限对照。270 行诊断、9 项测试和全部数值复核通过，整体目标未实现。
-[执行前方案](docs/ootang_bplus_rate_diagnostics_plan.v1.13.md)与
-[需求/修正对照图](results/ootang_bplus_v1_13/20260911_rate_diagnostics/correction_demand.png)保留。
-
-此前完成 [v1.12 直接力学输出学习](docs/ootang_bplus_rate_learning_results.v1.12.md)：
-同一 G 通过原 Day 训练并预测，固定 1,800 次更新约 6.03 分钟，36 checkpoint 与
-9 次原算法独立回放均通过核验。全部点窗训练误差下降，但预测平均 RMSE 为
-58.8431/24.7192 mm，仍高于 B+ 的 58.0122/22.2448，严格改善仅 2/8。
-概率区间仍有过宽和欠覆盖，整体目标未实现；[执行前方案](docs/ootang_bplus_rate_learning_plan.v1.12.md)
-及旧负结果保持。后续修正通道与跨期尺度诊断见 v1.13，本版没有追加训练。
-
-此前完成 [v1.11 共享力学路径验证](docs/ootang_bplus_shared_mechanics_results.v1.11.md)：
-36 条验证轨迹、4 次完整历史反向约 7.945 秒，0 训练更新；12 组完整输出与旧 B+/R
-的四点均值最大差 2.274e-13 mm，6/6 指定小步长导数及未来隔离检查通过。
-[v1.11 执行前方案](docs/ootang_bplus_shared_mechanics_plan.v1.11.md)保留，本版验证本身不代表预测有效。
-
-此前完成 [v1.10 冻结 PINN 梯度与轨迹诊断](docs/ootang_bplus_pinn_consistency_results.v1.10.md)：
-52 次网络求值、324 次梯度、9 组代数分解，约 8 秒，0 训练更新/力学调用，数值检查通过。
-342 日最终物理梯度约为数据梯度的 4,136–6,002 倍；612 日 ATU1/ATU5 的大 P/R 差
-主要对应塑性状态差，不能只据此增大运动残差权重。旧 M2 已通过求解器训练但泛化失败。
-同一速率网络下共享力学路径的原型验证见 v1.11；有限训练另行登记。
-本诊断没有新的预测改善结果，整体目标仍未完成。
-
-此前完成 [v1.9 状态 PINN 实验与补充核验](docs/ootang_bplus_state_pinn_results.v1.9.md)：
-1,800 次训练更新、9 次原力学回放，约 7.68 分钟至核验前。原进程因保存前后检查项数
-不同而退出 1，失败记录保留；独立补充核验通过，没有追加训练/积分或修改物理门限。
-主输出 R 两窗预测平均 RMSE 为 57.7985/45.8646 mm，B+ 为 58.0122/22.2448；
-严格改善 2/8，整体目标未实现。第二窗网络状态与力学回放明显分离，后续诊断见 v1.10。
-[均值对比图](results/ootang_bplus_v1_9/20260911_state_pinn_summary/forecast_means.png)。
-
-此前完成 [v1.7 同步重拟合与受限修正](docs/ootang_bplus_synchronized_correction_results.v1.7.md)：
-18 个模型共 1,800 次更新、19.27 分钟，无新物理拟合/前向。普通/受限修正均只达到
-3/8 点窗严格改善；训练拟合明显改善，但预测和概率评分仍未超过 B+。
-[v1.8 PINN 真实子步核验](docs/ootang_bplus_pinn_substep_audit_results.v1.8.md)已完成：
-三次积分、123,072 子步通过方程/活动集检查，日末四点均值与原保存值差为 0 mm。
-[v1.9 核心实现记录](docs/ootang_bplus_state_pinn_implementation.v1.9.md)为训练前历史状态；
-[有限方案](docs/ootang_bplus_state_pinn_plan.v1.9.md)和固定主输出定义保持。
-
-此前完成 [v1.6 新旧 B+ 同日对照](docs/ootang_bplus_teacher_transfer_results.v1.6.md)：
-固定网络和尺度，4 次原物理前向及 2 条独立力学核验，约 9.21 秒，无新训练。
-旧教师下修正也未稳定改善四点；部分点更换教师后 B+ 已改善，网络仍保留相近的正修正，
-导致过度修正。后续同步重拟合和受限修正的结果见 v1.7。
-[执行前方案](docs/ootang_bplus_teacher_transfer_plan.v1.6.md)及全部负结果保持。
-
-此前完成 [v1.5 ConvLSTM 样本来源对照](docs/ootang_bplus_sample_learning_results.v1.5.md)：
-同一网络以拟合误差/过去外推误差训练，各两窗三种子 100 轮，共 1,200 次更新。
-严格逐点同时改善分别为 2/8、0/8；外推样本组两窗平均预测 RMSE 58.1161/42.1026 mm，
-B+ 为 58.0122/22.2448 mm，仍未稳定改善四点。尺度迁移与概率覆盖局限保留。
-[执行前学习方案](docs/ootang_bplus_sample_learning_plan.v1.5.md) 与
-[误差诊断结果](docs/ootang_bplus_error_structure_results.v1.5.md) 独立保留；本版按预算结束。
-此前完成 [v1.4 优化及内部选模对照](docs/ootang_bplus_optimization_selection_results.v1.4.md)，
-仅使用前 792 日。同前缀续算的训练目标小幅下降，但未达既定梯度容差；内部选模在一个
-历史窗口改善预测、另一个窗口变差，逐点严格同时改善为 **0/8**。本次未新增神经网络训练。
-[v1.4 检查](docs/ootang_bplus_optimization_review.v1.4.md) 与
-[执行前方案](docs/ootang_bplus_optimization_selection_plan.v1.4.md) 独立保留。
-[v1.3 结果](docs/ootang_bplus_increment_results.v1.3.md) 保留两个窗口预测误差变差、1/8 的结论。
-前版 [v1.2 前缀诊断结果](docs/ootang_bplus_diagnostics_results.v1.2.md) 独立保留。
-已完成的三模型规格为[实验计划 v1.1](docs/ootang_bplus_probabilistic_experiment_plan.v1.1.md)，
-开发、验证及结果见[实施记录](docs/ootang_bplus_probabilistic_implementation.v1_1.md)。
-本阶段不做预警、不换案例。旧 ConvLSTM–NGBoost–SHAP 结果保留为历史阶段证据。
-v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前保留 M0 基线。
-
-## 当前四点 B+ 实验
+下列命令仅保留为历史复现资料，不是当前待执行步骤。部分 `--verify` 仍会运行模型或梯度计算；
+暂停期间不自动批量执行，当前工作范围以 [AGENTS.md](AGENTS.md) 和路线复盘为准。
 
 复核最新同 lead 输入迁移的距离、选择、样本、时序和指标，不训练或写入产物：
 
