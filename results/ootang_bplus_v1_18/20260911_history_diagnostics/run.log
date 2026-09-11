@@ -1,0 +1,4 @@
+{"fit_days": 342, "queries": 627, "forward_calls": 30, "neural_updates": 0}
+{"fit_days": 432, "queries": 769, "forward_calls": 72, "neural_updates": 0}
+{"fit_days": 612, "queries": 1052, "forward_calls": 126, "neural_updates": 0}
+{"status": "completed", "numerical_verification": true, "scientific_forward_calls": 408, "neural_updates": 0}

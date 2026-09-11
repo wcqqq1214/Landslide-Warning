@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "checkpoint_replays": 18,
+  "replay_forward_calls": 282,
+  "input_values_checked": 13512960,
+  "numeric_values_checked": 108821,
+  "max_absolute_difference": 1.9099388737231493e-11,
+  "demand_rows": 144,
+  "model_rows": 576,
+  "lead_coverage_rows": 540,
+  "protected_files_checked": 2292,
+  "new_neural_updates": 0,
+  "new_physical_forwards": 0,
+  "raw_observation_as_of_verified": "unknown"
+}

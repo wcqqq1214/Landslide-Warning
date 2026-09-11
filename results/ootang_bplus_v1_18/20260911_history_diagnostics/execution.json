@@ -1,0 +1,9 @@
+{
+  "primary_forward_calls": 126,
+  "neural_updates": 0,
+  "gradient_calls": 0,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "scaler_fits": 0,
+  "probability_scale_fits": 0
+}

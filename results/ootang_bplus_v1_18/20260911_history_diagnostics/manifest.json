@@ -1,0 +1,90 @@
+{
+  "specification": {
+    "version": "1.18",
+    "protocol": "docs/ootang_bplus_history_diagnostics_plan.v1.18.md",
+    "source_run": "results/ootang_bplus_v1_17/20260911_history_learning",
+    "source_index_sha256": "6b4bd6c118102fd162da30b820b395add248be5f284d94633037f9ccb7a7d541",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "checkpoint_epoch": 100,
+    "variants": [
+      "H",
+      "H0"
+    ],
+    "query_counts": {
+      "342": 627,
+      "432": 769,
+      "612": 1052
+    },
+    "lead_bands": [
+      [
+        0,
+        30
+      ],
+      [
+        30,
+        90
+      ],
+      [
+        90,
+        180
+      ]
+    ],
+    "direction_tolerance_mm": 1e-06,
+    "numeric_tolerance": 1e-08,
+    "primary_batch": 128,
+    "replay_batch": 53,
+    "primary_forward_calls": 126,
+    "replay_forward_calls": 282,
+    "scientific_forward_calls": 408,
+    "total_with_sealed_verification": 690,
+    "demand_rows": 144,
+    "model_rows": 576,
+    "lead_coverage_rows": 540,
+    "neural_updates": 0,
+    "gradient_calls": 0,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "scaler_fits": 0,
+    "probability_scale_fits": 0,
+    "cpu_threads": 1,
+    "max_processes": 1,
+    "hard_timeout_seconds": 180,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "80ff6e3a2259a72aa5126a646b8139a903771039c026e6a0af0553ec04adbd79",
+  "plan_sha256": "190bcab4fd03e33812c148717d00ea06fa45471fbf38dad68091f9c5147f1b8e",
+  "sources": {
+    "code/physics_guided_history_diagnostics/__init__.py": "b322a06dd271bb10865cbb0b9f5cec846ed096bb72dd0dc38affee6da12b1c87",
+    "code/physics_guided_history_diagnostics/core.py": "788281e69d855d2c042042474844d273875988362cb4772727c13f80f82b351b",
+    "code/physics_guided_history_diagnostics/run.py": "c8b5c12af81eb962517990adfe36d12f4c124183a6b061c9c3bc897ab6f9f399",
+    "code/physics_guided_history_diagnostics/verify.py": "1ce237bfadac01e188191ba7d4d0319b4d738b04263245b417a32bf54bb2b9cb",
+    "code/physics_guided_history_diagnostics/workflow.py": "67ebf88ef9b8c397c39c8c0fe2c655507e7ecad5594f274d40655fe86e56160d",
+    "tests/test_physics_guided_history_diagnostics.py": "bc0543ef1f27ab63d2fa48d1491ac0a2f05870291fb0227a0939da3ff107874d",
+    "config/ootang_bplus_history_diagnostics.v1_18.json": "80ff6e3a2259a72aa5126a646b8139a903771039c026e6a0af0553ec04adbd79",
+    "docs/ootang_bplus_history_diagnostics_plan.v1.18.md": "190bcab4fd03e33812c148717d00ea06fa45471fbf38dad68091f9c5147f1b8e"
+  },
+  "started_utc": "2026-09-11T01:29:45.534468+00:00",
+  "git_commit": "9b13c03b685c28af9b4963b1e3e6afcd3e08ae1c",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "matplotlib": "3.10.9"
+  }
+}
