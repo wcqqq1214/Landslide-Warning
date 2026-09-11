@@ -9,8 +9,8 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
-| [v2.2 当前方向](ootang_tail_scope_and_direction.v2.2.md) | 导师尾段补充要求、范围待定位、分段复核优先；无新训练候选 |
-| [网页版路线审查提示词](ootang_web_route_review_prompt.md) | 固定 GitHub 来源与独立评估任务；不替代实验方案 |
+| [v2.2 当前方向](ootang_tail_scope_and_direction.v2.2.md) | 导师尾段补充要求、分段复核优先；原图定位进展见 progress，精确截点待定 |
+| [6pro 定向补审入口](ootang_web_route_review_prompt.md) / [文本材料包](review_materials/ootang_6pro_followup_20260911.md) | 补齐可读原件与导师尾段要求，聚焦时段差异和唯一下一步；不是实验方案 |
 | [v2.1 暂缓候选](ootang_probability_pinn_plan.v2.1.md) / [冻结配置](../config/ootang_probability_pinn.v2_1.json) | 原样保留的概率 PINN 设计，当前不直接进入实现；尚无训练结果 |
 | [v2.0 结果](ootang_convlstm_direct_results.v2.0.md) / [冻结方案](ootang_convlstm_direct_plan.v2.0.md) | 5/8 严格均值改善，整体未达标；一次有界实验已停止 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
