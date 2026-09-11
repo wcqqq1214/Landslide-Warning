@@ -1,0 +1,33 @@
+{
+  "version": "1.16",
+  "protocol": "docs/ootang_bplus_history_availability_plan.v1.16.md",
+  "source_run": "results/ootang_bplus_v1_15/20260911_temporal_decomposition",
+  "source_index_sha256": "6aac1cddab0c0815b274fa2ea4d3e2efb68d1d439685453f55f326e0f2c9842e",
+  "csv": "data/monitoring_data.csv",
+  "xlsx": "data/monitoring_data.xlsx",
+  "zip": "section2d_v4.zip",
+  "zip_member": "section2d_v4/work/delivery_final/outang_repro/work/monitoring.csv",
+  "zip_member_sha256": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+  "lineage_manifest": "figures/data_lineage/ootang_data_lineage_manifest.json",
+  "fingerprints": "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv",
+  "source_hashes": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "data/monitoring_data.xlsx": "a28a6a09ea660132eafe9508848dcb2958ba892f425489f63c81a7c31b2e4a3d",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "figures/data_lineage/ootang_data_lineage_manifest.json": "a9a8c7991a77420abff52ced51009e41bbe573023b6a58eaf2a94643287fd42c",
+    "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv": "ac89970e18d686fbcc78acf2f9596945244ebf02c507d47fc7aed8c7971a41af",
+    "docs/ootang_data_lineage_expert_review.md": "1b77439dcd21347bf0866df21fcca033126c43a59d0b72a12ba08b87154c1fa4",
+    "code/convlstm/data_lineage_audit.py": "46e0edeea2635799ada5686b8aa0af015f1723ddd6be8f6bb8c80101c7353f78"
+  },
+  "origins": [252, 342, 432, 612],
+  "history_days": 30,
+  "max_label_prefix": 612,
+  "source_numeric_atol": 0.000000000001,
+  "numeric_atol": 0.0000000001,
+  "table_rows": {"origins": 4, "monthly_links": 16, "history": 480},
+  "timeout_seconds": 120,
+  "new_fits": 0,
+  "new_neural_calls": 0,
+  "new_physical_calls": 0,
+  "new_predictions": 0
+}
