@@ -5,6 +5,9 @@ import unittest
 import numpy as np
 import torch
 
+from physics_guided.training import optimizer
+from physics_guided_history_learning.verify import independent_windows
+
 from physics_guided_history_learning.core import (
     HISTORY_FLOOR,
     new_model,
@@ -14,6 +17,7 @@ from physics_guided_history_learning.core import (
     training_scalers,
     windows,
     predict,
+    mean_step,
 )
 
 
@@ -27,6 +31,40 @@ def example(h=70):
 
 
 class HistoryLearningTests(unittest.TestCase):
+    def test_independent_scalar_date_reconstruction_matches_inputs(self):
+        base, features, labels, scalers = example()
+        pairs = np.array([[31, 31], [50, 120], [70, 249]])
+        for strategy in ("C", "H"):
+            actual = windows(
+                base, features, labels, 70, pairs, *scalers, strategy
+            ).numpy()
+            expected = independent_windows(
+                base,
+                features,
+                labels,
+                pairs,
+                scalers[0].record(),
+                scalers[1].record(),
+                strategy,
+            )
+            np.testing.assert_array_equal(actual, expected)
+
+    def test_full_batch_update_changes_zero_head_with_finite_gradients(self):
+        base, features, labels, scalers = example()
+        pairs = training_pairs(70)
+        x = windows(base, features, labels, 70, pairs, *scalers, "H")
+        model = new_model(0)
+        loss, norm = mean_step(
+            model,
+            optimizer(model),
+            x,
+            torch.as_tensor(base[pairs[:, 1]]),
+            torch.as_tensor(labels[pairs[:, 1]]),
+        )
+        self.assertTrue(np.isfinite(loss))
+        self.assertGreater(norm, 0)
+        self.assertGreater(torch.count_nonzero(model.output.weight).item(), 0)
+
     def test_registered_training_sample_counts_and_boundaries(self):
         for h, count in ((342, 136), (432, 188), (612, 291)):
             pairs = training_pairs(h)
