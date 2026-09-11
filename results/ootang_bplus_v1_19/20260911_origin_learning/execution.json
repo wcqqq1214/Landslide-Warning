@@ -1,0 +1,8 @@
+{
+  "neural_updates": 1800,
+  "scale_fits": 6,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "scale_network_updates": 0,
+  "scaler_fits": 0
+}

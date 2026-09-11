@@ -1,0 +1,11 @@
+{
+  "fit_days": 432,
+  "label_read_utc": "2026-09-11T02:00:24.301792+00:00",
+  "labels_sha256": "4010f56812d9b74dfe6b01f7eb8b946ee2539b608d2fceea3262120b51fa94ed",
+  "feature_sha256": "6c3705fcd10fad8d9c8af5c664b49e287396df0354c5a8aa415d6e80fe705ad6",
+  "sample_hashes": {
+    "IN": "9914ce3e036094ebed68ae24cb8df945c183ebb75256f87087c46e09696d4fdc",
+    "OOF": "49292084048187187cddbab7f7d5e50e99d9f530ce73c7ed11f8517e63c51800"
+  },
+  "prior_lock_sha256": "79025189a91b9f8ef4a7d4e4b90cf07dc4a30f12e31de567f8544714a66f61ec"
+}

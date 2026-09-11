@@ -1,0 +1,133 @@
+{
+  "specification": {
+    "version": "1.19",
+    "protocol": "docs/ootang_bplus_origin_learning_plan.v1.19.md",
+    "diagnostic_source": "results/ootang_bplus_v1_18/20260911_history_diagnostics",
+    "diagnostic_index_sha256": "9bcf548869d1a26b6285c1e0edf07592727a8d3eae50fc5af7840d51aaa74dfd",
+    "history_learning_source": "results/ootang_bplus_v1_17/20260911_history_learning",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "teacher_source": "results/ootang_bplus_v1_5/20260911_sample_learning",
+    "input_csv": "data/monitoring_data.csv",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "teacher_recipes": {
+      "252": "B",
+      "342": "A",
+      "432": "B",
+      "612": "B"
+    },
+    "paired_origins": {
+      "342": [
+        252
+      ],
+      "432": [
+        252,
+        342
+      ],
+      "612": [
+        252,
+        342,
+        432
+      ]
+    },
+    "anchor_counts": {
+      "342": 136,
+      "432": 188,
+      "612": 291
+    },
+    "paired_counts": {
+      "342": 90,
+      "432": 270,
+      "612": 540
+    },
+    "unique_paired_dates": {
+      "342": 90,
+      "432": 180,
+      "612": 360
+    },
+    "total_counts": {
+      "342": 226,
+      "432": 458,
+      "612": 831
+    },
+    "anchor_weight": 0.5,
+    "paired_weight": 0.5,
+    "strategies": [
+      "P0",
+      "IN",
+      "OOF"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "input_channels": 23,
+    "hidden_channels": 16,
+    "model_parameters": 7569,
+    "epochs": 100,
+    "checkpoint_epochs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "gradient_clip": 1.0,
+    "loss_scale_mm": 100.0,
+    "forecast_days": 180,
+    "warmup_days": 30,
+    "sigma_floor_mm": 0.001,
+    "interval_levels": [
+      80,
+      90,
+      95
+    ],
+    "primary_interval": 90,
+    "strict_mean_tolerance_mm": 1e-06,
+    "max_neural_updates": 1800,
+    "scale_fits": 6,
+    "scaler_fits": 0,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "scale_network_updates": 0,
+    "cpu_threads": 1,
+    "max_processes": 1,
+    "hard_timeout_seconds": 1800,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "481ec70a85ca2d1b43bc3892b3b2f7bbe034fee4452fefd09cebc621ea6a0136",
+  "plan_sha256": "968108f0631d1367a92eb9b5f992218ab6d6c6dccf9124690de4bac01a53bffa",
+  "sources": {
+    "code/physics_guided_origin_learning/__init__.py": "e5952456a00d7efb19e69ef8145d0e51599eba0ee6109975fe64fa42121f7d11",
+    "code/physics_guided_origin_learning/core.py": "abf1bdbd4b6b0d3a8f28d4b58f7de857f2577b5ff506f0fade15835d1f5be9b7",
+    "code/physics_guided_origin_learning/run.py": "875b460345fc9ac9f73c68eea5eaebde763fa9641cd122f6a856eed5845fca88",
+    "code/physics_guided_origin_learning/support.py": "e9cfa7670437159e160f0c58329db76385e5f2d97e51594f985c275db5a9860f",
+    "code/physics_guided_origin_learning/verify.py": "fc27392d8512b90398331cc70c483d9e5cc6c7d0e00bd3c578cb966994343791",
+    "tests/test_physics_guided_origin_learning.py": "742775892bb892f409560eac3d54de90b4435794f16d84c0e197b271b3465b9d",
+    "config/ootang_bplus_origin_learning.v1_19.json": "481ec70a85ca2d1b43bc3892b3b2f7bbe034fee4452fefd09cebc621ea6a0136",
+    "docs/ootang_bplus_origin_learning_plan.v1.19.md": "968108f0631d1367a92eb9b5f992218ab6d6c6dccf9124690de4bac01a53bffa"
+  },
+  "started_utc": "2026-09-11T01:59:11.084746+00:00",
+  "input_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "git_commit": "d97adf9fd07741753fd4794d62df6779a08f5460",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  }
+}
