@@ -12,7 +12,7 @@
 IN_CARRY 两窗预测平均 RMSE 为 59.2967/25.4071 mm，高于 B+ 的 58.0122/22.2448 mm，
 四组两窗平均 CRPS 均未改善。全部旧模型、种子与负结果保留。
 
-v1.26 未完成草稿已[封存](archive/paused/ootang_sequence_state_v1_26/README.md)，未运行。
+v1.26 未运行的计划、配置与草稿已从工作树删除；历史备份见 Git `7fc5f29`。
 后续只有在一个具体候选的依据、总时间上限及失败退出条件确定后才考虑执行；当前没有新实验授权。
 详细状态见 [progress](docs/progress.md)，逐窗概率与误差汇总见
 [汇总数据](docs/ootang_route_review_2026-09-11_metrics.csv)。
