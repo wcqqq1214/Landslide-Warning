@@ -3,7 +3,14 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.22 同 lead 输入与修正迁移诊断](docs/ootang_bplus_input_transfer_results.v1.22.md)：
+最新完成 [v1.23 教师条件与时序表达审查](docs/ootang_bplus_teacher_condition_review.v1.23.md)：
+1,515 条样本、四组 54 维参数和 117,900 个窗口时间位置核对通过，0 新模型求值/拟合。
+OOF paired 的旧教师各绑定一个预测起点；当前网络按目标日分别编码两个不同时间基准的窗口。
+推荐下一版验证历史/未来日期对齐和编码状态连续传递，暂不选择新增教师参数学习。
+这是有原文依据的结构候选，尚未实现或验证效果；整体目标未实现。
+[执行前方案](docs/ootang_bplus_teacher_condition_review_plan.v1.23.md)与全部旧结果保持。
+
+此前完成 [v1.22 同 lead 输入与修正迁移诊断](docs/ootang_bplus_input_transfer_results.v1.22.md)：
 固定距离单邻居探针，11.682 秒，0 新训练/网络求值/物理拟合。OOF 两窗预测平均
 RMSE 为 57.3992/98.5816 mm，P0 为 58.0122/22.2448；IN/OOF 预测两项同降均 2/8。
 第二窗的输入距离相对过去参考较近，但修正迁移失败；不能据此断言输入无信息。
