@@ -3,7 +3,14 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.21 逐步梯度平衡对照](docs/ootang_bplus_balanced_origin_results.v1.21.md)：
+最新完成 [v1.22 同 lead 输入与修正迁移诊断](docs/ootang_bplus_input_transfer_results.v1.22.md)：
+固定距离单邻居探针，11.682 秒，0 新训练/网络求值/物理拟合。OOF 两窗预测平均
+RMSE 为 57.3992/98.5816 mm，P0 为 58.0122/22.2448；IN/OOF 预测两项同降均 2/8。
+第二窗的输入距离相对过去参考较近，但修正迁移失败；不能据此断言输入无信息。
+14 项测试及两次独立核验通过，整体目标未实现。[执行前方案](docs/ootang_bplus_input_transfer_plan.v1.22.md)
+保持；下一步先审查模型对物理教师条件和阶段变化的表达，本版不追加训练。
+
+此前完成 [v1.21 逐步梯度平衡对照](docs/ootang_bplus_balanced_origin_results.v1.21.md)：
 1,800 更新、552.014 秒，0 新物理拟合/积分。OOF 拟合 RMSE 降至 1.4150/1.6353 mm，
 预测仍为 59.1106/26.9027，高于 B+ 的 58.0122/22.2448；IN/OOF 严格改善均 3/8。
 1,796/1,800 步两块实际同降，但恢复拟合伴随旧起点配对块误差增大，概率目标也未实现。
@@ -130,7 +137,15 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新梯度平衡实验的 checkpoint、日志、样本、时序和概率，不训练或写入产物：
+复核最新同 lead 输入迁移的距离、选择、样本、时序和指标，不训练或写入产物：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python \
+  -m physics_guided_input_transfer.run --run-id 20260911_input_transfer --verify
+```
+
+复核此前梯度平衡实验的 checkpoint、日志、样本、时序和概率，不训练或写入产物：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
