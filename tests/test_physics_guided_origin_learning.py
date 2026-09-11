@@ -18,6 +18,10 @@ from physics_guided_origin_learning.core import (
     mean_step,
     query_table,
 )
+from physics_guided_origin_learning.verify import (
+    independent_samples,
+    independent_losses,
+)
 
 
 def fixture(h=342):
@@ -49,6 +53,31 @@ class LinearProbe(torch.nn.Module):
 
 
 class OriginLearningTests(unittest.TestCase):
+    def test_independent_date_constructor_rebuilds_both_sample_sources(self):
+        labels, teachers, scalers = fixture(612)
+        records = dict(physical=scalers[0].record(), history=scalers[1].record())
+        for strategy in ("IN", "OOF"):
+            samples = make_samples(strategy, 612, labels, teachers, scalers)
+            table, x, payload = independent_samples(
+                612, strategy, labels, teachers, records
+            )
+            self.assertEqual(table.to_dict("list"), query_table(612).to_dict("list"))
+            np.testing.assert_array_equal(x, samples.x.numpy())
+            for key, value in samples.payload().items():
+                np.testing.assert_array_equal(payload[key], value)
+
+    def test_independent_scalar_loss_matches_two_weighted_blocks(self):
+        labels, teachers, scalers = fixture()
+        samples = make_samples("OOF", 342, labels, teachers, scalers)
+        values = np.cos(np.arange(len(samples.blocks))[:, None]) * np.array(
+            [2, 3, 4, 5]
+        )
+        actual = loss_components(samples, values)
+        expected = independent_losses(samples.payload(), values)
+        np.testing.assert_allclose(
+            list(actual.values()), [expected[k] for k in actual], atol=1e-14, rtol=0
+        )
+
     def test_inventory_and_equal_block_weights(self):
         for h, a, p, u in (
             (342, 136, 90, 90),
