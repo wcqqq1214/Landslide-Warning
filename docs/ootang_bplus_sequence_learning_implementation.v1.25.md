@@ -5,6 +5,7 @@
 - 日期：2026-09-11；Origin Skill/Mode：academic-research-suite / experiment-agent / run。
 - 依据：[已登记方案](ootang_bplus_sequence_learning_plan.v1.25.md)，方案 commit `ddb2c35`。
 - 实现及相关测试 commit `8c748f6`。实现完成不代表预测效果改善；实验结果另行记录。
+- 实际有限执行及封存核验已完成，见[结果与边界](ootang_bplus_sequence_learning_results.v1.25.md)。
 
 ## 实现范围
 

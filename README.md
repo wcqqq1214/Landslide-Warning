@@ -3,18 +3,28 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.24 历史编码与连续预测接口](docs/ootang_bplus_sequence_interface_results.v1.24.md)：
+最新完成 [v1.25 连续预测有限学习](docs/ootang_bplus_sequence_learning_results.v1.25.md)：
+四组 IN/OOF × CARRY/RESET，3,600 次更新、约 14.6 分钟，0 新物理拟合。
+四组严格改善均 **2/8**；IN_CARRY 两窗预测平均 RMSE 为 59.2967/25.4071，
+OOF_CARRY 为 59.4546/28.8947 mm，均高于 B+ 的 58.0122/22.2448。
+拟合目标下降，预测 CRPS 仍未超过 B+；远期历史梯度仍弱。19 项相关测试及两次
+有限数值核验通过，全部 36 个训练实例、概率结果和负结果已分步备份。
+下一步先固定现有权重检查状态传递与不同步长的修正，当前无后续训练预算。
+[执行前方案](docs/ootang_bplus_sequence_learning_plan.v1.25.md)和
+[实现/运行入口](docs/ootang_bplus_sequence_learning_implementation.v1.25.md)可追溯；整体目标未完成。
+
+此前完成 [v1.24 历史编码与连续预测接口](docs/ootang_bplus_sequence_interface_results.v1.24.md)：
 同一 7,569 参数网络按日历编码历史、连续展开未来；15 个真实案例的 B+ 基线、
 前缀/分段一致性、独立 NumPy 参考和方向梯度核验通过，0 训练更新或物理拟合。
 未训练探针的长期历史梯度明显衰减，不能将接口通过当成预测有效。
-15 项合成测试及一次封存复核通过，整体目标未完成；下一版先固定有限学习对照。
+15 项合成测试及一次封存复核通过，后续有限学习见 v1.25，整体目标未完成。
 [执行前方案](docs/ootang_bplus_sequence_interface_plan.v1.24.md)及全部旧结果保持。
 
 此前完成 [v1.23 教师条件与时序表达审查](docs/ootang_bplus_teacher_condition_review.v1.23.md)：
 1,515 条样本、四组 54 维参数和 117,900 个窗口时间位置核对通过，0 新模型求值/拟合。
 OOF paired 的旧教师各绑定一个预测起点；当前网络按目标日分别编码两个不同时间基准的窗口。
 推荐下一版验证历史/未来日期对齐和编码状态连续传递，暂不选择新增教师参数学习。
-这是有原文依据的结构候选，尚未实现或验证效果；整体目标未实现。
+该审查当时提出有原文依据的结构候选，后续实现和学习见 v1.24/v1.25；整体目标未实现。
 [执行前方案](docs/ootang_bplus_teacher_condition_review_plan.v1.23.md)与全部旧结果保持。
 
 此前完成 [v1.22 同 lead 输入与修正迁移诊断](docs/ootang_bplus_input_transfer_results.v1.22.md)：
