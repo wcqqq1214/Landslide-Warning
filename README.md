@@ -3,7 +3,14 @@
 藕塘滑坡位移概率预测科研原型。当前阶段在同一剖面的 ATU1、ATU5、MJ3、MJ1 四点，
 比较冻结 B+、物理引导 ConvLSTM 残差模型、方程内蠕变修正模型和状态 PINN 混合方法。
 
-最新完成 [v1.19 起点历史 IN/OOF 有限学习](docs/ootang_bplus_origin_learning_results.v1.19.md)：
+最新完成 [v1.20 固定两目标梯度诊断](docs/ootang_bplus_origin_gradients_results.v1.20.md)：
+90 checkpoint、74.144 秒，0 训练/物理拟合。612 日 OOF 最终三个种子的配对块
+梯度为拟合块的约 12–17 倍，共同负梯度方向均使拟合块局部上升，支持另版检验
+目标尺度平衡；不代表原 Adam 实际方向或预测失败的唯一原因。13 项测试、72 项
+差分及独立回放通过，整体目标未实现。原 NumPy 数值警告保留，另做标量复查一致。
+[执行前方案](docs/ootang_bplus_origin_gradients_plan.v1.20.md)与全部负结果保持。
+
+此前完成 [v1.19 起点历史 IN/OOF 有限学习](docs/ootang_bplus_origin_learning_results.v1.19.md)：
 1,800 更新、506.138 秒，无新物理拟合/积分。两窗预测平均 RMSE：IN 58.9612/25.1138、
 OOF 59.6529/33.6124，仍高于 B+ 的 58.0122/22.2448 mm；严格改善为 2/8、1/8。
 总训练损失下降，但 612 日 OOF 一个种子的拟合块损失增加 13.7187%。15 项测试及
@@ -116,7 +123,21 @@ v1.1 有限实验已完成：M1/M2 均选择零轮修正，未改善 B+，当前
 
 ## 当前四点 B+ 实验
 
-复核最新 IN/OOF 的 checkpoint、样本、时序和概率指标，不训练或写入产物：
+复核最新固定梯度及副本差分，不训练或写入产物；原 NumPy 警告可能再次出现：
+
+```bash
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
+PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=code .venv/bin/python \
+  -m physics_guided_origin_gradients.run --run-id 20260911_origin_gradients --verify
+```
+
+仅以标量求和复核保存的梯度指标，无模型求值：
+
+```bash
+PYTHONDONTWRITEBYTECODE=1 .venv/bin/python results/ootang_bplus_v1_20/scalar_geometry_check.py
+```
+
+复核此前 IN/OOF 的 checkpoint、样本、时序和概率指标，不训练或写入产物：
 
 ```bash
 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 \
