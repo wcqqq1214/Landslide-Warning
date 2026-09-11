@@ -1,6 +1,6 @@
 # 项目文档导航
 
-本页只维护入口，不重复记录各版结果或下一步。当前有效决定是暂停自动扩展实验；
+本页只维护入口，不重复记录各版结果或下一步。当前只执行用户限定 ConvLSTM/PINN 下的一个 v2.0 候选；
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
 
 ## 当前入口
@@ -8,6 +8,7 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [v2.0 方案](ootang_convlstm_direct_plan.v2.0.md) | 一个直接多步 ConvLSTM 候选、完整判据和总时限 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
 | [路线复盘](ootang_route_review_2026-09-11.md) | 八轮学习的效果总表、失败证据和停止决定 |
 | [汇总指标](ootang_route_review_2026-09-11_metrics.csv) / [来源记录](ootang_route_review_2026-09-11_sources.json) | 由既有指标计算的跨版本对照及 Git 来源 |

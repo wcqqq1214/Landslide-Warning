@@ -1,0 +1,76 @@
+{
+  "version": "2.0",
+  "protocol": "docs/ootang_convlstm_direct_plan.v2.0.md",
+  "data": "data/monitoring_data.csv",
+  "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+  "reference_source": "results/ootang_bplus_v1_25/20260911_sequence_learning",
+  "point_order": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "prefixes": [
+    342,
+    432,
+    612
+  ],
+  "outer_days": [
+    432,
+    612
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "strategy": "DIRECT",
+  "teacher_column": "teacher_OOF",
+  "recipes": {
+    "252": "B",
+    "342": "A",
+    "432": "B",
+    "612": "B"
+  },
+  "history_days": 30,
+  "forecast_days": 180,
+  "mean_epochs": 100,
+  "scale_epochs": 100,
+  "mean_parameters": 8177,
+  "scale_parameters": 61,
+  "learning_rate": 0.001,
+  "gradient_clip": 1.0,
+  "loss_weighting": "v1.21 step_gradient_norm",
+  "warmup_days": 30,
+  "sigma_floor_mm": 0.001,
+  "sigma_initial_floor_mm": 0.002,
+  "probability_feature_count": 5,
+  "strict_mean_tolerance_mm": 1e-06,
+  "probability_tolerance_mm": 1e-06,
+  "coverage_slack": 0.005555555555555556,
+  "work_started_utc": "2026-09-11T07:33:17+00:00",
+  "work_deadline_utc": "2026-09-11T09:33:17+00:00",
+  "total_work_limit_seconds": 7200,
+  "run_limit_seconds": 1800,
+  "max_mean_updates": 900,
+  "max_scale_updates": 600,
+  "cpu_threads": 1,
+  "physical_forward_calls": 0,
+  "scaler_fits": 0,
+  "automatic_retry": false,
+  "exploratory": true,
+  "source_sha256": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "docs/ootang_convlstm_direct_plan.v2.0.md": "9042e727e2f0eda74818444d80fc9b313c6d3d679d3d8f91897f05294f62507f",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz": "751a5471b53d9cb8a8833410a839d8971bfb0a215ab8d89849dd7f5f1278da63",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz": "882f6f1bc59ef9361982ca371f99e14adbb63067ddb82e1112824e232d5e65e7",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/scalers_342.json": "16704a2c3f2713eb2f56a869cd733602309441696f6b90ce8b2c60e2b6be42b3",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/scalers_432.json": "d3a7ac1e2b05dc7a9e2822d2947c3350e300dcc3c38b09033f213e141ebbbb20",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/scalers_612.json": "cdf37fd507494ad059fbf895593f2aed17e58998421da4ef820dbf00c4cc8b15",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/prediction_432_P0.npz": "95f781c4a42d699da76a662d89173697229a71a01ba308aeefe776c9b0d47785",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/prediction_612_P0.npz": "4d703090643afdd263d4cfac0d0622aec6862ee6482b0af42b05467a0ed2a5dd",
+    "results/ootang_bplus_v1_25/20260911_sequence_learning/metrics.csv": "bc437b4e967f6042c770a7322c828be0bf403d7b0fde6290612a8ffabc356623"
+  }
+}
