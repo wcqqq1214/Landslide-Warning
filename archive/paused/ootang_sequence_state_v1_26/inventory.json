@@ -1,0 +1,37 @@
+{
+  "status": "suspended_unfinished_unrun",
+  "date": "2026-09-11",
+  "reason": "user_requested_strategy_correction",
+  "files": [
+    {
+      "original_path": "code/physics_guided_sequence_state/__init__.py",
+      "parked_path": "physics_guided_sequence_state/__init__.py",
+      "bytes": 61,
+      "sha256": "390e141a1049059082824c6b61ae511c706ca135c080e2df564dfdc82d5b1b03"
+    },
+    {
+      "original_path": "code/physics_guided_sequence_state/audit.py",
+      "parked_path": "physics_guided_sequence_state/audit.py",
+      "bytes": 7883,
+      "sha256": "e71f15acaf26d71284259678b678bbe46fdcf145496bfcb6dfecf0bc10b99c38"
+    },
+    {
+      "original_path": "code/physics_guided_sequence_state/core.py",
+      "parked_path": "physics_guided_sequence_state/core.py",
+      "bytes": 9182,
+      "sha256": "58e21cc028692e23d2d60936e8db4861ca1097065f398cf284d69dc9c572dcfa"
+    },
+    {
+      "original_path": "code/physics_guided_sequence_state/run.py",
+      "parked_path": "physics_guided_sequence_state/run.py",
+      "bytes": 12589,
+      "sha256": "8b498807e868b961f471cef3aacfb723617b04bba70fd1fbfd239ae31a85dd68"
+    },
+    {
+      "original_path": "code/physics_guided_sequence_state/support.py",
+      "parked_path": "physics_guided_sequence_state/support.py",
+      "bytes": 5008,
+      "sha256": "3ff318958dfca8c44c5b4983906a46c6026000501ff59541bc618b63f6aeedd3"
+    }
+  ]
+}
