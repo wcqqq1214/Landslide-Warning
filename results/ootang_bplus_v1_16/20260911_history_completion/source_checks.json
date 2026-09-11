@@ -1,0 +1,196 @@
+{
+  "source_hashes": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "data/monitoring_data.xlsx": "a28a6a09ea660132eafe9508848dcb2958ba892f425489f63c81a7c31b2e4a3d",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "figures/data_lineage/ootang_data_lineage_manifest.json": "a9a8c7991a77420abff52ced51009e41bbe573023b6a58eaf2a94643287fd42c",
+    "figures/data_lineage/ootang_monthly_polynomial_fingerprint.csv": "ac89970e18d686fbcc78acf2f9596945244ebf02c507d47fc7aed8c7971a41af",
+    "docs/ootang_data_lineage_expert_review.md": "1b77439dcd21347bf0866df21fcca033126c43a59d0b72a12ba08b87154c1fa4",
+    "code/convlstm/data_lineage_audit.py": "46e0edeea2635799ada5686b8aa0af015f1723ddd6be8f6bb8c80101c7353f78"
+  },
+  "zip_member_sha256": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+  "source_numeric_atol": 1e-12,
+  "numeric_prefix_rows": 612,
+  "first_date": "2016-07-01",
+  "last_date": "2018-03-04",
+  "numeric_column_order": [
+    "ATU1/mm",
+    "ATU5/mm",
+    "MJ3/mm",
+    "MJ1/mm",
+    "Rainfall/mm",
+    "RWL/m"
+  ],
+  "source_columns": {
+    "csv": [
+      "Date",
+      "MJ9/mm",
+      "MJ1/mm",
+      "MJ3/mm",
+      "ATU4/mm",
+      "ATU5/mm",
+      "ATU3/mm",
+      "ATU2/mm",
+      "ATU1/mm",
+      "Rainfall/mm",
+      "GWT/m",
+      "RWL/m",
+      "aveT/℃",
+      "minT/℃",
+      "maxT/℃",
+      "DP",
+      "RH"
+    ],
+    "xlsx": [
+      "Date",
+      "MJ9/mm",
+      "MJ1/mm",
+      "MJ3/mm",
+      "ATU4/mm",
+      "ATU5/mm",
+      "ATU3/mm",
+      "ATU2/mm",
+      "ATU1/mm",
+      "Rainfall/mm",
+      "GWT/m",
+      "RWL/m",
+      "aveT/℃",
+      "minT/℃",
+      "maxT/℃",
+      "DP",
+      "RH"
+    ],
+    "mentor": [
+      "Date",
+      "Rainfall",
+      "RWL",
+      "MJ9",
+      "MJ1",
+      "MJ3",
+      "ATU4",
+      "ATU5",
+      "ATU3",
+      "ATU2",
+      "ATU1"
+    ]
+  },
+  "workbook": {
+    "sheet_name": "Sheet1",
+    "sheet_path": "xl/worksheets/sheet1.xml",
+    "sheet_count": 1,
+    "hidden_sheet_count": 0,
+    "formula_cell_count": 0,
+    "uses_1904_date_epoch": false,
+    "data_rows_from_structure": 1461,
+    "columns_from_header": 17,
+    "converted_data_rows": 612,
+    "converted_numeric_columns": [
+      "ATU1/mm",
+      "ATU5/mm",
+      "MJ3/mm",
+      "MJ1/mm",
+      "Rainfall/mm",
+      "RWL/m"
+    ]
+  },
+  "comparisons": {
+    "csv_vs_xlsx": {
+      "compared_values": 3672,
+      "max_abs_difference": 0.0,
+      "max_abs_by_column": {
+        "ATU1/mm": 0.0,
+        "ATU5/mm": 0.0,
+        "MJ3/mm": 0.0,
+        "MJ1/mm": 0.0,
+        "Rainfall/mm": 0.0,
+        "RWL/m": 0.0
+      },
+      "above_original_tolerance": 0,
+      "above_original_tolerance_by_column": {
+        "ATU1/mm": 0,
+        "ATU5/mm": 0,
+        "MJ3/mm": 0,
+        "MJ1/mm": 0,
+        "Rainfall/mm": 0,
+        "RWL/m": 0
+      },
+      "passed": true,
+      "maximum_example": {
+        "source_index": 0,
+        "date": "2016-07-01",
+        "column": "ATU1/mm",
+        "value_a": 0.0,
+        "value_b": 0.0
+      }
+    },
+    "csv_vs_mentor": {
+      "compared_values": 3672,
+      "max_abs_difference": 5.002220859751105e-12,
+      "max_abs_by_column": {
+        "ATU1/mm": 5.115907697472721e-13,
+        "ATU5/mm": 5.115907697472721e-13,
+        "MJ3/mm": 5.002220859751105e-12,
+        "MJ1/mm": 4.547473508864641e-13,
+        "Rainfall/mm": 1.4210854715202004e-14,
+        "RWL/m": 0.0
+      },
+      "above_original_tolerance": 240,
+      "above_original_tolerance_by_column": {
+        "ATU1/mm": 0,
+        "ATU5/mm": 0,
+        "MJ3/mm": 240,
+        "MJ1/mm": 0,
+        "Rainfall/mm": 0,
+        "RWL/m": 0
+      },
+      "passed": false,
+      "maximum_example": {
+        "source_index": 306,
+        "date": "2017-05-03",
+        "column": "MJ3/mm",
+        "value_a": 1005.100114453055,
+        "value_b": 1005.10011445305
+      }
+    },
+    "xlsx_vs_mentor": {
+      "compared_values": 3672,
+      "max_abs_difference": 5.002220859751105e-12,
+      "max_abs_by_column": {
+        "ATU1/mm": 5.115907697472721e-13,
+        "ATU5/mm": 5.115907697472721e-13,
+        "MJ3/mm": 5.002220859751105e-12,
+        "MJ1/mm": 4.547473508864641e-13,
+        "Rainfall/mm": 1.4210854715202004e-14,
+        "RWL/m": 0.0
+      },
+      "above_original_tolerance": 240,
+      "above_original_tolerance_by_column": {
+        "ATU1/mm": 0,
+        "ATU5/mm": 0,
+        "MJ3/mm": 240,
+        "MJ1/mm": 0,
+        "Rainfall/mm": 0,
+        "RWL/m": 0
+      },
+      "passed": false,
+      "maximum_example": {
+        "source_index": 306,
+        "date": "2017-05-03",
+        "column": "MJ3/mm",
+        "value_a": 1005.100114453055,
+        "value_b": 1005.10011445305
+      }
+    }
+  },
+  "original_three_source_equivalence_passed": false,
+  "published_source_equivalence_passed": true,
+  "upstream_lineage_status": {
+    "released_series_role": "materialized_daily_modeling_series",
+    "exact_generation_algorithm": "unresolved",
+    "original_observation_anchors": "not_available_in_audited_release",
+    "future_information_usage": "unknown",
+    "independent_raw_daily_gnss_claim": "not_supported"
+  },
+  "source_recovery_status": "unavailable_by_project_constraint",
+  "raw_observation_as_of_verified": "unknown"
+}

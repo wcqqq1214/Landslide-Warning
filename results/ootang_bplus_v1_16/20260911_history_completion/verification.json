@@ -1,0 +1,19 @@
+{
+  "passed": true,
+  "original_run_exitcode": 1,
+  "original_three_source_equivalence_passed": false,
+  "published_source_equivalence_passed": true,
+  "protected_files": 2074,
+  "table_rows": {
+    "origins": 4,
+    "monthly_links": 16,
+    "history": 480
+  },
+  "history_numeric_checks": 1920,
+  "max_abs_u_error_mm": 0.0,
+  "max_abs_du_error_mm_per_day": 0.0,
+  "reused_fingerprint_numeric_checks": 32,
+  "max_abs_reused_fingerprint_error": 0.0,
+  "source_numeric_comparisons": 11016,
+  "raw_observation_as_of_verified": "unknown"
+}

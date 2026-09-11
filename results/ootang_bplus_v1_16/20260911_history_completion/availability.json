@@ -1,0 +1,89 @@
+{
+  "source_role": "materialized_daily_modeling_series",
+  "released_prefix_constructible": true,
+  "raw_observation_as_of_verified": "unknown",
+  "future_upstream_anchor_usage": "unknown",
+  "interpretation": "Conditional historical prototype on a released daily modeling series",
+  "origins": [
+    {
+      "origin": 252,
+      "source_role": "materialized_daily_modeling_series",
+      "raw_observation_as_of_verified": "unknown",
+      "released_prefix_constructible": true,
+      "source_rows_read": 252,
+      "history_days": 30,
+      "history_start_index": 222,
+      "history_end_index_exclusive": 252,
+      "difference_left_index": 221,
+      "last_available_index": 251,
+      "point_order": [
+        "ATU1",
+        "ATU5",
+        "MJ3",
+        "MJ1"
+      ],
+      "u_unit": "mm",
+      "du_unit": "mm/day; difference of materialized daily values"
+    },
+    {
+      "origin": 342,
+      "source_role": "materialized_daily_modeling_series",
+      "raw_observation_as_of_verified": "unknown",
+      "released_prefix_constructible": true,
+      "source_rows_read": 342,
+      "history_days": 30,
+      "history_start_index": 312,
+      "history_end_index_exclusive": 342,
+      "difference_left_index": 311,
+      "last_available_index": 341,
+      "point_order": [
+        "ATU1",
+        "ATU5",
+        "MJ3",
+        "MJ1"
+      ],
+      "u_unit": "mm",
+      "du_unit": "mm/day; difference of materialized daily values"
+    },
+    {
+      "origin": 432,
+      "source_role": "materialized_daily_modeling_series",
+      "raw_observation_as_of_verified": "unknown",
+      "released_prefix_constructible": true,
+      "source_rows_read": 432,
+      "history_days": 30,
+      "history_start_index": 402,
+      "history_end_index_exclusive": 432,
+      "difference_left_index": 401,
+      "last_available_index": 431,
+      "point_order": [
+        "ATU1",
+        "ATU5",
+        "MJ3",
+        "MJ1"
+      ],
+      "u_unit": "mm",
+      "du_unit": "mm/day; difference of materialized daily values"
+    },
+    {
+      "origin": 612,
+      "source_role": "materialized_daily_modeling_series",
+      "raw_observation_as_of_verified": "unknown",
+      "released_prefix_constructible": true,
+      "source_rows_read": 612,
+      "history_days": 30,
+      "history_start_index": 582,
+      "history_end_index_exclusive": 612,
+      "difference_left_index": 581,
+      "last_available_index": 611,
+      "point_order": [
+        "ATU1",
+        "ATU5",
+        "MJ3",
+        "MJ1"
+      ],
+      "u_unit": "mm",
+      "du_unit": "mm/day; difference of materialized daily values"
+    }
+  ]
+}
