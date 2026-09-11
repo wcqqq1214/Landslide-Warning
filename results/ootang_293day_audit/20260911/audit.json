@@ -1,0 +1,298 @@
+{
+  "source_commit": "e48d3e1b08f596bd571475b9872735db65e33ac2",
+  "status": "verified_saved_output_rescoring",
+  "scope": "full 293-day historical forecast; no fitting, inference, reselection, or segmentation",
+  "protocol": {
+    "fit_start": "2016-07-01",
+    "fit_end": "2019-09-11",
+    "fit_days": 1168,
+    "prediction_start": "2019-09-12",
+    "prediction_end": "2020-06-30",
+    "prediction_days": 293,
+    "points": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "inputs": [
+      "Rainfall",
+      "RWL"
+    ],
+    "temperature": false,
+    "DA": false,
+    "ML": false,
+    "fractures": false,
+    "substeps": 64,
+    "main": "continuous no reset or offset at split",
+    "comparison": "reused historical 80:20 conditional hindcast; test previously seen, not blind validation",
+    "fitting": "joint four-point least squares plus fitting-terminal penalty, weight116800; no future displacement in parameter objective",
+    "development": "Terminal calibration protocol introduced after viewing the unconstrained B+ hindcast; development-set historical comparison, not blind model selection.",
+    "fixed": {
+      "storage": 0.1,
+      "fast_drain_days": 0.5,
+      "moisture_capacity_mm": 40,
+      "initial_moisture": 0.5,
+      "nu": 0.3,
+      "phi_degrees": [
+        9.5,
+        9.3,
+        9.3,
+        9.3
+      ],
+      "normal_tangent_stiffness_ratio": 3
+    },
+    "parameter_count": 54
+  },
+  "fit_score_days_after_original_warmup": 1138,
+  "initial_sigma_from_fit_residuals_mm": 8.829636906719525,
+  "mask_sha256": "59a810e3912d7811629873ef32d42e8d0da1912706ec164cfd5659f86baf2071",
+  "sources": [
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/artifact_manifest.json",
+      "sha256": "8d7e58d7d452dace303815875853d3638975d474edf47b453558c595c72fbf90",
+      "bytes": 48669,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/reference_provenance.json",
+      "sha256": "66238e7b28e84415bb1742e73c412d57ff1c4d742dc9d03f4ef8d75beb126db9",
+      "bytes": 2931,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/frozen_reference.npz",
+      "sha256": "aef7298c605b901cf06fc14636488d7bbfccf96d50d9f084ef3226ba62589031",
+      "bytes": 424324,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/selection.json",
+      "sha256": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c",
+      "bytes": 4959,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/metrics_final.csv",
+      "sha256": "0875c702eb69316f670e35a087290ebea383845968f581bba705aedcd212d14a",
+      "bytes": 152941,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/predictions_final.csv",
+      "sha256": "dd33c9c434a19db80a048843db1055c74bd796a523e0ff32c0d85c5aba6c3795",
+      "bytes": 10276404,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/source_snapshot/code/physics_guided/probability.py",
+      "sha256": "14ad05a97f74b6bb5e1ad0c95daf261822a480add68f81f3dc1cabf8095cc0a9",
+      "bytes": 2673,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/final/M1/selection.json",
+      "sha256": "0834249e97c9b87526ae7b2144275a2a945f09cd505cc23cd8a15ae6a4f0701d",
+      "bytes": 223,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/final/M1/selected_predictions.npz",
+      "sha256": "74784ba35aa11b3355a7af003e91cff96648a0b638f0c2388b8ec70015580394",
+      "bytes": 125477,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/final/M2/selection.json",
+      "sha256": "e94384ceac4e9931a573df8dc96877f90287166579a8bb4232a92ba419c191a2",
+      "bytes": 223,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "results/ootang_bplus_v1_1/20260910_implementation/final/M2/selected_predictions.npz",
+      "sha256": "f9d74d2ca4561506338850bfcf74b5512c3d94f62913ae4e7b386e6f624664fa",
+      "bytes": 127925,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "data/monitoring_data.csv",
+      "sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+      "bytes": 341484,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "section2d_v4.zip",
+      "sha256": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+      "bytes": 47756740,
+      "verification": "git byte equality"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/work/monitoring.csv",
+      "sha256": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+      "bytes": 185876,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/results/geometry_ground_interpretation.csv",
+      "sha256": "666740a0dd45869d17ca11c8dfdbcfa3638066e9a8e336830c71baaa2d91405e",
+      "bytes": 252,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/results/geometry_O3_interpretation.csv",
+      "sha256": "53e72c3431c9b1aa8bbe8af3fd0757974f75a59a1fa68f99e268919fb3d21849",
+      "bytes": 98,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/results/geometry_O2_interpretation.csv",
+      "sha256": "961b6725a3bcb4f53371fa0e925b8f9e5e99ca50bfa006f8c129817767178256",
+      "bytes": 86,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/results/geometry_O1_interpretation.csv",
+      "sha256": "063d3e060aaab1c1638b06082acc6cf1e3ee2885267c0f803820ecafd82901c6",
+      "bytes": 105,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/physical_model.py",
+      "sha256": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09",
+      "bytes": 4852,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/physical_solver.c",
+      "sha256": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+      "bytes": 3393,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/geometry.py",
+      "sha256": "88e16279186087cc939cf9343539c0f583977abce324ff7208b81d3eca525a4e",
+      "bytes": 6796,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/calibrate_boundary.py",
+      "sha256": "42473a3e60573774cc10da381a6beea3f52c3ca2b6407c884727d494f03f68d4",
+      "bytes": 1627,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/predict.py",
+      "sha256": "ef14e4ec45eeb8b7844ab6bd2493f334981447210bb98a659b045548e6773ae0",
+      "bytes": 2627,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/calibrated.json",
+      "sha256": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2",
+      "bytes": 7009,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/calibration_lock.json",
+      "sha256": "2692527a5be3fa1248c03d43e525e6b754234a4ccaa870d957e33aa3e60952a8",
+      "bytes": 876,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/protocol.json",
+      "sha256": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c",
+      "bytes": 1166,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/metrics.json",
+      "sha256": "a96942342da72050199cfe2083b7e343addf365163900ff45257398a2b561b68",
+      "bytes": 6303,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/curves.npz",
+      "sha256": "a9d06f75fd1eb2a1238b95ca24a8ca83e4fab94f72e07ffa98b8eb8f1873a862",
+      "bytes": 611278,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/geometry_matrices.npz",
+      "sha256": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9",
+      "bytes": 1198,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/results/reservoir_force_lookup_final.npz",
+      "sha256": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e",
+      "bytes": 28942,
+      "verification": "frozen archive and provenance hash"
+    },
+    {
+      "path": "section2d_v4.zip!section2d_v4/work/delivery_final/outang_repro/section2d_v4/output/future_prediction.csv",
+      "sha256": "7be248b042f581885357e1240f31e32e4e92ba74ce933fead05bbf9af261f037",
+      "bytes": 23393,
+      "verification": "frozen archive and provenance hash"
+    }
+  ],
+  "source_differences": {
+    "observations_vs_original_curves_mm": 0.0,
+    "bplus_vs_original_curves_mm": 6.821210263296962e-13,
+    "bplus_vs_original_forecast_csv_mm": 5.4569682106375694e-12
+  },
+  "selected_models": {
+    "M1": {
+      "e_mu": 0,
+      "e_sigma": 0,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "prediction_mean_vs_bplus_max_mm": 0.0,
+      "valid_mean_vs_bplus_max_mm": 0.0,
+      "seed_mean_spread_mm": 0.0,
+      "sigma_min_mm": 8.829636906719527,
+      "sigma_max_mm": 8.829636906719527,
+      "excluded_warmup_nonfinite_means": 348
+    },
+    "M2": {
+      "e_mu": 0,
+      "e_sigma": 0,
+      "seeds": [
+        0,
+        1,
+        2
+      ],
+      "prediction_mean_vs_bplus_max_mm": 2.2737367544323206e-13,
+      "valid_mean_vs_bplus_max_mm": 2.2737367544323206e-13,
+      "seed_mean_spread_mm": 0.0,
+      "sigma_min_mm": 8.829636906719527,
+      "sigma_max_mm": 8.829636906719527,
+      "excluded_warmup_nonfinite_means": 0
+    }
+  },
+  "max_metric_difference": 1.4210854715202004e-14,
+  "max_prediction_or_quantile_difference_mm": 2.2737367544323206e-13,
+  "interpretation": {
+    "neural_mean_gain": false,
+    "probability_gain_vs_m0": "not_applicable",
+    "tail_start_dates": null,
+    "segmented_scores": null,
+    "new_acceptance_thresholds": null,
+    "new_training_authorized": false
+  },
+  "environment": {
+    "python": "3.10.20",
+    "numpy": "2.2.6",
+    "pandas": "2.3.3"
+  },
+  "audit_script_sha256": "088b94b0dd6a7a373340284bf5d6cbe68a3ab5103f80c404e022b11053ad8349",
+  "output_hashes": {
+    "daily_error.png": "62f3bd61d106087393a13c3a935366a779ef98f5b812564add1c186b459d7147",
+    "daily_predictions.csv": "99c88524606c43450da265dfa18426ea8d72a3628ca5c6ae02a8745b9a5626c0",
+    "forecast.png": "6c1d7a72fca03dd5792880e20cbaa37a3147812530f6abd4f914d9cd136f393d",
+    "metrics.csv": "b2aea1b8d3cc65221470da491ac81f0a08f80fcf290e80d229502e287b2920e4",
+    "sources.csv": "5083bdd6e435f9e272493c6d6ae636ee288539dec9253e60522b886c07e8464f"
+  }
+}
