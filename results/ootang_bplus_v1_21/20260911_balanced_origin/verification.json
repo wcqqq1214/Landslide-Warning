@@ -1,0 +1,21 @@
+{
+  "gradient_checkpoint_replays": 90,
+  "replay_gradient_calls": 960,
+  "replay_forward_calls": 1374,
+  "weighting_comparison_rows": 16,
+  "optimizer_diagnostic_rows": 1800,
+  "passed": true,
+  "checkpoint_replays": 18,
+  "saved_checkpoints": 90,
+  "training_updates": 1800,
+  "metrics_rows": 48,
+  "seed_metrics_rows": 112,
+  "comparison_rows": 16,
+  "numeric_values_checked": 264618,
+  "max_absolute_difference": 2.0119900909776334e-06,
+  "protected_files_checked": 2548,
+  "source_files_checked": 9,
+  "new_physical_forwards": 0,
+  "new_neural_updates": 0,
+  "raw_observation_as_of_verified": "unknown"
+}

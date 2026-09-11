@@ -1,0 +1,139 @@
+{
+  "specification": {
+    "version": "1.21",
+    "protocol": "docs/ootang_bplus_balanced_origin_plan.v1.21.md",
+    "diagnostic_source": "results/ootang_bplus_v1_20/20260911_origin_gradients",
+    "diagnostic_index_sha256": "eea694ef27ccc188f0c2aec37996caf58a2ec41e30138233aa1878a39af89818",
+    "equal_source": "results/ootang_bplus_v1_19/20260911_origin_learning",
+    "equal_index_sha256": "fd567efabfa9461563b578246949654e906a6007a9319291e3fe02859c48d1b3",
+    "history_learning_source": "results/ootang_bplus_v1_17/20260911_history_learning",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "teacher_source": "results/ootang_bplus_v1_5/20260911_sample_learning",
+    "input_csv": "data/monitoring_data.csv",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "teacher_recipes": {
+      "252": "B",
+      "342": "A",
+      "432": "B",
+      "612": "B"
+    },
+    "paired_origins": {
+      "342": [
+        252
+      ],
+      "432": [
+        252,
+        342
+      ],
+      "612": [
+        252,
+        342,
+        432
+      ]
+    },
+    "anchor_counts": {
+      "342": 136,
+      "432": 188,
+      "612": 291
+    },
+    "paired_counts": {
+      "342": 90,
+      "432": 270,
+      "612": 540
+    },
+    "unique_paired_dates": {
+      "342": 90,
+      "432": 180,
+      "612": 360
+    },
+    "total_counts": {
+      "342": 226,
+      "432": 458,
+      "612": 831
+    },
+    "stored_anchor_weight": 0.5,
+    "stored_paired_weight": 0.5,
+    "weighting": "step_gradient_norm",
+    "zero_norm_tolerance": 1e-12,
+    "strategies": [
+      "P0",
+      "IN",
+      "OOF"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "input_channels": 23,
+    "hidden_channels": 16,
+    "model_parameters": 7569,
+    "epochs": 100,
+    "checkpoint_epochs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "batch_size": 128,
+    "learning_rate": 0.001,
+    "gradient_clip": 1.0,
+    "loss_scale_mm": 100.0,
+    "forecast_days": 180,
+    "warmup_days": 30,
+    "sigma_floor_mm": 0.001,
+    "interval_levels": [
+      80,
+      90,
+      95
+    ],
+    "primary_interval": 90,
+    "strict_mean_tolerance_mm": 1e-06,
+    "max_neural_updates": 1800,
+    "primary_gradient_calls": 9696,
+    "scale_fits": 6,
+    "scaler_fits": 0,
+    "physical_forward_calls": 0,
+    "physical_optimizer_nfev": 0,
+    "scale_network_updates": 0,
+    "cpu_threads": 1,
+    "max_processes": 1,
+    "hard_timeout_seconds": 1800,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "2dfa103e249369407c605462953d3c80b4f2cb63ca3322c68964a5a29ba1d9c1",
+  "plan_sha256": "f21a8657b3e4a9f1edbb3978d0d94784eada3d802c4e4ace0b2887da3d43f0c8",
+  "sources": {
+    "code/physics_guided_balanced_origin/__init__.py": "c5621a9b94b77fac5871e5acb0111bbee1ea6b27cea7c1bbd3f3457c1d0a5220",
+    "code/physics_guided_balanced_origin/audit.py": "9f219344c898e25c3a9f0af84b944bdb04c2498ed50ee0421d5027eaa8926699",
+    "code/physics_guided_balanced_origin/core.py": "f1d0371994383c033bc42fcef1ee16f6c4303940468f251580a6b2f2c2426b62",
+    "code/physics_guided_balanced_origin/run.py": "864f62acc9ddac08e688d2c056d5219fd781af822767c62faf422016bf25024d",
+    "code/physics_guided_balanced_origin/support.py": "da3f31c78e8c99ecef541b1b7294d8473d8f3866b6047fae4fb004775868aa28",
+    "code/physics_guided_balanced_origin/verify.py": "7501d0495d8c42e8e84ce59632760eb41a2285b14d07d8e8a3a101514cf77e72",
+    "tests/test_physics_guided_balanced_origin.py": "3fc7b0206d5e1821e1d144de4f0ea695af8a457fe8db6883bb602e14efa0d533",
+    "config/ootang_bplus_balanced_origin.v1_21.json": "2dfa103e249369407c605462953d3c80b4f2cb63ca3322c68964a5a29ba1d9c1",
+    "docs/ootang_bplus_balanced_origin_plan.v1.21.md": "f21a8657b3e4a9f1edbb3978d0d94784eada3d802c4e4ace0b2887da3d43f0c8"
+  },
+  "started_utc": "2026-09-11T03:18:55.828670+00:00",
+  "input_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "git_commit": "e212096066384c7be71b58bd3c82193093fde60d",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  }
+}

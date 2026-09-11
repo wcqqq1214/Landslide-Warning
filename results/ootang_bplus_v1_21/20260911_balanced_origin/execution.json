@@ -1,0 +1,11 @@
+{
+  "neural_updates": 1800,
+  "scale_fits": 6,
+  "prediction_forward_calls": 90,
+  "gradient_calls": 9696,
+  "gradient_backward_calls": 9696,
+  "physical_forward_calls": 0,
+  "physical_optimizer_nfev": 0,
+  "scale_network_updates": 0,
+  "scaler_fits": 0
+}
