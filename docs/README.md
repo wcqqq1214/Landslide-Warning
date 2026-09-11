@@ -1,7 +1,8 @@
 # 项目文档导航
 
-本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN；当前按 v2.2
-先定位导师所指尾段并复核已有预测，v2.1 暂缓，尚未实现或训练。v2.0 按原标准未达标并已停止。
+本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN；导师 293 日已有预测
+复核已完成，没有神经均值增益；尾段局部偏差可先不管，不再要求先指定日期。v2.1 及力探针继续暂缓。
+v2.0 按原标准未达标并已停止。
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
 
 ## 当前入口
@@ -9,8 +10,9 @@
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
-| [v2.2 当前方向](ootang_tail_scope_and_direction.v2.2.md) | 导师尾段补充要求、分段复核优先；原图定位进展见 progress，精确截点待定 |
-| [6pro 定向补审入口](ootang_web_route_review_prompt.md) / [文本材料包](review_materials/ootang_6pro_followup_20260911.md) | 补齐可读原件与导师尾段要求，聚焦时段差异和唯一下一步；不是实验方案 |
+| [293 日复核与当前方向](ootang_293day_prediction_audit_2026-09-11.md) | 来源、参数、日期、完整图表和指标；用户最新澄清与停止点 |
+| [v2.2 需求记录](ootang_tail_scope_and_direction.v2.2.md) | 保留形成时的尾段要求，最新实施顺序以 293 日复核报告为准 |
+| [6pro 补审交接记录](ootang_web_route_review_prompt.md) / [文本材料包](review_materials/ootang_6pro_followup_20260911.md) | 补审已返回，处理结果见复核报告；保留当时的原件包，不再作为待发送任务 |
 | [v2.1 暂缓候选](ootang_probability_pinn_plan.v2.1.md) / [冻结配置](../config/ootang_probability_pinn.v2_1.json) | 原样保留的概率 PINN 设计，当前不直接进入实现；尚无训练结果 |
 | [v2.0 结果](ootang_convlstm_direct_results.v2.0.md) / [冻结方案](ootang_convlstm_direct_plan.v2.0.md) | 5/8 严格均值改善，整体未达标；一次有界实验已停止 |
 | [progress.md](progress.md) | 当前状态、最近维护和后续边界 |
