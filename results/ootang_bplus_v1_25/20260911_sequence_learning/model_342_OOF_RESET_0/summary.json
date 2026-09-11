@@ -1,0 +1,9 @@
+{
+  "fit_days": 342,
+  "strategy": "OOF_RESET",
+  "seed": 0,
+  "initial_anchor_loss": 0.01335883304087881,
+  "initial_paired_loss": 0.0334503873020123,
+  "final_anchor_loss": 0.001333495906675579,
+  "final_paired_loss": 0.00012893806484657398
+}

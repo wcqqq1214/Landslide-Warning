@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "neural_updates": 3600,
+    "model_calls": 3744,
+    "sequence_segments": 7488,
+    "cell_sample_steps": 25741800,
+    "readout_sample_steps": 22064400,
+    "gradient_calls": 7632
+  },
+  "scale_fits": 8,
+  "physical_forward_calls": 0,
+  "physical_fits": 0,
+  "scaler_fits": 0,
+  "scale_network_updates": 0,
+  "input_values_checked": 3406080,
+  "elapsed_before_verification_seconds": 863.6057983748615
+}

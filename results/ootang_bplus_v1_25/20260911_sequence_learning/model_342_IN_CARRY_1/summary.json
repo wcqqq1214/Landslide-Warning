@@ -1,0 +1,9 @@
+{
+  "fit_days": 342,
+  "strategy": "IN_CARRY",
+  "seed": 1,
+  "initial_anchor_loss": 0.01335883304087881,
+  "initial_paired_loss": 0.022657576450818246,
+  "final_anchor_loss": 0.0006887285176160633,
+  "final_paired_loss": 0.0001705487086305655
+}

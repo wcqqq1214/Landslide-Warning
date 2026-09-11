@@ -1,0 +1,11 @@
+{
+  "locked_utc": "2026-09-11T06:01:05.109802+00:00",
+  "files": {
+    "history_gradients.csv": "5fdf6a4a106fe8554080f9abc9003925cda4053c74e95b4889fcb3073a8ccdc6",
+    "mean_lock_342.json": "6a6eacab09cbe7fd724711b2c0d9d4601d2765136d6392a8391e16f1c9f7334d",
+    "mean_lock_432.json": "0ea4160ced83d55c72faf19dd1718da5a47fa3c93b2c186486d2da11f3f77ca0",
+    "mean_lock_612.json": "5598ab6833b5b28a14624277beca8b9392b5218167141e347443066d98158f30",
+    "model_summary.csv": "95d4d04dfd81e89122842c50a582c4ac949c083c494c591e7644dd815f4c2185",
+    "training.csv": "2374ddd7a530451a18503d81aeb38cd68afdc494b4f66ec533383997e98b0be3"
+  }
+}

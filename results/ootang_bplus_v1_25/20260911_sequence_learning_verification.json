@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "counts": {
+    "model_calls": 108,
+    "sequence_segments": 216,
+    "cell_sample_steps": 289800,
+    "readout_sample_steps": 248400,
+    "gradient_calls": 432,
+    "reference_sample_steps": 30240
+  },
+  "checkpoints_checked": 180,
+  "final_models_replayed": 36,
+  "input_values_checked": 3406080,
+  "mean_values_checked": 176544,
+  "max_mean_difference_mm": 2.2737367544323206e-13,
+  "max_quantile_cdf_error": 1.901037438578612e-09,
+  "ensemble_metric_rows": 80,
+  "seed_metric_rows": 208,
+  "reference_metric_rows": 48,
+  "history_gradient_rows": 432,
+  "protected_files_checked": 2878,
+  "source_files_checked": 10,
+  "neural_updates": 0,
+  "scale_fits": 0,
+  "physical_calls": 0,
+  "scaler_fits": 0,
+  "complete_optimizer_trajectory_retrained": false,
+  "raw_observation_as_of_verified": "unknown"
+}

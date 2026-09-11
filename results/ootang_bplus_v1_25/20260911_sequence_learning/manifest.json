@@ -1,0 +1,105 @@
+{
+  "specification": {
+    "version": "1.25",
+    "protocol": "docs/ootang_bplus_sequence_learning_plan.v1.25.md",
+    "interface_source": "results/ootang_bplus_v1_24/20260911_sequence_interface",
+    "interface_index_sha256": "b85931ae2a37975942eb3cb76298bcea4809d2d1ed9b1404678801e207f7ad48",
+    "learning_source": "results/ootang_bplus_v1_21/20260911_balanced_origin",
+    "physical_source": "results/ootang_bplus_v1_4/20260911_selection",
+    "point_order": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "prefixes": [
+      342,
+      432,
+      612
+    ],
+    "sources": [
+      "IN",
+      "OOF"
+    ],
+    "variants": [
+      "CARRY",
+      "RESET"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "epochs": 100,
+    "checkpoint_epochs": [
+      0,
+      25,
+      50,
+      75,
+      100
+    ],
+    "model_parameters": 7569,
+    "input_channels": 23,
+    "hidden_channels": 16,
+    "history_days": 30,
+    "forecast_days": 180,
+    "packed_counts": {
+      "342": 24,
+      "432": 31,
+      "612": 45
+    },
+    "loss_weighting": "v1.21 step_gradient_norm",
+    "learning_rate": 0.001,
+    "gradient_clip": 1.0,
+    "sigma_floor_mm": 0.001,
+    "strict_mean_tolerance_mm": 1e-06,
+    "max_scale_fits": 8,
+    "main_limits": {
+      "neural_updates": 3600,
+      "model_calls": 3744,
+      "sequence_segments": 7488,
+      "cell_sample_steps": 25741800,
+      "readout_sample_steps": 22064400,
+      "gradient_calls": 7632
+    },
+    "verification_limits": {
+      "model_calls": 108,
+      "sequence_segments": 216,
+      "cell_sample_steps": 289800,
+      "readout_sample_steps": 248400,
+      "gradient_calls": 432,
+      "reference_sample_steps": 30240
+    },
+    "physical_forward_calls": 0,
+    "scaler_fits": 0,
+    "scale_network_updates": 0,
+    "cpu_threads": 1,
+    "hard_timeout_seconds": 1800,
+    "automatic_retry": false,
+    "exploratory": true
+  },
+  "config_sha256": "d5e212edf28cfe5560c11a8a139adc69bdcfde6b9f67167b59cc738e3461a3e9",
+  "plan_sha256": "a57953ee83f5f814eab2e4644d165b7db43e6a00e83ea2f416c39530d66741df",
+  "sources": {
+    "code/physics_guided_sequence_learning/__init__.py": "70b173856310be7d0942471806d100eea59ccf352de02ef137d14f978fa9b35c",
+    "code/physics_guided_sequence_learning/audit.py": "e3d3f9811768d55d2f66bce997631b4a66c21c0525e2f43a0095a240baf23d9e",
+    "code/physics_guided_sequence_learning/core.py": "81fbcceb1e5c1afbccd397d38f7945d306a13bdda4723a1afa904859b161bc0e",
+    "code/physics_guided_sequence_learning/reference.py": "2e205ed9217ddca086c5ea58fcd99f9db535369238214003ecf03769b6c57f88",
+    "code/physics_guided_sequence_learning/run.py": "169678a6243ddd8ab99762da90e920489d0860d2a3f120bd3a2a4cd4d67b8c4b",
+    "code/physics_guided_sequence_learning/support.py": "83de38cc47d9477ffee061a5f6b82f9c1034f6dc26c62353dcb6ac2fe736a137",
+    "code/physics_guided_sequence_learning/verify.py": "020ebfb6dfbe45a5b51f6125213e87239b2af6a8ed3f7146a19ec85dff96c5ef",
+    "tests/test_physics_guided_sequence_learning.py": "8bbe8d9f4127cd700396943c263d39ec17089cc151e106dcaf10f638b2ca9c5e",
+    "config/ootang_bplus_sequence_learning.v1_25.json": "d5e212edf28cfe5560c11a8a139adc69bdcfde6b9f67167b59cc738e3461a3e9",
+    "docs/ootang_bplus_sequence_learning_plan.v1.25.md": "a57953ee83f5f814eab2e4644d165b7db43e6a00e83ea2f416c39530d66741df"
+  },
+  "started_utc": "2026-09-11T05:46:44.926206+00:00",
+  "input_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "git_commit": "8c748f69d2479eef4e6d114f472837153bb0add5",
+  "dependencies": {
+    "numpy": "2.2.6",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.9"
+  }
+}
