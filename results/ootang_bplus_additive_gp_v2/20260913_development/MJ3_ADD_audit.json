@@ -1,0 +1,61 @@
+{
+  "optimizer": {
+    "success": true,
+    "status": 0,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 63,
+    "evaluations": 87,
+    "loss": -3458.8516599565055,
+    "log_theta": [
+      0.7531679480371848,
+      -0.14876476963704224,
+      -6.146892278430127,
+      5.415108461514854,
+      4.610073399799079,
+      2.2564579023563356,
+      5.741028533836073,
+      -13.815510557964274
+    ]
+  },
+  "variance": {
+    "time_amplitude": 2.1237171968813047,
+    "physical_amplitude": 0.0021401223505465045,
+    "time_length_scale": 0.8617718059531796,
+    "physical_length_scales": [
+      224.77692400221838,
+      100.49152542347063,
+      9.54920497519252,
+      311.3845158444073
+    ],
+    "normalized_noise_variance": 1.0000000000000004e-06,
+    "negative_bound": 2.1258573192318512e-10,
+    "raw_latent_min": 5.542400667302161e-07,
+    "rounded_counts": {
+      "time": 0,
+      "physical": 0,
+      "total": 0
+    },
+    "component_mean_max_error_mm": 5.580261447145264e-10,
+    "covariance_identity_max_error_mm2": 1.5568285260779738e-12
+  },
+  "warnings": [
+    {
+      "category": "ConvergenceWarning",
+      "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "divide by zero encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "overflow encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "invalid value encountered in matmul"
+    }
+  ],
+  "serialized_optimizer": "None; optimized fitted inference state retained",
+  "log_marginal_likelihood": 3458.8516599565055
+}

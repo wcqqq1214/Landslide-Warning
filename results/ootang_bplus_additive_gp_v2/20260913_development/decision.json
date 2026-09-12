@@ -1,0 +1,202 @@
+{
+  "candidate": "ADD",
+  "control": "TIME_ONLY",
+  "effect_passed": false,
+  "aggregate_gates": [
+    {
+      "name": "train_mae_mm",
+      "candidate": 0.0004556103142241897,
+      "reference": 9.58134502764985,
+      "required_reduction": 1e-06,
+      "actual_reduction": 9.580889417335625,
+      "passed": true
+    },
+    {
+      "name": "prediction_mae_mm_vs_M0",
+      "candidate": 33.287789666832474,
+      "reference": 33.265136851962,
+      "required_reduction": 0.5,
+      "actual_reduction": -0.02265281487047588,
+      "passed": false
+    },
+    {
+      "name": "prediction_mae_mm_vs_TIME_ONLY",
+      "candidate": 33.287789666832474,
+      "reference": 32.39977078234589,
+      "required_reduction": 0.5,
+      "actual_reduction": -0.8880188844865842,
+      "passed": false
+    },
+    {
+      "name": "train_rmse_mm",
+      "candidate": 0.0015560738051771281,
+      "reference": 12.832358611170498,
+      "required_reduction": 1e-06,
+      "actual_reduction": 12.83080253736532,
+      "passed": true
+    },
+    {
+      "name": "prediction_rmse_mm_vs_M0",
+      "candidate": 41.734346954037285,
+      "reference": 41.36837187193975,
+      "required_reduction": 0.5,
+      "actual_reduction": -0.3659750820975347,
+      "passed": false
+    },
+    {
+      "name": "prediction_rmse_mm_vs_TIME_ONLY",
+      "candidate": 41.734346954037285,
+      "reference": 40.7863160819948,
+      "required_reduction": 0.5,
+      "actual_reduction": -0.9480308720424873,
+      "passed": false
+    },
+    {
+      "name": "prediction_crps_mm_vs_v1.1-e0",
+      "candidate": 25.253072053064177,
+      "reference": 28.11559583173335,
+      "required_reduction": 0.28115595831733353,
+      "actual_reduction": 2.862523778669175,
+      "passed": true
+    },
+    {
+      "name": "prediction_crps_mm_vs_TIME_ONLY",
+      "candidate": 25.253072053064177,
+      "reference": 25.440876676050983,
+      "required_reduction": 0.25440876676050983,
+      "actual_reduction": 0.1878046229868069,
+      "passed": false
+    },
+    {
+      "name": "prediction_interval_score_90_mm_vs_v1.1-e0",
+      "candidate": 229.63145529873995,
+      "reference": 388.43870487180874,
+      "required_reduction": 3.8843870487180876,
+      "actual_reduction": 158.8072495730688,
+      "passed": true
+    },
+    {
+      "name": "prediction_interval_score_90_mm_vs_TIME_ONLY",
+      "candidate": 229.63145529873995,
+      "reference": 267.9920597822553,
+      "required_reduction": 2.679920597822553,
+      "actual_reduction": 38.360604483515345,
+      "passed": true
+    },
+    {
+      "name": "retain_gp_v1_mae_mm",
+      "candidate": 33.287789666832474,
+      "reference": 32.88545586158976,
+      "required_reduction": -1e-06,
+      "actual_reduction": -0.4023338052427121,
+      "passed": false
+    },
+    {
+      "name": "retain_gp_v1_rmse_mm",
+      "candidate": 41.734346954037285,
+      "reference": 41.197621955939766,
+      "required_reduction": -1e-06,
+      "actual_reduction": -0.5367249980975188,
+      "passed": false
+    },
+    {
+      "name": "retain_gp_v1_crps_mm",
+      "candidate": 25.253072053064177,
+      "reference": 25.176624893911303,
+      "required_reduction": -1e-06,
+      "actual_reduction": -0.07644715915287392,
+      "passed": false
+    },
+    {
+      "name": "retain_gp_v1_interval_score_90_mm",
+      "candidate": 229.63145529873995,
+      "reference": 263.53184150412943,
+      "required_reduction": -1e-06,
+      "actual_reduction": 33.90038620538948,
+      "passed": true
+    }
+  ],
+  "point_guards": [
+    {
+      "station": "ATU1",
+      "checks": {
+        "train_mae_mm_vs_M0": true,
+        "train_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_M0": false,
+        "prediction_rmse_mm_vs_M0": false,
+        "prediction_mae_mm_vs_TIME_ONLY": false,
+        "prediction_rmse_mm_vs_TIME_ONLY": false,
+        "crps_mm_vs_v1.1-e0": true,
+        "interval_score_90_mm_vs_v1.1-e0": true,
+        "coverage_vs_v1.1-e0": true,
+        "width_vs_v1.1-e0": true,
+        "crps_mm_vs_TIME_ONLY": true,
+        "interval_score_90_mm_vs_TIME_ONLY": true,
+        "coverage_vs_TIME_ONLY": true,
+        "width_vs_TIME_ONLY": true
+      },
+      "passed": false
+    },
+    {
+      "station": "ATU5",
+      "checks": {
+        "train_mae_mm_vs_M0": true,
+        "train_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_M0": false,
+        "prediction_rmse_mm_vs_M0": false,
+        "prediction_mae_mm_vs_TIME_ONLY": false,
+        "prediction_rmse_mm_vs_TIME_ONLY": false,
+        "crps_mm_vs_v1.1-e0": true,
+        "interval_score_90_mm_vs_v1.1-e0": true,
+        "coverage_vs_v1.1-e0": true,
+        "width_vs_v1.1-e0": true,
+        "crps_mm_vs_TIME_ONLY": false,
+        "interval_score_90_mm_vs_TIME_ONLY": true,
+        "coverage_vs_TIME_ONLY": true,
+        "width_vs_TIME_ONLY": true
+      },
+      "passed": false
+    },
+    {
+      "station": "MJ3",
+      "checks": {
+        "train_mae_mm_vs_M0": true,
+        "train_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_M0": true,
+        "prediction_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_TIME_ONLY": false,
+        "prediction_rmse_mm_vs_TIME_ONLY": false,
+        "crps_mm_vs_v1.1-e0": true,
+        "interval_score_90_mm_vs_v1.1-e0": true,
+        "coverage_vs_v1.1-e0": true,
+        "width_vs_v1.1-e0": true,
+        "crps_mm_vs_TIME_ONLY": false,
+        "interval_score_90_mm_vs_TIME_ONLY": true,
+        "coverage_vs_TIME_ONLY": true,
+        "width_vs_TIME_ONLY": true
+      },
+      "passed": false
+    },
+    {
+      "station": "MJ1",
+      "checks": {
+        "train_mae_mm_vs_M0": true,
+        "train_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_M0": true,
+        "prediction_rmse_mm_vs_M0": true,
+        "prediction_mae_mm_vs_TIME_ONLY": true,
+        "prediction_rmse_mm_vs_TIME_ONLY": true,
+        "crps_mm_vs_v1.1-e0": true,
+        "interval_score_90_mm_vs_v1.1-e0": true,
+        "coverage_vs_v1.1-e0": false,
+        "width_vs_v1.1-e0": true,
+        "crps_mm_vs_TIME_ONLY": true,
+        "interval_score_90_mm_vs_TIME_ONLY": true,
+        "coverage_vs_TIME_ONLY": true,
+        "width_vs_TIME_ONLY": true
+      },
+      "passed": false
+    }
+  ],
+  "next_action": "stop; do not promote control, retry, add models or train final window"
+}

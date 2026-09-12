@@ -1,0 +1,51 @@
+{
+  "optimizer": {
+    "success": true,
+    "status": 0,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 19,
+    "evaluations": 28,
+    "loss": -1369.5172072531668,
+    "log_theta": [
+      1.0341481122594445,
+      -2.0890861535218166,
+      -13.815510557964274
+    ]
+  },
+  "variance": {
+    "time_amplitude": 2.8127091023227795,
+    "physical_amplitude": 0.0,
+    "time_length_scale": 0.12380021853316918,
+    "physical_length_scales": [],
+    "normalized_noise_variance": 1.0000000000000004e-06,
+    "negative_bound": 2.8127091023227797e-10,
+    "raw_latent_min": 9.95189987307299e-07,
+    "rounded_counts": {
+      "time": 0,
+      "physical": 0,
+      "total": 0
+    },
+    "component_mean_max_error_mm": 3.0235598050944376e-11,
+    "covariance_identity_max_error_mm2": 0.0
+  },
+  "warnings": [
+    {
+      "category": "ConvergenceWarning",
+      "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "divide by zero encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "overflow encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "invalid value encountered in matmul"
+    }
+  ],
+  "serialized_optimizer": "None; optimized fitted inference state retained",
+  "log_marginal_likelihood": 1369.5172072531668
+}

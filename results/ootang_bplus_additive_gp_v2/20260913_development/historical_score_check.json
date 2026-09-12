@@ -1,0 +1,59 @@
+{
+  "original_m0_e0": {
+    "checked_scores": 144,
+    "maximum_absolute_difference": 1.2363443602225743e-12
+  },
+  "metrics.csv": {
+    "rows": 24,
+    "max_absolute_difference_by_column": {
+      "days": 0.0,
+      "mae_mm": 8.379527540597342e-17,
+      "rmse_mm": 9.540979117872439e-17,
+      "crps_mm": 3.552713678800501e-15,
+      "coverage_80": 1.1102230246251565e-16,
+      "width_80_mm": 3.552713678800501e-15,
+      "interval_score_80_mm": 9.020562075079397e-17,
+      "coverage_90": 1.1102230246251565e-16,
+      "width_90_mm": 1.4210854715202004e-14,
+      "interval_score_90_mm": 5.684341886080802e-14,
+      "coverage_95": 1.1102230246251565e-16,
+      "width_95_mm": 1.4210854715202004e-14,
+      "interval_score_95_mm": 1.4210854715202004e-14
+    }
+  },
+  "aggregate.csv": {
+    "rows": 12,
+    "max_absolute_difference_by_column": {
+      "days": 0.0,
+      "point_days": 0.0,
+      "mae_mm": 1.1763593571467723e-17,
+      "rmse_mm": 7.105427357601002e-15,
+      "crps_mm": 2.949029909160572e-17,
+      "coverage_80": 5.551115123125783e-17,
+      "width_80_mm": 2.7755575615628914e-17,
+      "interval_score_80_mm": 6.245004513516506e-17,
+      "coverage_90": 1.1102230246251565e-16,
+      "width_90_mm": 0.0,
+      "interval_score_90_mm": 6.245004513516506e-17,
+      "coverage_95": 1.1102230246251565e-16,
+      "width_95_mm": 4.163336342344337e-17,
+      "interval_score_95_mm": 4.163336342344337e-17
+    }
+  },
+  "daily_predictions.csv": {
+    "rows": 13656,
+    "max_absolute_difference_by_column": {
+      "day": 0.0,
+      "observed_mm": 0.0,
+      "mean_mm": 2.2737367544323206e-13,
+      "error_mm": 1.4210854715202004e-14,
+      "crps_mm": 7.105427357601002e-15,
+      "lower_80_mm": 2.2737367544323206e-13,
+      "upper_80_mm": 2.2737367544323206e-13,
+      "lower_90_mm": 2.2737367544323206e-13,
+      "upper_90_mm": 2.2737367544323206e-13,
+      "lower_95_mm": 2.2737367544323206e-13,
+      "upper_95_mm": 2.2737367544323206e-13
+    }
+  }
+}

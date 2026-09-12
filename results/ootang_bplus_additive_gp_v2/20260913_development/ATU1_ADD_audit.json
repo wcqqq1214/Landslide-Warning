@@ -1,0 +1,69 @@
+{
+  "optimizer": {
+    "success": true,
+    "status": 0,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 35,
+    "evaluations": 50,
+    "loss": -1166.604886737808,
+    "log_theta": [
+      1.347790410905036,
+      -1.8161081759131854,
+      6.907755278982137,
+      3.594079173695212,
+      3.366440067898927,
+      3.649540100288474,
+      6.907755278982137,
+      -13.815510557964274
+    ]
+  },
+  "variance": {
+    "time_amplitude": 3.8489116149014055,
+    "physical_amplitude": 999.9999999999998,
+    "time_length_scale": 0.1626575552923019,
+    "physical_length_scales": [
+      36.3821828875051,
+      28.975193515199614,
+      38.45697562943636,
+      999.9999999999998
+    ],
+    "normalized_noise_variance": 1.0000000000000004e-06,
+    "negative_bound": 1.0038489116149012e-07,
+    "raw_latent_min": 9.921743640006753e-07,
+    "rounded_counts": {
+      "time": 0,
+      "physical": 0,
+      "total": 0
+    },
+    "component_mean_max_error_mm": 5.8232339110283594e-09,
+    "covariance_identity_max_error_mm2": 4.948352214610921e-10
+  },
+  "warnings": [
+    {
+      "category": "ConvergenceWarning",
+      "message": "The optimal value found for dimension 0 of parameter k1__k2__kernel__k1__constant_value is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+    },
+    {
+      "category": "ConvergenceWarning",
+      "message": "The optimal value found for dimension 3 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+    },
+    {
+      "category": "ConvergenceWarning",
+      "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "divide by zero encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "overflow encountered in matmul"
+    },
+    {
+      "category": "RuntimeWarning",
+      "message": "invalid value encountered in matmul"
+    }
+  ],
+  "serialized_optimizer": "None; optimized fitted inference state retained",
+  "log_marginal_likelihood": 1166.604886737808
+}

@@ -1,0 +1,505 @@
+{
+  "status": "completed_pending_independent_verification",
+  "started_utc": "2026-09-12T18:49:42.889706+00:00",
+  "run_limit_seconds": 1800,
+  "fit_calls": 8,
+  "objective_calls": 360,
+  "iterations": 270,
+  "completed_models": [
+    "ATU1_TIME_ONLY",
+    "ATU1_ADD",
+    "ATU5_TIME_ONLY",
+    "ATU5_ADD",
+    "MJ3_TIME_ONLY",
+    "MJ3_ADD",
+    "MJ1_TIME_ONLY",
+    "MJ1_ADD"
+  ],
+  "optimizer_records": {
+    "ATU1_TIME_ONLY": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 23,
+        "evaluations": 31,
+        "loss": -832.9568580354816,
+        "log_theta": [
+          0.5048821553453988,
+          -2.777428938894137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 1.6567902650796404,
+        "physical_amplitude": 0.0,
+        "time_length_scale": 0.062198217394870824,
+        "physical_length_scales": [],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 1.6567902650796405e-10,
+        "raw_latent_min": 9.990289917549688e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 6.3730375860166025e-12,
+        "covariance_identity_max_error_mm2": 0.0
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 832.9568580354816
+    },
+    "ATU1_ADD": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 35,
+        "evaluations": 50,
+        "loss": -1166.604886737808,
+        "log_theta": [
+          1.347790410905036,
+          -1.8161081759131854,
+          6.907755278982137,
+          3.594079173695212,
+          3.366440067898927,
+          3.649540100288474,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 3.8489116149014055,
+        "physical_amplitude": 999.9999999999998,
+        "time_length_scale": 0.1626575552923019,
+        "physical_length_scales": [
+          36.3821828875051,
+          28.975193515199614,
+          38.45697562943636,
+          999.9999999999998
+        ],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 1.0038489116149012e-07,
+        "raw_latent_min": 9.921743640006753e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 5.8232339110283594e-09,
+        "covariance_identity_max_error_mm2": 4.948352214610921e-10
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k1__k2__kernel__k1__constant_value is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 3 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 1166.604886737808
+    },
+    "ATU5_TIME_ONLY": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 19,
+        "evaluations": 28,
+        "loss": -1369.5172072531668,
+        "log_theta": [
+          1.0341481122594445,
+          -2.0890861535218166,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 2.8127091023227795,
+        "physical_amplitude": 0.0,
+        "time_length_scale": 0.12380021853316918,
+        "physical_length_scales": [],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 2.8127091023227797e-10,
+        "raw_latent_min": 9.95189987307299e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 3.0235598050944376e-11,
+        "covariance_identity_max_error_mm2": 0.0
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 1369.5172072531668
+    },
+    "ATU5_ADD": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 26,
+        "evaluations": 32,
+        "loss": -1385.9967107483126,
+        "log_theta": [
+          1.1364712009231952,
+          -2.033248652982982,
+          -2.1406315035352472,
+          6.907755278982137,
+          2.445803167234475,
+          5.886568529949552,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 3.1157540729074666,
+        "physical_amplitude": 0.11758056702771683,
+        "time_length_scale": 0.13090954990694745,
+        "physical_length_scales": [
+          999.9999999999998,
+          11.539814278517667,
+          360.16725830239074,
+          999.9999999999998
+        ],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 3.2333346399351836e-10,
+        "raw_latent_min": 9.94864017389574e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 1.6859889147548084e-11,
+        "covariance_identity_max_error_mm2": 1.0322195651879119e-11
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 3 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 1385.9967107483126
+    },
+    "MJ3_TIME_ONLY": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 20,
+        "evaluations": 24,
+        "loss": -3453.107254716713,
+        "log_theta": [
+          0.7320555760514,
+          -0.16610610590463765,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 2.0793504806968555,
+        "physical_amplitude": 0.0,
+        "time_length_scale": 0.8469563623505018,
+        "physical_length_scales": [],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 2.0793504806968556e-10,
+        "raw_latent_min": 5.581989466207915e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 6.350567507526835e-10,
+        "covariance_identity_max_error_mm2": 0.0
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 3453.107254716713
+    },
+    "MJ3_ADD": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 63,
+        "evaluations": 87,
+        "loss": -3458.8516599565055,
+        "log_theta": [
+          0.7531679480371848,
+          -0.14876476963704224,
+          -6.146892278430127,
+          5.415108461514854,
+          4.610073399799079,
+          2.2564579023563356,
+          5.741028533836073,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 2.1237171968813047,
+        "physical_amplitude": 0.0021401223505465045,
+        "time_length_scale": 0.8617718059531796,
+        "physical_length_scales": [
+          224.77692400221838,
+          100.49152542347063,
+          9.54920497519252,
+          311.3845158444073
+        ],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 2.1258573192318512e-10,
+        "raw_latent_min": 5.542400667302161e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 5.580261447145264e-10,
+        "covariance_identity_max_error_mm2": 1.5568285260779738e-12
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 3458.8516599565055
+    },
+    "MJ1_TIME_ONLY": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 17,
+        "evaluations": 22,
+        "loss": -3321.6379102869532,
+        "log_theta": [
+          1.407350247202892,
+          -0.10579342527530378,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 4.085116501330669,
+        "physical_amplitude": 0.0,
+        "time_length_scale": 0.8996104656669334,
+        "physical_length_scales": [],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 4.0851165013306687e-10,
+        "raw_latent_min": 6.235679261834548e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 5.410930387883746e-10,
+        "covariance_identity_max_error_mm2": 0.0
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 3321.6379102869532
+    },
+    "MJ1_ADD": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 67,
+        "evaluations": 86,
+        "loss": -3337.202813256713,
+        "log_theta": [
+          1.476477014568674,
+          -0.06638622748958758,
+          -6.907755278982137,
+          3.7170466032208758,
+          2.9169626300675544,
+          2.4088069349520884,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "time_amplitude": 4.377496626659545,
+        "physical_amplitude": 0.0010000000000000002,
+        "time_length_scale": 0.9357693746310938,
+        "physical_length_scales": [
+          41.1427037683416,
+          18.485056151580846,
+          11.12068552609153,
+          999.9999999999998
+        ],
+        "normalized_noise_variance": 1.0000000000000004e-06,
+        "negative_bound": 4.378496626659546e-10,
+        "raw_latent_min": 6.169367843256168e-07,
+        "rounded_counts": {
+          "time": 0,
+          "physical": 0,
+          "total": 0
+        },
+        "component_mean_max_error_mm": 6.518380231972759e-10,
+        "covariance_identity_max_error_mm2": 1.2889003408753041e-12
+      },
+      "warnings": [
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k1__k2__kernel__k1__constant_value is close to the specified lower bound 0.001. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 3 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "ConvergenceWarning",
+          "message": "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "serialized_optimizer": "None; optimized fitted inference state retained",
+      "log_marginal_likelihood": 3337.202813256713
+    }
+  },
+  "physical_solver_calls": 0,
+  "historical_fit_calls": 0,
+  "final_window_labels_read": 0,
+  "displacement_prefixes_read": [
+    792,
+    1168
+  ],
+  "formal_startups": 1,
+  "automatic_retries": 0,
+  "effect_passed_provisional": false,
+  "ended_utc": "2026-09-12T18:49:56.084855+00:00",
+  "elapsed_seconds": 13.194970958866179,
+  "next_action": "verify/report only; no retries or final-window training"
+}
