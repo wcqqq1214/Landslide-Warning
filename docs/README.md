@@ -15,6 +15,7 @@ v2.0 按原标准未达标并已停止。
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [B+–GP 开发验证计划](ootang_bplus_gp_plan.v1.md) | 按用户提供材料整理的 GP 候选；未执行，另附完整配置缺口，不改变既有实验结论 |
 | [v2.4 结果](ootang_convlstm_joint_results.v2.4.md) / [冻结计划](ootang_convlstm_joint_plan.v2.4.md) / [配置](../config/ootang_convlstm_joint.v2_4.json) | 一次两窗配对实验已停止；模型与评分复算通过，JOINT 效果失败；完整数组、评分异常及只读修复可追溯 |
 | [两页阶段简报 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf) / [源码与编译说明](../paper/README.md) | 供汇报使用的均值、概率结果与下一步讨论；无图，分别展示各预测窗 |
 | [方法筛选决策](ootang_method_selection_2026-09-12.md) | 三篇原始论文的适用边界与旧路线对照；本轮不训练，附导师沟通稿 |
