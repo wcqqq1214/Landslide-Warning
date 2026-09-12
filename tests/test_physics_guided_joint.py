@@ -1,6 +1,8 @@
 """Synthetic checks only: no real-data trial training before the single run."""
 
 import copy
+from pathlib import Path
+import tempfile
 import unittest
 from unittest.mock import patch
 
@@ -15,7 +17,7 @@ from physics_guided_sequence_learning.core import make_batch
 from physics_guided_joint import (
     ARMS, STRATEGIES, row_context, initial_scale, new_models, joint_step,
     probability_loss, selected_mean, decide, score_saved, training_inputs,
-    evaluation_inputs, predict_distribution, specification,
+    evaluation_inputs, predict_distribution, specification, load_distribution,
 )
 
 
@@ -159,11 +161,22 @@ class JointTests(unittest.TestCase):
                                             coverage_slack=1 / 180),
                                   labels, pd.date_range("2016-07-01", periods=792))
         self.assertEqual(len(tables["metrics.csv"]), 64)
-        self.assertEqual(len(tables["seed_metrics.csv"]), 192)
+        self.assertEqual(len(tables["seed_metrics.csv"]), 144)
+        self.assertNotIn("P0", set(tables["seed_metrics.csv"].strategy))
         self.assertEqual(len(tables["daily_predictions.csv"]), (582 + 762) * 4 * 4)
         aggregate = tables["aggregate_metrics.csv"]
         np.testing.assert_array_equal(aggregate.loc[aggregate.aggregation == "point_mean", "rmse_mm"], 2.5)
         np.testing.assert_array_equal(aggregate.loc[aggregate.aggregation == "pooled", "rmse_mm"], np.sqrt(7.5))
+
+    def test_p0_retains_one_fixed_component_without_fabricated_seeds(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder)
+            means = np.zeros((1, 612, 4))
+            np.savez(path / "prediction_432_P0.npz", means=means, scales=np.full((1, 4), 2.))
+            with patch("physics_guided_joint.ROOT", path):
+                mu, sigma = load_distribution(path, dict(reference_source="."), 432, "P0")
+            self.assertEqual(mu.shape, (1, 612, 4))
+            np.testing.assert_array_equal(sigma, np.full_like(means, 2.))
 
 
 if __name__ == "__main__":

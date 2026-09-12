@@ -283,8 +283,9 @@ def load_distribution(out, spec, h, strategy):
             np.broadcast_to(bundle["scales"][:, None], means.shape).copy()
             if strategy == "P0" else bundle["sigmas"]
         )
-    if means.shape != (3, h + 180, 4) or sigmas.shape != means.shape:
-        raise ValueError("All three seeds and four points are required")
+    components = 1 if strategy == "P0" else 3
+    if means.shape != (components, h + 180, 4) or sigmas.shape != means.shape:
+        raise ValueError("Reference component or neural seed count differs")
     if not np.isfinite(means[:, 30:]).all() or not np.isfinite(sigmas[:, 30:]).all():
         raise ValueError("Incomplete valid predictions")
     return means, sigmas
@@ -375,7 +376,7 @@ def score_saved(out, spec, labels, dates):
             records, summary = score(means, sigmas, y, h, strategy)
             rows.extend(records)
             values = crps(means[:, 30:], sigmas[:, 30:], y[30:])
-            for seed in spec["seeds"]:
+            for seed in ([] if strategy == "P0" else spec["seeds"]):
                 seed_rows, _ = score(
                     means[seed:seed + 1], sigmas[seed:seed + 1], y, h, strategy
                 )

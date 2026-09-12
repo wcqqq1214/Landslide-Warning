@@ -1,9 +1,11 @@
 """Read-only replay of v2.4 checkpoints and saved scores; never trains."""
 
 import json
+import ast
 from datetime import datetime
 from pathlib import Path
 import sys
+import time
 
 import numpy as np
 import pandas as pd
@@ -29,9 +31,26 @@ def check_frame(actual, expected, atol):
             pd.testing.assert_series_equal(actual[column], expected[column], check_dtype=False, check_exact=True)
 
 
-def run_checks(out, spec):
+def check_training_sources(out, manifest):
+    """Preserve executed bytes; only post-training reading/scoring may differ."""
+    for name, digest in manifest["sources"].items():
+        snapshot = out / "source_snapshot" / name
+        path = snapshot if snapshot.exists() else ROOT / name
+        if sha(path) != digest:
+            raise AssertionError("Executed source changed: " + name)
+    original = ast.parse((out / "source_snapshot/code/physics_guided_joint.py").read_text())
+    current = ast.parse((ROOT / "code/physics_guided_joint.py").read_text())
+    for tree in (original, current):
+        tree.body = [n for n in tree.body if not (
+            isinstance(n, ast.FunctionDef) and n.name in ("load_distribution", "score_saved")
+        )]
+    if ast.dump(original) != ast.dump(current):
+        raise AssertionError("Changes beyond array reading/scoring would affect the training implementation")
+
+
+def run_checks(out, spec, score_dir):
     manifest = json.loads((out / "manifest.json").read_text())
-    check_hashes(manifest["sources"])
+    check_training_sources(out, manifest)
     index = json.loads((out / "artifact_manifest.json").read_text())
     for name, digest in index.items():
         if sha(out / name) != digest:
@@ -39,7 +58,8 @@ def run_checks(out, spec):
     if manifest["config"] != spec:
         raise AssertionError("Executed config differs")
     execution = json.loads((out / "execution.json").read_text())
-    if execution["status"] != "completed" or execution["elapsed_seconds"] > spec["run_limit_seconds"]:
+    scoring_failure = execution["status"] == "failed" and execution["error"] == "ValueError: All three seeds and four points are required"
+    if (execution["status"] != "completed" and not scoring_failure) or execution["elapsed_seconds"] > spec["run_limit_seconds"]:
         raise AssertionError("Incomplete or over-budget execution")
     if datetime.fromisoformat(execution["ended_utc"]) > datetime.fromisoformat(spec["work_deadline_utc"]):
         raise AssertionError("Work deadline exceeded")
@@ -52,11 +72,12 @@ def run_checks(out, spec):
     events = [json.loads(line) for line in (out / "events.jsonl").read_text().splitlines()]
     if [e["sequence"] for e in events] != list(range(len(events))):
         raise AssertionError("Broken access-event sequence")
-    if [(e["kind"], e.get("rows", e.get("prefix"))) for e in events] != [
+    expected_events = [
         ("run_started", None), ("observation_prefix_read", 432), ("prefix_locked", 432),
         ("observation_prefix_read", 612), ("prefix_locked", 612),
-        ("observation_prefix_read", 792), ("run_completed", None),
-    ]:
+        ("observation_prefix_read", 792),
+    ] + ([] if scoring_failure else [("run_completed", None)])
+    if [(e["kind"], e.get("rows", e.get("prefix"))) for e in events] != expected_events:
         raise AssertionError("Observation reads do not follow complete paired locks")
     for h in spec["outer_days"]:
         lock = json.loads((out / f"prefix_lock_{h}.json").read_text())
@@ -143,15 +164,17 @@ def run_checks(out, spec):
     tables = score_saved(out, spec, labels, dates)
     maximum_score = 0.0
     for name, expected in tables.items():
-        saved = pd.read_csv(out / name, float_precision="round_trip")
+        saved = pd.read_csv(score_dir / name, float_precision="round_trip")
         check_frame(saved, expected, spec["score_atol_mm"])
         columns = expected.select_dtypes(include="number").columns
         maximum_score = max(maximum_score, float(np.nanmax(abs(saved[columns].values - expected[columns].values))))
     decision = decide(tables["metrics.csv"], spec)
-    if decision != json.loads((out / "decision.json").read_text()):
+    if decision != json.loads((score_dir / "decision.json").read_text()):
         raise AssertionError("Full frozen decision differs")
     return dict(
         implementation_passed=True, effectiveness_passed=decision["passed"],
+        original_runner_status=execution["status"], scoring_failure_preserved=scoring_failure,
+        training_source_ast_unchanged=True, p0_components=1, neural_seeds_per_arm=3,
         artifact_files_checked=len(index), reloaded_models=12,
         max_reload_error_mm=maximum_reload, max_detached_vs_direct_error_mm=maximum_control,
         max_objective_error=maximum_objective, max_score_error_mm=maximum_score,
@@ -162,9 +185,85 @@ def run_checks(out, spec):
     )
 
 
+def figures(score_dir, daily):
+    """Plots of already scored arrays; this module does not import the runner."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    for h in (432, 612):
+        fig, axes = plt.subplots(2, 2, figsize=(12, 7), sharex=True)
+        for ax, station in zip(axes.flat, ("ATU1", "ATU5", "MJ3", "MJ1")):
+            subset = daily[(daily.outer_days == h) & (daily.station == station)]
+            joint = subset[subset.strategy == "JOINT"]
+            dates = pd.to_datetime(joint.date)
+            ax.plot(dates, joint.observed_mm, color="black", lw=1.1, label="observed")
+            ax.fill_between(dates, joint.lower_90_mm, joint.upper_90_mm,
+                            color="#2686b1", alpha=.18, label="JOINT 90%")
+            for arm, color, style in (("P0", "#db8436", "-"), ("JOINT", "#147caa", "-"),
+                                      ("DETACHED", "#8658a2", "--")):
+                frame = subset[subset.strategy == arm]
+                ax.plot(pd.to_datetime(frame.date), frame.mean_mm, color=color, ls=style, lw=1, label=arm)
+            ax.axvline(pd.Timestamp("2016-07-01") + pd.Timedelta(days=h), color="#888888", ls=":", lw=1)
+            ax.set_title(station)
+            ax.set_ylabel("Displacement / mm")
+            ax.grid(alpha=.15)
+            ax.tick_params(axis="x", rotation=20)
+        handles, labels = axes[0, 0].get_legend_handles_labels()
+        fig.legend(handles, labels, loc="lower center", ncol=5)
+        fig.suptitle(f"Frozen {h}-day prefix + 180-day prediction | vertical line: forecast origin")
+        fig.tight_layout(rect=(0, .05, 1, .96))
+        fig.savefig(score_dir / f"curves_{h}.png", dpi=170)
+        fig.savefig(score_dir / f"curves_{h}.pdf")
+        plt.close(fig)
+
+
+def export_scores(out, spec, score_dir):
+    started = datetime.now().astimezone().isoformat()
+    tick = time.monotonic()
+    if datetime.now().astimezone() >= datetime.fromisoformat(spec["work_deadline_utc"]):
+        raise TimeoutError("The original work budget has ended")
+    manifest = json.loads((out / "manifest.json").read_text())
+    check_training_sources(out, manifest)
+    for name, digest in json.loads((out / "artifact_manifest.json").read_text()).items():
+        if sha(out / name) != digest:
+            raise AssertionError("Original training artifact changed")
+    score_dir.mkdir(exist_ok=False)
+    labels = load_observations(ROOT / spec["data"], 792)[2]
+    tables = score_saved(out, spec, labels, pd.date_range("2016-07-01", periods=792))
+    for name, frame in tables.items():
+        frame.to_csv(score_dir / name, index=False)
+    reference_error = reference_metric_error(tables["metrics.csv"], spec)
+    write_json(score_dir / "decision.json", decide(tables["metrics.csv"], spec))
+    figures(score_dir, tables["daily_predictions.csv"])
+    result = run_checks(out, spec, score_dir)
+    write_json(score_dir / "verification.json", result)
+    write_json(score_dir / "scoring_execution.json", dict(
+        status="completed", started=started, ended=datetime.now().astimezone().isoformat(),
+        elapsed_seconds=time.monotonic() - tick, new_training_updates=0, new_physical_calls=0,
+        original_training_manifest_sha256=sha(out / "artifact_manifest.json"),
+        reference_metric_error_mm=reference_error, p0_components=1,
+        reason="P0 is one frozen distribution, not a three-seed neural ensemble; original run failure retained",
+        scoring_source_sha256={p: sha(ROOT / p) for p in
+                              ("code/physics_guided_joint.py", "scripts/verify_ootang_convlstm_joint.py")},
+    ))
+    write_json(score_dir / "artifact_manifest.json", {
+        p.name: sha(p) for p in sorted(score_dir.iterdir()) if p.is_file()
+    })
+    return result
+
+
 if __name__ == "__main__":
     spec = specification()
     out = ROOT / spec["output_dir"]
-    result = run_checks(out, spec)
-    write_json(out / "verification.json", result)
+    score_dir = out / "scoring"
+    if sys.argv[1:] == ["--export-saved"]:
+        result = export_scores(out, spec, score_dir)
+    elif sys.argv[1:] == []:
+        for name, digest in json.loads((score_dir / "artifact_manifest.json").read_text()).items():
+            if sha(score_dir / name) != digest:
+                raise AssertionError("Read-only scoring artifact changed")
+        check_hashes(json.loads((score_dir / "scoring_execution.json").read_text())["scoring_source_sha256"])
+        result = run_checks(out, spec, score_dir)
+    else:
+        raise ValueError("Only --export-saved or read-only verification is supported")
     print(json.dumps(result, indent=2))
