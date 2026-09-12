@@ -1,0 +1,30 @@
+{
+  "phase": "implementation; synthetic tests only; no formal training startup",
+  "checked_utc": "2026-09-12T16:12:02+00:00",
+  "new_tests": {
+    "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_physics_guided_joint.py' -v",
+    "passed": 10,
+    "seconds": 0.827
+  },
+  "retained_tests": {
+    "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_physics_guided_direct.py' -v",
+    "passed": 7,
+    "seconds": 0.505
+  },
+  "new_checks": [
+    "paired initialization and exact B+ e0",
+    "tensor/NumPy scale feature equality and differentiability",
+    "post-origin history isolation and exact prefix API",
+    "OOF-only scale initialization and NLL",
+    "detached mean reproduces original updates exactly",
+    "direct and indirect probability gradient isolation",
+    "complete registered queries with synthetic arrays",
+    "all seeds/dates and separate pooled RMSE",
+    "full candidate stopping gates"
+  ],
+  "frozen_source_hashes_verified": 51,
+  "ruff": "passed for the four new Python files",
+  "formal_training_starts": 0,
+  "new_physical_calls": 0,
+  "initial_test_fixture_errors": "two iterrows index casts corrected before final checks; no real-data training"
+}
