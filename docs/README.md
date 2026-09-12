@@ -17,6 +17,7 @@ v2.0 按原标准未达标并已停止。
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [B+分组加性GP计划v2](ootang_bplus_additive_gp_plan.v2.md) | 根据6pro意见准备的ADD/TIME_ONLY配对方案；只完成文档，未实现或启动训练，新增数值与实质增益门槛为明确提议 |
 | [B+–GP结果](ootang_bplus_gp_results.v1.md) / [原计划](ootang_bplus_gp_plan.v1.md) / [已确认补充](ootang_bplus_gp_execution_addendum.v1.1.md) / [配置](../config/ootang_bplus_gp.v1.json) | 单次四点开发验证已停止；均值小幅改善、平均概率评分改善，MJ3/MJ1逐点概率保护失败；完整产物与复算保留 |
 | [v2.4 结果](ootang_convlstm_joint_results.v2.4.md) / [冻结计划](ootang_convlstm_joint_plan.v2.4.md) / [配置](../config/ootang_convlstm_joint.v2_4.json) | 一次两窗配对实验已停止；模型与评分复算通过，JOINT 效果失败；完整数组、评分异常及只读修复可追溯 |
 | [两页阶段简报 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf) / [源码与编译说明](../paper/README.md) | 供汇报使用的均值、概率结果与下一步讨论；无图，分别展示各预测窗 |
