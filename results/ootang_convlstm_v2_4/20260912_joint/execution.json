@@ -1,0 +1,14 @@
+{
+  "status": "failed",
+  "error": "ValueError: All three seeds and four points are required",
+  "started_utc": "2026-09-12T16:12:59.687225+00:00",
+  "ended_utc": "2026-09-12T16:14:00.810677+00:00",
+  "elapsed_seconds": 61.11728304205462,
+  "mean_updates": 1200,
+  "scale_updates": 1200,
+  "coordinated_iterations": 1200,
+  "optimizer_steps": 2400,
+  "physical_forward_calls": 0,
+  "scaler_fits": 0,
+  "retry_count": 0
+}

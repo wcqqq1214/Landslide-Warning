@@ -1,0 +1,22 @@
+{
+  "prefix": 432,
+  "artifacts": {
+    "queries_432.csv": "74cea2df71c19278b98ceddfe96fba7a97b4a4265f5f70470d5b808d02284e60",
+    "evaluation_queries_432.csv": "0f2eb664a640f19e31031ef0c1ae1cb5bfcfa69d8edea559836542f8ac6b5ac0",
+    "training_inputs_432.npz": "63be665c78ee19333e6dc55f49638bdfb7272a9f9791312204dd9f0903222c7f",
+    "evaluation_inputs_432.npz": "73449783e47f580717ea7eec7c2b03d606a289ce0078c7579c48a856bfe83f8a",
+    "initial_scale_432.json": "4b70d9a28a3865a37b7ff24d690f5e8d8ca75cf612acbd06328dbeb9303bb909",
+    "initial_432_seed0.pt": "6cf1d71aacc3fdc2130cca2e8758dcfa7ddaff7209b74ce74b65202bee2da4ce",
+    "model_432_DETACHED_seed0_e100.pt": "ad951c87aa5ba7b22b5aa0d37ee190d717f8ab61bf2090c630673f90fa1bd831",
+    "model_432_JOINT_seed0_e100.pt": "aced5762fc515e95b53d651b642d7eaa45e612a658c3af99dd0c7f5d94206282",
+    "initial_432_seed1.pt": "f1a344a94146e5a17ea9fd570f928274130f701108722a89d0c04575346e77bc",
+    "model_432_DETACHED_seed1_e100.pt": "d70774193d724e00f1939e6617319e785521b8bc60d51f14a9acb57a6703e990",
+    "model_432_JOINT_seed1_e100.pt": "9a130b94367ff8d4e8339d986e98c91a2da1dbc07e62e0224767136b478e1f97",
+    "initial_432_seed2.pt": "f0f77ee99a53425704d4066b08a6c5c2406bac099e40e37d3a7a12f7ef17866d",
+    "model_432_DETACHED_seed2_e100.pt": "19005bc411b50db512c6078b7e2bcac5eef323b990d2ffb4c8616be36a75fe63",
+    "model_432_JOINT_seed2_e100.pt": "5cec50fee53944858373af6b5135edb72149611d02216affb9b7ac90e40d7970",
+    "prediction_432_DETACHED.npz": "627288b1e1ef5fac13f7becbdba0f99e5103b350d71241b3099eae9ec2c7fdca",
+    "prediction_432_JOINT.npz": "3d59cb30eba9641e2fb0514a8e0bfd43640f6d5fbfe8f13ef6d28565847e6365",
+    "objectives_432.json": "71a3bc07da1ab4b153a14ec14748ab173e4bc400fb261c92e0c2243af2cd6186"
+  }
+}

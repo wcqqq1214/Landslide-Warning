@@ -1,0 +1,23 @@
+prefix=432 arm=DETACHED seed=0 e100 complete; elapsed=4.28s
+prefix=432 arm=JOINT seed=0 e100 complete; elapsed=9.09s
+prefix=432 arm=DETACHED seed=1 e100 complete; elapsed=12.76s
+prefix=432 arm=JOINT seed=1 e100 complete; elapsed=17.58s
+prefix=432 arm=DETACHED seed=2 e100 complete; elapsed=21.30s
+prefix=432 arm=JOINT seed=2 e100 complete; elapsed=26.16s
+prefix=612 arm=DETACHED seed=0 e100 complete; elapsed=31.21s
+prefix=612 arm=JOINT seed=0 e100 complete; elapsed=37.87s
+prefix=612 arm=DETACHED seed=1 e100 complete; elapsed=42.84s
+prefix=612 arm=JOINT seed=1 e100 complete; elapsed=49.46s
+prefix=612 arm=DETACHED seed=2 e100 complete; elapsed=54.45s
+prefix=612 arm=JOINT seed=2 e100 complete; elapsed=61.11s
+{"status": "failed", "error": "ValueError: All three seeds and four points are required", "started_utc": "2026-09-12T16:12:59.687225+00:00", "ended_utc": "2026-09-12T16:14:00.810677+00:00", "elapsed_seconds": 61.11728304205462, "mean_updates": 1200, "scale_updates": 1200, "coordinated_iterations": 1200, "optimizer_steps": 2400, "physical_forward_calls": 0, "scaler_fits": 0, "retry_count": 0}
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/run_ootang_convlstm_joint.py", line 258, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/run_ootang_convlstm_joint.py", line 225, in main
+    tables = score_saved(run.out, spec, labels, dates)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_joint.py", line 373, in score_saved
+    means, sigmas = load_distribution(out, spec, h, strategy)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_joint.py", line 287, in load_distribution
+    raise ValueError("All three seeds and four points are required")
+ValueError: All three seeds and four points are required

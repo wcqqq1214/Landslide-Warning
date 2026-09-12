@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/run_ootang_convlstm_joint.py", line 225, in main
+    tables = score_saved(run.out, spec, labels, dates)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_joint.py", line 373, in score_saved
+    means, sigmas = load_distribution(out, spec, h, strategy)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/physics_guided_joint.py", line 287, in load_distribution
+    raise ValueError("All three seeds and four points are required")
+ValueError: All three seeds and four points are required
