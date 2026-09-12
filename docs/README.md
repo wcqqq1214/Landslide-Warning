@@ -13,6 +13,7 @@ v2.0 按原标准未达标并已停止。
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [两页阶段简报 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf) / [源码与编译说明](../paper/README.md) | 供汇报使用的均值、概率结果与下一步讨论；无图，分别展示各预测窗 |
 | [方法筛选决策](ootang_method_selection_2026-09-12.md) | 三篇原始论文的适用边界与旧路线对照；本轮不训练，附导师沟通稿 |
 | [v2.3 结果](ootang_probability_pinn_results.v2.3.md) / [冻结方案](ootang_probability_pinn_plan.v2.3.md) / [执行配置](../config/ootang_probability_pinn.v2_3.json) | 已完成开发段实验，均值、概率及近似检查失败，已停止；本轮未训练最终模型 |
 | [293 日复核与当前方向](ootang_293day_prediction_audit_2026-09-11.md) | 来源、参数、日期、完整图表和指标；用户最新澄清与停止点 |

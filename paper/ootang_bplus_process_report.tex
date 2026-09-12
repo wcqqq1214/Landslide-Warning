@@ -1,0 +1,137 @@
+\documentclass[UTF8,zihao=-4]{ctexart}
+
+% Build from the repository root:
+% latexmk -xelatex -interaction=nonstopmode -halt-on-error \
+%   -outdir=tmp/pdfs/ootang_bplus_brief paper/ootang_bplus_process_report.tex
+% Data: frozen project artifacts at bd71024; no model execution.
+\usepackage[a4paper,top=22mm,bottom=22mm,left=22mm,right=22mm]{geometry}
+\usepackage{amsmath,booktabs,array,tabularx,xcolor,hyperref}
+\definecolor{reportblue}{HTML}{365F91}
+\hypersetup{colorlinks=true,linkcolor=reportblue,urlcolor=reportblue,
+  pdftitle={藕塘滑坡四点位移概率预测：阶段结果简报},
+  pdfsubject={已有结果汇总与下一步讨论，2026-09-12}}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.30em}
+\setlength{\footskip}{13mm}
+\renewcommand{\arraystretch}{1.25}
+\ctexset{section={format=\Large\bfseries\centering,beforeskip=1.0ex,afterskip=0.7ex}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\change}[2]{\mbox{#1\,$\rightarrow$\,#2}}
+
+\begin{document}
+\pagestyle{plain}
+
+\begin{center}
+  {\zihao{3}\bfseries 藕塘滑坡四点位移概率预测}\\[0.25em]
+  {\large 阶段结果简报}\\[0.25em]
+  {\small 2026 年 9 月 12 日}
+\end{center}
+
+\section{研究目标与已做工作}
+
+研究对象为藕塘同一剖面的 MJ3、MJ1、ATU5、ATU1 四个测点。目标是在改进 B+ 的
+物理引导下，利用 ConvLSTM 或 PINN 降低位移均值误差，并改善概率区间的覆盖与宽度。
+\textbf{当前保留 B+，尚未实现均值和概率质量同步改善。}
+
+已完成 B+ 复现、ConvLSTM 修正学习和 PINN 开发实验，并复核导师指定时段的已有预测。
+最初三组为 M0（改进 B+）、M1（ConvLSTM）和 M2（方程内修正混合模型）；M2 不称为
+经典 PINN。后续 v2.3 为另行实现的概率 PINN。
+
+\section{导师 293 日任务的已有结果}
+
+本任务使用 2016 年 7 月 1 日至 2019 年 9 月 11 日的 1168 日训练参数，预测
+2019 年 9 月 12 日至 2020 年 6 月 30 日，共 293 日。复核使用原选模记录和保存输出，
+未重新训练或在预测段选轮数。
+
+\textbf{M1、M2 均选中初始化轮次 e0：均值修正为零，尺度也未学到新变化。}
+因此三组均值与 B+ 一致，不能作为神经模型提高精度的证据。下表概率指标仅属于
+M1/M2 的已有分布，M0 本身没有概率区间。
+
+\begin{center}
+\small
+\begin{tabularx}{\textwidth}{@{}Yrrrr@{}}
+\toprule
+测点 & 三组均值 RMSE & M1/M2 CRPS & 90\% 覆盖率 & 90\% 宽度 \\
+\midrule
+ATU1 & 8.07 & 4.16 & 93.86\% & 29.05 \\
+ATU5 & 9.12 & 5.40 & 100.00\% & 29.05 \\
+MJ3  & 13.02 & 7.10 & 72.70\% & 29.05 \\
+MJ1  & 6.30 & 3.73 & 100.00\% & 29.05 \\
+\midrule
+四点平均 & \textbf{9.12} & \textbf{5.10} & \textbf{91.64\%} & 29.05 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+{\small RMSE、CRPS 和宽度单位均为 mm。RMSE 衡量均值误差；CRPS 综合评价概率预测，
+两者越低越好。覆盖率须结合区间宽度判断，不能只追求区间变宽。}
+
+四点 RMSE 先分别计算再平均为 9.12 mm；将全部点日误差合并计算的 RMSE 为
+9.45 mm，二者不是同一统计量。总体覆盖率虽为 91.64\%，MJ3 仅为 72.70\%，说明
+平均数不能代表每个测点的表现。本窗没有独立概率参照可证明现有区间已经得到改善。
+
+导师允许圈出末端的局部预测偏差，未指定排除日期。本次完整保留 293 日，不按模型
+胜负截尾；即使共同删去某些日期，零修正也不会产生神经均值增益。
+
+\clearpage
+
+\section{开发实验结果与主要问题}
+
+下表对应不同日期和训练前缀，\textbf{只在同行内比较，不与 293 日成绩混排。}
+RMSE、CRPS 均为四点算术平均，单位 mm。
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabularx}{\textwidth}{@{}Yrrrr@{}}
+\toprule
+方法与预测窗 & B+ RMSE & 模型 RMSE & 参照 CRPS & 模型 CRPS \\
+\midrule
+ConvLSTM v2.0，180 日 & 58.01 & 64.41 & 42.01 & 47.24 \\
+{\footnotesize 2017-09-06 至 2018-03-04} & & & & \\
+\addlinespace[0.3em]
+ConvLSTM v2.0，180 日 & 22.24 & 22.17 & 25.11 & 26.97 \\
+{\footnotesize 2018-03-05 至 2018-08-31} & & & & \\
+\addlinespace[0.3em]
+PINN v2.3，376 日 & 41.37 & 190.17 & 28.12 & 166.63 \\
+{\footnotesize 2018-09-01 至 2019-09-11} & & & & \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+{\small 均值参照为同窗 B+；概率参照分别为原 P0（ConvLSTM 两窗）与原 v1.1-e0（PINN 开发窗），
+不将概率成绩赋给确定性 B+。三行训练前缀依次为 432、612、792 日，拟合评分均排除首 30 日。}
+
+\textbf{ConvLSTM：训练段改善，预测收益不稳定。}
+两窗拟合 RMSE 分别为 \change{7.12}{3.97} 和 \change{7.19}{5.01} mm。
+第一预测窗变差；第二窗 RMSE 略降，MAE 却从 18.30 增到 18.41 mm。
+两窗 CRPS 及 90\% 区间评分均变差，局部改善尚未转化为稳定的整体收益。
+
+\textbf{PINN：训练段和物理轨迹近似均未达标。}
+拟合 RMSE 从 B+ 的 12.83 增至 40.93 mm；开发预测 90\% 区间覆盖率为 0\%，
+区间平均宽度为 63.53 mm。神经轨迹与同背景原 C 求解结果相差明显，偏差已出现在
+拟合段和预测起点，不仅在尾部。同背景 C 预测 RMSE 为 48.52 mm，也高于 B+；
+尚不能确定唯一的失败原因。
+
+\textbf{区间存在局部收益，但不能替代均值目标。}
+冻结 B+ 均值后，仅换用 v2.3 保存尺度，376 日平均 CRPS 可从 28.12 降到 26.96 mm，
+90\% 覆盖率从 36.24\% 增至 40.23\%；但区间变宽、MJ3 的 CRPS 变差，均值保持不变。
+这只是保存结果的交叉诊断，没有据此选出新模型，也不是 293 日预测结果。
+
+\section{阶段结论与下一步}
+
+\textbf{已测试的具体版本没有完成目标}，不等于证明 ConvLSTM/PINN 家族不适用。
+最新 PINN 已停止，未进入最终 293 日训练。实现、复算通过不能代替效果达标；
+历史窗口反复使用，结论仍属探索性证据。
+
+下一步先向导师汇报同窗结果，核对物理引导思路，并明确下一次修改的物理或数据依据。
+保留藕塘四点和均值、概率双重目标；获得新观测后的短期滚动预测仅作备选，
+\textbf{尚未决定更改原任务}。
+
+\vfill
+{\footnotesize
+\noindent 资料来源：项目《293 日已有预测复核》《v2.0 ConvLSTM 结果》与《v2.3 PINN 结果（含冻结交叉评分）》及其评分表，
+内容快照 \texttt{bd71024}。本简报仅汇总已有产物，无新训练或分段评分。
+}
+
+\end{document}

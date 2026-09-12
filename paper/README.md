@@ -1,10 +1,30 @@
-# `process_report` 编译说明
+# 阶段报告编译说明
+
+## 当前四点 B+ 阶段简报（2026-09-12）
+
+[两页 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf)参照原 `process_report` 的版式，
+仅使用文字和表格，汇总最终 293 日已有预测、ConvLSTM v2.0 与 PINN v2.3 开发结果及下一步讨论。
+各预测窗分别比较，保留未达标与局部收益的解释边界；没有新训练或任务变更。
+
+可编辑源码为 [ootang_bplus_process_report.tex](ootang_bplus_process_report.tex)。在仓库根目录执行：
+
+```bash
+mkdir -p tmp/pdfs/ootang_bplus_brief output/pdf
+latexmk -xelatex -interaction=nonstopmode -halt-on-error \
+  -outdir=tmp/pdfs/ootang_bplus_brief paper/ootang_bplus_process_report.tex
+cp tmp/pdfs/ootang_bplus_brief/ootang_bplus_process_report.pdf \
+  output/pdf/ootang_bplus_process_report_20260912.pdf
+```
+
+本简报的 PDF 与源码一同备份；编译辅助文件位于被忽略的 `tmp/`。原八点报告保持原样。
+
+## 历史八点 `process_report`
 
 本目录保存藕塘滑坡阶段报告。用户于 2026-09-05 确认报告已提交；原导师要求已退役。
 正文按该阶段的 ConvLSTM–NGBoost–SHAP 方法组织，以图为主，只保留理解方法和结果所需的文字。
 本说明保留报告的复现方式，不构成后续任务的固定路线或待提交要求；本次未修改报告正文。
 
-## 编译
+### 编译
 
 在 `paper/` 目录执行：
 
@@ -21,7 +41,7 @@ latexmk -xelatex -interaction=nonstopmode -halt-on-error \
 latexmk -C -outdir=build process_report.tex
 ```
 
-## 图件逻辑
+### 图件逻辑
 
 流程总览由 Draw.io 维护：可编辑源文件为 `figures/process_overview.drawio`，报告使用其导出的
 `figures/process_overview.png`。`process_report_figures.py` 生成 8 张测点预测图、ConvLSTM
