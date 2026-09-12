@@ -1,7 +1,7 @@
 # 项目文档导航
 
 本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN；293 日复核已完成，
-v2.3 神经组件与完整历史递推已实现，数据/运行接口及独立重放尚未完成，未训练；已有产物没有神经均值增益。
+v2.3 已完成开发段训练但未达标，已停止；其实现、完整数组与复算记录均保留。
 尾段局部偏差可先不管，不再要求先指定日期。v2.1 及力探针继续暂缓。
 v2.0 按原标准未达标并已停止。
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
@@ -11,7 +11,7 @@ v2.0 按原标准未达标并已停止。
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
-| [v2.3 当前候选](ootang_probability_pinn_plan.v2.3.md) | 单一水文蠕变假设、全历史状态、独立近似检查及拟议门槛；没有新训练预算 |
+| [v2.3 结果](ootang_probability_pinn_results.v2.3.md) / [冻结方案](ootang_probability_pinn_plan.v2.3.md) / [执行配置](../config/ootang_probability_pinn.v2_3.json) | 已完成开发段实验，均值、概率及近似检查失败，已停止；本轮未训练最终模型 |
 | [293 日复核与当前方向](ootang_293day_prediction_audit_2026-09-11.md) | 来源、参数、日期、完整图表和指标；用户最新澄清与停止点 |
 | [v2.2 需求记录](ootang_tail_scope_and_direction.v2.2.md) | 保留形成时的尾段要求，最新实施顺序以 293 日复核报告为准 |
 | [6pro 补审交接记录](ootang_web_route_review_prompt.md) / [文本材料包](review_materials/ootang_6pro_followup_20260911.md) | 补审已返回，处理结果见复核报告；保留当时的原件包，不再作为待发送任务 |
