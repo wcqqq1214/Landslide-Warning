@@ -1,0 +1,19 @@
+{
+  "source_sha256": {
+    "config/ootang_rolling_probability.v3_3.json": "80e079856831ea9ae4f9b605ccbbd68b0ebea6d90ec4241c1d2768d3ccae614b",
+    "config/ootang_rolling_transfer_lock.v3_3.json": "967a279de6b01e06a1b487268d90841757e8a044b14a9bdaf6a75218e27c97e9",
+    "code/rolling_probability/data.py": "c837dd2d37635b16441f480183bb8232cbc317a8fbcfaac0c1cbcad196bb71cd",
+    "code/physics_guided/reference.py": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz": "751a5471b53d9cb8a8833410a839d8971bfb0a215ab8d89849dd7f5f1278da63",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz": "882f6f1bc59ef9361982ca371f99e14adbb63067ddb82e1112824e232d5e65e7",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2"
+  },
+  "finite_arrays_checked": true,
+  "displacement_rows_parsed": 1,
+  "model_fits": 0,
+  "physical_forward_calls": 12
+}
