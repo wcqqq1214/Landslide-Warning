@@ -1,0 +1,38 @@
+{
+  "commit": "13eec6d6aeaf426fe29509fd121061b56cc3d1e5",
+  "files": {
+    "code/physics_guided_gp.py": "41455fc18f945446c851636db97b113de451b594de3f8bc40e020076b3fa3eaa",
+    "code/run_ootang_bplus_gp.py": "76b839741bbb5075f8095d6b960fa55e6d2fc5d86b306872bc52b5ec855d5277",
+    "scripts/verify_ootang_bplus_gp.py": "70bdd31d18d94dc4f5e7ffd6c131bdd07d3d12b239907052d6361e2927029973",
+    "tests/test_physics_guided_gp.py": "43a70d5f1d86184a825dc6b023841db6d5304872fa3c6a4e6d710d1a6cf990b2",
+    "config/ootang_bplus_gp.v1.json": "f49fb4414f18598794ab706341df3af5644c53b57aa71ffa98ab2a724b9055c8"
+  },
+  "config_sha256": "f49fb4414f18598794ab706341df3af5644c53b57aa71ffa98ab2a724b9055c8",
+  "frozen_sources": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+    "results/ootang_probability_pinn_v2_3/20260912_development/artifact_manifest.json": "cd860669ee0858fffcb5176cae2701edb255328ad78dd00edc3aac8f7163f8b9",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference_audit.json": "2cef6fbebb76b240144e330fe2ad97c4a927be8d73242da6530743660158eed3",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference_provenance.json": "0d6d839c86b4d6b7483c20c3e66f90221b3cfba49a73611d560e165fdb24ba21",
+    "results/ootang_probability_pinn_v2_3/20260912_development/source_snapshot.json": "980d387d03fe722c5e540e923f3100f8ef2b2662424956958da0444c443c98a5",
+    "results/ootang_probability_pinn_v2_3/20260912_development/metrics.csv": "417164004f9c9fa09011d2eb631afb037749ecb9fa6a397d61bf828618446108",
+    "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json": "eeafb73d69d8716810ae24c1d8fae4b90aaac2bf462c201217552f862fa180f6",
+    "results/ootang_bplus_v1_1/20260910_implementation/physics_package_development.json": "9ba838a0df5fea96a2662f4316a49de710e72799bcf18b19915a23758aa7d042",
+    "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz": "868ad6544ecf416abe0a13f56ccebaf96c39d400566851233343d5b13e06b138",
+    "results/ootang_bplus_v1_1/20260910_implementation/selection.json": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c",
+    "code/physics_guided/data.py": "a55a278a9b6abc12eedda33998ad1ce1d3474ba0b4ec96e0ab4642370d5360bb",
+    "code/physics_guided/probability.py": "14ad05a97f74b6bb5e1ad0c95daf261822a480add68f81f3dc1cabf8095cc0a9",
+    "code/physics_guided_pinn/creep_workflow.py": "34ebefa32b75923ba8d1ad77148599e17b2a7342e93ae0c3046c5c55cc90785a",
+    "config/ootang_probability_pinn.v2_3.json": "1b99ec46527fc74fa89a497eecef827133fe067e4f867b68723d5d5703264465",
+    "pyproject.toml": "bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0",
+    "uv.lock": "f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c",
+    "docs/ootang_bplus_gp_plan.v1.md": "515bc3ed25e32eec81f794429c846051588281f91354ef269cd2d942504779d6",
+    "docs/ootang_bplus_gp_execution_addendum.v1.1.md": "53ec717e01ce961c34fd87564600737417943f7428c9a9a0a19be3028fbca66d"
+  },
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "scientific_baseline_commit": "d92524db294c12847ddd72de12e681e313629d21"
+}

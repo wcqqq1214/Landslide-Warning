@@ -1,0 +1,188 @@
+{
+  "status": "completed_pending_independent_verification",
+  "started_utc": "2026-09-12T17:53:37.337884+00:00",
+  "fit_calls": 4,
+  "completed_points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "objective_calls": 138,
+  "physical_solver_calls": 0,
+  "formal_startups": 1,
+  "automatic_retries": 0,
+  "final_window_labels_read": 0,
+  "displacement_prefixes_read": [
+    792,
+    1168
+  ],
+  "optimizer_records": {
+    "ATU1": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 25,
+        "evaluations": 33,
+        "loss": -1102.9164795165457,
+        "log_theta": [
+          2.2409182547110498,
+          -1.776398972261045,
+          6.907755278982137,
+          2.493388001196476,
+          2.486286610705158,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "raw_latent_min": 9.963426546022447e-07,
+        "normalized_negative_bound": 9.401960719551917e-10,
+        "rounded_negative_values": 0,
+        "amplitude": 9.401960719551916,
+        "length_scales": [
+          0.1692465126276127,
+          999.9999999999998,
+          12.10220903960715,
+          12.016570962016203,
+          999.9999999999998
+        ],
+        "noise_variance_normalized": 1.0000000000000004e-06
+      },
+      "warnings": [
+        "The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 4 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+      ],
+      "serialized_optimizer": "None; inference-only fitted state",
+      "log_marginal_likelihood": 1102.9164795165457
+    },
+    "ATU5": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 34,
+        "evaluations": 48,
+        "loss": -1412.1698655856662,
+        "log_theta": [
+          1.363652393289795,
+          -1.8876171453159318,
+          6.907755278982137,
+          3.29733565295292,
+          3.174611470595057,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "raw_latent_min": 9.936638285523713e-07,
+        "normalized_negative_bound": 3.9104497512982983e-10,
+        "rounded_negative_values": 0,
+        "amplitude": 3.910449751298298,
+        "length_scales": [
+          0.15143222023714997,
+          999.9999999999998,
+          27.0404975886596,
+          23.917525400993362,
+          999.9999999999998
+        ],
+        "noise_variance_normalized": 1.0000000000000004e-06
+      },
+      "warnings": [
+        "The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 4 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+      ],
+      "serialized_optimizer": "None; inference-only fitted state",
+      "log_marginal_likelihood": 1412.1698655856662
+    },
+    "MJ3": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 19,
+        "evaluations": 22,
+        "loss": -3443.9704683931323,
+        "log_theta": [
+          -0.8504820049231959,
+          -0.6846990019287945,
+          6.907755278982137,
+          6.907755278982137,
+          4.856644459069332,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "raw_latent_min": 5.547851433806983e-07,
+        "normalized_negative_bound": 1e-10,
+        "rounded_negative_values": 0,
+        "amplitude": 0.42720896548969123,
+        "length_scales": [
+          0.5042419825991792,
+          999.9999999999998,
+          999.9999999999998,
+          128.59198168836798,
+          999.9999999999998
+        ],
+        "noise_variance_normalized": 1.0000000000000004e-06
+      },
+      "warnings": [
+        "The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 2 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 4 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+      ],
+      "serialized_optimizer": "None; inference-only fitted state",
+      "log_marginal_likelihood": 3443.9704683931323
+    },
+    "MJ1": {
+      "optimizer": {
+        "success": true,
+        "status": 0,
+        "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+        "iterations": 30,
+        "evaluations": 35,
+        "loss": -3313.5548435104956,
+        "log_theta": [
+          -0.2619159583214837,
+          -0.6538328375168527,
+          6.907755278982137,
+          6.311998012827196,
+          5.63596816325059,
+          6.907755278982137,
+          -13.815510557964274
+        ]
+      },
+      "variance": {
+        "raw_latent_min": 6.20181168531353e-07,
+        "normalized_negative_bound": 1e-10,
+        "rounded_negative_values": 0,
+        "amplitude": 0.7695756974232507,
+        "length_scales": [
+          0.5200486898220776,
+          999.9999999999998,
+          551.1450443117898,
+          280.3301913597335,
+          999.9999999999998
+        ],
+        "noise_variance_normalized": 1.0000000000000004e-06
+      },
+      "warnings": [
+        "The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 4 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+        "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+      ],
+      "serialized_optimizer": "None; inference-only fitted state",
+      "log_marginal_likelihood": 3313.5548435104956
+    }
+  },
+  "run_limit_seconds": 1800,
+  "effect_passed_provisional": false,
+  "ended_utc": "2026-09-12T17:53:41.727466+00:00",
+  "elapsed_seconds": 4.389596624765545,
+  "next_action": "verify/report only; no retry, additional fit or final-window training"
+}

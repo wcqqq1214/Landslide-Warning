@@ -1,0 +1,43 @@
+{
+  "dates_start": "2016-07-01",
+  "fit_end": "2018-08-31",
+  "prediction_start": "2018-09-01",
+  "dates_end": "2019-09-11",
+  "fit_days": 792,
+  "gp_training_days": 762,
+  "prediction_days": 376,
+  "point_order": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "theta_values": 54,
+  "physics_version": "prefix_792_v1_1",
+  "parameter_sha256": "d79f1b345f8743f05042df11af5a9c43656a27b70b09d7a3b8a9c2436a9c612d",
+  "reference_sha256": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+  "max_reference_to_e0_mean_error_mm": 0.0,
+  "physical_solver_calls": 0,
+  "displacement_label_rows_read": 0,
+  "original_array_shapes": {
+    "mean": [
+      1168,
+      4
+    ],
+    "moisture": [
+      1168,
+      4
+    ],
+    "rain_head": [
+      1168,
+      4
+    ],
+    "reservoir_head": [
+      1168
+    ],
+    "forcing": [
+      1168,
+      2
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "version": "ootang_bplus_gp.v1",
+  "status": "authorized",
+  "authorization": "根据这个plan，一步步进行; 采用这套事前固定的补充方案",
+  "scientific_baseline_commit": "d92524db294c12847ddd72de12e681e313629d21",
+  "plan": "docs/ootang_bplus_gp_plan.v1.md",
+  "addendum": "docs/ootang_bplus_gp_execution_addendum.v1.1.md",
+  "data": "data/monitoring_data.csv",
+  "reference": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+  "reference_manifest": "results/ootang_probability_pinn_v2_3/20260912_development/artifact_manifest.json",
+  "reference_audit": "results/ootang_probability_pinn_v2_3/20260912_development/reference_audit.json",
+  "parameter_source": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+  "physics_package": "results/ootang_bplus_v1_1/20260910_implementation/physics_package_development.json",
+  "probability_reference": "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz",
+  "selection": "results/ootang_bplus_v1_1/20260910_implementation/selection.json",
+  "historical_metrics": "results/ootang_probability_pinn_v2_3/20260912_development/metrics.csv",
+  "output_dir": "results/ootang_bplus_gp_v1/20260913_development",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "fit_days": 792,
+  "end_days": 1168,
+  "warmup_days": 30,
+  "features": [
+    "day_index",
+    "mean_moisture",
+    "mean_rain_head",
+    "reservoir_head_minus_rwl",
+    "delta_rwl"
+  ],
+  "kernel": {
+    "amplitude": 1.0,
+    "amplitude_bounds": [
+      0.001,
+      1000.0
+    ],
+    "length_scales": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "length_bounds": [
+      0.01,
+      1000.0
+    ],
+    "noise_variance": 0.01,
+    "noise_bounds": [
+      1e-06,
+      10.0
+    ],
+    "nu": 1.5
+  },
+  "optimizer": {
+    "maxiter": 200,
+    "max_evaluations": 400,
+    "ftol": 1e-09,
+    "gtol": 1e-05,
+    "maxls": 20,
+    "maxcor": 10,
+    "restarts": 0
+  },
+  "jitter": 1e-10,
+  "normalize_y": false,
+  "x_std_floor": 1e-12,
+  "residual_rms_floor_mm": 1e-06,
+  "negative_variance_factor": 1e-10,
+  "strict_tolerance_mm": 1e-06,
+  "coverage_slack": 0.0026595744680851063,
+  "coverage_tolerance": 1e-12,
+  "reload_atol": 1e-10,
+  "matrix_atol": 1e-06,
+  "matrix_rtol": 1e-08,
+  "score_atol_mm": 1e-09,
+  "reference_mean_atol_mm": 1e-08,
+  "versions": {
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "sklearn": "1.7.2"
+  },
+  "cpu_threads": 1,
+  "dtype": "float64",
+  "max_fit_calls": 4,
+  "max_total_objective_calls": 1600,
+  "physical_calls": 0,
+  "automatic_retry": false,
+  "work_started_utc": "2026-09-12T17:32:19+00:00",
+  "implementation_deadline_utc": "2026-09-12T18:47:19+00:00",
+  "training_deadline_utc": "2026-09-12T19:17:19+00:00",
+  "work_deadline_utc": "2026-09-12T19:32:19+00:00",
+  "run_limit_seconds": 1800,
+  "source_sha256": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+    "results/ootang_probability_pinn_v2_3/20260912_development/artifact_manifest.json": "cd860669ee0858fffcb5176cae2701edb255328ad78dd00edc3aac8f7163f8b9",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference_audit.json": "2cef6fbebb76b240144e330fe2ad97c4a927be8d73242da6530743660158eed3",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference_provenance.json": "0d6d839c86b4d6b7483c20c3e66f90221b3cfba49a73611d560e165fdb24ba21",
+    "results/ootang_probability_pinn_v2_3/20260912_development/source_snapshot.json": "980d387d03fe722c5e540e923f3100f8ef2b2662424956958da0444c443c98a5",
+    "results/ootang_probability_pinn_v2_3/20260912_development/metrics.csv": "417164004f9c9fa09011d2eb631afb037749ecb9fa6a397d61bf828618446108",
+    "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json": "eeafb73d69d8716810ae24c1d8fae4b90aaac2bf462c201217552f862fa180f6",
+    "results/ootang_bplus_v1_1/20260910_implementation/physics_package_development.json": "9ba838a0df5fea96a2662f4316a49de710e72799bcf18b19915a23758aa7d042",
+    "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz": "868ad6544ecf416abe0a13f56ccebaf96c39d400566851233343d5b13e06b138",
+    "results/ootang_bplus_v1_1/20260910_implementation/selection.json": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c",
+    "code/physics_guided/data.py": "a55a278a9b6abc12eedda33998ad1ce1d3474ba0b4ec96e0ab4642370d5360bb",
+    "code/physics_guided/probability.py": "14ad05a97f74b6bb5e1ad0c95daf261822a480add68f81f3dc1cabf8095cc0a9",
+    "code/physics_guided_pinn/creep_workflow.py": "34ebefa32b75923ba8d1ad77148599e17b2a7342e93ae0c3046c5c55cc90785a",
+    "config/ootang_probability_pinn.v2_3.json": "1b99ec46527fc74fa89a497eecef827133fe067e4f867b68723d5d5703264465",
+    "pyproject.toml": "bcc6b1e10534d0f2ed2c5e7510ee1761c7be4ca7a52fc743f4b266afedcf15f0",
+    "uv.lock": "f1d880ae806b501cd946f0c7564a552e288c7f3b2833a1801132675f5ec8841c",
+    "docs/ootang_bplus_gp_plan.v1.md": "515bc3ed25e32eec81f794429c846051588281f91354ef269cd2d942504779d6",
+    "docs/ootang_bplus_gp_execution_addendum.v1.1.md": "53ec717e01ce961c34fd87564600737417943f7428c9a9a0a19be3028fbca66d"
+  }
+}

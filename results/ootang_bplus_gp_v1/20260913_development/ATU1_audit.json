@@ -1,0 +1,40 @@
+{
+  "optimizer": {
+    "success": true,
+    "status": 0,
+    "message": "CONVERGENCE: RELATIVE REDUCTION OF F <= FACTR*EPSMCH",
+    "iterations": 25,
+    "evaluations": 33,
+    "loss": -1102.9164795165457,
+    "log_theta": [
+      2.2409182547110498,
+      -1.776398972261045,
+      6.907755278982137,
+      2.493388001196476,
+      2.486286610705158,
+      6.907755278982137,
+      -13.815510557964274
+    ]
+  },
+  "variance": {
+    "raw_latent_min": 9.963426546022447e-07,
+    "normalized_negative_bound": 9.401960719551917e-10,
+    "rounded_negative_values": 0,
+    "amplitude": 9.401960719551916,
+    "length_scales": [
+      0.1692465126276127,
+      999.9999999999998,
+      12.10220903960715,
+      12.016570962016203,
+      999.9999999999998
+    ],
+    "noise_variance_normalized": 1.0000000000000004e-06
+  },
+  "warnings": [
+    "The optimal value found for dimension 1 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+    "The optimal value found for dimension 4 of parameter k1__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.",
+    "The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value."
+  ],
+  "serialized_optimizer": "None; inference-only fitted state",
+  "log_marginal_likelihood": 1102.9164795165457
+}
