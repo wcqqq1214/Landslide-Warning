@@ -1,0 +1,42 @@
+{
+  "created_utc": "2026-09-12T23:07:12.641242+00:00",
+  "phases": [
+    {
+      "phase": "development",
+      "train_rows": 792,
+      "released_rows": 376,
+      "h30_n_per_point": 347,
+      "nonoverlap_origins": 12,
+      "first_h30_target": "2018-09-30",
+      "last_target": "2019-09-11"
+    },
+    {
+      "phase": "transfer",
+      "train_rows": 1168,
+      "released_rows": 293,
+      "h30_n_per_point": 264,
+      "nonoverlap_origins": 9,
+      "first_h30_target": "2019-10-11",
+      "last_target": "2020-06-30"
+    }
+  ],
+  "input_manifest_sha256": {
+    "results/ootang_rolling_v3/20260913/c4_feedback": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b",
+    "results/ootang_rolling_v3/20260913/c4_transfer": "06b20c03ce30225f754f3d5e5c8d672efe5064b666c6839e3ea405cdc89bd708"
+  },
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "script_sha256": "2aa90232e7889cf03cb9fbd24fd64a82d863c40909eb27e0485b1fff0b32e16d",
+  "protocol": "circular moving block; paired across models/points",
+  "bootstrap": {
+    "block_length": 30,
+    "replicates": 2000,
+    "seed": 20260913,
+    "confidence": 0.95
+  },
+  "seed_interpretation": "deterministic ridge; seed0 is an interface label",
+  "original_fixed_origin_task_unchanged": true,
+  "new_fits": 0,
+  "physical_forward_calls": 0,
+  "statistical_intervals_do_not_change_effect_gate": true,
+  "effect_decisions_independently_checked": true
+}
