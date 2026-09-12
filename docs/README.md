@@ -15,12 +15,14 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**最新授权：v3.0 滚动概率预测自主实验进行中。** 使用现有四点数据，在独立 8 小时总窗口内执行；旧长窗结论保持。
+**最新结果：v3.0 已完成四候选及一次后期迁移，正在收尾。** C4 均值/评分有改善，但后期覆盖未过；旧长窗结论保持。先读简报，不把历史计划中的“下一步”当作当前运行入口。
 
 | 文档 | 用途 |
 | --- | --- |
-| [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | C1 开发失败；保留强近期速度对照，后续候选和每三次纠偏在此记录 |
-| [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM 和概率评分；合成检查与正式运行分开记录 |
+| [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
+| [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
+| [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM/正则回归、概率反馈和独立核验 |
+| [三候选复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 停止网络扩展，针对概率覆盖修正；一次后期选择已用，不再按后期结果重选 |
 | [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 用户已授权自主执行；因果更新观测，30 日主步长，公平对照、六候选上限及每三次纠偏 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
 | [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
