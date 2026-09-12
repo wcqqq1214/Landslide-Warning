@@ -190,6 +190,163 @@ def verify_ridge_models(run, spec, phases, labels, sources):
     )
 
 
+def verify_crossfit_training(run, spec, labels):
+    """Validate auxiliary solves and reconstruct the scale targets independently."""
+    from rolling_probability.data import training_examples, load_teachers
+    from rolling_probability.ridge import RidgeDistribution, dynamic_features
+
+    sources = json.loads((run / "sources.json").read_text())["files"]
+    cache = [ROOT / p for p in sources if p.endswith("/teacher_252.npz")]
+    if len(cache) != 1:
+        raise ValueError("Ambiguous crossfit physics cache")
+    pool = load_teachers(cache[0].parent)
+    maximum_coef = 0.0
+    maximum_mean = 0.0
+    maximum_objective = 0.0
+    models = {}
+    for prefix in sorted({a for a, _ in spec["crossfit"]["folds"]}):
+        data = training_examples(
+            labels[:prefix],
+            pool,
+            spec["horizons"],
+            spec["history_days"],
+            spec["extra_baselines"],
+        )
+        train = run / "fold_training" / str(prefix)
+        contract = json.loads((train / "data_contract.json").read_text())
+        if contract["label_rows"] != prefix or contract["label_sha256"] != array_sha(
+            labels[:prefix]
+        ):
+            raise ValueError("Auxiliary mean crossed its label prefix")
+        with np.load(train / "training_queries.npz") as a:
+            np.testing.assert_array_equal(a["origins"], data["origins"])
+            if a["target_last"].max() >= prefix:
+                raise ValueError("Auxiliary mean saw its validation target")
+        expert = np.stack([data["baselines"][k] for k in spec["expert_names"]], axis=2)
+        features, base, _ = dynamic_features(data["x"], expert)
+        sy = np.maximum(np.sqrt(np.mean((data["y"] - base) ** 2, axis=0)), 0.01)
+        for arm in spec["ridge"]["arms"]:
+            alpha = spec["crossfit"]["alpha"]
+            model = RidgeDistribution.load(train / f"ridge_{arm}_a{alpha:g}.json")
+            models[prefix, arm] = model
+            D, N = model.dimensions, len(data["origins"])
+            sx = np.maximum(np.sqrt(np.mean(features[..., :D] ** 2, axis=0)), 1e-6)
+            np.testing.assert_array_equal(sx, model.feature_scale)
+            np.testing.assert_array_equal(sy, model.target_scale)
+            for h in range(spec["horizons"]):
+                for p in range(4):
+                    X = features[:, h, p, :D] / sx[h, p]
+                    target = (data["y"][:, h, p] - base[:, h, p]) / sy[h, p]
+                    design = np.vstack([X / np.sqrt(N), np.sqrt(alpha) * np.eye(D)])
+                    rhs = np.r_[target / np.sqrt(N), np.zeros(D)]
+                    beta = np.linalg.lstsq(design, rhs, rcond=None)[0]
+                    maximum_coef = max(
+                        maximum_coef, float(np.max(abs(beta - model.beta[h, p])))
+                    )
+                    np.testing.assert_allclose(
+                        beta, model.beta[h, p], atol=1e-9, rtol=1e-8
+                    )
+    counts = {}
+    for phase in ("inner", "development"):
+        start, _ = spec["stages"][phase]
+        train = run / f"{phase}_training"
+        with np.load(train / "oof_predictions.npz") as a:
+            saved = {k: a[k].copy() for k in a.files}
+        expected = np.concatenate(
+            [
+                np.arange(a, b - spec["horizons"] + 1)
+                for a, b in spec["crossfit"]["folds"]
+                if b <= start
+            ]
+        )
+        np.testing.assert_array_equal(saved["origins"], expected)
+        target_ids = expected[:, None] + np.arange(spec["horizons"])[None]
+        if target_ids.max() >= start:
+            raise ValueError("Crossfit scale used evaluation labels")
+        np.testing.assert_array_equal(saved["y"], labels[target_ids])
+        data = training_examples(
+            labels[:start],
+            pool,
+            spec["horizons"],
+            spec["history_days"],
+            spec["extra_baselines"],
+        )
+        lookup = {int(n): i for i, n in enumerate(data["origins"])}
+        positions = np.array([lookup[int(n)] for n in expected])
+        expert = np.stack(
+            [data["baselines"][k][positions] for k in spec["expert_names"]], axis=2
+        )
+        features, base, q = dynamic_features(data["x"][positions], expert)
+        np.testing.assert_array_equal(q, saved["q"])
+        np.testing.assert_array_equal(
+            saved["teacher_prefixes"], data["teachers"][positions]
+        )
+        for a, b in spec["crossfit"]["folds"]:
+            if b > start:
+                continue
+            mask = (expected >= a) & (expected + spec["horizons"] <= b)
+            np.testing.assert_array_equal(
+                saved["fit_prefix"][mask], np.full(mask.sum(), a)
+            )
+            for arm in spec["ridge"]["arms"]:
+                model = models[a, arm]
+                X = features[mask, ..., : model.dimensions] / model.feature_scale[None]
+                mean = (
+                    base[mask]
+                    + np.sum(X * model.beta[None], axis=-1) * model.target_scale[None]
+                )
+                maximum_mean = max(
+                    maximum_mean, float(np.max(abs(mean - saved[f"mean_{arm}"][mask])))
+                )
+                np.testing.assert_allclose(
+                    mean, saved[f"mean_{arm}"][mask], atol=1e-9, rtol=1e-12
+                )
+                np.testing.assert_array_equal(
+                    saved[f"error_{arm}"][mask],
+                    saved["y"][mask] - saved[f"mean_{arm}"][mask],
+                )
+        for arm in spec["ridge"]["arms"]:
+            model = RidgeDistribution.load(train / f"ridge_{arm}_a0.001.json")
+            original = json.loads((train / f"frozen_mean_{arm}.json").read_text())
+            for key in spec["crossfit"]["mean_fields_frozen"]:
+                if model.state[key] != original[key]:
+                    raise ValueError("C5 changed its frozen mean field")
+            if model.state["scale_training_samples"] != len(expected):
+                raise ValueError("Wrong scale-training sample count")
+            for p in range(4):
+                sy = model.target_scale[None, :, p]
+                error = saved[f"error_{arm}"][:, :, p] / sy
+                qn = q[:, :, p] / sy
+                a2, b2 = np.exp(2 * model.scale_logs[p])
+                variance = a2 + b2 * qn**2 + (0.01 / sy) ** 2
+                objective = 0.5 * np.mean(np.log(variance) + error**2 / variance)
+                residual_factor = 1 / variance - error**2 / variance**2
+                gradient = [
+                    np.mean(residual_factor * a2),
+                    np.mean(residual_factor * b2 * qn**2),
+                ]
+                record = model.state["scale_optimizer_records"][p]
+                maximum_objective = max(
+                    maximum_objective, abs(objective - record["objective"])
+                )
+                np.testing.assert_allclose(
+                    objective, record["objective"], atol=1e-8, rtol=1e-10
+                )
+                np.testing.assert_allclose(
+                    gradient, record["gradient"], atol=1e-7, rtol=1e-8
+                )
+        counts[phase] = len(expected)
+    return dict(
+        auxiliary_models=len(models),
+        queries=counts,
+        maximum_svd_coefficient_difference=maximum_coef,
+        maximum_independent_mean_difference_mm=maximum_mean,
+        maximum_scale_objective_difference=maximum_objective,
+        new_training_or_optimization=0,
+        nested_hyperparameter_validation=False,
+    )
+
+
 def verify(run, out, reload_models=True):
     if out.exists():
         raise FileExistsError(out)
@@ -388,7 +545,11 @@ def verify(run, out, reload_models=True):
                     [log_min, log_max],
                     atol=1e-12,
                 )
-            if phase == "development" and spec.get("reuse_development"):
+            if (
+                phase == "development"
+                and spec.get("reuse_development")
+                and spec.get("scale_training") != "rolling_crossfit"
+            ):
                 reuse = spec["reuse_development"]
                 prior = ROOT / reuse["path"]
                 if (
@@ -400,6 +561,36 @@ def verify(run, out, reload_models=True):
                 with np.load(prior / phase / f"{old_name}.npz") as previous:
                     for key in ("origins", "teacher_prefixes", "mean", "raw_sigma"):
                         np.testing.assert_array_equal(a[key], previous[key])
+            if spec.get("scale_training") == "rolling_crossfit":
+                if phase == "transfer":
+                    raise ValueError("Development-only C5 entered transfer")
+                old_prefix = spec["reuse_development"]["model_prefix"]
+                name_in_c3 = name.replace(spec["model_prefix"], old_prefix).replace(
+                    spec["crossfit"]["control_prefix"], old_prefix
+                )
+                with np.load(
+                    ROOT
+                    / spec["reuse_development"]["path"]
+                    / phase
+                    / f"{name_in_c3}.npz"
+                ) as previous:
+                    np.testing.assert_array_equal(a["mean"], previous["mean"])
+                    if not name.startswith(spec["model_prefix"]):
+                        np.testing.assert_array_equal(
+                            a["raw_sigma"], previous["raw_sigma"]
+                        )
+                if phase == "development" and not name.startswith(spec["model_prefix"]):
+                    control_name = name.replace(
+                        spec["crossfit"]["control_prefix"], "C4_RIDGE"
+                    )
+                    with np.load(
+                        ROOT
+                        / spec["control_reference"]["path"]
+                        / phase
+                        / f"{control_name}.npz"
+                    ) as prior:
+                        for key in prior.files:
+                            np.testing.assert_array_equal(a[key], prior[key])
             for k in range(spec["horizons"]):
                 ids = a["origins"] + k
                 mask = ids < end
@@ -448,6 +639,10 @@ def verify(run, out, reload_models=True):
     reload_result = {"performed": False}
     if reload_models and spec.get("model_family") == "ridge_dynamic":
         reload_result = verify_ridge_models(run, spec, phases, labels, sources)
+        if spec.get("scale_training") == "rolling_crossfit":
+            reload_result["crossfit_training"] = verify_crossfit_training(
+                run, spec, labels
+            )
     elif reload_models:
         # Frozen training and feature code, not a newer candidate's implementation.
         sys.path.insert(0, str(run / "sources/code"))
