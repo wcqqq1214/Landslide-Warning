@@ -1,0 +1,22 @@
+{
+  "locked_utc": "2026-09-12T22:57:06.113668+00:00",
+  "candidate": "C4_RIDGE_FULL",
+  "ablation": "C4_RIDGE_DATA",
+  "simple_baseline": "DRIFT1",
+  "selected_alpha": {
+    "FULL": 0.001,
+    "DATA": 0.001
+  },
+  "primary_horizon": 30,
+  "training_prefix_rows": 1168,
+  "rolling_end_rows": 1461,
+  "configuration": "config/ootang_rolling_probability.v3_3.json",
+  "configuration_sha256": "80e079856831ea9ae4f9b605ccbbd68b0ebea6d90ec4241c1d2768d3ccae614b",
+  "development_run": "results/ootang_rolling_v3/20260913/c4_feedback",
+  "development_manifest_sha256": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b",
+  "development_decision_sha256": "57b82455f543b946faf5b0a5d69047706dc1ebd93bda5163027bcea89848c8fc",
+  "verification": "results/ootang_rolling_v3/20260913/c4_verification/verification.json",
+  "verification_sha256": "d20d57015833509119cb2f9b6e85552f82a75dc9a4998b188cd0e96fb254d483",
+  "selection_policy": "one transfer choice; no post-transfer candidate reselection",
+  "interpretation": "exploratory daily rolling conditional forecasts; original fixed-origin task unchanged"
+}
