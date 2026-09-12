@@ -1,0 +1,213 @@
+{
+  "version": "ootang_rolling_probability.v3_5",
+  "plan": "docs/ootang_rolling_probability_plan.v3.0.md",
+  "baseline_commit": "85f9ee8",
+  "start_utc": "2026-09-12T21:27:52+00:00",
+  "deadline_utc": "2026-09-13T05:27:52+00:00",
+  "max_candidates": 6,
+  "review_every_candidates": 3,
+  "data": "data/monitoring_data.csv",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "history_days": 30,
+  "horizons": 30,
+  "primary_horizon": 30,
+  "stages": {
+    "inner": [
+      612,
+      792
+    ],
+    "development": [
+      792,
+      1168
+    ],
+    "transfer": [
+      1168,
+      1461
+    ]
+  },
+  "teacher_prefixes": [
+    252,
+    342,
+    432,
+    612,
+    792,
+    1168
+  ],
+  "forcing_mode": "conditional_known_future_rainfall_and_reservoir_level",
+  "candidate": "C6_RIDGE_FULL",
+  "seeds": [
+    0
+  ],
+  "dtype": "float64",
+  "cpu_threads": 1,
+  "probability": {
+    "window": 90,
+    "prior_count": 10,
+    "prior_sum_squares": 10,
+    "sigma_floor_mm": 0.01,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "feedback": {
+      "rate": 0.02,
+      "target_coverage": 0.9,
+      "initial_log_scale": 0.0,
+      "log_scale_bound": 2.302585092994046
+    }
+  },
+  "effect": {
+    "relative_improvement": 0.05,
+    "point_mean_atol_mm": 1e-08,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average": [
+      0.85,
+      0.95
+    ],
+    "coverage90_point": [
+      0.8,
+      0.98
+    ]
+  },
+  "bootstrap": {
+    "block_length": 30,
+    "replicates": 2000,
+    "seed": 20260913,
+    "confidence": 0.95
+  },
+  "run_timeout_seconds": 3600,
+  "output_root": "results/ootang_rolling_v3/20260913",
+  "exploratory": true,
+  "candidate_plan": "docs/ootang_rolling_probability_candidate.c6.md",
+  "model_family": "ridge_dynamic",
+  "expert_names": [
+    "B_ANCHOR",
+    "B_TREND14",
+    "DRIFT1",
+    "DRIFT3",
+    "DRIFT7",
+    "DRIFT14",
+    "DRIFT30",
+    "PERSIST"
+  ],
+  "extra_baselines": [
+    "DRIFT1",
+    "DRIFT3",
+    "DRIFT7",
+    "DRIFT30",
+    "EXPERT_INIT"
+  ],
+  "ridge": {
+    "alphas": [
+      0.001
+    ],
+    "arms": [
+      "FULL",
+      "DATA"
+    ],
+    "intercept": false,
+    "objective": "mean_squared_error_plus_alpha_l2",
+    "scale_initial_logs": [
+      -2.302585092994046,
+      0.0
+    ],
+    "scale_log_bounds": [
+      -10,
+      5
+    ],
+    "scale_maxiter": 100,
+    "scale_maxfun": 200,
+    "scale_ftol": 1e-10,
+    "scale_gtol": 1e-06
+  },
+  "model_prefix": "C6_RIDGE",
+  "reuse_development": {
+    "path": "results/ootang_rolling_v3/20260913/c3_ridge",
+    "artifact_manifest_sha256": "8df78fd33e6a1134e348f5731d653103eed83832877dbb24590c2fe904e15309",
+    "selected_alpha": {
+      "FULL": 0.001,
+      "DATA": 0.001
+    },
+    "model_prefix": "C3_RIDGE"
+  },
+  "scale_training": "rolling_crossfit",
+  "transfer_permitted": false,
+  "crossfit": {
+    "folds": [
+      [
+        342,
+        432
+      ],
+      [
+        432,
+        612
+      ],
+      [
+        612,
+        792
+      ]
+    ],
+    "alpha": 0.001,
+    "control_prefix": "C6_IN_SAMPLE",
+    "reuse_prefixes": [
+      612
+    ],
+    "mean_fields_frozen": [
+      "beta",
+      "feature_scale",
+      "target_scale",
+      "alpha",
+      "dimensions"
+    ],
+    "assessment_scope": "development only after C4 transfer; no new transfer selection",
+    "fold_scope": "latest_complete"
+  },
+  "additional_sources": [
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/ridge_FULL_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/ridge_DATA_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/data_contract.json",
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/training_queries.npz",
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/baseline_scales.json",
+    "results/ootang_rolling_v3/20260913/c4_feedback/artifact_manifest.json",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_ANCHOR.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_RAW.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_TREND14.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_DATA.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_DATA_seed0.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_FULL.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_FULL_seed0.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT1.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT14.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT3.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT30.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT7.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/EXPERT_INIT.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/PERSIST.npz",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/artifact_manifest.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/432/baseline_scales.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/432/data_contract.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/432/ridge_DATA_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/432/ridge_FULL_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/432/training_queries.npz",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/612/baseline_scales.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/612/data_contract.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/612/ridge_DATA_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/612/ridge_FULL_a0.001.json",
+    "results/ootang_rolling_v3/20260913/c5_crossfit/fold_training/612/training_queries.npz"
+  ],
+  "control_reference": {
+    "path": "results/ootang_rolling_v3/20260913/c4_feedback",
+    "manifest_sha256": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b"
+  },
+  "auxiliary_source": {
+    "path": "results/ootang_rolling_v3/20260913/c5_crossfit",
+    "manifest_sha256": "01c1149f93e847fd87ebe39a24deb3f209db284e49981f6d55301b9cbed4b343"
+  }
+}
