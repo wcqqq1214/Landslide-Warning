@@ -1,0 +1,69 @@
+{
+  "source": {
+    "path": "results/ootang_rolling_v3/20260913/c3_ridge",
+    "artifact_manifest_sha256": "8df78fd33e6a1134e348f5731d653103eed83832877dbb24590c2fe904e15309",
+    "selected_alpha": {
+      "FULL": 0.001,
+      "DATA": 0.001
+    },
+    "model_prefix": "C3_RIDGE"
+  },
+  "models": {
+    "DRIFT14": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "B_RAW": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "C4_RIDGE_DATA": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "C4_RIDGE_FULL_seed0": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "B_ANCHOR": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "DRIFT7": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "DRIFT3": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "C4_RIDGE_FULL": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "DRIFT1": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "C4_RIDGE_DATA_seed0": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "B_TREND14": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "PERSIST": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "DRIFT30": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    },
+    "EXPERT_INIT": {
+      "mean_max_difference_mm": 0.0,
+      "raw_sigma_max_difference_mm": 0.0
+    }
+  }
+}

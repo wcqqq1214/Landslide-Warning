@@ -1,0 +1,39 @@
+{
+  "start": 792,
+  "end": 1168,
+  "files": {
+    "DRIFT14.npz": "655231a0e595ef6ddecaa8f94803808df25d8318178a88b6ab11fa8f1286c5d4",
+    "B_RAW.npz": "7021a3f030445767be7c7c20ded1c0c677137394062cb9f0f03ec2cd7482b3d9",
+    "summary.csv": "44394b53a97bd75f659ec8bb74d9fbaaf63e93155e7a09ba20ae13edbecac3d7",
+    "C4_RIDGE_DATA.npz": "359a4d2705290e2dc49c19bd41e990b55b408c641363bd1b0acb9ae2903fc776",
+    "C4_RIDGE_FULL_seed0.npz": "3e22af465d516bc4f5f8b28654e0543d2b6d0b2c87415617dc757c9397fa37df",
+    "B_ANCHOR.npz": "614ffacb7f8652184e95b224048d126eea4123f951f8decf217aaf179b32b6fc",
+    "DRIFT7.npz": "b4a19cdae09b6490c1a400574cf9811404fc79d030380df54806796d0e5a0cc7",
+    "metrics.csv": "c6fe6c5b26d381872960578ad4b5b20f56f9a447f78ff2d1ac0399795a0b3046",
+    "DRIFT3.npz": "6d6ed972d26e2c1de1a6eb476dabc5cb6f5c117c41b360d52f9380b611fd6c76",
+    "C4_RIDGE_FULL.npz": "3e22af465d516bc4f5f8b28654e0543d2b6d0b2c87415617dc757c9397fa37df",
+    "DRIFT1.npz": "920f15f79dd9046fb98231b5a4e94839adac0cc9e5e13524146315b77ac9a439",
+    "C4_RIDGE_DATA_seed0.npz": "359a4d2705290e2dc49c19bd41e990b55b408c641363bd1b0acb9ae2903fc776",
+    "feedback_state.json": "0ac718bb0803c62b5f1e453708902920470ef5ebfa45c161b318ce6fe799e679",
+    "B_TREND14.npz": "5c13af7858522d8f855f8e64040b57ac45e9d61b70b8108791923d8dd49bb00f",
+    "PERSIST.npz": "d2136347cd9b5fed65d88be74b1c14bed710e40228e710bd56354c71f41515d4",
+    "DRIFT30.npz": "7332cd1594402a7e2284e62b7b59fcfb04b8c44c4e32abfc7170b0ec55aa96aa",
+    "EXPERT_INIT.npz": "ddcc98debc9af37fdfbff7e26279acda0298c8a94e955fcf40f7cc9c096a9115"
+  },
+  "label_rows_released": 376,
+  "prediction_origins": 376,
+  "mean_is_rolling": true,
+  "probability_extension_baselines": [
+    "B_ANCHOR_G",
+    "B_TREND14_G",
+    "PERSIST_G",
+    "DRIFT14_G",
+    "DRIFT1_G",
+    "DRIFT3_G",
+    "DRIFT7_G",
+    "DRIFT30_G",
+    "EXPERT_INIT_G"
+  ],
+  "table_baseline_names_omit_G_suffix": true,
+  "B_RAW_probability": "not applicable; stored sigma is an unused computational placeholder"
+}

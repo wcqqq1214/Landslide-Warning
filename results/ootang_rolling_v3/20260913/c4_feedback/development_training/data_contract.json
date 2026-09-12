@@ -1,0 +1,7 @@
+{
+  "label_rows": 792,
+  "label_sha256": "d7972112a617fe8a270355dced6f8c8a1058fe742cef3dd785fc093681be4109",
+  "samples": 511,
+  "max_target_index": 791,
+  "model_family": "ridge_dynamic"
+}
