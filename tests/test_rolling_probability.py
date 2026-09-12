@@ -20,7 +20,7 @@ from rolling_probability.models import (
     predict,
 )
 from rolling_probability.scoring import CausalCalibration, crps, interval
-from rolling_probability.run import forecast_phase
+from rolling_probability.run import forecast_phase, source_snapshot
 
 
 def synthetic(n=360, q=100):
@@ -32,6 +32,21 @@ def synthetic(n=360, q=100):
 
 
 class RollingContracts(unittest.TestCase):
+    def test_snapshot_accepts_relative_pool_paths(self):
+        root = Path(__file__).resolve().parents[1]
+        with tempfile.TemporaryDirectory(dir=root / "tmp") as directory:
+            pool = Path(directory) / "pool"
+            pool.mkdir()
+            (pool / "provenance.json").write_text("{}")
+            out = Path(directory) / "out"
+            out.mkdir()
+            sources = source_snapshot(
+                out,
+                root / "config/ootang_rolling_probability.v3_0.json",
+                pool.relative_to(root),
+            )
+            self.assertIn(str((pool / "provenance.json").relative_to(root)), sources)
+
     def test_stream_locks_forecasts_before_release_and_masks_end(self):
         y, t = synthetic()
         with tempfile.TemporaryDirectory() as directory:

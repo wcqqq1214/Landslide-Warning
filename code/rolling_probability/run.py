@@ -71,6 +71,7 @@ def source_snapshot(out, config, pool_dir):
     paths += sorted(Path(pool_dir).glob("*.json")) + sorted(
         Path(pool_dir).glob("*.npz")
     )
+    paths = [p.resolve() for p in paths]
     records = {str(p.relative_to(ROOT)): sha(p) for p in paths}
     for p in paths:
         if p.suffix in (".py", ".json", ".md"):
@@ -438,7 +439,7 @@ def develop(pool, spec, out, recorder):
 
 
 def transfer(pool, spec, out, recorder, development):
-    prior = Path(development)
+    prior = Path(development).resolve()
     decision = json.loads((prior / "decision.json").read_text())
     if not decision["passed"]:
         raise ValueError(
