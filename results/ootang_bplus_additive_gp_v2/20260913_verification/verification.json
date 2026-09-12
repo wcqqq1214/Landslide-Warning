@@ -1,0 +1,502 @@
+{
+  "verified_utc": "2026-09-12T18:53:48.872880+00:00",
+  "status": "completed_pending_independent_verification",
+  "sources_and_inventory_passed": true,
+  "fit_calls": 8,
+  "objective_calls": 360,
+  "iterations": 270,
+  "completed_models": [
+    "ATU1_TIME_ONLY",
+    "ATU1_ADD",
+    "ATU5_TIME_ONLY",
+    "ATU5_ADD",
+    "MJ3_TIME_ONLY",
+    "MJ3_ADD",
+    "MJ1_TIME_ONLY",
+    "MJ1_ADD"
+  ],
+  "in_run_budget": true,
+  "verification_fit_calls": 0,
+  "physical_solver_calls": 0,
+  "final_window_labels_read": 0,
+  "postrun_verification_changes": [
+    {
+      "path": "scripts/verify_ootang_bplus_additive_gp.py",
+      "pre_run_sha256": "8cefbe72948b5112ce0e3404756bfa18975790e951c07fa1a2a018493f8726d6",
+      "current_sha256": "3cdb6e09e278ce5373eede6f405abf960d9a2900c83a5b1fa421d286bf73960a",
+      "current_commit": "e33278719004f7b7ea1048875dd457e1d251d614"
+    },
+    {
+      "path": "tests/test_physics_guided_additive_gp.py",
+      "pre_run_sha256": "42f67c5000fc10ba6884d652d58f76b22e100efe21cc74b6e5a1765a365aa0dd",
+      "current_sha256": "7f9ac8afc8f8b1384d51b0976059aa94f9d831d52c56c405bdcce12dd3023e4e",
+      "current_commit": "e33278719004f7b7ea1048875dd457e1d251d614"
+    }
+  ],
+  "complete_effectiveness_evaluation": true,
+  "numerical_checks_passed": true,
+  "prediction_lock_passed": true,
+  "effect_passed": false,
+  "model_numerics": [
+    {
+      "model_id": "ATU1_TIME_ONLY",
+      "optimizer_log_roundtrip_max_difference": 1.1102230246251565e-16,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 1.2401635274272849e-11,
+        "time_mean": 1.2398970739013748e-11,
+        "physical_mean": 0.0,
+        "time_variance": 6.863842827442568e-12,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 6.863842827442568e-12,
+        "observation_variance": 6.849631972727366e-12,
+        "noise_variance": 0.0,
+        "mean": 1.2391865311656147e-11
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "ATU1_ADD",
+      "optimizer_log_roundtrip_max_difference": 0.0,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 1.190827880748202e-08,
+        "time_mean": 4.3360769974576385e-09,
+        "physical_mean": 1.3404737764233232e-08,
+        "time_variance": 2.7703919158739154e-09,
+        "physical_variance": 2.7056614726461703e-09,
+        "cross_covariance": 2.7749820219469257e-09,
+        "latent_variance": 6.730772383889416e-09,
+        "observation_variance": 6.61424337522476e-09,
+        "noise_variance": 0.0,
+        "mean": 1.1908298347407253e-08
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "ATU5_TIME_ONLY",
+      "optimizer_log_roundtrip_max_difference": 0.0,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 6.708589239678986e-11,
+        "time_mean": 5.858158402816116e-11,
+        "physical_mean": 0.0,
+        "time_variance": 1.1749534678529017e-10,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 1.1749534678529017e-10,
+        "observation_variance": 1.1752376849472057e-10,
+        "noise_variance": 0.0,
+        "mean": 6.707523425575346e-11
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "ATU5_ADD",
+      "optimizer_log_roundtrip_max_difference": 0.0,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 1.4386458691006965e-10,
+        "time_mean": 1.5968026900736731e-10,
+        "physical_mean": 1.4435719286609583e-10,
+        "time_variance": 5.729816621169448e-11,
+        "physical_variance": 2.0044410575792426e-11,
+        "cross_covariance": 2.226840933872154e-11,
+        "latent_variance": 6.627942639170215e-11,
+        "observation_variance": 7.145217750803567e-11,
+        "noise_variance": 0.0,
+        "mean": 1.439275365555659e-10
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "MJ3_TIME_ONLY",
+      "optimizer_log_roundtrip_max_difference": 2.7755575615628914e-17,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 5.556746174306681e-10,
+        "time_mean": 6.879781189184087e-10,
+        "physical_mean": 0.0,
+        "time_variance": 5.050537765782792e-10,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 5.050537765782792e-10,
+        "observation_variance": 5.0511061999714e-10,
+        "noise_variance": 0.0,
+        "mean": 5.557012627832592e-10
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "MJ3_ADD",
+      "optimizer_log_roundtrip_max_difference": 5.551115123125783e-17,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 1.2694933992918322e-09,
+        "time_mean": 1.2171921248693707e-09,
+        "physical_mean": 4.74432049202278e-10,
+        "time_variance": 8.179767974070273e-11,
+        "physical_variance": 4.0392134081912445e-12,
+        "cross_covariance": 2.95934388105934e-11,
+        "latent_variance": 1.319335751759354e-10,
+        "observation_variance": 1.2147438610554673e-10,
+        "noise_variance": 0.0,
+        "mean": 1.2694272299995646e-09
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "MJ1_TIME_ONLY",
+      "optimizer_log_roundtrip_max_difference": 4.163336342344337e-17,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 4.751016025039689e-09,
+        "time_mean": 4.7711243844617e-09,
+        "physical_mean": 0.0,
+        "time_variance": 7.195382067948231e-10,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 7.195382067948231e-10,
+        "observation_variance": 7.195097850853927e-10,
+        "noise_variance": 0.0,
+        "mean": 4.7510866352240555e-09
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    },
+    {
+      "model_id": "MJ1_ADD",
+      "optimizer_log_roundtrip_max_difference": 2.7755575615628914e-17,
+      "reload_max_errors": {
+        "mean": 0.0,
+        "residual_mean": 0.0,
+        "time_mean": 0.0,
+        "physical_mean": 0.0,
+        "time_variance": 0.0,
+        "physical_variance": 0.0,
+        "cross_covariance": 0.0,
+        "latent_variance": 0.0,
+        "observation_variance": 0.0,
+        "noise_variance": 0.0
+      },
+      "independent_matrix_max_errors": {
+        "residual_mean": 4.397644914888588e-09,
+        "time_mean": 4.248768448178453e-09,
+        "physical_mean": 2.7193181040274794e-10,
+        "time_variance": 2.4351862748517306e-09,
+        "physical_variance": 3.6670388947612764e-12,
+        "cross_covariance": 3.8458361495408155e-11,
+        "latent_variance": 2.387380959589791e-09,
+        "observation_variance": 2.397726461822458e-09,
+        "noise_variance": 0.0,
+        "mean": 4.397634256747551e-09
+      },
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ]
+    }
+  ],
+  "score_checks": {
+    "metrics.csv": {
+      "rows": 40,
+      "max_absolute_difference_by_column": {
+        "days": 0.0,
+        "mae_mm": 3.552713678800501e-15,
+        "rmse_mm": 7.105427357601002e-15,
+        "crps_mm": 3.552713678800501e-15,
+        "coverage_80": 1.1102230246251565e-16,
+        "width_80_mm": 3.552713678800501e-15,
+        "interval_score_80_mm": 2.842170943040401e-14,
+        "coverage_90": 1.1102230246251565e-16,
+        "width_90_mm": 1.4210854715202004e-14,
+        "interval_score_90_mm": 5.684341886080802e-14,
+        "coverage_95": 1.1102230246251565e-16,
+        "width_95_mm": 1.4210854715202004e-14,
+        "interval_score_95_mm": 2.842170943040401e-14
+      }
+    },
+    "aggregate.csv": {
+      "rows": 20,
+      "max_absolute_difference_by_column": {
+        "days": 0.0,
+        "point_days": 0.0,
+        "mae_mm": 8.971772977317549e-17,
+        "rmse_mm": 7.105427357601002e-15,
+        "crps_mm": 5.724587470723463e-17,
+        "coverage_80": 1.1102230246251565e-16,
+        "width_80_mm": 3.469446951953614e-17,
+        "interval_score_80_mm": 2.842170943040401e-14,
+        "coverage_90": 1.1102230246251565e-16,
+        "width_90_mm": 4.85722573273506e-17,
+        "interval_score_90_mm": 9.020562075079397e-17,
+        "coverage_95": 1.1102230246251565e-16,
+        "width_95_mm": 4.163336342344337e-17,
+        "interval_score_95_mm": 6.938893903907228e-17
+      }
+    },
+    "daily_predictions.csv": {
+      "rows": 22760,
+      "max_absolute_difference_by_column": {
+        "day": 0.0,
+        "observed_mm": 0.0,
+        "mean_mm": 2.2737367544323206e-13,
+        "error_mm": 1.4210854715202004e-14,
+        "crps_mm": 7.105427357601002e-15,
+        "lower_80_mm": 2.2737367544323206e-13,
+        "upper_80_mm": 2.2737367544323206e-13,
+        "lower_90_mm": 2.2737367544323206e-13,
+        "upper_90_mm": 2.2737367544323206e-13,
+        "lower_95_mm": 2.2737367544323206e-13,
+        "upper_95_mm": 2.2737367544323206e-13
+      }
+    },
+    "comparisons.csv": {
+      "rows": 512,
+      "max_absolute_difference_by_column": {
+        "reference_value": 5.684341886080802e-14,
+        "candidate_value": 2.842170943040401e-14,
+        "difference": 2.842170943040401e-14,
+        "relative_difference": 2.220446049250313e-16
+      }
+    }
+  },
+  "historical_scores": {
+    "original_m0_e0": {
+      "checked_scores": 144,
+      "maximum_absolute_difference": 1.2363443602225743e-12
+    },
+    "metrics.csv": {
+      "rows": 24,
+      "max_absolute_difference_by_column": {
+        "days": 0.0,
+        "mae_mm": 8.379527540597342e-17,
+        "rmse_mm": 9.540979117872439e-17,
+        "crps_mm": 3.552713678800501e-15,
+        "coverage_80": 1.1102230246251565e-16,
+        "width_80_mm": 3.552713678800501e-15,
+        "interval_score_80_mm": 9.020562075079397e-17,
+        "coverage_90": 1.1102230246251565e-16,
+        "width_90_mm": 1.4210854715202004e-14,
+        "interval_score_90_mm": 5.684341886080802e-14,
+        "coverage_95": 1.1102230246251565e-16,
+        "width_95_mm": 1.4210854715202004e-14,
+        "interval_score_95_mm": 1.4210854715202004e-14
+      }
+    },
+    "aggregate.csv": {
+      "rows": 12,
+      "max_absolute_difference_by_column": {
+        "days": 0.0,
+        "point_days": 0.0,
+        "mae_mm": 1.1763593571467723e-17,
+        "rmse_mm": 7.105427357601002e-15,
+        "crps_mm": 2.949029909160572e-17,
+        "coverage_80": 5.551115123125783e-17,
+        "width_80_mm": 2.7755575615628914e-17,
+        "interval_score_80_mm": 6.245004513516506e-17,
+        "coverage_90": 1.1102230246251565e-16,
+        "width_90_mm": 0.0,
+        "interval_score_90_mm": 6.245004513516506e-17,
+        "coverage_95": 1.1102230246251565e-16,
+        "width_95_mm": 4.163336342344337e-17,
+        "interval_score_95_mm": 4.163336342344337e-17
+      }
+    },
+    "daily_predictions.csv": {
+      "rows": 13656,
+      "max_absolute_difference_by_column": {
+        "day": 0.0,
+        "observed_mm": 0.0,
+        "mean_mm": 2.2737367544323206e-13,
+        "error_mm": 1.4210854715202004e-14,
+        "crps_mm": 7.105427357601002e-15,
+        "lower_80_mm": 2.2737367544323206e-13,
+        "upper_80_mm": 2.2737367544323206e-13,
+        "lower_90_mm": 2.2737367544323206e-13,
+        "upper_90_mm": 2.2737367544323206e-13,
+        "lower_95_mm": 2.2737367544323206e-13,
+        "upper_95_mm": 2.2737367544323206e-13
+      }
+    }
+  },
+  "outcome": "stop; no control promotion, retries or final-window training"
+}

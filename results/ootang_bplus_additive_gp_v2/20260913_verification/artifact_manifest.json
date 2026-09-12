@@ -1,0 +1,34 @@
+{
+  "verifier_sha256": "3cdb6e09e278ce5373eede6f405abf960d9a2900c83a5b1fa421d286bf73960a",
+  "raw_manifest_sha256": "31a812564fa8e4c33378e934835eaf9808fe99a784d7f34f4821c8b317f771c7",
+  "files": {
+    "prediction_components.pdf": {
+      "sha256": "7b0debbe8a88ca7330fed3ba84caf82c1e1894ee4dc23240d890f46bb6314859",
+      "bytes": 33419
+    },
+    "prediction_components.png": {
+      "sha256": "b8ef5a7ee1bf2e7838746ebbcb3740f0391f1c077d4757f4b7771cabe36cd8dd",
+      "bytes": 202035
+    },
+    "prediction_curves.pdf": {
+      "sha256": "aff4ef07ca7abb6455f5c295bb664f290b4f6bc460409f0bdcbdf586e3cc9ed3",
+      "bytes": 84744
+    },
+    "prediction_curves.png": {
+      "sha256": "3028f87adef0280d92b9ba4841d948db9ab4879f12eb9f3c1ad655047f9f14c8",
+      "bytes": 301670
+    },
+    "train_curves.pdf": {
+      "sha256": "fae5fbf66d969e1521d3726479d2b99850318d2260586418491f5e27be0e9039",
+      "bytes": 130635
+    },
+    "train_curves.png": {
+      "sha256": "5cc0a04fb66e585f200237c84af55336ada29e965f5dbbd3c9796ff81e892a46",
+      "bytes": 190956
+    },
+    "verification.json": {
+      "sha256": "1bb97959cd688127fafa912bf7ac1e890fa8edfe3ad07cb846b825d6ce8f6d04",
+      "bytes": 16452
+    }
+  }
+}
