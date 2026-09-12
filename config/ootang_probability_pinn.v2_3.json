@@ -1,0 +1,97 @@
+{
+  "version": "ootang_probability_pinn.v2_3",
+  "status": "authorized_development_only",
+  "authorization": "2026-09-12 user: 继续下一步，我批准启动新实验; use the previously proposed 60-minute total window",
+  "started_at_utc": "2026-09-12T08:24:03+00:00",
+  "deadline_utc": "2026-09-12T09:24:03+00:00",
+  "training_deadline_utc": "2026-09-12T09:16:03+00:00",
+  "plan": "docs/ootang_probability_pinn_plan.v2.3.md",
+  "input": "data/monitoring_data.csv",
+  "source_run": "results/ootang_bplus_v1_1/20260910_implementation",
+  "stage": "development",
+  "fit_days": 792,
+  "end_days": 1168,
+  "warmup_days": 30,
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "domains": [
+    "O3",
+    "O2",
+    "O1_up",
+    "O1_down"
+  ],
+  "substeps": 64,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "updates_per_seed": 300,
+  "max_total_updates": 900,
+  "run_final_stage": false,
+  "device": "cpu",
+  "dtype": "float64",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0,
+    "gradient_norm_limit": 1
+  },
+  "architecture": {
+    "creep": [
+      4,
+      8,
+      1
+    ],
+    "plastic": [
+      9,
+      16,
+      16,
+      1
+    ],
+    "scale": [
+      3,
+      4
+    ],
+    "parameters_per_seed": 514
+  },
+  "response_factor": 2.0,
+  "response_regularization": 0.001,
+  "sigma_floor_mm": 0.001,
+  "feature_rms_floor": 1e-06,
+  "plastic_rate_floor_mm_day": 1e-06,
+  "force_rms_floor": 1.0,
+  "slip_rms_floor_mm": 1e-08,
+  "score_tolerance_mm": 1e-06,
+  "approximation_gain_fraction": 0.1,
+  "tolerances": {
+    "displacement_absolute": 1e-08,
+    "reaction_absolute": 1e-07,
+    "roundoff_factor": 256,
+    "native_min_dx": -1e-08,
+    "native_min_gap": -1e-07,
+    "normalized_complementarity": 1e-08
+  },
+  "selection": "epoch 300 only, all three seeds; never select an earlier checkpoint",
+  "stop": "any numerical/preflight failure, nonfinite training, deadline, or failed development mean/probability/approximation criterion; no retries or additional variants",
+  "source_sha256": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "docs/ootang_probability_pinn_plan.v2.3.md": "8ed047aaa60007a2485b2cd9ad7fc9b9fb6cff41e7f0dcebf9fbadfdbcc34819",
+    "code/physics_guided_pinn/creep.py": "b68d75cc0256bd11712655d8e6f1d2fff5468700cd35334b74bef7ec33e132a0",
+    "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json": "eeafb73d69d8716810ae24c1d8fae4b90aaac2bf462c201217552f862fa180f6",
+    "results/ootang_bplus_v1_1/20260910_implementation/physics_package_development.json": "9ba838a0df5fea96a2662f4316a49de710e72799bcf18b19915a23758aa7d042",
+    "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz": "868ad6544ecf416abe0a13f56ccebaf96c39d400566851233343d5b13e06b138",
+    "results/ootang_bplus_v1_1/20260910_implementation/selection.json": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c"
+  }
+}
