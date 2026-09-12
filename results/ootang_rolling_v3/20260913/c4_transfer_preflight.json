@@ -1,0 +1,11 @@
+{
+  "checked_utc": "2026-09-12T22:58:59.204059+00:00",
+  "lock_sha256": "967a279de6b01e06a1b487268d90841757e8a044b14a9bdaf6a75218e27c97e9",
+  "matched_files": {
+    "config/ootang_rolling_probability.v3_3.json": "80e079856831ea9ae4f9b605ccbbd68b0ebea6d90ec4241c1d2768d3ccae614b",
+    "results/ootang_rolling_v3/20260913/c4_feedback/artifact_manifest.json": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b",
+    "results/ootang_rolling_v3/20260913/c4_feedback/decision.json": "57b82455f543b946faf5b0a5d69047706dc1ebd93bda5163027bcea89848c8fc",
+    "results/ootang_rolling_v3/20260913/c4_verification/verification.json": "d20d57015833509119cb2f9b6e85552f82a75dc9a4998b188cd0e96fb254d483"
+  },
+  "passed": true
+}

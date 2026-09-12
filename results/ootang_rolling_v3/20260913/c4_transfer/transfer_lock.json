@@ -1,0 +1,11 @@
+{
+  "development_path": "results/ootang_rolling_v3/20260913/c4_feedback",
+  "decision_sha256": "57b82455f543b946faf5b0a5d69047706dc1ebd93bda5163027bcea89848c8fc",
+  "candidate": "C4_RIDGE_FULL",
+  "selected_alpha": {
+    "FULL": 0.001,
+    "DATA": 0.001
+  },
+  "simple_baseline": "DRIFT1",
+  "locked_utc": "2026-09-12T22:59:01.038843+00:00"
+}

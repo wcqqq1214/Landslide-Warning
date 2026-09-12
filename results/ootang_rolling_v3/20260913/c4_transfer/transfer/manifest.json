@@ -1,0 +1,39 @@
+{
+  "start": 1168,
+  "end": 1461,
+  "files": {
+    "DRIFT14.npz": "d60c191a98778b8e9d2fc3a4f385ddc0cc1b969856d3992e62ccb46191b33135",
+    "B_RAW.npz": "fb357820262217beec780413fb63aa092390bff12839d894365f6d04a2659d02",
+    "summary.csv": "9018bcc0e8a308d66270b3154e36c7742f043db61f6cf691be398713a61bd22b",
+    "C4_RIDGE_DATA.npz": "79daf3f86e48dd7c4da9d2e8168b899f143edbb899fef1eaec69379d82bef1ae",
+    "C4_RIDGE_FULL_seed0.npz": "f7624ad1b81e3042ac7b1369fdafc8cbedc7793082c546ed4c8112e1d5db596c",
+    "B_ANCHOR.npz": "e7c7946e21c26facd1b01c89ac3487ccc745b628855513bf8e5b7d655a0b5424",
+    "DRIFT7.npz": "2de82cf1ad8631a21ec7b27b66768c202eb92a0ac77c45c08696405afde3b4ba",
+    "metrics.csv": "84cb6409df11392df97affd3adca656d58e2f4954a7e9bc8b3b737073a925095",
+    "DRIFT3.npz": "d24639ed17055380c13f5b345125a3572e6fa2d1b7d5526d0f3d04ea45fe21c4",
+    "C4_RIDGE_FULL.npz": "f7624ad1b81e3042ac7b1369fdafc8cbedc7793082c546ed4c8112e1d5db596c",
+    "DRIFT1.npz": "43fa6cd093a7998d8f562e74cbec730054ed708b9f4d20a2169d933eb3d8ac28",
+    "C4_RIDGE_DATA_seed0.npz": "79daf3f86e48dd7c4da9d2e8168b899f143edbb899fef1eaec69379d82bef1ae",
+    "feedback_state.json": "a14f12136f9bd80091a1a250d97b1a6f9063c79f5cc2f5e2195fe714afdb067c",
+    "B_TREND14.npz": "f6331259e06a47b45ca871cc9c88319c6e6a7cd3a91c6e46dee57c2a1eba3866",
+    "PERSIST.npz": "bf6decdca584bf0264469b31f74d172d3c18fdc8e439bfb1a6f1cfb85f6e3e8b",
+    "DRIFT30.npz": "a7dc38db3897f2c3b2074ab8c6a562c708da077c29fef902acf52bebe835ddec",
+    "EXPERT_INIT.npz": "dad56d0d17bfcd81a29edb60474e4c7a78b78930816709d901ecc305622eac1b"
+  },
+  "label_rows_released": 293,
+  "prediction_origins": 293,
+  "mean_is_rolling": true,
+  "probability_extension_baselines": [
+    "B_ANCHOR_G",
+    "B_TREND14_G",
+    "PERSIST_G",
+    "DRIFT14_G",
+    "DRIFT1_G",
+    "DRIFT3_G",
+    "DRIFT7_G",
+    "DRIFT30_G",
+    "EXPERT_INIT_G"
+  ],
+  "table_baseline_names_omit_G_suffix": true,
+  "B_RAW_probability": "not applicable; stored sigma is an unused computational placeholder"
+}
