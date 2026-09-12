@@ -1,0 +1,16 @@
+{
+  "status": "completed",
+  "started": "2026-09-13T00:17:22.962721+08:00",
+  "ended": "2026-09-13T00:17:25.384077+08:00",
+  "elapsed_seconds": 2.4213871248066425,
+  "new_training_updates": 0,
+  "new_physical_calls": 0,
+  "original_training_manifest_sha256": "c62409378b41201bf393b53de300461cc62e4db4cd4b4456350cf36cdd991668",
+  "reference_metric_error_mm": 0.0,
+  "p0_components": 1,
+  "reason": "P0 is one frozen distribution, not a three-seed neural ensemble; original run failure retained",
+  "scoring_source_sha256": {
+    "code/physics_guided_joint.py": "11bf0598123aa515330737768a40ca9134da89e8d95f28cc375d5252c65a22d8",
+    "scripts/verify_ootang_convlstm_joint.py": "659cbc3f0bb9ddd3cb67d2967b3a111c8a1249d788897323bf52df58f13d69e4"
+  }
+}

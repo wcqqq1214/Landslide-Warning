@@ -1,0 +1,26 @@
+{
+  "implementation_passed": true,
+  "effectiveness_passed": false,
+  "original_runner_status": "failed",
+  "scoring_failure_preserved": true,
+  "training_source_ast_unchanged": true,
+  "p0_components": 1,
+  "neural_seeds_per_arm": 3,
+  "artifact_files_checked": 47,
+  "reloaded_models": 12,
+  "max_reload_error_mm": 0.0,
+  "max_detached_vs_direct_error_mm": 0.0,
+  "max_objective_error": 0.0,
+  "max_score_error_mm": 0.0,
+  "max_reference_metric_error_mm": 0.0,
+  "table_rows": {
+    "metrics.csv": 64,
+    "seed_metrics.csv": 144,
+    "aggregate_metrics.csv": 32,
+    "daily_predictions.csv": 21504,
+    "comparison.csv": 8
+  },
+  "new_training_updates": 0,
+  "new_physics_calls": 0,
+  "conclusions": "implementation verification is separate from candidate effectiveness"
+}

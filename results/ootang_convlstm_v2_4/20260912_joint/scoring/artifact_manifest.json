@@ -1,0 +1,14 @@
+{
+  "aggregate_metrics.csv": "ec90d4426bfedcbc92c861b8ff33b9ec074734df36a725b459ecb5d9f4636cdd",
+  "comparison.csv": "b0cb42061aaf77baa0f68e2df30738a6073bc292cde7aeefbf979c5104d922b7",
+  "curves_432.pdf": "e1883f4ef991a56c112bd4ee56e2e8b9c1c2b510d6f711d03cdfea4f5c2edd39",
+  "curves_432.png": "7a4814a65c90c2311267f53d1b21aa6cb17a8eae8a38af6130e7dba99ee3ed64",
+  "curves_612.pdf": "7c3f59cb0152931242c56a7e4abd0333243f82329f7cdcf8f1879a8a03d47afc",
+  "curves_612.png": "6e77c39f2876cc63e82c1e5d1e5f62f0cc5a777ef95aa62234ed7b7496c178e4",
+  "daily_predictions.csv": "aa5b4480b52d16a42ce12bde9a6eeb38e1093b4ef36321f9648db46569a23ddd",
+  "decision.json": "b6d19be54768fc51084bf022c1a0fdbae710ecb4ce98cdb41bf7a83c36e0afd9",
+  "metrics.csv": "c6a3184b8069b43339f6c5541777cd8ab51e013bd2191f21f0cd4ade9238287c",
+  "scoring_execution.json": "61f5b8bc5855c9346400df302ffb5e42cb0f8aafdb08ff24aa8120207ff4aa5d",
+  "seed_metrics.csv": "61c715b86f1cdbe39ce5b8f5f99a7ab11285ff0d7876ff9c7531b1a6999e2125",
+  "verification.json": "bea734e8aea746f7dac37b88152dcbf6ac4b78cda9575cbb2110afdce9876db6"
+}
