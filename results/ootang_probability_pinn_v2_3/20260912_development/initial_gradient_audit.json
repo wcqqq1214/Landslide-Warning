@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "parameters": 514,
+  "gradients": {
+    "creep_net.0.weight": 0.0,
+    "creep_net.0.bias": 0.0,
+    "creep_net.2.weight": 0.09938015081004158,
+    "creep_net.2.bias": 6.066111155056397e-17,
+    "plastic_net.0.weight": 0.0,
+    "plastic_net.0.bias": 0.0,
+    "plastic_net.2.weight": 0.0,
+    "plastic_net.2.bias": 0.0,
+    "plastic_net.4.weight": 3.1186160591359346,
+    "plastic_net.4.bias": 4.3298988792852064,
+    "scale_net.weight": 0.0898596160850272,
+    "scale_net.bias": 0.12584226589275876
+  },
+  "loss": 6.756929850453558,
+  "terms": {
+    "mae": 3.6012999765112936,
+    "crps": 3.1283822108911896,
+    "negative_gap": 0.005709182239191911,
+    "complementarity": 0.021538480811882102,
+    "response": 0.0
+  },
+  "background_max_difference_mm": 0.0,
+  "optimizer_updates": 0,
+  "note": "Some hidden-layer gradients start at zero because the last layer is zero initialized; no efficacy claim."
+}

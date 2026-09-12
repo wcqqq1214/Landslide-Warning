@@ -1,0 +1,18 @@
+{
+  "files": {
+    "code/physics_guided_pinn/creep.py": "be8a855fa7beb117d6b98968126b6504390a01344f07bb52cf45dfa6b6bb72c8",
+    "code/physics_guided_pinn/creep_workflow.py": "34ebefa32b75923ba8d1ad77148599e17b2a7342e93ae0c3046c5c55cc90785a",
+    "code/physics_guided_pinn/run_creep.py": "b2d72e5b73072658c1ad243d88e2254ade75b14858a31d5bc5a01a0e776e1b4a",
+    "code/physics_guided_pinn/equations.py": "64ef8cc370dd9a10d4df873cf7322abf022de118230d0c519f1fa59fd4928b9b",
+    "code/physics_guided_pinn/trace.py": "838adc24ca62394cd513068de98911f511b96a3ddaf454b9260ae3c524cb81ce",
+    "code/physics_guided_pinn/substep_audit.py": "e25f3f3a22019975512b47595f09ea16740ebdab84792d5140b225f3b2e44502",
+    "code/physics_guided/reference.py": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+    "code/physics_guided/data.py": "a55a278a9b6abc12eedda33998ad1ce1d3474ba0b4ec96e0ab4642370d5360bb",
+    "code/physics_guided/probability.py": "14ad05a97f74b6bb5e1ad0c95daf261822a480add68f81f3dc1cabf8095cc0a9",
+    "code/physics_guided_forecast_error/artifacts.py": "724ac9ed26fc68bba51ef3b8c992af29bf3d9122a6d53b191729e505c7ada0ac",
+    "code/physics_guided_forecast_error/core.py": "bd35d2dda0902b42db9152dfdc56dca4ab347bd36fad48b2fefc093bc34ccadf",
+    "config/ootang_probability_pinn.v2_3.json": "1b99ec46527fc74fa89a497eecef827133fe067e4f867b68723d5d5703264465",
+    "docs/ootang_probability_pinn_plan.v2.3.md": "8ed047aaa60007a2485b2cd9ad7fc9b9fb6cff41e7f0dcebf9fbadfdbcc34819"
+  },
+  "git_commit": "003156d452d06f4de0c322c5bfdfe22f775474e5"
+}

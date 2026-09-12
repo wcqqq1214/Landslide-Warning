@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "max_absolute_by_state_block": [
+    2.8990143619012088e-11,
+    4.440892098500626e-16,
+    9.072209650184959e-10,
+    9.671197176430724e-11,
+    4.6121328978188103e-10,
+    0.0
+  ],
+  "max_error_to_bound": 0.009051468171245124,
+  "days": 1168,
+  "substeps": 74688,
+  "reference_negative_dx_count": 1,
+  "reference_negative_values_preserved": true,
+  "neural_increments_remain_strictly_nonnegative": true
+}

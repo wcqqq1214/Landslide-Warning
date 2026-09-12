@@ -1,0 +1,40 @@
+{
+  "archive_sha256": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+  "source_hashes": {
+    "work/monitoring.csv": "5042ae125af6f9f40a374287cc8d573c3b422af2c219a1818b18298675ba331a",
+    "results/geometry_ground_interpretation.csv": "666740a0dd45869d17ca11c8dfdbcfa3638066e9a8e336830c71baaa2d91405e",
+    "results/geometry_O3_interpretation.csv": "53e72c3431c9b1aa8bbe8af3fd0757974f75a59a1fa68f99e268919fb3d21849",
+    "results/geometry_O2_interpretation.csv": "961b6725a3bcb4f53371fa0e925b8f9e5e99ca50bfa006f8c129817767178256",
+    "results/geometry_O1_interpretation.csv": "063d3e060aaab1c1638b06082acc6cf1e3ee2885267c0f803820ecafd82901c6",
+    "section2d_v4/physical_model.py": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09",
+    "section2d_v4/physical_solver.c": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+    "section2d_v4/geometry.py": "88e16279186087cc939cf9343539c0f583977abce324ff7208b81d3eca525a4e",
+    "section2d_v4/calibrate_boundary.py": "42473a3e60573774cc10da381a6beea3f52c3ca2b6407c884727d494f03f68d4",
+    "section2d_v4/predict.py": "ef14e4ec45eeb8b7844ab6bd2493f334981447210bb98a659b045548e6773ae0",
+    "section2d_v4/results/calibrated.json": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2",
+    "section2d_v4/results/calibration_lock.json": "2692527a5be3fa1248c03d43e525e6b754234a4ccaa870d957e33aa3e60952a8",
+    "section2d_v4/results/protocol.json": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c",
+    "section2d_v4/results/metrics.json": "a96942342da72050199cfe2083b7e343addf365163900ff45257398a2b561b68",
+    "section2d_v4/results/curves.npz": "a9d06f75fd1eb2a1238b95ca24a8ca83e4fab94f72e07ffa98b8eb8f1873a862",
+    "section2d_v4/results/geometry_matrices.npz": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9",
+    "section2d_v4/results/reservoir_force_lookup_final.npz": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e",
+    "section2d_v4/output/future_prediction.csv": "7be248b042f581885357e1240f31e32e4e92ba74ce933fead05bbf9af261f037"
+  },
+  "adapted_python_sha256": "f39ed6e936f937f77dab554d91d6f35cfda878814d93c1f47c2c8f036d85877e",
+  "library_sha256": "656048f08266993de1ee4885552e46d9fc040afa8dbfdb7cf411dd36813bcb69",
+  "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)\nTarget: arm64-apple-darwin25.5.0\nThread model: posix\nInstalledDir: /Library/Developer/CommandLineTools/usr/bin\n",
+  "command": [
+    "cc",
+    "-O3",
+    "-fPIC",
+    "-shared",
+    "/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_probability_pinn_v2_3/reference/section2d_v4/physical_solver.c",
+    "-o",
+    "/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_probability_pinn_v2_3/reference/section2d_v4/physical_solver.dylib"
+  ],
+  "platform": "macOS-26.5.1-arm64-arm-64bit",
+  "adaptations": [
+    "dynamic library suffix",
+    "package-relative geometry import"
+  ]
+}

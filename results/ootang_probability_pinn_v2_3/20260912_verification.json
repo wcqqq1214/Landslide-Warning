@@ -1,0 +1,18 @@
+{
+  "verification_passed": true,
+  "artifact_files": 53,
+  "metric_rows": 388,
+  "daily_rows": 18688,
+  "prediction_days": 376,
+  "fit_days": 792,
+  "metric_max_difference": 5.684341886080802e-14,
+  "daily_mean_max_difference_mm": 2.2737367544323206e-13,
+  "raw_residual_summary_max_difference": 9.094947017729282e-13,
+  "manifest_sha256": "cd860669ee0858fffcb5176cae2701edb255328ad78dd00edc3aac8f7163f8b9",
+  "verifier_sha256": "967491d69097df8497cc92d041ef688c906fbb7177a3476146b4acca0e5a1c06",
+  "optimizer_updates": 900,
+  "new_training_or_native_calls": 0,
+  "final_stage_started": false,
+  "effectiveness_passed": false,
+  "acceptance_checks_verified": 9
+}

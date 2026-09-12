@@ -1,0 +1,52 @@
+{
+  "motion": {
+    "max_absolute": 4.712237544612918e-13,
+    "minimum": -4.712237544612918e-13,
+    "rms": 4.26721467229284e-14
+  },
+  "basal_memory": {
+    "max_absolute": 1.3642420526593924e-12,
+    "minimum": -1.3642420526593924e-12,
+    "rms": 1.3334605529438395e-13
+  },
+  "contact_memory": {
+    "max_absolute": 4.263256414560601e-14,
+    "minimum": -4.263256414560601e-14,
+    "rms": 4.7727585999819e-15
+  },
+  "bulk_memory": {
+    "max_absolute": 6.821210263296962e-13,
+    "minimum": -6.821210263296962e-13,
+    "rms": 7.349062788468825e-14
+  },
+  "background": {
+    "max_absolute": 0.0,
+    "minimum": 0.0,
+    "rms": 0.0
+  },
+  "slip_step": {
+    "max_absolute": 0.0007736048429692659,
+    "minimum": 2.4469921993203585e-08,
+    "rms": 0.00021565524676809387
+  },
+  "yield_gap": {
+    "max_absolute": 18564.90399110009,
+    "minimum": -968.5127274213878,
+    "rms": 4817.919047050366
+  },
+  "negative_slip": {
+    "max_absolute": 0.0,
+    "minimum": 0.0,
+    "rms": 0.0
+  },
+  "negative_gap": {
+    "max_absolute": 968.5127274213878,
+    "minimum": 0.0,
+    "rms": 47.85645401781901
+  },
+  "complementarity": {
+    "max_absolute": 0.6397486249578218,
+    "minimum": -0.6397486249578218,
+    "rms": 0.10708067853138512
+  }
+}

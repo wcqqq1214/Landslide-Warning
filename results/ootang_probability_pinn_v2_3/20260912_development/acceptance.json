@@ -1,0 +1,56 @@
+{
+  "passed": false,
+  "checks": {
+    "prediction_mae_each_lower": false,
+    "fit_mae_each_not_worse": false,
+    "crps_average_lower": false,
+    "crps_each_not_worse": false,
+    "interval_score_90_average_lower": false,
+    "interval_score_90_each_not_worse": false,
+    "mean_approximation_small_relative_to_gain": false,
+    "crps_approximation_small_relative_to_gain": false,
+    "interval_score_90_approximation_small_relative_to_gain": false
+  },
+  "gains": {
+    "mae": [
+      -176.26041842655036,
+      -202.08937644006804,
+      -131.465584680342,
+      -67.2733527739448
+    ],
+    "crps": [
+      -171.02809776084925,
+      -196.157672165459,
+      -122.77058395726202,
+      -64.12112732942808
+    ],
+    "interval_score_90": [
+      -3249.9183617802123,
+      -3725.1835499457957,
+      -2196.8281453689287,
+      -1181.6048044018817
+    ]
+  },
+  "approximation": {
+    "mae": [
+      167.0934916678083,
+      195.89158628220196,
+      123.74526451780007,
+      58.980723486351415
+    ],
+    "crps": [
+      164.93290259886572,
+      192.91867484943592,
+      118.37572599378785,
+      57.75291043250613
+    ],
+    "interval_score_90": [
+      3217.618555812022,
+      3746.9398958689544,
+      2167.9229397737695,
+      1103.84412069078
+    ]
+  },
+  "final_stage_started": false,
+  "interpretation": "exposed historical development window; no mentor acceptance or blind validation"
+}

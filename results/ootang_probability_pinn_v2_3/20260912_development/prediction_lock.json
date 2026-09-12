@@ -1,0 +1,22 @@
+{
+  "locked_at": "2026-09-12T08:47:16.178936+00:00",
+  "epochs": [
+    300,
+    300,
+    300
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "predictions_sha256": "939792e835e6992efe55943bdcab19e96cf43bcb5ea47d942c32316ce60211d8",
+  "normalizers_sha256": "3009c84cada80c78e63b27c7a4dfd300eeeade28e326139a3a2e55d92931bb3e",
+  "checkpoint_sha256": {
+    "0": "479f4cfd083f2aa8a8cfd2031afaf2205ffbc8b835b42656ceff7eb5971e1c33",
+    "1": "53f4bdaa5b9192fae29e3581965383ae4cd92af673c746984cb5e7ad6b48ab71",
+    "2": "6baab78f0c2c48bdf033cf795cc775b2fda0f9a692892ce72d41bf2eb5377389"
+  },
+  "labels_used_for_selection": false,
+  "final_stage_started": false
+}
