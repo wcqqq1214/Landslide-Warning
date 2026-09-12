@@ -1,0 +1,45 @@
+{
+  "completed_utc": "2026-09-12T18:49:41.930653+00:00",
+  "passed": true,
+  "synthetic_tests": 11,
+  "real_data_fit_calls": 0,
+  "physical_solver_calls": 0,
+  "source_preflight": "49 frozen sources; original 54 parameters, date and point identities; B+ to e0 mean error zero; historical GP manifest/lock; no displacement labels read",
+  "code_sha256": {
+    "code/physics_guided_additive_gp.py": "f584497b327847478991a1899b34fa89860768e8653556617ccae463aff495c1",
+    "code/run_ootang_bplus_additive_gp.py": "ff598399279422b2629daacd8cd04a0f44164160e0171a52b42188fa5905c768",
+    "scripts/verify_ootang_bplus_additive_gp.py": "8cefbe72948b5112ce0e3404756bfa18975790e951c07fa1a2a018493f8726d6",
+    "tests/test_physics_guided_additive_gp.py": "42f67c5000fc10ba6884d652d58f76b22e100efe21cc74b6e5a1765a365aa0dd"
+  },
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "code/physics_guided_additive_gp.py",
+        "code/run_ootang_bplus_additive_gp.py",
+        "scripts/verify_ootang_bplus_additive_gp.py",
+        "tests/test_physics_guided_additive_gp.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_physics_guided_additive_gp.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_all_strategy_scores_and_pooled_rmse (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_budget_counts_include_line_search_requests (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_joint_fit_with_bounded_optimizer_is_one_call (test_physics_guided_additive_gp.AdditiveContract) ... /Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:440: ConvergenceWarning: The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:440: ConvergenceWarning: The optimal value found for dimension 0 of parameter k1__k2__kernel__k1__constant_value is close to the specified lower bound 0.001. Decreasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:450: ConvergenceWarning: The optimal value found for dimension 0 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:450: ConvergenceWarning: The optimal value found for dimension 1 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:450: ConvergenceWarning: The optimal value found for dimension 2 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:450: ConvergenceWarning: The optimal value found for dimension 3 of parameter k1__k2__kernel__k2__length_scale is close to the specified upper bound 1000.0. Increasing the bound and calling fit again may find a better value.\n  warnings.warn(\n/Users/wcqqq1214/Project/Landslide-Warning/.venv/lib/python3.10/site-packages/sklearn/gaussian_process/kernels.py:440: ConvergenceWarning: The optimal value found for dimension 0 of parameter k2__noise_level is close to the specified lower bound 1e-06. Decreasing the bound and calling fit again may find a better value.\n  warnings.warn(\nok\ntest_joint_posterior_cross_term_noise_units_and_reload (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_material_thresholds_and_per_point_failure (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_probability_threshold_coverage_and_historical_retention (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_runner_eight_lock_order_and_failure_stop (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_selected_columns_clone_and_hyperparameter_gradients (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_target_sign_normalization_and_label_prefix (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_time_only_is_structural_removal_not_add_time_posterior (test_physics_guided_additive_gp.AdditiveContract) ... ok\ntest_zero_residual_returns_bplus (test_physics_guided_additive_gp.AdditiveContract) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 1.467s\n\nOK\n"
+    }
+  ]
+}
