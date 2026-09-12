@@ -1,0 +1,110 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-12T22:53:29.041563+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c4_feedback",
+  "immutable_artifacts_checked": 49,
+  "source_entries_checked": 41,
+  "chronological_forecast_locks": 376,
+  "score_cells_checked": 18960,
+  "max_score_csv_rounding_error": 4.995968083676416e-10,
+  "max_calibration_difference_mm": 0.0,
+  "stages": [
+    {
+      "phase": "development",
+      "model": "DRIFT14",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_RAW",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C4_RIDGE_DATA",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C4_RIDGE_FULL_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_ANCHOR",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT7",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT3",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C4_RIDGE_FULL",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT1",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C4_RIDGE_DATA_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_TREND14",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "PERSIST",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT30",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "EXPERT_INIT",
+      "origins": 376,
+      "max_horizon": 30
+    }
+  ],
+  "reload": {
+    "performed": true,
+    "models": 2,
+    "origin_ensembles": 752,
+    "max_mean_difference_mm": 0.0,
+    "max_raw_sigma_difference_mm": 0.0,
+    "independent_augmented_svd_max_coefficient_difference": 3.378075597026964e-12,
+    "optimizer_replays": 0
+  },
+  "maximum_observation_rows_read": 1168,
+  "new_training_updates": 0,
+  "physical_forward_calls": 0,
+  "verification_script_sha256": "72368fae2824867b2a24d40504a93059b87c0c327b2555b683ce1484de77dbcf"
+}

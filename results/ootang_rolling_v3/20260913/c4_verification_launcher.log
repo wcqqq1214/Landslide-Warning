@@ -1,0 +1,2 @@
+usage: verify_ootang_rolling.py [-h] --out OUT [--skip-reload] run
+verify_ootang_rolling.py: error: unrecognized arguments: --run
