@@ -204,7 +204,20 @@ def verify_crossfit_training(run, spec, labels):
     maximum_mean = 0.0
     maximum_objective = 0.0
     models = {}
-    for prefix in sorted({a for a, _ in spec["crossfit"]["folds"]}):
+
+    def selected_folds(limit):
+        eligible = [(a, b) for a, b in spec["crossfit"]["folds"] if b <= limit]
+        if spec["crossfit"].get("fold_scope") == "latest_complete":
+            last_end = max(b for _, b in eligible)
+            eligible = [(a, b) for a, b in eligible if b == last_end]
+        return eligible
+
+    needed = {
+        a
+        for phase in ("inner", "development")
+        for a, _ in selected_folds(spec["stages"][phase][0])
+    }
+    for prefix in sorted(needed):
         data = training_examples(
             labels[:prefix],
             pool,
@@ -253,11 +266,7 @@ def verify_crossfit_training(run, spec, labels):
         with np.load(train / "oof_predictions.npz") as a:
             saved = {k: a[k].copy() for k in a.files}
         expected = np.concatenate(
-            [
-                np.arange(a, b - spec["horizons"] + 1)
-                for a, b in spec["crossfit"]["folds"]
-                if b <= start
-            ]
+            [np.arange(a, b - spec["horizons"] + 1) for a, b in selected_folds(start)]
         )
         np.testing.assert_array_equal(saved["origins"], expected)
         target_ids = expected[:, None] + np.arange(spec["horizons"])[None]
@@ -281,9 +290,7 @@ def verify_crossfit_training(run, spec, labels):
         np.testing.assert_array_equal(
             saved["teacher_prefixes"], data["teachers"][positions]
         )
-        for a, b in spec["crossfit"]["folds"]:
-            if b > start:
-                continue
+        for a, b in selected_folds(start):
             mask = (expected >= a) & (expected + spec["horizons"] <= b)
             np.testing.assert_array_equal(
                 saved["fit_prefix"][mask], np.full(mask.sum(), a)

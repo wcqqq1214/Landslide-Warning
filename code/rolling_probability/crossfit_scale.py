@@ -27,6 +27,18 @@ def subset(data, mask):
     }
 
 
+def completed_folds(spec, label_rows):
+    eligible = [(a, b) for a, b in spec["crossfit"]["folds"] if b <= label_rows]
+    if not eligible:
+        raise ValueError("No historical fold has completed within this label prefix")
+    scope = spec["crossfit"].get("fold_scope", "all")
+    if scope == "latest_complete":
+        return [max(eligible, key=lambda fold: fold[1])]
+    if scope != "all":
+        raise ValueError("Unknown historical fold scope")
+    return eligible
+
+
 def historical_queries(labels, pool, spec, fold_start, fold_end):
     if not 0 < fold_start < fold_end <= len(labels):
         raise ValueError("Historical fold crosses the available label prefix")
@@ -131,13 +143,31 @@ def develop(pool, spec, out, recorder):
             source=spec["reuse_development"],
         ),
     )
-    folds = spec["crossfit"]["folds"]
+    needed_prefixes = {
+        a
+        for phase in ("inner", "development")
+        for a, _ in completed_folds(spec, spec["stages"][phase][0])
+    }
+    auxiliary_source = spec.get("auxiliary_source")
+    if auxiliary_source:
+        auxiliary_root = ROOT / auxiliary_source["path"]
+        manifest = auxiliary_root / "artifact_manifest.json"
+        if sha(manifest) != auxiliary_source["manifest_sha256"]:
+            raise ValueError("Frozen auxiliary source changed")
+        for name, expected in json.loads(manifest.read_text())["files"].items():
+            if sha(auxiliary_root / name) != expected:
+                raise ValueError("Frozen auxiliary artifact changed: " + name)
     fold_models = {}
     new_auxiliary_fits = 0
-    for prefix in sorted({start for start, _ in folds}):
+    for prefix in sorted(needed_prefixes):
         train_dir = out / "fold_training" / str(prefix)
-        if prefix in spec["crossfit"]["reuse_prefixes"]:
-            copy_selected_training(prior / "inner_training", train_dir, arms, alpha)
+        if auxiliary_source or prefix in spec["crossfit"]["reuse_prefixes"]:
+            source_dir = (
+                auxiliary_root / "fold_training" / str(prefix)
+                if auxiliary_source
+                else prior / "inner_training"
+            )
+            copy_selected_training(source_dir, train_dir, arms, alpha)
             fold_models[prefix] = {
                 arm: RidgeDistribution.load(train_dir / f"ridge_{arm}_a{alpha:g}.json")
                 for arm in arms
@@ -163,9 +193,7 @@ def develop(pool, spec, out, recorder):
         train_dir = out / f"{phase}_training"
         copy_selected_training(source, train_dir, arms, alpha)
         blocks = []
-        for a, b in folds:
-            if b > start:
-                continue
+        for a, b in completed_folds(spec, start):
             data = historical_queries(labels, pool, spec, a, b)
             experts = np.stack(
                 [data["baselines"][k] for k in spec["expert_names"]], axis=2
@@ -198,6 +226,7 @@ def develop(pool, spec, out, recorder):
                 max_target_index=int(history["origins"].max() + spec["horizons"] - 1),
                 fixed_alpha=alpha,
                 nested_hyperparameter_validation=False,
+                fold_scope=spec["crossfit"].get("fold_scope", "all"),
                 files={"oof_predictions.npz": sha(train_dir / "oof_predictions.npz")},
             ),
         )

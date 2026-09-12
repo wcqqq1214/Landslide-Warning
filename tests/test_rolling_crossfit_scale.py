@@ -10,7 +10,11 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
-from rolling_probability.crossfit_scale import historical_queries, refit_scale
+from rolling_probability.crossfit_scale import (
+    completed_folds,
+    historical_queries,
+    refit_scale,
+)
 from rolling_probability.data import training_examples
 from rolling_probability.ridge import dynamic_features, fit_distribution, transfer
 from test_rolling_probability import synthetic
@@ -38,6 +42,16 @@ class CrossfitScaleContracts(unittest.TestCase):
         np.testing.assert_array_equal(original["x"][:21], poisoned["x"][:21])
         with self.assertRaisesRegex(ValueError, "available label prefix"):
             historical_queries(y[:230], pool, self.spec, 180, 240)
+
+    def test_recent_fold_is_chosen_by_completed_date_without_scores(self):
+        self.assertEqual(completed_folds(self.spec, 612), [(342, 432), (432, 612)])
+        self.spec["crossfit"]["fold_scope"] = "latest_complete"
+        self.spec["crossfit"]["folds"].reverse()
+        self.assertEqual(completed_folds(self.spec, 612), [(432, 612)])
+        self.assertEqual(completed_folds(self.spec, 792), [(612, 792)])
+        self.assertEqual(completed_folds(self.spec, 791), [(432, 612)])
+        with self.assertRaisesRegex(ValueError, "No historical fold"):
+            completed_folds(self.spec, 431)
 
     def test_refitting_historical_scale_cannot_change_the_mean(self):
         y, teacher = synthetic(n=400)
