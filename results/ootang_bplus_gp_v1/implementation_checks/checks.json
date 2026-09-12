@@ -1,0 +1,45 @@
+{
+  "completed_utc": "2026-09-12T17:53:32.913523+00:00",
+  "passed": true,
+  "synthetic_tests": 12,
+  "real_data_gp_fit_calls": 0,
+  "physical_solver_calls": 0,
+  "source_preflight": "19 frozen file hashes, 54 parameters, complete 1168 dates and zero reference-to-e0 mean difference checked; no displacement labels read",
+  "code_sha256": {
+    "code/physics_guided_gp.py": "41455fc18f945446c851636db97b113de451b594de3f8bc40e020076b3fa3eaa",
+    "code/run_ootang_bplus_gp.py": "76b839741bbb5075f8095d6b960fa55e6d2fc5d86b306872bc52b5ec855d5277",
+    "scripts/verify_ootang_bplus_gp.py": "70bdd31d18d94dc4f5e7ffd6c131bdd07d3d12b239907052d6361e2927029973",
+    "tests/test_physics_guided_gp.py": "43a70d5f1d86184a825dc6b023841db6d5304872fa3c6a4e6d710d1a6cf990b2"
+  },
+  "checks": [
+    {
+      "command": [
+        ".venv/bin/ruff",
+        "check",
+        "code/physics_guided_gp.py",
+        "code/run_ootang_bplus_gp.py",
+        "scripts/verify_ootang_bplus_gp.py",
+        "tests/test_physics_guided_gp.py"
+      ],
+      "exit_code": 0,
+      "stdout": "All checks passed!\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_physics_guided_gp.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "test_coverage_slack_and_width_protection (test_physics_guided_gp.GPContract) ... ok\ntest_feature_definitions_and_order (test_physics_guided_gp.GPContract) ... ok\ntest_fixed_gates_reject_worse_point_even_with_better_average (test_physics_guided_gp.GPContract) ... ok\ntest_hard_objective_budget_stops_before_extra_call (test_physics_guided_gp.GPContract) ... ok\ntest_normalization_uses_only_training_prefix_and_no_target_centering (test_physics_guided_gp.GPContract) ... ok\ntest_observation_noise_once_and_jitter_training_only_with_reload (test_physics_guided_gp.GPContract) ... ok\ntest_optimizer_converges_once_on_synthetic_objective (test_physics_guided_gp.GPContract) ... ok\ntest_optimizer_nonconvergence_is_not_accepted (test_physics_guided_gp.GPContract) ... ok\ntest_prefix_reader_does_not_parse_future_displacements (test_physics_guided_gp.GPContract) ... ok\ntest_scores_match_single_gaussian_formula_and_distinguish_aggregations (test_physics_guided_gp.GPContract) ... ok\ntest_single_run_lock_order_and_failure_does_not_read_development (test_physics_guided_gp.GPContract) ... ok\ntest_zero_residual_retains_bplus_mean (test_physics_guided_gp.GPContract) ... ok\n\n----------------------------------------------------------------------\nRan 12 tests in 0.255s\n\nOK\n"
+    }
+  ]
+}
