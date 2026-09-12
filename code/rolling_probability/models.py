@@ -114,6 +114,13 @@ def objective(mu, sigma, target, mse_weight=0.25):
 
 @torch.no_grad()
 def predict(models, scaling, x, z, anchor, expert_means=None):
+    if models and getattr(models[0], "family", "") == "ridge_dynamic":
+        predictions = [m.predict_raw(x, z, anchor, expert_means) for m in models]
+        means = np.stack([m for m, s in predictions])
+        sigmas = np.stack([s for m, s in predictions])
+        mean = means.mean(axis=0)
+        variance = (sigmas**2 + (means - mean[None]) ** 2).mean(axis=0)
+        return mean, np.sqrt(variance), means, sigmas
     x, z = scaling.transform(x, z)
     x, z = torch.from_numpy(x), torch.from_numpy(z)
     H = z.shape[1]

@@ -69,7 +69,7 @@ def source_snapshot(out, config, pool_dir):
     config_values = json.loads(Path(config).read_text())
     if config_values.get("candidate_plan"):
         paths.append(ROOT / config_values["candidate_plan"])
-    paths += sorted((ROOT / "tests").glob("test_rolling_probability*.py"))
+    paths += sorted((ROOT / "tests").glob("test_rolling_*.py"))
     paths += sorted(Path(pool_dir).glob("*.json")) + sorted(
         Path(pool_dir).glob("*.npz")
     )
@@ -561,7 +561,14 @@ def main():
     try:
         sources = source_snapshot(out, args.config, args.pool)
         pool = load_teachers(args.pool)
-        if args.action == "develop":
+        if spec.get("model_family") == "ridge_dynamic":
+            from . import ridge
+
+            if args.action == "develop":
+                ridge.develop(pool, spec, out, recorder)
+            else:
+                ridge.transfer(pool, spec, out, recorder, args.development)
+        elif args.action == "develop":
             develop(pool, spec, out, recorder)
         else:
             transfer(pool, spec, out, recorder, args.development)
