@@ -1,0 +1,11 @@
+{
+  "phase": "inner",
+  "label_rows": 612,
+  "samples": 212,
+  "max_target_index": 611,
+  "fixed_alpha": 0.001,
+  "nested_hyperparameter_validation": false,
+  "files": {
+    "oof_predictions.npz": "7a0d2a2e17ffad5251323bbc4e4aed9c6d9515f1515bd679bba6a69868683d9d"
+  }
+}

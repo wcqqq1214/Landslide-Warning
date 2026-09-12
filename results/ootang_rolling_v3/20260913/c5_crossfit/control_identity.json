@@ -1,0 +1,16 @@
+{
+  "DRIFT14": "all arrays exactly equal to C4",
+  "B_RAW": "all arrays exactly equal to C4",
+  "C5_IN_SAMPLE_FULL_seed0": "all arrays exactly equal to C4",
+  "B_ANCHOR": "all arrays exactly equal to C4",
+  "DRIFT7": "all arrays exactly equal to C4",
+  "DRIFT3": "all arrays exactly equal to C4",
+  "DRIFT1": "all arrays exactly equal to C4",
+  "C5_IN_SAMPLE_DATA_seed0": "all arrays exactly equal to C4",
+  "C5_IN_SAMPLE_FULL": "all arrays exactly equal to C4",
+  "C5_IN_SAMPLE_DATA": "all arrays exactly equal to C4",
+  "B_TREND14": "all arrays exactly equal to C4",
+  "PERSIST": "all arrays exactly equal to C4",
+  "DRIFT30": "all arrays exactly equal to C4",
+  "EXPERT_INIT": "all arrays exactly equal to C4"
+}

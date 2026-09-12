@@ -1,0 +1,43 @@
+{
+  "start": 792,
+  "end": 1168,
+  "files": {
+    "DRIFT14.npz": "655231a0e595ef6ddecaa8f94803808df25d8318178a88b6ab11fa8f1286c5d4",
+    "B_RAW.npz": "7021a3f030445767be7c7c20ded1c0c677137394062cb9f0f03ec2cd7482b3d9",
+    "C5_RIDGE_FULL_seed0.npz": "93447e2f38210e3cc15b184b31425621ebc88fb2e79cb2d0385c92643b7b895b",
+    "summary.csv": "7fe627763f267f09418ab5c1fbbb719096cbe9845f399016932096ebe9d0f77e",
+    "C5_RIDGE_DATA.npz": "7778a12d0c286a90f076911543466ee20a3d084ab7bc4aaa23d3029556571250",
+    "C5_IN_SAMPLE_FULL_seed0.npz": "3e22af465d516bc4f5f8b28654e0543d2b6d0b2c87415617dc757c9397fa37df",
+    "C5_RIDGE_FULL.npz": "93447e2f38210e3cc15b184b31425621ebc88fb2e79cb2d0385c92643b7b895b",
+    "B_ANCHOR.npz": "614ffacb7f8652184e95b224048d126eea4123f951f8decf217aaf179b32b6fc",
+    "DRIFT7.npz": "b4a19cdae09b6490c1a400574cf9811404fc79d030380df54806796d0e5a0cc7",
+    "metrics.csv": "481e2c9395c665d48da01bb9e46e83e6377e160a72740656e7471fc25cc2fa56",
+    "DRIFT3.npz": "6d6ed972d26e2c1de1a6eb476dabc5cb6f5c117c41b360d52f9380b611fd6c76",
+    "DRIFT1.npz": "920f15f79dd9046fb98231b5a4e94839adac0cc9e5e13524146315b77ac9a439",
+    "C5_IN_SAMPLE_DATA_seed0.npz": "359a4d2705290e2dc49c19bd41e990b55b408c641363bd1b0acb9ae2903fc776",
+    "feedback_state.json": "3ffe0b1b44a6289482216dbe5e397cdeb2e6d8a9a806469b2fa05a2b2b53ec8d",
+    "C5_IN_SAMPLE_FULL.npz": "3e22af465d516bc4f5f8b28654e0543d2b6d0b2c87415617dc757c9397fa37df",
+    "C5_IN_SAMPLE_DATA.npz": "359a4d2705290e2dc49c19bd41e990b55b408c641363bd1b0acb9ae2903fc776",
+    "B_TREND14.npz": "5c13af7858522d8f855f8e64040b57ac45e9d61b70b8108791923d8dd49bb00f",
+    "PERSIST.npz": "d2136347cd9b5fed65d88be74b1c14bed710e40228e710bd56354c71f41515d4",
+    "C5_RIDGE_DATA_seed0.npz": "7778a12d0c286a90f076911543466ee20a3d084ab7bc4aaa23d3029556571250",
+    "DRIFT30.npz": "7332cd1594402a7e2284e62b7b59fcfb04b8c44c4e32abfc7170b0ec55aa96aa",
+    "EXPERT_INIT.npz": "ddcc98debc9af37fdfbff7e26279acda0298c8a94e955fcf40f7cc9c096a9115"
+  },
+  "label_rows_released": 376,
+  "prediction_origins": 376,
+  "mean_is_rolling": true,
+  "probability_extension_baselines": [
+    "B_ANCHOR_G",
+    "B_TREND14_G",
+    "PERSIST_G",
+    "DRIFT14_G",
+    "DRIFT1_G",
+    "DRIFT3_G",
+    "DRIFT7_G",
+    "DRIFT30_G",
+    "EXPERT_INIT_G"
+  ],
+  "table_baseline_names_omit_G_suffix": true,
+  "B_RAW_probability": "not applicable; stored sigma is an unused computational placeholder"
+}

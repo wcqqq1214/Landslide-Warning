@@ -1,0 +1,16 @@
+{
+  "selected_alpha": {
+    "FULL": 0.001,
+    "DATA": 0.001
+  },
+  "new_hyperparameter_selection": false,
+  "source": {
+    "path": "results/ootang_rolling_v3/20260913/c3_ridge",
+    "artifact_manifest_sha256": "8df78fd33e6a1134e348f5731d653103eed83832877dbb24590c2fe904e15309",
+    "selected_alpha": {
+      "FULL": 0.001,
+      "DATA": 0.001
+    },
+    "model_prefix": "C3_RIDGE"
+  }
+}
