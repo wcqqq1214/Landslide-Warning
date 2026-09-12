@@ -1,0 +1,77 @@
+{
+  "checked_utc": "2026-09-12T17:55:09.430947+00:00",
+  "script_sha256": "5b27bdfe5fa846280c8ec8fa675480ea0e6b57fe8dbb08573923c0b8011cc82a",
+  "prediction_lock_sha256": "27775f6b011205f60cb7c12ab7bd25fcb023e409488680e954904b5f854f46e6",
+  "new_fit_calls": 0,
+  "physical_solver_calls": 0,
+  "labels_read": 0,
+  "predictions_changed": false,
+  "point_checks": [
+    {
+      "station": "ATU1",
+      "warning_messages": [
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul"
+      ],
+      "warning_categories": [
+        "RuntimeWarning",
+        "RuntimeWarning",
+        "RuntimeWarning"
+      ],
+      "all_operands_and_results_finite": true,
+      "explicit_sum_to_saved_mean_max_difference_mm": 8.679990060045384e-11,
+      "library_to_explicit_sum_max_difference_mm": 8.681110657709102e-11
+    },
+    {
+      "station": "ATU5",
+      "warning_messages": [
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul"
+      ],
+      "warning_categories": [
+        "RuntimeWarning",
+        "RuntimeWarning",
+        "RuntimeWarning"
+      ],
+      "all_operands_and_results_finite": true,
+      "explicit_sum_to_saved_mean_max_difference_mm": 1.1152678780490533e-10,
+      "library_to_explicit_sum_max_difference_mm": 1.1149376781285739e-10
+    },
+    {
+      "station": "MJ3",
+      "warning_messages": [
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul"
+      ],
+      "warning_categories": [
+        "RuntimeWarning",
+        "RuntimeWarning",
+        "RuntimeWarning"
+      ],
+      "all_operands_and_results_finite": true,
+      "explicit_sum_to_saved_mean_max_difference_mm": 1.191438059322536e-10,
+      "library_to_explicit_sum_max_difference_mm": 1.1907314076612816e-10
+    },
+    {
+      "station": "MJ1",
+      "warning_messages": [
+        "divide by zero encountered in matmul",
+        "overflow encountered in matmul",
+        "invalid value encountered in matmul"
+      ],
+      "warning_categories": [
+        "RuntimeWarning",
+        "RuntimeWarning",
+        "RuntimeWarning"
+      ],
+      "all_operands_and_results_finite": true,
+      "explicit_sum_to_saved_mean_max_difference_mm": 8.128608897095546e-11,
+      "library_to_explicit_sum_max_difference_mm": 8.134675752054956e-11
+    }
+  ],
+  "finite_and_explicit_sum_checks_passed": true,
+  "scope": "Observed matmul warnings retained; warning origin not established. This check only verifies saved mean values."
+}

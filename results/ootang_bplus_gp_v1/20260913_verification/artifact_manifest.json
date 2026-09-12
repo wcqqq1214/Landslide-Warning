@@ -1,0 +1,26 @@
+{
+  "verifier_sha256": "70bdd31d18d94dc4f5e7ffd6c131bdd07d3d12b239907052d6361e2927029973",
+  "raw_manifest_sha256": "bb268276bb17c6c81f4c375dc37acf88bfa378f36a13ceb41f270dfa0fd8603b",
+  "files": {
+    "prediction_curves.pdf": {
+      "sha256": "d22cff63bbf7e0a376038adf159b63d2eaef6642c7cc9621af6ab27770a7a816",
+      "bytes": 58403
+    },
+    "prediction_curves.png": {
+      "sha256": "78ded6b2fbc1883f9415a66b453da5ce6e4d2771d816ee9a1ebae3ea0e53b23d",
+      "bytes": 272312
+    },
+    "train_curves.pdf": {
+      "sha256": "1354c1b97117fd630a2bd5b489d5aec0fe384c7aa65993363b87a6709fe843ca",
+      "bytes": 88254
+    },
+    "train_curves.png": {
+      "sha256": "24c3741b6458e63d04327a9eaf3fbc586189751ceb9c1799b031f956c8793d1e",
+      "bytes": 224833
+    },
+    "verification.json": {
+      "sha256": "78b1d5af31950ece74fe88e592c8012f115821f6941c5bf13254f0318f9f60c6",
+      "bytes": 5381
+    }
+  }
+}
