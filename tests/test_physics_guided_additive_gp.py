@@ -11,6 +11,7 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 import joblib
 import numpy as np
@@ -155,6 +156,22 @@ class AdditiveContract(unittest.TestCase):
             p, _ = predict(gp, arm, self.x, base, 3.0, self.spec)
             np.testing.assert_array_equal(p["mean"], base)
             np.testing.assert_array_equal(p["physical_mean"], np.zeros(9))
+
+    def test_optimizer_log_roundtrip_is_exact_in_stored_representation(self):
+        from verify_ootang_bplus_additive_gp import check_optimizer_kernel
+
+        for arm in ARMS:
+            k = kernel(self.spec, arm)
+            optimum = np.full(k.n_dims, 0.1)
+            fitted = k.clone_with_theta(optimum)
+            self.assertGreater(abs(fitted.theta - optimum).max(), 0)
+            check_optimizer_kernel(fitted, arm, optimum, self.spec)
+            changed = optimum.copy()
+            changed[0] += 0.001
+            with self.assertRaises(AssertionError):
+                check_optimizer_kernel(
+                    k.clone_with_theta(changed), arm, optimum, self.spec
+                )
 
     def test_joint_fit_with_bounded_optimizer_is_one_call(self):
         for arm in ARMS:

@@ -1,0 +1,14 @@
+{
+  "checked_utc": "2026-09-12T18:53:47.629537+00:00",
+  "cause": "sklearn theta getter/setter log(exp(theta)) is not bitwise identical to optimizer log theta",
+  "fix": "Reconstruct the positive-parameter representation from the frozen optimizer log; compare exactly. Allow only committed post-run verifier/tests changes and record their identities.",
+  "regression_checks": "12 synthetic tests and ruff passed",
+  "training_and_config_unchanged": {
+    "code/physics_guided_additive_gp.py": "f584497b327847478991a1899b34fa89860768e8653556617ccae463aff495c1",
+    "code/run_ootang_bplus_additive_gp.py": "ff598399279422b2629daacd8cd04a0f44164160e0171a52b42188fa5905c768",
+    "config/ootang_bplus_additive_gp.v2.json": "3cdf32187b42edac3fd2bf1bd3cb0173ef173e8af9a05e5648e819fe3ecff885"
+  },
+  "real_data_fit_calls_added": 0,
+  "physical_solver_calls_added": 0,
+  "scientific_tolerances_changed": false
+}

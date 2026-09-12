@@ -43,6 +43,14 @@ from physics_guided_additive_gp import (
 )
 
 
+def check_optimizer_kernel(learned_kernel, arm, log_theta, spec):
+    # sklearn stores exp(theta); reading .theta performs log again.
+    # Reconstruct that representation exactly instead of widening a tolerance.
+    expected = kernel(spec, arm).clone_with_theta(np.asarray(log_theta))
+    np.testing.assert_array_equal(learned_kernel.theta, expected.theta)
+    return float(abs(learned_kernel.theta - np.asarray(log_theta)).max())
+
+
 def verify():
     spec = specification()
     out = ROOT / spec["output_dir"]
@@ -58,7 +66,34 @@ def verify():
         ):
             raise AssertionError("Raw artifact changed: " + name)
     source = json.loads((out / "source_snapshot.json").read_text())
-    check_sources(source["files"])
+    postrun_changes = []
+    verification_only = {
+        "scripts/verify_ootang_bplus_additive_gp.py",
+        "tests/test_physics_guided_additive_gp.py",
+    }
+    current_commit = subprocess.check_output(
+        ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+    ).strip()
+    for path, digest in source["files"].items():
+        current_sha = sha(ROOT / path)
+        if current_sha != digest:
+            if path not in verification_only:
+                raise AssertionError(
+                    "Training implementation/configuration changed: " + path
+                )
+            current_blob = subprocess.check_output(
+                ["git", "show", f"{current_commit}:{path}"], cwd=ROOT
+            )
+            if hashlib.sha256(current_blob).hexdigest() != current_sha:
+                raise AssertionError("Commit the exact verification correction first")
+            postrun_changes.append(
+                dict(
+                    path=path,
+                    pre_run_sha256=digest,
+                    current_sha256=current_sha,
+                    current_commit=current_commit,
+                )
+            )
     check_sources(source["frozen_sources"])
     if sha(out / "config.json") != sha(CONFIG) or source["config_sha256"] != sha(
         CONFIG
@@ -150,6 +185,7 @@ def verify():
         verification_fit_calls=0,
         physical_solver_calls=0,
         final_window_labels_read=0,
+        postrun_verification_changes=postrun_changes,
     )
     if state["status"] != "completed_pending_independent_verification":
         if "development_labels_read" in kinds and "all_predictions_locked" not in kinds:
@@ -229,8 +265,8 @@ def verify():
                 raise AssertionError("Learned model configuration differs")
             if len(model.kernel_.theta) != spec["hyperparameter_counts"][arm]:
                 raise AssertionError("Model parameter count differs")
-            np.testing.assert_array_equal(
-                model.kernel_.theta, learned["optimizer"]["log_theta"]
+            theta_roundtrip_error = check_optimizer_kernel(
+                model.kernel_, arm, learned["optimizer"]["log_theta"], spec
             )
             np.testing.assert_array_equal(model.X_train_, inputs.x[30:792])
             np.testing.assert_array_equal(model.y_train_, inputs.targets[:, j])
@@ -297,6 +333,7 @@ def verify():
             checks.append(
                 dict(
                     model_id=model_id,
+                    optimizer_log_roundtrip_max_difference=theta_roundtrip_error,
                     reload_max_errors=reload_error,
                     independent_matrix_max_errors=matrix_error,
                     warnings=[

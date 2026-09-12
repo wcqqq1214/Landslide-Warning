@@ -1,0 +1,9 @@
+{
+  "status": "verification_check_failed_before_numerical_prediction_checks",
+  "verifier_sha256": "8cefbe72948b5112ce0e3404756bfa18975790e951c07fa1a2a018493f8726d6",
+  "run_commit": "112fd17",
+  "error": "assert_array_equal(model.kernel_.theta, optimizer.log_theta): max absolute difference 1.1102230246251565e-16, 1/3 values",
+  "cause": "The optimizer returns log hyperparameters; sklearn stores exp(theta) as positive parameters and computes log again on access. Raw log theta need not be bitwise identical after this round trip.",
+  "action": "Correct only the verifier parameter identity comparison via the same explicit round trip; preserve frozen source, training, predictions and scientific tolerances.",
+  "new_training_calls": 0
+}
