@@ -94,11 +94,10 @@ def verify(run, out, reload_models=True):
     )[[p + "/mm" for p in POINTS]].to_numpy(float)
     phases = {}
     for phase in phase_names:
-        phases[phase] = {
-            p.stem: {k: a[k].copy() for k in a.files}
-            for p in (run / phase).glob("*.npz")
-            for a in [np.load(p)]
-        }
+        phases[phase] = {}
+        for p in (run / phase).glob("*.npz"):
+            with np.load(p) as a:
+                phases[phase][p.stem] = {k: a[k].copy() for k in a.files}
     raw_events = (run / "events.jsonl").read_text().splitlines()
     events = [json.loads(line) for line in raw_events]
     chain = ""
@@ -276,6 +275,9 @@ def verify(run, out, reload_models=True):
         max_sd = 0.0
         model_count = 0
         origins_regenerated = 0
+        data_options = {}
+        if spec.get("extra_baselines"):
+            data_options["extra_baselines"] = spec["extra_baselines"]
         for phase in phase_names:
             start, end = spec["stages"][phase]
             train_dir = run / (
@@ -287,7 +289,11 @@ def verify(run, out, reload_models=True):
             ):
                 raise ValueError("Training label prefix changed")
             data = training_examples(
-                labels[:start], pool, spec["horizons"], spec["history_days"]
+                labels[:start],
+                pool,
+                spec["horizons"],
+                spec["history_days"],
+                **data_options,
             )
             regenerated = Scaling(data)
             stored = json.loads((train_dir / "scaling.json").read_text())
@@ -320,11 +326,22 @@ def verify(run, out, reload_models=True):
                         select_teacher(pool, n),
                         spec["horizons"],
                         spec["history_days"],
+                        **data_options,
                     )
                     H = min(len(z), end - n)
                     z = z[:H]
+                    model_options = {}
+                    if spec.get("expert_names"):
+                        model_options["expert_means"] = np.stack(
+                            [b[k][:H] for k in spec["expert_names"]], axis=1
+                        )[None]
                     mean, sd, seed_mean, seed_sigma = predict(
-                        models, scaling, x[None], z[None], b["B_ANCHOR"][None, :H]
+                        models,
+                        scaling,
+                        x[None],
+                        z[None],
+                        b["B_ANCHOR"][None, :H],
+                        **model_options,
                     )
                     max_mu = max(
                         max_mu, float(np.max(abs(mean[0] - saved["mean"][i, :H])))

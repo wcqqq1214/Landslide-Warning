@@ -223,7 +223,7 @@ def averages(x, width):
     return y
 
 
-def example(history, teacher, horizon=30, window=30):
+def example(history, teacher, horizon=30, window=30, extra_baselines=()):
     n = len(history)
     if n < 2 * window or teacher.prefix > n or n >= len(teacher.mean):
         raise ValueError("Invalid causal origin")
@@ -286,17 +286,37 @@ def example(history, teacher, horizon=30, window=30):
         PERSIST=np.broadcast_to(y[-1], (H, 4)).copy(),
         DRIFT14=y[-1] + h[:, None] * (y[-1] - y[-15]) / 14,
     )
+    if extra_baselines:
+        for width in (1, 3, 7, 30):
+            means[f"DRIFT{width}"] = (
+                y[-1] + h[:, None] * (y[-1] - y[-1 - width]) / width
+            )
+        expert_names = (
+            "B_ANCHOR",
+            "B_TREND14",
+            "DRIFT1",
+            "DRIFT3",
+            "DRIFT7",
+            "DRIFT14",
+            "DRIFT30",
+        )
+        weights = np.exp([0.0, 0.0, 0.0, 0.0, 0.0, 6.0, 0.0])
+        weights /= weights.sum()
+        means["EXPERT_INIT"] = sum(
+            w * means[key] for w, key in zip(weights, expert_names)
+        )
+        means = {k: means[k] for k in (*BASELINES, *extra_baselines)}
     if not all(np.isfinite(v).all() for v in [x, z, *means.values()]):
         raise ArithmeticError("Invalid origin features")
     return x, z, means
 
 
-def training_examples(labels, pool, horizon=30, window=30):
+def training_examples(labels, pool, horizon=30, window=30, extra_baselines=()):
     xs, zs, ys, anchors, origins, teachers = [], [], [], [], [], []
-    bases = {k: [] for k in BASELINES}
+    bases = {k: [] for k in (*BASELINES, *extra_baselines)}
     for n in range(min(pool), len(labels) - horizon + 1):
         teacher = select_teacher(pool, n)
-        x, z, means = example(labels[:n], teacher, horizon, window)
+        x, z, means = example(labels[:n], teacher, horizon, window, extra_baselines)
         if len(z) != horizon:
             raise ValueError("Teacher lacks the required future forcing trajectory")
         xs.append(x)

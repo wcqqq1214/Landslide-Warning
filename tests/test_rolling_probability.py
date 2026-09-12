@@ -15,6 +15,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from rolling_probability.data import Teacher, example, select_teacher, training_examples
 from rolling_probability.models import (
     DirectConvLSTM,
+    ExpertConvLSTM,
     Scaling,
     gaussian_crps_torch,
     predict,
@@ -32,6 +33,45 @@ def synthetic(n=360, q=100):
 
 
 class RollingContracts(unittest.TestCase):
+    def test_convex_experts_preserve_bounds_and_have_trainable_weights(self):
+        torch.set_num_threads(1)
+        y, t = synthetic()
+        extra = ("DRIFT1", "DRIFT3", "DRIFT7", "DRIFT30", "EXPERT_INIT")
+        d = training_examples(y[:240], {100: t}, extra_baselines=extra)
+        s = Scaling(d)
+        names = (
+            "B_ANCHOR",
+            "B_TREND14",
+            "DRIFT1",
+            "DRIFT3",
+            "DRIFT7",
+            "DRIFT14",
+            "DRIFT30",
+        )
+        raw = np.stack([d["baselines"][name][:2] for name in names], axis=2)
+        m = ExpertConvLSTM(d["x"].shape[2], 8, 4)
+        mu, sd, _, _ = predict([m], s, d["x"][:2], d["z"][:2], d["anchor"][:2], raw)
+        np.testing.assert_allclose(
+            mu, d["baselines"]["EXPERT_INIT"][:2], atol=2e-5, rtol=0
+        )
+        self.assertTrue((mu >= raw.min(axis=2) - 2e-5).all())
+        self.assertTrue((mu <= raw.max(axis=2) + 2e-5).all())
+        x, z = s.transform(d["x"][:2], d["z"][:2])
+        ex = torch.tensor(
+            (
+                (raw - d["anchor"][:2, :, None, :]) / s.target_scale[None, :, None, :]
+            ).astype(np.float32)
+        )
+        out, _ = m(torch.from_numpy(x), torch.from_numpy(z), ex)
+        out.square().mean().backward()
+        self.assertGreater(float(m.decoder[-1].weight.grad.abs().max()), 0.0)
+        original = example(y[:180], t)
+        extended = example(y[:180], t, extra_baselines=extra)
+        for a, b in zip(original[:2], extended[:2]):
+            np.testing.assert_array_equal(a, b)
+        for k in original[2]:
+            np.testing.assert_array_equal(original[2][k], extended[2][k])
+
     def test_snapshot_accepts_relative_pool_paths(self):
         root = Path(__file__).resolve().parents[1]
         with tempfile.TemporaryDirectory(dir=root / "tmp") as directory:

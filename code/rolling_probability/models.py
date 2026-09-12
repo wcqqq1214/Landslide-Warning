@@ -45,7 +45,7 @@ class DirectConvLSTM(nn.Module):
         nn.init.zeros_(self.decoder[-1].weight)
         nn.init.zeros_(self.decoder[-1].bias)
 
-    def forward(self, x, z):
+    def encoded_decoder(self, x, z):
         h = x.new_zeros((len(x), self.hidden, 4))
         c = torch.zeros_like(h)
         for row in x.unbind(dim=1):
@@ -54,10 +54,47 @@ class DirectConvLSTM(nn.Module):
             h = torch.sigmoid(o) * torch.tanh(c)
         H = z.shape[1]
         context = h[:, None].expand(-1, H, -1, -1)
-        d = self.decoder(
+        return self.decoder(
             torch.cat([context, z], dim=2).reshape(len(x) * H, -1, 4)
-        ).reshape(len(x), H, 2, 4)
+        ).reshape(len(x), H, -1, 4)
+
+    def forward(self, x, z, experts=None):
+        d = self.encoded_decoder(x, z)
         return d[:, :, 0], torch.exp(4 * torch.tanh(d[:, :, 1] / 4))
+
+
+class ExpertConvLSTM(DirectConvLSTM):
+    def __init__(
+        self, x_channels, z_channels, hidden=16, initial_logits=(0, 0, 0, 0, 0, 6, 0)
+    ):
+        super().__init__(x_channels, z_channels, hidden)
+        self.expert_count = len(initial_logits)
+        self.decoder[-1] = nn.Conv1d(hidden, self.expert_count + 1, 1)
+        nn.init.zeros_(self.decoder[-1].weight)
+        with torch.no_grad():
+            self.decoder[-1].bias.copy_(
+                torch.tensor([*initial_logits, 0.0], dtype=torch.float32)
+            )
+
+    def forward(self, x, z, experts=None):
+        if experts is None or experts.shape[2] != self.expert_count:
+            raise ValueError("Registered physical and velocity experts are required")
+        d = self.encoded_decoder(x, z)
+        weights = torch.softmax(d[:, :, : self.expert_count], dim=2)
+        return (weights * experts).sum(dim=2), torch.exp(
+            4 * torch.tanh(d[:, :, -1] / 4)
+        )
+
+
+def new_model(x_channels, z_channels, spec):
+    if spec.get("model_family") == "convex_experts":
+        return ExpertConvLSTM(
+            x_channels,
+            z_channels,
+            spec["hidden_channels"],
+            spec["initial_expert_logits"],
+        )
+    return DirectConvLSTM(x_channels, z_channels, spec["hidden_channels"])
 
 
 def gaussian_crps_torch(mu, sigma, target):
@@ -76,15 +113,22 @@ def objective(mu, sigma, target, mse_weight=0.25):
 
 
 @torch.no_grad()
-def predict(models, scaling, x, z, anchor):
+def predict(models, scaling, x, z, anchor, expert_means=None):
     x, z = scaling.transform(x, z)
     x, z = torch.from_numpy(x), torch.from_numpy(z)
     H = z.shape[1]
     scale = scaling.target_scale[None, :H]
+    experts = None
+    if expert_means is not None:
+        experts = torch.from_numpy(
+            ((expert_means - anchor[:, :, None, :]) / scale[:, :, None, :]).astype(
+                np.float32
+            )
+        )
     means, sigmas = [], []
     for model in models:
         model.eval()
-        delta, sigma = model(x, z)
+        delta, sigma = model(x, z, experts)
         means.append(anchor + delta.numpy().astype(float) * scale)
         sigmas.append(np.maximum(0.01, sigma.numpy().astype(float) * scale))
     means, sigmas = np.stack(means), np.stack(sigmas)

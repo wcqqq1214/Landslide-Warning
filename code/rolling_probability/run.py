@@ -17,7 +17,6 @@ import torch
 
 from physics_guided.reference import ROOT, save_json, sha
 from .data import (
-    BASELINES,
     ObservationStream,
     array_sha,
     example,
@@ -27,7 +26,7 @@ from .data import (
     select_teacher,
     training_examples,
 )
-from .models import DirectConvLSTM, Scaling, objective, predict
+from .models import Scaling, new_model, objective, predict
 from .scoring import CausalCalibration, aggregate, gate, score_predictions
 
 
@@ -67,6 +66,9 @@ def source_snapshot(out, config, pool_dir):
         ROOT / "code/physics_guided/reference.py",
     ]
     paths += sorted((ROOT / "code/rolling_probability").glob("*.py"))
+    config_values = json.loads(Path(config).read_text())
+    if config_values.get("candidate_plan"):
+        paths.append(ROOT / config_values["candidate_plan"])
     paths += sorted((ROOT / "tests").glob("test_rolling_probability*.py"))
     paths += sorted(Path(pool_dir).glob("*.json")) + sorted(
         Path(pool_dir).glob("*.npz")
@@ -96,7 +98,13 @@ def source_snapshot(out, config, pool_dir):
 def train(labels, pool, spec, out, steps, checkpoints, recorder):
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
-    data = training_examples(labels, pool, spec["horizons"], spec["history_days"])
+    data = training_examples(
+        labels,
+        pool,
+        spec["horizons"],
+        spec["history_days"],
+        spec.get("extra_baselines", ()),
+    )
     scaling = Scaling(data)
     save_json(out / "scaling.json", scaling.state())
     np.savez_compressed(
@@ -126,12 +134,21 @@ def train(labels, pool, spec, out, steps, checkpoints, recorder):
     target = torch.from_numpy(
         ((data["y"] - data["anchor"]) / scaling.target_scale).astype(np.float32)
     )
+    experts = None
+    if spec.get("expert_names"):
+        raw = np.stack([data["baselines"][k] for k in spec["expert_names"]], axis=2)
+        experts = torch.from_numpy(
+            (
+                (raw - data["anchor"][:, :, None, :])
+                / scaling.target_scale[None, :, None, :]
+            ).astype(np.float32)
+        )
     saved = {step: [] for step in checkpoints}
     logs = []
     for seed in spec["seeds"]:
         torch.manual_seed(seed)
         rng = np.random.default_rng(seed)
-        model = DirectConvLSTM(x.shape[2], z.shape[2], spec["hidden_channels"])
+        model = new_model(x.shape[2], z.shape[2], spec)
         optimizer = torch.optim.Adam(
             model.parameters(),
             lr=spec["learning_rate"],
@@ -141,7 +158,7 @@ def train(labels, pool, spec, out, steps, checkpoints, recorder):
             model.train()
             ids = rng.integers(0, len(x), size=spec["batch_size"])
             optimizer.zero_grad(set_to_none=True)
-            mu, sd = model(x[ids], z[ids])
+            mu, sd = model(x[ids], z[ids], None if experts is None else experts[ids])
             loss = objective(mu, sd, target[ids], spec["mse_weight"])
             if not torch.isfinite(loss):
                 raise ArithmeticError("Training loss is nonfinite")
@@ -173,7 +190,7 @@ def train(labels, pool, spec, out, steps, checkpoints, recorder):
                     ),
                     path,
                 )
-                copied = DirectConvLSTM(x.shape[2], z.shape[2], spec["hidden_channels"])
+                copied = new_model(x.shape[2], z.shape[2], spec)
                 copied.load_state_dict(
                     torch.load(path, weights_only=True)["state_dict"]
                 )
@@ -202,7 +219,7 @@ def load_group(train_dir, spec, step):
     models = []
     for seed in spec["seeds"]:
         d = torch.load(Path(train_dir) / f"seed{seed}_u{step}.pt", weights_only=True)
-        model = DirectConvLSTM(d["x_channels"], d["z_channels"], d["hidden"])
+        model = new_model(d["x_channels"], d["z_channels"], spec)
         model.load_state_dict(d["state_dict"])
         model.eval()
         models.append(model)
@@ -222,7 +239,7 @@ def forecast_phase(
     out = Path(out)
     out.mkdir(parents=True, exist_ok=False)
     H = spec["horizons"]
-    names = list(BASELINES) + list(groups)
+    names = list(base_scales) + list(groups)
     if save_seeds:
         names += [f"{g}_seed{s}" for g in groups for s in spec["seeds"]]
     shape = (end - start, H, 4)
@@ -255,14 +272,25 @@ def forecast_phase(
         if len(stream.history) != n:
             raise ValueError("Observation stream crossed forecast origin")
         teacher = select_teacher(pool, n)
-        x, z, base = example(stream.history, teacher, H, spec["history_days"])
+        x, z, base = example(
+            stream.history,
+            teacher,
+            H,
+            spec["history_days"],
+            spec.get("extra_baselines", ()),
+        )
         valid = min(len(z), end - n)
         z = z[:valid]
         base = {k: v[:valid] for k, v in base.items()}
-        forecasts = {k: (base[k], base_scales[k][:valid]) for k in BASELINES}
+        forecasts = {k: (base[k], base_scales[k][:valid]) for k in base_scales}
+        expert_means = None
+        if spec.get("expert_names"):
+            expert_means = np.stack([base[k] for k in spec["expert_names"]], axis=1)[
+                None
+            ]
         for name, models in groups.items():
             mean, sd, seed_mu, seed_sd = predict(
-                models, scaling, x[None], z[None], base["B_ANCHOR"][None]
+                models, scaling, x[None], z[None], base["B_ANCHOR"][None], expert_means
             )
             forecasts[name] = (mean[0], sd[0])
             if save_seeds:
@@ -354,7 +382,7 @@ def forecast_phase(
             prediction_origins=end - start,
             mean_is_rolling=True,
             probability_extension_baselines=[
-                k + "_G" for k in BASELINES if k != "B_RAW"
+                k + "_G" for k in base_scales if k != "B_RAW"
             ],
             table_baseline_names_omit_G_suffix=True,
             B_RAW_probability="not applicable; stored sigma is an unused computational placeholder",
@@ -429,7 +457,8 @@ def develop(pool, spec, out, recorder):
     )
     s = summary[summary.horizon == spec["primary_horizon"]].set_index("model")
     simple = min(
-        ("B_TREND14", "PERSIST", "DRIFT14"), key=lambda name: s.loc[name, "rmse"]
+        ("B_TREND14", "PERSIST", "DRIFT14", *spec.get("extra_baselines", ())),
+        key=lambda name: s.loc[name, "rmse"],
     )
     decision = gate(metrics, summary, prefix, simple, spec)
     decision["selected_updates"] = selected
