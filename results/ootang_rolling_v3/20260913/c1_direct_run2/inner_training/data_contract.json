@@ -1,0 +1,11 @@
+{
+  "label_rows": 612,
+  "max_label_index": 611,
+  "label_sha256": "aa0c7a93aa37ba30d69043b98d429fea6cd5a9975d49ef52fb432f391be850da",
+  "samples": 331,
+  "input_channels": 25,
+  "future_channels": 8,
+  "max_target_index": 611,
+  "teacher_never_later_than_origin": true,
+  "preprocessing_fitted_on_current_training_examples": true
+}

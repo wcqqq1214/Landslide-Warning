@@ -1,0 +1,9 @@
+{"seed": 0, "update": 1, "loss": 0.6248527765274048, "gradient_norm": 0.2685433030128479}
+{"seed": 0, "update": 25, "loss": 0.7962243556976318, "gradient_norm": 0.8203290700912476}
+{"seed": 0, "update": 50, "loss": 0.704596221446991, "gradient_norm": 0.8306331634521484}
+{"seed": 1, "update": 1, "loss": 0.7367022037506104, "gradient_norm": 0.46403858065605164}
+{"seed": 1, "update": 25, "loss": 0.8315242528915405, "gradient_norm": 0.7965930104255676}
+{"seed": 1, "update": 50, "loss": 0.5166825652122498, "gradient_norm": 0.6504000425338745}
+{"seed": 2, "update": 1, "loss": 0.8075008392333984, "gradient_norm": 0.2881794273853302}
+{"seed": 2, "update": 25, "loss": 0.6740590333938599, "gradient_norm": 0.7610746622085571}
+{"seed": 2, "update": 50, "loss": 0.5031870603561401, "gradient_norm": 0.6765355467796326}

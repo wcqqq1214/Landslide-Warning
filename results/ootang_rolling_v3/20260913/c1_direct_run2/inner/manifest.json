@@ -1,0 +1,40 @@
+{
+  "start": 612,
+  "end": 792,
+  "files": {
+    "C1_DIRECT_u100.npz": "3cfede85f2d52b4e9a659e508d9a8b5a4b2edd24c6956b6328bb6d89b40cbd66",
+    "DRIFT14.npz": "35ffce016778ece6b0027ca28603bf8d5cd8217e37ce01952a6d05c54fa16efc",
+    "B_RAW.npz": "ca4f98d298aae67656ad0db3c5be2697a79309d61009413c8ce9b3124b0ee9b5",
+    "summary.csv": "c41b6266b051cdf7530be8803c9c84846e58741d2aa55cc98bd951e0022467df",
+    "C1_DIRECT_u50.npz": "1f1a77899352963549cb86a735b2f503460f41079990588591fcb28675216203",
+    "C1_DIRECT_u50_seed0.npz": "92c9e6ac75d0c03e376218f3d407ca2d005bc5b025376655f7b15bc3e2c5c1fb",
+    "C1_DIRECT_u200.npz": "db6218c8290493096587ec7e80b99bff7f5760dd3f08dbe8ca2c2084db5ba3fc",
+    "C1_DIRECT_u50_seed1.npz": "5e573f35d04912db4f3677d2d4cc92c944d240022f4032703dd36b4dfbe41b9d",
+    "B_ANCHOR.npz": "98f1db48ba7e94cb79a0bb3eaf42b72afe42d3b87b2b612fefb8f178133dd0ed",
+    "C1_DIRECT_u50_seed2.npz": "383bc16862bc270e70c0f6e7f775d3ba507b8b4d459e7c9fcd1c82e204c8ec16",
+    "metrics.csv": "e418cfb76e394e28b32f54b11046d53650ec378c3a0539b10180c93fb5db43df",
+    "C1_DIRECT_u400.npz": "8cf8778def98fdab928fd5c31195a73fe090a08c23bab185ee98b2d85704e074",
+    "C1_DIRECT_u200_seed0.npz": "84c24f3be06fa7722cea7feab8e7fca8c9affed70d458620cb05f045f191cd1d",
+    "C1_DIRECT_u200_seed1.npz": "05b908483322b03e2026130eb3163d83033a812ea757626a2d89f14fab08a43c",
+    "C1_DIRECT_u200_seed2.npz": "b29868db43a9c388312bdf573a22ce34ae5f0e6180f08d85ec5ed7bfac413593",
+    "C1_DIRECT_u100_seed2.npz": "308ae24c035a55b32f9a7451b03871a48ace3b7f25708b728ff6bea0017837e0",
+    "C1_DIRECT_u100_seed1.npz": "903503d2a1da603fd0919a16d09ff89e6632525691c2491d89deb12a796ec2b4",
+    "C1_DIRECT_u100_seed0.npz": "a853338551694724df9e57b494f967f3cd42bf426a59dfae10c2bd56693fd952",
+    "C1_DIRECT_u400_seed1.npz": "360f0571c6229a22c2f154a2f9728887868c6f7d7399e3995e1b3aede631e8ca",
+    "C1_DIRECT_u400_seed0.npz": "457a224a9c83cda940eb1857d1caa8782b6bd78b68dd86723b701c5c0bf8dca4",
+    "B_TREND14.npz": "6f879d136989e424daa750bfb4743f7a85d000f9eb34272db0e3425bcef96c58",
+    "PERSIST.npz": "87ce4318dc23174259d325ecca8dde166a07d49bdc5d622b48c2508667cc27ed",
+    "C1_DIRECT_u400_seed2.npz": "7861180fb683867683f50e3ab149d94eed41fe3e645d2744afbc4fc0b3ddad98"
+  },
+  "label_rows_released": 180,
+  "prediction_origins": 180,
+  "mean_is_rolling": true,
+  "probability_extension_baselines": [
+    "B_ANCHOR_G",
+    "B_TREND14_G",
+    "PERSIST_G",
+    "DRIFT14_G"
+  ],
+  "table_baseline_names_omit_G_suffix": true,
+  "B_RAW_probability": "not applicable; stored sigma is an unused computational placeholder"
+}

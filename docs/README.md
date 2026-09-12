@@ -19,6 +19,7 @@ v2.0 按原标准未达标并已停止。
 
 | 文档 | 用途 |
 | --- | --- |
+| [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | C1 开发失败；保留强近期速度对照，后续候选和每三次纠偏在此记录 |
 | [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM 和概率评分；合成检查与正式运行分开记录 |
 | [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 用户已授权自主执行；因果更新观测，30 日主步长，公平对照、六候选上限及每三次纠偏 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |

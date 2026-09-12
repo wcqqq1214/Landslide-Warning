@@ -1,0 +1,11 @@
+{
+  "checkpoint_scores": {
+    "50": 3.497669073927054,
+    "100": 3.792524728309469,
+    "200": 4.049448434247395,
+    "400": 4.2136561603671545
+  },
+  "selected_updates": 50,
+  "criterion": "30-day mean RMSE ratio + CRPS ratio vs anchored B+",
+  "tie": "earlier update"
+}

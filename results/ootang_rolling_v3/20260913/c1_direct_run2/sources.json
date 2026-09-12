@@ -1,0 +1,25 @@
+{
+  "git_head": "0bd66fa739590f108eadcff1df9e45f3c467daef",
+  "files": {
+    "config/ootang_rolling_probability.v3_0.json": "2e7bd7cd46f804fa690ca96dcd292772cf3f48a0e01af6d320ba55ffded9dc1a",
+    "docs/ootang_rolling_probability_plan.v3.0.md": "0c86a78614e809e1b2630755b5d9a58b1617d1947998d5976f5e9632259f5603",
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "code/physics_guided/reference.py": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+    "code/rolling_probability/__init__.py": "7a300cb7e731f9a22c00b0c1029ce56d74c75022b4c155b97d50d1c843caabb5",
+    "code/rolling_probability/data.py": "9d984212133c032db471e1a20b517f6b7905b5394e2f8ca5230b67fc14488d1e",
+    "code/rolling_probability/models.py": "0b32753df607663e645cc9064302f26bf2b8f8453da6c4ebe0b467d3d962a749",
+    "code/rolling_probability/run.py": "91caade4ffb4a75806f67e9032077771fc7eef5688e2cea5871b8e2238edad89",
+    "code/rolling_probability/scoring.py": "a0538f4c11afe56ecb5ccf940f61d74ac71a45c93c3391e622a93e0e27c21865",
+    "tests/test_rolling_probability.py": "f18184b95c94f8b330574fdde0074eeefbf77f8c3c669cf7bf6fb26f2f6911bd",
+    "results/ootang_rolling_v3/20260913/physics_development/provenance.json": "305b03be5b1dca39e58a13ada9fc81380c5f7e94d0e00f8f33b740aceb94d70e",
+    "results/ootang_rolling_v3/20260913/physics_development/source_provenance.json": "539c81b2b329e4a96bd23edffcf0941d390119e1beaf4506108cf86c1cf86a56",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_252.npz": "cd8b1a0c7a1d459f744d2afa555573eb31218d718af26d02f237b4b81fde87fd",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_342.npz": "a1b1b49494cee530795a89edb1570b5de9f33e13d72505bb2cdbdacdcb426143",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_432.npz": "a1e832a66a53073fddbe15ceaff7c29de1b2ae0e8fc7a13b7bf8abdbcbfff096",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_612.npz": "8f2b7065b54c0e993d69f9aa260378a4f83f6c06529b6792f9d794805f7355ec",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_792.npz": "1c8fbb95e63333ece1a4af45612d8523746b596ba27625808fa4bfb4bba2de4b"
+  },
+  "python": "3.10.20",
+  "torch": "2.12.0",
+  "numpy": "2.2.6"
+}
