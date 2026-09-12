@@ -88,10 +88,11 @@
     "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
     "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
     "docs/ootang_probability_pinn_plan.v2.3.md": "8ed047aaa60007a2485b2cd9ad7fc9b9fb6cff41e7f0dcebf9fbadfdbcc34819",
-    "code/physics_guided_pinn/creep.py": "b68d75cc0256bd11712655d8e6f1d2fff5468700cd35334b74bef7ec33e132a0",
+    "code/physics_guided_pinn/creep.py": "be8a855fa7beb117d6b98968126b6504390a01344f07bb52cf45dfa6b6bb72c8",
     "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json": "eeafb73d69d8716810ae24c1d8fae4b90aaac2bf462c201217552f862fa180f6",
     "results/ootang_bplus_v1_1/20260910_implementation/physics_package_development.json": "9ba838a0df5fea96a2662f4316a49de710e72799bcf18b19915a23758aa7d042",
     "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz": "868ad6544ecf416abe0a13f56ccebaf96c39d400566851233343d5b13e06b138",
     "results/ootang_bplus_v1_1/20260910_implementation/selection.json": "93c1bd9f72bdce10eec08deca4af45a67a0a985af463af06229334d57b914c8c"
-  }
+  },
+  "implementation_note": "Reference-only recurrence comparison retains original C negative dx within its unchanged -1e-8 mm gate; the neural path remains strictly nonnegative. No clipping or model-law change."
 }

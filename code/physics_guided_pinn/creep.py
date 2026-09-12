@@ -37,11 +37,21 @@ def linear_memory(addition, decay):
     return value
 
 
-def memory_states(plastic_increment, elastic, background, coefficients, dt=1 / 64):
+def memory_states(
+    plastic_increment,
+    elastic,
+    background,
+    coefficients,
+    dt=1 / 64,
+    *,
+    reference_slip_tolerance=None,
+):
     """Derive s,p,rb,rc,rE,b at all substeps, including the zero initial state.
 
     Inputs exclude day zero; background is the prescribed substep endpoint.
-    Plastic increments are supplied by the network, not an active-set solver.
+    Neural increments are strictly nonnegative. The optional tolerance only
+    compares an already-audited original-C trace: permitted negative increments
+    are retained exactly, never clipped. Neural forward never passes it.
     """
     c = coefficients
     if not isinstance(c, Coefficients):
@@ -57,7 +67,20 @@ def memory_states(plastic_increment, elastic, background, coefficients, dt=1 / 6
         torch.isfinite(x).all() for x in (plastic_increment, elastic, background)
     ):
         raise ValueError("Finite increments and loads required")
-    if (plastic_increment < 0).any():
+    tolerance = 0
+    if reference_slip_tolerance is not None:
+        tolerance = torch.as_tensor(
+            reference_slip_tolerance, dtype=plastic_increment.dtype
+        )
+        if (
+            tolerance.shape not in (torch.Size([]), torch.Size([4]))
+            or not torch.isfinite(tolerance).all()
+            or (tolerance < 0).any()
+        ):
+            raise ValueError(
+                "Finite nonnegative reference-only slip tolerance required"
+            )
+    if (plastic_increment < -tolerance).any():
         raise ValueError("Nonnegative plastic increments required")
     beta = dt / (c.tau_motion + dt)
     ar = 1 / (1 + dt / c.tau_rest)

@@ -81,6 +81,19 @@ class CreepPinnTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             model.creep_response(x)
 
+    def test_signed_reference_step_is_preserved_but_rejected_in_neural_path(self):
+        c = Coefficients.from_reference(
+            torch.zeros(54), torch.ones(4), torch.eye(4), torch.eye(4)
+        )
+        dp = torch.full((2, 4), 0.1, dtype=torch.float64)
+        dp[1, 0] = -1e-9
+        zero = torch.zeros_like(dp)
+        with self.assertRaises(ValueError):
+            memory_states(dp, zero, zero, c)
+        states = memory_states(dp, zero, zero, c, reference_slip_tolerance=1e-8)
+        self.assertLess(float(states[-1, 4]), float(states[-2, 4]))
+        self.assertAlmostEqual(float(states[-1, 4]), 0.1 - 1e-9, places=15)
+
 
 if __name__ == "__main__":
     unittest.main()
