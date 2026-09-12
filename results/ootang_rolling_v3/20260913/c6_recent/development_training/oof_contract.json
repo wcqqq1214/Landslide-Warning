@@ -1,0 +1,12 @@
+{
+  "phase": "development",
+  "label_rows": 792,
+  "samples": 151,
+  "max_target_index": 791,
+  "fixed_alpha": 0.001,
+  "nested_hyperparameter_validation": false,
+  "fold_scope": "latest_complete",
+  "files": {
+    "oof_predictions.npz": "5f68ee41cd8ba987c5e968b12e0d97fcbb27f37bf090bbcdea6c6094d055093c"
+  }
+}

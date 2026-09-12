@@ -1,0 +1,43 @@
+{
+  "start": 612,
+  "end": 792,
+  "files": {
+    "DRIFT14.npz": "a5411ac8b234243a68dd903aa1d1119a7337ee62dee41e554cedbb6022b38645",
+    "B_RAW.npz": "cb8513be0620ffce54d78e4740f523c0c87e04c1b5047a66143865c4ade55c98",
+    "summary.csv": "3b45573648784e4c179ea4080490893cb169c4420597671cb9a88713722d876d",
+    "C6_RIDGE_FULL_a0.001_seed0.npz": "0f898070119853511773cfbba44fb72345643277de84cf8618cbc544476f0961",
+    "C6_IN_SAMPLE_DATA_a0.001_seed0.npz": "ce4e773d011caf0ed1c87321b88e3cbb1aa97febd0cbbef3e32017aa842a90f2",
+    "B_ANCHOR.npz": "90d80f2d09d23e61bf25998e047873cf2f070182ae7920111a421038008fc21a",
+    "DRIFT7.npz": "9ac8cbf9a678fa5223c12047ac9d9620c320cc946bb226acbf168d5c540069b5",
+    "metrics.csv": "ac72f6a034b4346e317be499b3e42f382c58cc6d301f6bd995bac1ed41e18666",
+    "DRIFT3.npz": "eb06ee2f095c1cec23d3d990e8357a255d76cc14cd12c4574514e0f0c132d7f2",
+    "DRIFT1.npz": "e7bb2e02c8c6afca283dbfcc502ddd362702bfb2ad5edfd731449b6d5910b141",
+    "C6_IN_SAMPLE_FULL_a0.001.npz": "cf0200debcad13702a1fbf0ab2d187022d80b22ccbdf4092422590901dad6dd6",
+    "C6_RIDGE_FULL_a0.001.npz": "0f898070119853511773cfbba44fb72345643277de84cf8618cbc544476f0961",
+    "feedback_state.json": "e22dbb6bb6fbba846f6aeee0752c4b18d9abfc9c2a686482d675bb6618ea90a2",
+    "C6_RIDGE_DATA_a0.001_seed0.npz": "78750c7efbed7cc88509592ff6174ee28fa2afeeeefddc7195466efb3e213500",
+    "C6_IN_SAMPLE_FULL_a0.001_seed0.npz": "cf0200debcad13702a1fbf0ab2d187022d80b22ccbdf4092422590901dad6dd6",
+    "C6_RIDGE_DATA_a0.001.npz": "78750c7efbed7cc88509592ff6174ee28fa2afeeeefddc7195466efb3e213500",
+    "C6_IN_SAMPLE_DATA_a0.001.npz": "ce4e773d011caf0ed1c87321b88e3cbb1aa97febd0cbbef3e32017aa842a90f2",
+    "B_TREND14.npz": "37db5981c91eaeba3786eff6441fa4a02cf9e379f2c3440137258b7bc6ee753b",
+    "PERSIST.npz": "55946e98f0770f74bff24cdb6038c5964a4bda7b760158fa01d206b90359363e",
+    "DRIFT30.npz": "a060b678e0d0e3867be6557a55f1030892eba6fb937fcbbd5052591d7a28b8d7",
+    "EXPERT_INIT.npz": "e052932f6c0b246e0fff58870787c2d54e584bb85d23a75703e21bde7ccc888f"
+  },
+  "label_rows_released": 180,
+  "prediction_origins": 180,
+  "mean_is_rolling": true,
+  "probability_extension_baselines": [
+    "B_ANCHOR_G",
+    "B_TREND14_G",
+    "PERSIST_G",
+    "DRIFT14_G",
+    "DRIFT1_G",
+    "DRIFT3_G",
+    "DRIFT7_G",
+    "DRIFT30_G",
+    "EXPERT_INIT_G"
+  ],
+  "table_baseline_names_omit_G_suffix": true,
+  "B_RAW_probability": "not applicable; stored sigma is an unused computational placeholder"
+}
