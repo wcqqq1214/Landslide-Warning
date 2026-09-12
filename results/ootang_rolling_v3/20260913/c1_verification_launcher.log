@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/Project/Landslide-Warning/scripts/verify_ootang_rolling.py", line 384, in <module>
+    verify(Path(args.run).resolve(), Path(args.out).resolve(), not args.skip_reload)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/scripts/verify_ootang_rolling.py", line 112, in verify
+    raise ValueError("Event chain broken")
+ValueError: Event chain broken

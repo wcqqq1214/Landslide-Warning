@@ -99,20 +99,19 @@ def verify(run, out, reload_models=True):
             for p in (run / phase).glob("*.npz")
             for a in [np.load(p)]
         }
-    events = [
-        json.loads(line) for line in (run / "events.jsonl").read_text().splitlines()
-    ]
+    raw_events = (run / "events.jsonl").read_text().splitlines()
+    events = [json.loads(line) for line in raw_events]
     chain = ""
     phase = None
     next_origin = None
     awaiting_release = False
     locks = 0
-    for event in events:
+    for raw_event, event in zip(raw_events, events):
         if event["previous_sha256"] != chain:
             raise ValueError("Event chain broken")
-        chain = hashlib.sha256(
-            json.dumps(event, sort_keys=True, allow_nan=False).encode()
-        ).hexdigest()
+        # Hash the original bytes. Integer score keys become strings on JSON
+        # loading, so sorting a reconstructed object can change their order.
+        chain = hashlib.sha256(raw_event.encode()).hexdigest()
         if event["kind"] == "forecast_phase_started":
             phase = next(
                 k
