@@ -209,6 +209,10 @@ def develop(pool, spec, out, recorder):
     from .run import forecast_phase
     from .scoring import gate
 
+    if spec.get("scale_training") == "rolling_crossfit":
+        from .crossfit_scale import develop as develop_crossfit
+
+        return develop_crossfit(pool, spec, out, recorder)
     if spec.get("reuse_development"):
         return recalibrate_development(pool, spec, out, recorder)
     prefix = spec.get("model_prefix", "C3_RIDGE")
@@ -354,6 +358,8 @@ def transfer(pool, spec, out, recorder, development):
     from .run import forecast_phase, utc
     from .scoring import gate
 
+    if spec.get("transfer_permitted") is False:
+        raise ValueError("This development-only study cannot enter transfer")
     prior = Path(development).resolve()
     decision = json.loads((prior / "decision.json").read_text())
     if not decision["passed"] or decision["candidate"] != spec["candidate"]:

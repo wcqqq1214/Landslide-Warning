@@ -173,6 +173,25 @@
     "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/ridge_DATA_a0.001.json",
     "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/data_contract.json",
     "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/training_queries.npz",
-    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/baseline_scales.json"
-  ]
+    "results/ootang_rolling_v3/20260913/c3_ridge/inner_training/baseline_scales.json",
+    "results/ootang_rolling_v3/20260913/c4_feedback/artifact_manifest.json",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_ANCHOR.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_RAW.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/B_TREND14.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_DATA.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_DATA_seed0.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_FULL.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/C4_RIDGE_FULL_seed0.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT1.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT14.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT3.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT30.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/DRIFT7.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/EXPERT_INIT.npz",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development/PERSIST.npz"
+  ],
+  "control_reference": {
+    "path": "results/ootang_rolling_v3/20260913/c4_feedback",
+    "manifest_sha256": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b"
+  }
 }

@@ -69,6 +69,7 @@ def source_snapshot(out, config, pool_dir):
     config_values = json.loads(Path(config).read_text())
     if config_values.get("candidate_plan"):
         paths.append(ROOT / config_values["candidate_plan"])
+    paths += [ROOT / p for p in config_values.get("additional_sources", ())]
     if config_values.get("reuse_development"):
         prior = ROOT / config_values["reuse_development"]["path"]
         paths += [prior / "artifact_manifest.json", prior / "internal_selection.json"]
