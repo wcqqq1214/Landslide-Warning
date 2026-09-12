@@ -1,6 +1,6 @@
 # 项目文档导航
 
-本页只维护入口，不重复记录各版结果或下一步。用户限定 ConvLSTM/PINN；293 日复核已完成，
+本页只维护入口，不重复记录各版结果或下一步。此前神经实验限定 ConvLSTM/PINN；293 日复核已完成，
 v2.3 已完成开发段训练但未达标，已停止；其实现、完整数组与复算记录均保留。
 后续冻结 3×2 交叉评分已完成并在同一结果报告第 5 节收尾，不再作为待核验或待送审任务。
 此前方法筛选已完成，当时没有推荐启动的候选；短期滚动任务仅作为讨论建议。
@@ -10,12 +10,14 @@ v2.3 已完成开发段训练但未达标，已停止；其实现、完整数组
 v2.0 按原标准未达标并已停止。
 旧计划的预算、运行命令和后续建议均不构成新的执行指令。
 
+用户随后另行批准 B+–GP 单次开发验证；本轮已完成并停止，平均指标有改善但逐点概率条件未通过。
+
 ## 当前入口
 
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
-| [B+–GP 开发验证计划](ootang_bplus_gp_plan.v1.md) | 按用户提供材料整理的 GP 候选；未执行，另附完整配置缺口，不改变既有实验结论 |
+| [B+–GP结果](ootang_bplus_gp_results.v1.md) / [原计划](ootang_bplus_gp_plan.v1.md) / [已确认补充](ootang_bplus_gp_execution_addendum.v1.1.md) / [配置](../config/ootang_bplus_gp.v1.json) | 单次四点开发验证已停止；均值小幅改善、平均概率评分改善，MJ3/MJ1逐点概率保护失败；完整产物与复算保留 |
 | [v2.4 结果](ootang_convlstm_joint_results.v2.4.md) / [冻结计划](ootang_convlstm_joint_plan.v2.4.md) / [配置](../config/ootang_convlstm_joint.v2_4.json) | 一次两窗配对实验已停止；模型与评分复算通过，JOINT 效果失败；完整数组、评分异常及只读修复可追溯 |
 | [两页阶段简报 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf) / [源码与编译说明](../paper/README.md) | 供汇报使用的均值、概率结果与下一步讨论；无图，分别展示各预测窗 |
 | [方法筛选决策](ootang_method_selection_2026-09-12.md) | 三篇原始论文的适用边界与旧路线对照；本轮不训练，附导师沟通稿 |
