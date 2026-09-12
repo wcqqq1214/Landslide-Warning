@@ -18,6 +18,7 @@ v2.0 按原标准未达标并已停止。
 | 文档 | 用途 |
 | --- | --- |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
+| [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
 | [B+加性GP v2结果](ootang_bplus_additive_gp_results.v2.md) / [冻结计划](ootang_bplus_additive_gp_plan.v2.md) / [配置](../config/ootang_bplus_additive_gp.v2.json) | 一次8组配对已完成并停止；ADD均值较B+及TIME_ONLY变差，整体失败；完整曲线、只读核验修正及评分保留 |
 | [B+–GP结果](ootang_bplus_gp_results.v1.md) / [原计划](ootang_bplus_gp_plan.v1.md) / [已确认补充](ootang_bplus_gp_execution_addendum.v1.1.md) / [配置](../config/ootang_bplus_gp.v1.json) | 单次四点开发验证已停止；均值小幅改善、平均概率评分改善，MJ3/MJ1逐点概率保护失败；完整产物与复算保留 |
 | [v2.4 结果](ootang_convlstm_joint_results.v2.4.md) / [冻结计划](ootang_convlstm_joint_plan.v2.4.md) / [配置](../config/ootang_convlstm_joint.v2_4.json) | 一次两窗配对实验已停止；模型与评分复算通过，JOINT 效果失败；完整数组、评分异常及只读修复可追溯 |
