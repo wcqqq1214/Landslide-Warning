@@ -1,0 +1,11 @@
+{
+  "action": "develop",
+  "pid": 2577,
+  "started_utc": "2026-09-12T21:50:20.722307+00:00",
+  "state": "failed",
+  "deadline": "2026-09-13T05:27:52+00:00",
+  "finished_utc": "2026-09-12T21:50:20.726206+00:00",
+  "elapsed_seconds": 0.00391462491825223,
+  "error": "ValueError(\"'results/ootang_rolling_v3/20260913/physics_development/provenance.json' is not in the subpath of '/Users/wcqqq1214/Project/Landslide-Warning' OR one path is relative and the other is absolute.\")",
+  "exit_code": 1
+}

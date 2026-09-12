@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/rolling_probability/run.py", line 569, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/rolling_probability/run.py", line 532, in main
+    sources = source_snapshot(out, args.config, args.pool)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/rolling_probability/run.py", line 74, in source_snapshot
+    records = {str(p.relative_to(ROOT)): sha(p) for p in paths}
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/rolling_probability/run.py", line 74, in <dictcomp>
+    records = {str(p.relative_to(ROOT)): sha(p) for p in paths}
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/pathlib.py", line 818, in relative_to
+    raise ValueError("{!r} is not in the subpath of {!r}"
+ValueError: 'results/ootang_rolling_v3/20260913/physics_development/provenance.json' is not in the subpath of '/Users/wcqqq1214/Project/Landslide-Warning' OR one path is relative and the other is absolute.
