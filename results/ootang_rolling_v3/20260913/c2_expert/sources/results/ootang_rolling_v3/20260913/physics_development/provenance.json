@@ -1,0 +1,111 @@
+{
+  "teachers": {
+    "252": {
+      "source": "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz",
+      "source_sha256": "751a5471b53d9cb8a8833410a839d8971bfb0a215ab8d89849dd7f5f1278da63",
+      "theta_sha256": "cc72b6f7ff4a92af175014cdb1c69433ee3ffe6c42a960726bfad34830a455f2",
+      "source_rows": 432,
+      "replay_rows": 1168,
+      "max_replay_difference_mm": 0.0,
+      "max_prefix_difference_mm": 1.1368683772161603e-13,
+      "fit_label_last_index": 251,
+      "prior_parameter_audit": {
+        "prefix": 252,
+        "recipe": "B",
+        "last_fit_date": "2017-03-09",
+        "theta_matches_saved_trajectory": true,
+        "training_label_and_forcing_hashes_match": true,
+        "trajectory_days": 432,
+        "trajectory_last_date": "2017-09-05",
+        "parameter_source": "results/ootang_bplus_v1_4/20260911_selection/B_252_B/stage4.json",
+        "original_optimizer_success": true
+      }
+    },
+    "342": {
+      "source": "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz",
+      "source_sha256": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+      "theta_sha256": "f7a93082be8edd9785d7f483b2aa98dc82a4d0fc479e5cef7d679c1ac7a1ceed",
+      "source_rows": 522,
+      "replay_rows": 1168,
+      "max_replay_difference_mm": 0.0,
+      "max_prefix_difference_mm": 1.1368683772161603e-13,
+      "fit_label_last_index": 341,
+      "prior_parameter_audit": {
+        "prefix": 342,
+        "recipe": "A",
+        "last_fit_date": "2017-06-07",
+        "theta_matches_saved_trajectory": true,
+        "training_label_and_forcing_hashes_match": true,
+        "trajectory_days": 522,
+        "trajectory_last_date": "2017-12-04",
+        "parameter_source": "results/ootang_bplus_v1_4/20260911_selection/B_342_A/stage4.json",
+        "original_optimizer_success": false
+      }
+    },
+    "432": {
+      "source": "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz",
+      "source_sha256": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+      "theta_sha256": "85296e7a2d0400de5037df90c66d73752f63e737ffb215b8861f0ca60a4403b5",
+      "source_rows": 612,
+      "replay_rows": 1168,
+      "max_replay_difference_mm": 0.0,
+      "max_prefix_difference_mm": 0.0,
+      "fit_label_last_index": 431,
+      "prior_parameter_audit": {
+        "prefix": 432,
+        "recipe": "B",
+        "last_fit_date": "2017-09-05",
+        "theta_matches_saved_trajectory": true,
+        "training_label_and_forcing_hashes_match": true,
+        "trajectory_days": 612,
+        "trajectory_last_date": "2018-03-04",
+        "parameter_source": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+        "original_optimizer_success": false
+      }
+    },
+    "612": {
+      "source": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+      "source_sha256": "882f6f1bc59ef9361982ca371f99e14adbb63067ddb82e1112824e232d5e65e7",
+      "theta_sha256": "17958ce1db2333c68cc20a9157c063631f0fe8064d8f0aa79f7c0633d4599d0d",
+      "source_rows": 792,
+      "replay_rows": 1168,
+      "max_replay_difference_mm": 0.0,
+      "max_prefix_difference_mm": 0.0,
+      "fit_label_last_index": 611,
+      "prior_parameter_audit": {
+        "prefix": 612,
+        "recipe": "B",
+        "last_fit_date": "2018-03-04",
+        "theta_matches_saved_trajectory": true,
+        "training_label_and_forcing_hashes_match": true,
+        "trajectory_days": 792,
+        "trajectory_last_date": "2018-08-31",
+        "parameter_source": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+        "original_optimizer_success": false
+      }
+    },
+    "792": {
+      "source": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+      "source_sha256": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+      "theta_sha256": "e07689a7009fb187c69643caa62e8ff2d5daf5b90758c73ac0803c3d8dce0235",
+      "source_rows": 1168,
+      "replay_rows": 1168,
+      "max_replay_difference_mm": 0.0,
+      "max_prefix_difference_mm": 0.0,
+      "fit_label_last_index": 791
+    }
+  },
+  "physical_forward_calls": 10,
+  "new_parameter_fits": 0,
+  "displacement_prefix_parsed": 1,
+  "forcing_rows": 1168,
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "earlier_teacher_audit_sha256": "432b602d048e68edbb39766f2d872a9357e741ec89279238356a34e713271728",
+  "files": {
+    "teacher_252.npz": "cd8b1a0c7a1d459f744d2afa555573eb31218d718af26d02f237b4b81fde87fd",
+    "teacher_342.npz": "a1b1b49494cee530795a89edb1570b5de9f33e13d72505bb2cdbdacdcb426143",
+    "teacher_792.npz": "1c8fbb95e63333ece1a4af45612d8523746b596ba27625808fa4bfb4bba2de4b",
+    "teacher_432.npz": "a1e832a66a53073fddbe15ceaff7c29de1b2ae0e8fc7a13b7bf8abdbcbfff096",
+    "teacher_612.npz": "8f2b7065b54c0e993d69f9aa260378a4f83f6c06529b6792f9d794805f7355ec"
+  }
+}

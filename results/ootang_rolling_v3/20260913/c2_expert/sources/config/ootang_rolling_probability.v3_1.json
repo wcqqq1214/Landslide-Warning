@@ -1,0 +1,125 @@
+{
+  "version": "ootang_rolling_probability.v3_1",
+  "plan": "docs/ootang_rolling_probability_plan.v3.0.md",
+  "baseline_commit": "85f9ee8",
+  "start_utc": "2026-09-12T21:27:52+00:00",
+  "deadline_utc": "2026-09-13T05:27:52+00:00",
+  "max_candidates": 6,
+  "review_every_candidates": 3,
+  "data": "data/monitoring_data.csv",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "history_days": 30,
+  "horizons": 30,
+  "primary_horizon": 30,
+  "stages": {
+    "inner": [
+      612,
+      792
+    ],
+    "development": [
+      792,
+      1168
+    ],
+    "transfer": [
+      1168,
+      1461
+    ]
+  },
+  "teacher_prefixes": [
+    252,
+    342,
+    432,
+    612,
+    792,
+    1168
+  ],
+  "forcing_mode": "conditional_known_future_rainfall_and_reservoir_level",
+  "candidate": "C2_EXPERT",
+  "hidden_channels": 16,
+  "kernel_width": 3,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "checkpoints": [
+    50,
+    100,
+    200,
+    400
+  ],
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "weight_decay": 0,
+  "gradient_clip": 5,
+  "loss": "normalized_gaussian_crps_plus_0.25_mse",
+  "mse_weight": 0.25,
+  "dtype": "float32",
+  "cpu_threads": 1,
+  "probability": {
+    "window": 90,
+    "prior_count": 10,
+    "prior_sum_squares": 10,
+    "sigma_floor_mm": 0.01,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ]
+  },
+  "effect": {
+    "relative_improvement": 0.05,
+    "point_mean_atol_mm": 1e-08,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average": [
+      0.85,
+      0.95
+    ],
+    "coverage90_point": [
+      0.8,
+      0.98
+    ]
+  },
+  "bootstrap": {
+    "block_length": 30,
+    "replicates": 2000,
+    "seed": 20260913,
+    "confidence": 0.95
+  },
+  "run_timeout_seconds": 3600,
+  "output_root": "results/ootang_rolling_v3/20260913",
+  "exploratory": true,
+  "candidate_plan": "docs/ootang_rolling_probability_candidate.c2.md",
+  "model_family": "convex_experts",
+  "expert_names": [
+    "B_ANCHOR",
+    "B_TREND14",
+    "DRIFT1",
+    "DRIFT3",
+    "DRIFT7",
+    "DRIFT14",
+    "DRIFT30"
+  ],
+  "extra_baselines": [
+    "DRIFT1",
+    "DRIFT3",
+    "DRIFT7",
+    "DRIFT30",
+    "EXPERT_INIT"
+  ],
+  "initial_expert_logits": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    6,
+    0
+  ]
+}
