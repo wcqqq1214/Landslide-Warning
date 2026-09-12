@@ -60,6 +60,135 @@ def independent_metrics(y, mean, sigma):
     return result
 
 
+def verify_ridge_models(run, spec, phases, labels, sources):
+    sys.path.insert(0, str(run / "sources/code"))
+    sys.path.insert(1, str(ROOT / "code"))
+    from rolling_probability.data import (
+        example,
+        load_teachers,
+        select_teacher,
+        training_examples,
+    )
+    from rolling_probability.ridge import RidgeDistribution, dynamic_features
+    from rolling_probability.models import predict
+
+    pool_files = [ROOT / name for name in sources if name.endswith("/teacher_252.npz")]
+    if len(pool_files) != 1:
+        raise ValueError("Ambiguous physical teacher cache")
+    pool = load_teachers(pool_files[0].parent)
+    selected = json.loads((run / "decision.json").read_text())["selected_alpha"]
+    max_coef_difference = 0.0
+    model_count = 0
+    origin_count = 0
+    for phase, forecasts in phases.items():
+        start, end = spec["stages"][phase]
+        train_dir = run / (
+            "inner_training" if phase == "inner" else phase + "_training"
+        )
+        contract = json.loads((train_dir / "data_contract.json").read_text())
+        if contract["label_rows"] != start or contract["label_sha256"] != array_sha(
+            labels[:start]
+        ):
+            raise ValueError("Ridge training used the wrong label prefix")
+        data = training_examples(
+            labels[:start],
+            pool,
+            spec["horizons"],
+            spec["history_days"],
+            spec["extra_baselines"],
+        )
+        with np.load(train_dir / "training_queries.npz") as a:
+            np.testing.assert_array_equal(a["origins"], data["origins"])
+            np.testing.assert_array_equal(a["teachers"], data["teachers"])
+            if a["target_last"].max() >= start:
+                raise ValueError("Ridge target crossed the training cutoff")
+        experts = np.stack([data["baselines"][k] for k in spec["expert_names"]], axis=2)
+        features, base, _ = dynamic_features(data["x"], experts)
+        sy = np.maximum(np.sqrt(np.mean((data["y"] - base) ** 2, axis=0)), 0.01)
+        for arm in spec["ridge"]["arms"]:
+            alphas = spec["ridge"]["alphas"] if phase == "inner" else [selected[arm]]
+            for alpha in alphas:
+                name = (
+                    f"C3_RIDGE_{arm}_a{alpha:g}"
+                    if phase == "inner"
+                    else f"C3_RIDGE_{arm}"
+                )
+                model = RidgeDistribution.load(
+                    train_dir / f"ridge_{arm}_a{alpha:g}.json"
+                )
+                D = model.dimensions
+                N = len(data["origins"])
+                sx = np.maximum(np.sqrt(np.mean(features[..., :D] ** 2, axis=0)), 1e-6)
+                np.testing.assert_array_equal(sy, model.target_scale)
+                np.testing.assert_array_equal(sx, model.feature_scale)
+                for h in range(spec["horizons"]):
+                    for p in range(4):
+                        x = features[:, h, p, :D] / sx[h, p]
+                        y = (data["y"][:, h, p] - base[:, h, p]) / sy[h, p]
+                        augmented = np.concatenate(
+                            [x / np.sqrt(N), np.eye(D) * np.sqrt(alpha)]
+                        )
+                        target = np.r_[y / np.sqrt(N), np.zeros(D)]
+                        coef = np.linalg.lstsq(augmented, target, rcond=None)[0]
+                        max_coef_difference = max(
+                            max_coef_difference,
+                            float(np.max(abs(coef - model.beta[h, p]))),
+                        )
+                        np.testing.assert_allclose(
+                            coef, model.beta[h, p], atol=1e-9, rtol=1e-8
+                        )
+                saved = forecasts[name]
+                for i, n in enumerate(saved["origins"]):
+                    x, z, b = example(
+                        labels[:n],
+                        select_teacher(pool, n),
+                        spec["horizons"],
+                        spec["history_days"],
+                        spec["extra_baselines"],
+                    )
+                    H = min(len(z), end - n)
+                    ex = np.stack([b[k][:H] for k in spec["expert_names"]], axis=1)[
+                        None
+                    ]
+                    mean, sigma, _, _ = predict(
+                        [model], None, x[None], z[None, :H], b["B_ANCHOR"][None, :H], ex
+                    )
+                    np.testing.assert_array_equal(mean[0], saved["mean"][i, :H])
+                    np.testing.assert_array_equal(sigma[0], saved["raw_sigma"][i, :H])
+                    # Fixed control means are also checked without the runner's helper.
+                    teacher = select_teacher(pool, n)
+                    h = np.arange(1, H + 1)[:, None]
+                    anchor = (
+                        labels[n - 1] + teacher.mean[n : n + H] - teacher.mean[n - 1]
+                    )
+                    np.testing.assert_allclose(
+                        anchor, forecasts["B_ANCHOR"]["mean"][i, :H], atol=1e-12, rtol=0
+                    )
+                    for width in (1, 3, 7, 14, 30):
+                        expected = (
+                            labels[n - 1]
+                            + h * (labels[n - 1] - labels[n - 1 - width]) / width
+                        )
+                        np.testing.assert_array_equal(
+                            expected, forecasts[f"DRIFT{width}"]["mean"][i, :H]
+                        )
+                    origin_count += 1
+                model_count += 1
+                print(
+                    f"independent ridge solve and complete reload: {phase} {name}",
+                    flush=True,
+                )
+    return dict(
+        performed=True,
+        models=model_count,
+        origin_ensembles=origin_count,
+        max_mean_difference_mm=0.0,
+        max_raw_sigma_difference_mm=0.0,
+        independent_augmented_svd_max_coefficient_difference=max_coef_difference,
+        optimizer_replays=0,
+    )
+
+
 def verify(run, out, reload_models=True):
     if out.exists():
         raise FileExistsError(out)
@@ -249,7 +378,9 @@ def verify(run, out, reload_models=True):
             )
         print(f"verified chronology and independent scores: {phase}", flush=True)
     reload_result = {"performed": False}
-    if reload_models:
+    if reload_models and spec.get("model_family") == "ridge_dynamic":
+        reload_result = verify_ridge_models(run, spec, phases, labels, sources)
+    elif reload_models:
         # Frozen training and feature code, not a newer candidate's implementation.
         sys.path.insert(0, str(run / "sources/code"))
         sys.path.insert(1, str(ROOT / "code"))
