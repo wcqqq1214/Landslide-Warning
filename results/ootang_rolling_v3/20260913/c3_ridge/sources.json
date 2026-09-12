@@ -1,0 +1,28 @@
+{
+  "git_head": "f06d166681048f796ddcd6036568bd87d9f2d4f7",
+  "files": {
+    "config/ootang_rolling_probability.v3_2.json": "c01ee6a8f0b3167f0ddeeef5b4b052618d9a6f9e73f284e1e89a8b2ce6e9a415",
+    "docs/ootang_rolling_probability_plan.v3.0.md": "0c86a78614e809e1b2630755b5d9a58b1617d1947998d5976f5e9632259f5603",
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "code/physics_guided/reference.py": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+    "code/rolling_probability/__init__.py": "7a300cb7e731f9a22c00b0c1029ce56d74c75022b4c155b97d50d1c843caabb5",
+    "code/rolling_probability/data.py": "c837dd2d37635b16441f480183bb8232cbc317a8fbcfaac0c1cbcad196bb71cd",
+    "code/rolling_probability/models.py": "dcd70f46546c1c54f0af27228ad4e5cd64783da3cb01498bd7a79febb4b9a3bb",
+    "code/rolling_probability/ridge.py": "4dab544e9f629cb9177fd626b3f78aa3985cff06ffa3d157461d604f417d6c33",
+    "code/rolling_probability/run.py": "e9b85e50474789577ad9b8548e0949d45a2563a4f55b62fb31a2a26c3bff21e5",
+    "code/rolling_probability/scoring.py": "a0538f4c11afe56ecb5ccf940f61d74ac71a45c93c3391e622a93e0e27c21865",
+    "docs/ootang_rolling_probability_candidate.c3.md": "91c48543492f2d70df54bda45ef2cb2adc875d65aaeb32e7fd3c6f56b9003559",
+    "tests/test_rolling_probability.py": "f22dd142b9598264bacfa5238575358d8d29075f6063a7806713e080e12b9c6e",
+    "tests/test_rolling_ridge.py": "817bcc9eb2c9df3ef49e6ddcd5ab2421fc1b50539815fd1c0ef2b0d8fd65ff41",
+    "results/ootang_rolling_v3/20260913/physics_development/provenance.json": "305b03be5b1dca39e58a13ada9fc81380c5f7e94d0e00f8f33b740aceb94d70e",
+    "results/ootang_rolling_v3/20260913/physics_development/source_provenance.json": "539c81b2b329e4a96bd23edffcf0941d390119e1beaf4506108cf86c1cf86a56",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_252.npz": "cd8b1a0c7a1d459f744d2afa555573eb31218d718af26d02f237b4b81fde87fd",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_342.npz": "a1b1b49494cee530795a89edb1570b5de9f33e13d72505bb2cdbdacdcb426143",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_432.npz": "a1e832a66a53073fddbe15ceaff7c29de1b2ae0e8fc7a13b7bf8abdbcbfff096",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_612.npz": "8f2b7065b54c0e993d69f9aa260378a4f83f6c06529b6792f9d794805f7355ec",
+    "results/ootang_rolling_v3/20260913/physics_development/teacher_792.npz": "1c8fbb95e63333ece1a4af45612d8523746b596ba27625808fa4bfb4bba2de4b"
+  },
+  "python": "3.10.20",
+  "torch": "2.12.0",
+  "numpy": "2.2.6"
+}

@@ -1,0 +1,42 @@
+{
+  "candidate": "C3_RIDGE_FULL",
+  "primary_horizon": 30,
+  "simple_baseline": "DRIFT1",
+  "passed": false,
+  "passed_count": 25,
+  "checks": {
+    "average_mae_improves_5pct": true,
+    "average_rmse_improves_5pct": true,
+    "average_crps_improves_5pct": true,
+    "average_interval_score90_improves_5pct": true,
+    "average_coverage90": false,
+    "ATU1_mae_nonregression": true,
+    "ATU1_rmse_nonregression": true,
+    "ATU1_crps_guard": true,
+    "ATU1_interval_score90_guard": true,
+    "ATU1_coverage90": true,
+    "ATU5_mae_nonregression": true,
+    "ATU5_rmse_nonregression": true,
+    "ATU5_crps_guard": true,
+    "ATU5_interval_score90_guard": true,
+    "ATU5_coverage90": true,
+    "MJ3_mae_nonregression": true,
+    "MJ3_rmse_nonregression": true,
+    "MJ3_crps_guard": true,
+    "MJ3_interval_score90_guard": true,
+    "MJ3_coverage90": false,
+    "MJ1_mae_nonregression": true,
+    "MJ1_rmse_nonregression": true,
+    "MJ1_crps_guard": true,
+    "MJ1_interval_score90_guard": true,
+    "MJ1_coverage90": true,
+    "beats_simple_rmse": true,
+    "beats_simple_crps": true
+  },
+  "selected_alpha": {
+    "FULL": 0.001,
+    "DATA": 0.001
+  },
+  "selected_updates": 0,
+  "neural_updates": 0
+}
