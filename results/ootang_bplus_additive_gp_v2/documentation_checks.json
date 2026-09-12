@@ -1,0 +1,10 @@
+{
+  "checked_utc": "2026-09-12T19:05:06.674238+00:00",
+  "local_links_checked": 121,
+  "sealed_files_rehashed": 48,
+  "report_main_score_and_gate_rows_checked": 44,
+  "training_core_runner_config_and_plan_unchanged_since_f73f3d4": true,
+  "new_fit_calls": 0,
+  "new_physical_calls": 0,
+  "notes": "Read-only documentation and inventory checks; numerical model verification is independently sealed in 20260913_verification/verification.json."
+}
