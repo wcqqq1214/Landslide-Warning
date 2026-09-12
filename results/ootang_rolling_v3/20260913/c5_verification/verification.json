@@ -1,0 +1,254 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-12T23:39:19.324873+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c5_crossfit",
+  "immutable_artifacts_checked": 112,
+  "source_entries_checked": 63,
+  "chronological_forecast_locks": 556,
+  "score_cells_checked": 49440,
+  "max_score_csv_rounding_error": 4.8603396862745285e-09,
+  "max_calibration_difference_mm": 0.0,
+  "stages": [
+    {
+      "phase": "inner",
+      "model": "DRIFT14",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "B_RAW",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_RIDGE_FULL_a0.001",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_IN_SAMPLE_FULL_a0.001",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_IN_SAMPLE_DATA_a0.001_seed0",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_RIDGE_DATA_a0.001_seed0",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "B_ANCHOR",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_IN_SAMPLE_DATA_a0.001",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "DRIFT7",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "DRIFT3",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_RIDGE_DATA_a0.001",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "DRIFT1",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_RIDGE_FULL_a0.001_seed0",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "C5_IN_SAMPLE_FULL_a0.001_seed0",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "B_TREND14",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "PERSIST",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "DRIFT30",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "inner",
+      "model": "EXPERT_INIT",
+      "origins": 180,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT14",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_RAW",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_RIDGE_FULL_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_RIDGE_DATA",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_IN_SAMPLE_FULL_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_RIDGE_FULL",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_ANCHOR",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT7",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT3",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT1",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_IN_SAMPLE_DATA_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_IN_SAMPLE_FULL",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_IN_SAMPLE_DATA",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "B_TREND14",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "PERSIST",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "C5_RIDGE_DATA_seed0",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT30",
+      "origins": 376,
+      "max_horizon": 30
+    },
+    {
+      "phase": "development",
+      "model": "EXPERT_INIT",
+      "origins": 376,
+      "max_horizon": 30
+    }
+  ],
+  "reload": {
+    "performed": true,
+    "models": 4,
+    "origin_ensembles": 1112,
+    "max_mean_difference_mm": 0.0,
+    "max_raw_sigma_difference_mm": 0.0,
+    "independent_augmented_svd_max_coefficient_difference": 3.378075597026964e-12,
+    "optimizer_replays": 0,
+    "crossfit_training": {
+      "auxiliary_models": 6,
+      "queries": {
+        "inner": 212,
+        "development": 363
+      },
+      "maximum_svd_coefficient_difference": 2.1172508191114048e-12,
+      "maximum_independent_mean_difference_mm": 1.8189894035458565e-12,
+      "maximum_scale_objective_difference": 1.1102230246251565e-16,
+      "new_training_or_optimization": 0,
+      "nested_hyperparameter_validation": false
+    }
+  },
+  "maximum_observation_rows_read": 1168,
+  "new_training_updates": 0,
+  "physical_forward_calls": 0,
+  "verification_script_sha256": "cba2c6e86ff325b31fcc160579eeaf09b68161202ee5d66ae8bb79984a281ba2"
+}
