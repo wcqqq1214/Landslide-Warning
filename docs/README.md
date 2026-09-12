@@ -15,8 +15,11 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
+**最新授权：v3.0 滚动概率预测自主实验进行中。** 使用现有四点数据，在独立 8 小时总窗口内执行；旧长窗结论保持。
+
 | 文档 | 用途 |
 | --- | --- |
+| [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 用户已授权自主执行；因果更新观测，30 日主步长，公平对照、六候选上限及每三次纠偏 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
 | [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
 | [B+加性GP v2结果](ootang_bplus_additive_gp_results.v2.md) / [冻结计划](ootang_bplus_additive_gp_plan.v2.md) / [配置](../config/ootang_bplus_additive_gp.v2.json) | 一次8组配对已完成并停止；ADD均值较B+及TIME_ONLY变差，整体失败；完整曲线、只读核验修正及评分保留 |
