@@ -69,6 +69,11 @@ def source_snapshot(out, config, pool_dir):
     config_values = json.loads(Path(config).read_text())
     if config_values.get("candidate_plan"):
         paths.append(ROOT / config_values["candidate_plan"])
+    if config_values.get("reuse_development"):
+        prior = ROOT / config_values["reuse_development"]["path"]
+        paths += [prior / "artifact_manifest.json", prior / "internal_selection.json"]
+        paths += sorted((prior / "development_training").glob("*"))
+        paths += sorted((prior / "development").glob("*.npz"))
     paths += sorted((ROOT / "tests").glob("test_rolling_*.py"))
     paths += sorted(Path(pool_dir).glob("*.json")) + sorted(
         Path(pool_dir).glob("*.npz")
@@ -256,10 +261,17 @@ def forecast_phase(
     prob = spec["probability"]
     calibrators = {
         name: CausalCalibration(
-            H, prob["window"], prob["prior_count"], prob["prior_sum_squares"]
+            H,
+            prob["window"],
+            prob["prior_count"],
+            prob["prior_sum_squares"],
+            feedback=prob.get("feedback"),
         )
         for name in names
     }
+    if prob.get("feedback"):
+        for record in records.values():
+            record["feedback_log_scale"] = np.full(shape, np.nan)
     stream = ObservationStream(ROOT / spec["data"], start, end)
     recorder.event(
         "forecast_phase_started",
@@ -307,6 +319,10 @@ def forecast_phase(
                 raise ArithmeticError("Invalid forecast")
             r = records[name]
             row = n - start
+            if prob.get("feedback"):
+                r["feedback_log_scale"][row, :valid] = calibrators[name].log_scale[
+                    :valid
+                ]
             for key, value in (
                 ("mean", mean),
                 ("raw_sigma", raw_sd),
@@ -346,10 +362,16 @@ def forecast_phase(
                     r["raw_sigma"][past - start, k],
                     n,
                     n + 1,
+                    issued_sigma=r["sigma"][past - start, k],
                 )
         if (n - start + 1) % 50 == 0:
             print(f"rolling {start}:{end} origin {n + 1}/{end}", flush=True)
     recorder.event("all_rolling_forecasts_locked", start=start, end=end)
+    if prob.get("feedback"):
+        save_json(
+            out / "feedback_state.json",
+            {name: c.feedback_summary() for name, c in calibrators.items()},
+        )
     tables = []
     for name, r in records.items():
         r["teacher_prefixes"] = np.array(

@@ -33,6 +33,48 @@ def synthetic(n=360, q=100):
 
 
 class RollingContracts(unittest.TestCase):
+    def test_feedback_uses_issued_interval_and_only_new_matured_targets(self):
+        feedback = dict(
+            rate=0.02,
+            target_coverage=0.9,
+            initial_log_scale=0.0,
+            log_scale_bound=np.log(10.0),
+        )
+        c = CausalCalibration(horizon=2, feedback=feedback)
+        np.testing.assert_array_equal(c.factors(100), np.ones((2, 4)))
+        error = np.array([2.0, -2.0, 0.1, 0.0])
+        # The second point is covered by its issued interval despite a raw-scale miss.
+        c.update(1, error, np.ones(4), 100, 101, np.array([1.0, 2.0, 1.0, 1.0]))
+        self.assertGreater(c.log_scale[1, 0], 0)
+        self.assertTrue((c.log_scale[1, 1:] < 0).all())
+        np.testing.assert_array_equal(c.log_scale[0], np.zeros(4))
+        with self.assertRaisesRegex(ValueError, "already processed"):
+            c.update(1, error, np.ones(4), 100, 102, np.ones(4))
+        with self.assertRaisesRegex(ValueError, "Unmatured"):
+            c.update(1, error, np.ones(4), 102, 102, np.ones(4))
+        with self.assertRaisesRegex(ValueError, "actually issued"):
+            c.update(1, error, np.ones(4), 101, 102)
+
+    def test_feedback_has_finite_bounds_without_changing_the_rms_history(self):
+        feedback = dict(
+            rate=0.02,
+            target_coverage=0.9,
+            initial_log_scale=0.0,
+            log_scale_bound=np.log(10.0),
+        )
+        adaptive = CausalCalibration(horizon=1, feedback=feedback)
+        original = CausalCalibration(horizon=1)
+        for n in range(1400):
+            error = np.array([20.0, 0.0, 20.0, 0.0])
+            adaptive.update(0, error, np.ones(4), n, n + 1, np.ones(4))
+            original.update(0, error, np.ones(4), n, n + 1)
+        np.testing.assert_allclose(
+            adaptive.factors(1401) / original.factors(1401), [[10.0, 0.1, 10.0, 0.1]]
+        )
+        self.assertTrue((adaptive.bound_hits > 0).all())
+        self.assertEqual(adaptive.feedback_updates[0], 1400)
+        self.assertEqual(adaptive.values, original.values)
+
     def test_convex_experts_preserve_bounds_and_have_trainable_weights(self):
         torch.set_num_threads(1)
         y, t = synthetic()
@@ -88,6 +130,19 @@ class RollingContracts(unittest.TestCase):
             self.assertIn(str((pool / "provenance.json").relative_to(root)), sources)
 
     def test_stream_locks_forecasts_before_release_and_masks_end(self):
+        self._check_causal_stream()
+
+    def test_feedback_stream_cannot_react_before_the_observation_is_released(self):
+        self._check_causal_stream(
+            dict(
+                rate=0.02,
+                target_coverage=0.9,
+                initial_log_scale=0.0,
+                log_scale_bound=np.log(10.0),
+            )
+        )
+
+    def _check_causal_stream(self, feedback=None):
         y, t = synthetic()
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "data.csv"
@@ -121,6 +176,8 @@ class RollingContracts(unittest.TestCase):
                     "levels": [0.8, 0.9, 0.95],
                 },
             }
+            if feedback:
+                spec["probability"]["feedback"] = feedback
             from rolling_probability.data import BASELINES
 
             scales = {k: np.ones((5, 4)) for k in BASELINES}
@@ -147,6 +204,8 @@ class RollingContracts(unittest.TestCase):
                 )
             with np.load(Path(directory) / "first/B_ANCHOR.npz") as a:
                 first = a["mean"].copy()
+                first_sigma = a["sigma"].copy()
+                first_feedback = a["feedback_log_scale"].copy() if feedback else None
                 self.assertTrue(np.isnan(first[-1, 1:]).all())
             frame.loc[180:, [p + "/mm" for p in ("ATU1", "ATU5", "MJ3", "MJ1")]] += 100
             frame.to_csv(path, index=False)
@@ -163,7 +222,20 @@ class RollingContracts(unittest.TestCase):
             )
             with np.load(Path(directory) / "poisoned/B_ANCHOR.npz") as a:
                 np.testing.assert_array_equal(first[0], a["mean"][0])
+                np.testing.assert_array_equal(first_sigma[0], a["sigma"][0])
                 self.assertFalse(np.array_equal(first[1], a["mean"][1]))
+                if feedback:
+                    np.testing.assert_array_equal(
+                        first_feedback[0], a["feedback_log_scale"][0]
+                    )
+                    self.assertFalse(
+                        np.array_equal(
+                            first_feedback[1, 0], a["feedback_log_scale"][1, 0]
+                        )
+                    )
+                    np.testing.assert_array_equal(
+                        a["feedback_log_scale"][1, 1:], np.zeros((4, 4))
+                    )
 
     def test_origin_target_alignment_and_reanchoring(self):
         y, t = synthetic()

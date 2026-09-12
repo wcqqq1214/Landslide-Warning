@@ -77,6 +77,7 @@ def verify_ridge_models(run, spec, phases, labels, sources):
         raise ValueError("Ambiguous physical teacher cache")
     pool = load_teachers(pool_files[0].parent)
     selected = json.loads((run / "decision.json").read_text())["selected_alpha"]
+    prefix = spec.get("model_prefix", "C3_RIDGE")
     max_coef_difference = 0.0
     model_count = 0
     origin_count = 0
@@ -109,9 +110,9 @@ def verify_ridge_models(run, spec, phases, labels, sources):
             alphas = spec["ridge"]["alphas"] if phase == "inner" else [selected[arm]]
             for alpha in alphas:
                 name = (
-                    f"C3_RIDGE_{arm}_a{alpha:g}"
+                    f"{prefix}_{arm}_a{alpha:g}"
                     if phase == "inner"
-                    else f"C3_RIDGE_{arm}"
+                    else f"{prefix}_{arm}"
                 )
                 model = RidgeDistribution.load(
                     train_dir / f"ridge_{arm}_a{alpha:g}.json"
@@ -303,6 +304,12 @@ def verify(run, out, reload_models=True):
             valid = a["origins"][:, None] + np.arange(spec["horizons"])[None, :] < end
             if not np.isnan(a["mean"][~valid]).all():
                 raise ValueError("Out-of-window predictions were retained")
+            feedback = prob.get("feedback")
+            log_scale = np.zeros((spec["horizons"], 4))
+            reconstructed_sigma = np.full_like(a["sigma"], np.nan)
+            hits = np.zeros_like(log_scale, dtype=int)
+            updates = np.zeros(spec["horizons"], dtype=int)
+            log_min = log_max = 0.0
             for i, n in enumerate(a["origins"]):
                 for k in range(min(spec["horizons"], end - n)):
                     # A horizon k+1 matures after k+1 subsequent observed days.
@@ -323,8 +330,20 @@ def verify(run, out, reload_models=True):
                         (prob["prior_sum_squares"] + squared.sum(axis=0))
                         / (prob["prior_count"] + len(history))
                     )
+                    if feedback:
+                        factor *= np.exp(log_scale[k])
+                        np.testing.assert_allclose(
+                            log_scale[k],
+                            a["feedback_log_scale"][i, k],
+                            atol=1e-12,
+                            rtol=1e-12,
+                        )
                     sigma = np.maximum(
                         prob["sigma_floor_mm"], a["raw_sigma"][i, k] * factor
+                    )
+                    reconstructed_sigma[i, k] = sigma
+                    np.testing.assert_allclose(
+                        factor, a["calibration_factor"][i, k], atol=1e-12, rtol=1e-12
                     )
                     max_cal_error = max(
                         max_cal_error, float(np.max(abs(sigma - a["sigma"][i, k])))
@@ -332,6 +351,55 @@ def verify(run, out, reload_models=True):
                     np.testing.assert_allclose(
                         sigma, a["sigma"][i, k], rtol=1e-12, atol=1e-10
                     )
+                if feedback:
+                    # Release today's target only after all its forecasts are rebuilt.
+                    quantile = NormalDist().inv_cdf(
+                        (1 + feedback["target_coverage"]) / 2
+                    )
+                    for past in range(max(0, i - spec["horizons"] + 1), i + 1):
+                        k = i - past
+                        error = labels[n] - a["mean"][past, k]
+                        issued = reconstructed_sigma[past, k]
+                        if not np.isfinite(issued).all():
+                            raise ValueError(
+                                "Feedback interval has not yet been issued"
+                            )
+                        miss = np.abs(error) > quantile * issued
+                        proposed = log_scale[k] + feedback["rate"] * (
+                            miss.astype(float) - (1 - feedback["target_coverage"])
+                        )
+                        bound = feedback["log_scale_bound"]
+                        hits[k] += np.abs(proposed) >= bound
+                        log_scale[k] = np.minimum(bound, np.maximum(-bound, proposed))
+                        updates[k] += 1
+                        log_min = min(log_min, float(log_scale.min()))
+                        log_max = max(log_max, float(log_scale.max()))
+            if feedback:
+                state = json.loads((run / phase / "feedback_state.json").read_text())[
+                    name
+                ]
+                np.testing.assert_allclose(
+                    state["log_scale_final"], log_scale, atol=1e-12
+                )
+                np.testing.assert_array_equal(state["bound_hits"], hits)
+                np.testing.assert_array_equal(state["updates_per_horizon"], updates)
+                np.testing.assert_allclose(
+                    [state["log_scale_min"], state["log_scale_max"]],
+                    [log_min, log_max],
+                    atol=1e-12,
+                )
+            if phase == "development" and spec.get("reuse_development"):
+                reuse = spec["reuse_development"]
+                prior = ROOT / reuse["path"]
+                if (
+                    sha(prior / "artifact_manifest.json")
+                    != reuse["artifact_manifest_sha256"]
+                ):
+                    raise ValueError("Frozen C3 manifest differs")
+                old_name = name.replace(spec["model_prefix"], reuse["model_prefix"])
+                with np.load(prior / phase / f"{old_name}.npz") as previous:
+                    for key in ("origins", "teacher_prefixes", "mean", "raw_sigma"):
+                        np.testing.assert_array_equal(a[key], previous[key])
             for k in range(spec["horizons"]):
                 ids = a["origins"] + k
                 mask = ids < end

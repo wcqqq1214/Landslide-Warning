@@ -2,6 +2,7 @@
 
 import json
 from pathlib import Path
+import shutil
 import numpy as np
 from scipy.linalg import solve
 from scipy.optimize import minimize
@@ -208,6 +209,10 @@ def develop(pool, spec, out, recorder):
     from .run import forecast_phase
     from .scoring import gate
 
+    if spec.get("reuse_development"):
+        return recalibrate_development(pool, spec, out, recorder)
+    prefix = spec.get("model_prefix", "C3_RIDGE")
+
     inner_start, inner_end = spec["stages"]["inner"]
     start, end = spec["stages"]["development"]
     labels = read_prefix(ROOT / spec["data"], inner_start)
@@ -216,7 +221,7 @@ def develop(pool, spec, out, recorder):
     groups = {}
     for arm in spec["ridge"]["arms"]:
         for alpha in spec["ridge"]["alphas"]:
-            groups[f"C3_RIDGE_{arm}_a{alpha:g}"] = train_group(
+            groups[f"{prefix}_{arm}_a{alpha:g}"] = train_group(
                 data, spec, out / "inner_training", arm, alpha, recorder
             )
     _, summary = forecast_phase(
@@ -237,8 +242,8 @@ def develop(pool, spec, out, recorder):
     for arm in spec["ridge"]["arms"]:
         scores = {
             a: float(
-                s.loc[f"C3_RIDGE_{arm}_a{a:g}", "rmse"] / reference.rmse
-                + s.loc[f"C3_RIDGE_{arm}_a{a:g}", "crps"] / reference.crps
+                s.loc[f"{prefix}_{arm}_a{a:g}", "rmse"] / reference.rmse
+                + s.loc[f"{prefix}_{arm}_a{a:g}", "crps"] / reference.crps
             )
             for a in spec["ridge"]["alphas"]
         }
@@ -255,7 +260,7 @@ def develop(pool, spec, out, recorder):
     recorder.event("training_prefix_read", rows=len(labels))
     data, scales = training_data(labels, pool, spec, out / "development_training")
     groups = {
-        f"C3_RIDGE_{arm}": train_group(
+        f"{prefix}_{arm}": train_group(
             data, spec, out / "development_training", arm, selected[arm], recorder
         )
         for arm in spec["ridge"]["arms"]
@@ -270,6 +275,76 @@ def develop(pool, spec, out, recorder):
     )
     decision = gate(metrics, summary, spec["candidate"], simple, spec)
     decision.update(selected_alpha=selected, selected_updates=0, neural_updates=0)
+    save_json(out / "decision.json", decision)
+    recorder.event("development_decision", **decision)
+    return decision
+
+
+def recalibrate_development(pool, spec, out, recorder):
+    """Reissue the frozen C3 raw forecasts without fitting or selecting again."""
+    from .run import forecast_phase
+    from .scoring import gate
+
+    reuse = spec["reuse_development"]
+    prior = ROOT / reuse["path"]
+    manifest = prior / "artifact_manifest.json"
+    if sha(manifest) != reuse["artifact_manifest_sha256"]:
+        raise ValueError("Reused development manifest changed")
+    for name, expected in json.loads(manifest.read_text())["files"].items():
+        if sha(prior / name) != expected:
+            raise ValueError("Reused development artifact changed: " + name)
+    selected = json.loads((prior / "internal_selection.json").read_text())[
+        "selected_alpha"
+    ]
+    if selected != reuse["selected_alpha"]:
+        raise ValueError("Reused ridge alpha differs from the frozen choice")
+    shutil.copytree(prior / "development_training", out / "development_training")
+    shutil.copyfile(prior / "internal_selection.json", out / "internal_selection.json")
+    train_dir = out / "development_training"
+    scales = {
+        k: np.array(v)
+        for k, v in json.loads((train_dir / "baseline_scales.json").read_text()).items()
+    }
+    prefix = spec["model_prefix"]
+    groups = {
+        f"{prefix}_{arm}": [
+            RidgeDistribution.load(train_dir / f"ridge_{arm}_a{selected[arm]:g}.json")
+        ]
+        for arm in spec["ridge"]["arms"]
+    }
+    recorder.event(
+        "frozen_development_models_reused",
+        source=reuse,
+        selected_alpha=selected,
+        new_model_fits=0,
+    )
+    start, end = spec["stages"]["development"]
+    metrics, summary = forecast_phase(
+        pool, spec, start, end, groups, None, scales, out / "development", recorder
+    )
+    checks = {}
+    for path in (out / "development").glob("*.npz"):
+        old_name = path.name.replace(prefix, reuse["model_prefix"])
+        with np.load(path) as new, np.load(prior / "development" / old_name) as old:
+            for key in ("origins", "teacher_prefixes", "mean", "raw_sigma"):
+                np.testing.assert_array_equal(new[key], old[key])
+        checks[path.stem] = dict(
+            mean_max_difference_mm=0.0, raw_sigma_max_difference_mm=0.0
+        )
+    save_json(out / "raw_forecast_identity.json", dict(source=reuse, models=checks))
+    s = summary[summary.horizon == spec["primary_horizon"]].set_index("model")
+    simple = min(
+        ("B_TREND14", "PERSIST", "DRIFT14", *spec["extra_baselines"]),
+        key=lambda name: s.loc[name, "rmse"],
+    )
+    decision = gate(metrics, summary, spec["candidate"], simple, spec)
+    decision.update(
+        selected_alpha=selected,
+        selected_updates=0,
+        neural_updates=0,
+        new_model_fits=0,
+        frozen_development_reused=reuse["path"],
+    )
     save_json(out / "decision.json", decision)
     recorder.event("development_decision", **decision)
     return decision
@@ -299,8 +374,9 @@ def transfer(pool, spec, out, recorder, development):
     labels = read_prefix(ROOT / spec["data"], start)
     recorder.event("training_prefix_read", rows=len(labels))
     data, scales = training_data(labels, pool, spec, out / "transfer_training")
+    prefix = spec.get("model_prefix", "C3_RIDGE")
     groups = {
-        f"C3_RIDGE_{arm}": train_group(
+        f"{prefix}_{arm}": train_group(
             data, spec, out / "transfer_training", arm, selected[arm], recorder
         )
         for arm in spec["ridge"]["arms"]
