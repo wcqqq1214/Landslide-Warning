@@ -1,0 +1,130 @@
+{
+  "source_commit": "9a63ee5c332538e44b256663423c98f178735a68",
+  "started_at": "2026-09-12T11:08:21.958598+00:00",
+  "finished_at": "2026-09-12T11:08:24.035685+00:00",
+  "protocol": {
+    "points": [
+      "ATU1",
+      "ATU5",
+      "MJ3",
+      "MJ1"
+    ],
+    "domains": [
+      "O3",
+      "O2",
+      "O1_up",
+      "O1_down"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "weights": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "mean_sources": [
+      "bplus",
+      "neural",
+      "replay"
+    ],
+    "scale_sources": [
+      "e0",
+      "v23"
+    ],
+    "pairing": "mean seed k with scale seed k; no averaging or permutation before constructing the mixture",
+    "phases": {
+      "train": {
+        "start": "2016-07-31",
+        "end": "2018-08-31",
+        "days": 762
+      },
+      "prediction": {
+        "start": "2018-09-01",
+        "end": "2019-09-11",
+        "days": 376
+      }
+    },
+    "interpretation": "conditional frozen-distribution comparisons, not additive causal effects",
+    "m0_probability_metrics": "not applicable; bplus/e0 is the original v1.1-e0 distribution",
+    "selection": "none; original PINN remains the neural/v23 combination"
+  },
+  "original_verification": {
+    "verification_passed": true,
+    "artifact_files": 53,
+    "metric_rows": 388,
+    "daily_rows": 18688,
+    "prediction_days": 376,
+    "fit_days": 792,
+    "metric_max_difference": 5.684341886080802e-14,
+    "daily_mean_max_difference_mm": 2.2737367544323206e-13,
+    "raw_residual_summary_max_difference": 9.094947017729282e-13,
+    "manifest_sha256": "cd860669ee0858fffcb5176cae2701edb255328ad78dd00edc3aac8f7163f8b9",
+    "verifier_sha256": "967491d69097df8497cc92d041ef688c906fbb7177a3476146b4acca0e5a1c06",
+    "optimizer_updates": 900,
+    "new_training_or_native_calls": 0,
+    "final_stage_started": false,
+    "effectiveness_passed": false,
+    "acceptance_checks_verified": 9
+  },
+  "matched_original_score_rows": 366,
+  "original_score_max_difference": 5.684341886080802e-14,
+  "score_rows": 732,
+  "contrast_rows": 854,
+  "state_difference_rows": 168,
+  "new_optimizer_updates": 0,
+  "new_native_solver_calls": 0,
+  "final_293day_started": false,
+  "v23_status": "failed and stopped; cross scores do not replace its primary output",
+  "inputs": {
+    "results/ootang_probability_pinn_v2_3/20260912_development/artifact_manifest.json": {
+      "sha256": "cd860669ee0858fffcb5176cae2701edb255328ad78dd00edc3aac8f7163f8b9",
+      "bytes": 7934
+    },
+    "results/ootang_probability_pinn_v2_3/20260912_development/selected_predictions.npz": {
+      "sha256": "939792e835e6992efe55943bdcab19e96cf43bcb5ea47d942c32316ce60211d8",
+      "bytes": 317678
+    },
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz": {
+      "sha256": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+      "bytes": 349466
+    },
+    "results/ootang_probability_pinn_v2_3/20260912_development/sources/code/physics_guided/probability.py": {
+      "sha256": "14ad05a97f74b6bb5e1ad0c95daf261822a480add68f81f3dc1cabf8095cc0a9",
+      "bytes": 2673
+    },
+    "results/ootang_probability_pinn_v2_3/20260912_development/sources/config/ootang_probability_pinn.v2_3.json": {
+      "sha256": "1b99ec46527fc74fa89a497eecef827133fe067e4f867b68723d5d5703264465",
+      "bytes": 3356
+    },
+    "results/ootang_bplus_v1_1/20260910_implementation/development/M1/selected_predictions.npz": {
+      "sha256": "868ad6544ecf416abe0a13f56ccebaf96c39d400566851233343d5b13e06b138",
+      "bytes": 102048
+    },
+    "data/monitoring_data.csv": {
+      "sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+      "bytes": 341484
+    },
+    "scripts/verify_ootang_creep_pinn.py": {
+      "sha256": "967491d69097df8497cc92d041ef688c906fbb7177a3476146b4acca0e5a1c06",
+      "bytes": 13207
+    }
+  },
+  "analysis_script_sha256": "9f06a0fed0ce68b2305df54c1978670c90ad4a64db1b12327aa666f1c5b13e46",
+  "outputs": {
+    "contrasts.csv": {
+      "sha256": "e944d64db1f483d69aac30c5dfad808282c18d245a89834028f84012b42e8061",
+      "bytes": 77961
+    },
+    "scores.csv": {
+      "sha256": "e45212a72b9557fc3fa9ee79fef846892099e28ce36e472e8e55fbb48441d58d",
+      "bytes": 61283
+    },
+    "state_differences.csv": {
+      "sha256": "d387e53feffb17ffe3b3797c58989e2576c363eb8a6c4585fa543e2e1fa3afea",
+      "bytes": 19740
+    }
+  }
+}
