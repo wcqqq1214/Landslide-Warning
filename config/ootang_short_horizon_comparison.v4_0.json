@@ -1,0 +1,244 @@
+{
+  "version": "ootang_short_horizon_comparison.v4_0",
+  "plan": "docs/ootang_short_horizon_comparison_plan.v4.0.md",
+  "baseline_commit": "3863847",
+  "run_id": "20260913_short_horizon",
+  "start_utc": "2026-09-13T13:37:17+00:00",
+  "deadline_utc": "2026-09-13T17:37:17+00:00",
+  "p1_deadline_utc": "2026-09-13T14:22:17+00:00",
+  "data": "data/monitoring_data.csv",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "history_days": 30,
+  "horizons": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "stages": {
+    "inner": [
+      612,
+      792
+    ],
+    "development": [
+      792,
+      1168
+    ],
+    "later_exploratory": [
+      1168,
+      1461
+    ]
+  },
+  "teacher_prefixes": [
+    252,
+    342,
+    432,
+    612,
+    792,
+    1168
+  ],
+  "scenario": {
+    "rainfall": "mean_last_7_observed_days",
+    "reservoir": "last_observed_value",
+    "known_future_control": "B_ORACLE",
+    "main_uses_future_actual_forcing": false
+  },
+  "models": [
+    "B_ANCHOR",
+    "DRIFT1",
+    "CL_DIRECT",
+    "CL_BRES",
+    "PINN_EQ",
+    "PINN_NOEQ",
+    "RR_DIRECT",
+    "RR_BRES",
+    "C16_CORE_RULES",
+    "C16_PHYS_RULES"
+  ],
+  "secondary": [
+    "B_RAW",
+    "B_ORACLE"
+  ],
+  "selection_excluded": [
+    "PINN_NOEQ",
+    "B_RAW",
+    "B_ORACLE"
+  ],
+  "neural": {
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "batch_size": 64,
+    "learning_rate": 0.001,
+    "gradient_clip": 5,
+    "checkpoints": [
+      50,
+      100,
+      200,
+      400
+    ],
+    "max_fits": 36,
+    "max_updates_each": 400,
+    "max_process_seconds": 900,
+    "conv_hidden": 16,
+    "conv_kernel": 3,
+    "loss": "normalized_mse",
+    "dtype": "float64",
+    "cpu_threads": 1
+  },
+  "ridge": {
+    "alphas": [
+      0.001,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "fit_intercept": true,
+    "penalty": "mean_mse_plus_alpha_l2_unpenalized_intercept",
+    "features": [
+      "v1",
+      "v3",
+      "v7",
+      "v14",
+      "v30",
+      "v1-v3",
+      "v1-v7",
+      "v7-v14",
+      "v14-v30",
+      "b_future_increment",
+      "b_recent_v1",
+      "b_recent_v14",
+      "rain_mean7",
+      "rwl_last",
+      "rwl_delta1",
+      "h_over7"
+    ]
+  },
+  "pinn": {
+    "family": "discrete_state_multiple_shooting_pinn",
+    "state_order": [
+      "z",
+      "p",
+      "rb",
+      "rc",
+      "rE",
+      "background"
+    ],
+    "learned_state_dimensions": 20,
+    "initial_correction": "z_only",
+    "initial_other_states": "inherit_full_Bplus_history",
+    "history_summary": [
+      "last",
+      "mean_last7",
+      "mean_last30"
+    ],
+    "encoder_widths": [
+      32,
+      32
+    ],
+    "decoder_width": 32,
+    "correction_bound_units": 1.0,
+    "state_unit_floor": 1e-06,
+    "equation_weight": 100.0,
+    "plastic_monotonic_weight": 100.0,
+    "initial_regularization": 0.01,
+    "substeps": 64,
+    "physics_operator": "exact_C_day_flow",
+    "force_gradient_required": false,
+    "zero_tolerance_mm": 1e-08,
+    "normalized_defect_max": 0.001,
+    "replay_tolerance_cap_mm": 0.01,
+    "replay_tolerance_fraction_of_training_drift_rmse": 0.1
+  },
+  "calibration": {
+    "window": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "distribution": "empirical_error_gaussian",
+    "initial": "previous_phase_issued_errors_then_causal_drift1_fill",
+    "mean_shift": false
+  },
+  "c16": {
+    "reuse_frozen_C8_core": true,
+    "feedback_lead": 1,
+    "innovation_alpha": 1.0,
+    "normalization": "saved_core_units_new_past_scenario_physics_rms",
+    "response_units": "saved_C8_first_sigma",
+    "new_interval": "common_calibration_only",
+    "inner": "not_required_for_fixed_baseline_selection"
+  },
+  "selection": {
+    "method": "per_horizon_development_only",
+    "score": "0.5*(rmse/drift_rmse+crps/drift_crps)",
+    "tie": "mae_or_interval_score_then_id",
+    "tolerance_mm": 1e-08,
+    "coverage90_average": [
+      0.85,
+      0.95
+    ],
+    "coverage90_point": [
+      0.8,
+      0.98
+    ],
+    "max_point_probability_regression": 0.05,
+    "inner_shared_horizon_mask": true,
+    "require_pinn_physical_gate": true
+  },
+  "bootstrap": {
+    "block_length": 30,
+    "replicates": 2000,
+    "seed": 20260913,
+    "confidence": 0.95
+  },
+  "output_root": "results/ootang_short_horizon_v4/20260913_short_horizon",
+  "figures_root": "figures/ootang_short_horizon_v4/20260913_short_horizon",
+  "source_sha256": {
+    "docs/ootang_short_horizon_comparison_plan.v4.0.md": "7f526e2fdf1e22e14dc32ece8a37ceda2d7ebf7eed4e420efd43bc4c765eb0bd",
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "manuscript.pdf": "9b2785eb9c1795afe66a380b0fa972c0c6370953a1febd33fcb68315bbe9c367",
+    "section2d_v4.zip": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+    "code/physics_guided/mechanics.py": "6cfe904a25840cad6aef84d2e455d0b6d59908a3272591a255d1fd02ccc14d40",
+    "code/physics_guided/mechanics.c": "ce9f07674d3f1cbab1a5e3e54761c970ebc83c9b330870dd49aaa9257fa9a692",
+    "code/physics_guided/reference.py": "f2c8d91b0980ab35218e4d68e93b64949aa38bcc6272f2f61e2ead3c1d4dd332",
+    "code/rolling_probability/models.py": "dcd70f46546c1c54f0af27228ad4e5cd64783da3cb01498bd7a79febb4b9a3bb",
+    "code/rolling_probability/ridge.py": "650e439118dd4d053fc9bd25fb744eda689ada23ae1b60bf34e82f0e6f06a3c6",
+    "code/rolling_probability/online.py": "250921e237d4dbd9a0f6a09d5aa0323addb8391b3d37fec5bdd5a065088af6fb",
+    "code/rolling_probability/innovation.py": "5ffb8268b63b853c5eaf968526275cb75b674832953f1422b51347c3bf45f88f",
+    "config/ootang_rolling_probability.v3_15.json": "79f46fdae9b4f99db81c68b5559069357387cf88bf60c3b694c0e34be2b3da2c",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_432_252_B.npz": "751a5471b53d9cb8a8833410a839d8971bfb0a215ab8d89849dd7f5f1278da63",
+    "results/ootang_bplus_v1_4/20260911_selection/inner_612_342_A.npz": "214776a5b9d6df663c06b322670efa194fdbd56d318b988f6f57cc59b01cb1d2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_432_B.npz": "d81c3532de0fad4c699116d7f099bbfe25c6b9088520df6ac6d862f45a817ef2",
+    "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz": "882f6f1bc59ef9361982ca371f99e14adbb63067ddb82e1112824e232d5e65e7",
+    "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz": "386e186b32210714357267576aa725c3915d43d8a250f8c90a85d7c0d27ef441",
+    "results/ootang_bplus_v1_1/20260910_implementation/frozen_reference.npz": "aef7298c605b901cf06fc14636488d7bbfccf96d50d9f084ef3226ba62589031",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model.py": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_solver.c": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/geometry.py": "88e16279186087cc939cf9343539c0f583977abce324ff7208b81d3eca525a4e",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/geometry_matrices.npz": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/reservoir_force_lookup_final.npz": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e",
+    "results/ootang_rolling_v3/20260913/c8_online/development/C8_ONLINE_DATA.npz": "e7465e3a4bb93999e115333295e1dce9a6eaf4992b78d128a794fc0408272d1d",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/normalization.json": "aecc60e0acd4f5a67b77b850b3c1bd630336fa5e166170609854820c074cd43f",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/C16_FAST_CORE.npz": "8ee8e1080d843dec85fa703edb76f76fff47254917fe492a8faa0c94ccc5688c",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/C8_ONLINE_DATA.npz": "4df6184dca7f22506ac32a59feb36ea829d48ce2f89dc5ec6cb9e828701b6728",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/normalization.json": "a04ada19d5c1245e9036bb8becc5dc210bb0c75150c5956c15dcf586b24d3d78",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/C16_FAST_CORE.npz": "e80322d9b9d17a5544756bcbfb41bd21d4441a6420379fadbfcc5f747a78cf8e"
+  },
+  "exploratory": true
+}
