@@ -32,6 +32,74 @@ def arrays(p):
         return {k: z[k].copy() for k in z.files}
 
 
+def verify_historical_units(spec, phase, labels, core, saved, totals):
+    source = spec["normalization_sources"][phase]
+    root = ROOT / source["run"]
+    start = spec["stages"][phase][0]
+    if sha(root / "artifact_manifest.json") != source["manifest_sha256"]:
+        raise ValueError("Historical source changed")
+    prior = ROOT / source["verification"]
+    if (
+        sha(prior) != source["verification_sha256"]
+        or not json.loads(prior.read_text())["passed"]
+    ):
+        raise ValueError("Historical verification changed")
+    if (
+        saved["mode"] != "historical_one_day_rms"
+        or saved["stage_start"] != start
+        or saved["feedback_lead_days"] != 1
+        or saved["label_prefix_sha256"] != array_sha(labels[:start])
+    ):
+        raise ValueError("Historical normalization crosses prefix")
+    if set(saved["input_entries"]) != set(source["model_map"]) or set(
+        saved["input_scales"]
+    ) != set(source["model_map"]):
+        raise ValueError("Changed input unit references")
+    scales = {}
+    for name, model in source["model_map"].items():
+        path = root / source["phase"] / (model + ".npz")
+        pred = arrays(path)
+        target = pred["origins"]
+        if (
+            len(target) != source["expected_rows"]
+            or target.max() >= start
+            or target.min() < 0
+            or np.any(pred["teacher_prefixes"] > target)
+        ):
+            raise ValueError("Historical unit dates or teacher differ")
+        error = labels[target] - pred["mean"][:, 0]
+        calculated = np.maximum(
+            np.linalg.norm(error, axis=0) / np.sqrt(len(target)),
+            spec["feature_rms_floor_mm"],
+        )
+        entry = saved["input_entries"][name]
+        unit = np.asarray(entry["unit"])
+        np.testing.assert_allclose(unit, calculated, rtol=5e-11, atol=1e-15)
+        if (
+            entry["source"] != str(path.relative_to(ROOT))
+            or entry["source_sha256"] != sha(path)
+            or entry["source_model"] != model
+            or entry["rows"] != len(target)
+            or entry["first_target"] != int(target[0])
+            or entry["last_target"] != int(target[-1])
+            or entry["error_sha256"] != array_sha(error)
+        ):
+            raise ValueError("Historical unit record differs")
+        scales[name] = np.broadcast_to(unit, (spec["horizons"], 4)).copy()
+        np.testing.assert_array_equal(saved["input_scales"][name], scales[name])
+        totals["historical_error_cells_checked"] = (
+            totals.get("historical_error_cells_checked", 0) + error.size
+        )
+        totals["historical_units_checked"] = (
+            totals.get("historical_units_checked", 0) + 4
+        )
+    np.testing.assert_array_equal(saved["response_scales"], core["sigma"][0])
+    totals["response_unit_constants_checked"] = (
+        totals.get("response_unit_constants_checked", 0) + core["sigma"][0].size
+    )
+    return scales, np.asarray(saved["response_scales"])
+
+
 def verify(run):
     manifest = json.loads((run / "artifact_manifest.json").read_text())["files"]
     for name, wanted in manifest.items():
@@ -53,7 +121,12 @@ def verify(run):
         status["state"] != "completed"
         or status["exit_code"] != 0
         or datetime.fromisoformat(status["finished_utc"])
-        > datetime.fromisoformat(spec["deadline_utc"])
+        > min(
+            datetime.fromisoformat(spec["deadline_utc"]),
+            datetime.fromisoformat(
+                spec.get("candidate_deadline_utc", spec["deadline_utc"])
+            ),
+        )
     ):
         raise ValueError("Incomplete or late run")
     prior = ROOT / spec["prior_verification"]
@@ -93,10 +166,20 @@ def verify(run):
         learning[phase] = {}
         states = json.loads((run / phase / "learning_state.json").read_text())
         core = arrays(source / (spec["core_model"] + ".npz"))
-        fixed = spec.get("error_units", "issued") == "frozen_first_forecast"
-        if spec.get("error_units", "issued") not in ("issued", "frozen_first_forecast"):
+        mode = spec.get("error_units", "issued")
+        fixed = mode != "issued"
+        one_day = mode == "historical_one_day_rms"
+        feature_units, response_units = {}, None
+        if mode not in ("issued", "frozen_first_forecast", "historical_one_day_rms"):
             raise ValueError("Unknown fixed-unit contract")
-        if fixed:
+        if one_day:
+            if spec.get("feedback_lead_days") != 1:
+                raise ValueError("Changed feedback lead")
+            units = json.loads((run / phase / "normalization.json").read_text())
+            feature_units, response_units = verify_historical_units(
+                spec, phase, labels, core, units, totals
+            )
+        elif fixed:
             units = json.loads((run / phase / "normalization.json").read_text())
             names = {r for refs in spec["innovation_references"].values() for r in refs}
             if (
@@ -113,6 +196,8 @@ def verify(run):
                 totals["unit_constants_checked"] = (
                     totals.get("unit_constants_checked", 0) + reference["sigma"][0].size
                 )
+                feature_units[unit_name] = np.asarray(units["scales"][unit_name])
+            response_units = feature_units[spec["core_model"]]
         for name, pred in current.items():
             np.testing.assert_array_equal(pred["origins"], np.arange(start, end))
             np.testing.assert_array_equal(pred["teacher_prefixes"], np.full(N, start))
@@ -144,27 +229,30 @@ def verify(run):
             reconstructed_beta = np.zeros_like(log["beta"])
             for k in range(H):
                 h = k + 1
+                lead = 1 if one_day else h
+                source_k = lead - 1
                 count = N - k
                 x = np.zeros((count, 4, D))
-                valid_origins = np.arange(h, count)
+                valid_origins = np.arange(lead, count)
                 for d, reference in enumerate(refs):
-                    past = valid_origins - h
+                    past = valid_origins - lead
                     scale = (
-                        reference["sigma"][0, k]
+                        feature_units[spec["innovation_references"][name][d]][k]
                         if fixed
-                        else reference["sigma"][past, k]
+                        else reference["sigma"][past, source_k]
                     )
                     x[valid_origins, :, d] = (
-                        labels[start + valid_origins - 1] - reference["mean"][past, k]
+                        labels[start + valid_origins - 1]
+                        - reference["mean"][past, source_k]
                     ) / scale
                 expected_features[:count, k] = x
-                expected_available[h:count, k] = True
-                scale = core["sigma"][0, k] if fixed else core["sigma"][:count, k]
+                expected_available[lead:count, k] = True
+                scale = response_units[k] if fixed else core["sigma"][:count, k]
                 response = (labels[start + k : end] - core["mean"][:count, k]) / scale
-                counts = np.maximum(h, np.r_[np.arange(N) - k, count])
+                counts = np.maximum(lead, np.r_[np.arange(N) - k, count])
                 for i, stop in enumerate(counts):
-                    xx = x[h:stop]
-                    yy = response[h:stop]
+                    xx = x[lead:stop]
+                    yy = response[lead:stop]
                     gram = spec["innovation_alpha"] * np.eye(D) + np.einsum(
                         "npi,npj->pij", xx, xx, optimize=False
                     )
@@ -199,11 +287,11 @@ def verify(run):
                             )
                             totals["svd_checks"] += 1
                 if (
-                    state["updates"][k] != count - h
+                    state["updates"][k] != count - lead
                     or state["last_target"][k] != end - 1
                 ):
                     raise ValueError("Mature target counts changed")
-                totals["point_updates"] += (count - h) * 4
+                totals["point_updates"] += (count - lead) * 4
             np.testing.assert_allclose(
                 log["features"], expected_features, rtol=0, atol=0, equal_nan=True
             )
@@ -214,7 +302,7 @@ def verify(run):
             maximum["beta"] = max(
                 maximum["beta"], float(abs(log["beta"] - reconstructed_beta).max())
             )
-            scale = core["sigma"][0][None] if fixed else core["sigma"]
+            scale = response_units[None] if fixed else core["sigma"]
             mean = core["mean"] + scale * np.einsum(
                 "nhpd,nhpd->nhp", expected_features, reconstructed_beta, optimize=False
             )
@@ -296,7 +384,7 @@ def verify(run):
         expected_solves = (
             len(spec["innovation_references"])
             * 4
-            * sum(N - 2 * h + 1 for h in range(1, H + 1))
+            * sum(N - h - (1 if one_day else h) + 1 for h in range(1, H + 1))
         )
         if dec["point_solves"] != expected_solves:
             raise ValueError("Phase solve count differs")
