@@ -1,0 +1,35 @@
+{"phase": "inner", "seed": 0, "step": 100, "loss": 0.4113599366665899, "gradient_norm": 0.04268657016413834, "mse": 0.4076471370135653, "initial_regularization": 0.37127996530245705}
+{"phase": "inner", "seed": 0, "step": 200, "loss": 0.21986073903484876, "gradient_norm": 0.009908506011567815, "mse": 0.2157566444269688, "initial_regularization": 0.4104094607879959}
+{"phase": "inner", "seed": 0, "step": 300, "loss": 0.24886563458141192, "gradient_norm": 0.015217572354560983, "mse": 0.24443507777982626, "initial_regularization": 0.44305568015856545}
+{"phase": "inner", "seed": 0, "step": 400, "loss": 0.41602456213146577, "gradient_norm": 0.007613599654391544, "mse": 0.41097583687605255, "initial_regularization": 0.5048725255413236}
+{"phase": "inner", "seed": 1, "step": 100, "loss": 0.3196756748595855, "gradient_norm": 0.048775011828574535, "mse": 0.31595297283966556, "initial_regularization": 0.37227020199199096}
+{"phase": "inner", "seed": 1, "step": 200, "loss": 0.3039350731136864, "gradient_norm": 0.019074733184053616, "mse": 0.29988438054598404, "initial_regularization": 0.40506925677023703}
+{"phase": "inner", "seed": 1, "step": 300, "loss": 0.6886909792560617, "gradient_norm": 0.017750578663421876, "mse": 0.6840954428688024, "initial_regularization": 0.45955363872592464}
+{"phase": "inner", "seed": 1, "step": 400, "loss": 0.41478642884254896, "gradient_norm": 0.01705669660628044, "mse": 0.4100421296543693, "initial_regularization": 0.47442991881796304}
+{"phase": "inner", "seed": 2, "step": 100, "loss": 0.2998401347368911, "gradient_norm": 0.03799312470965712, "mse": 0.2963547268298414, "initial_regularization": 0.34854079070496935}
+{"phase": "inner", "seed": 2, "step": 200, "loss": 0.43847028401110005, "gradient_norm": 0.021667120089401578, "mse": 0.43414514150640265, "initial_regularization": 0.4325142504697418}
+{"phase": "inner", "seed": 2, "step": 300, "loss": 0.32987813758313733, "gradient_norm": 0.011260903507479525, "mse": 0.3248919788656367, "initial_regularization": 0.4986158717500613}
+{"phase": "inner", "seed": 2, "step": 400, "loss": 0.4231596351740647, "gradient_norm": 0.007075358618802685, "mse": 0.41849235048311634, "initial_regularization": 0.4667284690948348}
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/run.py", line 236, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/run.py", line 209, in main
+    evaluated = evaluate(spec, args.phase, cache, data, scaling, step, previous, out / f"checkpoint_{step}", reference, recorder)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/run.py", line 115, in evaluate
+    rows = audit_prediction(reference, data, detail, scaling.state_unit, spec)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/feasibility.py", line 46, in audit_prediction
+    check_audit(audit, spec)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/feasibility.py", line 32, in check_audit
+    raise ArithmeticError("Original C substep physical check failed: " + repr(audit))
+ArithmeticError: Original C substep physical check failed: array([-6.27179604e-09, -2.71279387e-16,  1.18495419e-21, -3.04213507e-06,
+        7.00000000e+00])

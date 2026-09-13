@@ -1,0 +1,8 @@
+{
+  "config/ootang_neural_initial_state.v1_0.json": "74d59a5d6eb91b4266655d5fba28d2eb4931a6e28511713f2a4fb37b642887e3",
+  "code/neural_initial_state/__init__.py": "5abc479c15d0a31857fc49d3b00cee56eb8ffc1884d4c98c524958c50dc4cbe3",
+  "code/neural_initial_state/core.py": "c5b660d1604b39696ebb1d80b986c8e4f3466c2717cd98ced285a0f5ec8782c0",
+  "code/neural_initial_state/feasibility.py": "67a730f2ba7ff29e0efdf0ec27ea1809d342484536a73ba5c99712aac0a88b00",
+  "code/neural_initial_state/reference.py": "8c91baaa8af0a7ca11eb954c9d758d6abc7b59c470dc71f67cc1acf13f68da21",
+  "code/neural_initial_state/run.py": "a12389b4d1d3dc93f12de17822cb4eb6e04fc3564e0c8d9cea92695bd45e6890"
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "phase": "inner",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T18:37:56.374522+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T18:38:01.045106+00:00",
+    "elapsed_seconds": 4.162413792219013
+  },
+  {
+    "phase": "inner",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T18:38:01.045257+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T18:38:05.160054+00:00",
+    "elapsed_seconds": 4.112973333802074
+  },
+  {
+    "phase": "inner",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T18:38:05.160207+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T18:38:09.336336+00:00",
+    "elapsed_seconds": 4.175231625325978
+  }
+]

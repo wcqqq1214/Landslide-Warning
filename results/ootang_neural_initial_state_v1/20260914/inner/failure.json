@@ -1,0 +1,11 @@
+{
+  "error": "ArithmeticError('Original C substep physical check failed: array([-6.27179604e-09, -2.71279387e-16,  1.18495419e-21, -3.04213507e-06,\\n        7.00000000e+00])')",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/run.py\", line 209, in main\n    evaluated = evaluate(spec, args.phase, cache, data, scaling, step, previous, out / f\"checkpoint_{step}\", reference, recorder)\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/run.py\", line 115, in evaluate\n    rows = audit_prediction(reference, data, detail, scaling.state_unit, spec)\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/feasibility.py\", line 46, in audit_prediction\n    check_audit(audit, spec)\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/neural_initial_state/feasibility.py\", line 32, in check_audit\n    raise ArithmeticError(\"Original C substep physical check failed: \" + repr(audit))\nArithmeticError: Original C substep physical check failed: array([-6.27179604e-09, -2.71279387e-16,  1.18495419e-21, -3.04213507e-06,\n        7.00000000e+00])\n",
+  "utc": "2026-09-13T18:38:10.365263+00:00",
+  "calls": {
+    "reference_forward": 0,
+    "day_forward": 538860,
+    "day_backward": 537600,
+    "original_resume_forward": 80
+  }
+}
