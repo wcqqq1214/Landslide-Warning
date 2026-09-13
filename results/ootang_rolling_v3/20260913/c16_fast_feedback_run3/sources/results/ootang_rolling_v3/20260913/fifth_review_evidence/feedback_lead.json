@@ -1,0 +1,499 @@
+{
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "rows": [
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.29696596535667347,
+      "known_error_sd_mm": 0.00021641086647761876
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.5240981345632195,
+      "known_error_sd_mm": 0.00013747774937047954
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.36807745732880137,
+      "known_error_sd_mm": 0.00010898379035480357
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.34008817939627095,
+      "known_error_sd_mm": 0.00018113599174795746
+    },
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.4723690605639512,
+      "known_error_sd_mm": 0.6126538355359166
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.10479138038882978,
+      "known_error_sd_mm": 0.5649840041902119
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.34338580286345693,
+      "known_error_sd_mm": 0.40521923938699583
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.5297263327046688,
+      "known_error_sd_mm": 0.6217713063358659
+    },
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.08194637624435831,
+      "known_error_sd_mm": 0.5144225859053512
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.07652012947943557,
+      "known_error_sd_mm": 0.5805772246578556
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.31406390491580244,
+      "known_error_sd_mm": 0.4331926096429249
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.4902405897368578,
+      "known_error_sd_mm": 0.22917013615828086
+    },
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.024785440985945015,
+      "known_error_sd_mm": 5.426679703815066
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.08016058069990359,
+      "known_error_sd_mm": 7.5240901867303975
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.2206331539897271,
+      "known_error_sd_mm": 12.21844194178615
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.2771948602062863,
+      "known_error_sd_mm": 6.26018452925552
+    },
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.025209510772250417,
+      "known_error_sd_mm": 0.031121296021073396
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.427949292808804,
+      "known_error_sd_mm": 0.021864564826773444
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.0003855471322020309,
+      "known_error_sd_mm": 0.01755139367436175
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.22434815311346556,
+      "known_error_sd_mm": 0.024898615780198932
+    },
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": -0.005070642561179292,
+      "known_error_sd_mm": 2.11290778820185
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.18040082774398708,
+      "known_error_sd_mm": 1.6227719475567366
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.005948618852204796,
+      "known_error_sd_mm": 1.3883921387924458
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 317,
+      "correlation": 0.2563775595816338,
+      "known_error_sd_mm": 1.82234519907987
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.5612006276300606,
+      "known_error_sd_mm": 0.0007175838593599749
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.5984747188410006,
+      "known_error_sd_mm": 0.0004853399810750221
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.3620534539742142,
+      "known_error_sd_mm": 0.0001522749638820516
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.38381239598891587,
+      "known_error_sd_mm": 0.00014198372491756948
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.4698893477263436,
+      "known_error_sd_mm": 1.8159437130115943
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.24308987449972325,
+      "known_error_sd_mm": 1.095733187661121
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.3456387355529734,
+      "known_error_sd_mm": 0.5909306630722837
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "C8_ONLINE_DATA",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.39155842617388364,
+      "known_error_sd_mm": 0.4965227071768672
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.2292684265731823,
+      "known_error_sd_mm": 0.25313734999689436
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.15540070724039676,
+      "known_error_sd_mm": 0.14511280347478805
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.03494917106122579,
+      "known_error_sd_mm": 0.15732192098419287
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.021168467435964178,
+      "known_error_sd_mm": 0.3801550757625095
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.6305501300239598,
+      "known_error_sd_mm": 4.323966069277154
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.3769130856779911,
+      "known_error_sd_mm": 2.213700569271612
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.07136624491424486,
+      "known_error_sd_mm": 3.084166218638705
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "B_ANCHOR",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.21403073919194796,
+      "known_error_sd_mm": 2.8760500806209506
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.25728710132246313,
+      "known_error_sd_mm": 0.1010964306283898
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.17260830138284378,
+      "known_error_sd_mm": 0.058780997654172586
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.02359197288004519,
+      "known_error_sd_mm": 0.025512556340964682
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "DRIFT14",
+      "known_error_lead": 1,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.0905918187019158,
+      "known_error_sd_mm": 0.021436869819894875
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.7145177040094798,
+      "known_error_sd_mm": 4.78428050106692
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.6834808291332453,
+      "known_error_sd_mm": 1.803320718933522
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": -0.027270788239112897,
+      "known_error_sd_mm": 2.101128131129652
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "reference": "DRIFT14",
+      "known_error_lead": 30,
+      "future_core_error_lead": 30,
+      "n": 234,
+      "correlation": 0.01997985356791433,
+      "known_error_sd_mm": 1.4669072655514446
+    }
+  ],
+  "post_exposure": true,
+  "independent_transfer": false,
+  "correlation_is_not_incremental_skill": true,
+  "no_sign_selected": true,
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "c8_manifest_sha256": "b7ddb09633adf74d858e8ced87253ab2c93f85999423bcc0549876b2b60eb2a4",
+  "new_training": 0,
+  "new_physics": 0,
+  "script_sha256": "e57c3a4ad870e431aadcb8b04d20fbefcc883f830b99e3df5650fb6ef0a4de68"
+}
