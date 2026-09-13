@@ -1,0 +1,50 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+{"step": 0, "seed": 0, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 179, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": -3.042135066067384e-06}
+{"step": 0, "seed": 1, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 179, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": -3.042135066067384e-06}
+{"step": 0, "seed": 2, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 179, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": -3.042135066067384e-06}
+{"step": 50, "seed": 0, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 50, "seed": 1, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 50, "seed": 2, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 100, "seed": 0, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 100, "seed": 1, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 100, "seed": 2, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 200, "seed": 0, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 200, "seed": 1, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 200, "seed": 2, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 400, "seed": 0, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 400, "seed": 1, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{"step": 400, "seed": 2, "trajectories": 180, "original_solver_pass": 180, "substep_pass": 180, "daily_pass": 180, "forward_pass": 180, "minimum_substep_plastic_mm": 0.0}
+{
+  "verification_pass": true,
+  "physical_contract_pass": false,
+  "stopped_as_frozen": true,
+  "normalization_reconstructed": true,
+  "training_queries": 354,
+  "frozen_sources": 69,
+  "implementation_files": 6,
+  "reloaded_checkpoints": 15,
+  "trajectories": 2700,
+  "original_solver_pass": 2700,
+  "substep_pass": 2697,
+  "forward_pass": 2700,
+  "minimum_substep_plastic_mm": -3.042135066067384e-06,
+  "maximum_independent_state_difference": 5.684341886080802e-14,
+  "maximum_independent_mean_difference_mm": 2.2737367544323206e-13,
+  "new_training": 0,
+  "new_model_selection": 0,
+  "new_scoring": 0,
+  "probability_comparison_available": false,
+  "development_or_later_run": false,
+  "calls": {
+    "reference_forward": 0,
+    "day_forward": 18900,
+    "day_backward": 0,
+    "original_resume_forward": 2700
+  },
+  "completed_utc": "2026-09-13T18:43:56.295458+00:00"
+}

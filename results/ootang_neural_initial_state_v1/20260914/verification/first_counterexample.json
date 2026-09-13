@@ -1,0 +1,31 @@
+{
+  "step": 0,
+  "seed": 0,
+  "origin": 691,
+  "min_x": -6.2717960445064175e-09,
+  "min_gap": -2.712793865150817e-16,
+  "max_complementarity": 1.184954190924364e-21,
+  "min_substep_plastic_mm": -3.042135066067384e-06,
+  "min_daily_plastic_mm": 0.0,
+  "original_solver_gate": true,
+  "frozen_substep_gate": false,
+  "frozen_daily_gate": true,
+  "forward_ok": true,
+  "independent_state_difference": 5.684341886080802e-14,
+  "independent_mean_difference_mm": 1.1368683772161603e-13,
+  "worst_substep": {
+    "horizon": 7,
+    "substep": 54,
+    "coordinate": 1,
+    "mask": 13,
+    "beta": 0.002061642862101474,
+    "x": -6.27179604447533e-09,
+    "gap": 0.0,
+    "delta_plastic_mm": -3.042135066052305e-06,
+    "original_x_tolerance_allows": true,
+    "frozen_plastic_gate_pass": false
+  },
+  "independent_trace_max_state_difference": 5.684341886080802e-14,
+  "latest_observed_date": "2018-05-22",
+  "first_target_date": "2018-05-23"
+}
