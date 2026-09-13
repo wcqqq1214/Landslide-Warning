@@ -10,7 +10,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "results/ootang_short_horizon_v4/20260913_short_horizon"
 INITIAL_STATE = ROOT / "results/ootang_neural_initial_state_v1/20260914"
-FIGURES = ROOT / "figures/ootang_short_horizon_v4/20260913_short_horizon"
+FIGURES = ROOT / "paper/figures/short_horizon_zh"
 SOURCE = ROOT / "paper/ootang_short_horizon_brief.v4.1.tex"
 RECEIPT = ROOT / "paper/ootang_short_horizon_brief.v4.1.sources.json"
 
@@ -51,12 +51,12 @@ def main():
     labels = {
         "B_ANCHOR": "锚定 B+",
         "DRIFT1": "当天速度外推",
-        "CL_DIRECT": "ConvLSTM 直接版",
-        "CL_BRES": "ConvLSTM 残差版",
-        "PINN_EQ": "PINN 方程约束版",
-        "PINN_NOEQ": "PINN 去方程对照",
-        "RR_DIRECT": "岭回归直接版",
-        "RR_BRES": "岭回归残差版",
+        "CL_DIRECT": "ConvLSTM 直接预测",
+        "CL_BRES": "ConvLSTM 残差学习",
+        "PINN_EQ": "软约束状态 PINN",
+        "PINN_NOEQ": "PINN 无方程约束对照",
+        "RR_DIRECT": "岭回归直接预测",
+        "RR_BRES": "岭回归残差学习",
         "C16_CORE_RULES": "在线回归＋反馈",
         "C16_PHYS_RULES": "在线回归＋反馈＋物理误差",
     }
@@ -115,7 +115,7 @@ def main():
 \definecolor{reportblue}{HTML}{365F91}
 \definecolor{lightblue}{HTML}{EEF3F8}
 \hypersetup{colorlinks=true,linkcolor=reportblue,urlcolor=reportblue}
-\graphicspath{{../figures/ootang_short_horizon_v4/20260913_short_horizon/}}
+\graphicspath{{figures/short_horizon_zh/}}
 \captionsetup{font=footnotesize,labelfont=bf,labelsep=quad,skip=2pt,hypcap=false}
 \setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
 \setlength{\headheight}{14pt}\setlength{\footskip}{10mm}
@@ -129,8 +129,8 @@ def main():
 \pagetitle{1\quad 七个步长，分别比较}
 \takeaway{\textbf{主要结果：}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
 {\small 每天使用过去 30 天观测，预测第 1、2、3、4、5、6、7 天后的位移；已发出的预测固定保存。四点：ATU1、ATU5、MJ3、MJ1。}\par
-\reportfigure{horizon_comparison.pdf}{同一步长比较同一组起点。家族代表按开发 RMSE 固定；纵轴为对数。}
-\textbf{兼顾均值与区间的锁定推荐}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
+\reportfigure{horizon_comparison.pdf}{同一步长比较同一组起点。各类代表按开发 RMSE 选择，后期沿用；纵轴为对数。}
+\textbf{兼顾均值与区间的推荐方法}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
 \begin{center}\footnotesize
 \begin{tabular}{clrrrr}\toprule
 步长 & 推荐组合 & MAE & RMSE & CRPS & 90\% 覆盖\\\midrule
@@ -150,12 +150,12 @@ def main():
 \bottomrule\end{tabular}
 \end{center}
 {\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
-\reportfigure{paired_effects.pdf}{固定配对的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
-\takeaway{\textbf{ConvLSTM：}两版仍未超过当天速度外推。\quad\textbf{旧状态 PINN：}物理验收失败。}
+\reportfigure{paired_effects.pdf}{配对方法的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
+\takeaway{\textbf{ConvLSTM：}直接预测与残差学习均未超过速度外推。\quad\textbf{软约束状态 PINN：}物理一致性未达标。}
 \begingroup\fontsize{9}{12}\selectfont
 残差与物理参照未带来稳定额外收益。在线回归的优势来自趋势特征、在线更新与误差反馈的完整方案；神经与普通岭回归在阶段内固定权重。\par
-\textbf{新增神经初态估计＋严格 B+ 递推：}训练后 @@INITIAL_TRAJECTORIES@@ 条内部期轨迹全部通过物理检查。原求解器容差与新增塑性子步门未对齐，零修正对照触发本轮停止。\textbf{1--7 天均值与概率收益尚未评价，暂不能与在线回归比较。}\par
-{\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 去方程对照仍保留相同物理背景。\par}
+\textbf{神经初态估计＋B+ 物理递推：}训练后 @@INITIAL_TRAJECTORIES@@ 条内部期轨迹全部通过物理检查。求解器与塑性子步检查的容差口径不一致，零修正对照未通过，整体验收中止。\textbf{1--7 天预测精度与概率质量尚未评价。}\par
+{\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 无方程约束对照仍保留相同物理背景。\par}
 \endgroup
 \clearpage
 \pagetitle{3\quad ATU1、ATU5：完整后期曲线}
@@ -176,7 +176,7 @@ def main():
 
 {\small\textbf{下一步：}保持 1--7 天任务与现有对照，明确预警事件和阈值，再评价误报、漏报及提前量。}
 \vfill
-{\footnotesize\color{gray}仅精简展示，实验仍为已冻结的 v4.0。完整指标、四点全部七步长曲线及核验见配套结果记录。}
+{\footnotesize\color{gray}完整指标、四点全部七步长曲线及核验见配套结果记录。}
 \end{document}
 """
     tex = tex.replace("@@SELECTION@@", "\n".join(rows)).replace(
@@ -191,7 +191,7 @@ def main():
         "horizon_comparison", "paired_effects", "forecast_atu1_h7",
         "forecast_atu5_h7", "forecast_mj3_h7", "forecast_mj1_h7",
     ]
-    inputs = [summary_path, selection_path, point_path]
+    inputs = [summary_path, selection_path, point_path, FIGURES / "sources.json"]
     inputs += [FIGURES / f"{name}.pdf" for name in figure_names]
     inputs += [
         RUN / "selection.json", RUN / "internal_selection.json",
@@ -207,6 +207,8 @@ def main():
             "presentation": "v4.1",
             "new_training": 0,
             "new_model_selection": 0,
+            "new_prediction_or_scoring": 0,
+            "figure_language": "Chinese labels, axes, legends and panel titles; saved data unchanged",
             "expected_pages": 4,
             "displayed_numeric_cells": expected,
             "initial_state_result": {
