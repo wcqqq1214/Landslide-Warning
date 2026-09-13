@@ -1,0 +1,13 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T04:50:42.382143+00:00",
+  "artifact_count": 36,
+  "paired_intervals": 112,
+  "daily_rows": 14664,
+  "maximum_difference": 9.866198524832726e-09,
+  "analysis_manifest_sha256": "df165da021d4848c151dc3a492104e6e0881f4692f85e6d812a87b3ca959f732",
+  "verifier_sha256": "7c79817be31ca5a8968b0e52d9cfd2d23b6347ed1f303931b7aeb2f520376616",
+  "new_training": 0,
+  "new_physics": 0,
+  "method": "exported rows, counted block weights, erf and NormalDist"
+}

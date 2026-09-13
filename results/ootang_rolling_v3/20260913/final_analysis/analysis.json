@@ -1,0 +1,379 @@
+{
+  "created_utc": "2026-09-13T04:47:26.633995+00:00",
+  "registry": {
+    "artifact_counts": {
+      "results/ootang_rolling_v3/20260913/c1_direct_run2": 77,
+      "results/ootang_rolling_v3/20260913/c2_expert": 88,
+      "results/ootang_rolling_v3/20260913/c3_ridge": 87,
+      "results/ootang_rolling_v3/20260913/c4_feedback": 49,
+      "results/ootang_rolling_v3/20260913/c4_transfer": 48,
+      "results/ootang_rolling_v3/20260913/c5_crossfit": 112,
+      "results/ootang_rolling_v3/20260913/c6_recent": 116,
+      "results/ootang_rolling_v3/20260913/c7_empirical": 50,
+      "results/ootang_rolling_v3/20260913/c8_online": 77,
+      "results/ootang_rolling_v3/20260913/c9_horizon": 75,
+      "results/ootang_rolling_v3/20260913/c10_forgetting": 76,
+      "results/ootang_rolling_v3/20260913/c11_mixture": 68,
+      "results/ootang_rolling_v3/20260913/c12_interval": 73,
+      "results/ootang_rolling_v3/20260913/c13_innovation": 80,
+      "results/ootang_rolling_v3/20260913/c14_fixed_units": 88,
+      "results/ootang_rolling_v3/20260913/c15_spatial": 91,
+      "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3": 86,
+      "results/ootang_rolling_v3/20260913/c17_self_calibration": 74
+    },
+    "candidate_stage_rows": 29,
+    "entries": [
+      {
+        "candidate_number": 1,
+        "run": "results/ootang_rolling_v3/20260913/c1_direct_run2",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C1_DIRECT",
+        "decision": "results/ootang_rolling_v3/20260913/c1_direct_run2/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c1_verification_run2/verification.json",
+        "verification_sha256": "67c38afa1a4cdab69ce79dfcaa99a728ad4e33dc60fb38cf557e8a678c6aa2e8",
+        "manifest_sha256": "f402d2a8670bf94e235861ef9e770a3d4baabd323a0f50f2c27ae4685025c521"
+      },
+      {
+        "candidate_number": 2,
+        "run": "results/ootang_rolling_v3/20260913/c2_expert",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C2_EXPERT",
+        "decision": "results/ootang_rolling_v3/20260913/c2_expert/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c2_verification/verification.json",
+        "verification_sha256": "3f3c2596ba88a55ed44388d51755fc4a0d6eea528b357db08c8d93449be69842",
+        "manifest_sha256": "133ec976431dbd0582ba2c99cfd4a243cc738dce89e28e8ae11780093c290286"
+      },
+      {
+        "candidate_number": 3,
+        "run": "results/ootang_rolling_v3/20260913/c3_ridge",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C3_RIDGE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c3_ridge/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c3_verification/verification.json",
+        "verification_sha256": "6340a47e727d02746c1498d91927d05acd2b8d3cb335d517acc9df95d1dc6a4f",
+        "manifest_sha256": "8df78fd33e6a1134e348f5731d653103eed83832877dbb24590c2fe904e15309"
+      },
+      {
+        "candidate_number": 4,
+        "run": "results/ootang_rolling_v3/20260913/c4_feedback",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C4_RIDGE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c4_feedback/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c4_verification/verification.json",
+        "verification_sha256": "d20d57015833509119cb2f9b6e85552f82a75dc9a4998b188cd0e96fb254d483",
+        "manifest_sha256": "4ebd3dd8fb2546f8a35a4bb931dc373004b742a6b14bacedb83fdda278101a4b"
+      },
+      {
+        "candidate_number": 4,
+        "run": "results/ootang_rolling_v3/20260913/c4_transfer",
+        "phase": "transfer",
+        "display_phase": "original_transfer",
+        "model": "C4_RIDGE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c4_transfer/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c4_transfer_verification/verification.json",
+        "verification_sha256": "ae96491aa38abb30d238a31074aedc5e5630e4b619b070a882a932d8810386a4",
+        "manifest_sha256": "06b20c03ce30225f754f3d5e5c8d672efe5064b666c6839e3ea405cdc89bd708"
+      },
+      {
+        "candidate_number": 5,
+        "run": "results/ootang_rolling_v3/20260913/c5_crossfit",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C5_RIDGE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c5_crossfit/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c5_verification/verification.json",
+        "verification_sha256": "e1a31a2265725c71b61e9b6af3f8959c62d8bb9a2e557bac7afbb7aa07cf7a77",
+        "manifest_sha256": "01c1149f93e847fd87ebe39a24deb3f209db284e49981f6d55301b9cbed4b343"
+      },
+      {
+        "candidate_number": 6,
+        "run": "results/ootang_rolling_v3/20260913/c6_recent",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C6_RIDGE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c6_recent/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c6_verification/verification.json",
+        "verification_sha256": "73bcebf99744c558ac19364ea2948af83ca1e932d6e425720bf7faa896336eb5",
+        "manifest_sha256": "8f63d69683cd1867e66efa3b9b5f7b84c6e9bcc2f78bfce6d479b84ddcddf55e"
+      },
+      {
+        "candidate_number": 7,
+        "run": "results/ootang_rolling_v3/20260913/c7_empirical",
+        "phase": "development/empirical",
+        "display_phase": "development",
+        "model": "C7_EMP_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c7_empirical/development/empirical/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c7_verification/verification.json",
+        "verification_sha256": "34330c8b92d4b32668d5100df81801097afe493a90bbe88ffc4bca81460d2921",
+        "manifest_sha256": "96620e2f7265bd4b25d801a185f2355e9719989abdcd936fc9c758ba5d1d1ec2"
+      },
+      {
+        "candidate_number": 7,
+        "run": "results/ootang_rolling_v3/20260913/c7_empirical",
+        "phase": "later_exploratory/empirical",
+        "display_phase": "later_exploratory",
+        "model": "C7_EMP_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c7_empirical/later_exploratory/empirical/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c7_verification/verification.json",
+        "verification_sha256": "34330c8b92d4b32668d5100df81801097afe493a90bbe88ffc4bca81460d2921",
+        "manifest_sha256": "96620e2f7265bd4b25d801a185f2355e9719989abdcd936fc9c758ba5d1d1ec2"
+      },
+      {
+        "candidate_number": 8,
+        "run": "results/ootang_rolling_v3/20260913/c8_online",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C8_ONLINE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c8_online/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c8_verification/verification.json",
+        "verification_sha256": "2ccfba99565c81a1e0c98b0fb6764696df0837f6dec86667e846dd115e79a894",
+        "manifest_sha256": "b7ddb09633adf74d858e8ced87253ab2c93f85999423bcc0549876b2b60eb2a4"
+      },
+      {
+        "candidate_number": 8,
+        "run": "results/ootang_rolling_v3/20260913/c8_online",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C8_ONLINE_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c8_verification/verification.json",
+        "verification_sha256": "2ccfba99565c81a1e0c98b0fb6764696df0837f6dec86667e846dd115e79a894",
+        "manifest_sha256": "b7ddb09633adf74d858e8ced87253ab2c93f85999423bcc0549876b2b60eb2a4"
+      },
+      {
+        "candidate_number": 9,
+        "run": "results/ootang_rolling_v3/20260913/c9_horizon",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C9_HORIZON_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c9_horizon/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c9_verification/verification.json",
+        "verification_sha256": "a55554ee7762698711e537e368f576389a5a9881bee54ca2bbd57b7f10b6980d",
+        "manifest_sha256": "20b86c39d792adeab33a1b14e3ae015efde80d7576dd5e800f9bec6d7cfb1813"
+      },
+      {
+        "candidate_number": 9,
+        "run": "results/ootang_rolling_v3/20260913/c9_horizon",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C9_HORIZON_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c9_horizon/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c9_verification/verification.json",
+        "verification_sha256": "a55554ee7762698711e537e368f576389a5a9881bee54ca2bbd57b7f10b6980d",
+        "manifest_sha256": "20b86c39d792adeab33a1b14e3ae015efde80d7576dd5e800f9bec6d7cfb1813"
+      },
+      {
+        "candidate_number": 10,
+        "run": "results/ootang_rolling_v3/20260913/c10_forgetting",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C10_FORGET_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c10_forgetting/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c10_verification/verification.json",
+        "verification_sha256": "544d47364b3a46f9e6e2c69c85228aec471592193f5ee1b2ddcd6b76387d1bf7",
+        "manifest_sha256": "6cdacda1f4110f4f62100a5e3eae57d3116a8b37018af265dd333f76f512b4c4"
+      },
+      {
+        "candidate_number": 10,
+        "run": "results/ootang_rolling_v3/20260913/c10_forgetting",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C10_FORGET_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c10_forgetting/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c10_verification/verification.json",
+        "verification_sha256": "544d47364b3a46f9e6e2c69c85228aec471592193f5ee1b2ddcd6b76387d1bf7",
+        "manifest_sha256": "6cdacda1f4110f4f62100a5e3eae57d3116a8b37018af265dd333f76f512b4c4"
+      },
+      {
+        "candidate_number": 11,
+        "run": "results/ootang_rolling_v3/20260913/c11_mixture",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C11_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c11_mixture/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c11_verification/verification.json",
+        "verification_sha256": "d12495624edbcceb6d57b7c7a322bdaed9877610737bccf5b8b08ec170f5f575",
+        "manifest_sha256": "802c6aacccd6d2a5d5ef6dfc6bb462dc8676e7e84ef068172411d9652fcf3a86"
+      },
+      {
+        "candidate_number": 11,
+        "run": "results/ootang_rolling_v3/20260913/c11_mixture",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C11_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c11_mixture/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c11_verification/verification.json",
+        "verification_sha256": "d12495624edbcceb6d57b7c7a322bdaed9877610737bccf5b8b08ec170f5f575",
+        "manifest_sha256": "802c6aacccd6d2a5d5ef6dfc6bb462dc8676e7e84ef068172411d9652fcf3a86"
+      },
+      {
+        "candidate_number": 12,
+        "run": "results/ootang_rolling_v3/20260913/c12_interval",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C12_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c12_interval/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c12_verification/verification.json",
+        "verification_sha256": "0fcedbf0c1784c24c9b50723f7ec3a75cf6c86a48bcaffab4a8fbd2b99fbca45",
+        "manifest_sha256": "ce5e2c807cd3b77b4d64cba506b6b0806363a9ff401e94b7845b6ef9eb554d1b"
+      },
+      {
+        "candidate_number": 12,
+        "run": "results/ootang_rolling_v3/20260913/c12_interval",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C12_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c12_interval/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c12_verification/verification.json",
+        "verification_sha256": "0fcedbf0c1784c24c9b50723f7ec3a75cf6c86a48bcaffab4a8fbd2b99fbca45",
+        "manifest_sha256": "ce5e2c807cd3b77b4d64cba506b6b0806363a9ff401e94b7845b6ef9eb554d1b"
+      },
+      {
+        "candidate_number": 13,
+        "run": "results/ootang_rolling_v3/20260913/c13_innovation",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C13_INNOV_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c13_innovation/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c13_verification/verification.json",
+        "verification_sha256": "b9986bb25a5b4b6c80f53cbcfb99043ac28b2383b95d31d35ada356c3fb4525a",
+        "manifest_sha256": "a1c6e5cd486ba583987fe551d4facbb232eb3e04b0d1c7acbebb375d1d2e21c2"
+      },
+      {
+        "candidate_number": 13,
+        "run": "results/ootang_rolling_v3/20260913/c13_innovation",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C13_INNOV_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c13_innovation/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c13_verification/verification.json",
+        "verification_sha256": "b9986bb25a5b4b6c80f53cbcfb99043ac28b2383b95d31d35ada356c3fb4525a",
+        "manifest_sha256": "a1c6e5cd486ba583987fe551d4facbb232eb3e04b0d1c7acbebb375d1d2e21c2"
+      },
+      {
+        "candidate_number": 14,
+        "run": "results/ootang_rolling_v3/20260913/c14_fixed_units",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C14_INNOV_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c14_fixed_units/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c14_verification/verification.json",
+        "verification_sha256": "5e3fe85554c3317750adf800b81340e18499dafadf029c0f12ace1daa12072ee",
+        "manifest_sha256": "c76d6373552eda228b7831d3c92a655ec8dd8e2e81d4f6b90c12f02e06c1d8c2"
+      },
+      {
+        "candidate_number": 14,
+        "run": "results/ootang_rolling_v3/20260913/c14_fixed_units",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C14_INNOV_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c14_fixed_units/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c14_verification/verification.json",
+        "verification_sha256": "5e3fe85554c3317750adf800b81340e18499dafadf029c0f12ace1daa12072ee",
+        "manifest_sha256": "c76d6373552eda228b7831d3c92a655ec8dd8e2e81d4f6b90c12f02e06c1d8c2"
+      },
+      {
+        "candidate_number": 15,
+        "run": "results/ootang_rolling_v3/20260913/c15_spatial",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C15_SPATIAL_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c15_spatial/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c15_verification/verification.json",
+        "verification_sha256": "1c6892a8d7471a3261d29003739a801baa219395f764b0e537800e9d61642e84",
+        "manifest_sha256": "5d13be479a58dbd0b8b5c1c0ad276d74a7ffe9a0c59daa7a6c01405855ce5183"
+      },
+      {
+        "candidate_number": 15,
+        "run": "results/ootang_rolling_v3/20260913/c15_spatial",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C15_SPATIAL_FULL",
+        "decision": "results/ootang_rolling_v3/20260913/c15_spatial/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c15_verification/verification.json",
+        "verification_sha256": "1c6892a8d7471a3261d29003739a801baa219395f764b0e537800e9d61642e84",
+        "manifest_sha256": "5d13be479a58dbd0b8b5c1c0ad276d74a7ffe9a0c59daa7a6c01405855ce5183"
+      },
+      {
+        "candidate_number": 16,
+        "run": "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C16_FAST_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c16_verification/verification.json",
+        "verification_sha256": "788228e8793d99e513278e3b0bfc83543a6914202537d0287295315f56d74c59",
+        "manifest_sha256": "0f39a5b3a77754b1335a770dcda37365d1802668a92875e38790e274f943b7fc"
+      },
+      {
+        "candidate_number": 16,
+        "run": "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C16_FAST_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c16_verification/verification.json",
+        "verification_sha256": "788228e8793d99e513278e3b0bfc83543a6914202537d0287295315f56d74c59",
+        "manifest_sha256": "0f39a5b3a77754b1335a770dcda37365d1802668a92875e38790e274f943b7fc"
+      },
+      {
+        "candidate_number": 17,
+        "run": "results/ootang_rolling_v3/20260913/c17_self_calibration",
+        "phase": "development",
+        "display_phase": "development",
+        "model": "C17_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c17_self_calibration/development/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c17_verification/verification.json",
+        "verification_sha256": "31c0a4ca65ecb24da4bf56748043c4f13f77dd337276cee3158d8bf0617b252e",
+        "manifest_sha256": "91624411bea41e519c4262a752072e7119a2a931bbdde09dbbc3639183af05e2"
+      },
+      {
+        "candidate_number": 17,
+        "run": "results/ootang_rolling_v3/20260913/c17_self_calibration",
+        "phase": "later_exploratory",
+        "display_phase": "later_exploratory",
+        "model": "C17_PHYS",
+        "decision": "results/ootang_rolling_v3/20260913/c17_self_calibration/later_exploratory/decision.json",
+        "verification": "results/ootang_rolling_v3/20260913/c17_verification/verification.json",
+        "verification_sha256": "31c0a4ca65ecb24da4bf56748043c4f13f77dd337276cee3158d8bf0617b252e",
+        "manifest_sha256": "91624411bea41e519c4262a752072e7119a2a931bbdde09dbbc3639183af05e2"
+      }
+    ]
+  },
+  "c16": {
+    "phases": [
+      {
+        "phase": "development",
+        "train": 792,
+        "end": 1168,
+        "n_per_point": 347,
+        "first_target": "2018-09-30",
+        "last_target": "2019-09-11"
+      },
+      {
+        "phase": "later_exploratory",
+        "train": 1168,
+        "end": 1461,
+        "n_per_point": 264,
+        "first_target": "2019-10-11",
+        "last_target": "2020-06-30"
+      }
+    ],
+    "maximum_saved_metric_difference": 4.9823256631498225e-11,
+    "comparisons": 112,
+    "daily_point_rows": 14664,
+    "independent_effect_decisions_checked": true
+  },
+  "config_sha256": "297445999737b902c61627bad4f74e1627b5af7ac5f1be08815733bb454a3c94",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "new_training": 0,
+  "new_physics": 0,
+  "original_selection_unchanged": true,
+  "c16_post_exposure": true,
+  "independent_transfer": false,
+  "figure_qa_pending": true
+}

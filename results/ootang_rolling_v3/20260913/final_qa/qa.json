@@ -1,0 +1,25 @@
+{
+  "checked_utc": "2026-09-13T04:52:51.689857+00:00",
+  "figures": 6,
+  "panels": 22,
+  "visual_review_completed": true,
+  "minimum_font_pt": 7,
+  "alignment_failures": 0,
+  "alignment_warnings": 0,
+  "collision_failures": 0,
+  "collision_warnings": 0,
+  "figure_qa_pending_resolved": true,
+  "source_preflight_warnings": [
+    "No TIFF: internal report has PDF/SVG and 600 dpi PNG; no journal submission claim."
+  ],
+  "observations": [
+    "All four points and complete development/later dates retained.",
+    "Forecast legends distinguish observations, primary 90% prediction intervals, core feedback, anchored B+ and current velocity.",
+    "Later ATU1/ATU5 tail errors and interval widening retained; no clipping or smoothing.",
+    "PHYS and CORE lines overlap at places; paired tables quantify small differences.",
+    "Every prescribed horizon is plotted; h30 remains primary."
+  ],
+  "statistics_verification": "statistics/verification.json",
+  "new_training": 0,
+  "new_physics": 0
+}
