@@ -15,17 +15,18 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**当前：原六候选结果与两次复盘已完成，C7 追加概率研究准备中。** 追加工作仍受原八小时截止约束；原 C4 后期失败不改判，C7 后期只作已暴露数据上的探索性复核。见 progress 和追加方案。
+**当前：九候选及第三次路线复盘已完成，完整概率目标尚未达成。** C8 在线均值有小幅收益，C9 增加覆盖但评分退步；下一项研究问题是有限记忆在线学习，尚需单独固定方案。仍受原八小时截止约束；C7 之后的后期结果只作暴露后的探索性复核，C4 原迁移失败保持。
 
 | 文档 | 用途 |
 | --- | --- |
-| [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 同预算内有依据地继续；均值冻结，经验误差分布与同池高斯对照，尚未运行 |
+| [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 已完成并核验；经验分布覆盖失败，同池高斯对照与完整分布保留 |
+| [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
 | [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM/正则回归、概率反馈和独立核验 |
-| [两次路线复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六候选后的纠偏与目标逐项核对；六候选和一次后期选择已用，完整效果尚未达成 |
-| [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 用户已授权自主执行；因果更新观测，30 日主步长，公平对照、六候选上限及每三次纠偏 |
+| [三次路线复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六/第九候选后的纠偏，区间修改分支停止，完整效果及物理额外价值尚未完成 |
+| [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 原冻结方案；因果更新观测、30 日主步长、公平对照与每三次纠偏，追加安排另见 C7 方案 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
 | [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
 | [B+加性GP v2结果](ootang_bplus_additive_gp_results.v2.md) / [冻结计划](ootang_bplus_additive_gp_plan.v2.md) / [配置](../config/ootang_bplus_additive_gp.v2.json) | 一次8组配对已完成并停止；ADD均值较B+及TIME_ONLY变差，整体失败；完整曲线、只读核验修正及评分保留 |
