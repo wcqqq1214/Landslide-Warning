@@ -233,7 +233,7 @@ def point_curves(spec, root, out, y, dates, selection):
             axs[2].plot(time, error, color="#365f91", label="Observed - mean", lw=0.85)
             axs[2].axhline(0, color="#888888", lw=0.5)
             for ax, label in zip(
-                axs, ("Displacement / mm", f"{h}-day increment / mm", "Residual / mm")
+                axs, ("Displacement\n/ mm", f"{h}-day increment\n/ mm", "Residual / mm")
             ):
                 ax.set_ylabel(label)
                 ax.grid(axis="y", alpha=0.13)
