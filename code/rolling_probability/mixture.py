@@ -1,4 +1,4 @@
-"""C11: learn a symmetric reference-scale mixture from matured CRPS losses."""
+"""Learn reference-scale mixtures from matured CRPS or interval-score losses."""
 
 import argparse
 from collections import deque
@@ -102,6 +102,67 @@ class MixtureWeights:
         )
 
 
+class IntervalWeights:
+    """C12: finite-grid empirical risk, evaluated only after targets mature."""
+
+    def __init__(self, horizons, window, start, intervals, level, tie, iterations):
+        self.pools = [deque(maxlen=window) for _ in range(horizons)]
+        self.weights = np.zeros((horizons, 4))
+        self.last_target = np.full(horizons, start - 1, int)
+        self.updates = np.zeros(horizons, int)
+        self.mean_losses = np.zeros((horizons, 4, intervals + 1))
+        self.grid = np.arange(intervals + 1, dtype=float) / intervals
+        self.start, self.level, self.tie = start, level, tie
+        self.iterations = iterations
+
+    def update_batch(self, error, core, wide, issued_origins, target, next_origin):
+        K = len(issued_origins)
+        if (
+            K > len(self.pools)
+            or np.shape(error) != (K, 4)
+            or np.shape(core) != (K, 4)
+            or np.shape(wide) != (K, 4)
+            or (np.asarray(issued_origins) < self.start).any()
+            or (np.asarray(issued_origins) + np.arange(K) != target).any()
+            or target >= next_origin
+            or (target <= self.last_target[:K]).any()
+        ):
+            raise ValueError("Invalid, unissued, premature or duplicate interval batch")
+        if (
+            not np.isfinite(np.stack([error, core, wide])).all()
+            or (core <= 0).any()
+            or (wide < core).any()
+        ):
+            raise ValueError("Invalid interval scale or supervision")
+        radius = central_radius(
+            core[..., None], wide[..., None], self.grid, self.level, self.iterations
+        )
+        loss = 2 * radius + 2 / (1 - self.level) * np.maximum(
+            abs(error[..., None]) - radius, 0
+        )
+        if not np.isfinite(loss).all():
+            raise ArithmeticError("Nonfinite interval risk")
+        for k in range(K):
+            self.pools[k].append(loss[k])
+            average = np.mean(self.pools[k], axis=0)
+            minimum = average.min(axis=-1, keepdims=True)
+            tied = average <= minimum + self.tie * np.maximum(1, abs(minimum))
+            self.weights[k] = self.grid[np.argmax(tied, axis=-1)]
+            self.mean_losses[k] = average
+            self.updates[k] += 1
+            self.last_target[k] = target
+
+    def state(self):
+        return dict(
+            weights=self.weights.tolist(),
+            last_target=self.last_target.tolist(),
+            updates=self.updates.tolist(),
+            pool_counts=[len(p) for p in self.pools],
+            mean_loss_grid=self.mean_losses.tolist(),
+            grid=self.grid.tolist(),
+        )
+
+
 def mixture_scores(pred, labels, levels):
     rows = []
     start, N, H = int(pred["origins"][0]), *pred["mean"].shape[:2]
@@ -145,6 +206,12 @@ def mixture_scores(pred, labels, levels):
     return pd.DataFrame(rows)
 
 
+def distribution_scores(pred, labels, levels):
+    if {"core_sigma", "wide_sigma", "weight"} <= pred.keys():
+        return mixture_scores(pred, labels, levels)
+    return score_predictions(pred, labels, levels)
+
+
 def phase_run(spec, phase, current, out, recorder):
     start, end = spec["stages"][phase]
     H = spec["horizons"]
@@ -169,7 +236,18 @@ def phase_run(spec, phase, current, out, recorder):
                 for k in ("wide_sigma", "weight", "sigma")
             }
         )
-        learners[name] = MixtureWeights(H, spec["mixture_window"], start)
+        if spec.get("weight_objective", "crps") == "interval_score":
+            learners[name] = IntervalWeights(
+                H,
+                spec["mixture_window"],
+                start,
+                spec["weight_grid_intervals"],
+                spec["weight_score_level"],
+                spec["weight_tie_relative"],
+                spec["quantile_bisection_steps"],
+            )
+        else:
+            learners[name] = MixtureWeights(H, spec["mixture_window"], start)
     recorder.event(
         "phase_started",
         phase=phase,
@@ -228,9 +306,22 @@ def phase_run(spec, phase, current, out, recorder):
             index=n,
             value_sha256=array_sha(observed),
         )
-        for k in range(min(H, i + 1)):
-            j = i - k
-            for name, learner in learners.items():
+        for name, learner in learners.items():
+            if isinstance(learner, IntervalWeights):
+                k = np.arange(min(H, i + 1))
+                j = i - k
+                r = records[name]
+                learner.update_batch(
+                    observed - r["mean"][j, k],
+                    r["core_sigma"][j, k],
+                    r["wide_sigma"][j, k],
+                    start + j,
+                    n,
+                    n + 1,
+                )
+                continue
+            for k in range(min(H, i + 1)):
+                j = i - k
                 r = records[name]
                 learner.update(
                     k,
@@ -257,15 +348,11 @@ def phase_run(spec, phase, current, out, recorder):
                     pred["mean"] - radius,
                     pred["mean"] + radius,
                 )
-            frame = mixture_scores(pred, stream.history, spec["probability"]["levels"])
-        else:
-            frame = score_predictions(
-                pred, stream.history, spec["probability"]["levels"]
-            )
-            if name == "B_RAW":
-                for key in frame:
-                    if key not in ("horizon", "point", "n", "mae", "rmse"):
-                        frame[key] = np.nan
+        frame = distribution_scores(pred, stream.history, spec["probability"]["levels"])
+        if name == "B_RAW":
+            for key in frame:
+                if key not in ("horizon", "point", "n", "mae", "rmse"):
+                    frame[key] = np.nan
         np.savez_compressed(out / f"{name}.npz", **pred)
         frame.insert(0, "model", name)
         rows.append(frame)
@@ -289,6 +376,10 @@ def phase_run(spec, phase, current, out, recorder):
         post_exposure=True,
         independent_transfer=False,
     )
+    if spec.get("weight_objective") == "interval_score":
+        decision["grid_loss_values"] = decision["mature_point_updates"] * (
+            spec["weight_grid_intervals"] + 1
+        )
     save_json(out / "decision.json", decision)
     recorder.event("phase_completed", phase=phase, decision=decision)
     print(
@@ -309,6 +400,8 @@ def execute(spec, config, out):
         1.0,
     ]:
         raise ValueError("Mixture weight contract changed")
+    if spec.get("weight_objective", "crps") not in ("crps", "interval_score"):
+        raise ValueError("Unknown weight objective")
     prior = ROOT / spec["prior_verification"]
     if (
         sha(prior) != spec["prior_verification_sha256"]
@@ -364,6 +457,12 @@ def execute(spec, config, out):
     count = sum(d["mature_point_updates"] for d in decisions.values())
     if count != spec["expected_mature_point_updates"]:
         raise ValueError("Mixture update count differs")
+    grid_counts = {}
+    if spec.get("weight_objective") == "interval_score":
+        grid_count = sum(d["grid_loss_values"] for d in decisions.values())
+        if grid_count != spec["expected_grid_loss_values"]:
+            raise ValueError("Grid loss count differs")
+        grid_counts["grid_loss_values"] = grid_count
     save_json(
         out / "decision.json",
         dict(
@@ -375,6 +474,7 @@ def execute(spec, config, out):
             new_scale_optimizations=0,
             physical_calls=0,
             independent_transfer=False,
+            **grid_counts,
         ),
     )
 
