@@ -1,0 +1,10 @@
+{
+  "state": "failed",
+  "pid": 29439,
+  "started_utc": "2026-09-13T04:18:41.584574+00:00",
+  "deadline": "2026-09-13T05:27:52+00:00",
+  "exit_code": 1,
+  "error": "FileNotFoundError(2, 'No such file or directory')",
+  "finished_utc": "2026-09-13T04:18:41.723547+00:00",
+  "elapsed_seconds": 0.1388462078757584
+}
