@@ -56,7 +56,9 @@ class OriginalResume:
             raise ValueError("Original resume interface changed")
         generated.write_text(source)
         save_json(path / "interface_changes.json", dict(original_sha256=sha(original), generated_sha256=sha(generated), replacements=changes, original_computation_recovered_exactly=True))
-        binary = path / ("original_resume" + (".dylib" if sys.platform == "darwin" else ".so"))
+        binary_root = ROOT / "runtime/ootang_neural_initial_state_v1"
+        binary_root.mkdir(parents=True, exist_ok=True)
+        binary = binary_root / ("original_resume_" + sha(generated)[:16] + (".dylib" if sys.platform == "darwin" else ".so"))
         if not binary.exists():
             subprocess.run(["cc", "-O3", "-fPIC", "-shared", str(generated), "-o", str(binary)], check=True, capture_output=True)
         self.lib = ctypes.CDLL(str(binary))
