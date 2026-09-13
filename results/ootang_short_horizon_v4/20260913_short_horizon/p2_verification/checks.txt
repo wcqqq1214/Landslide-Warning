@@ -1,0 +1,16 @@
+test_c16 (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_causality (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_dates (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_equation_loss (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_gradient (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_maturity (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_physics_replay (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_previous_scale (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_probability_analytic (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_ridge (test_short_horizon_v4.ShortHorizonTests) ... ok
+test_zero_residual (test_short_horizon_v4.ShortHorizonTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.649s
+
+OK

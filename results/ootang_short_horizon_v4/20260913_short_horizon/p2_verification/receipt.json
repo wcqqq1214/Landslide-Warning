@@ -1,0 +1,33 @@
+{
+  "start_utc": "2026-09-13T14:16:30.024112+00:00",
+  "end_utc": "2026-09-13T14:16:31.792149+00:00",
+  "elapsed_seconds": 1.7679336247965693,
+  "tests": 11,
+  "passed": true,
+  "failures": 0,
+  "errors": 0,
+  "calls": {
+    "reference_forward": 9,
+    "day_forward": 45,
+    "day_backward": 22
+  },
+  "neural_training_updates": 0,
+  "first_runner_note": "pytest module absent; used existing unittest runtime, no package install",
+  "physical_warnings": "Original macOS matmul warnings emitted; finite outputs and independent daily replay checked; underlying warning cause not claimed fixed",
+  "checks_sha256": "0007b51a1e6072a9e92c85a4c79fe5106ace564538be11eda1d8f796e1f446ae",
+  "implementation_commit": "419896d",
+  "earlier_check_run": {
+    "tests": 10,
+    "passed": true,
+    "calls": {
+      "reference_forward": 9,
+      "day_forward": 45,
+      "day_backward": 22
+    }
+  },
+  "p2_total_calls": {
+    "reference_forward": 18,
+    "day_forward": 90,
+    "day_backward": 44
+  }
+}

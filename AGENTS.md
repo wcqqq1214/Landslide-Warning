@@ -18,6 +18,9 @@
 
 # Current Stage Plan
 
+- **v4.0 P2 已核验并提交 `419896d`，现在进入 P3 正式运行。** P1 合同 `42e36d4`；11 项检查和 lint 通过，零正式训练。按 `docs/ootang_short_horizon_execution.v4.0.md`／冻结 JSON 顺序执行，原四小时截止 2026-09-13 17:37:17 UTC 保持。每步备份，未要求 push；新状态不改写下面的历史 P0/P1。
+
+
 @docs/ootang_short_horizon_comparison_plan.v4.0.md
 @docs/ootang_short_horizon_execution.v4.0.md
 
