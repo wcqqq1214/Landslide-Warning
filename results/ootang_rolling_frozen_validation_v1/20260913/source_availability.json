@@ -1,0 +1,113 @@
+{
+  "checked_utc": "2026-09-13T10:17:48.431002+00:00",
+  "source_sha256": {
+    "literature/Journal of Geophysical Research  Machine Learning and Computation - 2025 - Wang - Enhancing Landslide Displacement.pdf": "d2ae22029288dd2eca5ed888b864342d624b36ee233f35f14119e23a511553df",
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "data/monitoring_data.xlsx": "a28a6a09ea660132eafe9508848dcb2958ba892f425489f63c81a7c31b2e4a3d",
+    "docs/ootang_data_lineage_expert_review.md": "1b77439dcd21347bf0866df21fcca033126c43a59d0b72a12ba08b87154c1fa4",
+    "code/rolling_probability/data.py": "c837dd2d37635b16441f480183bb8232cbc317a8fbcfaac0c1cbcad196bb71cd",
+    "code/rolling_probability/ridge.py": "650e439118dd4d053fc9bd25fb744eda689ada23ae1b60bf34e82f0e6f06a3c6",
+    "code/rolling_probability/innovation.py": "5ffb8268b63b853c5eaf968526275cb75b674832953f1422b51347c3bf45f88f",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model.py": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09"
+  },
+  "paper": {
+    "path": "literature/Journal of Geophysical Research  Machine Learning and Computation - 2025 - Wang - Enhancing Landslide Displacement.pdf",
+    "pages": 19,
+    "keyword_scan_pages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
+    ],
+    "full_text_and_visual_pages": [
+      5,
+      6,
+      17
+    ],
+    "findings": [
+      {
+        "page": 5,
+        "section": "4.2",
+        "supports": "GNSS and piezometer monitoring; points to Supporting Information Text S5",
+        "does_not_establish": "per-record sampling and public availability timestamps"
+      },
+      {
+        "page": 6,
+        "section": "4.2–4.3",
+        "supports": "2016–2020 displacement and multiple monitoring points",
+        "does_not_establish": "day-value construction or publication delay"
+      },
+      {
+        "page": 17,
+        "section": "Data Availability Statement",
+        "supports": "datasets, notebooks and processing/training code archived on Figshare",
+        "does_not_establish": "operational historical as-of timestamps"
+      }
+    ],
+    "supplementary_text_s5": "Referenced but not located in current literature directory; not downloaded in this audit"
+  },
+  "csv": {
+    "rows": 1461,
+    "columns": [
+      "Date",
+      "MJ9/mm",
+      "MJ1/mm",
+      "MJ3/mm",
+      "ATU4/mm",
+      "ATU5/mm",
+      "ATU3/mm",
+      "ATU2/mm",
+      "ATU1/mm",
+      "Rainfall/mm",
+      "GWT/m",
+      "RWL/m",
+      "aveT/℃",
+      "minT/℃",
+      "maxT/℃",
+      "DP",
+      "RH"
+    ],
+    "date_start": "2016-07-01",
+    "date_end": "2020-06-30",
+    "date_resolution": "one date label per day",
+    "sampling_timestamp": "not recorded",
+    "available_at": "not recorded",
+    "revision_timestamp": "not recorded"
+  },
+  "workbook": {
+    "local_md5": "372d1608f46d7fcdb9805568d1c0782a",
+    "published_match": "matches prior versioned lineage record; no new remote download"
+  },
+  "availability": {
+    "as_of_verified": false,
+    "new_unexposed_eligible_observations_registered": false,
+    "working_assumption": "published day values are available before the next rolling origin",
+    "data_authenticity": "use fixed real published data as authorized; no new interpolation or future-use allegation"
+  },
+  "source_scope": "Existing local paper, versioned lineage notes and current input schema only",
+  "forcing_dependency": {
+    "C18_CORE": "past displacement and matured core error only",
+    "DRIFT1": "past displacement only",
+    "C18_PHYS": "past displacement and matured B_ANCHOR h1 errors; last driver index n-1 under saved causal teacher contract",
+    "C16_FAST_PHYS": "same mean dependence as C18_PHYS",
+    "B_ANCHOR": "physical trajectory increments to n+h-1; conditional known future rain/reservoir"
+  },
+  "physical_scope": "Static source/provenance inspection; no new physical solve or forcing perturbation",
+  "new_training": 0,
+  "new_physics": 0
+}

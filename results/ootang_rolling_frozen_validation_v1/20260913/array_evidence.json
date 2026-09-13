@@ -1,0 +1,169 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T10:13:47.220855+00:00",
+  "start_utc": "2026-09-13T09:59:11+00:00",
+  "deadline_utc": "2026-09-13T10:59:11+00:00",
+  "auditor_sha256": "41bf9cd17f859bed4b977391fefa10c8ee4ba682155593d2582c555fb398a234",
+  "source_receipt_sha256": "9131a2235e28c385f0ad9ed36e087d554fd6e3c0163a0995664907d8c98c4f9b",
+  "inputs": {
+    "data/monitoring_data.csv": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+    "results/ootang_rolling_v3/20260913/c8_online/events.jsonl": "6eecdd45b200d8297e83f28588166356fb142adaa1ab091043d8a4dc685ceb3b",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/events.jsonl": "af3f4da22bd82524597cf92288e151845bc2eab0ad6c0a32b668a880fc8beea1",
+    "results/ootang_rolling_v3/20260913/c18_information/events.jsonl": "f8dfd0e3a33f68e9038d080ab427e71947f4acc4b45d523e63ca7d0b349db37f",
+    "results/ootang_rolling_v3/20260913/c8_online/development/C8_ONLINE_DATA.npz": "e7465e3a4bb93999e115333295e1dce9a6eaf4992b78d128a794fc0408272d1d",
+    "results/ootang_rolling_v3/20260913/c8_online/development/online_state_DATA.npz": "5e1b59cbf97e00341528d0fb80b45b75fc74870082dda24d8d10178cf4b63c7d",
+    "results/ootang_rolling_v3/20260913/c8_online/development/issued_features.npz": "d766d6095fb9ebde9bba39f5a3cdf6d0814f25dfbe06538d647360200124308b",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/normalization.json": "aecc60e0acd4f5a67b77b850b3c1bd630336fa5e166170609854820c074cd43f",
+    "results/ootang_rolling_v3/20260913/c18_information/development/C18_PHYS.npz": "699caf547763942994214216fe1b84e03f494546215eeaaeb29be85658f3a1be",
+    "results/ootang_rolling_v3/20260913/c18_information/development/C18_CORE.npz": "8612f19258ecb37ad783c9169090748832e735411ef8e84a9d2946c19a2f98c8",
+    "results/ootang_rolling_v3/20260913/c18_information/development/C16_FAST_PHYS.npz": "f14b3fae0a6b3c2d2e642768a0d07517c265325ce2907788e6272af24776ef79",
+    "results/ootang_rolling_v3/20260913/c18_information/development/DRIFT1.npz": "920f15f79dd9046fb98231b5a4e94839adac0cc9e5e13524146315b77ac9a439",
+    "results/ootang_rolling_v3/20260913/c18_information/development/B_ANCHOR.npz": "614ffacb7f8652184e95b224048d126eea4123f951f8decf217aaf179b32b6fc",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/C16_FAST_PHYS.npz": "f14b3fae0a6b3c2d2e642768a0d07517c265325ce2907788e6272af24776ef79",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/C16_FAST_PHYS_learning.npz": "240732ddeca225c2fed1477f2b9ed404ab34c5b0cd1750e43819959d7704d102",
+    "results/ootang_rolling_v3/20260913/c18_information/development/C18_PHYS_information.npz": "8625f852c8fd51a3270f16a590260de4ddef149b43b18f50f939304428a5f208",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/C16_FAST_CORE.npz": "8ee8e1080d843dec85fa703edb76f76fff47254917fe492a8faa0c94ccc5688c",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/development/C16_FAST_CORE_learning.npz": "867cd8088005f0a6a6cb33cb37208ddb18e250ade8ba5a396e922132a69172f6",
+    "results/ootang_rolling_v3/20260913/c18_information/development/C18_CORE_information.npz": "82190c834a257e8a9e44e1afcb12d2c0787751817837f8316c5c15a2fcd46ad8",
+    "results/ootang_rolling_v3/20260913/c8_online/development/B_ANCHOR.npz": "614ffacb7f8652184e95b224048d126eea4123f951f8decf217aaf179b32b6fc",
+    "results/ootang_rolling_v3/20260913/c8_online/development/DRIFT1.npz": "920f15f79dd9046fb98231b5a4e94839adac0cc9e5e13524146315b77ac9a439",
+    "results/ootang_rolling_v3/20260913/physics_development/provenance.json": "305b03be5b1dca39e58a13ada9fc81380c5f7e94d0e00f8f33b740aceb94d70e",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/C8_ONLINE_DATA.npz": "4df6184dca7f22506ac32a59feb36ea829d48ce2f89dc5ec6cb9e828701b6728",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/online_state_DATA.npz": "c5c1e4a25fd27f49479e71b9169540135a3deb196e0b056d6ca74b0f1d66be13",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/issued_features.npz": "12c6a020f24b205f0bd7c38e5143f78ce9ae98e319aaffbc70c1fe4ab60c2635",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/normalization.json": "a04ada19d5c1245e9036bb8becc5dc210bb0c75150c5956c15dcf586b24d3d78",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/C18_PHYS.npz": "95ce65a1fa9b6b26023b83c7096503dfa8339b255f7b60bb29959e47a7f4f543",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/C18_CORE.npz": "dab4b7eda8585f7f6aafceda93f4c718cfebb2b7c2c62e67c02637daeb44a3ca",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/C16_FAST_PHYS.npz": "96da996928d125847de640322adf16e3222bfcaa8d78a1aea67243f60a351459",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/DRIFT1.npz": "43fa6cd093a7998d8f562e74cbec730054ed708b9f4d20a2169d933eb3d8ac28",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/B_ANCHOR.npz": "e7c7946e21c26facd1b01c89ac3487ccc745b628855513bf8e5b7d655a0b5424",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/C16_FAST_PHYS.npz": "96da996928d125847de640322adf16e3222bfcaa8d78a1aea67243f60a351459",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/C16_FAST_PHYS_learning.npz": "61f60e047aff00778c2ae8489ba107f5a2a14d66a4ee724e3b522b7d69865669",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/C18_PHYS_information.npz": "3f9f343b3b6676a6e488bd293636d6abceec8dc7dd4c7bc18844ac971a1564a8",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/C16_FAST_CORE.npz": "e80322d9b9d17a5544756bcbfb41bd21d4441a6420379fadbfcc5f747a78cf8e",
+    "results/ootang_rolling_v3/20260913/c16_fast_feedback_run3/later_exploratory/C16_FAST_CORE_learning.npz": "460d39e3bbc9737a704f677c90a2448cc412083aa23afe64b30fc4d9e9cd7c6c",
+    "results/ootang_rolling_v3/20260913/c18_information/later_exploratory/C18_CORE_information.npz": "b3a87631014940c7f128cff91a8141978cd1129171b7d628a2b1f4558a0fef66",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/B_ANCHOR.npz": "e7c7946e21c26facd1b01c89ac3487ccc745b628855513bf8e5b7d655a0b5424",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/DRIFT1.npz": "43fa6cd093a7998d8f562e74cbec730054ed708b9f4d20a2169d933eb3d8ac28",
+    "results/ootang_rolling_v3/20260913/physics_transfer/provenance.json": "8a1d3eae0512b2bd98a4a3df9bd0c7b6fb95869aa0783427c59b6992e46c6cc0"
+  },
+  "arrays_loaded": 32,
+  "origin_rows": 669,
+  "boundary_rows": 192,
+  "phase_results": {
+    "development": {
+      "all_origins": 376,
+      "h30_origins": 347,
+      "boundary_origins": [
+        792,
+        793,
+        823,
+        1138
+      ],
+      "boundary_dates": [
+        "2018-09-01",
+        "2018-09-02",
+        "2018-10-02",
+        "2019-08-13"
+      ],
+      "exact_mean_and_scale_inheritance": true,
+      "input_units_mm": {
+        "C8_ONLINE_DATA": [
+          0.000277073542354806,
+          0.00044422564260469805,
+          0.0001079794599926528,
+          0.00039397117266298576
+        ],
+        "B_ANCHOR": [
+          0.39825099268243813,
+          0.26105883497354543,
+          0.6531656970977738,
+          0.5956867050572839
+        ],
+        "DRIFT14": [
+          0.04719991418779554,
+          0.08583805128891368,
+          0.018301622906864046,
+          0.0627752284802117
+        ]
+      },
+      "response_h30_units_mm": [
+        1.2344404400436606,
+        1.5377017128400225,
+        0.501541871530041,
+        0.9018898681787966
+      ]
+    },
+    "later_exploratory": {
+      "all_origins": 293,
+      "h30_origins": 264,
+      "boundary_origins": [
+        1168,
+        1169,
+        1199,
+        1431
+      ],
+      "boundary_dates": [
+        "2019-09-12",
+        "2019-09-13",
+        "2019-10-13",
+        "2020-06-01"
+      ],
+      "exact_mean_and_scale_inheritance": true,
+      "input_units_mm": {
+        "C8_ONLINE_DATA": [
+          0.0002141349372636978,
+          0.00013588005897292787,
+          0.00011231639284900868,
+          0.00017164114950504836
+        ],
+        "B_ANCHOR": [
+          0.5218854410985625,
+          0.5686159248448817,
+          0.4721887532266004,
+          0.32078579676983693
+        ],
+        "DRIFT14": [
+          0.029606202262175602,
+          0.02086357234995268,
+          0.018244632058249683,
+          0.024834566638044023
+        ]
+      },
+      "response_h30_units_mm": [
+        0.7166519720348287,
+        0.6197797432123485,
+        0.333034078797101,
+        0.7341133388942823
+      ]
+    }
+  },
+  "maximum_differences": {
+    "sigma_formula_mm": 8.881784197001252e-16,
+    "data_only_trend_features_mm": 0.0,
+    "drift1_mean_mm": 0.0,
+    "calibration_log_scale": 1.1102230246251565e-16,
+    "calibration_factor": 4.440892098500626e-16,
+    "calibration_sigma_mm": 1.7763568394002505e-15,
+    "feedback_input_dimensionless": 0.0,
+    "information_matrix_dimensionless": 4.547473508864641e-13,
+    "information_variance_mm2": 4.440892098500626e-16,
+    "mean_reconstruction_mm": 0.0
+  },
+  "original_atol": 1e-08,
+  "original_rtol": 5e-11,
+  "new_training": 0,
+  "new_physics": 0,
+  "new_scores": 0,
+  "coefficient_fits": 0,
+  "verification_matrix_solves": 192,
+  "files": {
+    "origin_ledger.csv": "92448caf9a9414f8bb756efa7f9190ff848a2a2ab0472e01cf0e295e268be560",
+    "boundary_checks.csv": "89773d5bb4e08810add3644a6400b4b2fb501c9ff01795216a402a95fe9beaad"
+  },
+  "limitations": [
+    "as-of is not verified",
+    "unit-noise variance interpretation is not validated by algebra",
+    "No complete model verifier, new bootstrap, or new forecast run"
+  ]
+}

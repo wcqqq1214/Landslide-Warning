@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "scripts/audit_ootang_frozen_evidence.py"
+  ],
+  "started_utc": "2026-09-13T10:13:46.498683+00:00",
+  "finished_utc": "2026-09-13T10:13:47.249800+00:00",
+  "returncode": 0,
+  "stdout": "{\"passed\": true, \"checked_utc\": \"2026-09-13T10:13:47.220855+00:00\", \"arrays_loaded\": 32, \"origin_rows\": 669, \"boundary_rows\": 192, \"new_training\": 0, \"new_physics\": 0, \"new_scores\": 0, \"maximum_differences\": {\"sigma_formula_mm\": 8.881784197001252e-16, \"data_only_trend_features_mm\": 0.0, \"drift1_mean_mm\": 0.0, \"calibration_log_scale\": 1.1102230246251565e-16, \"calibration_factor\": 4.440892098500626e-16, \"calibration_sigma_mm\": 1.7763568394002505e-15, \"feedback_input_dimensionless\": 0.0, \"information_matrix_dimensionless\": 4.547473508864641e-13, \"information_variance_mm2\": 4.440892098500626e-16, \"mean_reconstruction_mm\": 0.0}}\n",
+  "stderr": ""
+}
