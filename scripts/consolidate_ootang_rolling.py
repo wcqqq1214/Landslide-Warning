@@ -1,4 +1,4 @@
-"""Read-only fifteen-candidate registry and paired C8 analysis with figures."""
+"""Read-only frozen candidate registry and paired forecast analysis with figures."""
 
 import argparse
 from datetime import datetime, timezone
@@ -145,9 +145,11 @@ def export_figure(fig, prefix, require_matplotlib_panel_alignment):
     plt.close(fig)
 
 
-def figures(phase, forecasts, dates, labels, rows, out, align):
+def figures(
+    phase, forecasts, dates, labels, rows, out, align, models, display, interval
+):
     h = 30
-    primary = forecasts[MODELS[0]]
+    primary = forecasts[models[0]]
     ids = primary["origins"] + h - 1
     mask = ids < len(labels)
     when, actual = dates[ids[mask]], labels[ids[mask]]
@@ -181,14 +183,14 @@ def figures(phase, forecasts, dates, labels, rows, out, align):
                     mu + ndtri(0.95) * sd,
                     color=COLORS[0],
                     alpha=0.18,
-                    label="FULL 90% prediction interval",
+                    label=interval,
                 )
                 ax.plot(
                     when, actual[:, p], color="#202020", lw=0.9, label="Observation"
                 )
             else:
                 ax.axhline(0, color="#555555", lw=0.4)
-            for name, label, color, style in zip(MODELS[:4], DISPLAY, COLORS, STYLES):
+            for name, label, color, style in zip(models[:4], display, COLORS, STYLES):
                 value = forecasts[name]["mean"][mask, h - 1, p]
                 if kind == "errors":
                     value = value - actual[:, p]
@@ -228,7 +230,7 @@ def figures(phase, forecasts, dates, labels, rows, out, align):
             ("Mean point RMSE (mm)", "CRPS (mm)", "90% coverage"),
         )
     ):
-        for model, label, color, style in zip(MODELS[:4], DISPLAY, COLORS, STYLES):
+        for model, label, color, style in zip(models[:4], display, COLORS, STYLES):
             table = rows[rows.model.eq(model)].sort_values("horizon")
             ax.plot(
                 table.horizon,
@@ -264,13 +266,36 @@ def figures(phase, forecasts, dates, labels, rows, out, align):
     export_figure(fig, out / f"{phase}_horizons", align)
 
 
-def c8_analysis(cfg, out, align):
-    if sha(ROOT / cfg["c8_config"]) != cfg["c8_config_sha256"]:
-        raise ValueError("Changed C8 configuration")
-    spec = json.loads((ROOT / cfg["c8_config"]).read_text())
+def focus_analysis(cfg, out, align):
+    prefix = cfg.get("focus_prefix", "c8")
+    config_path = cfg.get("focus_config", cfg.get("c8_config"))
+    config_sha = cfg.get("focus_config_sha256", cfg.get("c8_config_sha256"))
+    models = tuple(cfg.get("focus_models", MODELS))
+    display = tuple(cfg.get("display_labels", DISPLAY))
+    if len(models) != 6 or len(set(models)) != 6 or len(display) != 4:
+        raise ValueError("Expected six distinct models and four plot labels")
+    if not prefix.isalnum():
+        raise ValueError("Unsafe output prefix")
+    if sha(ROOT / config_path) != config_sha:
+        raise ValueError("Changed focus configuration")
+    spec = json.loads((ROOT / config_path).read_text())
     if spec["bootstrap"] != cfg["bootstrap"]:
         raise ValueError("Changed original statistics protocol")
-    run = ROOT / cfg["c8_run"]
+    run = ROOT / cfg.get("focus_run", cfg.get("c8_run"))
+    pairs = cfg.get(
+        "comparison_pairs",
+        [
+            (models[0], models[2]),
+            (models[0], models[3]),
+            (models[0], models[1]),
+            (models[1], models[2]),
+            (models[1], models[3]),
+            (models[0], models[4]),
+            (models[1], models[5]),
+        ],
+    )
+    if any(len(pair) != 2 or not set(pair).issubset(models) for pair in pairs):
+        raise ValueError("Comparison references an unavailable model")
     all_rows, points, nonoverlap, comparisons, daily, phase_info = (
         [],
         [],
@@ -284,7 +309,7 @@ def c8_analysis(cfg, out, align):
         table = pd.read_csv(ROOT / cfg["data"], nrows=end)
         labels = table[[p + "/mm" for p in POINTS]].to_numpy(float)
         dates = pd.to_datetime(table.Date).to_numpy()
-        forecasts = {name: read_npz(run / phase / (name + ".npz")) for name in MODELS}
+        forecasts = {name: read_npz(run / phase / (name + ".npz")) for name in models}
         scores, phase_rows, point_rows = {}, [], []
         for name, saved in forecasts.items():
             np.testing.assert_array_equal(saved["origins"], np.arange(start, end))
@@ -360,15 +385,6 @@ def c8_analysis(cfg, out, align):
         indices = circular_blocks(
             n, boot["block_length"], boot["replicates"], boot["seed"]
         )
-        pairs = [
-            (MODELS[0], MODELS[2]),
-            (MODELS[0], MODELS[3]),
-            (MODELS[0], MODELS[1]),
-            (MODELS[1], MODELS[2]),
-            (MODELS[1], MODELS[3]),
-            (MODELS[0], MODELS[4]),
-            (MODELS[1], MODELS[5]),
-        ]
         observed = {name: statistics(value) for name, value in scores.items()}
         sampled = {name: statistics(value, indices) for name, value in scores.items()}
         for candidate, reference in pairs:
@@ -391,7 +407,18 @@ def c8_analysis(cfg, out, align):
                         **boot,
                     )
                 )
-        figures(phase, forecasts, dates, labels, pd.DataFrame(phase_rows), out, align)
+        figures(
+            phase,
+            forecasts,
+            dates,
+            labels,
+            pd.DataFrame(phase_rows),
+            out,
+            align,
+            models,
+            display,
+            cfg.get("interval_label", "FULL 90% prediction interval"),
+        )
         phase_info.append(
             dict(
                 phase=phase,
@@ -403,11 +430,11 @@ def c8_analysis(cfg, out, align):
             )
         )
     for name, rows in [
-        ("c8_horizons", all_rows),
-        ("c8_points_h30", points),
-        ("c8_nonoverlap", nonoverlap),
-        ("c8_paired_bootstrap", comparisons),
-        ("c8_daily_h30", daily),
+        (prefix + "_horizons", all_rows),
+        (prefix + "_points_h30", points),
+        (prefix + "_nonoverlap", nonoverlap),
+        (prefix + "_paired_bootstrap", comparisons),
+        (prefix + "_daily_h30", daily),
     ]:
         pd.DataFrame(rows).to_csv(
             out / (name + ".csv"), index=False, float_format="%.12g"
@@ -443,7 +470,7 @@ def main(args):
     from audit_panel_alignment import require_matplotlib_panel_alignment
 
     registry = collect_registry(cfg, out)
-    summary = c8_analysis(cfg, out, require_matplotlib_panel_alignment)
+    summary = focus_analysis(cfg, out, require_matplotlib_panel_alignment)
     for source in [
         Path(__file__),
         Path(__file__).with_name("analyze_ootang_rolling.py"),
@@ -454,13 +481,13 @@ def main(args):
     metadata = dict(
         created_utc=datetime.now(timezone.utc).isoformat(),
         registry=registry,
-        c8=summary,
+        **{cfg.get("focus_prefix", "c8"): summary},
         config_sha256=sha(cfg_path),
         data_sha256=cfg["data_sha256"],
         new_training=0,
         new_physics=0,
         original_selection_unchanged=True,
-        c8_post_exposure=True,
+        **{cfg.get("focus_prefix", "c8") + "_post_exposure": True},
         independent_transfer=False,
         figure_qa_pending=True,
     )
