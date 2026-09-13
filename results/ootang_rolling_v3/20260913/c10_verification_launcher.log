@@ -1,0 +1,62 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T01:45:38.155154+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c10_forgetting",
+  "immutable_artifacts_checked": 76,
+  "sources_checked": 59,
+  "forecast_locks": 669,
+  "original_online_point_updates_verified": 153600,
+  "coefficient_checks": {
+    "development/FULL": {
+      "max_coefficient_difference": 1.9254042804561777e-12,
+      "max_augmented_svd_difference": 1.6681378500749133e-12,
+      "max_effective_weight_difference": 2.8421709430404007e-13,
+      "augmented_svd_checks": 168,
+      "point_updates": 43380,
+      "fixed_regularization_verified": true,
+      "forgetting_factor": 0.9889503892939223
+    },
+    "development/DATA": {
+      "max_coefficient_difference": 2.03009831167833e-12,
+      "max_augmented_svd_difference": 1.8090529074754613e-12,
+      "max_effective_weight_difference": 2.8421709430404007e-13,
+      "augmented_svd_checks": 168,
+      "point_updates": 43380,
+      "fixed_regularization_verified": true,
+      "forgetting_factor": 0.9889503892939223
+    },
+    "later_exploratory/FULL": {
+      "max_coefficient_difference": 2.9076463459176694e-12,
+      "max_augmented_svd_difference": 4.693800903510237e-12,
+      "max_effective_weight_difference": 2.2737367544323206e-13,
+      "augmented_svd_checks": 132,
+      "point_updates": 33420,
+      "fixed_regularization_verified": true,
+      "forgetting_factor": 0.9889503892939223
+    },
+    "later_exploratory/DATA": {
+      "max_coefficient_difference": 2.9021784975213905e-12,
+      "max_augmented_svd_difference": 4.713229806441177e-12,
+      "max_effective_weight_difference": 2.2737367544323206e-13,
+      "augmented_svd_checks": 132,
+      "point_updates": 33420,
+      "fixed_regularization_verified": true,
+      "forgetting_factor": 0.9889503892939223
+    }
+  },
+  "max_independent_feature_difference": 0.0,
+  "max_independent_mean_difference_mm": 1.0231815394945443e-12,
+  "max_calibration_difference_mm": 0.0,
+  "score_cells_checked": 63360,
+  "max_csv_rounding_difference": 4.995968083676416e-10,
+  "static_distributions_and_raw_scales_unchanged": true,
+  "post_exposure": true,
+  "independent_transfer": false,
+  "new_training_updates": 0,
+  "physical_calls": 0,
+  "verifier_sha256": "fb0566cf2ef3748d161124c47f6a022481b71f8d7bf77c15866ca25a647b097b",
+  "dependency_sha256": {
+    "verify_ootang_empirical.py": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138",
+    "verify_ootang_rolling.py": "5f19112d481e4d6408ea613f557c5957fa43905ae92908c1d3a43ee519add42f"
+  }
+}
