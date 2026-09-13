@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "intervals_checked": 98,
+  "replicates": 2000,
+  "block_length": 30,
+  "seed": 20260913,
+  "method": "independent block multiplicity weights and matrix aggregates from exported daily rows",
+  "maximum_ci_difference": 2.146723687701524e-09,
+  "prior_gaussian_and_causal_verification": "c8_verification",
+  "new_training": 0,
+  "new_physics": 0
+}

@@ -1,0 +1,10 @@
+{
+  "pdf": "results/ootang_rolling_v3/20260913/consolidated_analysis/later_exploratory_horizons.pdf",
+  "auditable": true,
+  "minimum_required_pt": 5.0,
+  "minimum_found_pt": 7.0,
+  "text_run_count": 42,
+  "below_minimum_count": 0,
+  "below_minimum": [],
+  "warnings": []
+}
