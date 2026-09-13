@@ -15,18 +15,19 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**当前：十候选、第三次路线复盘与 C10 补记已完成，完整概率目标尚未达成。** C8 在线均值有小幅收益，C9 增加覆盖但评分退步，C10 指数遗忘也未改善效果；当前没有已冻结的 C11。仍受原八小时截止约束；C7 之后的后期结果只作暴露后的探索性复核，C4 原迁移失败保持。
+**当前：十二候选、四次路线复盘及适用独立核验已完成，完整概率目标尚未达成。** 在线 Ridge 属于机器学习，均值有收益；C11/C12 物理宽分量只有限增加覆盖，概率评分差于原核心，已停止该分支。仍受原八小时截止约束，暂无冻结的 C13；后期追加为已暴露探索，C4 原迁移失败保持。
 
 | 文档 | 用途 |
 | --- | --- |
 | [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 已完成并核验；经验分布覆盖失败，同池高斯对照与完整分布保留 |
 | [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |
 | [C10 指数遗忘在线回归](ootang_rolling_probability_candidate.c10.md) / [配置](../config/ootang_rolling_probability.v3_9.json) | 已运行并独立核验；均值与概率均差于 C8，停止遗忘参数搜索 |
+| [C11 物理概率参照](ootang_rolling_probability_candidate.c11.md) / [C12 区间评分权重](ootang_rolling_probability_candidate.c12.md) | 均已完成并独立核验；均值复用 C8 DATA，覆盖有限增加但评分退步，后期 25/27，停止固定核心宽分量/评分切换分支 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
 | [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM/正则回归、概率反馈和独立核验 |
-| [三次路线复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六/第九候选后的纠偏，区间修改分支停止，完整效果及物理额外价值尚未完成 |
+| [四次路线复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六/第九/第十二候选后的纠偏，区间修改分支停止，完整效果及物理额外价值尚未完成 |
 | [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 原冻结方案；因果更新观测、30 日主步长、公平对照与每三次纠偏，追加安排另见 C7 方案 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
 | [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
