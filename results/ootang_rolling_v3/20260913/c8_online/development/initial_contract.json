@@ -1,0 +1,9 @@
+{
+  "training_rows": 792,
+  "label_sha256": "d7972112a617fe8a270355dced6f8c8a1058fe742cef3dd785fc093681be4109",
+  "training_samples": 511,
+  "initial_regularization": {
+    "FULL": 0.511,
+    "DATA": 0.511
+  }
+}
