@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T03:05:23.552991+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c13_innovation",
+  "immutable_artifacts_checked": 80,
+  "sources_checked": 57,
+  "forecast_locks": 669,
+  "checks": {
+    "point_updates": 219240,
+    "score_cells": 67320,
+    "svd_checks": 2160
+  },
+  "maximum_differences": {
+    "features": 0.0,
+    "beta": 1.2434497875801753e-14,
+    "svd": 2.220446049250313e-15,
+    "mean_mm": 2.2737367544323206e-13,
+    "scores_mm": 4.995968083676416e-10
+  },
+  "old_distributions_and_core_sigma_exactly_unchanged": true,
+  "post_exposure": true,
+  "independent_transfer": false,
+  "new_training_updates": 0,
+  "physical_calls": 0,
+  "verifier_sha256": "9fe03fbe0c8ca8ad853c43fb29eaabe1042cbd582e026208ecafabd69b43a00d",
+  "dependency_sha256": {
+    "verify_ootang_empirical.py": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138",
+    "verify_ootang_rolling.py": "5f19112d481e4d6408ea613f557c5957fa43905ae92908c1d3a43ee519add42f"
+  }
+}
