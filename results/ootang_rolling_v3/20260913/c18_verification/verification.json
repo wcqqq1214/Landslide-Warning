@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T05:21:57.207756+00:00",
+  "artifact_count": 79,
+  "source_count": 64,
+  "covariance_point_updates": 228960,
+  "svd_checks": 828,
+  "score_cells": 79200,
+  "locks": 669,
+  "maximum_difference": 4.995968083676416e-10,
+  "new_training": 0,
+  "new_physics": 0,
+  "run_manifest_sha256": "872a60b3bd43c3d9f6d40823ac6db801d0a720836271ce5fad98397c7998a39b"
+}

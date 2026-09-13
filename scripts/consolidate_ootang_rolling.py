@@ -272,8 +272,8 @@ def focus_analysis(cfg, out, align):
     config_sha = cfg.get("focus_config_sha256", cfg.get("c8_config_sha256"))
     models = tuple(cfg.get("focus_models", MODELS))
     display = tuple(cfg.get("display_labels", DISPLAY))
-    if len(models) != 6 or len(set(models)) != 6 or len(display) != 4:
-        raise ValueError("Expected six distinct models and four plot labels")
+    if len(models) < 6 or len(set(models)) != len(models) or len(display) != 4:
+        raise ValueError("Expected at least six distinct models and four plot labels")
     if not prefix.isalnum():
         raise ValueError("Unsafe output prefix")
     if sha(ROOT / config_path) != config_sha:
