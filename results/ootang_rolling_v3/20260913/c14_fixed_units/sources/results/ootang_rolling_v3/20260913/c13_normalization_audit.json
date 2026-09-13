@@ -1,0 +1,88 @@
+{
+  "sources": {
+    "results/ootang_rolling_v3/20260913/c13_innovation/development/C8_ONLINE_DATA.npz": "e7465e3a4bb93999e115333295e1dce9a6eaf4992b78d128a794fc0408272d1d",
+    "results/ootang_rolling_v3/20260913/c13_innovation/development/C13_INNOV_CORE.npz": "d41e9fab9ffa1092aa4d6c5dff310dead4dcc669f9a08dda538f7317d07e6712",
+    "results/ootang_rolling_v3/20260913/c13_innovation/later_exploratory/C8_ONLINE_DATA.npz": "4df6184dca7f22506ac32a59feb36ea829d48ce2f89dc5ec6cb9e828701b6728",
+    "results/ootang_rolling_v3/20260913/c13_innovation/later_exploratory/C13_INNOV_CORE.npz": "16f67788da7e900250ab134d45515f4414aec1c878f0f3a202235e5ad49f4233"
+  },
+  "script_sha256": "d193f646e6639543ef53cba85be5eba4d06e44957a98d194257111067983864e",
+  "rows": [
+    {
+      "phase": "development",
+      "point": "ATU1",
+      "horizon": 30,
+      "n_ratios": 317,
+      "maximum_scale_ratio": 2.615747181737075,
+      "median_scale_ratio": 0.9359784274055298,
+      "maximum_absolute_core_correction_mm": 3.185752049982
+    },
+    {
+      "phase": "development",
+      "point": "ATU5",
+      "horizon": 30,
+      "n_ratios": 317,
+      "maximum_scale_ratio": 2.6919194060711886,
+      "median_scale_ratio": 0.8881435001113659,
+      "maximum_absolute_core_correction_mm": 1.5235784483195403
+    },
+    {
+      "phase": "development",
+      "point": "MJ3",
+      "horizon": 30,
+      "n_ratios": 317,
+      "maximum_scale_ratio": 5.931630957367474,
+      "median_scale_ratio": 0.847170318544,
+      "maximum_absolute_core_correction_mm": 11.149478905712385
+    },
+    {
+      "phase": "development",
+      "point": "MJ1",
+      "horizon": 30,
+      "n_ratios": 317,
+      "maximum_scale_ratio": 2.6608135824590735,
+      "median_scale_ratio": 0.8873730044684252,
+      "maximum_absolute_core_correction_mm": 5.31871353349527
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU1",
+      "horizon": 30,
+      "n_ratios": 234,
+      "maximum_scale_ratio": 15.275073774599797,
+      "median_scale_ratio": 0.9892400547815332,
+      "maximum_absolute_core_correction_mm": 148.06247361606012
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "ATU5",
+      "horizon": 30,
+      "n_ratios": 234,
+      "maximum_scale_ratio": 8.060003175712943,
+      "median_scale_ratio": 1.1565705479230748,
+      "maximum_absolute_core_correction_mm": 3.066896251540811
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ3",
+      "horizon": 30,
+      "n_ratios": 234,
+      "maximum_scale_ratio": 14.23293929341885,
+      "median_scale_ratio": 0.8178299662700635,
+      "maximum_absolute_core_correction_mm": 30.77930503942912
+    },
+    {
+      "phase": "later_exploratory",
+      "point": "MJ1",
+      "horizon": 30,
+      "n_ratios": 234,
+      "maximum_scale_ratio": 3.3823075392546373,
+      "median_scale_ratio": 0.9627780014695704,
+      "maximum_absolute_core_correction_mm": 3.764093755729732
+    }
+  ],
+  "core_correction_identity": "beta * error_core(n-h,h) * sigma_core(n,h)/sigma_core(n-h,h)",
+  "labels_loaded": false,
+  "new_fits": 0,
+  "physical_calls": 0,
+  "limitation": "algebraic and descriptive evidence only; no proof that fixed units improve forecasting"
+}
