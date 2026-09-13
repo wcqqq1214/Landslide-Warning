@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "step": 200,
+  "zero_q": 25.77143643988577,
+  "best_q": 25.622272530686878,
+  "checkpoints": [
+    {
+      "step": 0,
+      "q": 25.77143643988577,
+      "physics_pass": true
+    },
+    {
+      "step": 50,
+      "q": 27.19447648217551,
+      "physics_pass": true
+    },
+    {
+      "step": 100,
+      "q": 26.717308094016605,
+      "physics_pass": true
+    },
+    {
+      "step": 200,
+      "q": 25.622272530686878,
+      "physics_pass": true
+    },
+    {
+      "step": 400,
+      "q": 25.75166378300025,
+      "physics_pass": true
+    }
+  ],
+  "selection_uses": "inner common 7-target origins only",
+  "later_reselection": false,
+  "new_internal_training": 0
+}

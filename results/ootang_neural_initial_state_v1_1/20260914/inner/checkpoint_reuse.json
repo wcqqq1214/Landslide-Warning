@@ -1,0 +1,24 @@
+{
+  "new_training": 0,
+  "source_sha256": {
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/scaling.json": "0aa039f4b3dabe26d8efd813373423de5be00d376bfa516bf0bc2517f84ec462",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/losses.json": "3de17a1c209b3b349f5c92ddd4fa777a34cde4c5d87dac8a50522a667dc7a0db",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/step_0.pt": "9913766365440bfeadeb2eb2d9ee8105e90f76e8d6f72c30c4f039828f670afb",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/step_100.pt": "24817014d54ce9f1a401fd2b50f91a7a0911ef5613f74be8c03d72e4c81e08f3",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/step_200.pt": "a9b24acc698a477fd67d5bf4e9bac17ea7df335eb71f51417acfbcbf0f8255c2",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/step_400.pt": "f3ab7238f05dcbec780fa345382e6f0057439a38e671e49c904bd9a1d06933cb",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_0/step_50.pt": "3389b700e171ef28df3d4dc57db8a154ffabae982aa908ec11fa6cf07e308d90",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/losses.json": "e2ee7fdba93b90343df7549dafc549745f8d7838b3df6f9cd1c7765f9fd20a4e",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/step_0.pt": "7b4ce20a63cc00f11c60d4f6ebdc6e1cb7359a3eb7cacffeb9add70e0b1a372a",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/step_100.pt": "aa13f30c5c56a65897a4c479f059c3120e7f6388f16811b77f92eb67fba217aa",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/step_200.pt": "3aed99fb9e36727f3bcc2de7724ec26edee68d7e16df9b32e7bca6c2d9d13e1a",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/step_400.pt": "ed30eea0187db401d387141ec324992873e19079cf33f447682c03923bdf7e31",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_1/step_50.pt": "22f799ba7a75e85da599813742232f630f4545d6b2b6d3f8e7d1c90aea23afb6",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/losses.json": "cadf2a7099d916e09cbae4d156bddf301461a14c9d1fb1daeb9960b874585ae2",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/step_0.pt": "c3f61b739dc536e45ecb66cad4a2aa957ddbddbe4e268d2c4c952b31bf6f9add",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/step_100.pt": "e5fc16a9aa011e867182fe01ddfdac2395a2143aaa343751f3722155b6e07592",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/step_200.pt": "f6ffaff83bb700b201654c81c093f5e32578b161e40871ca8162b75956c132dc",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/step_400.pt": "871f9b45ec607a0988caf4ea70f44a438a4ee65e95f55adbd1cf31e10101cc9e",
+    "results/ootang_neural_initial_state_v1/20260914/inner/training/seed_2/step_50.pt": "aae5e1e95d193cf3754dfaf1abe062eda88c24d66af21dd341b9cc4d7d3eec8c"
+  }
+}

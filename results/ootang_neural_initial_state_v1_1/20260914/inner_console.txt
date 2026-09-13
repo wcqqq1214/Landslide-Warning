@@ -1,0 +1,47 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+{"step": 0, "q": 25.77143643988577, "physics_pass": true}
+{"step": 50, "q": 27.19447648217551, "physics_pass": true}
+{"step": 100, "q": 26.717308094016605, "physics_pass": true}
+{"step": 200, "q": 25.622272530686878, "physics_pass": true}
+{"step": 400, "q": 25.75166378300025, "physics_pass": true}
+{
+  "passed": true,
+  "step": 200,
+  "zero_q": 25.77143643988577,
+  "best_q": 25.622272530686878,
+  "checkpoints": [
+    {
+      "step": 0,
+      "q": 25.77143643988577,
+      "physics_pass": true
+    },
+    {
+      "step": 50,
+      "q": 27.19447648217551,
+      "physics_pass": true
+    },
+    {
+      "step": 100,
+      "q": 26.717308094016605,
+      "physics_pass": true
+    },
+    {
+      "step": 200,
+      "q": 25.622272530686878,
+      "physics_pass": true
+    },
+    {
+      "step": 400,
+      "q": 25.75166378300025,
+      "physics_pass": true
+    }
+  ],
+  "selection_uses": "inner common 7-target origins only",
+  "later_reselection": false,
+  "new_internal_training": 0
+}

@@ -1,0 +1,14 @@
+{
+  "statistical_mean_only": true,
+  "mean_initial_replay_difference_by_horizon_mm": [
+    0.00018561609783773747,
+    0.00039492450923717115,
+    0.0005783351307400153,
+    0.0007390523039703112,
+    0.0008798838955499377,
+    0.0010032903536512094,
+    0.001111427695718703
+  ],
+  "used_as_replacement": false,
+  "interval_physical_feasibility_claim": false
+}
