@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "x_shape": [
+    1209,
+    30,
+    25,
+    4
+  ],
+  "z_shape": [
+    1209,
+    7,
+    8,
+    4
+  ],
+  "teacher_prefixes": [
+    252,
+    342,
+    432,
+    612,
+    792,
+    1168
+  ],
+  "training_sizes": {
+    "612": 354,
+    "792": 534,
+    "1168": 910
+  },
+  "input_sha256": "b2c7fed16beaba029ca4dfd65bfd5fc77768ee5e96497843d5c899b75f72f77b"
+}

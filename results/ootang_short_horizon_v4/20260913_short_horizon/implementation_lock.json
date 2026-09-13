@@ -1,0 +1,10 @@
+{
+  "code/short_horizon/__init__.py": "c1ef0fe5432133b7676347345ee2e8e28eea3697e1624c34f6894f1e8e76d8f6",
+  "code/short_horizon/common.py": "ffc3dab2a0599ebc2a2c05cf289fbbfc29bea0dbddb381bf05bef5879da04db4",
+  "code/short_horizon/physics.py": "af51278097fab8a2930a3105ca9acc60c86adb444d71243f6ff6dcc22c344cc4",
+  "code/short_horizon/data.py": "c94c8c98a81efbb6072f63e8a24173e5628877ec65dcf3a8cbbe18b9a0f85703",
+  "code/short_horizon/models.py": "9a55314081e62179f0e491ca0da84292e65441eac725d83fe67968e2e50d4653",
+  "code/short_horizon/evaluation.py": "689ce7ca143ae701cd7ac2aef90abb2905ee7b345b8bfc7cf0db81943e32a97d",
+  "code/short_horizon/train.py": "c16a6146c2e6ac1915e8d0eeabf7db6595340a0c20d9ffcc2f38104ee2e08acd",
+  "code/short_horizon/run.py": "d40b95f133cee66f35eb4dd56c5eaad324a3b766064d0ecf4d5605b12ada9afc"
+}

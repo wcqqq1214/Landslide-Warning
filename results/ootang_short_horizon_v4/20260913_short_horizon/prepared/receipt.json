@@ -1,0 +1,14 @@
+{
+  "rows": 1209,
+  "min_origin": 252,
+  "max_origin": 1460,
+  "target_labels_saved": false,
+  "calls": {
+    "reference_forward": 1215,
+    "day_forward": 0,
+    "day_backward": 0
+  },
+  "max_historical_state_difference": 0.0,
+  "input_sha256": "b2c7fed16beaba029ca4dfd65bfd5fc77768ee5e96497843d5c899b75f72f77b",
+  "semantics": "each x uses y[:origin]; future physical inputs use fixed past-only scenario"
+}
