@@ -93,6 +93,26 @@ def verify(run):
         learning[phase] = {}
         states = json.loads((run / phase / "learning_state.json").read_text())
         core = arrays(source / (spec["core_model"] + ".npz"))
+        fixed = spec.get("error_units", "issued") == "frozen_first_forecast"
+        if spec.get("error_units", "issued") not in ("issued", "frozen_first_forecast"):
+            raise ValueError("Unknown fixed-unit contract")
+        if fixed:
+            units = json.loads((run / phase / "normalization.json").read_text())
+            names = {r for refs in spec["innovation_references"].values() for r in refs}
+            if (
+                units["origin"] != start
+                or units["mode"] != "frozen_first_forecast"
+                or set(units["scales"]) != names
+            ):
+                raise ValueError("Incorrect normalization origin or references")
+            for unit_name in names:
+                reference = arrays(source / (unit_name + ".npz"))
+                np.testing.assert_array_equal(
+                    units["scales"][unit_name], reference["sigma"][0]
+                )
+                totals["unit_constants_checked"] = (
+                    totals.get("unit_constants_checked", 0) + reference["sigma"][0].size
+                )
         for name, pred in current.items():
             np.testing.assert_array_equal(pred["origins"], np.arange(start, end))
             np.testing.assert_array_equal(pred["teacher_prefixes"], np.full(N, start))
@@ -129,14 +149,18 @@ def verify(run):
                 valid_origins = np.arange(h, count)
                 for d, reference in enumerate(refs):
                     past = valid_origins - h
+                    scale = (
+                        reference["sigma"][0, k]
+                        if fixed
+                        else reference["sigma"][past, k]
+                    )
                     x[valid_origins, :, d] = (
                         labels[start + valid_origins - 1] - reference["mean"][past, k]
-                    ) / reference["sigma"][past, k]
+                    ) / scale
                 expected_features[:count, k] = x
                 expected_available[h:count, k] = True
-                response = (labels[start + k : end] - core["mean"][:count, k]) / core[
-                    "sigma"
-                ][:count, k]
+                scale = core["sigma"][0, k] if fixed else core["sigma"][:count, k]
+                response = (labels[start + k : end] - core["mean"][:count, k]) / scale
                 counts = np.maximum(h, np.r_[np.arange(N) - k, count])
                 for i, stop in enumerate(counts):
                     xx = x[h:stop]
@@ -190,7 +214,8 @@ def verify(run):
             maximum["beta"] = max(
                 maximum["beta"], float(abs(log["beta"] - reconstructed_beta).max())
             )
-            mean = core["mean"] + core["sigma"] * np.einsum(
+            scale = core["sigma"][0][None] if fixed else core["sigma"]
+            mean = core["mean"] + scale * np.einsum(
                 "nhpd,nhpd->nhp", expected_features, reconstructed_beta, optimize=False
             )
             np.testing.assert_allclose(
