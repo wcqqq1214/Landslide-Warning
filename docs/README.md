@@ -15,10 +15,11 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**最新结果：v3.0 六候选、一次后期迁移和两次路线复盘已完成。** C4 均值/评分有改善，但后期覆盖未过；C6 只有开发小幅概率改善，没有后期结论。结束本轮候选搜索，完整研究目标尚未达成；旧长窗结论保持。先读简报，不把历史计划中的“下一步”当作当前运行入口。
+**当前：原六候选结果与两次复盘已完成，C7 追加概率研究准备中。** 追加工作仍受原八小时截止约束；原 C4 后期失败不改判，C7 后期只作已暴露数据上的探索性复核。见 progress 和追加方案。
 
 | 文档 | 用途 |
 | --- | --- |
+| [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 同预算内有依据地继续；均值冻结，经验误差分布与同池高斯对照，尚未运行 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
