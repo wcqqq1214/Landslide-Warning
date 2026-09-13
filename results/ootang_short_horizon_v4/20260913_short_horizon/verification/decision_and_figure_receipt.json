@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-13T14:35:10.840549+00:00",
+  "internal_choices": [
+    {
+      "model": "CL_DIRECT",
+      "checkpoint": 200
+    },
+    {
+      "model": "CL_BRES",
+      "checkpoint": 100
+    },
+    {
+      "model": "PINN_EQ",
+      "checkpoint": 100
+    },
+    {
+      "model": "PINN_NOEQ",
+      "checkpoint": 100
+    }
+  ],
+  "ridge_alpha": 0.001,
+  "independent_gate_checks": 3528,
+  "later_locked_choices": [
+    {
+      "horizon": 1,
+      "model": "RR_DIRECT",
+      "passed": true
+    },
+    {
+      "horizon": 2,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    },
+    {
+      "horizon": 3,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    },
+    {
+      "horizon": 4,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    },
+    {
+      "horizon": 5,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    },
+    {
+      "horizon": 6,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    },
+    {
+      "horizon": 7,
+      "model": "C16_CORE_RULES",
+      "passed": true
+    }
+  ],
+  "fitting_score_cells": 1008,
+  "paired_table_rows": 336,
+  "complete_plot_rows": 8120,
+  "selection_sha256": "1ce50148723275dfccee295c3212cbf3f873aa7ea4ef6a6693d95ec8bffd6170",
+  "plot_data_sha256": "1f0d779dc526288806ce41551be787f5a3774c04b4cf3db68dff72556031986a",
+  "new_training": 0,
+  "physical_calls": 0
+}

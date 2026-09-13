@@ -1,0 +1,50 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-13T14:58:30.159893+00:00",
+  "pdf_sha256": "c2b1127f6cd39de0ac5c5f34abad47fc3ef6002c245b5a94b766699983a982c3",
+  "character_geometry": [
+    {
+      "page": 1,
+      "glyphs": 1145,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 2,
+      "glyphs": 910,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 3,
+      "glyphs": 637,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 4,
+      "glyphs": 642,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 5,
+      "glyphs": 1034,
+      "clipped": [],
+      "collisions": []
+    }
+  ],
+  "numbers": {
+    "pages": 5,
+    "numeric_presence_checks": 70,
+    "checked_against": "frozen selection and source summary tables; row order also reviewed in TeX and rendered pages"
+  },
+  "statistics": {
+    "passed": true,
+    "score_and_interval_cells": 128,
+    "max_difference_mm": 3.774758283725532e-15,
+    "method": "independent prefix sums over the same frozen non-circular block samples",
+    "new_training": 0
+  },
+  "generic_figure_span_audit": "XeTeX joins nonadjacent rows/cells into font spans; the generic plot-span detector reports false overlap. Final report checked with actual per-character boxes and page renders; generic failure receipts retained, not relabelled as passes."
+}

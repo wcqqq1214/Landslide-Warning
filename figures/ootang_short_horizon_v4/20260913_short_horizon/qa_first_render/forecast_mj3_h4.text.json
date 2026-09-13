@@ -1,0 +1,10 @@
+{
+  "pdf": "figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_mj3_h4.pdf",
+  "auditable": true,
+  "minimum_required_pt": 5.0,
+  "minimum_found_pt": 6.5,
+  "text_run_count": 23,
+  "below_minimum_count": 0,
+  "below_minimum": [],
+  "warnings": []
+}

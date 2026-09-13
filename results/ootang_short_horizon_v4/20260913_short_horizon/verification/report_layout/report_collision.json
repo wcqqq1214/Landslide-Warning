@@ -1,0 +1,3038 @@
+{
+  "pdf": "tmp/pdfs/v4/ootang_short_horizon_process_report.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 5,
+  "visible_text_box_count": 377,
+  "text_trace_count": 531,
+  "stroke_path_count": 754,
+  "filled_region_count": 564,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 137,
+    "warn": 0,
+    "contained_fill_overlays": 16,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 39.1% of the smaller box",
+      "text": "每天读入截至当天的历史，分别预测第1、2、3、4、5、6、7 天后的位移。一个起点的七步预测",
+      "text_bbox": [
+        62.36199951171875,
+        146.68699645996094,
+        532.9180297851562,
+        177.40699768066406
+      ],
+      "other_text": "发出后保持不变；下一天的新观测只服务新预测与已到期误差更新。比较B+、ConvLSTM、",
+      "other_bbox": [
+        62.36199951171875,
+        165.40699768066406,
+        541.0490112304688,
+        196.1269989013672
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "发出后保持不变；下一天的新观测只服务新预测与已到期误差更新。比较B+、ConvLSTM、",
+      "text_bbox": [
+        62.36199951171875,
+        165.40699768066406,
+        541.0490112304688,
+        196.1269989013672
+      ],
+      "other_text": "离散状态PINN、岭回归／在线反馈，并固定直接版与残差版配对。",
+      "other_bbox": [
+        114.27400207519531,
+        184.1269989013672,
+        420.11798095703125,
+        196.77500915527344
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "均最低；1天开发覆盖率95.81%，略高于事前95%上限，因此共同推荐按原规则选择岭回",
+      "text_bbox": [
+        62.36199951171875,
+        538.2479858398438,
+        532.916015625,
+        568.9679565429688
+      ],
+      "other_text": "归。均值最小组合为反馈回归的1天预测，后期RMSE为0.000209mm。",
+      "other_bbox": [
+        234.2740020751953,
+        556.9679565429688,
+        453.65802001953125,
+        569.615966796875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 39.1% of the smaller box",
+      "text": "开发目标期：2018-09-01–2019-09-11；后期：2019-09-12–2020-06-30。每点各h保留全部合法起点，后",
+      "text_bbox": [
+        62.362030029296875,
+        574.637939453125,
+        532.91748046875,
+        601.5179443359375
+      ],
+      "other_text": "期样本量依次为293、292、291、290、289、288、287。这些误差针对公开的已处理日序列，不能直接",
+      "other_bbox": [
+        62.362030029296875,
+        591.0179443359375,
+        532.9150390625,
+        617.89794921875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "期样本量依次为293、292、291、290、289、288、287。这些误差针对公开的已处理日序列，不能直接",
+      "text_bbox": [
+        62.362030029296875,
+        591.0179443359375,
+        532.9150390625,
+        617.89794921875
+      ],
+      "other_text": "解释成现场传感器精度或真实失稳预警精度。",
+      "other_bbox": [
+        62.362030029296875,
+        607.39794921875,
+        272.3620300292969,
+        617.89794921875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "结果：在当前公开日序列上，开发锁定的组合在后期的1–7天均通过本轮工作条件，最远",
+      "text_bbox": [
+        65.35099792480469,
+        107.45700073242188,
+        529.9310302734375,
+        138.177001953125
+      ],
+      "other_text": "为7天。在线回归与误差反馈最值得保留；物理参照的额外收益尚未确立。",
+      "other_bbox": [
+        81.26301574707031,
+        126.17700958251953,
+        463.05499267578125,
+        138.82501220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "步长",
+      "text_bbox": [
+        146.42999267578125,
+        372.98699951171875,
+        251.33399963378906,
+        381.98699951171875
+      ],
+      "other_text": "锁定组合",
+      "other_bbox": [
+        176.3820037841797,
+        372.98699951171875,
+        212.3820037841797,
+        381.98699951171875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "岭回归",
+      "other_bbox": [
+        176.38499450683594,
+        395.30401611328125,
+        203.38499450683594,
+        404.30401611328125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000918",
+      "other_bbox": [
+        246.1829833984375,
+        395.7900085449219,
+        281.1390380859375,
+        404.7900085449219
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000420",
+      "other_bbox": [
+        305.93402099609375,
+        395.7900085449219,
+        340.89007568359375,
+        404.7900085449219
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000229",
+      "other_bbox": [
+        363.88507080078125,
+        395.7900085449219,
+        398.84112548828125,
+        404.7900085449219
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "88.48%",
+      "other_bbox": [
+        420.0631103515625,
+        395.7900085449219,
+        448.84515380859375,
+        404.7900085449219
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 35.6% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "2",
+      "other_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        411.59100341796875,
+        221.38497924804688,
+        420.59100341796875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000361",
+      "other_bbox": [
+        246.1829833984375,
+        412.0769958496094,
+        281.1390380859375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000899",
+      "other_bbox": [
+        305.93402099609375,
+        412.0769958496094,
+        340.89007568359375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "0.000296",
+      "other_bbox": [
+        363.88507080078125,
+        412.0769958496094,
+        398.84112548828125,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "1",
+      "text_bbox": [
+        153.11697387695312,
+        395.7900085449219,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "other_text": "93.92%",
+      "other_bbox": [
+        420.0631103515625,
+        412.0769958496094,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        411.59100341796875,
+        221.38497924804688,
+        420.59100341796875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.000361",
+      "other_bbox": [
+        246.1829833984375,
+        412.0769958496094,
+        281.1390380859375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.000899",
+      "other_bbox": [
+        305.93402099609375,
+        412.0769958496094,
+        340.89007568359375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.000296",
+      "other_bbox": [
+        363.88507080078125,
+        412.0769958496094,
+        398.84112548828125,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "93.92%",
+      "other_bbox": [
+        420.0631103515625,
+        412.0769958496094,
+        448.84515380859375,
+        421.0769958496094
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 35.6% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "3",
+      "other_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        427.87701416015625,
+        221.38497924804688,
+        436.87701416015625
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.000947",
+      "other_bbox": [
+        246.1829833984375,
+        428.3630065917969,
+        281.1390380859375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.002399",
+      "other_bbox": [
+        305.93402099609375,
+        428.3630065917969,
+        340.89007568359375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "0.000820",
+      "other_bbox": [
+        363.88507080078125,
+        428.3630065917969,
+        398.84112548828125,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "2",
+      "text_bbox": [
+        153.11697387695312,
+        412.0769958496094,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "other_text": "93.56%",
+      "other_bbox": [
+        420.0631103515625,
+        428.3630065917969,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        427.87701416015625,
+        221.38497924804688,
+        436.87701416015625
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.000947",
+      "other_bbox": [
+        246.1829833984375,
+        428.3630065917969,
+        281.1390380859375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.002399",
+      "other_bbox": [
+        305.93402099609375,
+        428.3630065917969,
+        340.89007568359375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.000820",
+      "other_bbox": [
+        363.88507080078125,
+        428.3630065917969,
+        398.84112548828125,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "93.56%",
+      "other_bbox": [
+        420.0631103515625,
+        428.3630065917969,
+        448.84515380859375,
+        437.3630065917969
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 35.6% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "4",
+      "other_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        444.16302490234375,
+        221.38497924804688,
+        453.16302490234375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.001953",
+      "other_bbox": [
+        246.1829833984375,
+        444.6490173339844,
+        281.1390380859375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.005143",
+      "other_bbox": [
+        305.93402099609375,
+        444.6490173339844,
+        340.89007568359375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "0.001829",
+      "other_bbox": [
+        363.88507080078125,
+        444.6490173339844,
+        398.84112548828125,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3",
+      "text_bbox": [
+        153.11697387695312,
+        428.3630065917969,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "other_text": "92.41%",
+      "other_bbox": [
+        420.0631103515625,
+        444.6490173339844,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        444.16302490234375,
+        221.38497924804688,
+        453.16302490234375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.001953",
+      "other_bbox": [
+        246.1829833984375,
+        444.6490173339844,
+        281.1390380859375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.005143",
+      "other_bbox": [
+        305.93402099609375,
+        444.6490173339844,
+        340.89007568359375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.001829",
+      "other_bbox": [
+        363.88507080078125,
+        444.6490173339844,
+        398.84112548828125,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "92.41%",
+      "other_bbox": [
+        420.0631103515625,
+        444.6490173339844,
+        448.84515380859375,
+        453.6490173339844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 35.6% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "5",
+      "other_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        460.45001220703125,
+        221.38497924804688,
+        469.45001220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.003510",
+      "other_bbox": [
+        246.1829833984375,
+        460.9360046386719,
+        281.1390380859375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.009612",
+      "other_bbox": [
+        305.93402099609375,
+        460.9360046386719,
+        340.89007568359375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "0.003541",
+      "other_bbox": [
+        363.88507080078125,
+        460.9360046386719,
+        398.84112548828125,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "4",
+      "text_bbox": [
+        153.11697387695312,
+        444.6490173339844,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "other_text": "89.97%",
+      "other_bbox": [
+        420.0631103515625,
+        460.9360046386719,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        460.45001220703125,
+        221.38497924804688,
+        469.45001220703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.003510",
+      "other_bbox": [
+        246.1829833984375,
+        460.9360046386719,
+        281.1390380859375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.009612",
+      "other_bbox": [
+        305.93402099609375,
+        460.9360046386719,
+        340.89007568359375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.003541",
+      "other_bbox": [
+        363.88507080078125,
+        460.9360046386719,
+        398.84112548828125,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "89.97%",
+      "other_bbox": [
+        420.0631103515625,
+        460.9360046386719,
+        448.84515380859375,
+        469.9360046386719
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 35.6% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "6",
+      "other_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        476.73602294921875,
+        221.38497924804688,
+        485.73602294921875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.005755",
+      "other_bbox": [
+        246.1829833984375,
+        477.2220153808594,
+        281.1390380859375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.016277",
+      "other_bbox": [
+        305.93402099609375,
+        477.2220153808594,
+        340.89007568359375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "0.006185",
+      "other_bbox": [
+        363.88507080078125,
+        477.2220153808594,
+        398.84112548828125,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "5",
+      "text_bbox": [
+        153.11697387695312,
+        460.9360046386719,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "other_text": "87.24%",
+      "other_bbox": [
+        420.0631103515625,
+        477.2220153808594,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 94.6% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        476.73602294921875,
+        221.38497924804688,
+        485.73602294921875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.005755",
+      "other_bbox": [
+        246.1829833984375,
+        477.2220153808594,
+        281.1390380859375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.016277",
+      "other_bbox": [
+        305.93402099609375,
+        477.2220153808594,
+        340.89007568359375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.006185",
+      "other_bbox": [
+        363.88507080078125,
+        477.2220153808594,
+        398.84112548828125,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "87.24%",
+      "other_bbox": [
+        420.0631103515625,
+        477.2220153808594,
+        448.84515380859375,
+        486.2220153808594
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "7",
+      "other_bbox": [
+        153.11697387695312,
+        493.5090026855469,
+        157.74298095703125,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "回归＋反馈",
+      "other_bbox": [
+        176.38497924804688,
+        493.02301025390625,
+        221.38497924804688,
+        502.02301025390625
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.008827",
+      "other_bbox": [
+        246.1829833984375,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.025580",
+      "other_bbox": [
+        305.93402099609375,
+        493.5090026855469,
+        340.89007568359375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.009978",
+      "other_bbox": [
+        363.88507080078125,
+        493.5090026855469,
+        398.84112548828125,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "6",
+      "text_bbox": [
+        153.11697387695312,
+        477.2220153808594,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "85.89%",
+      "other_bbox": [
+        420.0631103515625,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.008827",
+      "text_bbox": [
+        246.1829833984375,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.025580",
+      "other_bbox": [
+        305.93402099609375,
+        493.5090026855469,
+        340.89007568359375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.008827",
+      "text_bbox": [
+        246.1829833984375,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "0.009978",
+      "other_bbox": [
+        363.88507080078125,
+        493.5090026855469,
+        398.84112548828125,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 1,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.008827",
+      "text_bbox": [
+        246.1829833984375,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "other_text": "85.89%",
+      "other_bbox": [
+        420.0631103515625,
+        493.5090026855469,
+        448.84515380859375,
+        502.5090026855469
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "图2",
+      "text_bbox": [
+        62.36199951171875,
+        432.3240051269531,
+        532.9190063476562,
+        455.364013671875
+      ],
+      "other_text": "各家族代表按开发段同h的最低RMSE固定，再报告后期；因此代表图与第1页“共同推荐”的身份可能不同。纵",
+      "other_bbox": [
+        88.92500305175781,
+        432.3240051269531,
+        398.1000061035156,
+        441.80999755859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "图2",
+      "text_bbox": [
+        62.36199951171875,
+        432.3240051269531,
+        532.9190063476562,
+        455.364013671875
+      ],
+      "other_text": "轴为对数；点表示已发预测的整体评分，不是种子评分的平均。神经均值先作三种子等权合并。",
+      "other_bbox": [
+        62.36199951171875,
+        446.364013671875,
+        440.36199951171875,
+        455.364013671875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM两版都优于本轮B+，但仍未超过当天速度外推。PINN完成训练，但其神经状态未通过独",
+      "text_bbox": [
+        62.36199951171875,
+        696.8299560546875,
+        540.0385131835938,
+        740.0909423828125
+      ],
+      "other_text": "立物理重放检查，表中仍保留原神经输出；本结论限于这次固定结构。在线回归方案还使用多尺度趋势、",
+      "other_bbox": [
+        62.362030029296875,
+        713.2099609375,
+        540.0385131835938,
+        723.7099609375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM两版都优于本轮B+，但仍未超过当天速度外推。PINN完成训练，但其神经状态未通过独",
+      "text_bbox": [
+        62.36199951171875,
+        696.8299560546875,
+        540.0385131835938,
+        740.0909423828125
+      ],
+      "other_text": "在线更新及误差反馈，不能把全部优势归因于“线性模型优于深度学习”。",
+      "other_bbox": [
+        62.362030029296875,
+        729.5909423828125,
+        394.3825378417969,
+        740.0909423828125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "0.0891",
+      "other_bbox": [
+        299.093994140625,
+        536.5140380859375,
+        328.26300048828125,
+        547.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "0.2786",
+      "other_bbox": [
+        365.8909912109375,
+        536.5140380859375,
+        395.05999755859375,
+        547.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "0.1260",
+      "other_bbox": [
+        430.6399841308594,
+        536.5140380859375,
+        459.8089904785156,
+        547.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 36.8% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "ConvLSTM直接版",
+      "other_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "1.6026",
+      "other_bbox": [
+        299.093994140625,
+        555.5140380859375,
+        328.26300048828125,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "0.9829",
+      "other_bbox": [
+        365.8909912109375,
+        555.5140380859375,
+        395.05999755859375,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当天速度外推",
+      "text_bbox": [
+        135.46697998046875,
+        535.947021484375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "other_text": "0.5286",
+      "other_bbox": [
+        430.6399841308594,
+        555.5140380859375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "1.6026",
+      "other_bbox": [
+        299.093994140625,
+        555.5140380859375,
+        328.26300048828125,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "0.9829",
+      "other_bbox": [
+        365.8909912109375,
+        555.5140380859375,
+        395.05999755859375,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "0.5286",
+      "other_bbox": [
+        430.6399841308594,
+        555.5140380859375,
+        459.8089904785156,
+        566.0140380859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 36.8% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "ConvLSTM残差版",
+      "other_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "2.7316",
+      "other_bbox": [
+        299.093994140625,
+        574.5150146484375,
+        328.26300048828125,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "0.9149",
+      "other_bbox": [
+        365.8909912109375,
+        574.5150146484375,
+        395.05999755859375,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM直接版",
+      "text_bbox": [
+        135.46697998046875,
+        554.947021484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "other_text": "0.5188",
+      "other_bbox": [
+        430.6399841308594,
+        574.5150146484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "2.7316",
+      "other_bbox": [
+        299.093994140625,
+        574.5150146484375,
+        328.26300048828125,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "0.9149",
+      "other_bbox": [
+        365.8909912109375,
+        574.5150146484375,
+        395.05999755859375,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "0.5188",
+      "other_bbox": [
+        430.6399841308594,
+        574.5150146484375,
+        459.8089904785156,
+        585.0150146484375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "PINN方程约束版",
+      "other_bbox": [
+        165.6539764404297,
+        592.948974609375,
+        218.1539764404297,
+        603.448974609375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "3.4947",
+      "other_bbox": [
+        299.093994140625,
+        593.5159912109375,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "1.5275",
+      "other_bbox": [
+        365.8909912109375,
+        593.5159912109375,
+        395.05999755859375,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "ConvLSTM残差版",
+      "text_bbox": [
+        135.46697998046875,
+        573.947998046875,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "0.8101",
+      "other_bbox": [
+        430.6399841308594,
+        593.5159912109375,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        135.4669952392578,
+        516.9459838867188,
+        459.8089904785156,
+        528.0130004882812
+      ],
+      "other_text": "3.5570",
+      "other_bbox": [
+        299.093994140625,
+        517.5130004882812,
+        328.26300048828125,
+        528.0130004882812
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        135.4669952392578,
+        516.9459838867188,
+        459.8089904785156,
+        528.0130004882812
+      ],
+      "other_text": "1.7842",
+      "other_bbox": [
+        365.8909912109375,
+        517.5130004882812,
+        395.05999755859375,
+        528.0130004882812
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        135.4669952392578,
+        516.9459838867188,
+        459.8089904785156,
+        528.0130004882812
+      ],
+      "other_text": "0.9044",
+      "other_bbox": [
+        430.6399841308594,
+        517.5130004882812,
+        459.8089904785156,
+        528.0130004882812
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3.4947",
+      "text_bbox": [
+        299.093994140625,
+        593.5159912109375,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "1.5275",
+      "other_bbox": [
+        365.8909912109375,
+        593.5159912109375,
+        395.05999755859375,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "3.4947",
+      "text_bbox": [
+        299.093994140625,
+        593.5159912109375,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "other_text": "0.8101",
+      "other_bbox": [
+        430.6399841308594,
+        593.5159912109375,
+        459.8089904785156,
+        604.0159912109375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0793",
+      "text_bbox": [
+        299.093994140625,
+        612.5169677734375,
+        459.8089904785156,
+        623.0169677734375
+      ],
+      "other_text": "0.0373",
+      "other_bbox": [
+        365.8909912109375,
+        612.5169677734375,
+        395.05999755859375,
+        623.0169677734375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0793",
+      "text_bbox": [
+        299.093994140625,
+        612.5169677734375,
+        459.8089904785156,
+        623.0169677734375
+      ],
+      "other_text": "0.0215",
+      "other_bbox": [
+        430.6399841308594,
+        612.5169677734375,
+        459.8089904785156,
+        623.0169677734375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0904",
+      "text_bbox": [
+        299.093994140625,
+        631.5179443359375,
+        459.8089904785156,
+        642.0179443359375
+      ],
+      "other_text": "0.0376",
+      "other_bbox": [
+        365.8909912109375,
+        631.5179443359375,
+        395.05999755859375,
+        642.0179443359375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0904",
+      "text_bbox": [
+        299.093994140625,
+        631.5179443359375,
+        459.8089904785156,
+        642.0179443359375
+      ],
+      "other_text": "0.0219",
+      "other_bbox": [
+        430.6399841308594,
+        631.5179443359375,
+        459.8089904785156,
+        642.0179443359375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0088",
+      "text_bbox": [
+        299.093994140625,
+        650.5189208984375,
+        459.8089904785156,
+        661.0189208984375
+      ],
+      "other_text": "0.0256",
+      "other_bbox": [
+        365.8909912109375,
+        650.5189208984375,
+        395.05999755859375,
+        661.0189208984375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0088",
+      "text_bbox": [
+        299.093994140625,
+        650.5189208984375,
+        459.8089904785156,
+        661.0189208984375
+      ],
+      "other_text": "0.0100",
+      "other_bbox": [
+        430.6399841308594,
+        650.5189208984375,
+        459.8089904785156,
+        661.0189208984375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0093",
+      "text_bbox": [
+        299.093994140625,
+        669.5198974609375,
+        459.8089904785156,
+        680.0198974609375
+      ],
+      "other_text": "0.0265",
+      "other_bbox": [
+        365.8909912109375,
+        669.5198974609375,
+        395.05999755859375,
+        680.0198974609375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 2,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "0.0093",
+      "text_bbox": [
+        299.093994140625,
+        669.5198974609375,
+        459.8089904785156,
+        680.0198974609375
+      ],
+      "other_text": "0.0105",
+      "other_bbox": [
+        430.6399841308594,
+        669.5198974609375,
+        459.8089904785156,
+        680.0198974609375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 3,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "两点覆盖率较低，ATU1仅略高于本轮逐点80%下界。困难尾段与误差尖峰全部保留，尚不能把“过工",
+      "text_bbox": [
+        62.36198425292969,
+        695.54296875,
+        532.9199829101562,
+        722.4229736328125
+      ],
+      "other_text": "作条件”理解为已充分覆盖所有异常变化。",
+      "other_bbox": [
+        62.36198425292969,
+        711.9229736328125,
+        255.58297729492188,
+        722.4229736328125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 3,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "每点依次为累计位移、7日总增量、实测减预测均值。蓝带为相对均值的90%边际预测区间；误差落在",
+      "text_bbox": [
+        62.36199951171875,
+        99.54499816894531,
+        532.91845703125,
+        128.76499938964844
+      ],
+      "other_text": "蓝带内即被覆盖。累计曲线重合仍需由增量和误差图核对。",
+      "other_bbox": [
+        62.36199951171875,
+        118.26499938964844,
+        335.36199951171875,
+        128.76499938964844
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 4,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "图中每条点日预测都在目标日前7天发出，之后未被新预测覆盖；两点均为287个合法起点。不同面",
+      "text_bbox": [
+        62.36199951171875,
+        99.54499816894531,
+        532.903076171875,
+        128.76499938964844
+      ],
+      "other_text": "板纵轴尺度分别标注，增量单位为mm，未转换为单日速度。",
+      "other_bbox": [
+        223.35899353027344,
+        118.26499938964844,
+        345.85198974609375,
+        129.33200073242188
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 4,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "当前最优均值属于监督回归与成熟误差反馈。B+在这里提供对照和可选物理误差参照；这组小误差主",
+      "text_bbox": [
+        62.36199951171875,
+        695.594970703125,
+        532.9140014648438,
+        722.4749755859375
+      ],
+      "other_text": "要来自近期位移信息，尚无稳定的额外物理增益证据。",
+      "other_bbox": [
+        62.36199951171875,
+        711.9749755859375,
+        314.36199951171875,
+        722.4749755859375
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "图7",
+      "text_bbox": [
+        62.36199951171875,
+        367.0370178222656,
+        532.9139404296875,
+        390.0770263671875
+      ],
+      "other_text": "固定配对的四点平均RMSE差值，负值表示前一版本更好。四个面板纵轴尺度不同：残差输出、方程约束与物理",
+      "other_bbox": [
+        89.06399536132812,
+        367.0370178222656,
+        199.71299743652344,
+        376.52301025390625
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "图7",
+      "text_bbox": [
+        62.36199951171875,
+        367.0370178222656,
+        532.9139404296875,
+        390.0770263671875
+      ],
+      "other_text": "误差参照是不同问题，不能混为同一种增益。",
+      "other_bbox": [
+        62.36199951171875,
+        381.0770263671875,
+        242.36199951171875,
+        390.0770263671875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 39.1% of the smaller box",
+      "text": "这次的取舍。ConvLSTM残差版在开发段更差，在后期部分步长稍好；岭回归残差版未获得稳定增益。",
+      "text_bbox": [
+        62.36199951171875,
+        531.7509765625,
+        539.5594482421875,
+        558.6309814453125
+      ],
+      "other_text": "加入B+ 一日误差后的反馈方案总体略退步。PINN 集成均值与独立C 重放最大相差约1.2763 mm，高",
+      "other_bbox": [
+        62.362030029296875,
+        548.1309814453125,
+        532.9210205078125,
+        575.010986328125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "核验：36次固定神经拟合、7800次更新；427项哈希、14508个分布锁和61152个评分单元通过复算。完整七步长指标、",
+      "text_bbox": [
+        62.36199951171875,
+        768.739013671875,
+        539.0189819335938,
+        794.1190185546875
+      ],
+      "other_text": "配对统计、三种子结果、原始模型及31幅图件随版本保存。",
+      "other_bbox": [
+        209.44900512695312,
+        785.1190185546875,
+        302.78802490234375,
+        794.60498046875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 94.9% of the smaller box",
+      "text": "加入B+ 一日误差后的反馈方案总体略退步。PINN 集成均值与独立C 重放最大相差约1.2763 mm，高",
+      "text_bbox": [
+        62.362030029296875,
+        548.1309814453125,
+        532.9210205078125,
+        575.010986328125
+      ],
+      "other_text": "于0.01mm上限，停止这版结构。",
+      "other_bbox": [
+        76.3590316772461,
+        564.510986328125,
+        224.5140380859375,
+        575.5780029296875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 92.7% of the smaller box",
+      "text": "值得保留什么。保留在线趋势回归＋短期误差反馈及共同成熟误差校准，固定1–7天任务和完整对",
+      "text_bbox": [
+        62.362030029296875,
+        580.8909912109375,
+        532.9114990234375,
+        607.77099609375
+      ],
+      "other_text": "照。7天反馈回归相对速度外推的RMSE差为−0.2530mm，30日成块重采样的描述性95%区间为",
+      "other_bbox": [
+        83.36203002929688,
+        597.27099609375,
+        532.9110107421875,
+        608.594970703125
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "下一步。先把这套短期方法写清楚，再单独确定预警对象、事件标签和阈值，评价误报、漏报与提前量；",
+      "text_bbox": [
+        62.362030029296875,
+        630.031005859375,
+        540.029541015625,
+        673.291015625
+      ],
+      "other_text": "本轮没有验证真实失稳预警。公开四条日序列具有强月内三次数值结构，原始日值当时是否可得仍未",
+      "other_bbox": [
+        62.362030029296875,
+        646.4110107421875,
+        532.908935546875,
+        656.9110107421875
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "下一步。先把这套短期方法写清楚，再单独确定预警对象、事件标签和阈值，评价误报、漏报与提前量；",
+      "text_bbox": [
+        62.362030029296875,
+        630.031005859375,
+        540.029541015625,
+        673.291015625
+      ],
+      "other_text": "知，且评价期已被多轮探索使用。它们限制外推主张，也不自动否定本次保存的预测改善。",
+      "other_bbox": [
+        62.362030029296875,
+        662.791015625,
+        482.3620300292969,
+        673.291015625
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        152.18899536132812,
+        437.2760009765625,
+        443.0870361328125,
+        446.7619934082031
+      ],
+      "other_text": "78.66%",
+      "other_bbox": [
+        281.4049987792969,
+        437.7619934082031,
+        310.1870422363281,
+        446.7619934082031
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        152.18899536132812,
+        437.2760009765625,
+        443.0870361328125,
+        446.7619934082031
+      ],
+      "other_text": "4.1382",
+      "other_bbox": [
+        341.9329833984375,
+        437.7619934082031,
+        367.63702392578125,
+        446.7619934082031
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "锚定B+",
+      "text_bbox": [
+        152.18899536132812,
+        437.2760009765625,
+        443.0870361328125,
+        446.7619934082031
+      ],
+      "other_text": "9.2460",
+      "other_bbox": [
+        417.38299560546875,
+        437.7619934082031,
+        443.0870361328125,
+        446.7619934082031
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "75.35%",
+      "text_bbox": [
+        281.4049987792969,
+        454.0480041503906,
+        443.0870361328125,
+        463.0480041503906
+      ],
+      "other_text": "0.4296",
+      "other_bbox": [
+        341.9329833984375,
+        454.0480041503906,
+        367.63702392578125,
+        463.0480041503906
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "75.35%",
+      "text_bbox": [
+        281.4049987792969,
+        454.0480041503906,
+        443.0870361328125,
+        463.0480041503906
+      ],
+      "other_text": "1.3601",
+      "other_bbox": [
+        417.38299560546875,
+        454.0480041503906,
+        443.0870361328125,
+        463.0480041503906
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "86.67%",
+      "text_bbox": [
+        281.4049987792969,
+        470.3349914550781,
+        443.0870361328125,
+        479.3349914550781
+      ],
+      "other_text": "0.1518",
+      "other_bbox": [
+        341.9329833984375,
+        470.3349914550781,
+        367.63702392578125,
+        479.3349914550781
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "86.67%",
+      "text_bbox": [
+        281.4049987792969,
+        470.3349914550781,
+        443.0870361328125,
+        479.3349914550781
+      ],
+      "other_text": "0.2223",
+      "other_bbox": [
+        417.38299560546875,
+        470.3349914550781,
+        443.0870361328125,
+        479.3349914550781
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "85.89%",
+      "text_bbox": [
+        281.4049987792969,
+        486.6210021972656,
+        443.0870361328125,
+        495.6210021972656
+      ],
+      "other_text": "0.0415",
+      "other_bbox": [
+        341.9329833984375,
+        486.6210021972656,
+        367.63702392578125,
+        495.6210021972656
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "85.89%",
+      "text_bbox": [
+        281.4049987792969,
+        486.6210021972656,
+        443.0870361328125,
+        495.6210021972656
+      ],
+      "other_text": "0.1116",
+      "other_bbox": [
+        417.38299560546875,
+        486.6210021972656,
+        443.0870361328125,
+        495.6210021972656
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "85.80%",
+      "text_bbox": [
+        281.4049987792969,
+        502.9079895019531,
+        443.0870361328125,
+        511.9079895019531
+      ],
+      "other_text": "0.0420",
+      "other_bbox": [
+        341.9329833984375,
+        502.9079895019531,
+        367.63702392578125,
+        511.9079895019531
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-text",
+      "page": 5,
+      "message": "Text boxes overlap by 100.0% of the smaller box",
+      "text": "85.80%",
+      "text_bbox": [
+        281.4049987792969,
+        502.9079895019531,
+        443.0870361328125,
+        511.9079895019531
+      ],
+      "other_text": "0.1148",
+      "other_bbox": [
+        417.38299560546875,
+        502.9079895019531,
+        443.0870361328125,
+        511.9079895019531
+      ],
+      "object_count": 1,
+      "object_indexes": []
+    }
+  ]
+}

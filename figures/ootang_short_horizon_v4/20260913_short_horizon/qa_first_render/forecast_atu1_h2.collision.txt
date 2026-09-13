@@ -1,0 +1,13 @@
+Nature Figure Rendered Collision Audit
+pdf: figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_atu1_h2.pdf
+pages: 1
+visible text boxes: 25
+stroke paths: 60
+
+[FAIL] page 1 text-text: Text boxes overlap by 5.1% of the smaller box — '2-day increment / mm'
+  other text: '0.01'
+  text bbox: (44.12641143798828, 109.67243957519531, 51.12641906738281, 177.35549926757812)
+
+summary: 1 fail, 0 warn, 0 contained fill overlays, 0 contained image overlays
+verdict: FIX BEFORE DELIVERY
+note: contained overlays can be intentional; WARN findings need final-size visual review

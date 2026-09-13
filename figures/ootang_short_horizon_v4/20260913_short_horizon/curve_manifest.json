@@ -1,0 +1,422 @@
+[
+  {
+    "figure": "forecast_atu1_h1",
+    "point": "ATU1",
+    "horizon": 1,
+    "model": "RR_DIRECT",
+    "n": 293,
+    "coverage90": 0.8532423208191127,
+    "time_first": "2019-09-12",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h1",
+    "point": "ATU5",
+    "horizon": 1,
+    "model": "RR_DIRECT",
+    "n": 293,
+    "coverage90": 0.8668941979522184,
+    "time_first": "2019-09-12",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h1",
+    "point": "MJ3",
+    "horizon": 1,
+    "model": "RR_DIRECT",
+    "n": 293,
+    "coverage90": 0.9010238907849829,
+    "time_first": "2019-09-12",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h1",
+    "point": "MJ1",
+    "horizon": 1,
+    "model": "RR_DIRECT",
+    "n": 293,
+    "coverage90": 0.9180887372013652,
+    "time_first": "2019-09-12",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h2",
+    "point": "ATU1",
+    "horizon": 2,
+    "model": "C16_CORE_RULES",
+    "n": 292,
+    "coverage90": 0.9315068493150684,
+    "time_first": "2019-09-13",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h2",
+    "point": "ATU5",
+    "horizon": 2,
+    "model": "C16_CORE_RULES",
+    "n": 292,
+    "coverage90": 0.9315068493150684,
+    "time_first": "2019-09-13",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h2",
+    "point": "MJ3",
+    "horizon": 2,
+    "model": "C16_CORE_RULES",
+    "n": 292,
+    "coverage90": 0.9554794520547946,
+    "time_first": "2019-09-13",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h2",
+    "point": "MJ1",
+    "horizon": 2,
+    "model": "C16_CORE_RULES",
+    "n": 292,
+    "coverage90": 0.9383561643835616,
+    "time_first": "2019-09-13",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h3",
+    "point": "ATU1",
+    "horizon": 3,
+    "model": "C16_CORE_RULES",
+    "n": 291,
+    "coverage90": 0.9312714776632303,
+    "time_first": "2019-09-14",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h3",
+    "point": "ATU5",
+    "horizon": 3,
+    "model": "C16_CORE_RULES",
+    "n": 291,
+    "coverage90": 0.9175257731958762,
+    "time_first": "2019-09-14",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h3",
+    "point": "MJ3",
+    "horizon": 3,
+    "model": "C16_CORE_RULES",
+    "n": 291,
+    "coverage90": 0.9587628865979382,
+    "time_first": "2019-09-14",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h3",
+    "point": "MJ1",
+    "horizon": 3,
+    "model": "C16_CORE_RULES",
+    "n": 291,
+    "coverage90": 0.9347079037800687,
+    "time_first": "2019-09-14",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h4",
+    "point": "ATU1",
+    "horizon": 4,
+    "model": "C16_CORE_RULES",
+    "n": 290,
+    "coverage90": 0.9172413793103448,
+    "time_first": "2019-09-15",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h4",
+    "point": "ATU5",
+    "horizon": 4,
+    "model": "C16_CORE_RULES",
+    "n": 290,
+    "coverage90": 0.9103448275862069,
+    "time_first": "2019-09-15",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h4",
+    "point": "MJ3",
+    "horizon": 4,
+    "model": "C16_CORE_RULES",
+    "n": 290,
+    "coverage90": 0.9448275862068966,
+    "time_first": "2019-09-15",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h4",
+    "point": "MJ1",
+    "horizon": 4,
+    "model": "C16_CORE_RULES",
+    "n": 290,
+    "coverage90": 0.9241379310344827,
+    "time_first": "2019-09-15",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h5",
+    "point": "ATU1",
+    "horizon": 5,
+    "model": "C16_CORE_RULES",
+    "n": 289,
+    "coverage90": 0.8754325259515571,
+    "time_first": "2019-09-16",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h5",
+    "point": "ATU5",
+    "horizon": 5,
+    "model": "C16_CORE_RULES",
+    "n": 289,
+    "coverage90": 0.8615916955017301,
+    "time_first": "2019-09-16",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h5",
+    "point": "MJ3",
+    "horizon": 5,
+    "model": "C16_CORE_RULES",
+    "n": 289,
+    "coverage90": 0.9377162629757786,
+    "time_first": "2019-09-16",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h5",
+    "point": "MJ1",
+    "horizon": 5,
+    "model": "C16_CORE_RULES",
+    "n": 289,
+    "coverage90": 0.9238754325259516,
+    "time_first": "2019-09-16",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h6",
+    "point": "ATU1",
+    "horizon": 6,
+    "model": "C16_CORE_RULES",
+    "n": 288,
+    "coverage90": 0.8194444444444444,
+    "time_first": "2019-09-17",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h6",
+    "point": "ATU5",
+    "horizon": 6,
+    "model": "C16_CORE_RULES",
+    "n": 288,
+    "coverage90": 0.8298611111111112,
+    "time_first": "2019-09-17",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h6",
+    "point": "MJ3",
+    "horizon": 6,
+    "model": "C16_CORE_RULES",
+    "n": 288,
+    "coverage90": 0.9270833333333334,
+    "time_first": "2019-09-17",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h6",
+    "point": "MJ1",
+    "horizon": 6,
+    "model": "C16_CORE_RULES",
+    "n": 288,
+    "coverage90": 0.9131944444444444,
+    "time_first": "2019-09-17",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu1_h7",
+    "point": "ATU1",
+    "horizon": 7,
+    "model": "C16_CORE_RULES",
+    "n": 287,
+    "coverage90": 0.8013937282229965,
+    "time_first": "2019-09-18",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_atu5_h7",
+    "point": "ATU5",
+    "horizon": 7,
+    "model": "C16_CORE_RULES",
+    "n": 287,
+    "coverage90": 0.818815331010453,
+    "time_first": "2019-09-18",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj3_h7",
+    "point": "MJ3",
+    "horizon": 7,
+    "model": "C16_CORE_RULES",
+    "n": 287,
+    "coverage90": 0.8989547038327527,
+    "time_first": "2019-09-18",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  },
+  {
+    "figure": "forecast_mj1_h7",
+    "point": "MJ1",
+    "horizon": 7,
+    "model": "C16_CORE_RULES",
+    "n": 287,
+    "coverage90": 0.9163763066202091,
+    "time_first": "2019-09-18",
+    "time_last": "2020-06-30",
+    "panels": [
+      "full_cumulative_displacement",
+      "h_day_increment",
+      "residual_and_90_percent_band"
+    ]
+  }
+]

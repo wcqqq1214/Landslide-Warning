@@ -1,0 +1,153 @@
+{
+  "generated_utc": "2026-09-13T15:09:03.903099+00:00",
+  "selection": [
+    {
+      "horizon": 1,
+      "model": "RR_DIRECT",
+      "development_rmse": 0.0009175693276421,
+      "later_rmse": 0.0004199605924951,
+      "later_crps": 0.0002291100038567,
+      "coverage90_pct": 88.48122866894201,
+      "later_pass": true
+    },
+    {
+      "horizon": 2,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.0003609835117302,
+      "later_rmse": 0.0008992863481267,
+      "later_crps": 0.0002956877560787,
+      "coverage90_pct": 93.9212328767123,
+      "later_pass": true
+    },
+    {
+      "horizon": 3,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.0009465280143737,
+      "later_rmse": 0.0023990315675311,
+      "later_crps": 0.0008197733171855,
+      "coverage90_pct": 93.5567010309278,
+      "later_pass": true
+    },
+    {
+      "horizon": 4,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.0019531415882761,
+      "later_rmse": 0.0051432672338045,
+      "later_crps": 0.0018291693015387,
+      "coverage90_pct": 92.4137931034483,
+      "later_pass": true
+    },
+    {
+      "horizon": 5,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.0035095273806108,
+      "later_rmse": 0.0096117858968333,
+      "later_crps": 0.0035413915520997,
+      "coverage90_pct": 89.9653979238754,
+      "later_pass": true
+    },
+    {
+      "horizon": 6,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.0057547104031376,
+      "later_rmse": 0.0162769354583289,
+      "later_crps": 0.0061848496321371,
+      "coverage90_pct": 87.2395833333333,
+      "later_pass": true
+    },
+    {
+      "horizon": 7,
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.008827028332068,
+      "later_rmse": 0.0255796349180615,
+      "later_crps": 0.0099777354784114,
+      "coverage90_pct": 85.8885017421603,
+      "later_pass": true
+    }
+  ],
+  "horizon7": [
+    {
+      "model": "B_ANCHOR",
+      "development_rmse": 3.55703560971604,
+      "later_rmse": 1.78416245875774,
+      "later_crps": 0.904383370802034,
+      "coverage90_pct": 78.65853658536591,
+      "width90": 4.13820273586806,
+      "interval_score90": 9.24604306296743
+    },
+    {
+      "model": "DRIFT1",
+      "development_rmse": 0.0890575090641191,
+      "later_rmse": 0.278587483000087,
+      "later_crps": 0.126016956939423,
+      "coverage90_pct": 75.3484320557491,
+      "width90": 0.429551935979171,
+      "interval_score90": 1.36011165850513
+    },
+    {
+      "model": "CL_DIRECT",
+      "development_rmse": 1.60264107297311,
+      "later_rmse": 0.982854778153963,
+      "later_crps": 0.528578831545052,
+      "coverage90_pct": 79.3554006968641,
+      "width90": 2.77540517311098,
+      "interval_score90": 4.93068919533927
+    },
+    {
+      "model": "CL_BRES",
+      "development_rmse": 2.73162426478267,
+      "later_rmse": 0.914890448209932,
+      "later_crps": 0.518804115634098,
+      "coverage90_pct": 84.32055749128921,
+      "width90": 3.07548935352384,
+      "interval_score90": 4.75748216255139
+    },
+    {
+      "model": "PINN_EQ",
+      "development_rmse": 3.49474029936378,
+      "later_rmse": 1.52754313416501,
+      "later_crps": 0.810066830853906,
+      "coverage90_pct": 79.9651567944251,
+      "width90": 3.99379747981317,
+      "interval_score90": 8.02114233657004
+    },
+    {
+      "model": "RR_DIRECT",
+      "development_rmse": 0.0792642751563104,
+      "later_rmse": 0.0373177291305828,
+      "later_crps": 0.0215099301858971,
+      "coverage90_pct": 86.6724738675958,
+      "width90": 0.151800619635933,
+      "interval_score90": 0.222346663078554
+    },
+    {
+      "model": "RR_BRES",
+      "development_rmse": 0.0903946985728963,
+      "later_rmse": 0.0375985639641341,
+      "later_crps": 0.0219159541685628,
+      "coverage90_pct": 86.5853658536585,
+      "width90": 0.157760239140898,
+      "interval_score90": 0.230335691181461
+    },
+    {
+      "model": "C16_CORE_RULES",
+      "development_rmse": 0.008827028332068,
+      "later_rmse": 0.0255796349180615,
+      "later_crps": 0.0099777354784114,
+      "coverage90_pct": 85.8885017421603,
+      "width90": 0.0415038110429494,
+      "interval_score90": 0.111616242646864
+    },
+    {
+      "model": "C16_PHYS_RULES",
+      "development_rmse": 0.0092643817127588,
+      "later_rmse": 0.0265063032119415,
+      "later_crps": 0.0104748931462607,
+      "coverage90_pct": 85.80139372822299,
+      "width90": 0.0419648791293803,
+      "interval_score90": 0.114811856474974
+    }
+  ],
+  "tex_sha256": "eec38bd76370a1b99e5d617a479653ecc995e52239b646d38c47b3348cb6c43d",
+  "source_summary_sha256": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4"
+}

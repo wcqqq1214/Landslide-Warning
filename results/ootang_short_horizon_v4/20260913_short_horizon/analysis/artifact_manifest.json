@@ -1,0 +1,13 @@
+{
+  "conclusions.json": "ae59f5a3f5d693ee98a8b67064cecca2420b8c557fc1197bbee764b9f0974de0",
+  "every_seventh_origin.csv": "b17637cf7915efb7922001f56fa5bd4f6f706092adb37b8aa03691e204c9fcee",
+  "family_representatives.csv": "c361ff77635e6f62ff0e741fd9b3b807da6c971e30319036196a26a77b255bdd",
+  "fitting_metrics.csv": "e6d23a5a7792154025a6a94296534fc7a7316af289f015b4d82742c6b8add230",
+  "legacy_native_probability.csv": "50b3ace6965e4b8dbe928c790b84db22d3de71c61ba417d39790dc7b8031e7cb",
+  "metrics_by_point_horizon.csv": "20f3c4438e12fba08fa529e10126446ff49dadcfd6f5cc331976400386fff06d",
+  "paired_block_bootstrap.csv": "5525cf64d6034ad1c5e7f4d4e77c9060ca3d30b69cb1d23afaed30160a5b3e72",
+  "paired_differences.csv": "df33c408fb02a55a3fd305d31206d9982cb288a23cdd8da7487ca7dd078ca3c6",
+  "seed_mean_metrics.csv": "43ad75026edaa0f2a6fb2fe54400b696598879bcaf3bf1e1d727ef18d6dfc22a",
+  "selection_by_horizon.csv": "6696bf0334fd44e31ae825852ec7c67529854d7662fd56e516993a3395eda8ee",
+  "summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4"
+}

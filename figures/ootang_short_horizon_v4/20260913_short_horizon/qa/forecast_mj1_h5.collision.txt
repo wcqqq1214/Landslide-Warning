@@ -1,0 +1,10 @@
+Nature Figure Rendered Collision Audit
+pdf: figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_mj1_h5.pdf
+pages: 1
+visible text boxes: 25
+stroke paths: 56
+
+
+summary: 0 fail, 0 warn, 0 contained fill overlays, 0 contained image overlays
+verdict: PASS
+note: contained overlays can be intentional; WARN findings need final-size visual review

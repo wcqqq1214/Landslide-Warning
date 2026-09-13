@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-09-13T14:28:07.310818+00:00",
+  "selection_sha256": "1ce50148723275dfccee295c3212cbf3f873aa7ea4ef6a6693d95ec8bffd6170",
+  "verification_sha256": "8b99b7324098ca97b7a7a4b193a662dc051b999ed07fe9145792edb1c68eaed1",
+  "best_development_mean_combination": {
+    "model": "C16_CORE_RULES",
+    "horizon": 1,
+    "development_rmse": 8.34242765866008e-05,
+    "later_rmse": 0.000208745332316
+  },
+  "longest_jointly_qualified_horizon": 7,
+  "qualified_horizons": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "physical_increment_established": false,
+  "real_warning_validated": false,
+  "main_claim": "Prespecified rolling endpoint comparisons on the published daily sequence; no new independent data"
+}

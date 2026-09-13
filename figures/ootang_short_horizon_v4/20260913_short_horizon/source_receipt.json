@@ -1,0 +1,10 @@
+{
+  "config_sha256": "31f66ae030621f7a7c372fd17ac335fde46df2ee063151458be98480b64b5f64",
+  "selection_sha256": "1ce50148723275dfccee295c3212cbf3f873aa7ea4ef6a6693d95ec8bffd6170",
+  "plot_source_sha256": "da32c9993ea11bc97adf3a3562222757e36fd22f7b37de9e7bc139954725f436",
+  "all_legal_later_dates": true,
+  "main_curve_horizon": 7,
+  "interval": "90% marginal Gaussian empirical prediction band",
+  "claim": "Published daily-sequence endpoint comparison; no verified real warning performance",
+  "comparison_centers": "Scores of fixed issued predictions; not averages across seeds; seed dispersion in analysis/seed_mean_metrics.csv"
+}

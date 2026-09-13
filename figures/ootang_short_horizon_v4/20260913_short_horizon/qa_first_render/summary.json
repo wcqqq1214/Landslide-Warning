@@ -1,0 +1,157 @@
+[
+  {
+    "figure": "forecast_atu1_h1",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h2",
+    "collision_exit": 1,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h3",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h4",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h5",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h6",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu1_h7",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h1",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h2",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h3",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h4",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h5",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h6",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_atu5_h7",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h1",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h2",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h3",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h4",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h5",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h6",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj1_h7",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h1",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h2",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h3",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h4",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h5",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h6",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "forecast_mj3_h7",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "horizon_comparison",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "paired_effects",
+    "collision_exit": 0,
+    "text_exit": 0
+  },
+  {
+    "figure": "workflow",
+    "collision_exit": 0,
+    "text_exit": 0
+  }
+]
