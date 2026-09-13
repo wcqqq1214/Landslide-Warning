@@ -1,0 +1,21 @@
+{
+  "base_config": "config/ootang_neural_initial_state.v1_1.json",
+  "phase": "later_exploratory",
+  "authority": "用户在开发失败后明确要求完整后期比较；不受开发效果门控制，物理门保持",
+  "fixed_steps": 200,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "max_new_fits": 3,
+  "max_new_updates": 600,
+  "deadline_utc": "2026-09-13T22:05:18+00:00",
+  "training_deadline_utc": "2026-09-13T21:40:18+00:00",
+  "source_sha256": {
+    "config/ootang_neural_initial_state.v1_1.json": "bea40a7f3e0de2a4b8c58480cb7beddd7167ebc76b44f9e663021d6035b0bebe",
+    "docs/ootang_neural_initial_state_later_report.v1.2.md": "968169997465558b308c5c6a2b0d6314435bbb89bbd48b526c73accba216351a",
+    "results/ootang_neural_initial_state_v1_1/20260914/internal_selection.json": "06f86328a22ae0b9af1de5b675b35822f68b56dc555097b0dbd808e55526f122",
+    "results/ootang_neural_initial_state_v1_1/20260914/development/decision.json": "7938c2fa29601a1aff706ecfacd0253f21ee056252dad6514434a9c612923237"
+  }
+}
