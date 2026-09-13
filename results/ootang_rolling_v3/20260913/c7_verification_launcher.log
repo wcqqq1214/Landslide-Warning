@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "run": "results/ootang_rolling_v3/20260913/c7_empirical",
+  "checked_utc": "2026-09-13T00:33:10.919659+00:00",
+  "immutable_artifacts_checked": 50,
+  "sources_checked": 47,
+  "forecast_locks": 669,
+  "probability_pool_cells_reconstructed": 79477200,
+  "score_cells_checked": 95040,
+  "max_csv_rounding_difference": 4.982041446055518e-10,
+  "raw_mean_and_sigma_unchanged": true,
+  "calibration_pool_exact": true,
+  "empirical_crps_method": "independent piecewise CDF integral",
+  "decisions": {
+    "development/empirical": {
+      "passed": false,
+      "passed_count": 25
+    },
+    "development/moment_gaussian": {
+      "passed": false,
+      "passed_count": 25
+    },
+    "later_exploratory/empirical": {
+      "passed": false,
+      "passed_count": 24
+    },
+    "later_exploratory/moment_gaussian": {
+      "passed": false,
+      "passed_count": 24
+    }
+  },
+  "post_transfer_exposure": true,
+  "independent_transfer": false,
+  "maximum_label_rows": 1461,
+  "new_training_or_optimization": 0,
+  "physical_calls": 0,
+  "verifier_sha256": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138"
+}
