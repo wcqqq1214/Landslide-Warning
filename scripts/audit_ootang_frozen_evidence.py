@@ -76,7 +76,7 @@ def main():
         maxima[name] = max(maxima.get(name, 0.0), value)
 
     labels_path = checked(ROOT / "data/monitoring_data.csv")
-    with labels_path.open() as handle:
+    with labels_path.open(encoding="utf-8-sig") as handle:
         frame = list(csv.DictReader(handle))
     y = pd.read_csv(labels_path, usecols=[p + "/mm" for p in POINTS])[
         [p + "/mm" for p in POINTS]

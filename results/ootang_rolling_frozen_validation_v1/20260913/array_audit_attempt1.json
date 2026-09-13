@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "scripts/audit_ootang_frozen_evidence.py"
+  ],
+  "started_utc": "2026-09-13T10:12:24.687682+00:00",
+  "finished_utc": "2026-09-13T10:12:25.276964+00:00",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 459, in <module>\n    main()\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 85, in main\n    assert all(row[\"Date\"] == day(i) for i, row in enumerate(frame))\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 85, in <genexpr>\n    assert all(row[\"Date\"] == day(i) for i, row in enumerate(frame))\nKeyError: 'Date'\n"
+}
