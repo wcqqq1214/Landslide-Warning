@@ -1,0 +1,24 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T04:37:18.151648+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c17_self_calibration",
+  "immutable_artifacts_checked": 74,
+  "sources_checked": 55,
+  "forecast_locks": 669,
+  "calibration_point_updates": 307200,
+  "score_cells": 83160,
+  "maximum_calibration_difference_mm": 0.0,
+  "maximum_score_difference_mm": 4.995968083676416e-10,
+  "frozen_means_and_raw_scales_exact": true,
+  "old_distributions_exact": true,
+  "c8_identity_exact": true,
+  "independent_transfer": false,
+  "new_training": 0,
+  "new_physics": 0,
+  "verifier_sha256": "c34fb4ac7587852c493f9ca31c0cb3e062dfee76640157e707da83ead92eb3c1",
+  "dependency_sha256": {
+    "verify_ootang_online.py": "57d53c41f5ee34d956e6a0c1cfd4f7b3c89fd880da64622133f1d53ad92eb1bf",
+    "verify_ootang_empirical.py": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138",
+    "verify_ootang_rolling.py": "5f19112d481e4d6408ea613f557c5957fa43905ae92908c1d3a43ee519add42f"
+  }
+}
