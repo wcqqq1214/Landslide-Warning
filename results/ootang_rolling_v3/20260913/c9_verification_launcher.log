@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T01:20:15.442336+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c9_horizon",
+  "immutable_artifacts_checked": 75,
+  "sources_checked": 58,
+  "forecast_locks": 669,
+  "scale_heads_verified": 480,
+  "means_and_old_distributions_exactly_unchanged": true,
+  "max_raw_scale_difference_mm": 3.552713678800501e-15,
+  "max_calibration_difference_mm": 0.0,
+  "score_cells_checked": 63360,
+  "max_csv_rounding_difference": 4.995968083676416e-10,
+  "post_exposure": true,
+  "independent_transfer": false,
+  "new_training_updates": 0,
+  "optimizer_reruns": 0,
+  "physical_calls": 0,
+  "verifier_sha256": "22176be5340b7248c7b56feea2563a1e2513aebe238d24c1c1a4c6e3cd4ea5bf",
+  "dependency_sha256": {
+    "verify_ootang_online.py": "57d53c41f5ee34d956e6a0c1cfd4f7b3c89fd880da64622133f1d53ad92eb1bf",
+    "verify_ootang_empirical.py": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138",
+    "verify_ootang_rolling.py": "5f19112d481e4d6408ea613f557c5957fa43905ae92908c1d3a43ee519add42f"
+  }
+}
