@@ -1,0 +1,17 @@
+{
+  "stage": "D closing audit, first attempt",
+  "passed": false,
+  "reason": "Displayed paired table was rounded from a six-decimal console excerpt; exact saved CSV rounds one displayed value differently at four decimals. The check correctly rejected it.",
+  "changes": [
+    {
+      "reference": "B_ANCHOR",
+      "phase": "development",
+      "metric": "rmse",
+      "before": "−9.4484 [−12.2226, −5.7159]",
+      "after": "−9.4483 [−12.2226, −5.7159]"
+    }
+  ],
+  "model_or_source_changes": 0,
+  "new_scores": 0,
+  "resolution": "Regenerate paired table cells directly from original CSV values in comparison_receipt.json; keep exact original metrics and numerical tolerances."
+}

@@ -1,0 +1,104 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T10:32:59.359829+00:00",
+  "start_utc": "2026-09-13T09:59:11+00:00",
+  "deadline_utc": "2026-09-13T10:59:11+00:00",
+  "elapsed_seconds_at_precommit_check": 2028.359829,
+  "closing_commit_time": "Resolve the committer timestamp of the commit adding this receipt; it includes final documentation and backup time. The seven preceding commits are recorded below.",
+  "scientific_snapshot": "1b8fc12820eff42e7133e806597489152e794082",
+  "plan_commit": "584111e",
+  "checks": {
+    "frozen_sources_unchanged": true,
+    "plan_unchanged_since_584111e": true,
+    "auditor_and_receipt_hashes_match": true,
+    "origin_ledger_669_rows": true,
+    "fixed_boundary_192_rows": true,
+    "reported_summary_70_cells_match_saved_csv": true,
+    "paired_table_16_cells_match_saved_statistics": true,
+    "complete_300_summary_1200_point_rows_referenced": true,
+    "local_links_resolve_on_receipt_write": true,
+    "no_model_data_config_or_original_result_changes": true,
+    "whitespace_passes_with_valid_csv_crlf": true,
+    "seven_prior_step_commits_within_budget": true,
+    "as_of_and_independent_data_limits_reported": true,
+    "probability_assumptions_not_relabelled_as_verified": true,
+    "no_placeholder_or_dependent_experiment_pending": true,
+    "original_negative_results_and_stopping_rules_preserved": true
+  },
+  "frozen_paths_rechecked": 347,
+  "local_links_checked": 115,
+  "artifact_sha256_before_closing_commit": {
+    "results/ootang_rolling_frozen_validation_v1/20260913/array_audit_attempt1.json": "ff57e45a59b2dfeea8382b2775f7abac4f8f9fe6af61fac6098f167496d85775",
+    "results/ootang_rolling_frozen_validation_v1/20260913/array_audit_attempt2.json": "0440e6033b0cae8d51c99ebce529adeded7506e9fef831865fcdaa0cee080be0",
+    "results/ootang_rolling_frozen_validation_v1/20260913/array_audit_attempt3.json": "70400599f5fa83cd25a0fd79cca8f08c84e560e855a3c0f0baefd371ca0c078a",
+    "results/ootang_rolling_frozen_validation_v1/20260913/array_evidence.json": "f48f61140855c54ccda41448c1b094d0f9374707c579dc11194ef9a468c0cee7",
+    "results/ootang_rolling_frozen_validation_v1/20260913/boundary_checks.csv": "89773d5bb4e08810add3644a6400b4b2fb501c9ff01795216a402a95fe9beaad",
+    "results/ootang_rolling_frozen_validation_v1/20260913/comparison_receipt.json": "3f4827e0b105e174bf45e8b04a5c5d441dec8d630ec0b6c0a1bfa7088840e7ab",
+    "results/ootang_rolling_frozen_validation_v1/20260913/completion_attempt1.json": "44c1b2900d4cf18099554d667ea618c18f537a8a4c148c67f50ed95d6535f1f3",
+    "results/ootang_rolling_frozen_validation_v1/20260913/origin_ledger.csv": "92448caf9a9414f8bb756efa7f9190ff848a2a2ab0472e01cf0e295e268be560",
+    "results/ootang_rolling_frozen_validation_v1/20260913/source_availability.json": "6e1abe3e6b966386b4d38ccc1e4f1d1cabf1e0c5034343c629c1de39dc774711",
+    "results/ootang_rolling_frozen_validation_v1/20260913/sources_audit.json": "9131a2235e28c385f0ad9ed36e087d554fd6e3c0163a0995664907d8c98c4f9b",
+    "docs/ootang_rolling_frozen_validation_report.v1.0.md": "58e8271de14321d08ec8de019ef0b1f91dfde47082b23ffb45c2f4c8812d29d0",
+    "docs/README.md": "0a02409ebfd4f573dcf347a00f6117df6003e322e9791c3d40a00ad68f98441f",
+    "docs/progress.md": "b922fb5355f68ff0dd502b9b4d3b5d4f816fc1b8580b9c253747ab350369b908",
+    "docs/ootang_rolling_frozen_validation_plan.v1.0.md": "8f180f646aab4287ca8105cfec02a8b8dee01babb215caf862e339118fa30aa8",
+    "scripts/audit_ootang_frozen_sources.py": "85c45cfab57758437be84bb78b0f9da854566950277ce15f2da273b1f944d3b9",
+    "scripts/audit_ootang_frozen_evidence.py": "41bf9cd17f859bed4b977391fefa10c8ee4ba682155593d2582c555fb398a234"
+  },
+  "completed_step_commits": [
+    {
+      "commit": "0e6c9e726b745e461a02cea061c16a3f8768634d",
+      "committed_at": "2026-09-13T18:02:21+08:00",
+      "message": "feat: add read-only audit for frozen rolling sources"
+    },
+    {
+      "commit": "b861006fbf6f9c433e86d9ccc65c4c65b9cc67c2",
+      "committed_at": "2026-09-13T18:03:08+08:00",
+      "message": "docs: record frozen sources and update rules for validation"
+    },
+    {
+      "commit": "2b4bc5e44926cdbd96902672956165e46a463ec3",
+      "committed_at": "2026-09-13T18:12:24+08:00",
+      "message": "feat: audit frozen scale inheritance and time boundaries"
+    },
+    {
+      "commit": "5c9e7ab6d55ed06d4f2b0bab7f7cd37c7bac53a1",
+      "committed_at": "2026-09-13T18:12:58+08:00",
+      "message": "fix: handle bom in frozen audit date headers"
+    },
+    {
+      "commit": "42fd87c53288943319f3feb3612d214e47571f91",
+      "committed_at": "2026-09-13T18:13:46+08:00",
+      "message": "fix: resolve archived provenance paths in frozen audit"
+    },
+    {
+      "commit": "babe4c057b52ccebcbf24a2d34943f1af16bf105",
+      "committed_at": "2026-09-13T18:17:48+08:00",
+      "message": "docs: record probability assumptions and causal evidence audit"
+    },
+    {
+      "commit": "4245faf33b2d310df694af1852ae7f0226c2c9e4",
+      "committed_at": "2026-09-13T18:26:38+08:00",
+      "message": "docs: record fixed comparisons and exploratory conclusions"
+    }
+  ],
+  "training": 0,
+  "coefficient_fits": 0,
+  "new_forecasts": 0,
+  "new_scores": 0,
+  "new_physics": 0,
+  "new_bootstrap": 0,
+  "new_full_figure_inspection": 0,
+  "new_model_candidates": 0,
+  "push_performed": false,
+  "acceptance": "execution authorized; scientific acceptance not recorded",
+  "scientific_limitations": [
+    "historical exposed-data study",
+    "as-of unknown",
+    "no eligible new independent observations registered",
+    "physical incremental value not established",
+    "C18 variance is empirical; unified probability decomposition unidentified"
+  ],
+  "unrelated_file_excluded": "data/vajont_fig5a_curves_2_3_4_5_58_mm_velocity.xlsx",
+  "interpretation": "Audit delivery and source consistency only; not a new effectiveness evaluation or independent test."
+}
