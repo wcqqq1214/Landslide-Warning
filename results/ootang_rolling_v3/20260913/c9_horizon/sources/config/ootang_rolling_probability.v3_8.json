@@ -1,0 +1,108 @@
+{
+  "baseline_commit": "85f9ee8",
+  "start_utc": "2026-09-12T21:27:52+00:00",
+  "deadline_utc": "2026-09-13T05:27:52+00:00",
+  "data": "data/monitoring_data.csv",
+  "data_sha256": "ee63480ad9b8065dea359d49873182b1554013f910bec1c6988c0b152bede118",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "history_days": 30,
+  "horizons": 30,
+  "primary_horizon": 30,
+  "forcing_mode": "conditional_known_future_rainfall_and_reservoir_level",
+  "effect": {
+    "relative_improvement": 0.05,
+    "point_mean_atol_mm": 1e-08,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average": [
+      0.85,
+      0.95
+    ],
+    "coverage90_point": [
+      0.8,
+      0.98
+    ]
+  },
+  "bootstrap": {
+    "block_length": 30,
+    "replicates": 2000,
+    "seed": 20260913,
+    "confidence": 0.95
+  },
+  "output_root": "results/ootang_rolling_v3/20260913",
+  "probability": {
+    "window": 90,
+    "prior_count": 10,
+    "prior_sum_squares": 10,
+    "sigma_floor_mm": 0.01,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "feedback": {
+      "rate": 0.02,
+      "target_coverage": 0.9,
+      "initial_log_scale": 0.0,
+      "log_scale_bound": 2.302585092994046
+    }
+  },
+  "stages": {
+    "development": [
+      792,
+      1168
+    ],
+    "later_exploratory": [
+      1168,
+      1461
+    ]
+  },
+  "simple_baseline": "DRIFT1",
+  "version": "ootang_rolling_probability.v3_8",
+  "plan": "docs/ootang_rolling_probability_candidate.c9.md",
+  "candidate": "C9_HORIZON_FULL",
+  "model_family": "frozen_online_ridge_horizon_scales",
+  "max_candidates": 9,
+  "review_every_candidates": 3,
+  "run_timeout_seconds": 1200,
+  "exploratory": true,
+  "post_transfer_exposure": true,
+  "original_single_transfer_reused": false,
+  "new_mean_updates_permitted": false,
+  "scale_initial_logs": [
+    -2.302585092994046,
+    0.0
+  ],
+  "scale_log_bounds": [
+    -10,
+    5
+  ],
+  "scale_maxiter": 100,
+  "scale_maxfun": 200,
+  "scale_ftol": 1e-10,
+  "scale_gtol": 1e-06,
+  "expected_scale_fits": 480,
+  "sources": {
+    "development": {
+      "current_run": "results/ootang_rolling_v3/20260913/c8_online",
+      "current_phase": "development",
+      "current_manifest_sha256": "b7ddb09633adf74d858e8ced87253ab2c93f85999423bcc0549876b2b60eb2a4",
+      "original_mean_training_path": "results/ootang_rolling_v3/20260913/c4_feedback/development_training",
+      "initial_training": "results/ootang_rolling_v3/20260913/c8_online/development/initial_training.npz",
+      "issued_features": "results/ootang_rolling_v3/20260913/c8_online/development/issued_features.npz"
+    },
+    "later_exploratory": {
+      "current_run": "results/ootang_rolling_v3/20260913/c8_online",
+      "current_phase": "later_exploratory",
+      "current_manifest_sha256": "b7ddb09633adf74d858e8ced87253ab2c93f85999423bcc0549876b2b60eb2a4",
+      "original_mean_training_path": "results/ootang_rolling_v3/20260913/c4_transfer/transfer_training",
+      "initial_training": "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/initial_training.npz",
+      "issued_features": "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/issued_features.npz"
+    }
+  },
+  "pre_run_audit": "results/ootang_rolling_v3/20260913/c9_horizon_pre_run_audit.json"
+}
