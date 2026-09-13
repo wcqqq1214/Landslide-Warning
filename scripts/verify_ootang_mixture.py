@@ -1,4 +1,4 @@
-"""Independently verify C11 weights, mixture CDFs and proper scoring.
+"""Independently verify mature mixture weights, CDFs and proper scoring.
 
 Uses Gaussian component energy expectations, plus separate CDF quadrature.
 Does not import the production mixture learner or scorer.
@@ -15,6 +15,7 @@ from statistics import NormalDist
 import numpy as np
 import pandas as pd
 from scipy.integrate import quad
+from scipy.special import erf
 
 from verify_ootang_empirical import decision_checks
 from verify_ootang_rolling import independent_metrics
@@ -72,6 +73,89 @@ def fitted_weight(linear, quadratic):
     return np.clip(np.divide(-L, 2 * Q, out=np.zeros(4), where=Q > 0), 0, 1)
 
 
+def interval_grid_losses(error, core, wide, spec):
+    grid = np.arange(spec["weight_grid_intervals"] + 1, dtype=float)
+    grid /= spec["weight_grid_intervals"]
+    level = spec["weight_score_level"]
+    left = np.zeros((*core.shape, len(grid)))
+    right = np.broadcast_to(
+        wide[..., None] * NormalDist().inv_cdf((1 + level) / 2), left.shape
+    ).copy()
+    for _ in range(spec["quantile_bisection_steps"]):
+        x = left + (right - left) * 0.5
+        centered_cdf = (1 - grid) * erf(x / (core[..., None] * np.sqrt(2)))
+        centered_cdf += grid * erf(x / (wide[..., None] * np.sqrt(2)))
+        right = np.where(centered_cdf >= level, x, right)
+        left = np.where(centered_cdf < level, x, left)
+    radius = left + (right - left) * 0.5
+    return 2 * radius + (2 / (1 - level)) * np.clip(
+        np.abs(error[..., None]) - radius, 0, None
+    ), grid
+
+
+def interval_weight(average, grid, spec):
+    lowest = np.min(average, axis=-1)
+    allowance = spec["weight_tie_relative"] * np.maximum(1, np.abs(lowest))
+    selected = np.empty(4)
+    for p in range(4):
+        selected[p] = grid[np.flatnonzero(average[p] <= lowest[p] + allowance[p])[0]]
+    return selected
+
+
+def verify_mature_weights(spec, state, name, k, error, c, s, w, end, totals, maximum):
+    count = len(error)
+    begin_final = max(0, count - spec["mixture_window"])
+    reconstructed = np.zeros_like(w)
+    if spec.get("weight_objective", "crps") == "interval_score":
+        losses, grid = interval_grid_losses(error, c, s, spec)
+        np.testing.assert_array_equal(grid, state[name]["grid"])
+        for i in range(count):
+            stop = max(0, i - k)
+            begin = max(0, stop - spec["mixture_window"])
+            if stop:
+                reconstructed[i] = interval_weight(
+                    losses[begin:stop].mean(axis=0), grid, spec
+                )
+        average = losses[begin_final:].mean(axis=0)
+        np.testing.assert_allclose(
+            average, state[name]["mean_loss_grid"][k], rtol=5e-11, atol=1e-8
+        )
+        maximum["interval_loss_grid_mm"] = max(
+            maximum.get("interval_loss_grid_mm", 0),
+            float(abs(average - state[name]["mean_loss_grid"][k]).max()),
+        )
+        np.testing.assert_array_equal(w, reconstructed)
+        np.testing.assert_array_equal(
+            interval_weight(average, grid, spec), state[name]["weights"][k]
+        )
+        if state[name]["pool_counts"][k] != count - begin_final:
+            raise ValueError("Interval risk pool length differs")
+        totals["grid_loss_values"] = totals.get("grid_loss_values", 0) + losses.size
+    else:
+        L, Q = independent_coefficients(error, c, s)
+        for i in range(count):
+            stop = max(0, i - k)
+            begin = max(0, stop - spec["mixture_window"])
+            reconstructed[i] = fitted_weight(L[begin:stop], Q[begin:stop])
+        pool = np.stack([L[begin_final:], Q[begin_final:]], axis=1)
+        actual = np.asarray(state[name]["coefficient_pools"][k])
+        np.testing.assert_allclose(pool, actual, rtol=5e-11, atol=1e-8)
+        maximum["coefficient_pool"] = max(
+            maximum["coefficient_pool"], float(abs(pool - actual).max())
+        )
+        np.testing.assert_allclose(
+            fitted_weight(L[begin_final:], Q[begin_final:]),
+            state[name]["weights"][k],
+            rtol=5e-11,
+            atol=1e-8,
+        )
+        np.testing.assert_allclose(w, reconstructed, rtol=5e-11, atol=1e-8)
+    maximum["weight"] = max(maximum["weight"], float(abs(w - reconstructed).max()))
+    if state[name]["updates"][k] != count or state[name]["last_target"][k] != end - 1:
+        raise ValueError("Mixture maturation counts differ")
+    totals["weight_updates"] += count * 4
+
+
 def integrated_score(error, core, wide, weight):
     standard = NormalDist()
 
@@ -107,9 +191,10 @@ def verify(run):
             p = ROOT / name
         if sha(p) != wanted:
             raise ValueError("Source changed: " + name)
-    spec = json.loads(
-        (run / "sources/config/ootang_rolling_probability.v3_10.json").read_text()
-    )
+    configs = list((run / "sources/config").glob("ootang_rolling_probability.*.json"))
+    if len(configs) != 1:
+        raise ValueError("Ambiguous frozen config")
+    spec = json.loads(configs[0].read_text())
     if not spec["post_transfer_exposure"] or spec["original_single_transfer_reused"]:
         raise ValueError("Exposure boundary changed")
     status = json.loads((run / "status.json").read_text())
@@ -161,8 +246,9 @@ def verify(run):
         for name, pred in current.items():
             np.testing.assert_array_equal(pred["origins"], np.arange(start, end))
             np.testing.assert_array_equal(pred["teacher_prefixes"], np.full(N, start))
-            is_mixture = name in spec["reference_models"]
-            if is_mixture:
+            learned_here = name in spec["reference_models"]
+            is_mixture = {"core_sigma", "wide_sigma", "weight"} <= pred.keys()
+            if learned_here:
                 for key in ("origins", "teacher_prefixes", "mean", "raw_sigma"):
                     np.testing.assert_array_equal(pred[key], core[key])
                 for key, old_key in (
@@ -224,36 +310,10 @@ def verify(run):
                         or (w > 1).any()
                     ):
                         raise ValueError("Invalid issued mixture")
-                    L, Q = independent_coefficients(error, c, s)
-                    reconstructed = np.empty_like(w)
-                    for i in range(count):
-                        stop = max(0, i - k)
-                        begin = max(0, stop - spec["mixture_window"])
-                        reconstructed[i] = fitted_weight(L[begin:stop], Q[begin:stop])
-                    np.testing.assert_allclose(w, reconstructed, rtol=5e-11, atol=1e-8)
-                    maximum["weight"] = max(
-                        maximum["weight"], float(abs(w - reconstructed).max())
-                    )
-                    begin = max(0, count - spec["mixture_window"])
-                    pool = np.stack([L[begin:], Q[begin:]], axis=1)
-                    actual_pool = np.asarray(state[name]["coefficient_pools"][k])
-                    np.testing.assert_allclose(pool, actual_pool, rtol=5e-11, atol=1e-8)
-                    maximum["coefficient_pool"] = max(
-                        maximum["coefficient_pool"],
-                        float(abs(pool - actual_pool).max()),
-                    )
-                    np.testing.assert_allclose(
-                        fitted_weight(L[begin:], Q[begin:]),
-                        state[name]["weights"][k],
-                        rtol=5e-11,
-                        atol=1e-8,
-                    )
-                    if (
-                        state[name]["updates"][k] != count
-                        or state[name]["last_target"][k] != end - 1
-                    ):
-                        raise ValueError("Mixture maturation counts differ")
-                    totals["weight_updates"] += count * 4
+                    if learned_here:
+                        verify_mature_weights(
+                            spec, state, name, k, error, c, s, w, end, totals, maximum
+                        )
                     loss = energy_score(error, c, s, w)
                     values = dict(
                         mae=abs(error).mean(axis=0),
@@ -428,6 +488,12 @@ def verify(run):
         or totals["weight_updates"] != spec["expected_mature_point_updates"]
     ):
         raise ValueError("Incomplete predictions or weight updates")
+    if spec.get("weight_objective") == "interval_score":
+        if (
+            totals["grid_loss_values"] != spec["expected_grid_loss_values"]
+            or totals["grid_loss_values"] != decisions["grid_loss_values"]
+        ):
+            raise ValueError("Grid loss accounting differs")
     if any(
         decisions[k] != 0
         for k in (
