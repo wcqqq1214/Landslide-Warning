@@ -1,0 +1,241 @@
+{
+  "passed": true,
+  "start_utc": "2026-09-13T14:25:11.174437+00:00",
+  "verified_hashes": 427,
+  "prediction_files": [
+    "inner/PINN_NOEQ.npz",
+    "inner/CL_DIRECT.npz",
+    "inner/B_RAW.npz",
+    "inner/PINN_EQ.npz",
+    "inner/B_ANCHOR.npz",
+    "inner/CL_BRES.npz",
+    "inner/DRIFT1.npz",
+    "inner/B_ORACLE.npz",
+    "inner/RR_BRES.npz",
+    "inner/RR_DIRECT.npz",
+    "inner/ridge_a0.1/RR_BRES.npz",
+    "inner/ridge_a0.1/RR_DIRECT.npz",
+    "inner/CL_DIRECT_step_50/CL_DIRECT.npz",
+    "inner/CL_DIRECT_step_400/CL_DIRECT.npz",
+    "inner/ridge_a0.01/RR_BRES.npz",
+    "inner/ridge_a0.01/RR_DIRECT.npz",
+    "inner/PINN_EQ_step_200/PINN_EQ.npz",
+    "inner/ridge_a0.001/RR_BRES.npz",
+    "inner/ridge_a0.001/RR_DIRECT.npz",
+    "inner/PINN_NOEQ_step_400/PINN_NOEQ.npz",
+    "inner/CL_BRES_step_400/CL_BRES.npz",
+    "inner/PINN_EQ_step_100/PINN_EQ.npz",
+    "inner/CL_DIRECT_step_200/CL_DIRECT.npz",
+    "inner/PINN_NOEQ_step_100/PINN_NOEQ.npz",
+    "inner/PINN_EQ_step_50/PINN_EQ.npz",
+    "inner/PINN_NOEQ_step_50/PINN_NOEQ.npz",
+    "inner/CL_BRES_step_100/CL_BRES.npz",
+    "inner/PINN_EQ_step_400/PINN_EQ.npz",
+    "inner/ridge_a10/RR_BRES.npz",
+    "inner/ridge_a10/RR_DIRECT.npz",
+    "inner/ridge_a1/RR_BRES.npz",
+    "inner/ridge_a1/RR_DIRECT.npz",
+    "inner/CL_DIRECT_step_100/CL_DIRECT.npz",
+    "inner/PINN_NOEQ_step_200/PINN_NOEQ.npz",
+    "inner/CL_BRES_step_50/CL_BRES.npz",
+    "inner/CL_BRES_step_200/CL_BRES.npz",
+    "development/PINN_NOEQ.npz",
+    "development/CL_DIRECT.npz",
+    "development/B_RAW.npz",
+    "development/PINN_EQ.npz",
+    "development/C16_CORE_RULES.npz",
+    "development/B_ANCHOR.npz",
+    "development/CL_BRES.npz",
+    "development/DRIFT1.npz",
+    "development/B_ORACLE.npz",
+    "development/RR_BRES.npz",
+    "development/RR_DIRECT.npz",
+    "development/C16_PHYS_RULES.npz",
+    "later_exploratory/PINN_NOEQ.npz",
+    "later_exploratory/CL_DIRECT.npz",
+    "later_exploratory/B_RAW.npz",
+    "later_exploratory/PINN_EQ.npz",
+    "later_exploratory/C16_CORE_RULES.npz",
+    "later_exploratory/B_ANCHOR.npz",
+    "later_exploratory/CL_BRES.npz",
+    "later_exploratory/DRIFT1.npz",
+    "later_exploratory/B_ORACLE.npz",
+    "later_exploratory/RR_BRES.npz",
+    "later_exploratory/RR_DIRECT.npz",
+    "later_exploratory/C16_PHYS_RULES.npz"
+  ],
+  "forecast_locks": 14508,
+  "score_cells": 61152,
+  "max_score_difference_mm": 5.115907697472721e-13,
+  "max_scale_difference_mm": 0.0,
+  "models": [
+    {
+      "phase": "inner",
+      "model": "CL_DIRECT",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "inner",
+      "model": "CL_BRES",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "inner",
+      "model": "PINN_EQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "inner",
+      "model": "PINN_NOEQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "inner",
+      "model": "RR_DIRECT",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    },
+    {
+      "phase": "inner",
+      "model": "RR_BRES",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    },
+    {
+      "phase": "development",
+      "model": "CL_DIRECT",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "development",
+      "model": "CL_BRES",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "development",
+      "model": "PINN_EQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "development",
+      "model": "PINN_NOEQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "development",
+      "model": "RR_DIRECT",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    },
+    {
+      "phase": "development",
+      "model": "RR_BRES",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "CL_DIRECT",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "CL_BRES",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 8353
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "PINN_EQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "PINN_NOEQ",
+      "reloaded_seeds": 3,
+      "mean_difference_mm": 0.0,
+      "parameters": 13560
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "RR_DIRECT",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "RR_BRES",
+      "mean_difference_mm": 0.0,
+      "parameters": 476
+    }
+  ],
+  "feedback": {
+    "development": {
+      "max_mean_difference_mm": 0.0,
+      "independent_updates": 20832
+    },
+    "later_exploratory": {
+      "max_mean_difference_mm": 5.684341886080802e-14,
+      "independent_updates": 16184
+    }
+  },
+  "physical_cache": {
+    "origins": [
+      252,
+      253,
+      300,
+      341,
+      342,
+      343,
+      431,
+      432,
+      433,
+      611,
+      612,
+      613,
+      791,
+      792,
+      793,
+      1167,
+      1168,
+      1169,
+      1454,
+      1460
+    ],
+    "max_anchor_difference_mm": 2.2737367544323206e-13,
+    "max_independent_daily_state_difference": 3.183231456205249e-12,
+    "future_driver_perturbation_passed": true
+  },
+  "fit_count": 36,
+  "training_updates": 7800,
+  "no_new_training": true,
+  "source_and_selection_chronology_passed": true,
+  "end_utc": "2026-09-13T14:25:22.442806+00:00",
+  "elapsed_seconds": 11.268449041061103,
+  "calls": {
+    "reference_forward": 46,
+    "day_forward": 140,
+    "day_backward": 0
+  }
+}

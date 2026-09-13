@@ -1,0 +1,13 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+{"passed": true, "start_utc": "2026-09-13T14:25:11.174437+00:00", "verified_hashes": 427, "forecast_locks": 14508, "score_cells": 61152, "max_score_difference_mm": 5.115907697472721e-13, "max_scale_difference_mm": 0.0, "physical_cache": {"origins": [252, 253, 300, 341, 342, 343, 431, 432, 433, 611, 612, 613, 791, 792, 793, 1167, 1168, 1169, 1454, 1460], "max_anchor_difference_mm": 2.2737367544323206e-13, "max_independent_daily_state_difference": 3.183231456205249e-12, "future_driver_perturbation_passed": true}, "fit_count": 36, "training_updates": 7800, "no_new_training": true, "source_and_selection_chronology_passed": true, "end_utc": "2026-09-13T14:25:22.442806+00:00", "elapsed_seconds": 11.268449041061103, "calls": {"reference_forward": 46, "day_forward": 140, "day_backward": 0}}
