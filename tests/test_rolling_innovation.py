@@ -11,7 +11,12 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "code"))
-from rolling_probability.innovation import ErrorRidge, error_features, phase_run
+from rolling_probability.innovation import (
+    ErrorRidge,
+    error_features,
+    fixed_error_scales,
+    phase_run,
+)
 
 
 def predictions(start, end, H):
@@ -28,6 +33,38 @@ def predictions(start, end, H):
 
 
 class InnovationChecks(unittest.TestCase):
+    def test_fixed_units_ignore_later_scales_and_validate_initial_origin(self):
+        history = np.arange(12.0)[:, None] + np.zeros((12, 4))
+        core = predictions(10, 20, 3)
+        core["sigma"][0] = 2
+        core["sigma"][1] = 10
+        fixed = fixed_error_scales({"core": core}, ["core"], 10)
+        f, _ = error_features(history, {"core": core}, ["core"], 10, 12, 3, fixed)
+        np.testing.assert_array_equal(f[:2], 5.5)
+        core["sigma"][1:] = 1000
+        f2, _ = error_features(history, {"core": core}, ["core"], 10, 12, 3, fixed)
+        np.testing.assert_array_equal(f, f2)
+        with self.assertRaises(ValueError):
+            fixed_error_scales({"core": core}, ["core"], 11)
+
+    def test_constant_units_have_the_declared_millimeter_ridge_solution(self):
+        scale = 2.5
+        past = np.array([1.0, -2.0, 3.0, -4.0])
+        future = np.array([-0.2, 1.0, -2.0, 3.0])
+        state = ErrorRidge(1, 1, 100, 1)
+        for i in range(len(past)):
+            state.update(
+                0,
+                np.full((4, 1), past[i] / scale),
+                np.full(4, future[i] / scale),
+                101 + i,
+                101 + i,
+                102 + i,
+            )
+        beta = (past @ future) / (past @ past + scale * scale)
+        predicted = scale * (6.0 / scale) * state.beta[0, :, 0]
+        np.testing.assert_allclose(predicted, 6 * beta, rtol=1e-13, atol=1e-13)
+
     def test_only_latest_matured_same_horizon_forecast_enters_features(self):
         history = np.arange(12.0)[:, None] + np.zeros((12, 4))
         core = predictions(10, 20, 3)

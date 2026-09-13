@@ -62,7 +62,21 @@ class ErrorRidge:
         }
 
 
-def error_features(history, current, references, start, origin, valid):
+def fixed_error_scales(current, references, origin):
+    scales = {}
+    for name in references:
+        pred = current[name]
+        if int(pred["origins"][0]) != origin:
+            raise ValueError("Normalization forecast is not the initial origin")
+        scales[name] = pred["sigma"][0].copy()
+        if not np.isfinite(scales[name]).all() or (scales[name] <= 0).any():
+            raise ValueError("Invalid fixed error unit")
+    return scales
+
+
+def error_features(
+    history, current, references, start, origin, valid, fixed_scales=None
+):
     if len(history) != origin:
         raise ValueError("Error input crosses observed prefix")
     features = np.zeros((valid, 4, len(references)))
@@ -76,7 +90,10 @@ def error_features(history, current, references, start, origin, valid):
             pred = current[name]
             if pred["origins"][j] != previous:
                 raise ValueError("Incorrect previous forecast origin")
-            features[k, :, d] = (history[-1] - pred["mean"][j, k]) / pred["sigma"][j, k]
+            scale = (
+                pred["sigma"][j, k] if fixed_scales is None else fixed_scales[name][k]
+            )
+            features[k, :, d] = (history[-1] - pred["mean"][j, k]) / scale
         available[k] = True
     if not np.isfinite(features).all():
         raise ArithmeticError("Nonfinite issued error features")
@@ -91,6 +108,20 @@ def phase_run(spec, phase, current, out, recorder):
     records = {name: {k: v.copy() for k, v in r.items()} for name, r in current.items()}
     states, issued = {}, {}
     out.mkdir(parents=True)
+    fixed = None
+    if spec.get("error_units", "issued") == "frozen_first_forecast":
+        references = {
+            r for refs in spec["innovation_references"].values() for r in refs
+        }
+        fixed = fixed_error_scales(current, references, start)
+        save_json(
+            out / "normalization.json",
+            dict(
+                mode="frozen_first_forecast",
+                origin=start,
+                scales={name: scale.tolist() for name, scale in fixed.items()},
+            ),
+        )
     for name, refs in spec["innovation_references"].items():
         states[name] = ErrorRidge(H, len(refs), start, spec["innovation_alpha"])
         pred = {
@@ -118,7 +149,7 @@ def phase_run(spec, phase, current, out, recorder):
         valid = min(H, end - n)
         for name, refs in spec["innovation_references"].items():
             feature, available = error_features(
-                stream.history, current, refs, start, n, valid
+                stream.history, current, refs, start, n, valid, fixed
             )
             pred, state, log = records[name], states[name], issued[name]
             log["features"][i, :valid], log["available"][i, :valid] = feature, available
@@ -126,9 +157,12 @@ def phase_run(spec, phase, current, out, recorder):
             correction = np.einsum(
                 "hpd,hpd->hp", feature, state.beta[:valid], optimize=False
             )
-            pred["mean"][i, :valid] = (
-                core["mean"][i, :valid] + core["sigma"][i, :valid] * correction
+            units = (
+                core["sigma"][i, :valid]
+                if fixed is None
+                else fixed[spec["core_model"]][:valid]
             )
+            pred["mean"][i, :valid] = core["mean"][i, :valid] + units * correction
             if not np.isfinite(pred["mean"][i, :valid]).all():
                 raise ArithmeticError("Invalid issued mean")
         recorder.event(
@@ -160,7 +194,10 @@ def phase_run(spec, phase, current, out, recorder):
         )
         for k in range(min(H, i + 1)):
             j = i - k
-            response = (observed - core["mean"][j, k]) / core["sigma"][j, k]
+            units = (
+                core["sigma"][j, k] if fixed is None else fixed[spec["core_model"]][k]
+            )
+            response = (observed - core["mean"][j, k]) / units
             for name, state in states.items():
                 if issued[name]["available"][j, k]:
                     state.update(
@@ -218,6 +255,8 @@ def phase_run(spec, phase, current, out, recorder):
 
 
 def execute(spec, config, out):
+    if spec.get("error_units", "issued") not in ("issued", "frozen_first_forecast"):
+        raise ValueError("Unknown error unit convention")
     if (
         sha(ROOT / spec["data"]) != spec["data_sha256"]
         or not spec["post_transfer_exposure"]
