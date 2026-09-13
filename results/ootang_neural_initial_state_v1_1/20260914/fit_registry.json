@@ -25,5 +25,32 @@
     "updates": 200,
     "end_utc": "2026-09-13T21:12:10.237098+00:00",
     "elapsed_seconds": 2.040830582845956
+  },
+  {
+    "phase": "later_exploratory",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T21:21:05.013092+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T21:21:07.755999+00:00",
+    "elapsed_seconds": 2.2351772910915315
+  },
+  {
+    "phase": "later_exploratory",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T21:21:07.756190+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T21:21:09.838107+00:00",
+    "elapsed_seconds": 2.0790582918561995
+  },
+  {
+    "phase": "later_exploratory",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T21:21:09.838269+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T21:21:11.944954+00:00",
+    "elapsed_seconds": 2.1054072906263173
   }
 ]

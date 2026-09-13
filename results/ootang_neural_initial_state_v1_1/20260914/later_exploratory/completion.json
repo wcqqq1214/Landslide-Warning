@@ -1,0 +1,247 @@
+{
+  "status": "completed",
+  "utc": "2026-09-13T21:21:12.466897+00:00",
+  "calls": {
+    "reference_forward": 0,
+    "day_forward": 274953,
+    "day_backward": 268800,
+    "original_resume_forward": 1172
+  },
+  "decision": {
+    "passed": false,
+    "joint_horizons": 0,
+    "horizons": [
+      {
+        "horizon": 1,
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "crps": false,
+          "interval_score90": false,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": false,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": false,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": false,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 2,
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": false,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 3,
+        "mean_pass": false,
+        "probability_pass": true,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 4,
+        "mean_pass": false,
+        "probability_pass": true,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 5,
+        "mean_pass": false,
+        "probability_pass": true,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 6,
+        "mean_pass": false,
+        "probability_pass": true,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      },
+      {
+        "horizon": 7,
+        "mean_pass": false,
+        "probability_pass": true,
+        "joint": false,
+        "average_rmse_no_worse_B": true,
+        "mean_checks": {
+          "mae": true,
+          "rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": true,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "crps": true,
+          "interval_score90": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "coverage_deviation": true
+        }
+      }
+    ],
+    "physics_pass": true,
+    "step": 200,
+    "phase": "later_exploratory",
+    "exploratory": true,
+    "development_passed": false,
+    "execution_policy": "user authorized full later report after development failure",
+    "later_reselection": false
+  }
+}
