@@ -1,0 +1,122 @@
+[
+  {
+    "phase": "inner",
+    "model": "CL_DIRECT",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:18:52.508607+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:00.937824+00:00",
+    "elapsed_seconds": 7.9512452078051865
+  },
+  {
+    "phase": "inner",
+    "model": "CL_DIRECT",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:00.938121+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:08.833870+00:00",
+    "elapsed_seconds": 7.893175624776632
+  },
+  {
+    "phase": "inner",
+    "model": "CL_DIRECT",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:08.834080+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:16.728882+00:00",
+    "elapsed_seconds": 7.894157417118549
+  },
+  {
+    "phase": "inner",
+    "model": "CL_BRES",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:17.387358+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:25.306086+00:00",
+    "elapsed_seconds": 7.918046541977674
+  },
+  {
+    "phase": "inner",
+    "model": "CL_BRES",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:25.306344+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:33.313225+00:00",
+    "elapsed_seconds": 8.006311083678156
+  },
+  {
+    "phase": "inner",
+    "model": "CL_BRES",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:33.313486+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:41.227858+00:00",
+    "elapsed_seconds": 7.913547000382096
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_EQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:41.885364+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:45.908564+00:00",
+    "elapsed_seconds": 4.022476874757558
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_EQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:45.908882+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:49.921788+00:00",
+    "elapsed_seconds": 4.012233874760568
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_EQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:49.922066+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:53.978644+00:00",
+    "elapsed_seconds": 4.055873665958643
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_NOEQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:54.252611+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:54.678863+00:00",
+    "elapsed_seconds": 0.425480917096138
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_NOEQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:54.679112+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:55.124341+00:00",
+    "elapsed_seconds": 0.44458012515679
+  },
+  {
+    "phase": "inner",
+    "model": "PINN_NOEQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:19:55.124691+00:00",
+    "updates": 400,
+    "end_utc": "2026-09-13T14:19:55.550710+00:00",
+    "elapsed_seconds": 0.42530116718262434
+  }
+]
