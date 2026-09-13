@@ -5,6 +5,7 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
@@ -16,6 +17,7 @@ from rolling_probability.innovation import (
     error_features,
     fixed_error_scales,
     phase_run,
+    historical_error_scales,
 )
 
 
@@ -33,6 +35,98 @@ def predictions(start, end, H):
 
 
 class InnovationChecks(unittest.TestCase):
+    def test_short_feedback_uses_previous_one_day_forecast_for_every_head(self):
+        history = np.arange(12.0)[:, None] + np.zeros((12, 4))
+        core = predictions(10, 20, 3)
+        core["mean"][1, 0] = 3
+        core["mean"][:, 1:] = 1e9
+        fixed = {"core": np.ones((3, 4)) * 2}
+        features, available = error_features(
+            history, {"core": core}, ["core"], 10, 12, 3, fixed, 1
+        )
+        np.testing.assert_array_equal(available, True)
+        np.testing.assert_array_equal(features, 4)
+        core["mean"][2:] = -1e9
+        again, _ = error_features(
+            history, {"core": core}, ["core"], 10, 12, 3, fixed, 1
+        )
+        np.testing.assert_array_equal(features, again)
+        _, available = error_features(
+            history[:10], {"core": core}, ["core"], 10, 10, 3, fixed, 1
+        )
+        np.testing.assert_array_equal(available, False)
+
+    def test_short_feedback_allows_early_feature_but_waits_for_long_target(self):
+        state = ErrorRidge(3, 2, 100, 1, feedback_lead_days=1)
+        original = ErrorRidge(3, 2, 100, 1)
+        x = np.array([[[1.0, 2.0]] * 4, [[2.0, -1.0]] * 4, [[3.0, 1.0]] * 4])
+        y = np.array([[2.0] * 4, [-1.0] * 4, [4.0] * 4])
+        with self.assertRaises(ValueError):
+            state.update(2, x[0], y[0], 101, 103, 103)
+        with self.assertRaises(ValueError):
+            original.update(2, x[0], y[0], 101, 103, 104)
+        for i in range(3):
+            state.update(2, x[i], y[i], 101 + i, 103 + i, 104 + i)
+            A = np.vstack([x[: i + 1, 0], np.eye(2)])
+            b = np.r_[y[: i + 1, 0], 0.0, 0.0]
+            expected = np.linalg.lstsq(A, b, rcond=None)[0]
+            np.testing.assert_allclose(
+                state.beta[2], np.broadcast_to(expected, (4, 2)), atol=1e-12, rtol=1e-12
+            )
+        with self.assertRaises(ValueError):
+            state.update(2, x[-1], y[-1], 103, 105, 107)
+
+    def test_historical_units_ignore_future_labels_and_reject_boundary_target(self):
+        import hashlib
+
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp)
+            (path / "inner").mkdir()
+            verify = path / "verification.json"
+            verify.write_text('{"passed": true}')
+            values = np.arange(7.0)[:, None] + np.arange(4.0)[None]
+            table = pd.DataFrame(
+                values, columns=[p + "/mm" for p in ("ATU1", "ATU5", "MJ3", "MJ1")]
+            )
+            table.to_csv(path / "data.csv", index=False)
+            source = dict(
+                run=str(path),
+                phase="inner",
+                manifest_sha256="fixture",
+                verification=str(verify),
+                verification_sha256=hashlib.sha256(verify.read_bytes()).hexdigest(),
+                model_map={"core": "old_core"},
+                expected_rows=3,
+            )
+            spec = dict(
+                normalization_sources={"development": source},
+                stages={"development": [4, 7]},
+                data=str(path / "data.csv"),
+                points=["ATU1", "ATU5", "MJ3", "MJ1"],
+                horizons=3,
+                feature_rms_floor_mm=1e-6,
+            )
+            forecast = predictions(1, 4, 3)
+            np.savez(path / "inner/old_core.npz", **forecast)
+            with (
+                patch("rolling_probability.innovation.checked_run", return_value=path),
+                patch("rolling_probability.innovation.ROOT", path),
+            ):
+                units, contract, _ = historical_error_scales(spec, "development")
+                expected = np.sqrt(np.mean(values[1:4] ** 2, axis=0))
+                np.testing.assert_array_equal(
+                    units["core"], np.broadcast_to(expected, (3, 4))
+                )
+                self.assertEqual(contract["input_entries"]["core"]["last_target"], 3)
+                table.iloc[4:] = 1e10
+                table.to_csv(path / "data.csv", index=False)
+                after, _, _ = historical_error_scales(spec, "development")
+                np.testing.assert_array_equal(after["core"], units["core"])
+                forecast["origins"] += 1
+                np.savez(path / "inner/old_core.npz", **forecast)
+                with self.assertRaises(ValueError):
+                    historical_error_scales(spec, "development")
+
     def test_fixed_units_ignore_later_scales_and_validate_initial_origin(self):
         history = np.arange(12.0)[:, None] + np.zeros((12, 4))
         core = predictions(10, 20, 3)
