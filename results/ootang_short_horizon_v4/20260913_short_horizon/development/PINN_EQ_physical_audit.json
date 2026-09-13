@@ -1,0 +1,79 @@
+{
+  "passed": false,
+  "tolerance_by_horizon_mm": [
+    0.004871518051724687,
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.01
+  ],
+  "per_seed_and_ensemble": [
+    {
+      "seed": 0,
+      "max_replay_difference_mm": [
+        0.9765106257406728,
+        0.8567150059022879,
+        0.7871808715644306,
+        0.7616089853309518,
+        0.763027268139183,
+        0.7295334766358792,
+        0.6474230785269128
+      ],
+      "max_normalized_defect": 0.5764485690211336,
+      "min_plastic_increment_mm": -0.028511495758607452,
+      "max_complementarity_residual": 2.9208957722845854e-18,
+      "passed": false
+    },
+    {
+      "seed": 1,
+      "max_replay_difference_mm": [
+        1.711854427460196,
+        1.5022331034152785,
+        1.3648267826756637,
+        1.2586407768749268,
+        1.1486299598423102,
+        1.0334789466727443,
+        0.9239191547932251
+      ],
+      "max_normalized_defect": 0.5186606731527411,
+      "min_plastic_increment_mm": -0.02896508445149948,
+      "max_complementarity_residual": 2.8134219004371722e-18,
+      "passed": false
+    },
+    {
+      "seed": 2,
+      "max_replay_difference_mm": [
+        1.0726745485941933,
+        1.040256635237938,
+        1.0023173782094545,
+        0.9683170730691018,
+        0.9418623684927638,
+        0.9334311291282802,
+        0.9446121846009419
+      ],
+      "max_normalized_defect": 0.5170888855026117,
+      "min_plastic_increment_mm": -0.01607765869096056,
+      "max_complementarity_residual": 2.6938554713890355e-18,
+      "passed": false
+    },
+    {
+      "seed": "equal_weight_mean",
+      "max_replay_difference_mm": [
+        1.2294801525707157,
+        1.1109099527137687,
+        1.037700532260601,
+        0.9961889450912622,
+        0.9511731988243355,
+        0.8979544509491006,
+        0.8386514726402083
+      ],
+      "max_normalized_defect": 0.5192282126580112,
+      "min_plastic_increment_mm": -0.02214029732738254,
+      "max_complementarity_residual": 3.0628813413135406e-18,
+      "passed": false
+    }
+  ],
+  "main_output_replaced": false
+}

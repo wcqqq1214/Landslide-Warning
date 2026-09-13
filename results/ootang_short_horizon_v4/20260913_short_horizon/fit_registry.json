@@ -118,5 +118,125 @@
     "updates": 400,
     "end_utc": "2026-09-13T14:19:55.550710+00:00",
     "elapsed_seconds": 0.42530116718262434
+  },
+  {
+    "phase": "development",
+    "model": "CL_DIRECT",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:31.962517+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:22:36.452557+00:00",
+    "elapsed_seconds": 4.013265833258629
+  },
+  {
+    "phase": "development",
+    "model": "CL_DIRECT",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:36.452890+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:22:40.401840+00:00",
+    "elapsed_seconds": 3.9464333332143724
+  },
+  {
+    "phase": "development",
+    "model": "CL_DIRECT",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:40.402111+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:22:44.345452+00:00",
+    "elapsed_seconds": 3.9425919158384204
+  },
+  {
+    "phase": "development",
+    "model": "CL_BRES",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:44.670059+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:46.640667+00:00",
+    "elapsed_seconds": 1.9698089589364827
+  },
+  {
+    "phase": "development",
+    "model": "CL_BRES",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:46.641004+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:48.626827+00:00",
+    "elapsed_seconds": 1.9850969170220196
+  },
+  {
+    "phase": "development",
+    "model": "CL_BRES",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:48.627116+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:50.603618+00:00",
+    "elapsed_seconds": 1.9758426249027252
+  },
+  {
+    "phase": "development",
+    "model": "PINN_EQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:50.921105+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:51.915837+00:00",
+    "elapsed_seconds": 0.9939552922733128
+  },
+  {
+    "phase": "development",
+    "model": "PINN_EQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:51.916123+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:52.894843+00:00",
+    "elapsed_seconds": 0.9779799999669194
+  },
+  {
+    "phase": "development",
+    "model": "PINN_EQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:52.895135+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:53.858283+00:00",
+    "elapsed_seconds": 0.9624850829131901
+  },
+  {
+    "phase": "development",
+    "model": "PINN_NOEQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:53.927321+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:54.036391+00:00",
+    "elapsed_seconds": 0.10835966607555747
+  },
+  {
+    "phase": "development",
+    "model": "PINN_NOEQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:54.036698+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:54.150328+00:00",
+    "elapsed_seconds": 0.11290787486359477
+  },
+  {
+    "phase": "development",
+    "model": "PINN_NOEQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:22:54.150637+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:22:54.265052+00:00",
+    "elapsed_seconds": 0.1136972913518548
   }
 ]
