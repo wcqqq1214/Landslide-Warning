@@ -117,7 +117,7 @@
       "verification": "results/ootang_rolling_v3/20260913/c3_verification/verification.json",
       "verification_sha256": "6340a47e727d02746c1498d91927d05acd2b8d3cb335d517acc9df95d1dc6a4f",
       "model_map": {
-        "C8_ONLINE_DATA": "C3_RIDGE_DATA",
+        "C8_ONLINE_DATA": "C3_RIDGE_DATA_a0.001",
         "B_ANCHOR": "B_ANCHOR",
         "DRIFT14": "DRIFT14"
       },
