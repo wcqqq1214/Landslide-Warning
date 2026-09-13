@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T02:18:19.112610+00:00",
+  "run": "results/ootang_rolling_v3/20260913/c11_mixture",
+  "immutable_artifacts_checked": 68,
+  "sources_checked": 53,
+  "forecast_locks": 669,
+  "checks": {
+    "weight_updates": 153600,
+    "score_cells": 63360,
+    "quadrature_checks": 184,
+    "cdf_values_checked": 921600
+  },
+  "maximum_differences": {
+    "weight": 6.87817858224804e-16,
+    "wide_scale_mm": 7.105427357601002e-15,
+    "score_csv_mm": 4.995968083676416e-10,
+    "cdf": 1.9867441025667176e-12,
+    "quadrature_mm": 9.52293799372228e-14,
+    "coefficient_pool": 1.4210854715202004e-14
+  },
+  "old_distributions_and_core_exactly_unchanged": true,
+  "real_mixture_cdf_and_crps_verified": true,
+  "post_exposure": true,
+  "independent_transfer": false,
+  "new_training_updates": 0,
+  "physical_calls": 0,
+  "verifier_sha256": "fc680d42d48f9fd0e6a046b80d057bdb27441f82ece33c20a37e08e123e7417e",
+  "dependency_sha256": {
+    "verify_ootang_empirical.py": "6d1871bba874b11efdf29d7c7b6ef03193790a1be391d14412b909c0cfbb4138",
+    "verify_ootang_rolling.py": "5f19112d481e4d6408ea613f557c5957fa43905ae92908c1d3a43ee519add42f"
+  }
+}
