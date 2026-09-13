@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checked_utc": "2026-09-13T05:26:15.544279+00:00",
+  "figures": 6,
+  "panels": 22,
+  "visual_review_completed": true,
+  "minimum_font_pt": 7,
+  "alignment_failures": 0,
+  "collision_failures": 0,
+  "source_warning": "No TIFF needed for internal report; PDF/SVG/600dpi PNG supplied.",
+  "notes": [
+    "Full dates and all four points retained.",
+    "Early development interval spikes retained.",
+    "Later ATU1/ATU5 tail errors and interval widening retained.",
+    "Variance proxy does not imply exact Bayesian posterior."
+  ]
+}

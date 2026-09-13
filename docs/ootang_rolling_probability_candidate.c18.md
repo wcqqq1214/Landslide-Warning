@@ -42,3 +42,26 @@
 原件 `ca1992e`、复算器 `94ecfa0`；05:21:57 UTC 核验通过：79 项产物、64 项来源、全部 228,960 次矩阵追加、828 次增广 SVD、79,200 个评分单元及 669 份预测锁，最大差 5.00e-10。均值、raw_sigma、旧对照和首起点尺度精确保持；两段原 27 项全部通过，后期仍是探索，不改原 C4 迁移。
 
 固定 C18_PHYS/CORE、B_ANCHOR、DRIFT1、C16_PHYS/CORE、C18_TREND 七个模型；PHYS 对前述两基线、CORE、TREND、原 C16 PHYS，CORE 对两基线和原 C16 CORE，共八组/两阶段/七指标 112 项成块区间。沿用原 30 日块、2,000 次、95%、seed=20260913、每隔 30 日非重叠及完整六图，不改主步长。分析器只允许配置多于六个固定对照，旧六模型默认保持；新配置 `ootang_rolling_consolidation.v3.20260913.json` 冻结来源，原十七轮归并不覆盖。统计与图件尚待核对，全部工作仍在原 05:27:52 UTC 前停止。
+
+
+## 核验后的结果与保留条件
+
+统计配置及数组核验提交 `fc99763`。112 项配对区间、17,108 行点日表和非重叠统计于 05:24:31 UTC 独立核验通过，最大差 9.74e-9，原容差保持。六张图的全部 22 面板已目视，完整日期与区间尖峰保留；对齐、字体（最低 7 pt）、碰撞检查通过，源检查只有内部报告不需 TIFF 的提示。
+
+| 阶段 / 主模型 | 平均 RMSE | 合并 RMSE | CRPS | 90% 覆盖 | 宽度 | 区间评分 | 判据 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 开发 C18 PHYS | 0.5740 | 0.5872 | 0.3508 | 89.34% | 2.6378 | 3.3602 | 27/27 |
+| 后期探索 C18 PHYS | 1.3931 | 1.6721 | 0.6937 | 86.27% | 4.6279 | 7.2493 | 27/27 |
+
+单位 mm，覆盖率除外。相对 C16 PHYS，均值完全不变，CRPS 开发/后期分别增加 0.005779/0.000628 mm，差值区间均跨 0；覆盖与区间评分改善，宽度增加。它通过原来相对 B_ANCHOR、DRIFT1 和逐点保护的门槛，**不是每一项都优于 C16**。
+
+相对 DRIFT1，开发/后期平均 RMSE 差为 -0.7039 [-0.9478,-0.4189] / -2.6685 [-4.2478,-0.8261]；CRPS 差 -1.4290 [-1.9922,-0.9986] / -1.8904 [-3.0428,-1.0189]。但 PHYS 对 CORE 的开发 RMSE/CRPS 更差；后期微小改善的区间均跨 0，物理额外价值仍未确立。每隔 30 日只剩开发12/后期9起点，PHYS RMSE 0.5331/1.1197、CRPS 0.3301/0.5726、覆盖89.58%/91.67%，不冒充大量独立重复。
+
+**保留 C18 为数值门槛通过的探索候选，停止新增 C19。** 方法是已有监督机器学习均值加信息矩阵方差近似，不是新深度网络或严格贝叶斯后验。后期反复暴露、方差项可能重复计量、物理增量不稳定、已知未来驱动和四点边际分布限制保持。原 C4 唯一迁移失败、原293日长窗及所有负结果不改判，不能据本次宣布正式独立验证或原研究目标全部解决。
+
+- [十八轮31条主记录](../results/ootang_rolling_v3/20260913/c18_analysis/all_candidates_h30.csv)、[全部步长与对照](../results/ootang_rolling_v3/20260913/c18_analysis/all_saved_horizons.csv)
+- [全部112项统计](../results/ootang_rolling_v3/20260913/c18_analysis/c18_paired_bootstrap.csv)、[非重叠](../results/ootang_rolling_v3/20260913/c18_analysis/c18_nonoverlap.csv)、[逐点](../results/ootang_rolling_v3/20260913/c18_analysis/c18_points_h30.csv)
+- [开发完整位移](../results/ootang_rolling_v3/20260913/c18_analysis/development_forecasts_h30.pdf)、[后期完整位移](../results/ootang_rolling_v3/20260913/c18_analysis/later_exploratory_forecasts_h30.pdf)
+- [开发完整误差](../results/ootang_rolling_v3/20260913/c18_analysis/development_errors_h30.pdf)、[后期完整误差](../results/ootang_rolling_v3/20260913/c18_analysis/later_exploratory_errors_h30.pdf)
+- [开发全步长](../results/ootang_rolling_v3/20260913/c18_analysis/development_horizons.pdf)、[后期全步长](../results/ootang_rolling_v3/20260913/c18_analysis/later_exploratory_horizons.pdf)
+- [模型核验](../results/ootang_rolling_v3/20260913/c18_verification/verification.json)、[统计核验](../results/ootang_rolling_v3/20260913/c18_statistics_verification/verification.json)、[图件QA](../results/ootang_rolling_v3/20260913/c18_qa/qa.json)

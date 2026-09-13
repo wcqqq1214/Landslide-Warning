@@ -1,0 +1,62 @@
+[
+  {
+    "figure": "development_errors_h30.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "development_errors_h30.pdf",
+    "kind": "collision",
+    "returncode": 0
+  },
+  {
+    "figure": "development_forecasts_h30.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "development_forecasts_h30.pdf",
+    "kind": "collision",
+    "returncode": 0
+  },
+  {
+    "figure": "development_horizons.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "development_horizons.pdf",
+    "kind": "collision",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_errors_h30.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_errors_h30.pdf",
+    "kind": "collision",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_forecasts_h30.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_forecasts_h30.pdf",
+    "kind": "collision",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_horizons.pdf",
+    "kind": "text",
+    "returncode": 0
+  },
+  {
+    "figure": "later_exploratory_horizons.pdf",
+    "kind": "collision",
+    "returncode": 0
+  }
+]
