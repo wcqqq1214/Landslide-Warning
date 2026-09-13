@@ -107,9 +107,7 @@ def main():
 \setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
 \setlength{\headheight}{14pt}\setlength{\footskip}{10mm}
 \renewcommand{\arraystretch}{1.13}
-\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0.3pt}
-\fancyhead[L]{\small\color{reportblue}藕塘滑坡｜1--7 天位移预测对比}
-\fancyhead[R]{\small 简报 v4.1 · 2026-09-14}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
 \fancyfoot[C]{\small\thepage\ / 4}
 \newcommand{\pagetitle}[1]{{\Large\bfseries\color{reportblue}#1}\par\vspace{1mm}}
 \newcommand{\takeaway}[1]{\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep}{\small #1}}\par}

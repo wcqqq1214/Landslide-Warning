@@ -4,6 +4,8 @@
 
 [四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。只精简展示，实验仍为冻结的 v4.0；下方五页原版和原始图件保持不变。
 
+当前展示按用户要求去除了页眉、版本号和制作日期，保留数据时段与页码；文件名中的版本仅用于归档。
+
 可编辑源码：[ootang_short_horizon_brief.v4.1.tex](ootang_short_horizon_brief.v4.1.tex)。[生成脚本](build_short_horizon_brief.py)只读取已保存 CSV 与图件，自动填入表格和图注，不训练或重新选模。在仓库根目录执行：
 
 ```bash

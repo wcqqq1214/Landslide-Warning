@@ -1,12 +1,11 @@
 {
-  "checked_at_utc": "2026-09-13T17:20:29.518764+00:00",
+  "checked_at_utc": "2026-09-13T17:58:52.451775+00:00",
   "scope": "presentation only; frozen v4.0 experiment unchanged",
-  "builder_commit": "7255b8e0dc2e6d8e7925d39e1f73b801c0384cfd",
   "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
-  "pdf_sha256": "8059588b03d1876e1f6c67e2238e8c25131bb7a9f468754b072ffe2a60a1c01c",
+  "pdf_sha256": "f20defa804ef77ee80ed25e40d2751065349a4cf9c8098b76245873d01d920a1",
   "page_count": 4,
   "csv_numeric_cells_verified_in_pdf_order": 96,
-  "numeric_method": "csv.DictReader independently reconstructs 28 selected cells, 60 model cells and 8 point-caption cells; compare the ordered decimal tokens extracted from each PDF table/caption",
+  "numeric_method": "CSV audit inherited from base commit; all 96 ordered PDF numeric cells rechecked against unchanged source receipt",
   "frozen_input_hashes_verified_against_git_head": 14,
   "tex_sha256_verified": true,
   "minimum_font_size_pt": 6.5,
@@ -14,25 +13,25 @@
   "page_geometry": [
     {
       "page": 1,
-      "glyphs": 1012,
+      "glyphs": 980,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 2,
-      "glyphs": 1126,
+      "glyphs": 1094,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 3,
-      "glyphs": 587,
+      "glyphs": 555,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 4,
-      "glyphs": 666,
+      "glyphs": 634,
       "clipped": [],
       "collisions": []
     }
@@ -50,7 +49,9 @@
       "legible tables and axes",
       "all four full-period point curves retained",
       "no clipping or overlap",
-      "correct figure/caption pairing"
+      "correct figure/caption pairing",
+      "page headers and issue metadata removed",
+      "all body and footer pixels unchanged"
     ]
   },
   "new_training": 0,
@@ -63,5 +64,30 @@
     "no validated real-world instability warning",
     "unstable physical increment",
     "current PINN physical checks failed"
-  ]
+  ],
+  "previous_pdf_sha256": "8059588b03d1876e1f6c67e2238e8c25131bb7a9f468754b072ffe2a60a1c01c",
+  "base_commit": "ead32ea71bf6e23de468a8dc3d9563095edc50d6",
+  "builder_sha256": "0457d8b9d521b6bd5b41adb56e8fc5ff344fdf40b742af154fa8136f4bca8080",
+  "presentation_change": "removed page header, presentation version and issue date; body and footer unchanged",
+  "body_pixel_comparison": {
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "clip_top_pt": 42,
+    "render_scale": 1.4,
+    "status": "identical"
+  },
+  "blank_header_check": {
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "clip_bottom_pt": 42,
+    "status": "all white"
+  }
 }
