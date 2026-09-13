@@ -1,0 +1,249 @@
+{"phase": "later_exploratory", "seed": 0, "step": 100, "loss": 0.48458233993819105, "gradient_norm": 0.05305146202438047, "mse": 0.4808117799610284, "initial_regularization": 0.37705599771626286}
+{"phase": "later_exploratory", "seed": 0, "step": 200, "loss": 1.0931645222583852, "gradient_norm": 0.048279669948462375, "mse": 1.0887401424573993, "initial_regularization": 0.4424379800985928}
+{"phase": "later_exploratory", "seed": 1, "step": 100, "loss": 0.5183347749338764, "gradient_norm": 0.0591224567838434, "mse": 0.5147358080280358, "initial_regularization": 0.3598966905840586}
+{"phase": "later_exploratory", "seed": 1, "step": 200, "loss": 0.5194520603480884, "gradient_norm": 0.052492720547273365, "mse": 0.5152895459736782, "initial_regularization": 0.4162514374410234}
+{"phase": "later_exploratory", "seed": 2, "step": 100, "loss": 0.670046041058912, "gradient_norm": 0.08180311836619883, "mse": 0.6664004673793015, "initial_regularization": 0.364557367961048}
+{"phase": "later_exploratory", "seed": 2, "step": 200, "loss": 0.6122330960584911, "gradient_norm": 0.04690404280315155, "mse": 0.607979024260323, "initial_regularization": 0.4254071798168101}
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+{
+  "passed": false,
+  "joint_horizons": 0,
+  "horizons": [
+    {
+      "horizon": 1,
+      "mean_pass": false,
+      "probability_pass": false,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": false,
+        "MJ1_rmse": false
+      },
+      "probability_checks": {
+        "crps": false,
+        "interval_score90": false,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": false,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": false,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": false,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 2,
+      "mean_pass": false,
+      "probability_pass": false,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": false,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 3,
+      "mean_pass": false,
+      "probability_pass": true,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": true,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 4,
+      "mean_pass": false,
+      "probability_pass": true,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": true,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 5,
+      "mean_pass": false,
+      "probability_pass": true,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": true,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 6,
+      "mean_pass": false,
+      "probability_pass": true,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": true,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    },
+    {
+      "horizon": 7,
+      "mean_pass": false,
+      "probability_pass": true,
+      "joint": false,
+      "average_rmse_no_worse_B": true,
+      "mean_checks": {
+        "mae": true,
+        "rmse": true,
+        "ATU1_mae": true,
+        "ATU1_rmse": true,
+        "ATU5_mae": true,
+        "ATU5_rmse": true,
+        "MJ3_mae": false,
+        "MJ3_rmse": true,
+        "MJ1_mae": true,
+        "MJ1_rmse": true
+      },
+      "probability_checks": {
+        "crps": true,
+        "interval_score90": true,
+        "ATU1_crps": true,
+        "ATU1_interval_score90": true,
+        "ATU5_crps": true,
+        "ATU5_interval_score90": true,
+        "MJ3_crps": true,
+        "MJ3_interval_score90": true,
+        "MJ1_crps": true,
+        "MJ1_interval_score90": true,
+        "coverage_deviation": true
+      }
+    }
+  ],
+  "physics_pass": true,
+  "step": 200,
+  "phase": "later_exploratory",
+  "exploratory": true,
+  "development_passed": false,
+  "execution_policy": "user authorized full later report after development failure",
+  "later_reselection": false
+}
