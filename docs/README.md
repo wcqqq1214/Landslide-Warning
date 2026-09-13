@@ -15,6 +15,8 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
+**已批准独立初态续评：[补充协议](ootang_neural_initial_state_continuation.v1.1.md)／[配置](../config/ootang_neural_initial_state.v1_1.json)。** 统一容差换算，复用内部检查点，按原效果门补完条件流程并同步 PDF；旧停止与失败原件保留。独立最多 60 分钟，仅 `test` 本地备份。
+
 **神经初态单候选实验已停止：[结果报告](ootang_neural_initial_state_results.v1.0.md)／[事前计划](ootang_neural_initial_state_plan.v1.0.md)／[冻结配置](../config/ootang_neural_initial_state.v1_0.json)。** B 的物理／梯度抽检通过，内部三种子训练完成；训练后 2160 条轨迹均过物理门，但 e0 同一起点触发新增塑性子步容差。整体验收停止，未选模／评分或进入开发后期；不能据此判断新模型精度。保留接口和失败原件，结束本轮，不追加训练或候选。
 
 **v4.0 短期对比已完成：[完整结果](ootang_short_horizon_comparison_results.v4.0.md)／[四页精简报告](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)／[四点全部七步长图件](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)。** 用户明确的七个位移端点、四类模型与残差配对已经执行并核验；共同推荐 1 天为 RR_DIRECT、2—7 天为在线回归＋反馈，均按开发锁定。保留 PINN 物理失败和物理增量不稳定结果，不把公开已处理日序列上的低误差等同于真实预警效果；停止新增实验。
