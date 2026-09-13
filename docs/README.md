@@ -15,7 +15,7 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**当前：十二候选、四次路线复盘及适用独立核验已完成，完整概率目标尚未达成。** 在线 Ridge 属于机器学习，均值有收益；C11/C12 物理宽分量只有限增加覆盖，概率评分差于原核心，已停止该分支。仍受原八小时截止约束，暂无冻结的 C13；后期追加为已暴露探索，C4 原迁移失败保持。
+**当前：十四候选及适用独立核验完成，四次路线复盘与 C13/C14 补记保留，完整目标尚未达成。** C13 误差记忆退步，C14 固定单位后仍差于原核心，停止该分支；下一项待检查是逐点 Ridge 的邻点信息利用，尚无冻结 C15。原总截止、后期暴露地位及 C4 迁移失败保持。
 
 | 文档 | 用途 |
 | --- | --- |
@@ -23,6 +23,7 @@ v2.0 按原标准未达标并已停止。
 | [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |
 | [C10 指数遗忘在线回归](ootang_rolling_probability_candidate.c10.md) / [配置](../config/ootang_rolling_probability.v3_9.json) | 已运行并独立核验；均值与概率均差于 C8，停止遗忘参数搜索 |
 | [C11 物理概率参照](ootang_rolling_probability_candidate.c11.md) / [C12 区间评分权重](ootang_rolling_probability_candidate.c12.md) | 均已完成并独立核验；均值复用 C8 DATA，覆盖有限增加但评分退步，后期 25/27，停止固定核心宽分量/评分切换分支 |
+| [C13 成熟误差记忆](ootang_rolling_probability_candidate.c13.md) / [C14 固定单位](ootang_rolling_probability_candidate.c14.md) | 均已运行并独立核验；前者大幅退步，后者较稳定但未超过原核心，停止单位/惩罚/滞后阶搜索 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
