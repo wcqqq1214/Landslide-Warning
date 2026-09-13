@@ -15,6 +15,8 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
+**独立单候选实验已获授权：[神经初态估计与 B+ 求解器计划](ootang_neural_initial_state_plan.v1.0.md)／[冻结配置](../config/ootang_neural_initial_state.v1_0.json)。** 本轮最多 120 分钟，先过初态／严格递推／非零梯度可行性门，再按固定训练执行；停止条件与旧预算分开。当前 A 已准备，B 尚未核验，不预设有效。
+
 **v4.0 短期对比已完成：[完整结果](ootang_short_horizon_comparison_results.v4.0.md)／[四页精简报告](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)／[四点全部七步长图件](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)。** 用户明确的七个位移端点、四类模型与残差配对已经执行并核验；共同推荐 1 天为 RR_DIRECT、2—7 天为在线回归＋反馈，均按开发锁定。保留 PINN 物理失败和物理增量不稳定结果，不把公开已处理日序列上的低误差等同于真实预警效果；停止新增实验。
 
 2026-09-14 仅将展示压缩为四页（简报 v4.1），六组原图、七步长推荐和科学结论均保持；[五页原版](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)保留。[源码、来源与核验入口](../paper/README.md)说明编译及 96 个数字单元核对，不构成新实验版本。
