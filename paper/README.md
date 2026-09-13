@@ -2,7 +2,7 @@
 
 ## 当前四页精简版（2026-09-14）
 
-[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。第 2 页已同步[独立初态实验结果](../docs/ootang_neural_initial_state_results.v1.0.md)：训练后 2160 条轨迹通过物理检查，零修正对照触发额外子步门，预测收益尚未评价。原 v4.0 数值与结论、下方五页原版和原始图件保持不变。
+[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。第 2 页已同步[完整初态耦合实验结果](../docs/ootang_neural_initial_state_results.v1.1.md)：加入开发/后期七天数值行，4707 条已评价轨迹通过原求解器数值容差检查，原零修正严格诊断仍保留；开发整体未改善，后期七天平均均值改善、3—7 天概率门通过，但逐点均值保护未过，仍落后于在线回归。原 v4.0 数值与结论、下方五页原版和原始图件保持不变。
 
 当前展示按用户要求去除了页眉、版本号、制作日期及“旧版／新增”等过程性措辞，保留数据时段与页码；文件名中的版本仅用于归档。图中坐标、图例和面板标题采用中文，以“软约束状态 PINN”和“神经初态估计＋B+ 物理递推”区分方法；物理检查与预测效果分别说明。
 
@@ -22,7 +22,9 @@ xelatex -interaction=nonstopmode -halt-on-error \
   ootang_short_horizon_brief.v4.1.tex
 ```
 
-[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 18 项输入及 TeX 哈希；[中文图件来源](figures/short_horizon_zh/sources.json)记录 5 份 CSV、全部 1148 行七日曲线数据及图件对齐检查。[交付核验](ootang_short_horizon_brief.v4.1.qa.json)核对 96 个有序数字单元、2160 条轨迹计数、四页逐字几何与实际渲染；六组图的字体和碰撞检查通过。原 17 项来源与实验图件哈希不变。保留数据结构、反复评价、软约束状态 PINN 物理未达标、初态方法效果未评价与物理增量不稳定的解释边界；不能以此称真实预警已验证。
+[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 21 项输入及 TeX 哈希；[中文图件来源](figures/short_horizon_zh/sources.json)记录 5 份 CSV、全部 1148 行七日曲线数据及原图件对齐检查。[交付核验](ootang_short_horizon_brief.v4.1.qa.json)核对 102 个有序数字单元（原 96 个保持、初态模型增加 6 个）、196 个 Markdown 表格数字和 4707 条轨迹计数；四页逐字几何与实际渲染通过，第 1、3、4 页逐像素不变。共有的 15 项原来源与六幅图件不变；图件未重新生成，沿用其原字体/碰撞检查。保留公开序列结构、探索性评价、软 PINN 物理失败及初态模型整体收益未达标的解释边界，不称真实预警已验证。
+
+完成结果同步后，可运行 `.venv/bin/python paper/verify_short_horizon_brief_initial_state.py` 核对保存 PDF、全部新旧数字及来源；此入口不导入训练或评分模型。
 
 ## 五页原版（2026-09-13）
 

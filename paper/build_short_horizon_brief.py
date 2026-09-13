@@ -1,4 +1,4 @@
-"""Present saved v4.0 results and the initial-state audit; no model execution."""
+"""Present saved v4.0 and complete initial-state results; no model execution."""
 
 import hashlib
 import json
@@ -9,7 +9,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "results/ootang_short_horizon_v4/20260913_short_horizon"
-INITIAL_STATE = ROOT / "results/ootang_neural_initial_state_v1/20260914"
+INITIAL_STATE = ROOT / "results/ootang_neural_initial_state_v1_1/20260914"
 FIGURES = ROOT / "paper/figures/short_horizon_zh"
 SOURCE = ROOT / "paper/ootang_short_horizon_brief.v4.1.tex"
 RECEIPT = ROOT / "paper/ootang_short_horizon_brief.v4.1.sources.json"
@@ -21,17 +21,20 @@ def sha(path):
 
 def main():
     initial_receipt_path = INITIAL_STATE / "verification/receipt.json"
-    initial_final_path = INITIAL_STATE / "final_receipt.json"
-    initial_report_path = ROOT / "docs/ootang_neural_initial_state_results.v1.0.md"
+    initial_report_path = ROOT / "docs/ootang_neural_initial_state_results.v1.1.md"
+    initial_dev_path = INITIAL_STATE / "development/summary_by_horizon.csv"
+    initial_later_path = INITIAL_STATE / "later_exploratory/summary_by_horizon.csv"
+    initial_decision_path = INITIAL_STATE / "development/decision.json"
+    initial_later_decision_path = INITIAL_STATE / "later_exploratory/decision.json"
     initial = json.loads(initial_receipt_path.read_text())
-    initial_final = json.loads(initial_final_path.read_text())
-    assert initial["trained_checkpoints_physical_pass"]
-    assert initial["global_contract_failure_is_zero_control"]
-    assert not initial["physical_contract_pass"]
-    assert initial["trained_trajectories"] == 2160
-    assert not initial_final["hypothesis_effectiveness_answered"]
-    assert not initial_final["new_candidate_scoring_performed"]
-    assert initial_final["status"] == "stopped"
+    assert initial["status"] == "passed" and initial["physics_pass"]
+    assert initial["counts"]["trajectories"] == 4707
+    assert initial["selected_steps"] == 200 and initial["old_stop_preserved"]
+    assert initial["strict_diagnostic_failures"] == 3
+    assert not json.loads(initial_decision_path.read_text())["passed"]
+    assert not json.loads(initial_later_decision_path.read_text())["passed"]
+    initial_dev = pd.read_csv(initial_dev_path).set_index(["model", "horizon"])
+    initial_later = pd.read_csv(initial_later_path).set_index(["model", "horizon"])
     summary_path = RUN / "analysis/summary_by_horizon.csv"
     selection_path = RUN / "analysis/selection_by_horizon.csv"
     point_path = RUN / "analysis/metrics_by_point_horizon.csv"
@@ -55,6 +58,7 @@ def main():
         "CL_BRES": "ConvLSTM 残差学习",
         "PINN_EQ": "软约束状态 PINN",
         "PINN_NOEQ": "PINN 无方程约束对照",
+        "NIS_BPLUS": "神经初态＋B+严格递推",
         "RR_DIRECT": "岭回归直接预测",
         "RR_BRES": "岭回归残差学习",
         "C16_CORE_RULES": "在线回归＋反馈",
@@ -79,7 +83,10 @@ def main():
 
     model_rows = []
     for name, label in labels.items():
-        d, a = dev.loc[(name, 7)], later.loc[(name, 7)]
+        if name == "NIS_BPLUS":
+            d, a = initial_dev.loc[(name, 7)], initial_later.loc[(name, 7)]
+        else:
+            d, a = dev.loc[(name, 7)], later.loc[(name, 7)]
         cells = [
             f"{d.rmse:.4f}",
             f"{a.rmse:.4f}",
@@ -153,8 +160,8 @@ def main():
 \reportfigure{paired_effects.pdf}{配对方法的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
 \takeaway{\textbf{ConvLSTM：}直接预测与残差学习均未超过速度外推。\quad\textbf{软约束状态 PINN：}物理一致性未达标。}
 \begingroup\fontsize{9}{12}\selectfont
-残差与物理参照未带来稳定额外收益。在线回归的优势来自趋势特征、在线更新与误差反馈的完整方案；神经与普通岭回归在阶段内固定权重。\par
-\textbf{神经初态估计＋B+ 物理递推：}训练后 @@INITIAL_TRAJECTORIES@@ 条内部期轨迹全部通过物理检查。求解器与塑性子步检查的容差口径不一致，零修正对照未通过，整体验收中止。\textbf{1--7 天预测精度与概率质量尚未评价。}\par
+在线回归包含趋势特征、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
+\textbf{神经初态＋B+严格递推：}内部、开发及后期共 @@INITIAL_TRAJECTORIES@@ 条轨迹通过求解器数值容差检查；零修正的额外严格子步诊断仍保留异常。\textbf{开发整体未改善；后期 1--7 天平均误差下降，3--7 天概率门通过，但逐点均值门未过，仍落后在线回归。}后期按完整比较补齐，未重选。\par
 {\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 无方程约束对照仍保留相同物理背景。\par}
 \endgroup
 \clearpage
@@ -184,7 +191,7 @@ def main():
     )
     for name, caption in captions.items():
         tex = tex.replace(f"@@{name}@@", caption)
-    tex = tex.replace("@@INITIAL_TRAJECTORIES@@", str(initial["trained_trajectories"]))
+    tex = tex.replace("@@INITIAL_TRAJECTORIES@@", str(initial["counts"]["trajectories"]))
     assert "@@" not in tex
     SOURCE.write_text(tex, encoding="utf-8")
     figure_names = [
@@ -198,12 +205,13 @@ def main():
         ROOT / "paper/process_report.tex",
         ROOT / "paper/ootang_short_horizon_process_report.tex",
         ROOT / "output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf",
-        initial_report_path, initial_receipt_path, initial_final_path,
+        initial_report_path, initial_receipt_path, initial_dev_path, initial_later_path,
+        initial_decision_path, initial_later_decision_path,
     ]
     RECEIPT.write_text(
         json.dumps({
             "role": "presentation_revision_only",
-            "experiment": "v4.0 unchanged; saved independent initial-state audit added on page 2",
+            "experiment": "v4.0 unchanged; verified complete initial-state comparison on page 2",
             "presentation": "v4.1",
             "new_training": 0,
             "new_model_selection": 0,
@@ -213,11 +221,14 @@ def main():
             "displayed_numeric_cells": expected,
             "initial_state_result": {
                 "page": 2,
-                "trained_trajectories": initial["trained_trajectories"],
-                "trained_checkpoints_physical_pass": True,
-                "overall_physical_contract_pass": False,
-                "stop_reason": "zero-control substep tolerance mismatch",
-                "forecast_effectiveness": "not evaluated for all seven horizons",
+                "all_evaluated_trajectories": initial["counts"]["trajectories"],
+                "numerical_physics_pass": True,
+                "strict_zero_control_diagnostic_failures": initial["strict_diagnostic_failures"],
+                "all_seven_horizons_and_both_phases_evaluated": True,
+                "development_joint_pass": False,
+                "later_joint_pass": False,
+                "later_execution": "explicit user amendment after development failure; exploratory",
+                "forecast_effectiveness": "later aggregate improvement over B+, no stable overall benefit; weaker than online regression",
             },
             "input_sha256": {str(p.relative_to(ROOT)): sha(p) for p in inputs},
             "tex_sha256": sha(SOURCE),

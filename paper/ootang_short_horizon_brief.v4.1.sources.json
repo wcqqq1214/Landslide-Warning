@@ -1,6 +1,6 @@
 {
   "role": "presentation_revision_only",
-  "experiment": "v4.0 unchanged; saved independent initial-state audit added on page 2",
+  "experiment": "v4.0 unchanged; verified complete initial-state comparison on page 2",
   "presentation": "v4.1",
   "new_training": 0,
   "new_model_selection": 0,
@@ -72,6 +72,12 @@
     "81.97",
     "4.2005",
     "6.6412",
+    "3.5243",
+    "1.5546",
+    "0.8026",
+    "79.70",
+    "3.8689",
+    "8.1893",
     "0.0793",
     "0.0373",
     "0.0215",
@@ -107,11 +113,14 @@
   ],
   "initial_state_result": {
     "page": 2,
-    "trained_trajectories": 2160,
-    "trained_checkpoints_physical_pass": true,
-    "overall_physical_contract_pass": false,
-    "stop_reason": "zero-control substep tolerance mismatch",
-    "forecast_effectiveness": "not evaluated for all seven horizons"
+    "all_evaluated_trajectories": 4707,
+    "numerical_physics_pass": true,
+    "strict_zero_control_diagnostic_failures": 3,
+    "all_seven_horizons_and_both_phases_evaluated": true,
+    "development_joint_pass": false,
+    "later_joint_pass": false,
+    "later_execution": "explicit user amendment after development failure; exploratory",
+    "forecast_effectiveness": "later aggregate improvement over B+, no stable overall benefit; weaker than online regression"
   },
   "input_sha256": {
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4",
@@ -129,9 +138,12 @@
     "paper/process_report.tex": "b32a8e45847f0a9d080c57bbfb3470deac3388cf1af44fcd997418753aef93e8",
     "paper/ootang_short_horizon_process_report.tex": "eec38bd76370a1b99e5d617a479653ecc995e52239b646d38c47b3348cb6c43d",
     "output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf": "c2b1127f6cd39de0ac5c5f34abad47fc3ef6002c245b5a94b766699983a982c3",
-    "docs/ootang_neural_initial_state_results.v1.0.md": "5a3a175cfa18cfb3822fbd971bacb89a2e0685ee58230af2e4f4518211a633c6",
-    "results/ootang_neural_initial_state_v1/20260914/verification/receipt.json": "fcf3b7f510e1d8f13f7bfd30c4bc47a82cba957ac20364d14732069ccb3f424c",
-    "results/ootang_neural_initial_state_v1/20260914/final_receipt.json": "1e3d1e39135648cfc3c78cc01006cdd691203b022a58b82150d7a033da8652c5"
+    "docs/ootang_neural_initial_state_results.v1.1.md": "8888e44e90d070ec51eca2653f1a9bfef6b4630d5e06a9ceb9111d9031e140c4",
+    "results/ootang_neural_initial_state_v1_1/20260914/verification/receipt.json": "cbe5fba7e1d6be11c5548ab036d48b6a5b206f6639e29289f20789c2e4cb2b4e",
+    "results/ootang_neural_initial_state_v1_1/20260914/development/summary_by_horizon.csv": "222c43c60f1c5de196f1f0c39b5a6f405be6c8f53e608284d3eb985f3e1c3025",
+    "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/summary_by_horizon.csv": "bb5b9a4ffb8ac2068a6457cc13126d9d9b5b9421dd2f609c780198224b0b8360",
+    "results/ootang_neural_initial_state_v1_1/20260914/development/decision.json": "7938c2fa29601a1aff706ecfacd0253f21ee056252dad6514434a9c612923237",
+    "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/decision.json": "2d1f7d1d69441edf89775ad190dfb097131c8f1b8ade07fedcb56dcc356c51ca"
   },
-  "tex_sha256": "a9c0c4226250d402e027019ba918ee816ae883a449f6f8d03dce10e4bb8177e8"
+  "tex_sha256": "02a022dde26c47d55c7f2d007ceb9d831d2d76ee9d3e2ccf48762126f4f8727b"
 }

@@ -1,26 +1,41 @@
 {
-  "checked_at_utc": "2026-09-13T20:04:53.048929+00:00",
-  "scope": "Chinese wording and figure-label revision only; saved experimental outputs unchanged",
+  "checked_at_utc": "2026-09-13T21:33:12.751229+00:00",
+  "scope": "page 2 complete initial-state result synchronization only",
   "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
-  "pdf_sha256": "9c9649d45c8aed6b510a605c210db214c396bf468e1a0db11ee707bdbc1526ee",
+  "pdf_sha256": "51a735ae47e3b00a968fd3ea4c54f803ffa8aba2cdeba67bf0ecdc45d08947ce",
   "page_count": 4,
-  "base_commit": "e0cec817188f88c28e6d510893de7f25b1f965a7",
-  "builder_commit": "4ccefe31714ae0cefa5f42acbdaacf777468b23b",
-  "previous_pdf_sha256": "8caeac07755a5f3e5dc19f69a78c0f136365f416ac55a538cfc8b73f5b4cee91",
-  "csv_numeric_cells_verified_in_pdf_order": 96,
-  "numeric_method": "28 recommendation cells + 60 model cells + 8 point-caption cells match unchanged CSV-derived values in PDF reading order",
-  "additional_result_numeric_cells_verified": 1,
+  "base_commit": "c956401",
+  "csv_numeric_cells_verified_in_pdf_order": 102,
+  "unchanged_original_numeric_cells": 96,
+  "new_model_numeric_cells": 6,
+  "documentation_numeric_cells_verified": 196,
   "additional_result": {
     "page": 2,
-    "trained_trajectories": 2160,
-    "trained_checkpoints_physical_pass": true,
-    "overall_physical_contract_pass": false,
-    "stop_reason": "zero-control substep tolerance mismatch",
-    "forecast_effectiveness": "not evaluated for all seven horizons"
+    "all_evaluated_trajectories": 4707,
+    "numerical_physics_pass": true,
+    "strict_zero_control_diagnostic_failures": 3,
+    "all_seven_horizons_and_both_phases_evaluated": true,
+    "development_joint_pass": false,
+    "later_joint_pass": false,
+    "later_execution": "explicit user amendment after development failure; exploratory",
+    "forecast_effectiveness": "later aggregate improvement over B+, no stable overall benefit; weaker than online regression"
   },
-  "original_source_hashes_verified_unchanged_against_base_commit": 17,
-  "current_report_input_hashes_verified": 18,
-  "figure_csv_source_hashes_verified_against_base_commit": 5,
+  "current_report_input_hashes_verified": 21,
+  "common_original_source_hashes_unchanged": 15,
+  "original_figure_source_files_unchanged": [
+    "paper/figures/short_horizon_zh/paired_effects.pdf",
+    "paper/figures/short_horizon_zh/horizon_comparison.pdf",
+    "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf",
+    "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf",
+    "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf",
+    "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf",
+    "paper/figures/short_horizon_zh/sources.json"
+  ],
+  "unchanged_pages_pixel_identical": [
+    1,
+    3,
+    4
+  ],
   "tex_sha256_verified": true,
   "minimum_font_size_pt": 6.5,
   "page_geometry": [
@@ -32,7 +47,7 @@
     },
     {
       "page": 2,
-      "glyphs": 1083,
+      "glyphs": 1136,
       "clipped": [],
       "collisions": []
     },
@@ -49,422 +64,25 @@
       "collisions": []
     }
   ],
-  "geometry_method": "Unchanged short_horizon.qa_report.geometry function, extracted without executing the experiment module",
+  "geometry_method": "original geometry function extracted without importing experiment or statistics",
   "geometry_source_sha256": "0aca1c7f65adc4e70a4478af755e931f8cdea5bf4abd0d92a9caf470b9527da9",
-  "blank_header_check": {
-    "pages": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "clip_bottom_pt": 42,
-    "status": "all white"
-  },
-  "visible_wording_check": "No old/new-version labels, version identifiers, frozen-experiment terms or production date",
-  "figure_source_preflight": {
-    "source": "paper/build_short_horizon_brief_figures_zh.py",
-    "backend": "python",
-    "summary": {
-      "ready": true,
-      "strict": false,
-      "counts": {
-        "PASS": 17,
-        "WARN": 4,
-        "FAIL": 0
-      }
-    },
-    "findings": [
-      {
-        "check_id": "SOURCE-SYNTAX",
-        "level": "PASS",
-        "message": "Python source parses successfully",
-        "evidence": []
-      },
-      {
-        "check_id": "FONT-FAMILY",
-        "level": "PASS",
-        "message": "A publication-safe sans-serif family is configured",
-        "evidence": [
-          "Arial",
-          "sans-serif"
-        ]
-      },
-      {
-        "check_id": "FONT-SIZE",
-        "level": "PASS",
-        "message": "All detected text sizes are at least 5 pt (minimum 6.5 pt)",
-        "evidence": []
-      },
-      {
-        "check_id": "FONT-GLYPH-FLOOR",
-        "level": "PASS",
-        "message": "No mathtext superscript/subscript expression detected",
-        "evidence": []
-      },
-      {
-        "check_id": "LEGEND-LABEL-CASE",
-        "level": "PASS",
-        "message": "Detected literal legend labels start with display-style capitalization",
-        "evidence": []
-      },
-      {
-        "check_id": "COLOR-MAP",
-        "level": "PASS",
-        "message": "No rainbow/jet/hsv color mapping detected",
-        "evidence": []
-      },
-      {
-        "check_id": "EDITABLE-TEXT",
-        "level": "PASS",
-        "message": "SVG and PDF editable-text settings are configured",
-        "evidence": []
-      },
-      {
-        "check_id": "EXPORT-VECTOR",
-        "level": "PASS",
-        "message": "Both SVG and PDF exports are present",
-        "evidence": []
-      },
-      {
-        "check_id": "EXPORT-RASTER",
-        "level": "WARN",
-        "message": "PNG preview is present but no TIFF submission raster was found",
-        "evidence": []
-      },
-      {
-        "check_id": "RASTER-DPI",
-        "level": "WARN",
-        "message": "Raster export meets the 300 dpi floor but not the 600 dpi default",
-        "evidence": [
-          "300"
-        ]
-      },
-      {
-        "check_id": "FINAL-WIDTH",
-        "level": "WARN",
-        "message": "Detected width 4216.4 mm is not near the common 89/183 mm defaults; verify the target journal",
-        "evidence": []
-      },
-      {
-        "check_id": "DATA-SAMPLING",
-        "level": "PASS",
-        "message": "No high-confidence row-sampling operation detected",
-        "evidence": []
-      },
-      {
-        "check_id": "DATA-EXCLUSION",
-        "level": "PASS",
-        "message": "No high-confidence missing-data exclusion detected",
-        "evidence": []
-      },
-      {
-        "check_id": "DEMO-DATA",
-        "level": "PASS",
-        "message": "No obvious simulated-data generator detected",
-        "evidence": []
-      },
-      {
-        "check_id": "LOG-GUARD",
-        "level": "WARN",
-        "message": "Logarithmic operation found without an obvious positivity/pseudocount guard",
-        "evidence": [
-          "set_yscale(\"log"
-        ]
-      },
-      {
-        "check_id": "INTERP-MONOTONIC",
-        "level": "PASS",
-        "message": "No NumPy interpolation requiring an increasing x-grid detected",
-        "evidence": []
-      },
-      {
-        "check_id": "UNCERTAINTY-ENCODING",
-        "level": "PASS",
-        "message": "No stochastic aggregate requiring a variability audit was inferred",
-        "evidence": []
-      },
-      {
-        "check_id": "ROTATION-ANCHOR",
-        "level": "PASS",
-        "message": "No rotated Matplotlib text detected",
-        "evidence": []
-      },
-      {
-        "check_id": "ANNOTATION-WORKAROUND",
-        "level": "PASS",
-        "message": "No high-risk hard-coded label height or opaque white text mask detected",
-        "evidence": []
-      },
-      {
-        "check_id": "PANEL-ALIGNMENT-GATE",
-        "level": "PASS",
-        "message": "Render-time panel-alignment gate is wired into the plotting source",
-        "evidence": [
-          "require_matplotlib_panel_alignment("
-        ]
-      },
-      {
-        "check_id": "BACKEND-EXCLUSIVE",
-        "level": "PASS",
-        "message": "No obvious cross-backend plotting reference found for python",
-        "evidence": []
-      }
-    ]
-  },
-  "preflight_warning_review": {
-    "EXPORT-RASTER": "The requested artifact is a PDF report; PNG is a screen preview, and no submission TIFF was requested.",
-    "RASTER-DPI": "300 dpi previews preserve the existing report workflow; all embedded report figures are vectors.",
-    "FINAL-WIDTH": "Static parser misreads 166 / 25.4 as 166 inches; all six PDF media boxes independently measure 166 mm.",
-    "LOG-GUARD": "The plotted metric values are explicitly asserted positive before setting the logarithmic axis."
-  },
-  "figure_qa": {
-    "horizon_comparison": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/horizon_comparison.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 51,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/horizon_comparison.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 51,
-        "text_trace_count": 51,
-        "stroke_path_count": 387,
-        "filled_region_count": 341,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    },
-    "paired_effects": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/paired_effects.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 39,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/paired_effects.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 39,
-        "text_trace_count": 39,
-        "stroke_path_count": 134,
-        "filled_region_count": 104,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    },
-    "forecast_atu1_h7": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 25,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 25,
-        "text_trace_count": 25,
-        "stroke_path_count": 54,
-        "filled_region_count": 29,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    },
-    "forecast_atu5_h7": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 22,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 22,
-        "text_trace_count": 22,
-        "stroke_path_count": 48,
-        "filled_region_count": 26,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    },
-    "forecast_mj3_h7": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 23,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 23,
-        "text_trace_count": 23,
-        "stroke_path_count": 50,
-        "filled_region_count": 27,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    },
-    "forecast_mj1_h7": {
-      "text": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf",
-        "auditable": true,
-        "minimum_required_pt": 6.5,
-        "minimum_found_pt": 6.5,
-        "text_run_count": 22,
-        "below_minimum_count": 0,
-        "below_minimum": [],
-        "warnings": []
-      },
-      "collisions": {
-        "pdf": "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf",
-        "auditable": true,
-        "verdict": "PASS",
-        "page_count": 1,
-        "visible_text_box_count": 22,
-        "text_trace_count": 22,
-        "stroke_path_count": 48,
-        "filled_region_count": 26,
-        "image_region_count": 0,
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "contained_fill_overlays": 0,
-          "contained_image_overlays": 0
-        },
-        "thresholds": {
-          "text_inset_pt": 0.6,
-          "min_overlap_ratio": 0.05,
-          "clipping_tolerance_pt": 0.5
-        },
-        "findings": []
-      }
-    }
-  },
-  "final_compile_warnings": [],
-  "visual_review": {
-    "pages": [
-      1,
-      2,
-      3,
-      4
-    ],
-    "figures": [
-      "horizon_comparison",
-      "paired_effects",
-      "forecast_atu1_h7",
-      "forecast_atu5_h7",
-      "forecast_mj3_h7",
-      "forecast_mj1_h7"
-    ],
-    "status": "PASS",
-    "checks": [
-      "Chinese glyphs rendered without missing characters",
-      "Axes, legends and panel titles translated",
-      "Four-page layout has no clipping or overlaps",
-      "Complete curves and difficult tails retained",
-      "Physical-check failure and unevaluated forecast effectiveness remain distinct"
-    ]
-  },
+  "blank_header_check": "all four headers white through 42 pt",
+  "visible_wording_check": "no display version, production date, old/new version terminology",
+  "numerical_method": "saved CSV values and independent run verification receipt; no model or score recalculation",
   "new_training": 0,
   "new_model_selection": 0,
   "new_prediction_or_scoring": 0,
-  "new_physics_calls": 0,
-  "limitations_preserved": [
-    "published daily sequence structure",
-    "repeated evaluation exposure",
-    "no validated real-world instability warning",
-    "unstable physical increment",
-    "soft-constraint PINN physical checks failed",
-    "initial-state forecast effectiveness not evaluated"
-  ]
+  "new_physical_calls": 0,
+  "verifier_sha256": "5e584527627664249ff555a28b56de90ab4b2ddeb639e16a2f226a206ee231bb",
+  "visual_review": {
+    "reviewed_at_utc": "2026-09-13T21:34:39.548597+00:00",
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "status": "passed",
+    "notes": "Rendered pages inspected: new page 2 row and text fit without collision; original Chinese figures, no header/date/version; pages 1,3,4 also pixel-identical."
+  }
 }
