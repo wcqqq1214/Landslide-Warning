@@ -29,20 +29,25 @@ from .scoring import CausalCalibration, aggregate, gate, score_predictions
 
 
 class OnlineRidge:
-    def __init__(self, model, features, base, target, start):
+    def __init__(self, model, features, base, target, start, forgetting=1.0):
+        if not np.isfinite(forgetting) or not 0 < forgetting <= 1:
+            raise ValueError("Forgetting factor must be in (0, 1]")
         self.model = model
         self.start = start
+        self.forgetting = float(forgetting)
         d = model.dimensions
         normalized = features[..., :d] / model.feature_scale[None]
         response = (target - base) / model.target_scale[None]
         self.gram = np.einsum("nhpi,nhpj->hpij", normalized, normalized, optimize=False)
-        self.gram += len(features) * model.state["alpha"] * np.eye(d)
+        self.penalty = len(features) * model.state["alpha"] * np.eye(d)
+        self.gram += self.penalty
         self.rhs = np.einsum("nhpi,nhp->hpi", normalized, response, optimize=False)
         self.beta = model.beta.copy()
         self.initial_gram = self.gram.copy()
         self.initial_rhs = self.rhs.copy()
         self.last_target = np.full(len(self.beta), start - 1, dtype=int)
         self.updates = np.zeros(len(self.beta), dtype=int)
+        self.effective_weight = np.full(len(self.beta), float(len(features)))
         self.point_solves = 0
 
     def predict(self, features, base):
@@ -68,6 +73,10 @@ class OnlineRidge:
         response = (observed - base) / self.model.target_scale[k]
         if not np.isfinite(x).all() or not np.isfinite(response).all():
             raise ArithmeticError("Nonfinite online supervision")
+        if self.forgetting != 1.0:
+            self.gram[k] *= self.forgetting
+            self.gram[k] += (1 - self.forgetting) * self.penalty
+            self.rhs[k] *= self.forgetting
         self.gram[k] += np.einsum("pi,pj->pij", x, x, optimize=False)
         self.rhs[k] += x * response[:, None]
         for p in range(4):
@@ -77,6 +86,7 @@ class OnlineRidge:
             raise ArithmeticError("Nonfinite online coefficients")
         self.last_target[k] = target
         self.updates[k] += 1
+        self.effective_weight[k] = self.forgetting * self.effective_weight[k] + 1
 
 
 def phase_run(spec, phase, current, pool, models, out, recorder):

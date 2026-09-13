@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
 from rolling_probability.online import OnlineRidge
 
 
-def fixture():
+def fixture(forgetting=1.0):
     rng = np.random.default_rng(4)
     features = rng.normal(size=(12, 3, 4, 2))
     target = rng.normal(size=(12, 3, 4))
@@ -30,10 +30,78 @@ def fixture():
         beta=beta,
         state={"alpha": 0.1},
     )
-    return OnlineRidge(model, features, base, target, 100), features, target, rng
+    return (
+        OnlineRidge(model, features, base, target, 100, forgetting=forgetting),
+        features,
+        target,
+        rng,
+    )
 
 
 class OnlineChecks(unittest.TestCase):
+    def test_forgetting_matches_weighted_svd_with_fixed_penalty(self):
+        factor = 0.93
+        state, x, y, rng = fixture(factor)
+        all_x, all_y = x[:, 1].copy(), y[:, 1].copy()
+        weights = np.ones(len(x))
+        for step in range(9):
+            row, target = rng.normal(size=(4, 2)), rng.normal(size=4)
+            state.update(
+                1, row, np.zeros(4), target, 100 + step, 101 + step, 102 + step
+            )
+            weights = np.r_[factor * weights, 1.0]
+            all_x, all_y = (
+                np.concatenate([all_x, row[None]]),
+                np.concatenate([all_y, target[None]]),
+            )
+            for p in range(4):
+                augmented = np.vstack(
+                    [np.sqrt(weights[:, None]) * all_x[:, p], np.sqrt(1.2) * np.eye(2)]
+                )
+                response = np.r_[np.sqrt(weights) * all_y[:, p], np.zeros(2)]
+                expected = np.linalg.lstsq(augmented, response, rcond=None)[0]
+                np.testing.assert_allclose(
+                    state.beta[1, p], expected, atol=1e-12, rtol=1e-12
+                )
+                gram = augmented.T @ augmented
+                np.testing.assert_allclose(
+                    state.gram[1, p], gram, atol=1e-12, rtol=1e-12
+                )
+            self.assertAlmostEqual(state.effective_weight[1], weights.sum(), places=12)
+        np.testing.assert_array_equal(state.effective_weight[[0, 2]], [12, 12])
+
+    def test_rejected_supervision_does_not_decay_history(self):
+        state, _, _, _ = fixture(0.9)
+        before = [
+            v.copy()
+            for v in (state.gram, state.rhs, state.beta, state.effective_weight)
+        ]
+        with self.assertRaises(ValueError):
+            state.update(2, np.ones((4, 2)), np.zeros(4), np.ones(4), 100, 102, 102)
+        for a, b in zip(
+            before, (state.gram, state.rhs, state.beta, state.effective_weight)
+        ):
+            np.testing.assert_array_equal(a, b)
+        state.update(2, np.ones((4, 2)), np.zeros(4), np.ones(4), 100, 102, 103)
+        after = state.gram.copy()
+        with self.assertRaises(ValueError):
+            state.update(2, np.ones((4, 2)), np.zeros(4), np.ones(4), 100, 102, 104)
+        np.testing.assert_array_equal(after, state.gram)
+
+    def test_factor_one_preserves_default_and_invalid_factors_fail(self):
+        a, _, _, _ = fixture()
+        b, _, _, _ = fixture(1.0)
+        for k in range(3):
+            for obj in (a, b):
+                obj.update(
+                    k, np.ones((4, 2)), np.zeros(4), np.arange(4), 100, 100 + k, 101 + k
+                )
+        for field in ("gram", "rhs", "beta", "effective_weight"):
+            np.testing.assert_array_equal(getattr(a, field), getattr(b, field))
+        for bad in (0, -0.1, 1.01, np.nan):
+            with self.assertRaises(ValueError):
+                fixture(bad)
+
     def test_each_update_equals_independent_augmented_batch_fit(self):
         state, x, y, rng = fixture()
         expected_x = x[:, 1].copy()
