@@ -18,6 +18,12 @@
 
 # Current Stage Plan
 
+@docs/ootang_short_horizon_comparison_plan.v4.0.md
+
+- **当前请求：用户已明确改为分别预测 1、2、3、4、5、6、7 天后的位移，先写短期比较 plan，最终交付参考 process_report 的简要图文报告。** 采用 B+、ConvLSTM、PINN、岭回归与固定残差配对；逐 h 在开发段选模，后期完整评价，不按点／种子／尾段拼接。v4.0 当前为设计文档，尚未训练；PINN 数学接口须在实施准备中明确，未就绪只影响该臂。未来 4 小时为拟议独立执行上限，尚未启用；原八小时及冻结审查均已结束。旧 30 日与 293 日结论保留为历史，不再决定本次短期主模型。当前只做文档、来源核对与本地 commit；未请求 push。
+
+以下入口与执行预算描述此前阶段；其“当前”不覆盖上述最新请求。
+
 @docs/ootang_rolling_probability_plan.v3.0.md
 @docs/ootang_rolling_consolidation.v2_2026-09-13.md
 @docs/ootang_rolling_probability_brief_2026-09-13.md
