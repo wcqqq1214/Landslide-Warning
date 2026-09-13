@@ -1,0 +1,23 @@
+{
+  "original_sha256": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95",
+  "generated_sha256": "e948ad8e4ffd608b0a1f72122ec597fbf208d5d55353e934b83794066fe97b08",
+  "replacements": [
+    {
+      "before": "API int integrate(",
+      "after": "API int integrate_initial("
+    },
+    {
+      "before": "double *uout,double *pout,double *rcout,double *reout,double *rrout){",
+      "after": "const double *initial,double *uout,double *pout,double *rcout,double *reout,double *rrout,double *audit,int *tape){"
+    },
+    {
+      "before": "for(int i=0;i<4;i++)uout[i]=pout[i]=rcout[i]=reout[i]=rrout[i]=0;",
+      "after": "for(int i=0;i<4;i++){\n s[i]=initial[i];p[i]=initial[4+i];rr[i]=initial[8+i];rc[i]=initial[12+i];re[i]=initial[16+i];bg[i]=initial[20+i];u[i]=s[i]+bg[i];\n uout[i]=u[i];pout[i]=p[i];rcout[i]=rc[i];reout[i]=re[i];rrout[i]=rr[i];}\n audit[0]=audit[1]=audit[3]=1e300;audit[2]=audit[4]=0;"
+    },
+    {
+      "before": "if(!valid)bad++;prev=chosen;",
+      "after": "if(!valid)bad++;\n if(prev!=chosen)audit[4]++;prev=chosen;tape[(t-1)*sub+step]=chosen;\n double mx=0,mw=0,mp=0;\n for(int i=0;i<4;i++){\n  double gap=-rhs[i];for(int j=0;j<4;j++)gap+=A[4*i+j]*dx[j];\n  audit[0]=fmin(audit[0],dx[i]);audit[1]=fmin(audit[1],gap);audit[3]=fmin(audit[3],dx[i]/be[i]);\n  mx=fmax(mx,fabs(dx[i]));mw=fmax(mw,fabs(gap));mp=fmax(mp,fabs(dx[i]*gap));}\n audit[2]=fmax(audit[2],mp/(1+mx*mw));"
+    }
+  ],
+  "original_computation_recovered_exactly": true
+}

@@ -1,0 +1,2 @@
+{"time_utc": "2026-09-13T21:10:42.445774+00:00", "phase": "preflight", "event": "started", "elapsed_seconds": 0.011486333794891834, "git_commit": "f5e0817014daf0823b4c4f8ef6bd237ce9c29f62"}
+{"time_utc": "2026-09-13T21:10:42.977569+00:00", "phase": "preflight", "event": "preflight_passed", "elapsed_seconds": 0.5432718340307474, "trajectories": 180, "zero_error_mm": 2.2737367544323206e-13, "calls": {"reference_forward": 0, "day_forward": 1260, "day_backward": 0, "original_resume_forward": 180}}

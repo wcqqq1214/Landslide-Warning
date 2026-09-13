@@ -1,0 +1,9 @@
+{
+  "independent_scalar_rows": 1792,
+  "converted_gate_equivalent_to_original_x_gate": true,
+  "strict_substep_failures_retained": 1,
+  "all_converted_rows_pass": true,
+  "maximum_dp_beta_minus_x": 8.470329472543003e-22,
+  "new_training": 0,
+  "new_physics_calls": 0
+}
