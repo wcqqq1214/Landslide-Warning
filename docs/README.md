@@ -15,12 +15,13 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**当前：九候选及第三次路线复盘已完成，完整概率目标尚未达成。** C8 在线均值有小幅收益，C9 增加覆盖但评分退步；下一项研究问题是有限记忆在线学习，尚需单独固定方案。仍受原八小时截止约束；C7 之后的后期结果只作暴露后的探索性复核，C4 原迁移失败保持。
+**当前：十候选、第三次路线复盘与 C10 补记已完成，完整概率目标尚未达成。** C8 在线均值有小幅收益，C9 增加覆盖但评分退步，C10 指数遗忘也未改善效果；当前没有已冻结的 C11。仍受原八小时截止约束；C7 之后的后期结果只作暴露后的探索性复核，C4 原迁移失败保持。
 
 | 文档 | 用途 |
 | --- | --- |
 | [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 已完成并核验；经验分布覆盖失败，同池高斯对照与完整分布保留 |
 | [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |
+| [C10 指数遗忘在线回归](ootang_rolling_probability_candidate.c10.md) / [配置](../config/ootang_rolling_probability.v3_9.json) | 已运行并独立核验；均值与概率均差于 C8，停止遗忘参数搜索 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
