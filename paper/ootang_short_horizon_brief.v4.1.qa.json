@@ -1,0 +1,67 @@
+{
+  "checked_at_utc": "2026-09-13T17:20:29.518764+00:00",
+  "scope": "presentation only; frozen v4.0 experiment unchanged",
+  "builder_commit": "7255b8e0dc2e6d8e7925d39e1f73b801c0384cfd",
+  "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
+  "pdf_sha256": "8059588b03d1876e1f6c67e2238e8c25131bb7a9f468754b072ffe2a60a1c01c",
+  "page_count": 4,
+  "csv_numeric_cells_verified_in_pdf_order": 96,
+  "numeric_method": "csv.DictReader independently reconstructs 28 selected cells, 60 model cells and 8 point-caption cells; compare the ordered decimal tokens extracted from each PDF table/caption",
+  "frozen_input_hashes_verified_against_git_head": 14,
+  "tex_sha256_verified": true,
+  "minimum_font_size_pt": 6.5,
+  "geometry_method": "short_horizon.qa_report.geometry; unchanged 0.6 pt inset and 5% glyph overlap rule",
+  "page_geometry": [
+    {
+      "page": 1,
+      "glyphs": 1012,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 2,
+      "glyphs": 1126,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 3,
+      "glyphs": 587,
+      "clipped": [],
+      "collisions": []
+    },
+    {
+      "page": 4,
+      "glyphs": 666,
+      "clipped": [],
+      "collisions": []
+    }
+  ],
+  "final_compile_warnings": [],
+  "visual_review": {
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "status": "PASS",
+    "checks": [
+      "legible tables and axes",
+      "all four full-period point curves retained",
+      "no clipping or overlap",
+      "correct figure/caption pairing"
+    ]
+  },
+  "new_training": 0,
+  "new_model_selection": 0,
+  "new_prediction_or_scoring": 0,
+  "new_physics_calls": 0,
+  "limitations_preserved": [
+    "published daily sequence structure",
+    "repeated evaluation exposure",
+    "no validated real-world instability warning",
+    "unstable physical increment",
+    "current PINN physical checks failed"
+  ]
+}

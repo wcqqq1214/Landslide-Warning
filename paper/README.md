@@ -1,6 +1,27 @@
 # 阶段报告编译说明
 
-## 当前四点 1—7 天对比简报（2026-09-13）
+## 当前四页精简版（2026-09-14）
+
+[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。只精简展示，实验仍为冻结的 v4.0；下方五页原版和原始图件保持不变。
+
+可编辑源码：[ootang_short_horizon_brief.v4.1.tex](ootang_short_horizon_brief.v4.1.tex)。[生成脚本](build_short_horizon_brief.py)只读取已保存 CSV 与图件，自动填入表格和图注，不训练或重新选模。在仓库根目录执行：
+
+```bash
+.venv/bin/python paper/build_short_horizon_brief.py
+mkdir -p tmp/pdfs/short_horizon_brief_v4_1
+```
+
+在 `paper/` 目录将下列编译命令执行两次，再把生成的 PDF 复制到上述交付路径：
+
+```bash
+xelatex -interaction=nonstopmode -halt-on-error \
+  -output-directory ../tmp/pdfs/short_horizon_brief_v4_1 \
+  ootang_short_horizon_brief.v4.1.tex
+```
+
+[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 14 项冻结输入及 TeX 哈希；[交付核验](ootang_short_horizon_brief.v4.1.qa.json)核对 PDF 内 96 个有序数字单元、四页逐字几何和实际渲染。保留数据结构、反复评价、PINN 物理失败与物理增量不稳定的解释边界；不能以此称真实预警已验证。
+
+## 五页原版（2026-09-13）
 
 [五页 PDF](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)参照原 `process_report` 的蓝色标题与简洁图文布局。内容包括七个端点的开发锁定选择、四类模型及残差配对、四点完整后期 7 天曲线、概率质量和研究边界。四点全部 1—7 天图件另存，原报告不修改。
 

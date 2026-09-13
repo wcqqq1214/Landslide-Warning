@@ -15,7 +15,9 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**v4.0 短期对比已完成：[完整结果](ootang_short_horizon_comparison_results.v4.0.md)／[五页图文简报](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)／[四点全部七步长图件](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)。** 用户明确的七个位移端点、四类模型与残差配对已经执行并核验；共同推荐 1 天为 RR_DIRECT、2—7 天为在线回归＋反馈，均按开发锁定。保留 PINN 物理失败和物理增量不稳定结果，不把公开已处理日序列上的低误差等同于真实预警效果；停止新增实验。
+**v4.0 短期对比已完成：[完整结果](ootang_short_horizon_comparison_results.v4.0.md)／[四页精简报告](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)／[四点全部七步长图件](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)。** 用户明确的七个位移端点、四类模型与残差配对已经执行并核验；共同推荐 1 天为 RR_DIRECT、2—7 天为在线回归＋反馈，均按开发锁定。保留 PINN 物理失败和物理增量不稳定结果，不把公开已处理日序列上的低误差等同于真实预警效果；停止新增实验。
+
+2026-09-14 仅将展示压缩为四页（简报 v4.1），六组原图、七步长推荐和科学结论均保持；[五页原版](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)保留。[源码、来源与核验入口](../paper/README.md)说明编译及 96 个数字单元核对，不构成新实验版本。
 
 依据 [原计划](ootang_short_horizon_comparison_plan.v4.0.md)、[执行合同](ootang_short_horizon_execution.v4.0.md)与 [配置](../config/ootang_short_horizon_comparison.v4_0.json)，独立窗口为 2026-09-13 13:37:17—17:37:17 UTC。旧计划中“尚未执行”是形成时状态；剩余预算不转用。以下滚动与长窗记录均为历史依据。
 
@@ -26,7 +28,7 @@ v2.0 按原标准未达标并已停止。
 
 | 文档 | 用途 |
 | --- | --- |
-| [短期对比结果 v4.0](ootang_short_horizon_comparison_results.v4.0.md) / [图文 PDF](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf) | 当前完成结果：七端点、四类模型与残差配对；开发锁定与后期评价、统计、全部曲线及核验 |
+| [短期对比结果 v4.0](ootang_short_horizon_comparison_results.v4.0.md) / [四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf) | 当前完成结果与精简展示：七端点、四类模型与残差配对；开发锁定与后期评价、统计、全部曲线及核验 |
 | [短期模型与残差学习对比计划 v4.0](ootang_short_horizon_comparison_plan.v4.0.md) / [执行合同](ootang_short_horizon_execution.v4.0.md) | 已完成实验的事前冻结依据；不根据其中的运行建议自动重启 |
 | [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 已完成并核验；经验分布覆盖失败，同池高斯对照与完整分布保留 |
 | [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |

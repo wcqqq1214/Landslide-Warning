@@ -1,0 +1,85 @@
+\documentclass[UTF8,zihao=-4]{ctexart}
+\usepackage[a4paper,top=18mm,bottom=18mm,left=22mm,right=22mm]{geometry}
+\usepackage{graphicx,xcolor,booktabs,caption,amsmath,hyperref,fancyhdr}
+\xeCJKsetup{PunctStyle=plain}
+\definecolor{reportblue}{HTML}{365F91}
+\definecolor{lightblue}{HTML}{EEF3F8}
+\hypersetup{colorlinks=true,linkcolor=reportblue,urlcolor=reportblue}
+\graphicspath{{../figures/ootang_short_horizon_v4/20260913_short_horizon/}}
+\captionsetup{font=footnotesize,labelfont=bf,labelsep=quad,skip=2pt,hypcap=false}
+\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}
+\setlength{\headheight}{14pt}\setlength{\footskip}{10mm}
+\renewcommand{\arraystretch}{1.13}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0.3pt}
+\fancyhead[L]{\small\color{reportblue}藕塘滑坡｜1--7 天位移预测对比}
+\fancyhead[R]{\small 简报 v4.1 · 2026-09-14}
+\fancyfoot[C]{\small\thepage\ / 4}
+\newcommand{\pagetitle}[1]{{\Large\bfseries\color{reportblue}#1}\par\vspace{1mm}}
+\newcommand{\takeaway}[1]{\colorbox{lightblue}{\parbox{\dimexpr\textwidth-2\fboxsep}{\small #1}}\par}
+\newcommand{\reportfigure}[2]{\begin{minipage}{\textwidth}\includegraphics[width=\linewidth]{#1}\captionof{figure}{#2}\end{minipage}\par}
+\begin{document}
+\pagetitle{1\quad 七个步长，分别比较}
+\takeaway{\textbf{主要结果：}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
+{\small 每天使用过去 30 天观测，预测第 1、2、3、4、5、6、7 天后的位移；已发出的预测固定保存。四点：ATU1、ATU5、MJ3、MJ1。}\par
+\reportfigure{horizon_comparison.pdf}{同一步长比较同一组起点。家族代表按开发 RMSE 固定；纵轴为对数。}
+\textbf{兼顾均值与区间的锁定推荐}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
+\begin{center}\footnotesize
+\begin{tabular}{clrrrr}\toprule
+步长 & 推荐组合 & MAE & RMSE & CRPS & 90\% 覆盖\\\midrule
+1 & 岭回归直接版 & 0.000274 & 0.000420 & 0.000229 & 88.48\% \\
+2 & 在线回归＋反馈 & 0.000350 & 0.000899 & 0.000296 & 93.92\% \\
+3 & 在线回归＋反馈 & 0.000996 & 0.002399 & 0.000820 & 93.56\% \\
+4 & 在线回归＋反馈 & 0.002237 & 0.005143 & 0.001829 & 92.41\% \\
+5 & 在线回归＋反馈 & 0.004340 & 0.009612 & 0.003541 & 89.97\% \\
+6 & 在线回归＋反馈 & 0.007601 & 0.016277 & 0.006185 & 87.24\% \\
+7 & 在线回归＋反馈 & 0.012278 & 0.025580 & 0.009978 & 85.89\% \\
+\bottomrule\end{tabular}
+\end{center}
+{\footnotesize 七步长的开发 RMSE／CRPS 最低者均为在线回归＋反馈。1 天的开发覆盖率 95.81\% 超过预定 95\% 上限，因此综合推荐选岭回归；后期保持名单。RMSE 为四点各自 RMSE 的平均。}
+
+{\footnotesize\color{gray}开发：2018-09-01 至 2019-09-11；后期：2019-09-12 至 2020-06-30。后期各步长每点样本数为 293、292、291、290、289、288、287。}
+\clearpage
+\pagetitle{2\quad 四类模型与残差学习}
+{\small 固定看 7 天后位移。所有模型采用相同的观测截止与成熟误差校准；已知未来真实驱动的 B+ 不参加主比较。}\par
+\begin{center}\fontsize{8.7}{11}\selectfont\setlength{\tabcolsep}{3pt}
+\begin{tabular}{lrrrrrr}\toprule
+模型 & 开发 RMSE & 后期 RMSE & CRPS & 90\% 覆盖 & 区间宽度 & 区间评分\\\midrule
+锚定 B+ & 3.5570 & 1.7842 & 0.9044 & 78.66\% & 4.1382 & 9.2460 \\
+当天速度外推 & 0.0891 & 0.2786 & 0.1260 & 75.35\% & 0.4296 & 1.3601 \\
+ConvLSTM 直接版 & 1.6026 & 0.9829 & 0.5286 & 79.36\% & 2.7754 & 4.9307 \\
+ConvLSTM 残差版 & 2.7316 & 0.9149 & 0.5188 & 84.32\% & 3.0755 & 4.7575 \\
+PINN 方程约束版 & 3.4947 & 1.5275 & 0.8101 & 79.97\% & 3.9938 & 8.0211 \\
+PINN 去方程对照 & 3.5004 & 1.3053 & 0.7531 & 81.97\% & 4.2005 & 6.6412 \\
+岭回归直接版 & 0.0793 & 0.0373 & 0.0215 & 86.67\% & 0.1518 & 0.2223 \\
+岭回归残差版 & 0.0904 & 0.0376 & 0.0219 & 86.59\% & 0.1578 & 0.2303 \\
+在线回归＋反馈 & 0.0088 & 0.0256 & 0.0100 & 85.89\% & 0.0415 & 0.1116 \\
+在线回归＋反馈＋物理误差 & 0.0093 & 0.0265 & 0.0105 & 85.80\% & 0.0420 & 0.1148 \\
+\bottomrule\end{tabular}
+\end{center}
+{\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
+\reportfigure{paired_effects.pdf}{固定配对的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
+\takeaway{\textbf{ConvLSTM：}两版仍未超过当天速度外推。\quad\textbf{PINN：}本版物理状态验收失败。}
+{\small 残差与物理参照未带来稳定额外收益。在线回归的优势来自趋势特征、在线更新与误差反馈的完整方案；神经与普通岭回归在阶段内固定权重。}
+
+{\footnotesize\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 去方程对照仍保留相同物理背景。}
+\clearpage
+\pagetitle{3\quad ATU1、ATU5：完整后期曲线}
+{\small 展示在线回归＋反馈的 7 天预测，每点 287 个起点。每组依次为累计位移、7 日总增量、实测减预测；蓝带为相对均值的 90\% 边际预测区间。}\par\vspace{2mm}
+\reportfigure{forecast_atu1_h7.pdf}{ATU1：7 天 RMSE 0.0513 mm，90\% 区间覆盖 80.14\%。}
+\vspace{4mm}
+\reportfigure{forecast_atu5_h7.pdf}{ATU5：7 天 RMSE 0.0345 mm，90\% 区间覆盖 81.88\%。}
+\vspace{2mm}
+\takeaway{两点的区间覆盖仍偏低。困难尾段和误差尖峰全部保留，累计曲线重合不等于所有变化均已准确预测。}
+\clearpage
+\pagetitle{4\quad MJ3、MJ1：完整后期曲线}
+{\small 同样保留全部后期合法起点；图中每条预测均提前 7 天发出。不同测点坐标范围分别标注，7 日增量的单位为 mm。}\par\vspace{2mm}
+\reportfigure{forecast_mj3_h7.pdf}{MJ3：7 天 RMSE 0.0089 mm，90\% 区间覆盖 89.90\%。}
+\vspace{4mm}
+\reportfigure{forecast_mj1_h7.pdf}{MJ1：7 天 RMSE 0.0077 mm，90\% 区间覆盖 91.64\%。}
+\vspace{2mm}
+{\small\textbf{解释范围：}公开日序列的月内三次结构、评价期反复暴露限制泛化主张；低位移误差尚不能证明真实失稳预警有效。}
+
+{\small\textbf{下一步：}保持 1--7 天任务与现有对照，明确预警事件和阈值，再评价误报、漏报及提前量。}
+\vfill
+{\footnotesize\color{gray}仅精简展示，实验仍为已冻结的 v4.0。完整指标、四点全部七步长曲线及核验见配套结果记录。}
+\end{document}
