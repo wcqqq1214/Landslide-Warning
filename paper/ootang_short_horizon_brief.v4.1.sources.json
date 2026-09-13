@@ -4,6 +4,8 @@
   "presentation": "v4.1",
   "new_training": 0,
   "new_model_selection": 0,
+  "new_prediction_or_scoring": 0,
+  "figure_language": "Chinese labels, axes, legends and panel titles; saved data unchanged",
   "expected_pages": 4,
   "displayed_numeric_cells": [
     "0.000274",
@@ -115,12 +117,13 @@
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/selection_by_horizon.csv": "6696bf0334fd44e31ae825852ec7c67529854d7662fd56e516993a3395eda8ee",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/metrics_by_point_horizon.csv": "20f3c4438e12fba08fa529e10126446ff49dadcfd6f5cc331976400386fff06d",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/horizon_comparison.pdf": "51f2a9185af1f01dc9562ee44c3db1ca255db6630e9997b81706e14c71f56687",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/paired_effects.pdf": "31452abc877d12294072ab3f17dbf09746e60a3fe5780a36323fc98ad9678785",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_atu1_h7.pdf": "29c6089e55f0968f761c0e1a812563b3eb3303c841b05edc325b12283f3cc413",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_atu5_h7.pdf": "d0913c55380e1eb6c2bf8f571366110ba3d7b47cec86d84b42780a6eb772f485",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_mj3_h7.pdf": "f85b766f5ef128639014b93dbc91cc3e4b04f18c3e1551cf509a8da58604e363",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/forecast_mj1_h7.pdf": "4217500539cf403299bc63304015e89d062c8d13c5241d266aa5aba562d134cd",
+    "paper/figures/short_horizon_zh/sources.json": "fd6f24a47e82a2fef81399be70285520cf288659c2d8f4a9fac5bb757ef41e72",
+    "paper/figures/short_horizon_zh/horizon_comparison.pdf": "609cdcbb56ecab80ceeacac28049088b24efd77d182a403c192441b3aa32253a",
+    "paper/figures/short_horizon_zh/paired_effects.pdf": "68cec7a623dd86a2deea09c4cba5dca1b1519de8ff24a697be6204b88c4900c1",
+    "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf": "4a04396b1548e397d9d7a1f7538285869551e116980296328d2fc60433b6db9a",
+    "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf": "6d91e8c1dbcd9fb90ffbc18128da9716537f2fe2445c0ca31fd5949c4b2d8229",
+    "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf": "23f8c769cc84deebe97b9cfeef321a79dbeb17ada91b74250aab4d9d73f679f1",
+    "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf": "b629744d05136cb3f0b8c568c332e4025e0e3c69ca9d95a4a1fffe2a4d266946",
     "results/ootang_short_horizon_v4/20260913_short_horizon/selection.json": "1ce50148723275dfccee295c3212cbf3f873aa7ea4ef6a6693d95ec8bffd6170",
     "results/ootang_short_horizon_v4/20260913_short_horizon/internal_selection.json": "4cfaf71a1afe1b8d5989e699887578c1d2b1b217a99ced6e276ed80468939a4b",
     "paper/process_report.tex": "b32a8e45847f0a9d080c57bbfb3470deac3388cf1af44fcd997418753aef93e8",
@@ -130,5 +133,5 @@
     "results/ootang_neural_initial_state_v1/20260914/verification/receipt.json": "fcf3b7f510e1d8f13f7bfd30c4bc47a82cba957ac20364d14732069ccb3f424c",
     "results/ootang_neural_initial_state_v1/20260914/final_receipt.json": "1e3d1e39135648cfc3c78cc01006cdd691203b022a58b82150d7a033da8652c5"
   },
-  "tex_sha256": "7c1404bafb2dd0c40ac7b1097907ee04d2295ad44f69d55dbeaa8086e2f246be"
+  "tex_sha256": "a9c0c4226250d402e027019ba918ee816ae883a449f6f8d03dce10e4bb8177e8"
 }
