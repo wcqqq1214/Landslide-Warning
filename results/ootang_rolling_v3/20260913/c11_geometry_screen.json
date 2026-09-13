@@ -1,0 +1,166 @@
+{
+  "kind": "label_free_h30_geometry_screen",
+  "formula": "ell=x.T@(G_initial+sum_mature(x_i*x_i.T))^-1@x; x uses frozen feature RMS",
+  "interpretation": "geometry under existing homoscedastic ridge information, not a calibrated Bayesian posterior or iid effective sample estimate",
+  "source_files": {
+    "results/ootang_rolling_v3/20260913/c8_online/development/issued_features.npz": "d766d6095fb9ebde9bba39f5a3cdf6d0814f25dfbe06538d647360200124308b",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development_training/ridge_FULL_a0.001.json": "845aeca66fd5d75a523cdf19d2bfb648cf476661c5ff5c6ea16c461628091be8",
+    "results/ootang_rolling_v3/20260913/c8_online/development/online_state_FULL.npz": "d6e65e3397c0b73e37dc1e30a063f166b0276cb1ee8ed9c73e4290c0edb39180",
+    "results/ootang_rolling_v3/20260913/c4_feedback/development_training/ridge_DATA_a0.001.json": "5052a75ff5950ccd3dd562b5fb9aec965116da2d8e5b4c233cc37d0e99756d09",
+    "results/ootang_rolling_v3/20260913/c8_online/development/online_state_DATA.npz": "5e1b59cbf97e00341528d0fb80b45b75fc74870082dda24d8d10178cf4b63c7d",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/issued_features.npz": "12c6a020f24b205f0bd7c38e5143f78ce9ae98e319aaffbc70c1fe4ab60c2635",
+    "results/ootang_rolling_v3/20260913/c4_transfer/transfer_training/ridge_FULL_a0.001.json": "e8631b155d9e46314bba7d9c2a2dffb4f91897d3581ad4329f4881af505a3202",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/online_state_FULL.npz": "6c780e9735cc78ff74e373c6f82624531135a0bbc11fda23cc4cd477bc154904",
+    "results/ootang_rolling_v3/20260913/c4_transfer/transfer_training/ridge_DATA_a0.001.json": "9947ec0e511f6d5e86c9593e66f561c434ed071d11a53c31d36f91a8f0d38061",
+    "results/ootang_rolling_v3/20260913/c8_online/later_exploratory/online_state_DATA.npz": "c5c1e4a25fd27f49479e71b9169540135a3deb196e0b056d6ca74b0f1d66be13"
+  },
+  "phases": {
+    "development": {
+      "FULL": {
+        "count_per_point": 347,
+        "points": [
+          "ATU1",
+          "ATU5",
+          "MJ3",
+          "MJ1"
+        ],
+        "median_p90_max": [
+          [
+            6.315509660522503e-05,
+            9.484055089053814e-05,
+            0.0005086017510143981,
+            0.0012484432020887274
+          ],
+          [
+            0.001360070806200234,
+            0.0049173886863343634,
+            0.007230862132457855,
+            0.003371089885029033
+          ],
+          [
+            0.024381882321532062,
+            0.26858108349141546,
+            0.05740738342276301,
+            0.007113094485199672
+          ]
+        ],
+        "maximum_sqrt_one_plus_leverage": [
+          1.012117523967218,
+          1.1263130486198834,
+          1.0283031573532988,
+          1.0035502451223852
+        ]
+      },
+      "DATA": {
+        "count_per_point": 347,
+        "points": [
+          "ATU1",
+          "ATU5",
+          "MJ3",
+          "MJ1"
+        ],
+        "median_p90_max": [
+          [
+            7.380164076727642e-06,
+            5.8966965694280265e-06,
+            0.0002207550075936246,
+            0.000913537194822666
+          ],
+          [
+            2.568430359425615e-05,
+            1.942001960008465e-05,
+            0.0005259497891992355,
+            0.002591162717970584
+          ],
+          [
+            4.2824234937187226e-05,
+            3.389146538580493e-05,
+            0.0009436144858340074,
+            0.004428007856648975
+          ]
+        ],
+        "maximum_sqrt_one_plus_leverage": [
+          1.0000214118882342,
+          1.0000169455891164,
+          1.0004716959943614,
+          1.0022115584329732
+        ]
+      }
+    },
+    "later_exploratory": {
+      "FULL": {
+        "count_per_point": 264,
+        "points": [
+          "ATU1",
+          "ATU5",
+          "MJ3",
+          "MJ1"
+        ],
+        "median_p90_max": [
+          [
+            6.277933902185508e-05,
+            6.44219047826931e-05,
+            0.00048806471458040236,
+            0.0007325647129245729
+          ],
+          [
+            0.0004115168319861328,
+            0.0004907701168676607,
+            0.0018672492219328886,
+            0.004367822774696868
+          ],
+          [
+            0.0019641698865781243,
+            0.001543459507293028,
+            0.02532762229811439,
+            0.16576942833030597
+          ]
+        ],
+        "maximum_sqrt_one_plus_leverage": [
+          1.0009816031708965,
+          1.0007714321998271,
+          1.012584624758896,
+          1.0797080292052597
+        ]
+      },
+      "DATA": {
+        "count_per_point": 264,
+        "points": [
+          "ATU1",
+          "ATU5",
+          "MJ3",
+          "MJ1"
+        ],
+        "median_p90_max": [
+          [
+            7.604125254502182e-06,
+            7.672795203232827e-06,
+            0.00027410244563327944,
+            0.00020675497386851084
+          ],
+          [
+            0.00021820764736006786,
+            0.0002738203941582805,
+            0.0016033369437178215,
+            0.00195819657947267
+          ],
+          [
+            0.0017121904822899998,
+            0.001401027922893114,
+            0.0025905988555670408,
+            0.0032205103479237217
+          ]
+        ],
+        "maximum_sqrt_one_plus_leverage": [
+          1.0008557291049944,
+          1.0007002687732691,
+          1.0012944616123505,
+          1.0016089607965395
+        ]
+      }
+    }
+  },
+  "new_model_fits": 0,
+  "new_physical_calls": 0,
+  "new_forecast_scores": 0
+}
