@@ -15,7 +15,7 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**当前：十五候选及适用独立核验、五次路线复盘完成，完整目标尚未达成。** C13/C14 误差头、C15 跨点输入均未超过各自原核心，停止这些固定分支。下一步统一全部结果并补 C8 的统计和完整曲线，尚无冻结 C16。原总截止、后期暴露地位及 C4 迁移失败保持。
+**当前：十七候选及适用独立核验、五次定期复盘与最后两轮收尾完成。** 短步长误差反馈有均值/概率评分正结果，概率覆盖和 B+ 额外贡献仍未解决，完整目标未达成；停止新增 C18。C8/C16 的配对统计与完整曲线均已完成。原总截止、后期暴露地位、C4 迁移失败和原 293 日任务保持。
 
 | 文档 | 用途 |
 | --- | --- |
@@ -25,11 +25,13 @@ v2.0 按原标准未达标并已停止。
 | [C11 物理概率参照](ootang_rolling_probability_candidate.c11.md) / [C12 区间评分权重](ootang_rolling_probability_candidate.c12.md) | 均已完成并独立核验；均值复用 C8 DATA，覆盖有限增加但评分退步，后期 25/27，停止固定核心宽分量/评分切换分支 |
 | [C13 成熟误差记忆](ootang_rolling_probability_candidate.c13.md) / [C14 固定单位](ootang_rolling_probability_candidate.c14.md) | 均已运行并独立核验；前者大幅退步，后者较稳定但未超过原核心，停止单位/惩罚/滞后阶搜索 |
 | [C15 跨点回归](ootang_rolling_probability_candidate.c15.md) | 两臂均退步，主模型开发/后期 26/27、24/27；初始/在线方程、空间输入和评分已独立核验，停止固定配置 |
+| [C16 一日误差反馈](ootang_rolling_probability_candidate.c16.md) / [C17 自身误差校准](ootang_rolling_probability_candidate.c17.md) | 均已运行、核验并停止；后期 26/27、25/27，均值收益保留，覆盖仍不足 |
+| [十七轮最终对比与 C16 统计](ootang_rolling_consolidation.v2_2026-09-13.md) / [十五轮归并与 C8 统计](ootang_rolling_consolidation_2026-09-13.md) | 已完成；全部候选/对照、配对成块、非重叠、完整曲线和来源核验，旧主模型不改判 |
 | [本轮简报](ootang_rolling_probability_brief_2026-09-13.md) | 方法是否属于机器学习、实际效果、尚未解决的问题与提交索引 |
 | [v3.0 滚动结果与路线记录](ootang_rolling_probability_results.v3.0.md) | 四候选与后期完整结果、概率不足、物理消融、配对统计和完整曲线 |
 | [C5—C6 概率尺度对照](ootang_rolling_probability_scale_study.v3.4.md) / [C5 方案](ootang_rolling_probability_candidate.c5.md) / [C6 方案](ootang_rolling_probability_candidate.c6.md) | 两个开发候选均已完成并独立核验；合并历史误差失败，最近折收益不稳定，均未运行后期 |
 | [v3.0 实施与核验](ootang_rolling_probability_implementation.v3.0.md) | 因果数据流、物理教师、ConvLSTM/正则回归、概率反馈和独立核验 |
-| [五次路线复盘](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六/第九/第十二/第十五候选后的纠偏，停止连续无收益分支，完整效果及物理额外价值尚未完成 |
+| [五次定期复盘与最终收尾](ootang_rolling_route_review_2026-09-13.md) / [后期选择锁](ootang_rolling_transfer_decision.v3.3.md) | 第三/第六/第九/第十二/第十五候选后的纠偏及 C16/C17 收尾，停止连续无收益分支，完整效果及物理额外价值尚未完成 |
 | [v3.0 滚动概率预测计划](ootang_rolling_probability_plan.v3.0.md) / [配置](../config/ootang_rolling_probability.v3_0.json) | 原冻结方案；因果更新观测、30 日主步长、公平对照与每三次纠偏，追加安排另见 C7 方案 |
 | [AGENTS.md](../AGENTS.md) | 当前范围、导师目标、协作与 Git 规则 |
 | [历史预测残差训练核对](ootang_residual_training_review_2026-09-13.md) | v1.5/v1.19/v2.0/v2.4已有尝试与180日范围；本轮核对完成，无新训练或重复送审，数据固定使用 |
