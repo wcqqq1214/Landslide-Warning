@@ -1,0 +1,11 @@
+{
+  "command": [
+    ".venv/bin/python",
+    "scripts/audit_ootang_frozen_evidence.py"
+  ],
+  "started_utc": "2026-09-13T10:12:58.754587+00:00",
+  "finished_utc": "2026-09-13T10:12:59.256203+00:00",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 459, in <module>\n    main()\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 189, in main\n    provenance = read_json(teacher_dir / \"provenance.json\")\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 68, in read_json\n    return json.loads(checked(path).read_text())\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/scripts/audit_ootang_frozen_evidence.py\", line 57, in checked\n    raise ValueError(f\"Source absent from audit or changed: {rel}\")\nValueError: Source absent from audit or changed: results/ootang_rolling_v3/20260913/physics_development/provenance.json\n"
+}

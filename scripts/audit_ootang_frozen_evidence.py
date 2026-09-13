@@ -53,6 +53,14 @@ def main():
     def checked(path):
         rel = str(path.relative_to(ROOT))
         value = sha(path)
+        if rel not in known:
+            originals = {
+                r["expected"]
+                for r in source_receipt["checks"]
+                if r.get("original_path") == rel
+            }
+            if len(originals) == 1:
+                known[rel] = originals.pop()
         if rel not in known or value != known[rel]:
             raise ValueError(f"Source absent from audit or changed: {rel}")
         used[rel] = value
