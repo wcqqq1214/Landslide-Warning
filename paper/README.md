@@ -1,6 +1,26 @@
 # 阶段报告编译说明
 
-## 当前四点 B+ 阶段简报（2026-09-12）
+## 当前四点 1—7 天对比简报（2026-09-13）
+
+[五页 PDF](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)参照原 `process_report` 的蓝色标题与简洁图文布局。内容包括七个端点的开发锁定选择、四类模型及残差配对、四点完整后期 7 天曲线、概率质量和研究边界。四点全部 1—7 天图件另存，原报告不修改。
+
+可编辑源码：[ootang_short_horizon_process_report.tex](ootang_short_horizon_process_report.tex)；完整数值与来源见 [v4.0 结果](../docs/ootang_short_horizon_comparison_results.v4.0.md)。文档生成器只读取已保存结果：
+
+```bash
+PYTHONPATH=code .venv/bin/python -m short_horizon.report \
+  --config config/ootang_short_horizon_comparison.v4_0.json
+```
+
+在仓库根目录创建 `tmp/pdfs/v4` 后，在 `paper/` 目录编译两次以固定页码与引用：
+
+```bash
+xelatex -interaction=nonstopmode -halt-on-error \
+  -output-directory ../tmp/pdfs/v4 ootang_short_horizon_process_report.tex
+```
+
+最终 PDF 复制至 `output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf`。图件和 PDF 的来源、视觉检查与误报解释见 [图件说明](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)；数字及描述性统计另由 `short_horizon.qa_report` 对最终 PDF 核对。编译与核验不需要重训；PDF、TeX 与完整图件均分步备份。
+
+## 历史四点 B+ 阶段简报（2026-09-12）
 
 [两页 PDF](../output/pdf/ootang_bplus_process_report_20260912.pdf)参照原 `process_report` 的版式，
 仅使用文字和表格，汇总最终 293 日已有预测、ConvLSTM v2.0 与 PINN v2.3 开发结果及下一步讨论。

@@ -1,0 +1,8 @@
+{
+  "passed": false,
+  "stage": "final packaging, before receipt write",
+  "failure": "AssertionError: single-panel workflow alignment was incorrectly required to be PASS",
+  "observed_verdict": "NOT APPLICABLE",
+  "resolution": "Require PASS for 30 multi-panel figures and NOT APPLICABLE for the one single-panel workflow; retain original audit bytes and numerical tolerances",
+  "training_or_prediction_changes": 0
+}

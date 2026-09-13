@@ -18,11 +18,14 @@
 
 # Current Stage Plan
 
-- **v4.0 P2 已核验并提交 `419896d`，现在进入 P3 正式运行。** P1 合同 `42e36d4`；11 项检查和 lint 通过，零正式训练。按 `docs/ootang_short_horizon_execution.v4.0.md`／冻结 JSON 顺序执行，原四小时截止 2026-09-13 17:37:17 UTC 保持。每步备份，未要求 push；新状态不改写下面的历史 P0/P1。
+- **v4.0 P1—P5 已完成，当前停止追加实验。** 36 次固定神经拟合、7800 次更新，七步长开发选择锁定后完整运行后期；独立模型、数组、尺度、评分、选择、统计与图件核验完成。共同推荐 h=1 为 RR_DIRECT，h=2—7 为 C16_CORE_RULES，后期七组均通过本轮工作条件；均值／CRPS 最小身份七步长均为 CORE。7 天 CORE 后期平均 RMSE 0.025580、CRPS 0.009978 mm，90% 覆盖 85.8885%；B_ANCHOR 同窗 RMSE 1.784162 mm。PINN 完成训练但物理验收失败，B+ 额外增量未确立；低误差仅支持当前公开日序列的探索性位移预测，不代表真实预警有效。结果与五页图文简报见下方新入口；原四小时截止不变，剩余时间不转用，分步本地 commit，未 push。
 
 
 @docs/ootang_short_horizon_comparison_plan.v4.0.md
 @docs/ootang_short_horizon_execution.v4.0.md
+@docs/ootang_short_horizon_comparison_results.v4.0.md
+
+以下 v4.0 授权与 P0 文字保留形成时记录；其中“尚未训练／尚未启用”不覆盖已完成状态。
 
 - **最新执行授权：用户已要求“根据 plan，一步步进行”。v4.0 独立执行窗口已于 2026-09-13 13:37:17 UTC 开始，17:37:17 UTC 截止。** P1 固定短窗状态 PINN 的完整记忆／初始 z 校正与日映射约束，原 54 参数不重估；共同校准与七步长开发选择保持。此授权支持 P1—P5 的实现、固定实验、核验、报告及分步 commit，不需再逐命令询问。仍未请求 push。
 

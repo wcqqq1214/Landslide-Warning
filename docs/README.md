@@ -15,9 +15,9 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**v4.0 已获执行授权并进入 P1：[实施记录与执行合同](ootang_short_horizon_execution.v4.0.md)／[配置](../config/ootang_short_horizon_comparison.v4_0.json)。** 独立窗口 2026-09-13 13:37:17—17:37:17 UTC；按准备、实现、实验、核验和图文报告分步提交。下述“本次仅文档”是 P0 形成时的范围，不覆盖最新执行授权。
+**v4.0 短期对比已完成：[完整结果](ootang_short_horizon_comparison_results.v4.0.md)／[五页图文简报](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf)／[四点全部七步长图件](../figures/ootang_short_horizon_v4/20260913_short_horizon/README.md)。** 用户明确的七个位移端点、四类模型与残差配对已经执行并核验；共同推荐 1 天为 RR_DIRECT、2—7 天为在线回归＋反馈，均按开发锁定。保留 PINN 物理失败和物理增量不稳定结果，不把公开已处理日序列上的低误差等同于真实预警效果；停止新增实验。
 
-**当前工作：已形成 [1—7 天模型与残差学习对比计划 v4.0](ootang_short_horizon_comparison_plan.v4.0.md)。** 用户明确分别预测第 1、2、3、4、5、6、7 天后的位移，先交付计划，最终按 process_report 风格输出 4—6 页图文简报。固定四类模型、开发逐 h 选择、完整后期比较与信息边界；当前没有新训练或效果结论。PINN 数学接口在实施准备中补齐，未来执行预算尚未启用。以下滚动与长窗记录均为历史依据。
+依据 [原计划](ootang_short_horizon_comparison_plan.v4.0.md)、[执行合同](ootang_short_horizon_execution.v4.0.md)与 [配置](../config/ootang_short_horizon_comparison.v4_0.json)，独立窗口为 2026-09-13 13:37:17—17:37:17 UTC。旧计划中“尚未执行”是形成时状态；剩余预算不转用。以下滚动与长窗记录均为历史依据。
 
 **冻结可信度审查已完成：[报告 v1.0](ootang_rolling_frozen_validation_report.v1.0.md)／[执行前计划](ootang_rolling_frozen_validation_plan.v1.0.md)。** 用户随后授权按计划执行，A—D 已完成：五对象来源、669 起点与192边界核对通过，完整指标和结论已收束。保留滚动机器学习的探索性收益；B+ 额外增益未确立，C18 仍是经验方差规则。真实日值 as-of 与新独立评价资格未核实，不阻塞报告，也不据此开启 C19。零新训练、评分或物理调用，分步提交，未 push；原计划中的“未执行”保留为形成时记录。
 下述实验收尾中的“未 push”是形成时记录；6pro 报告远端已有该快照，本次远端核对范围见新计划第 7 节，不再由旧记录判断当前缺材料。
@@ -26,7 +26,8 @@ v2.0 按原标准未达标并已停止。
 
 | 文档 | 用途 |
 | --- | --- |
-| [短期模型与残差学习对比计划 v4.0](ootang_short_horizon_comparison_plan.v4.0.md) | 当前设计：七个端点、四类模型与固定配对、开发选模、完整评价、预算建议和简要图文报告；本次仅文档 |
+| [短期对比结果 v4.0](ootang_short_horizon_comparison_results.v4.0.md) / [图文 PDF](../output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf) | 当前完成结果：七端点、四类模型与残差配对；开发锁定与后期评价、统计、全部曲线及核验 |
+| [短期模型与残差学习对比计划 v4.0](ootang_short_horizon_comparison_plan.v4.0.md) / [执行合同](ootang_short_horizon_execution.v4.0.md) | 已完成实验的事前冻结依据；不根据其中的运行建议自动重启 |
 | [C7 追加概率研究](ootang_rolling_probability_extension.v3.6.md) / [配置](../config/ootang_rolling_probability.v3_6.json) | 已完成并核验；经验分布覆盖失败，同池高斯对照与完整分布保留 |
 | [C8 在线均值学习](ootang_rolling_probability_candidate.c8.md) / [C9 逐步长尺度](ootang_rolling_probability_candidate.c9.md) | 两候选已完成并核验；均值小幅收益、概率覆盖仍不足，C9 尺度优化停止 |
 | [C10 指数遗忘在线回归](ootang_rolling_probability_candidate.c10.md) / [配置](../config/ootang_rolling_probability.v3_9.json) | 已运行并独立核验；均值与概率均差于 C8，停止遗忘参数搜索 |
