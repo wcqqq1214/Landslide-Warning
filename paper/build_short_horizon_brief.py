@@ -1,4 +1,4 @@
-"""Render a compact presentation of frozen v4.0 results; no model execution."""
+"""Present saved v4.0 results and the initial-state audit; no model execution."""
 
 import hashlib
 import json
@@ -9,6 +9,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "results/ootang_short_horizon_v4/20260913_short_horizon"
+INITIAL_STATE = ROOT / "results/ootang_neural_initial_state_v1/20260914"
 FIGURES = ROOT / "figures/ootang_short_horizon_v4/20260913_short_horizon"
 SOURCE = ROOT / "paper/ootang_short_horizon_brief.v4.1.tex"
 RECEIPT = ROOT / "paper/ootang_short_horizon_brief.v4.1.sources.json"
@@ -19,6 +20,18 @@ def sha(path):
 
 
 def main():
+    initial_receipt_path = INITIAL_STATE / "verification/receipt.json"
+    initial_final_path = INITIAL_STATE / "final_receipt.json"
+    initial_report_path = ROOT / "docs/ootang_neural_initial_state_results.v1.0.md"
+    initial = json.loads(initial_receipt_path.read_text())
+    initial_final = json.loads(initial_final_path.read_text())
+    assert initial["trained_checkpoints_physical_pass"]
+    assert initial["global_contract_failure_is_zero_control"]
+    assert not initial["physical_contract_pass"]
+    assert initial["trained_trajectories"] == 2160
+    assert not initial_final["hypothesis_effectiveness_answered"]
+    assert not initial_final["new_candidate_scoring_performed"]
+    assert initial_final["status"] == "stopped"
     summary_path = RUN / "analysis/summary_by_horizon.csv"
     selection_path = RUN / "analysis/selection_by_horizon.csv"
     point_path = RUN / "analysis/metrics_by_point_horizon.csv"
@@ -138,10 +151,12 @@ def main():
 \end{center}
 {\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
 \reportfigure{paired_effects.pdf}{固定配对的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
-\takeaway{\textbf{ConvLSTM：}两版仍未超过当天速度外推。\quad\textbf{PINN：}本版物理状态验收失败。}
-{\small 残差与物理参照未带来稳定额外收益。在线回归的优势来自趋势特征、在线更新与误差反馈的完整方案；神经与普通岭回归在阶段内固定权重。}
-
-{\footnotesize\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 去方程对照仍保留相同物理背景。}
+\takeaway{\textbf{ConvLSTM：}两版仍未超过当天速度外推。\quad\textbf{旧状态 PINN：}物理验收失败。}
+\begingroup\fontsize{9}{12}\selectfont
+残差与物理参照未带来稳定额外收益。在线回归的优势来自趋势特征、在线更新与误差反馈的完整方案；神经与普通岭回归在阶段内固定权重。\par
+\textbf{新增神经初态估计＋严格 B+ 递推：}训练后 @@INITIAL_TRAJECTORIES@@ 条内部期轨迹全部通过物理检查。原求解器容差与新增塑性子步门未对齐，零修正对照触发本轮停止。\textbf{1--7 天均值与概率收益尚未评价，暂不能与在线回归比较。}\par
+{\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 去方程对照仍保留相同物理背景。\par}
+\endgroup
 \clearpage
 \pagetitle{3\quad ATU1、ATU5：完整后期曲线}
 {\small 展示在线回归＋反馈的 7 天预测，每点 287 个起点。每组依次为累计位移、7 日总增量、实测减预测；蓝带为相对均值的 90\% 边际预测区间。}\par\vspace{2mm}
@@ -169,6 +184,7 @@ def main():
     )
     for name, caption in captions.items():
         tex = tex.replace(f"@@{name}@@", caption)
+    tex = tex.replace("@@INITIAL_TRAJECTORIES@@", str(initial["trained_trajectories"]))
     assert "@@" not in tex
     SOURCE.write_text(tex, encoding="utf-8")
     figure_names = [
@@ -182,16 +198,25 @@ def main():
         ROOT / "paper/process_report.tex",
         ROOT / "paper/ootang_short_horizon_process_report.tex",
         ROOT / "output/pdf/ootang_short_horizon_comparison_report.v4.0.pdf",
+        initial_report_path, initial_receipt_path, initial_final_path,
     ]
     RECEIPT.write_text(
         json.dumps({
             "role": "presentation_revision_only",
-            "experiment": "v4.0, unchanged",
+            "experiment": "v4.0 unchanged; saved independent initial-state audit added on page 2",
             "presentation": "v4.1",
             "new_training": 0,
             "new_model_selection": 0,
             "expected_pages": 4,
             "displayed_numeric_cells": expected,
+            "initial_state_result": {
+                "page": 2,
+                "trained_trajectories": initial["trained_trajectories"],
+                "trained_checkpoints_physical_pass": True,
+                "overall_physical_contract_pass": False,
+                "stop_reason": "zero-control substep tolerance mismatch",
+                "forecast_effectiveness": "not evaluated for all seven horizons",
+            },
             "input_sha256": {str(p.relative_to(ROOT)): sha(p) for p in inputs},
             "tex_sha256": sha(SOURCE),
         }, ensure_ascii=False, indent=2) + "\n",

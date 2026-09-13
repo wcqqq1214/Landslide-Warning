@@ -2,11 +2,11 @@
 
 ## 当前四页精简版（2026-09-14）
 
-[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。只精简展示，实验仍为冻结的 v4.0；下方五页原版和原始图件保持不变。
+[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。第 2 页已同步[独立初态实验结果](../docs/ootang_neural_initial_state_results.v1.0.md)：训练后 2160 条轨迹通过物理检查，零修正对照触发额外子步门，预测收益尚未评价。原 v4.0 数值与结论、下方五页原版和原始图件保持不变。
 
 当前展示按用户要求去除了页眉、版本号和制作日期，保留数据时段与页码；文件名中的版本仅用于归档。
 
-可编辑源码：[ootang_short_horizon_brief.v4.1.tex](ootang_short_horizon_brief.v4.1.tex)。[生成脚本](build_short_horizon_brief.py)只读取已保存 CSV 与图件，自动填入表格和图注，不训练或重新选模。在仓库根目录执行：
+可编辑源码：[ootang_short_horizon_brief.v4.1.tex](ootang_short_horizon_brief.v4.1.tex)。[生成脚本](build_short_horizon_brief.py)只读取已保存 CSV、图件与初态核验回执，自动填入表格、图注及对应结果，不训练或重新选模。在仓库根目录执行：
 
 ```bash
 .venv/bin/python paper/build_short_horizon_brief.py
@@ -21,7 +21,7 @@ xelatex -interaction=nonstopmode -halt-on-error \
   ootang_short_horizon_brief.v4.1.tex
 ```
 
-[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 14 项冻结输入及 TeX 哈希；[交付核验](ootang_short_horizon_brief.v4.1.qa.json)核对 PDF 内 96 个有序数字单元、四页逐字几何和实际渲染。保留数据结构、反复评价、PINN 物理失败与物理增量不稳定的解释边界；不能以此称真实预警已验证。
+[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 17 项输入及 TeX 哈希；[交付核验](ootang_short_horizon_brief.v4.1.qa.json)核对原 96 个有序数字单元、新增轨迹计数、四页逐字几何与第 2 页实际渲染，第 1、3、4 页逐像素保持一致。保留数据结构、反复评价、旧状态 PINN 物理失败与物理增量不稳定的解释边界；不能以此称真实预警已验证。
 
 ## 五页原版（2026-09-13）
 
