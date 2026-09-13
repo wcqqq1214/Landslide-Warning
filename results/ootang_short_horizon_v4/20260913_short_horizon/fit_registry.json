@@ -238,5 +238,125 @@
     "updates": 100,
     "end_utc": "2026-09-13T14:22:54.265052+00:00",
     "elapsed_seconds": 0.1136972913518548
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_DIRECT",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:23:58.569784+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:24:02.982015+00:00",
+    "elapsed_seconds": 3.9670991669408977
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_DIRECT",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:02.982315+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:24:06.919532+00:00",
+    "elapsed_seconds": 3.935718667227775
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_DIRECT",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:06.919904+00:00",
+    "updates": 200,
+    "end_utc": "2026-09-13T14:24:10.837029+00:00",
+    "elapsed_seconds": 3.916268540546298
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_BRES",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:11.263393+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:13.226767+00:00",
+    "elapsed_seconds": 1.962540959008038
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_BRES",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:13.227080+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:15.190823+00:00",
+    "elapsed_seconds": 1.9630677090026438
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "CL_BRES",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:15.191147+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:17.149253+00:00",
+    "elapsed_seconds": 1.9573823329992592
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_EQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:17.568238+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:18.565519+00:00",
+    "elapsed_seconds": 0.9962855423800647
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_EQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:18.565878+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:19.534662+00:00",
+    "elapsed_seconds": 0.9678572090342641
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_EQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:19.535099+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:20.487867+00:00",
+    "elapsed_seconds": 0.9518379578366876
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_NOEQ",
+    "seed": 0,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:20.558596+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:20.682135+00:00",
+    "elapsed_seconds": 0.12276012497022748
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_NOEQ",
+    "seed": 1,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:20.682475+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:20.790442+00:00",
+    "elapsed_seconds": 0.10722750006243587
+  },
+  {
+    "phase": "later_exploratory",
+    "model": "PINN_NOEQ",
+    "seed": 2,
+    "status": "completed",
+    "start_utc": "2026-09-13T14:24:20.790920+00:00",
+    "updates": 100,
+    "end_utc": "2026-09-13T14:24:20.898995+00:00",
+    "elapsed_seconds": 0.10729441698640585
   }
 ]

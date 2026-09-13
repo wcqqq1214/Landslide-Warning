@@ -1,0 +1,20 @@
+{
+  "models": {
+    "CL_DIRECT": "completed",
+    "CL_BRES": "completed",
+    "PINN_EQ": "completed",
+    "PINN_NOEQ": "completed",
+    "RR_DIRECT": "completed",
+    "RR_BRES": "completed",
+    "C16_CORE_RULES": "replayed",
+    "C16_PHYS_RULES": "replayed"
+  },
+  "physical_pass": {
+    "PINN_EQ": false
+  },
+  "calls": {
+    "reference_forward": 0,
+    "day_forward": 150640,
+    "day_backward": 134400
+  }
+}

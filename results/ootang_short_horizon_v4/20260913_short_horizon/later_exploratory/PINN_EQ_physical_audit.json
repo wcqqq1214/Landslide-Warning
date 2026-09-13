@@ -1,0 +1,79 @@
+{
+  "passed": false,
+  "tolerance_by_horizon_mm": [
+    0.0037465537326826916,
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.01,
+    0.01
+  ],
+  "per_seed_and_ensemble": [
+    {
+      "seed": 0,
+      "max_replay_difference_mm": [
+        1.239612116560238,
+        1.162645120250545,
+        1.1228073021475211,
+        1.1047867581141873,
+        1.1038078968321088,
+        1.0959014438196846,
+        1.1012340591580596
+      ],
+      "max_normalized_defect": 0.41278758302335267,
+      "min_plastic_increment_mm": -0.07752330275138775,
+      "max_complementarity_residual": 0.0,
+      "passed": false
+    },
+    {
+      "seed": 1,
+      "max_replay_difference_mm": [
+        1.3138276989078577,
+        1.2641592184847354,
+        1.2549852739774678,
+        1.2942933878086933,
+        1.3589187651108432,
+        1.4110373629591777,
+        1.4397341254132243
+      ],
+      "max_normalized_defect": 0.41254226528949817,
+      "min_plastic_increment_mm": -0.014866923955594302,
+      "max_complementarity_residual": 0.0,
+      "passed": false
+    },
+    {
+      "seed": 2,
+      "max_replay_difference_mm": [
+        1.2491410845764221,
+        1.2026968245609737,
+        1.2677442591532326,
+        1.3631285854469297,
+        1.4145678361385308,
+        1.4224466090863643,
+        1.4146247218020562
+      ],
+      "max_normalized_defect": 0.3893806023394832,
+      "min_plastic_increment_mm": -0.014654451448109285,
+      "max_complementarity_residual": 0.0,
+      "passed": false
+    },
+    {
+      "seed": "equal_weight_mean",
+      "max_replay_difference_mm": [
+        1.2344438005607117,
+        1.1803489077519203,
+        1.1632497188622324,
+        1.1716634941262782,
+        1.230678033399272,
+        1.267944376378864,
+        1.2762578525957906
+      ],
+      "max_normalized_defect": 0.38784779584038365,
+      "min_plastic_increment_mm": -0.025142710035197524,
+      "max_complementarity_residual": 0.0,
+      "passed": false
+    }
+  ],
+  "main_output_replaced": false
+}
