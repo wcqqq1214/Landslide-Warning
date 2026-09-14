@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-14T12:55:15.122437+00:00",
+  "phase": "development",
+  "forecast_start": 792,
+  "forecast_end": 1168,
+  "latest_observed_index": 791,
+  "calibration_indices": [
+    702,
+    792
+  ],
+  "calibration_source_sha256": "e1a2b32e7b98f04f1f93e548c4fa4502d99e3e4ed1b987ee7db366c5a3cfa3e6",
+  "files": {
+    "issued_distribution.npz": "4ec967b0bf12f8f21df65a09967ee86bc96fe5748a3994779e6eac9e199e7796"
+  }
+}

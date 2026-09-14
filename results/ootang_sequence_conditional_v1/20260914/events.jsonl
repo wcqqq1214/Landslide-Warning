@@ -1,0 +1,95 @@
+{"time_utc": "2026-09-14T12:50:19.797284+00:00", "event": "phase_started", "phase": "internal", "training_rows": 612, "prediction_rows": 180, "given_forcing_last_index": 791, "selected_updates": {"TRANSFORMER": 400, "CNN_MAMBA": 400}}
+{"time_utc": "2026-09-14T12:50:19.799712+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "internal_training"}
+{"time_utc": "2026-09-14T12:50:19.806190+00:00", "event": "controls_reused", "phase": "internal", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TCN_DIRECT_COND", "TCN_BRES_COND"], "new_fits": 0, "baseline_sha256": "fb3708fe361ee6a253cedfec4b2cb1941f9e022b7ec40476e774cdbf9248697f", "tcn_sha256": "fcbca675f804484a4c10b28705058d8f06638a3a2f2e978f82ea6317329a21b0"}
+{"time_utc": "2026-09-14T12:50:19.817984+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:24.331670+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 4.512989457696676}
+{"time_utc": "2026-09-14T12:50:24.332523+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:28.791398+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 4.458122875075787}
+{"time_utc": "2026-09-14T12:50:28.792283+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:33.207732+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 4.414765750057995}
+{"time_utc": "2026-09-14T12:50:33.208587+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:37.615031+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 4.405689083039761}
+{"time_utc": "2026-09-14T12:50:37.615932+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:42.118969+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 4.502290875185281}
+{"time_utc": "2026-09-14T12:50:42.120169+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:46.529289+00:00", "event": "fit_completed", "phase": "internal", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 4.408400209154934}
+{"time_utc": "2026-09-14T12:50:46.533423+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:50:58.823348+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 12.289138332940638}
+{"time_utc": "2026-09-14T12:50:58.824507+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:51:11.399336+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 12.574097125325352}
+{"time_utc": "2026-09-14T12:51:11.400948+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:51:24.166656+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 12.764951083343476}
+{"time_utc": "2026-09-14T12:51:24.167879+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:51:37.137759+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 12.96875562518835}
+{"time_utc": "2026-09-14T12:51:37.139006+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:51:50.355165+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 13.215254582930356}
+{"time_utc": "2026-09-14T12:51:50.356705+00:00", "event": "fit_started", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T12:52:03.505899+00:00", "event": "fit_completed", "phase": "internal", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 13.148461083881557}
+{"time_utc": "2026-09-14T12:52:03.545146+00:00", "event": "all_means_locked", "phase": "internal", "lock_sha256": "920a03ca81e624c4bb55d4d79e1046dc0b023e375cbf49976b3b1b4c33696ab0"}
+{"time_utc": "2026-09-14T12:52:03.545202+00:00", "event": "label_prefix_read", "rows": 702, "last_index": 701, "purpose": "internal_update_selection"}
+{"time_utc": "2026-09-14T12:52:03.553139+00:00", "event": "updates_locked", "selected_updates": {"TRANSFORMER": 400, "CNN_MAMBA": 400}, "quality": {"TRANSFORMER": {"50": 1.0533822396030226, "100": 0.6347622394860226, "200": 0.2424012159184062, "400": 0.2289095164736116}, "CNN_MAMBA": {"50": 1.0225511806972065, "100": 0.5948875233187049, "200": 0.25060654503285623, "400": 0.2043091212789232}}}
+{"time_utc": "2026-09-14T12:52:03.555511+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "internal_initial_calibration"}
+{"time_utc": "2026-09-14T12:52:03.560449+00:00", "event": "phase_completed", "phase": "internal", "selected_updates": {"TRANSFORMER": 400, "CNN_MAMBA": 400}}
+{"time_utc": "2026-09-14T12:52:31.383172+00:00", "event": "phase_started", "phase": "development", "training_rows": 792, "prediction_rows": 376, "given_forcing_last_index": 1167, "selected_updates": {"TRANSFORMER": 400, "CNN_MAMBA": 400}}
+{"time_utc": "2026-09-14T12:52:31.385883+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "development_training"}
+{"time_utc": "2026-09-14T12:52:31.392704+00:00", "event": "controls_reused", "phase": "development", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TCN_DIRECT_COND", "TCN_BRES_COND"], "new_fits": 0, "baseline_sha256": "c33b7f5bb458c64a27e870c9d18bac0507ca05c4b35ee372bd11ddce876f2250", "tcn_sha256": "c93b45d21a6c63621175d4d145706f895cc3736bf1dd3364cbcc4a3c6abeb789"}
+{"time_utc": "2026-09-14T12:52:31.395515+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:52:37.890642+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 6.494434624910355}
+{"time_utc": "2026-09-14T12:52:37.891530+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:52:44.373210+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 6.4809951251372695}
+{"time_utc": "2026-09-14T12:52:44.374058+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:52:50.804959+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 6.429954959079623}
+{"time_utc": "2026-09-14T12:52:50.805895+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:52:57.334557+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 6.527982874773443}
+{"time_utc": "2026-09-14T12:52:57.335429+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:53:03.878372+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 6.542240290902555}
+{"time_utc": "2026-09-14T12:53:03.879257+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:53:10.476172+00:00", "event": "fit_completed", "phase": "development", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 6.596191416028887}
+{"time_utc": "2026-09-14T12:53:10.477444+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:53:27.453730+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 16.973266125191003}
+{"time_utc": "2026-09-14T12:53:27.455051+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:53:45.188405+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 17.729710792191327}
+{"time_utc": "2026-09-14T12:53:45.189727+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:54:04.894296+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 19.702203333377838}
+{"time_utc": "2026-09-14T12:54:04.896070+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:54:26.498157+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 21.597529250197113}
+{"time_utc": "2026-09-14T12:54:26.499798+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:54:49.753902+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 23.249902333132923}
+{"time_utc": "2026-09-14T12:54:49.755725+00:00", "event": "fit_started", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "rows": 792}
+{"time_utc": "2026-09-14T12:55:15.071966+00:00", "event": "fit_completed", "phase": "development", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 25.313193042296916}
+{"time_utc": "2026-09-14T12:55:15.115999+00:00", "event": "all_means_locked", "phase": "development", "lock_sha256": "e4f63bde4789883c2589cb4389ee38e949fba096066d0aa2e23c4b82303f97d1"}
+{"time_utc": "2026-09-14T12:55:15.122804+00:00", "event": "distribution_locked", "phase": "development", "lock_sha256": "191e44327cf53d661c316ab77c8de32318ada1025deba09c5408e2c48e8c1c1e"}
+{"time_utc": "2026-09-14T12:55:15.122884+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "development_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T12:55:15.359156+00:00", "event": "development_selection_locked", "mean": "DRIFT1", "probability": "DRIFT1", "selection_sha256": "4087c1a1d95c2ef5cc34a8612921053963252cd9a370e91ad74476cecbade211"}
+{"time_utc": "2026-09-14T12:55:15.362008+00:00", "event": "phase_completed", "phase": "development", "mean_rmse": {"BPLUS_CONTINUOUS": 41.36837187193975, "DRIFT1": 6.541317970779125, "RR_COND": 45.899829150075504, "TCN_DIRECT_COND": 91.68410592699266, "TCN_BRES_COND": 49.59822889567976, "TRANSFORMER_DIRECT_COND": 36.856791648869624, "TRANSFORMER_BRES_COND": 48.18661688434247, "CNN_MAMBA_DIRECT_COND": 47.55388424881562, "CNN_MAMBA_BRES_COND": 50.10412869413697}}
+{"time_utc": "2026-09-14T12:55:39.253529+00:00", "event": "phase_started", "phase": "final_exploratory", "training_rows": 1168, "prediction_rows": 293, "given_forcing_last_index": 1460, "selected_updates": {"TRANSFORMER": 400, "CNN_MAMBA": 400}}
+{"time_utc": "2026-09-14T12:55:39.256614+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "final_exploratory_training"}
+{"time_utc": "2026-09-14T12:55:39.263657+00:00", "event": "controls_reused", "phase": "final_exploratory", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TCN_DIRECT_COND", "TCN_BRES_COND"], "new_fits": 0, "baseline_sha256": "d25b1090df42f7e13560c4a510c1d082d8c811b0b54320cc19ead269f9fa1bc9", "tcn_sha256": "1697b14c3fddd2df9baebcd1dc499897e30ad2d3e871a2f2b8c6cca007d0745a"}
+{"time_utc": "2026-09-14T12:55:39.274783+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:55:55.979460+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 16.702288375236094}
+{"time_utc": "2026-09-14T12:55:55.980822+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:56:12.053543+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 16.070413624867797}
+{"time_utc": "2026-09-14T12:56:12.054659+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:56:27.790948+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 15.73396445903927}
+{"time_utc": "2026-09-14T12:56:27.792185+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:56:43.975320+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 16.180847791023552}
+{"time_utc": "2026-09-14T12:56:43.976621+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:57:00.333769+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 16.35500441584736}
+{"time_utc": "2026-09-14T12:57:00.335010+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:57:16.834526+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 16.49782424978912}
+{"time_utc": "2026-09-14T12:57:16.839944+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:57:55.228599+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 38.38604500005022}
+{"time_utc": "2026-09-14T12:57:55.232222+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:58:34.037713+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 38.80306416703388}
+{"time_utc": "2026-09-14T12:58:34.040805+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T12:59:17.180765+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 43.13684449996799}
+{"time_utc": "2026-09-14T12:59:17.184715+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T13:00:00.597405+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 43.410065583884716}
+{"time_utc": "2026-09-14T13:00:00.600995+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T13:00:45.250888+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 44.64638333301991}
+{"time_utc": "2026-09-14T13:00:45.255226+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "rows": 1168}
+{"time_utc": "2026-09-14T13:01:30.008917+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "CNN_MAMBA_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 44.75086670881137}
+{"time_utc": "2026-09-14T13:01:30.046542+00:00", "event": "all_means_locked", "phase": "final_exploratory", "lock_sha256": "bebac0ec7640158355184adf22fa47c6b4587695e74d061432f70d6341d9091d"}
+{"time_utc": "2026-09-14T13:01:30.050853+00:00", "event": "distribution_locked", "phase": "final_exploratory", "lock_sha256": "02d54d7cfc28a3671eeb26a64add1543e3b080e7ca3f98d97cd19599387f8649"}
+{"time_utc": "2026-09-14T13:01:30.050908+00:00", "event": "label_prefix_read", "rows": 1461, "last_index": 1460, "purpose": "final_exploratory_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T13:01:30.250336+00:00", "event": "phase_completed", "phase": "final_exploratory", "mean_rmse": {"BPLUS_CONTINUOUS": 9.124173217774597, "DRIFT1": 12.9777345313275, "RR_COND": 12.338213669009026, "TCN_DIRECT_COND": 43.25335670757466, "TCN_BRES_COND": 12.862059398748798, "TRANSFORMER_DIRECT_COND": 36.41685844101815, "TRANSFORMER_BRES_COND": 9.27908197971311, "CNN_MAMBA_DIRECT_COND": 39.61011918014843, "CNN_MAMBA_BRES_COND": 10.375614434729393}}

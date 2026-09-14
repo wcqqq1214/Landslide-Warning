@@ -1,0 +1,28 @@
+{
+  "time_utc": "2026-09-14T12:55:15.068466+00:00",
+  "status": "fit_complete",
+  "phase": "development",
+  "arm": "CNN_MAMBA_BRES_COND",
+  "seed": 2,
+  "updates": 400,
+  "rows": 792,
+  "elapsed_seconds": 25.313193042296916,
+  "files": {
+    "e0.pt": "68a4a91a7f034bb01df520ffd065003be7de99bf21f3f3bc01daaf8780cec0f0",
+    "e0_fit.json": "f1ec8ea21c3d3f7844ee895bfc2550b9c24e0069d2766be3e2aed3c5b393e690",
+    "e0_mean.npy": "2f65fde13e591a1546f94f9305c17581d3cc1c49b71e50d3aadd530f5cc9f40f",
+    "e100.pt": "bd1d0ca0f723cdcb44b83b6cc68738c78e2396166b55732233af90201343c29b",
+    "e100_fit.json": "1a95a4145165db4e58fde78537d42d910a9cf651080b5ffdfc944ea4b7a7aa9c",
+    "e100_mean.npy": "602b23240c8ae343420ae655e8ebeb7b79e3e3fa1114848f7cfda5c6a8fd1e2a",
+    "e200.pt": "1ad97a937fb2fc7990a011d02e5171f83423bd7c80adabd9dbe33e4aeadc4125",
+    "e200_fit.json": "bbba26d357012c95266caa45bdaf4b15d73d016dc450788bb9654fe291dffe26",
+    "e200_mean.npy": "b520bf27488252fc028b4dc87b064ab6b8c098e3e6cd7979631c271ca9aebc8b",
+    "e400.pt": "e6fdbda52a3dca90137c8707cfc30677933a294f2410f978f9120583b209a703",
+    "e400_fit.json": "ddc63bd350007c00869d0004445fa3b60767e00117366421284e5500b2d4e4f7",
+    "e400_mean.npy": "f390927938a2c754c3c4eb32b76acfbc80fff36fed70a6db3c7cfcd7016c4a0b",
+    "e50.pt": "0d39e15bc95dfc08c0bfaad4aadc6b99d16aa13e86d5679291c22a77000ccf4d",
+    "e50_fit.json": "358d4b2a28dee595b32f8e98418798f726e4ccf4c2481319625523c6a5196915",
+    "e50_mean.npy": "b50fa2217d1a77de2e89e4a7b40d30d67e3e48e439b4b328cf6994149e4c5861",
+    "training.jsonl": "d9888354245b728c1b2af35e4df0837e44343d4109f869e346f5adf6aad09294"
+  }
+}

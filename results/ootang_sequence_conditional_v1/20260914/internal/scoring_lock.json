@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T12:52:03.560239+00:00",
+  "phase": "internal",
+  "status": "complete",
+  "selected_updates": {
+    "TRANSFORMER": 400,
+    "CNN_MAMBA": 400
+  },
+  "neural_fits": 12,
+  "optimizer_updates": 4800,
+  "files": {
+    "ensemble_selected.npz": "791edc592dadee9c51102de24a9fc09b8231b8a1313ddd2f5110044c959d86b7",
+    "metrics_by_point.csv": "5c423ec5a45b1e586fb8d1abcbf880e70426664ca1d6332eef9edfaf95c95238",
+    "next_calibration.json": "e1a2b32e7b98f04f1f93e548c4fa4502d99e3e4ed1b987ee7db366c5a3cfa3e6"
+  }
+}
