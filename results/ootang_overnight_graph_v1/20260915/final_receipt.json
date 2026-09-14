@@ -1,0 +1,233 @@
+{
+  "status": "complete",
+  "execution_completed": true,
+  "independently_validated": true,
+  "research_effectiveness_target_met": false,
+  "user_mentor_acceptance": "not received",
+  "branch": "codex/overnight-fixed-graph",
+  "start_utc": "2026-09-14T18:23:23+00:00",
+  "finished_utc": "2026-09-14T19:13:53.409040+00:00",
+  "deadline_utc": "2026-09-15T01:00:00+00:00",
+  "elapsed_seconds": 3030.40904,
+  "remaining_seconds_not_reassigned": 20766.59096,
+  "early_finish": true,
+  "new_fits": 24,
+  "optimizer_updates": 4800,
+  "checkpoints": 96,
+  "bplus_refits": 0,
+  "physical_forwards": 0,
+  "dual_fits": 0,
+  "prior_origin_pilot": {
+    "status": "completed before this scope",
+    "fits": 36,
+    "updates": 7200,
+    "checkpoints": 144,
+    "delivery_commit": "0bfa674"
+  },
+  "diagnostic_triggered": false,
+  "all_prescribed_windows_complete": true,
+  "evaluated_origins": [
+    792,
+    972,
+    1168
+  ],
+  "bootstrap_origin": 612,
+  "summary_rows": 33,
+  "point_rows": 132,
+  "seed_rows": 99,
+  "daily_rows": 38676,
+  "independent_audit": {
+    "status": "passed",
+    "started_utc": "2026-09-14T18:47:09.843157+00:00",
+    "values_checked": 11110304,
+    "max_difference": 3.296918293926865e-12,
+    "checkpoints": 96,
+    "fits": 24,
+    "updates": 4800,
+    "new_fits": 0,
+    "physical_forwards": 0,
+    "source_files": 301,
+    "finished_utc": "2026-09-14T18:47:11.669471+00:00",
+    "phases": [
+      "base"
+    ],
+    "events_checked": 62,
+    "diagnostic_triggered": false,
+    "summary_rows": 33,
+    "point_rows": 132,
+    "seed_rows": 99,
+    "daily_rows": 38676,
+    "script_sha256": "cdd72110043874827c92271c6fd1f635e3b5df189c5c7e42b18c13235fd57a2b"
+  },
+  "figure_audit": {
+    "status": "passed",
+    "time_utc": "2026-09-14T19:02:54.107452+00:00",
+    "figures": 6,
+    "panels": 24,
+    "values_checked": 70346,
+    "max_svg_quantization_difference_mm": 4.700200861407211e-06,
+    "exports": [
+      {
+        "figure": "comparison",
+        "page": 1,
+        "min_font_pt": 7.2
+      },
+      {
+        "figure": "GRU_GRAPH_mentor",
+        "page": 2,
+        "min_font_pt": 7.2
+      },
+      {
+        "figure": "GRU_LOCAL_mentor",
+        "page": 3,
+        "min_font_pt": 7.2
+      },
+      {
+        "figure": "residual_diagnostic",
+        "page": 4,
+        "min_font_pt": 7.2
+      },
+      {
+        "figure": "GRU_GRAPH_full",
+        "page": 5,
+        "min_font_pt": 7.2
+      },
+      {
+        "figure": "GRU_LOCAL_full",
+        "page": 6,
+        "min_font_pt": 7.2
+      }
+    ],
+    "audit_script_sha256": "d43d7d00e9e68d5e8a79de965b5aa82a5d2a3ccdf5a9ea545a2ba5aff4289154",
+    "pdf_pages": 6,
+    "pdf_fonts": "embedded",
+    "pdf_vector": true,
+    "visual_inspection": "passed: six Poppler PDF pages inspected panel by panel, followed by whole-page review",
+    "visual_checked_utc": "2026-09-14T19:05:15.529637+00:00",
+    "pdf_collision_verdict": "PASS: 0 fail / 0 warn",
+    "pdf_min_font_pt": 7.2,
+    "source_static": "18 PASS / 3 WARN / 0 FAIL; warnings reviewed in validation report"
+  },
+  "document_audit": {
+    "status": "passed",
+    "time_utc": "2026-09-14T19:12:07.341249+00:00",
+    "tables": 3,
+    "rows": 17,
+    "numerical_values": 54,
+    "local_links_checked": 142,
+    "remote_links_not_refetched": [
+      "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2025JH000592"
+    ],
+    "source_and_implementation_guard": "passed",
+    "assertions": "tables, point error direction, all gates, seed agreement, counts and trigger",
+    "document_sha256": {
+      "docs/ootang_overnight_graph_results.v1.0.md": "eb79b076fdf7a5603eaf8a5f7441f33d3262d4f4e5f4ee1f92e9fd30c47ac7c4",
+      "README.md": "e7322954f8f1cb6866048c47778b699c87c0fa63dd28e43654a949e2767d52d6",
+      "AGENTS.md": "f0bde99fb769a2a2864458184a4e942f758aad0094a3e6a14fa0723d69276469",
+      "docs/README.md": "c65f4c7fd9ef7354ebb4dfc77bea29efb0a709cf41415568d727ae4f4a45a1d6",
+      "docs/ootang_overnight_graph_validation.v1.0.md": "6283e492bd724385f7425c2b8fd025902041e53fc6b88b5f06c5d4c1e70d78d2",
+      "figures/ootang_overnight_graph_v1/20260915/README.md": "b35d173e73f1b5cbad6283148d0fe9c58d9dd076e965cecfad547d9282df8b43"
+    },
+    "script_sha256": "828a031f51ef5a48844b9023221469e08452cb106af4203f7c8b0380298a603a",
+    "new_training": 0
+  },
+  "interpretation": "Both GRU arms fail final mean gate, pass final probability gate; no stable spatial increment; residual trigger false. All prescribed experiment and delivery work is complete, without claiming the scientific improvement target was achieved.",
+  "completion_checklist": [
+    {
+      "requirement": "prior_origin_pilot_completed",
+      "status": "met",
+      "evidence": "docs/ootang_transformer_origin_results.v1.0.md; base commit 0bfa674"
+    },
+    {
+      "requirement": "original_paper_grounding_and_innovation_bounds",
+      "status": "met",
+      "evidence": "docs/ootang_overnight_graph_plan.v1.0.md; sources.v1.0.json; results.v1.0.md"
+    },
+    {
+      "requirement": "plan_config_sources_frozen_before_training",
+      "status": "met",
+      "evidence": "commit 6e98c86"
+    },
+    {
+      "requirement": "new_family_and_fixed_spatial_pair_implemented",
+      "status": "met",
+      "evidence": "GRU_LOCAL / GRU_GRAPH; commit 90956fd"
+    },
+    {
+      "requirement": "preflight_information_alignment_zero_reload_connectivity",
+      "status": "met",
+      "evidence": "preflight/receipt.json; implementation_lock.json"
+    },
+    {
+      "requirement": "all_fixed_arms_seeds_updates_windows_completed",
+      "status": "met",
+      "evidence": "base/training_complete.json; analysis/outcome.json"
+    },
+    {
+      "requirement": "complete_negative_results_and_old_controls_retained",
+      "status": "met",
+      "evidence": "analysis/*; commits 5a32b2a and 6849149"
+    },
+    {
+      "requirement": "causal_residual_diagnostic_and_prespecified_conditional_decision",
+      "status": "met",
+      "evidence": "diagnostic/decision.json: false; no dual fit needed"
+    },
+    {
+      "requirement": "independent_numerical_and_event_audit",
+      "status": "met",
+      "evidence": "independent_audit/receipt.json: 11110304 values / 96 checkpoints / 62 events"
+    },
+    {
+      "requirement": "mentor_pdf_and_complete_intervals_delivered",
+      "status": "met",
+      "evidence": "output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf: six pages"
+    },
+    {
+      "requirement": "pdf_svg_source_numeric_and_visual_qa",
+      "status": "met",
+      "evidence": "figures/ootang_overnight_graph_v1/20260915/v2/delivery_qa.json: 24 panels / 70346 values"
+    },
+    {
+      "requirement": "brief_single_summary_with_pdf_links",
+      "status": "met",
+      "evidence": "docs/ootang_overnight_graph_results.v1.0.md"
+    },
+    {
+      "requirement": "step_records_backups_and_research_scope_preserved",
+      "status": "met",
+      "evidence": "docs/progress.md; commits through dd2d0e9; final documentation staged for its own commit"
+    },
+    {
+      "requirement": "deadline_and_no_unplanned_training",
+      "status": "met",
+      "evidence": "all fixed training completed 18:43:57 UTC; no new fits/physics during audit or delivery"
+    },
+    {
+      "requirement": "document_numbers_and_links_checked",
+      "status": "met",
+      "evidence": "document_qa.json: 17 rows / 54 values / 142 local links"
+    }
+  ],
+  "commits_before_final_documentation": {
+    "plan": "6e98c86",
+    "implementation": "90956fd",
+    "training": "5a32b2a",
+    "diagnostic": "6849149",
+    "audit": "58159cf",
+    "figures": "dd2d0e9"
+  },
+  "final_documentation_backup": "This receipt, summary, navigation and document QA are committed together in the closing docs commit; no self-referential commit hash.",
+  "final_pdf": "output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf",
+  "brief": "docs/ootang_overnight_graph_results.v1.0.md",
+  "delivery_manifest": "delivery_manifest.json",
+  "delivery_manifest_sha256": "71d968d123d745f1c63c7f93e4ec506794165de81834896d3365a49f970ff01c",
+  "delivery_files": 496,
+  "failure_preservation": "figure_attempts/v1: diagnostic annotation/footer collision blocked fourth-page export; v2 layout-only repair. No scientific training or numerical audit failure.",
+  "stopped": true,
+  "new_candidates_remaining": 0,
+  "old_budget_resumed": false,
+  "budget_reassigned": false,
+  "push": false,
+  "unrelated_user_file": "docs/ootang_mentor_figure_rules.v1.0.md retained untracked and untouched"
+}

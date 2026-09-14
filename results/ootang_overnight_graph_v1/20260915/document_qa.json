@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T19:12:07.341249+00:00",
+  "tables": 3,
+  "rows": 17,
+  "numerical_values": 54,
+  "local_links_checked": 142,
+  "remote_links_not_refetched": [
+    "https://agupubs.onlinelibrary.wiley.com/doi/full/10.1029/2025JH000592"
+  ],
+  "source_and_implementation_guard": "passed",
+  "assertions": "tables, point error direction, all gates, seed agreement, counts and trigger",
+  "document_sha256": {
+    "docs/ootang_overnight_graph_results.v1.0.md": "eb79b076fdf7a5603eaf8a5f7441f33d3262d4f4e5f4ee1f92e9fd30c47ac7c4",
+    "README.md": "e7322954f8f1cb6866048c47778b699c87c0fa63dd28e43654a949e2767d52d6",
+    "AGENTS.md": "f0bde99fb769a2a2864458184a4e942f758aad0094a3e6a14fa0723d69276469",
+    "docs/README.md": "c65f4c7fd9ef7354ebb4dfc77bea29efb0a709cf41415568d727ae4f4a45a1d6",
+    "docs/ootang_overnight_graph_validation.v1.0.md": "6283e492bd724385f7425c2b8fd025902041e53fc6b88b5f06c5d4c1e70d78d2",
+    "figures/ootang_overnight_graph_v1/20260915/README.md": "b35d173e73f1b5cbad6283148d0fe9c58d9dd076e965cecfad547d9282df8b43"
+  },
+  "script_sha256": "828a031f51ef5a48844b9023221469e08452cb106af4203f7c8b0380298a603a",
+  "new_training": 0
+}

@@ -51,3 +51,7 @@ academic-research-suite / experiment-agent / validate；实现、来源及完整
 | 分叉路径 | 训练前计划和实施说明提交；唯一条件候选按冻结触发停用，不据最终评分开新臂。 |
 | 相关与因果 | 驱动相关不等于水文因果，神经连通/模型依赖不等于实际坡体机制。 |
 | 反向因果 | 即使采用单边EMA/滞后也不建立驱动方向因果；只用于描述性启动判断。 |
+
+## 简报和收尾核验
+
+简报两张表及README一张主表，共17行54个数值，按保存CSV独立核对；各点误差方向、配对种子1/3、2/3、1/3、原均值/概率门、诊断false和训练/审计计数同时检查。当前简报、导航、核验与图件说明中的本地链接逐项确认，出版商原文链接按已核读来源保留，不以链接存在代替原文核读。最后结果见[document_qa.json](../results/ootang_overnight_graph_v1/20260915/document_qa.json)，全部任务要求及时间/产物锁见[final_receipt.json](../results/ootang_overnight_graph_v1/20260915/final_receipt.json)。本节数值以核验器实际通过回执为准。

@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15（本地时间）已完成的起点条件化小型Transformer尝试**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15（本地时间）已完成的夜间固定小图与因果残差诊断**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：起点条件化小试
+## 最新交付：夜间固定小图小试
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [简要报告](ootang_overnight_graph_results.v1.0.md) · [六页PDF](../output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf) | 旧起点小试失败、两版GRU、残差诊断及完整区间图 |
+| [PNG/SVG与源数组](../figures/ootang_overnight_graph_v1/20260915/README.md) · [33组CSV](../results/ootang_overnight_graph_v1/20260915/analysis/phase_summary.csv) | 完整三窗、全部旧对照、三种子与逐点结果 |
+| [冻结计划](ootang_overnight_graph_plan.v1.0.md) · [配置](../config/ootang_overnight_graph.v1_0.json) · [301来源](ootang_overnight_graph_sources.v1.0.json) | 固定小图/GRU、合法教师、唯一条件候选与新截止 |
+| [实施说明](ootang_overnight_graph_implementation.v1.0.md) · [核验](ootang_overnight_graph_validation.v1.0.md) · [图件合同](ootang_overnight_graph_figure_contract.v1.0.md) · [回执](../results/ootang_overnight_graph_v1/20260915/final_receipt.json) | 96检查点、11110304数值、70346图形值、完整交付与失败留档 |
+
+24拟合4800更新已完整结束；最终LOCAL/GRAPH平均RMSE14.283633/14.257499mm，B+9.124173。最终概率门通过、均值门未过；图相对本点增量不足。因果残差触发false，双头拟合0，不自动追加实验；北京时间09:00前提前结束，只本地提交。
+
+## 上一轮：起点条件化小试
 
 | 文档/产物 | 用途 |
 | --- | --- |

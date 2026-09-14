@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15（本地时间），起点条件化小型Transformer三臂小试全部完成，未建立稳定收益，最终窗口明显差于B+。**
+**截至2026-09-15（本地时间），夜间固定小图与因果残差诊断已完整完成，仍未达到均值和概率同时优于B+的目标。**
 
-[最新完整图文报告](docs/ootang_transformer_origin_results.v1.0.md) · [三张PNG/SVG](figures/ootang_transformer_origin_v1/20260914/README.md) · [全部27组CSV](results/ootang_transformer_origin_v1/20260914/analysis/phase_summary.csv)
+[最新简报与PDF链接](docs/ootang_overnight_graph_results.v1.0.md) · [六页PDF](output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf) · [PNG/SVG](figures/ootang_overnight_graph_v1/20260915/README.md) · [完整33组CSV](results/ootang_overnight_graph_v1/20260915/analysis/phase_summary.csv)
 
-每个评分窗口完整293日；下表为四点RMSE的平均值，单位mm。模型固定200次、三种子，无选模；全部均值/区间锁定后释放完整标签评分。
+全历史GRU的本点版与固定图版仅改变MJ3—MJ1神经传递边，均为1241参数、固定200更新和三种子。每个窗口完整293日；下表为四点RMSE的平均值，单位mm。
 
-| 起点（已观测天数） | B+ | 完整历史注意力 | 去显式历史位移 | 历史均匀池化 |
-| --- | ---: | ---: | ---: | --- |
-| 792 | 27.313325 | 42.081238 | 42.866189 | 42.369016 |
-| 972 | 67.167389 | 46.468504 | 46.556051 | 45.874273 |
-| 1168，最终探索 | 9.124173 | 24.702585 | 24.565083 | 24.929915 |
+| 起点（已观测天数） | B+ | GRU 本点 | GRU 固定图 |
+| --- | ---: | ---: | ---: |
+| 792 | 27.313325 | 30.127621 | 30.145471 |
+| 972 | 67.167389 | 37.666177 | 37.481242 |
+| 1168，最终探索 | 9.124173 | 14.283633 | 14.257499 |
 
-三臂均只过972历史窗的均值门，概率门三窗均未过；完整历史和注意力的配对收益不稳定。36新拟合7200更新、144检查点、全部预测及负结果已保存并独立复算。旧固定半残差最终8.867132mm的局部收益保持，不自动追加训练或RL。
+两版只过972历史均值门，最终概率门通过但均值未过；图相对本点的均值/概率门三窗均未过。24新拟合4800更新、96检查点和全部负结果已保存并独立复算。前1152日因果残差诊断未触发双头候选，新增双头拟合0；本轮提前结束，不追加模型、训练或RL。图文和每步本地提交已完成，未push。
 
 当前协议给定未来逐日降雨/库水位，每条预测路径不接收实测位移反馈。窗口部分重叠、历史日期已经暴露，属于探索性条件预测；972沿用已可用的792日B+参数，不能推广为每个起点都重新拟合物理参数。它与逐日更新的1—7日滚动任务、固定驱动长期递推分开解释。
 
-[上一轮跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。
+[上一轮起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。旧半残差最终8.867132mm的局部正结果不改，不据此重新选模。
 
 ## 阅读入口
 
@@ -35,6 +35,7 @@
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/overnight_graph/](code/overnight_graph/) | 固定GRU空间配对、因果残差触发、完整核验与六页PDF |
 | [code/transformer_origin/](code/transformer_origin/) | 起点条件化三臂训练、独立复算和图文交付 |
 | [code/transformer_temporal/](code/transformer_temporal/) | 跨起点选参、有限λ训练与完整核验 |
 | [code/transformer_calibration/](code/transformer_calibration/) | 上一轮保存预测半残差与离线区间校准 |
