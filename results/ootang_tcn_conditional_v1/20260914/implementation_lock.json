@@ -1,0 +1,17 @@
+{
+  "status": "pretraining_verified",
+  "source_count": 39,
+  "tests_passed": 6,
+  "formal_fits": 0,
+  "optimizer_updates": 0,
+  "files": {
+    "code/tcn_conditional_trajectory/__init__.py": "daead0d7edf10b184f21448be3337979faeb6b1eb93afdb58b26926c55769d0c",
+    "code/tcn_conditional_trajectory/core.py": "3cc54d2fdb838840a06d976852ea09c79a231ac8e89c86a882a08485cc85936e",
+    "code/tcn_conditional_trajectory/run.py": "3802aacbf543f896ea4c33ace2c5e903aa6d78d29ae204098d2b141c8c190ea4",
+    "code/tcn_conditional_trajectory/verify.py": "51542737e871b4f09d3c849b8da0f7d5a63490033a840ad99600050ba810a2c8",
+    "docs/ootang_tcn_conditional_execution.v1.0.md": "0fc820be92393ed8c13bdbdd4d96e40681fb1ff03e91ffde87378299c29ca8d3",
+    "docs/ootang_tcn_conditional_sources.v1.0.json": "c0746029e624633b37cfe26e32f56bb46fab8aca00b165fc4423531767010920",
+    "results/ootang_tcn_conditional_v1/20260914/implementation_verification/receipt.json": "bf58cc8e2681186f7985d349d9310be20b605c8f4366af32f4a03b91c86a250d",
+    "tests/test_tcn_conditional_trajectory.py": "59c4fbaa3a036278722df594345aa7d95a5b38588fbed46e535944ff25f40e81"
+  }
+}
