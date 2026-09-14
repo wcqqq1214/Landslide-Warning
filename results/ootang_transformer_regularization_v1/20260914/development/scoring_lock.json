@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T14:58:14.600666+00:00",
+  "status": "complete",
+  "phase": "development",
+  "neural_fits": 3,
+  "optimizer_updates": 1200,
+  "files": {
+    "daily_predictions.csv": "9c36b412c62863083a2138b981817ecc1dd5b11b515238c8d104ae9b4c3151b6",
+    "effect_gates.json": "3ffc70034c1b08213595b330c50834b504ef160e35a3812ad10f80c434c8c6ec",
+    "fitting_by_point.csv": "385c1017aa9415db9fa5bd472a7b50fe223aae7628c9d4fcd00076f1df737968",
+    "metrics_by_point.csv": "8a26cb5b1fa385550436c5d35ebb7b43653a123faf8611122ed875beb338aa32",
+    "next_calibration.json": "0beedb7eee417e450c8259e3b872b44d92a0be2ccf68ddba8e643bb59c512136",
+    "seed_metrics.csv": "f217d6488a07c141694d106ef225b2c24cdb9204178aa2cceaefd0cadb783570",
+    "summary.csv": "444515bb09829e35e7d6a4a70c8b725e22def3cc5d260f4280ca4766ba7e8b28"
+  }
+}

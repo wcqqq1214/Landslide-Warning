@@ -1,0 +1,40 @@
+{"time_utc": "2026-09-14T14:57:18.732504+00:00", "event": "phase_started", "phase": "internal", "training_rows": 612, "prediction_rows": 180}
+{"time_utc": "2026-09-14T14:57:18.734719+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "internal_training"}
+{"time_utc": "2026-09-14T14:57:18.746054+00:00", "event": "controls_reused", "phase": "internal", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TRANSFORMER_BRES_COND"], "new_fits": 0}
+{"time_utc": "2026-09-14T14:57:18.758381+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_REG1", "seed": 0, "rows": 612, "updates": 400}
+{"time_utc": "2026-09-14T14:57:23.261585+00:00", "event": "fit_completed", "phase": "internal", "seed": 0, "updates": 400, "elapsed_seconds": 4.502473458182067}
+{"time_utc": "2026-09-14T14:57:23.264036+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_REG1", "seed": 1, "rows": 612, "updates": 400}
+{"time_utc": "2026-09-14T14:57:27.715717+00:00", "event": "fit_completed", "phase": "internal", "seed": 1, "updates": 400, "elapsed_seconds": 4.45087879197672}
+{"time_utc": "2026-09-14T14:57:27.718519+00:00", "event": "fit_started", "phase": "internal", "arm": "TRANSFORMER_BRES_REG1", "seed": 2, "rows": 612, "updates": 400}
+{"time_utc": "2026-09-14T14:57:32.164571+00:00", "event": "fit_completed", "phase": "internal", "seed": 2, "updates": 400, "elapsed_seconds": 4.445314500015229}
+{"time_utc": "2026-09-14T14:57:32.167229+00:00", "event": "all_means_locked", "phase": "internal", "lock_sha256": "0bc64f95e54b64ebd785b76661672cee6dc8fb8a259019d9e8c1c0489af0f89e"}
+{"time_utc": "2026-09-14T14:57:32.167273+00:00", "event": "label_prefix_read", "rows": 702, "last_index": 701, "purpose": "internal_fixed_version_diagnostic"}
+{"time_utc": "2026-09-14T14:57:32.170297+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "internal_mature_calibration"}
+{"time_utc": "2026-09-14T14:57:32.172293+00:00", "event": "phase_completed", "phase": "internal"}
+{"time_utc": "2026-09-14T14:57:55.066588+00:00", "event": "phase_started", "phase": "development", "training_rows": 792, "prediction_rows": 376}
+{"time_utc": "2026-09-14T14:57:55.069012+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "development_training"}
+{"time_utc": "2026-09-14T14:57:55.079847+00:00", "event": "controls_reused", "phase": "development", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TRANSFORMER_BRES_COND"], "new_fits": 0}
+{"time_utc": "2026-09-14T14:57:55.090272+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_REG1", "seed": 0, "rows": 792, "updates": 400}
+{"time_utc": "2026-09-14T14:58:01.594416+00:00", "event": "fit_completed", "phase": "development", "seed": 0, "updates": 400, "elapsed_seconds": 6.503109083976597}
+{"time_utc": "2026-09-14T14:58:01.597440+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_REG1", "seed": 1, "rows": 792, "updates": 400}
+{"time_utc": "2026-09-14T14:58:08.070226+00:00", "event": "fit_completed", "phase": "development", "seed": 1, "updates": 400, "elapsed_seconds": 6.471998540684581}
+{"time_utc": "2026-09-14T14:58:08.073057+00:00", "event": "fit_started", "phase": "development", "arm": "TRANSFORMER_BRES_REG1", "seed": 2, "rows": 792, "updates": 400}
+{"time_utc": "2026-09-14T14:58:14.509075+00:00", "event": "fit_completed", "phase": "development", "seed": 2, "updates": 400, "elapsed_seconds": 6.435205707792193}
+{"time_utc": "2026-09-14T14:58:14.512702+00:00", "event": "all_means_locked", "phase": "development", "lock_sha256": "bd0871a49aea87edf76ceb947a8a39058378357b41984fbf1a03c23a64990d9f"}
+{"time_utc": "2026-09-14T14:58:14.514270+00:00", "event": "distribution_locked", "phase": "development", "lock_sha256": "7b73d30cf6409c901502495c9dde35810dd45fbda2f9092d8c5dde34121881d4"}
+{"time_utc": "2026-09-14T14:58:14.514303+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "development_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T14:58:14.600248+00:00", "event": "development_selection_locked", "selection_sha256": "88c7077ad6fc10ea4cb1d0b5388cea60ac8e4ef72384dca2d72a06aefa936800"}
+{"time_utc": "2026-09-14T14:58:14.601492+00:00", "event": "phase_completed", "phase": "development", "rmse": {"BPLUS_CONTINUOUS": 41.36837187193975, "DRIFT1": 6.541317970779125, "RR_COND": 45.899829150075504, "TRANSFORMER_BRES_COND": 48.18661688434247, "TRANSFORMER_BRES_REG1": 44.41355340219474}}
+{"time_utc": "2026-09-14T15:01:09.404484+00:00", "event": "phase_started", "phase": "final_exploratory", "training_rows": 1168, "prediction_rows": 293}
+{"time_utc": "2026-09-14T15:01:09.407478+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "final_exploratory_training"}
+{"time_utc": "2026-09-14T15:01:09.418637+00:00", "event": "controls_reused", "phase": "final_exploratory", "methods": ["BPLUS_CONTINUOUS", "DRIFT1", "RR_COND", "TRANSFORMER_BRES_COND"], "new_fits": 0}
+{"time_utc": "2026-09-14T15:01:09.432222+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_REG1", "seed": 0, "rows": 1168, "updates": 400}
+{"time_utc": "2026-09-14T15:01:22.952655+00:00", "event": "fit_completed", "phase": "final_exploratory", "seed": 0, "updates": 400, "elapsed_seconds": 13.519612167030573}
+{"time_utc": "2026-09-14T15:01:22.956076+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_REG1", "seed": 1, "rows": 1168, "updates": 400}
+{"time_utc": "2026-09-14T15:01:36.330403+00:00", "event": "fit_completed", "phase": "final_exploratory", "seed": 1, "updates": 400, "elapsed_seconds": 13.37334379227832}
+{"time_utc": "2026-09-14T15:01:36.333349+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TRANSFORMER_BRES_REG1", "seed": 2, "rows": 1168, "updates": 400}
+{"time_utc": "2026-09-14T15:01:49.786035+00:00", "event": "fit_completed", "phase": "final_exploratory", "seed": 2, "updates": 400, "elapsed_seconds": 13.451990500092506}
+{"time_utc": "2026-09-14T15:01:49.789961+00:00", "event": "all_means_locked", "phase": "final_exploratory", "lock_sha256": "e4e55f0a48e4d6ca0558e62a035b6f2aadc12114bb5bc0b1224f40289cb922d0"}
+{"time_utc": "2026-09-14T15:01:49.791528+00:00", "event": "distribution_locked", "phase": "final_exploratory", "lock_sha256": "9ce93a311476e91c7821d21fa5e428e7d5778b053c78dfade6d8f6956a6c0fc9"}
+{"time_utc": "2026-09-14T15:01:49.791573+00:00", "event": "label_prefix_read", "rows": 1461, "last_index": 1460, "purpose": "final_exploratory_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T15:01:49.862848+00:00", "event": "phase_completed", "phase": "final_exploratory", "rmse": {"BPLUS_CONTINUOUS": 9.124173217774597, "DRIFT1": 12.9777345313275, "RR_COND": 12.338213669009026, "TRANSFORMER_BRES_COND": 9.27908197971311, "TRANSFORMER_BRES_REG1": 8.90733346455108}}

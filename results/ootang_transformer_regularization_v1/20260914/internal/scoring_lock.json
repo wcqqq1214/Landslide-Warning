@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-09-14T14:57:32.172136+00:00",
+  "status": "complete",
+  "phase": "internal",
+  "neural_fits": 3,
+  "optimizer_updates": 1200,
+  "files": {
+    "first90_diagnostic.csv": "14cc435389a456dfbb0312c75ee1e11c4e66185c1995e98a03e63f293c3b15c2",
+    "metrics_by_point.csv": "a8372dba6b438d23c7af2d2dc02b2b1d05b0ca5bcd77d80854e8845a183b4a40",
+    "next_calibration.json": "5f5f9f22c510158ed72258510f37e2a6eef738810697be4e22e5f09c60186c53"
+  }
+}
