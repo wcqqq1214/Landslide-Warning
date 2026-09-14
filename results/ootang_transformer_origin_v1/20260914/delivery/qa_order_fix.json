@@ -1,0 +1,9 @@
+{
+  "scope": "read-only Markdown verifier",
+  "failure": "AssertionError at actual[0] == saved[headers] in two initial checks",
+  "cause": "report_tables.json stores construction order; report presents the same seven tables in another order",
+  "fix": "match unique table headers, then independently verify every cell against original CSV",
+  "training_changes": 0,
+  "prediction_changes": 0,
+  "report_numeric_changes": 0
+}

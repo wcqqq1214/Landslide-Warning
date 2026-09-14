@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15（本地时间）已完成的跨起点 α / 有限 λ 三步验证**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15（本地时间）已完成的起点条件化小型Transformer尝试**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：跨起点 α / 有限 λ
+## 最新交付：起点条件化小试
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [完整报告](ootang_transformer_origin_results.v1.0.md) | 完整历史/去显式历史位移/均匀池化三臂，完整三窗与负结果 |
+| [三张图PNG/SVG](../figures/ootang_transformer_origin_v1/20260914/README.md) · [27组CSV](../results/ootang_transformer_origin_v1/20260914/analysis/phase_summary.csv) | 跨时段配对、四点导师版及完整区间版 |
+| [冻结计划](ootang_transformer_origin_plan.v1.0.md) · [配置](../config/ootang_transformer_origin.v1_0.json) · [253来源](ootang_transformer_origin_sources.v1.0.json) | 固定模型、训练目标/教师/日期、90分钟自限窗口 |
+| [实现勘误](ootang_transformer_origin_implementation.v1.0.md) · [核验](ootang_transformer_origin_validation.v1.0.md) · [图件合同](ootang_transformer_origin_figure_contract.v1.0.md) · [回执](../results/ootang_transformer_origin_v1/20260914/final_receipt.json) | 144检查点、9027212数值、35247图形值、异常与完成状态 |
+
+当前结论：36拟合7200更新完整完成；三臂均只过972历史均值门，最终RMSE分别24.702585/24.565083/24.929915mm，B+9.124173mm。历史信息/注意力收益不稳定，最终完整均值/概率门失败；本轮停止，不自动加训练/RL。
+
+## 上一轮：跨起点 α / 有限 λ
 
 | 文档/产物 | 用途 |
 | --- | --- |
@@ -11,7 +22,7 @@
 | [冻结计划](ootang_transformer_temporal_plan.v1.0.md) · [配置](../config/ootang_transformer_temporal.v1_0.json) · [156来源](ootang_transformer_temporal_sources.v1.0.json) | 事前网格、时间/教师/信息边界、预算 |
 | [核验](ootang_transformer_temporal_validation.v1.0.md) · [图件合同](ootang_transformer_temporal_figure_contract.v1.0.md) · [最终回执](../results/ootang_transformer_temporal_v1/20260914/final_receipt.json) | 228检查点/3339568数值/事件与图形复算、异常及实际完成状态 |
 
-当前结论：三步完整完成，42新拟合16800更新；α/λ未建立稳定四点B+优势。最终选择α=1、λ=0，两流程同为9.279082mm RMSE，高于B+9.124173。固定半残差局部收益仍在，旧结论不改；不自动继续搜索或RL。
+该轮结论：三步完整完成，42新拟合16800更新；α/λ未建立稳定四点B+优势。最终选择α=1、λ=0，两流程同为9.279082mm RMSE，高于B+9.124173。固定半残差局部收益仍在，旧结论不改；不自动继续搜索或RL。
 
 ## 上一轮：固定半残差与区间校准
 

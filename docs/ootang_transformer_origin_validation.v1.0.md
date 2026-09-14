@@ -27,3 +27,9 @@ NumPy复算不调用模型forward；线性层、GELU、LayerNorm、相对位置�
 第一版绘图在写比较图数值记录时遇到NumPy int64不能直接JSON序列化，已用显式标准数值转换修复。`attempt_01_failed/`保留原源码、错误说明及两幅当时已导出的预览；训练、保存预测和评分完全未改，不重新训练。最终绘图/核验入口为 `transformer_origin.figures` / `transformer_origin.qa_figures`。
 
 静态源扫描保留16 PASS、2 WARN、3 FAIL原报告。扫描器未追踪导入的共用canvas/save，因而未识别真实PNG/SVG及尺寸/dpi；实际导出逐项核验补足，PDF设置/导出按用户范围不适用。解释见static_source_review.json，不宣称静态工具全通过，也未制作PDF碰撞或字体报告。当前图件只作为导师讨论展示，不冒称已达Nature投稿版式要求。
+
+## 报告、导航及收尾
+
+`transformer_origin.qa_report` 对报告7张表/45行、README对比表及诊断CSV共153数值单元逐项对照保存结果，核对113个本地链接、253原来源与实现/训练/评分锁，于18:20:58 UTC通过，结果为 `delivery/report_qa.json`。只读核验器最初假定表格构建顺序等于正文顺序，两次检查触发断言；改为唯一表头匹配后再独立核对每项值。原检查器与修订说明在delivery保留；报告数值、训练与预测改动均为0。
+
+报告区分单窗/配对局部改善、相对B+失败、保存残差方向诊断及未证实的原因假设。最终来源/用时见final_receipt.json，实际提交由Git追溯。所有预定工作已完成，停止追加训练或新候选；没有用户/导师验收声明，没有push/PDF。

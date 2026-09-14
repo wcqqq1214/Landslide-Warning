@@ -4,24 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15（本地时间），跨起点验证、α五点对照和λ四点训练/搜索三步全部完成；仍未建立稳定的四点B+优势。**
+**截至2026-09-15（本地时间），起点条件化小型Transformer三臂小试全部完成，未建立稳定收益，最终窗口明显差于B+。**
 
-[最新完整图文报告](docs/ootang_transformer_temporal_results.v1.0.md) · [跨起点及四点PNG/SVG](figures/ootang_transformer_temporal_v1/20260914/README.md) · [全部56组CSV](results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv)
+[最新完整图文报告](docs/ootang_transformer_origin_results.v1.0.md) · [三张PNG/SVG](figures/ootang_transformer_origin_v1/20260914/README.md) · [全部27组CSV](results/ootang_transformer_origin_v1/20260914/analysis/phase_summary.csv)
 
-每个窗口完整293日；下表为四点RMSE的平均值，单位mm。α/λ均只用上一起点已成熟的前90日选择，随后90日校准，完整外层标签在所有预测锁定后释放。
+每个评分窗口完整293日；下表为四点RMSE的平均值，单位mm。模型固定200次、三种子，无选模；全部均值/区间锁定后释放完整标签评分。
 
-| 起点（已观测天数） | B+ | 历史选α | 历史选λ | 选出α / λ |
+| 起点（已观测天数） | B+ | 完整历史注意力 | 去显式历史位移 | 历史均匀池化 |
 | --- | ---: | ---: | ---: | --- |
-| 612 | 34.949548 | 34.949548 | 34.927836 | 0 / 3 |
-| 792 | 27.313325 | 27.313325 | 28.101706 | 0 / 3 |
-| 972 | 67.167389 | 67.167389 | 64.541391 | 0 / 3 |
-| 1168，最终探索 | 9.124173 | 9.279082 | 9.279082 | 1 / 0 |
+| 792 | 27.313325 | 42.081238 | 42.866189 | 42.369016 |
+| 972 | 67.167389 | 46.468504 | 46.556051 | 45.874273 |
+| 1168，最终探索 | 9.124173 | 24.702585 | 24.565083 | 24.929915 |
 
-固定半残差最终RMSE仍为8.867132mm，但历史选择没有选中它；新加λ=1/3、3在最终均值误差上未超过已有λ=1。972窗口λ有平均改善，但MJ3退步；两流程历史完整均值门均0/3，最终也未过。42次新拟合、16800更新和全部负结果保留，不自动追加训练或RL。
+三臂均只过972历史窗的均值门，概率门三窗均未过；完整历史和注意力的配对收益不稳定。36新拟合7200更新、144检查点、全部预测及负结果已保存并独立复算。旧固定半残差最终8.867132mm的局部收益保持，不自动追加训练或RL。
 
 当前协议给定未来逐日降雨/库水位，每条预测路径不接收实测位移反馈。窗口部分重叠、历史日期已经暴露，属于探索性条件预测；972沿用已可用的792日B+参数，不能推广为每个起点都重新拟合物理参数。它与逐日更新的1—7日滚动任务、固定驱动长期递推分开解释。
 
-[上一轮半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。
+[上一轮跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。
 
 ## 阅读入口
 
@@ -36,6 +35,7 @@
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/transformer_origin/](code/transformer_origin/) | 起点条件化三臂训练、独立复算和图文交付 |
 | [code/transformer_temporal/](code/transformer_temporal/) | 跨起点选参、有限λ训练与完整核验 |
 | [code/transformer_calibration/](code/transformer_calibration/) | 上一轮保存预测半残差与离线区间校准 |
 | [code/transformer_regularization/](code/transformer_regularization/) | 上一轮 Transformer 残差正则化实现 |

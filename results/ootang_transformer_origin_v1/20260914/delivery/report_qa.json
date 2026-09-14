@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T18:20:58.838561+00:00",
+  "tables": 7,
+  "rows": 45,
+  "numerical_cells_checked": 153,
+  "links_checked": 113,
+  "source_files": 253,
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "report_sha256": "145ff31f24bd1cb5b7b7c4876cbe3b2e8698c79505d7a4639abdb78ae411b51b",
+  "script_sha256": "c733c5657d4be3b64095e1f61c6d6bf9a1f2653ca29485de4f9e111d2be4dc7a"
+}
