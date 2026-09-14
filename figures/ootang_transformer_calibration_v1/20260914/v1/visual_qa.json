@@ -1,0 +1,312 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T16:08:24.132122+00:00",
+  "inspector": "Codex image inspection of all seven PNGs and all 28 panels",
+  "not_user_or_mentor_acceptance": true,
+  "panel_checks": [
+    {
+      "figure": "REG1_LAST90_mentor",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_mentor",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_mentor",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_mentor",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_full",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_full",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_full",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_LAST90_full",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_mentor",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_mentor",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_mentor",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_mentor",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_full",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_full",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_full",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "REG1_DIST90_full",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_mentor",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_mentor",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_mentor",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_mentor",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "reference axes crop only documented uncertainty; companion full-range image inspected",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_full",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_full",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_full",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "HALF_DIST90_full",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "frozen 80/95% marginal bands; no seed-confidence-interval claim",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "all_methods_forecast",
+      "point": "ATU1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "mean-only figure; intervals in companions",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "all_methods_forecast",
+      "point": "ATU5",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "mean-only figure; intervals in companions",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "all_methods_forecast",
+      "point": "MJ3",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "mean-only figure; intervals in companions",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    },
+    {
+      "figure": "all_methods_forecast",
+      "point": "MJ1",
+      "curve_and_band_visibility": "reviewed",
+      "text_legend_spacing": "readable; no obscuring label/data overlap",
+      "axis_and_grid": "left/bottom axes and both grid directions; no triangles",
+      "uncertainty": "mean-only figure; intervals in companions",
+      "clipping": "all displayed values within frame",
+      "scientific_note": "late acceleration and negative model results retained; overlapping means are expected"
+    }
+  ],
+  "static_preflight_resolution": {
+    "raw_summary": {
+      "ready": false,
+      "strict": false,
+      "counts": {
+        "PASS": 16,
+        "WARN": 2,
+        "FAIL": 3
+      }
+    },
+    "pdf": "explicit user exclusion; not performed",
+    "svg_png_dpi_width": "source-only checker does not resolve imported canvas/save helpers; final SVG geometry and PNG metadata independently passed",
+    "glyph_editability": "SVG text nodes and 7.6 pt minimum verified; PDF setting inapplicable"
+  },
+  "pre_delivery_fixes": [
+    {
+      "issue": "source date-key merge retained forecast dates only",
+      "fix": "added explicit full_dates; numeric arrays and rendered images unchanged; recorded in manifest"
+    },
+    {
+      "issue": "initial marker audit misclassified filled confidence polygons as decorative markers",
+      "fix": "exclude only named interval paths from marker gate and verify every excluded polygon vertex against raw 80/95% arrays; no figure or model modification"
+    }
+  ]
+}

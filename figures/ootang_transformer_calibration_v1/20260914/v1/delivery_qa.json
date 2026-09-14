@@ -1,0 +1,92 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T16:05:36.689007+00:00",
+  "figures": 7,
+  "panels": 28,
+  "curve_and_band_values_checked": 141524,
+  "max_svg_quantization_difference_mm": 5.450869934975344e-06,
+  "svg_tolerance_mm": 0.0001,
+  "raw_numerical_tolerances_unchanged": true,
+  "source_arrays_match": true,
+  "exports": [
+    {
+      "figure": "REG1_LAST90_mentor",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "REG1_LAST90_full",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "REG1_DIST90_mentor",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "REG1_DIST90_full",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "HALF_DIST90_mentor",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "HALF_DIST90_full",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    },
+    {
+      "figure": "all_methods_forecast",
+      "pixels": [
+        2834,
+        2007
+      ],
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "min_font_pt": 7.6,
+      "missing_glyphs": []
+    }
+  ],
+  "pdf_audits": "not run: explicit user no-PDF request",
+  "visual_inspection": "pending"
+}

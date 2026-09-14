@@ -1,5 +1,6 @@
 """Independent saved-model replay, horizon selection, RMS, scores and decisions."""
 
+import argparse
 import json
 import math
 import traceback
@@ -63,10 +64,12 @@ def independent_effect(c, b, cfg):
     )
 
 
-def main():
+def main(attempt="v1"):
     cfg = spec()
     root = ROOT / cfg["out"]
-    dest = root / "verification_v1"
+    if not attempt.replace("_", "").isalnum():
+        raise ValueError("Use a fresh alphanumeric audit attempt name")
+    dest = root / ("verification_" + attempt)
     dest.mkdir(exist_ok=False)
     torch.set_num_threads(1)
     torch.use_deterministic_algorithms(True)
@@ -621,4 +624,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--attempt", default="v1")
+    main(parser.parse_args().attempt)
