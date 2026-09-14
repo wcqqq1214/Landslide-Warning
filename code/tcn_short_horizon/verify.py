@@ -35,7 +35,7 @@ def verify(spec, root):
     dev = json.loads((root / "selection.json").read_text())
     assert dev["internal_selection_sha256"] == sha(root / "internal_selection.json")
     assert internal["config_sha256"] == sha(ROOT / "config/ootang_tcn.v1_0.json")
-    models_count, score_cells, locks = 0, 0, 0
+    models_count, weight_files, score_cells, locks = 0, 0, 0, 0
     max_model, max_score, max_scale = 0.0, 0.0, 0.0
     control_differences = []
     for phase, (start, end) in spec["stages"].items():
@@ -50,13 +50,22 @@ def verify(spec, root):
         assert np.array_equal(q["teacher"], tr["teacher"])
         assert (q["target_last"] < start).all() and (q["teacher"] <= q["origins"]).all()
         for name in ARMS:
-            steps = (
-                spec["neural"]["checkpoints"]
-                if phase == "inner"
-                else [internal["step"]]
-            )
+            steps = [
+                s
+                for s in spec["neural"]["checkpoints"]
+                if phase == "inner" or s <= internal["step"]
+            ]
             for step in steps:
                 models, scale = load_group(root / phase / "training" / name, spec, step)
+                assert all(
+                    torch.isfinite(p).all() and p.dtype == torch.float64
+                    for model in models
+                    for p in model.parameters()
+                )
+                weight_files += len(models)
+                # Unselected development/later checkpoints are archive-only: no new forecasts or scores.
+                if phase != "inner" and step != internal["step"]:
+                    continue
                 means = predict(models, name, scale, data)
                 directory = (
                     root / phase / (f"{name}_step_{step}" if phase == "inner" else "")
@@ -209,6 +218,7 @@ def verify(spec, root):
         passed=True,
         verified_hashes=hashes,
         checkpoint_models_reloaded=models_count,
+        weight_files_loaded=weight_files,
         forecast_locks=locks,
         score_cells=score_cells,
         max_model_difference_mm=max_model,
@@ -244,7 +254,10 @@ def main():
         raise
     finally:
         result.update(
-            start_utc=began, end_utc=now(), elapsed_seconds=time.monotonic() - start
+            start_utc=began,
+            end_utc=now(),
+            elapsed_seconds=time.monotonic() - start,
+            verifier_sha256=sha(__file__),
         )
         save_json(out, result)
         print(json.dumps(result, ensure_ascii=False), flush=True)
