@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "verified_hashes": 235,
+  "checkpoint_models_reloaded": 36,
+  "weight_files_loaded": 72,
+  "forecast_locks": 5685,
+  "score_cells": 22568,
+  "max_model_difference_mm": 0.0,
+  "max_score_difference_mm": 4.973799150320701e-14,
+  "max_scale_difference_mm": 0.0,
+  "controls_vs_v4": [
+    {
+      "phase": "inner",
+      "model": "B_ANCHOR",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "inner",
+      "model": "DRIFT1",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "inner",
+      "model": "RR_DIRECT",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "development",
+      "model": "B_ANCHOR",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "development",
+      "model": "DRIFT1",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "development",
+      "model": "RR_DIRECT",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "B_ANCHOR",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "DRIFT1",
+      "mean": 0.0,
+      "sigma": 0.0
+    },
+    {
+      "phase": "later_exploratory",
+      "model": "RR_DIRECT",
+      "mean": 0.0,
+      "sigma": 0.0
+    }
+  ],
+  "paired_initialization_batches_units_passed": true,
+  "selection_chronology_passed": true,
+  "fit_count": 18,
+  "updates": 7200,
+  "new_optimizer_updates": 0,
+  "start_utc": "2026-09-14T09:47:44.804580+00:00",
+  "end_utc": "2026-09-14T09:47:49.736214+00:00",
+  "elapsed_seconds": 4.931840583216399,
+  "verifier_sha256": "9f90b86c0769793171ca3c4b7aacce169afd605567f4f1e6614f1f2bd9ce8ad9"
+}

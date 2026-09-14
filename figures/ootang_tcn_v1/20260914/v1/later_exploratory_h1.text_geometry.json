@@ -1,0 +1,21 @@
+{
+  "passed": false,
+  "text_count": 64,
+  "minimum_font_pt": 6.5,
+  "text_text_collisions": [
+    [
+      "2019-09",
+      "620"
+    ],
+    [
+      "2019-09",
+      "1230"
+    ],
+    [
+      "2019-09",
+      "970"
+    ]
+  ],
+  "canvas_clipping": [],
+  "boundary": "Matplotlib text rectangles; PDF audits not run; data-stroke overlap reviewed visually"
+}

@@ -1,0 +1,16 @@
+{
+  "recorded_at_utc": "2026-09-14T10:08:44.948080+00:00",
+  "source_audit_sha256": "215d9ab8e1abcfe25224ba950fb0b1ea7e6ad1d15b1dd461d71071564642d240",
+  "raw_audit_ready": false,
+  "raw_audit_unchanged": true,
+  "dispositions": {
+    "EDITABLE-TEXT": "PDF font setting is inapplicable because the user requested no PDF; actual SVG text nodes independently verified.",
+    "EXPORT-VECTOR": "PDF export is inapplicable; editable SVG is the contracted vector output.",
+    "EXPORT-RASTER": "PNG is the requested raster delivery; TIFF is not required.",
+    "RASTER-DPI": "Actual 300 dpi PNG verified; satisfies the frozen figure contract.",
+    "LOG-GUARD": "Actual plotting code asserts all logged values finite and strictly positive per plotted group; all values retained."
+  },
+  "user_output_contract_satisfied": true,
+  "pdf_audit_pass_claimed": false,
+  "visual_review_sha256": "31869ce2c59802689a02ba3aedf3ddddd66fd370263e70f973f7f2d8b56dccd9"
+}

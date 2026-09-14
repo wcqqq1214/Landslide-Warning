@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "recorded_at_utc": "2026-09-14T10:08:44.948080+00:00",
+  "method": "Assistant visual inspection through view_image of every final v3 PNG in this task",
+  "figures_reviewed": 16,
+  "panels_reviewed": 64,
+  "checks": [
+    "Complete four-point panels and date axes",
+    "Visible labels, ticks and legends remain readable",
+    "No clipping or visible text overlap",
+    "Both TCN 90% prediction bands retain full legal dates",
+    "Small differences are interpreted with score and paired-difference figures"
+  ],
+  "artifacts_sha256": {
+    "development_h1.png": "8abecc17ac14d6a6366215f98f99fb1abcaa6a6f7d6f00b9491628c16e55a08f",
+    "development_h2.png": "be1395b92903decb3e91eb0ec4f2cb77453f9581fbfe074f11341411fcd79fb2",
+    "development_h3.png": "37c660474aa57d2bda561a539f1e925ff02b4399fea3ae29fa9fc03dfdc69aa0",
+    "development_h4.png": "5cdc3a62bb611ee269ac332c80d08ae57c90d6074feb06f9361bcc234e6bf971",
+    "development_h5.png": "f8e3f5aea39ea7c62ebb089c46fa5abbd75d411debcb65095e988310326f1498",
+    "development_h6.png": "220c5501bcbaa1b16d295ee935405461ec10a0e3b4f9e9142e6d55f406a6e187",
+    "development_h7.png": "0c9d9dbad92e7e70dfabc85ea5ffdfd64df6b5c132e8e10d5f132fa8995a4ae0",
+    "later_exploratory_h1.png": "b01384a7761a038b7c268f3d496240cd1f04b60dd8de397d336d7d0155f713bf",
+    "later_exploratory_h2.png": "c12feeed7dbf34b0079c9c43a51df61f984e80af6681a0bf534e2b156eda716f",
+    "later_exploratory_h3.png": "94cabc8b9abfd77b86359c56cee2493a6162ad613a8472a4058586011075c571",
+    "later_exploratory_h4.png": "d3fa058796011472b6f16b7675b212fd78e9b0bd8cf94753e0520f8e1fdc8739",
+    "later_exploratory_h5.png": "22b1625c61e8a9a35dbfc9066e0a69711243863607b5cbceec7176c7c2172e56",
+    "later_exploratory_h6.png": "6b1616cd2866c27ad41112b169d7c22ac468bf3865ea0d986db281b97656a829",
+    "later_exploratory_h7.png": "7c86301aa36d2ed48e45582a51cb1b4568eaf232e55e895acedbe63d677e3e7b",
+    "overview.png": "8f7a97abf2db8915f623fc42be6ebb47bf61f08c6bfa288e4e85477dfc4ba535",
+    "residual_pair.png": "a10ab0727d4319b2cb8f0c6cc1bd88120ef81ee6302c1e334b2a96a2a702813d"
+  },
+  "render_receipt_sha256": "0f5e85af96ba12da435caee348d59e0eb47bd9198db695c125c52cb16f9dcf38",
+  "render_receipt_pending_review_resolved_by_this_record": true,
+  "no_data_or_score_changes": true,
+  "limitations": "Visual review is assistant QA, not user acceptance or journal certification. PDF checks are inapplicable to the user-requested SVG/PNG delivery."
+}

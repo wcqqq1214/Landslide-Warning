@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_short_horizon/figures.py", line 323, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_short_horizon/figures.py", line 294, in main
+    save(fig, out, f"{phase}_h{h}", align)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_short_horizon/figures.py", line 81, in save
+    raise ValueError(f"Figure text geometry failed: {name}: {geometry}")
+ValueError: Figure text geometry failed: later_exploratory_h1: {'passed': False, 'text_count': 64, 'minimum_font_pt': 6.5, 'text_text_collisions': [['2019-09', '620'], ['2019-09', '1230'], ['2019-09', '970']], 'canvas_clipping': [], 'boundary': 'Matplotlib text rectangles; PDF audits not run; data-stroke overlap reviewed visually'}

@@ -1,0 +1,33 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T10:08:47.108806+00:00",
+  "csv_groups": 420,
+  "csv_rows": 117600,
+  "csv_max_difference_mm": 5.002220859751105e-12,
+  "comparison_rows": 98,
+  "working_condition_cells": 1960,
+  "unscored_issued_scale_cells": 1932,
+  "max_unscored_scale_difference_mm": 0.0,
+  "report_numeric_values": 67,
+  "figures_checked": [
+    "development_h1.png",
+    "development_h2.png",
+    "development_h3.png",
+    "development_h4.png",
+    "development_h5.png",
+    "development_h6.png",
+    "development_h7.png",
+    "later_exploratory_h1.png",
+    "later_exploratory_h2.png",
+    "later_exploratory_h3.png",
+    "later_exploratory_h4.png",
+    "later_exploratory_h5.png",
+    "later_exploratory_h6.png",
+    "later_exploratory_h7.png",
+    "overview.png",
+    "residual_pair.png"
+  ],
+  "no_new_training": true,
+  "script_sha256": "3ed837d5e12123f57561d62171fce7e1988f2c0aef816055ea55a2253f55c2d3",
+  "report_sha256": "d3c7c05b28a19ad35095866c37424252e4bd8a5df51476eca74d0183d21ea01c"
+}

@@ -1,0 +1,337 @@
+[
+  {
+    "key": "later_exploratory/B_ANCHOR/7/mae",
+    "value": 1.11719384989141,
+    "display": "1.117194"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/rmse",
+    "value": 1.78416245875774,
+    "display": "1.784162"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/crps",
+    "value": 0.904383370802034,
+    "display": "0.904383"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/interval_score90",
+    "value": 9.24604306296743,
+    "display": "9.246043"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/coverage90_percent",
+    "value": 78.65853658536591,
+    "display": "78.66"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/width90",
+    "value": 4.13820273586806,
+    "display": "4.138203"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/mae",
+    "value": 0.160806227680145,
+    "display": "0.160806"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/rmse",
+    "value": 0.278587483000087,
+    "display": "0.278587"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/crps",
+    "value": 0.126016956939423,
+    "display": "0.126017"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/interval_score90",
+    "value": 1.36011165850513,
+    "display": "1.360112"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/coverage90_percent",
+    "value": 75.3484320557491,
+    "display": "75.35"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/width90",
+    "value": 0.429551935979171,
+    "display": "0.429552"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/mae",
+    "value": 0.0258675697082673,
+    "display": "0.025868"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/rmse",
+    "value": 0.0373177291305828,
+    "display": "0.037318"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/crps",
+    "value": 0.0215099301858971,
+    "display": "0.021510"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/interval_score90",
+    "value": 0.222346663078554,
+    "display": "0.222347"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/coverage90_percent",
+    "value": 86.6724738675958,
+    "display": "86.67"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/width90",
+    "value": 0.151800619635933,
+    "display": "0.151801"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/mae",
+    "value": 0.67883396558763,
+    "display": "0.678834"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/rmse",
+    "value": 0.856186040247381,
+    "display": "0.856186"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/crps",
+    "value": 0.475484955987227,
+    "display": "0.475485"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/interval_score90",
+    "value": 3.72778366485916,
+    "display": "3.727784"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/coverage90_percent",
+    "value": 85.6271777003484,
+    "display": "85.63"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/width90",
+    "value": 2.48174063052235,
+    "display": "2.481741"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/mae",
+    "value": 0.551999221224269,
+    "display": "0.551999"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/rmse",
+    "value": 0.771781036400694,
+    "display": "0.771781"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/crps",
+    "value": 0.424421159233915,
+    "display": "0.424421"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/interval_score90",
+    "value": 3.98230296508641,
+    "display": "3.982303"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/coverage90_percent",
+    "value": 76.8292682926829,
+    "display": "76.83"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/width90",
+    "value": 2.16012189705422,
+    "display": "2.160122"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/1/rmse",
+    "value": 0.298429938169496,
+    "display": "0.298430"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/1/rmse",
+    "value": 0.0100916533884798,
+    "display": "0.010092"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/1/rmse",
+    "value": 0.0004199605924951,
+    "display": "0.000420"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/1/rmse",
+    "value": 0.117375233350147,
+    "display": "0.117375"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/1/rmse",
+    "value": 0.127607472352208,
+    "display": "0.127607"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/2/rmse",
+    "value": 0.562356187807008,
+    "display": "0.562356"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/2/rmse",
+    "value": 0.0301954829648851,
+    "display": "0.030195"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/2/rmse",
+    "value": 0.0016983384720363,
+    "display": "0.001698"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/2/rmse",
+    "value": 0.234580198033792,
+    "display": "0.234580"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/2/rmse",
+    "value": 0.240579672978831,
+    "display": "0.240580"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/3/rmse",
+    "value": 0.80892247877238,
+    "display": "0.808922"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/3/rmse",
+    "value": 0.0602409031819953,
+    "display": "0.060241"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/3/rmse",
+    "value": 0.0042877609594596,
+    "display": "0.004288"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/3/rmse",
+    "value": 0.352646738603002,
+    "display": "0.352647"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/3/rmse",
+    "value": 0.343923237495271,
+    "display": "0.343923"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/4/rmse",
+    "value": 1.05225135602225,
+    "display": "1.052251"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/4/rmse",
+    "value": 0.100163591712152,
+    "display": "0.100164"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/4/rmse",
+    "value": 0.0086822360160835,
+    "display": "0.008682"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/4/rmse",
+    "value": 0.473033584226737,
+    "display": "0.473034"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/4/rmse",
+    "value": 0.447826109648431,
+    "display": "0.447826"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/5/rmse",
+    "value": 1.2954041145249,
+    "display": "1.295404"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/5/rmse",
+    "value": 0.149902749195309,
+    "display": "0.149903"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/5/rmse",
+    "value": 0.015358151844283,
+    "display": "0.015358"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/5/rmse",
+    "value": 0.596078851116138,
+    "display": "0.596079"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/5/rmse",
+    "value": 0.553997922198101,
+    "display": "0.553998"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/6/rmse",
+    "value": 1.5393807797898,
+    "display": "1.539381"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/6/rmse",
+    "value": 0.209398220000513,
+    "display": "0.209398"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/6/rmse",
+    "value": 0.0247646455513984,
+    "display": "0.024765"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/6/rmse",
+    "value": 0.723131351544817,
+    "display": "0.723131"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/6/rmse",
+    "value": 0.662033801090646,
+    "display": "0.662034"
+  },
+  {
+    "key": "later_exploratory/B_ANCHOR/7/rmse",
+    "value": 1.78416245875774,
+    "display": "1.784162"
+  },
+  {
+    "key": "later_exploratory/DRIFT1/7/rmse",
+    "value": 0.278587483000087,
+    "display": "0.278587"
+  },
+  {
+    "key": "later_exploratory/RR_DIRECT/7/rmse",
+    "value": 0.0373177291305828,
+    "display": "0.037318"
+  },
+  {
+    "key": "later_exploratory/TCN_DIRECT/7/rmse",
+    "value": 0.856186040247381,
+    "display": "0.856186"
+  },
+  {
+    "key": "later_exploratory/TCN_BRES/7/rmse",
+    "value": 0.771781036400694,
+    "display": "0.771781"
+  },
+  {
+    "key": "development/RR_DIRECT/7/ATU1/coverage90_percent",
+    "value": 79.7297297297297,
+    "display": "79.73"
+  },
+  {
+    "key": "fit_registry/total_optimization_seconds",
+    "value": 55.790469167754054,
+    "display": "55.79"
+  }
+]

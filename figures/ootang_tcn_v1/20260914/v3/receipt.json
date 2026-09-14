@@ -1,0 +1,21 @@
+{
+  "passed": true,
+  "figure_count": 16,
+  "curve_lines_checked": 280,
+  "formats": [
+    "svg",
+    "png"
+  ],
+  "dpi": 300,
+  "no_pdf_generated": true,
+  "source_sha256": {
+    "summary_by_horizon.csv": "0462cf92169c66ee159e0955bd9abfc5c1aa89cb44c8553a6611e0966f24abb7",
+    "forecasts_long.csv": "af5d2714feceae1654ced50754522a3fa5749985d283fd7fc0a0a1e88e449190",
+    "comparisons_by_point.csv": "94186d3ba1fad032734ffdc8f7165fb2f3ac266276eb41c4ec8a04e94f0a15e5"
+  },
+  "script_sha256": "bcd589dab012dcaf88cc045af042b096022811c9241c681ec4b2dff968ff9e99",
+  "alignment_helper_sha256": "43958e6b49d897f326ff64e73cbed0bf057e17c06533b5b57d3dededf8111e76",
+  "intervals": "90% empirical Gaussian marginal prediction intervals on TCN curves",
+  "visual_review": "pending",
+  "pdf_specific_audits": "not_run_user_requested_no_pdf"
+}
