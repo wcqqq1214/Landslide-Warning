@@ -18,6 +18,8 @@
 
 # Current Stage Plan
 
+- **最新完成：按导师条件从头训练 TCN，所有阶段与交付已跑通并结束。** 见 `docs/ootang_tcn_conditional_training_results.v1.0.md`、`docs/ootang_tcn_conditional_validation.v1.0.md` 与 `results/ootang_tcn_conditional_v1/20260914/final_receipt.json`。6996参数、两臂三种子，18次拟合/3600次更新，内部共选100次；完整376日开发与293日最终评价，未因效果差中止。最终B+/DRIFT1/RR/DIRECT/BRES平均RMSE9.124173/12.977735/12.338214/43.253357/12.862059 mm，两臂整体失败，保留负结果。BRES较DIRECT均值在两阶段和3/3种子改善，概率收益有阶段/测点限制；其四点主要评分仍差于B+。66检查点独立前向、509586数值、完整发出顺序及三图12面板/38612个SVG值核对通过。首次图件打包键冲突修复为v2，原件保留，训练未重跑。来源冻结`d68cecc`、实现`c880721`、训练结果`9ade9a2`；只在`codex/tcn-conditional-training`本地提交，不push/PDF，不自动追加候选或更新，独立120分钟余额不转用。下方本轮授权及仅计划文字保留形成时状态。
+
 - **最新执行授权：用户要求无论效果多差都跑通 TCN 新实验。** 见 `docs/ootang_tcn_conditional_execution.v1.0.md` 与配置；分支 `codex/tcn-conditional-training`，独立 2026-09-14 11:44:16—13:44:16 UTC。执行整段条件训练，两臂/三种子和完整开发/最终评价；效果门不阻塞后续，代码问题修复后继续，保留负结果。旧参数/数据/切分不变，不加候选、轮数或恢复旧预算，只本地分步 commit，不 push/PDF。此项覆盖下方“先计划、尚未授权执行”的形成时记录。
 
 - **当前用户要求：先写按导师方案重新训练 TCN 的 plan，尚未授权本轮立即执行。** 见 `docs/ootang_tcn_conditional_training_plan.v1.0.md`。旧七天滚动实验和 293 日固定权重递推均已完成；新计划对齐原 PDF/ZIP 的给定未来降雨/水位、连续原 B+ 和无位移反馈 8:2 条件预测，从头训练整段 DIRECT/BRES 轨迹。当前仅文档及来源核对，正式配置/实现/训练未启动；拟议独立 120 分钟窗口未计时，不恢复旧额度，不自动加入 Transformer/Mamba，不 push/PDF。后续先读新计划与最新 progress，再按需核读下方已完成结果；旧负结果、冻结计划和最终回执不改写。

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/figures.py", line 339, in <module>
+    main(parser.parse_args().attempt)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/figures.py", line 313, in main
+    np.savez_compressed(
+TypeError: numpy.savez_compressed() got multiple values for keyword argument 'TCN_DIRECT_COND__sigma'

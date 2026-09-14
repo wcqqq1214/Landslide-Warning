@@ -3,7 +3,9 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前请求（2026-09-14）：先输出按导师条件重新训练 TCN 的计划。** [训练计划](docs/ootang_tcn_conditional_training_plan.v1.0.md)已形成，尚未实现或训练。拟用导师给定的预测期降雨/库水位、连续原 B+ 和完整 8:2 切分，从头训练整段位移轨迹；不接收预测段实测位移。此前两轮均已完成，下面的负结果与来源保持；新计划不等于恢复旧预算或启动其他模型。
+**当前（2026-09-14）：按导师条件重新训练 TCN 已完整执行并交付，实验结束。** [图文对比报告](docs/ootang_tcn_conditional_training_results.v1.0.md)／[三张中文四点PNG/SVG](figures/ootang_tcn_conditional_v1/20260914/README.md)／[两阶段CSV](results/ootang_tcn_conditional_v1/20260914/analysis/phase_summary.csv)。给定逐日未来降雨/水位、原B+连续状态、无预测段位移反馈；18次拟合/3600次更新、完整376日开发和293日最终评价。最终平均RMSE：B+9.12、DRIFT1 12.98、岭回归12.34、TCN直接43.25、残差12.86 mm。残差版改善直接版均值，但两臂仍未超过B+、工作条件失败，保留负结果；66检查点和全部评分/图件核验完成。只本地提交，不追加模型/训练，不push/PDF。
+
+此前[训练计划](docs/ootang_tcn_conditional_training_plan.v1.0.md)的“尚未执行”是形成时状态，后续授权与实际执行见[执行补充](docs/ootang_tcn_conditional_execution.v1.0.md)和[最终回执](results/ootang_tcn_conditional_v1/20260914/final_receipt.json)。下方两个旧TCN实验也均已完成，结果保持，跨协议不混排。
 
 **此前8:2无位移反馈独立递推及图文交付已完成，实验停止。**
 前1168日为训练/校准期，后293日（2019-09-12—2020-06-30）一次发出预测，全期不接收实测位移或驱动。

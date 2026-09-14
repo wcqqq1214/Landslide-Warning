@@ -1,0 +1,38 @@
+{
+  "development": {
+    "mean": {
+      "improving_seeds": 3,
+      "by_seed": [
+        true,
+        true,
+        true
+      ]
+    },
+    "probability": {
+      "improving_seeds": 1,
+      "by_seed": [
+        false,
+        true,
+        false
+      ]
+    }
+  },
+  "final_exploratory": {
+    "mean": {
+      "improving_seeds": 3,
+      "by_seed": [
+        true,
+        true,
+        true
+      ]
+    },
+    "probability": {
+      "improving_seeds": 3,
+      "by_seed": [
+        true,
+        true,
+        true
+      ]
+    }
+  }
+}

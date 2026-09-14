@@ -1,0 +1,77 @@
+{
+  "status": "complete_fixed_training_all_comparisons_verification_and_delivery",
+  "effectiveness": "negative_overall_vs_bplus; residual_mean_benefit_vs_direct_only",
+  "user_request": "不要中断实验，无论实验结果有多差都要跑通",
+  "started_utc": "2026-09-14T11:44:16+00:00",
+  "completed_utc": "2026-09-14T12:21:49.398194+00:00",
+  "deadline_utc": "2026-09-14T13:44:16+00:00",
+  "elapsed_minutes": 37.55663656666666,
+  "within_120_minutes": true,
+  "stages_completed": [
+    "internal",
+    "development",
+    "final_exploratory"
+  ],
+  "methods_per_evaluation": 5,
+  "development_days": 376,
+  "final_days": 293,
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "formal_neural_fits": 18,
+  "optimizer_updates": 3600,
+  "selected_updates": 100,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "ridge_fits": 3,
+  "bplus_parameter_refits": 0,
+  "physical_preparation_forward_calls": 7,
+  "training_loop_seconds": 5.1047337064519525,
+  "training_execution_errors": 0,
+  "performance_based_stops": 0,
+  "development_frozen_mean_winner": "DRIFT1",
+  "development_frozen_probability_winner": "DRIFT1",
+  "verification": {
+    "status": "passed",
+    "checkpoints": 66,
+    "numerical_values": 509586,
+    "max_difference": 1.4722445484949276e-11,
+    "issue_order": "passed"
+  },
+  "figures": {
+    "status": "passed",
+    "current_attempt": "v2",
+    "figures": 3,
+    "panels": 12,
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "actual_svg_values_checked": 38612,
+    "visual_review_completed": true
+  },
+  "retained_anomalies": [
+    "original physical and independent SVD matmul warnings with finite matching values",
+    "figure v1 source-array duplicate-key packaging error, corrected in v2 without any retraining",
+    "static figure checker PDF requirements outside user scope and false negatives for dynamic alignment/width expression"
+  ],
+  "source_artifact_count": 352,
+  "final_manifest_sha256": "d3f4a27c6c441edd255d60529d83e6412d33005244a494d5a9de3e4f79a44536",
+  "training_result_commit": "9ade9a2",
+  "implementation_commit": "c880721",
+  "protocol_commit": "d68cecc",
+  "verification_and_plot_code_commit": "e1ab5ce",
+  "branch": "codex/tcn-conditional-training",
+  "push": false,
+  "pdf": false,
+  "remaining_budget_reused": false,
+  "additional_training_planned": false,
+  "user_or_supervisor_effect_acceptance": "not provided",
+  "git_whitespace_check": "passed for source, docs and data; generated SVG trailing spaces retained to preserve audited original bytes"
+}

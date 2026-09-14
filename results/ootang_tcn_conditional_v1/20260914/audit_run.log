@@ -1,0 +1,37 @@
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: divide by zero encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: overflow encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: invalid value encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: divide by zero encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: overflow encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: invalid value encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: divide by zero encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: overflow encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: invalid value encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: divide by zero encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: overflow encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: invalid value encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: divide by zero encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: overflow encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:165: RuntimeWarning: invalid value encountered in matmul
+  coef = (vt.T * (s / (s * s + 1))) @ (u.T @ (target - target.mean(0)))
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: divide by zero encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: overflow encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_conditional_trajectory/audit.py:170: RuntimeWarning: invalid value encountered in matmul
+  rr = y[0] + unit * (zfull @ coef + intercept)
+{"status": "passed", "time_utc": "2026-09-14T12:02:17.615582+00:00", "attempt": "v1", "max_abs_difference": 1.4722445484949276e-11, "numerical_values_checked": 509586, "model_checkpoints": 66, "formal_new_fits": 0, "optimizer_updates": 0, "source_files_checked": 39, "completed_utc": "2026-09-14T12:02:18.418108+00:00", "formal_fits_verified": 18, "optimizer_updates_verified": 3600, "training_loop_seconds": 5.1047337064519525, "independent_forward": "numpy causal convolutions from all saved weights", "ridge_verification": "svd algebra, no new optimization", "issue_order_verified": true, "execution_errors": 0, "seed_agreement": {"development": {"mean": {"improving_seeds": 3, "by_seed": [true, true, true]}, "probability": {"improving_seeds": 1, "by_seed": [false, true, false]}}, "final_exploratory": {"mean": {"improving_seeds": 3, "by_seed": [true, true, true]}, "probability": {"improving_seeds": 3, "by_seed": [true, true, true]}}}}
