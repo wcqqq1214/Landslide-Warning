@@ -1,0 +1,9 @@
+{
+  "time_utc": "2026-09-14T16:48:42.251678+00:00",
+  "origin": 432,
+  "training_last_index": 431,
+  "files": {
+    "lambda_candidate_means.npz": "d10a2d9c97ddffaff95a8c2a56d589bd097608475d55671edfe0097963ca8144",
+    "lambda_candidate_seeds.npz": "26abe176961f9eb0e6ba4c418fae48c21687622d58c9d3b628baf2fe48fdcfee"
+  }
+}

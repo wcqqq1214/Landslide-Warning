@@ -40,3 +40,102 @@
 {"time_utc": "2026-09-14T16:45:50.134844+00:00", "event": "ridge_fitted", "origin": 1168, "training_rows": 1168}
 {"time_utc": "2026-09-14T16:45:50.163123+00:00", "event": "candidate_means_locked", "origin": 1168, "phase": "alpha", "lock_sha256": "3c3ae3df24ef156fda96fbc052991a8a0a5ed61e649c17c7e4a3bd89127e5ab4"}
 {"time_utc": "2026-09-14T16:45:50.197451+00:00", "event": "trajectory_issued", "origin": 1168, "phase": "alpha", "selected": "A1", "lock_sha256": "96668060a726779265e504818648defe4c5fb91c0b3df16eed8aa00ea983abb3"}
+{"time_utc": "2026-09-14T16:48:21.565828+00:00", "event": "label_prefix_read", "rows": 432, "last_index": 431, "purpose": "lambda_origin_432_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:48:21.586040+00:00", "event": "fit_started", "origin": 432, "key": "L033", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:48:23.911021+00:00", "event": "fit_completed", "origin": 432, "key": "L033", "seed": 0, "updates": 400, "elapsed_seconds": 2.331157292239368}
+{"time_utc": "2026-09-14T16:48:23.912645+00:00", "event": "fit_started", "origin": 432, "key": "L033", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:48:26.204296+00:00", "event": "fit_completed", "origin": 432, "key": "L033", "seed": 1, "updates": 400, "elapsed_seconds": 2.2922814157791436}
+{"time_utc": "2026-09-14T16:48:26.205803+00:00", "event": "fit_started", "origin": 432, "key": "L033", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:48:28.508296+00:00", "event": "fit_completed", "origin": 432, "key": "L033", "seed": 2, "updates": 400, "elapsed_seconds": 2.303097791969776}
+{"time_utc": "2026-09-14T16:48:28.509853+00:00", "event": "fit_started", "origin": 432, "key": "L1", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:48:30.781403+00:00", "event": "fit_completed", "origin": 432, "key": "L1", "seed": 0, "updates": 400, "elapsed_seconds": 2.2722144168801606}
+{"time_utc": "2026-09-14T16:48:30.783095+00:00", "event": "fit_started", "origin": 432, "key": "L1", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:48:33.055840+00:00", "event": "fit_completed", "origin": 432, "key": "L1", "seed": 1, "updates": 400, "elapsed_seconds": 2.273373957723379}
+{"time_utc": "2026-09-14T16:48:33.057228+00:00", "event": "fit_started", "origin": 432, "key": "L1", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:48:35.334021+00:00", "event": "fit_completed", "origin": 432, "key": "L1", "seed": 2, "updates": 400, "elapsed_seconds": 2.277354540769011}
+{"time_utc": "2026-09-14T16:48:35.335516+00:00", "event": "fit_started", "origin": 432, "key": "L3", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:48:37.629396+00:00", "event": "fit_completed", "origin": 432, "key": "L3", "seed": 0, "updates": 400, "elapsed_seconds": 2.2944621252827346}
+{"time_utc": "2026-09-14T16:48:37.631873+00:00", "event": "fit_started", "origin": 432, "key": "L3", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:48:39.960888+00:00", "event": "fit_completed", "origin": 432, "key": "L3", "seed": 1, "updates": 400, "elapsed_seconds": 2.3300177077762783}
+{"time_utc": "2026-09-14T16:48:39.962556+00:00", "event": "fit_started", "origin": 432, "key": "L3", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:48:42.244628+00:00", "event": "fit_completed", "origin": 432, "key": "L3", "seed": 2, "updates": 400, "elapsed_seconds": 2.2827010843902826}
+{"time_utc": "2026-09-14T16:48:42.252033+00:00", "event": "candidate_means_locked", "origin": 432, "phase": "lambda", "lock_sha256": "1554505ea7eaef77693cfba8111d33471e2a8e8d7b02328a52cfac7b3e4c803e"}
+{"time_utc": "2026-09-14T16:48:42.252195+00:00", "event": "trajectory_issued", "origin": 432, "phase": "lambda", "bootstrap": true}
+{"time_utc": "2026-09-14T16:48:42.259394+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "lambda_origin_612_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:48:42.264523+00:00", "event": "fit_started", "origin": 612, "key": "L033", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:48:46.811236+00:00", "event": "fit_completed", "origin": 612, "key": "L033", "seed": 0, "updates": 400, "elapsed_seconds": 4.547437416855246}
+{"time_utc": "2026-09-14T16:48:46.812896+00:00", "event": "fit_started", "origin": 612, "key": "L033", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:48:51.292015+00:00", "event": "fit_completed", "origin": 612, "key": "L033", "seed": 1, "updates": 400, "elapsed_seconds": 4.479758416768163}
+{"time_utc": "2026-09-14T16:48:51.293546+00:00", "event": "fit_started", "origin": 612, "key": "L033", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:48:55.818878+00:00", "event": "fit_completed", "origin": 612, "key": "L033", "seed": 2, "updates": 400, "elapsed_seconds": 4.525883458089083}
+{"time_utc": "2026-09-14T16:48:55.837570+00:00", "event": "model_reused", "origin": 612, "key": "L1", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:48:55.853503+00:00", "event": "model_reused", "origin": 612, "key": "L1", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:48:55.869041+00:00", "event": "model_reused", "origin": 612, "key": "L1", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:48:55.870122+00:00", "event": "fit_started", "origin": 612, "key": "L3", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:49:00.385834+00:00", "event": "fit_completed", "origin": 612, "key": "L3", "seed": 0, "updates": 400, "elapsed_seconds": 4.516245833132416}
+{"time_utc": "2026-09-14T16:49:00.387349+00:00", "event": "fit_started", "origin": 612, "key": "L3", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:49:05.051104+00:00", "event": "fit_completed", "origin": 612, "key": "L3", "seed": 1, "updates": 400, "elapsed_seconds": 4.664304915815592}
+{"time_utc": "2026-09-14T16:49:05.052690+00:00", "event": "fit_started", "origin": 612, "key": "L3", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:49:09.581149+00:00", "event": "fit_completed", "origin": 612, "key": "L3", "seed": 2, "updates": 400, "elapsed_seconds": 4.529030750039965}
+{"time_utc": "2026-09-14T16:49:09.590886+00:00", "event": "candidate_means_locked", "origin": 612, "phase": "lambda", "lock_sha256": "a6ff5340853fb3cc49b764756d5acbb73096012e1b29d9e012dd2468f9dedae5"}
+{"time_utc": "2026-09-14T16:49:09.604266+00:00", "event": "trajectory_issued", "origin": 612, "phase": "lambda", "selected": "L3", "lock_sha256": "e7ba29847bcc9d53d3895ac941c48f7e8dc0bdf8b21d2bce9c1bfcd2ef40f48a"}
+{"time_utc": "2026-09-14T16:49:09.608070+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "lambda_origin_792_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:49:09.625215+00:00", "event": "fit_started", "origin": 792, "key": "L033", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:49:16.296485+00:00", "event": "fit_completed", "origin": 792, "key": "L033", "seed": 0, "updates": 400, "elapsed_seconds": 6.671897749882191}
+{"time_utc": "2026-09-14T16:49:16.298030+00:00", "event": "fit_started", "origin": 792, "key": "L033", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:49:22.984545+00:00", "event": "fit_completed", "origin": 792, "key": "L033", "seed": 1, "updates": 400, "elapsed_seconds": 6.687013958115131}
+{"time_utc": "2026-09-14T16:49:22.986120+00:00", "event": "fit_started", "origin": 792, "key": "L033", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:49:29.715182+00:00", "event": "fit_completed", "origin": 792, "key": "L033", "seed": 2, "updates": 400, "elapsed_seconds": 6.7295981659553945}
+{"time_utc": "2026-09-14T16:49:29.737879+00:00", "event": "model_reused", "origin": 792, "key": "L1", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:49:29.759628+00:00", "event": "model_reused", "origin": 792, "key": "L1", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:49:29.781617+00:00", "event": "model_reused", "origin": 792, "key": "L1", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:49:29.782833+00:00", "event": "fit_started", "origin": 792, "key": "L3", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:49:36.573752+00:00", "event": "fit_completed", "origin": 792, "key": "L3", "seed": 0, "updates": 400, "elapsed_seconds": 6.791502499952912}
+{"time_utc": "2026-09-14T16:49:36.575321+00:00", "event": "fit_started", "origin": 792, "key": "L3", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:49:43.375257+00:00", "event": "fit_completed", "origin": 792, "key": "L3", "seed": 1, "updates": 400, "elapsed_seconds": 6.800453959032893}
+{"time_utc": "2026-09-14T16:49:43.376915+00:00", "event": "fit_started", "origin": 792, "key": "L3", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:49:50.165633+00:00", "event": "fit_completed", "origin": 792, "key": "L3", "seed": 2, "updates": 400, "elapsed_seconds": 6.789221167098731}
+{"time_utc": "2026-09-14T16:49:50.179046+00:00", "event": "candidate_means_locked", "origin": 792, "phase": "lambda", "lock_sha256": "3c20ee56d847f111cb86ac7f37dfe0fdbbbaf361d6ad6f30458e439b8b01631b"}
+{"time_utc": "2026-09-14T16:49:50.195369+00:00", "event": "trajectory_issued", "origin": 792, "phase": "lambda", "selected": "L3", "lock_sha256": "a9f07dbffa86c5396c0a1acf1859b767c9b1610e72dff54e5608efb2dd27f39c"}
+{"time_utc": "2026-09-14T16:49:50.199567+00:00", "event": "label_prefix_read", "rows": 972, "last_index": 971, "purpose": "lambda_origin_972_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:49:50.207215+00:00", "event": "fit_started", "origin": 972, "key": "L033", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:50:00.467767+00:00", "event": "fit_completed", "origin": 972, "key": "L033", "seed": 0, "updates": 400, "elapsed_seconds": 10.2610799591057}
+{"time_utc": "2026-09-14T16:50:00.470730+00:00", "event": "fit_started", "origin": 972, "key": "L033", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:50:11.694873+00:00", "event": "fit_completed", "origin": 972, "key": "L033", "seed": 1, "updates": 400, "elapsed_seconds": 11.224760874640197}
+{"time_utc": "2026-09-14T16:50:11.698187+00:00", "event": "fit_started", "origin": 972, "key": "L033", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:50:23.452572+00:00", "event": "fit_completed", "origin": 972, "key": "L033", "seed": 2, "updates": 400, "elapsed_seconds": 11.755008874926716}
+{"time_utc": "2026-09-14T16:50:23.457359+00:00", "event": "fit_started", "origin": 972, "key": "L1", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:50:36.876665+00:00", "event": "fit_completed", "origin": 972, "key": "L1", "seed": 0, "updates": 400, "elapsed_seconds": 13.419843959156424}
+{"time_utc": "2026-09-14T16:50:36.882209+00:00", "event": "fit_started", "origin": 972, "key": "L1", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:50:50.931871+00:00", "event": "fit_completed", "origin": 972, "key": "L1", "seed": 1, "updates": 400, "elapsed_seconds": 14.050899416208267}
+{"time_utc": "2026-09-14T16:50:50.936211+00:00", "event": "fit_started", "origin": 972, "key": "L1", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:51:05.302847+00:00", "event": "fit_completed", "origin": 972, "key": "L1", "seed": 2, "updates": 400, "elapsed_seconds": 14.367390166036785}
+{"time_utc": "2026-09-14T16:51:05.307559+00:00", "event": "fit_started", "origin": 972, "key": "L3", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:51:20.056495+00:00", "event": "fit_completed", "origin": 972, "key": "L3", "seed": 0, "updates": 400, "elapsed_seconds": 14.749936375301331}
+{"time_utc": "2026-09-14T16:51:20.060004+00:00", "event": "fit_started", "origin": 972, "key": "L3", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:51:34.815294+00:00", "event": "fit_completed", "origin": 972, "key": "L3", "seed": 1, "updates": 400, "elapsed_seconds": 14.75595391727984}
+{"time_utc": "2026-09-14T16:51:34.820683+00:00", "event": "fit_started", "origin": 972, "key": "L3", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:51:50.004882+00:00", "event": "fit_completed", "origin": 972, "key": "L3", "seed": 2, "updates": 400, "elapsed_seconds": 15.185003084130585}
+{"time_utc": "2026-09-14T16:51:50.027626+00:00", "event": "candidate_means_locked", "origin": 972, "phase": "lambda", "lock_sha256": "f7b389bb178f2af053e86f69efe2554955c5e95304e2caf538bc285849d9c3b0"}
+{"time_utc": "2026-09-14T16:51:50.055510+00:00", "event": "trajectory_issued", "origin": 972, "phase": "lambda", "selected": "L3", "lock_sha256": "6de2d3a505c02eb2a0e8b145d2300e5032d0ae256b74e1bb7f43ace7b0c4e209"}
+{"time_utc": "2026-09-14T16:51:50.061628+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "lambda_origin_1168_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:51:50.074409+00:00", "event": "fit_started", "origin": 1168, "key": "L033", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:52:10.733937+00:00", "event": "fit_completed", "origin": 1168, "key": "L033", "seed": 0, "updates": 400, "elapsed_seconds": 20.66067970916629}
+{"time_utc": "2026-09-14T16:52:10.739196+00:00", "event": "fit_started", "origin": 1168, "key": "L033", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:52:31.358694+00:00", "event": "fit_completed", "origin": 1168, "key": "L033", "seed": 1, "updates": 400, "elapsed_seconds": 20.62007650034502}
+{"time_utc": "2026-09-14T16:52:31.366911+00:00", "event": "fit_started", "origin": 1168, "key": "L033", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:52:52.509840+00:00", "event": "fit_completed", "origin": 1168, "key": "L033", "seed": 2, "updates": 400, "elapsed_seconds": 21.14399845805019}
+{"time_utc": "2026-09-14T16:52:52.567651+00:00", "event": "model_reused", "origin": 1168, "key": "L1", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:52:52.619822+00:00", "event": "model_reused", "origin": 1168, "key": "L1", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:52:52.672474+00:00", "event": "model_reused", "origin": 1168, "key": "L1", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:52:52.674143+00:00", "event": "fit_started", "origin": 1168, "key": "L3", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:53:14.328998+00:00", "event": "fit_completed", "origin": 1168, "key": "L3", "seed": 0, "updates": 400, "elapsed_seconds": 21.655387124978006}
+{"time_utc": "2026-09-14T16:53:14.332563+00:00", "event": "fit_started", "origin": 1168, "key": "L3", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:53:35.530321+00:00", "event": "fit_completed", "origin": 1168, "key": "L3", "seed": 1, "updates": 400, "elapsed_seconds": 21.1982837500982}
+{"time_utc": "2026-09-14T16:53:35.534722+00:00", "event": "fit_started", "origin": 1168, "key": "L3", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:53:57.502844+00:00", "event": "fit_completed", "origin": 1168, "key": "L3", "seed": 2, "updates": 400, "elapsed_seconds": 21.969291042070836}
+{"time_utc": "2026-09-14T16:53:57.526999+00:00", "event": "candidate_means_locked", "origin": 1168, "phase": "lambda", "lock_sha256": "e90834a6cd29df885a671bbbce5a3ca9860ea0cf4e326cd74a561408702ea72b"}
+{"time_utc": "2026-09-14T16:53:57.558121+00:00", "event": "trajectory_issued", "origin": 1168, "phase": "lambda", "selected": "L0", "lock_sha256": "f06ea418a46c169cb2d1e914a55466188614b0ff38a8fb99db953ec469d01498"}
+{"time_utc": "2026-09-14T16:54:49.214596+00:00", "event": "all_trajectories_locked_before_outer_scoring"}
+{"time_utc": "2026-09-14T16:54:49.214681+00:00", "event": "label_prefix_read", "rows": 1461, "last_index": 1460, "purpose": "outer_scoring_after_every_alpha_lambda_issue_lock"}
+{"time_utc": "2026-09-14T16:54:49.582774+00:00", "event": "all_outer_scoring_complete", "distributions": 56}

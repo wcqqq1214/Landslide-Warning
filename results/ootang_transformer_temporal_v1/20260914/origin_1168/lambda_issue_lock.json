@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T16:53:57.557183+00:00",
+  "status": "issued",
+  "origin": 1168,
+  "selected": "L0",
+  "last_calibration_label": 1151,
+  "displacement_feedback": false,
+  "files": {
+    "lambda_calibration_errors.npz": "9eee15f56309151bf51a2bc87f198aa33a6bb5351c1e2af1ab18c0e36d85bfd3",
+    "lambda_candidate_lock.json": "e90834a6cd29df885a671bbbce5a3ca9860ea0cf4e326cd74a561408702ea72b",
+    "lambda_means.npz": "e4b4069afb9b5978eb0daef68697c0f9c255c665a3c258691349958afa20442f",
+    "lambda_seeds.npz": "fc9ac5266fd903ea3f599862ef68f44ecdaf0632e48e8df24987edde8bb80c15",
+    "lambda_selection.json": "e3efd79b30a5a5c8da07c1fa6338eb8b90a2d4d7e72618820e6451c900d4c9b6",
+    "lambda_sigmas.npz": "04b6633e80b02edae1e861f723169f302a33f8003b30318a7f9da162ed2f5cc5"
+  }
+}

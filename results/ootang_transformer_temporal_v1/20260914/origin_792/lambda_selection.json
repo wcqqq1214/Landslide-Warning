@@ -1,0 +1,37 @@
+{
+  "previous_origin": 612,
+  "issue_origin": 792,
+  "selection_indices": [
+    612,
+    702
+  ],
+  "calibration_indices": [
+    702,
+    792
+  ],
+  "last_label_index": 791,
+  "selected": "L3",
+  "scores": {
+    "L0": {
+      "n_per_point": 90,
+      "mae": 9.375469363032842,
+      "rmse": 11.100033788545279
+    },
+    "L033": {
+      "n_per_point": 90,
+      "mae": 8.994317844680737,
+      "rmse": 10.769888991728253
+    },
+    "L1": {
+      "n_per_point": 90,
+      "mae": 8.692306529619556,
+      "rmse": 10.49739181081481
+    },
+    "L3": {
+      "n_per_point": 90,
+      "mae": 8.479730726307618,
+      "rmse": 10.289219286832825
+    }
+  },
+  "displacement_feedback": false
+}

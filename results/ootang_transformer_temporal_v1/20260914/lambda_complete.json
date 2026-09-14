@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-14T16:53:57.558287+00:00",
+  "status": "complete",
+  "phase": "lambda",
+  "full_outer_scores_read": false,
+  "files": {
+    "origin_1168/lambda_issue_lock.json": "f06ea418a46c169cb2d1e914a55466188614b0ff38a8fb99db953ec469d01498",
+    "origin_432/lambda_issue_lock.json": "4412a7018a58b63303249838a2bb19c5d4b7955b0853518aab71528543a58e49",
+    "origin_612/lambda_issue_lock.json": "e7ba29847bcc9d53d3895ac941c48f7e8dc0bdf8b21d2bce9c1bfcd2ef40f48a",
+    "origin_792/lambda_issue_lock.json": "a9f07dbffa86c5396c0a1acf1859b767c9b1610e72dff54e5608efb2dd27f39c",
+    "origin_972/lambda_issue_lock.json": "6de2d3a505c02eb2a0e8b145d2300e5032d0ae256b74e1bb7f43ace7b0c4e209"
+  }
+}

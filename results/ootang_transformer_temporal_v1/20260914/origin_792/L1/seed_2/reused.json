@@ -1,0 +1,8 @@
+{
+  "source": "results/ootang_transformer_regularization_v1/20260914/development/TRANSFORMER_BRES_REG1/seed_2/e400.pt",
+  "source_sha256": "f651bf06bea61a82774858047a8a87902dc4c824b44e3197232f71d264ee9b18",
+  "training_prefix": 792,
+  "seed": 2,
+  "strength": 1,
+  "mean_overlap_max_abs": 0.0
+}
