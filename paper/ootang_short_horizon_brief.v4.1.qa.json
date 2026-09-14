@@ -1,16 +1,19 @@
 {
-  "checked_at_utc": "2026-09-14T06:29:32.626057+00:00",
-  "scope": "pages 1 and 2 physical-status clarification and saved initial-state overview curves only",
+  "checked_at_utc": "2026-09-14T07:02:53.811818+00:00",
+  "scope": "B+ font and coupled-model wording consistency in text and legend only",
   "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
-  "pdf_sha256": "22dd375f82fdd26302f89860bbbba488cfe8e97f2750b4812294c72ceb6c14f8",
+  "pdf_sha256": "723d4ed59b52aa64adf5bcc87c6d430df3a25ea1c28c58689837bcea9acdc7e8",
   "page_count": 4,
-  "base_commit": "143cc17",
+  "base_commit": "e898ad5",
   "csv_numeric_cells_verified_in_pdf_order": 102,
   "unchanged_previous_numeric_cells": 102,
   "initial_state_numeric_cells": 6,
   "overview_series_verified": 24,
   "unchanged_original_overview_ordinates": 140,
   "initial_state_overview_ordinates": 28,
+  "unchanged_previous_overview_ordinates": 168,
+  "bplus_font": "ArialUnicodeMS",
+  "bplus_spans_verified": 14,
   "figure_input_hashes_verified": 8,
   "figure_pdf_hashes_verified": 6,
   "documentation_numeric_cells_verified": 196,
@@ -46,13 +49,13 @@
   "page_geometry": [
     {
       "page": 1,
-      "glyphs": 922,
+      "glyphs": 930,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 2,
-      "glyphs": 1138,
+      "glyphs": 1148,
       "clipped": [],
       "collisions": []
     },
@@ -78,7 +81,7 @@
   "new_model_selection": 0,
   "new_prediction_or_scoring": 0,
   "new_physical_calls": 0,
-  "verifier_sha256": "f4a506d615049f2d681b479c2568f1a28a55321b413c3ee1e90f858080637b2d",
+  "verifier_sha256": "35bb2be52299455d4bdddac027d4f18d6422997f5d6bb0d381a20f0de9d2f586",
   "overview_render_qa": {
     "width_mm": 165.99999889797633,
     "height_mm": 118.00000025431314,
@@ -148,7 +151,7 @@
         "uncertainty": "Saved aggregate scores; no inferential intervals added."
       }
     ],
-    "legend_review": "All six methods visible; initial-state model uses distinct teal dash-dot line and downward triangle. Historical PINN failure remains labeled."
+    "legend_review": "Full coupled-model name uses wording instead of a full-width joining plus. All six methods readable, with the same model colors and markers."
   },
   "manual_visual_review": {
     "pages_reviewed": [
@@ -156,7 +159,7 @@
       2
     ],
     "render_scale": 1.6,
-    "result": "Passed: overview and physical-status callouts readable, all table rows present, no cropped text or extra page.",
-    "remaining_pages": "Pages 3 and 4 are pixel-identical to the previous report."
+    "result": "Passed: B+ is upright and consistent in text, table and legend; longer model name fits without clipping or an extra page. All prior results remain visible.",
+    "remaining_pages": "Pages 3 and 4 are pixel-identical to e898ad5; their B+ legend font was already Arial Unicode MS."
   }
 }
