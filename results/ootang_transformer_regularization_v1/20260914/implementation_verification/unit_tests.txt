@@ -1,0 +1,10 @@
+test_causality_fallback_reload_and_numpy (test_transformer_regularization.RegularizationContracts) ... ok
+test_exact_zero_loss_and_gradient (test_transformer_regularization.RegularizationContracts) ... ok
+test_future_poison_does_not_change_training (test_transformer_regularization.RegularizationContracts) ... ok
+test_invalid_loss_inputs_fail (test_transformer_regularization.RegularizationContracts) ... ok
+test_penalty_identity_and_analytic_gradient (test_transformer_regularization.RegularizationContracts) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.297s
+
+OK

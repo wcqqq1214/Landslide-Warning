@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T14:56:26.122567+00:00",
+  "formal_new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "latest_label_index": 611,
+  "source_files": 779,
+  "tests_passed": 5,
+  "parameters": 4916,
+  "real_internal_numpy_max_abs_mm": 2.2737367544323206e-13,
+  "config_sha256": "9d8069d7e03e0824be43b4608d170e26c6702274742437605f62ba94603ff827",
+  "caches_checked": 3,
+  "initializations_checked": 3
+}

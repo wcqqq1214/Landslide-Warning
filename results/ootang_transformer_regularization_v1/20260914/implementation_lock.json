@@ -1,0 +1,11 @@
+{
+  "time_utc": "2026-09-14T14:56:26.892395+00:00",
+  "files": {
+    "config/ootang_transformer_regularization.v1_0.json": "9d8069d7e03e0824be43b4608d170e26c6702274742437605f62ba94603ff827",
+    "code/transformer_regularization/run.py": "ce391a375dcf63144fd02caeaee6a5a252f42d93045b2eb7e7d881f36df3a2fd",
+    "code/transformer_regularization/__init__.py": "693e2f0019e8608df8bdc843b8088851028978c41c554fd3495af2cc5e992733",
+    "code/transformer_regularization/core.py": "7d6d28388cc8ff74d888e3e2d53b6ba36ccb2fecf22dda36f1ab1cc6fcf69850",
+    "code/transformer_regularization/verify.py": "f4d36fa8df14133746a14f44df2711b8a684184eeba06c5e13a024870c7e9fcb",
+    "tests/test_transformer_regularization.py": "2a47cd7bdf3e63b99769088bd62d11253c9b9409c09979ab071a9d950de4746a"
+  }
+}
