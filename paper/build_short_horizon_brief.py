@@ -58,7 +58,7 @@ def main():
         "CL_BRES": "ConvLSTM 残差学习",
         "PINN_EQ": "软约束状态 PINN",
         "PINN_NOEQ": "PINN 无方程约束对照",
-        "NIS_BPLUS": "神经初态＋B+严格递推",
+        "NIS_BPLUS": "神经初态估计与 B+ 严格递推",
         "RR_DIRECT": "岭回归直接预测",
         "RR_BRES": "岭回归残差学习",
         "C16_CORE_RULES": "在线回归＋反馈",
@@ -119,6 +119,7 @@ def main():
 \usepackage[a4paper,top=18mm,bottom=18mm,left=22mm,right=22mm]{geometry}
 \usepackage{graphicx,xcolor,booktabs,caption,amsmath,hyperref,fancyhdr}
 \xeCJKsetup{PunctStyle=plain}
+@@BPLUS_FONT@@
 \definecolor{reportblue}{HTML}{365F91}
 \definecolor{lightblue}{HTML}{EEF3F8}
 \hypersetup{colorlinks=true,linkcolor=reportblue,urlcolor=reportblue}
@@ -134,7 +135,7 @@ def main():
 \newcommand{\reportfigure}[2]{\begin{minipage}{\textwidth}\includegraphics[width=\linewidth]{#1}\captionof{figure}{#2}\end{minipage}\par}
 \begin{document}
 \pagetitle{1\quad 七个步长，分别比较}
-\takeaway{\textbf{神经初态＋B+严格递推已通过物理数值检查，预测整体收益仍未达标。}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
+\takeaway{\textbf{神经初态估计与 B+ 严格递推已通过物理数值检查，预测整体收益仍未达标。}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
 {\small 每天使用过去 30 天观测，预测第 1、2、3、4、5、6、7 天后的位移；已发出的预测固定保存。四点：ATU1、ATU5、MJ3、MJ1。}\par
 \reportfigure{horizon_comparison.pdf}{同一步长、同组起点；神经初态模型为固定候选，其余各类代表按开发 RMSE 选择并沿用至后期。纵轴为对数，越低越好。}
 \textbf{兼顾均值与区间的推荐方法}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
@@ -149,6 +150,7 @@ def main():
 {\footnotesize\color{gray}开发：2018-09-01 至 2019-09-11；后期：2019-09-12 至 2020-06-30。后期各步长每点样本数为 293、292、291、290、289、288、287。}
 \clearpage
 \pagetitle{2\quad 四类模型与残差学习}
+\begingroup\setlength{\parskip}{2pt}
 {\small 第 7 天位移比较：观测截止、成熟误差校准相同；未来真实驱动 B+ 不参加主比较。}\par
 \begin{center}\fontsize{8.7}{11}\selectfont\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lrrrrrr}\toprule
@@ -158,11 +160,12 @@ def main():
 \end{center}
 {\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
 \reportfigure{paired_effects.pdf}{配对方法的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
-\takeaway{\textbf{软约束状态 PINN：物理一致性未达标。}\quad\textbf{神经初态＋B+：物理数值检查通过。}}
+\takeaway{\textbf{软约束状态 PINN：物理一致性未达标。}\quad\textbf{神经初态估计与 B+ 严格递推：物理数值检查通过。}}
 \begingroup\fontsize{9}{12}\selectfont
 ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含趋势、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
-\textbf{神经初态＋B+严格递推：}内部、开发及后期共 @@INITIAL_TRAJECTORIES@@ 条轨迹通过求解器数值容差检查；零修正的额外严格子步诊断仍保留异常。\textbf{开发整体未改善；后期 1--7 天平均误差下降，3--7 天概率门通过，但逐点均值门未过，仍落后在线回归。}后期按完整比较补齐，未重选。\par
+\textbf{神经初态估计与 B+ 严格递推：}内部、开发及后期共 @@INITIAL_TRAJECTORIES@@ 条轨迹通过求解器数值容差检查；零修正的额外严格子步诊断仍保留异常。\textbf{开发整体未改善；后期 1--7 天平均误差下降，3--7 天概率门通过，但逐点均值门未过，仍落后在线回归。}后期按完整比较补齐，未重选。\par
 {\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 无方程约束对照仍保留相同物理背景。\par}
+\endgroup
 \endgroup
 \clearpage
 \pagetitle{3\quad ATU1、ATU5：完整后期曲线}
@@ -192,6 +195,11 @@ ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含�
     for name, caption in captions.items():
         tex = tex.replace(f"@@{name}@@", caption)
     tex = tex.replace("@@INITIAL_TRAJECTORIES@@", str(initial["counts"]["trajectories"]))
+    # Keep the model suffix an upright, unbreakable Latin token in the same
+    # font as the saved Matplotlib legends; Chinese composition uses words.
+    tex = tex.replace("B+", r"\Bplus{}")
+    tex = tex.replace("@@BPLUS_FONT@@", r"""\newfontfamily\bplusfont{Arial Unicode MS}
+\newcommand{\Bplus}{\mbox{{\bplusfont\mdseries\upshape B+}}}""")
     assert "@@" not in tex
     SOURCE.write_text(tex, encoding="utf-8")
     figure_names = [
@@ -217,6 +225,12 @@ ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含�
             "new_model_selection": 0,
             "new_prediction_or_scoring": 0,
             "figure_language": "Chinese labels, axes, legends and panel titles; saved data unchanged",
+            "bplus_typography": {
+                "model_name": "B+",
+                "font": "Arial Unicode MS",
+                "coupled_model_name": "神经初态估计与 B+ 严格递推",
+                "model_token": "upright, regular, unbreakable ASCII B+",
+            },
             "expected_pages": 4,
             "displayed_numeric_cells": expected,
             "initial_state_result": {

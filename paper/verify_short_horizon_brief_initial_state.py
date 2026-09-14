@@ -13,7 +13,7 @@ import pymupdf
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = '143cc17'
+BASE = 'e898ad5'
 PRESENTATION_INPUTS = {
     'paper/figures/short_horizon_zh/horizon_comparison.pdf',
     'paper/figures/short_horizon_zh/sources.json',
@@ -66,6 +66,8 @@ def main():
     # Independently check every plotted overview value against frozen CSV sources.
     figures = json.loads((ROOT/'paper/figures/short_horizon_zh/sources.json').read_text())
     assert sha(ROOT/'paper/build_short_horizon_brief_figures_zh.py') == figures['builder_sha256']
+    old_figures = json.loads(git_file('paper/figures/short_horizon_zh/sources.json'))
+    assert figures['overview_series'] == old_figures['overview_series']
     for name, digest in figures['input_sha256'].items():
         assert sha(ROOT/name) == digest, name
     for name, values in figures['figures'].items():
@@ -120,10 +122,20 @@ def main():
     assert '4707' in texts[1] and '尚未评价' not in texts[1]
     assert '逐点均值门未过' in texts[1] and '软约束状态PINN：物理一致性未达标' in texts[1]
     compact = [''.join(t.split()) for t in texts]
-    assert '神经初态＋B+（数值检查通过）' in compact[0]
+    assert '神经初态估计与B+严格递推（数值检查通过）' in compact[0]
     assert '软约束PINN（物理未达标）' in compact[0]
     assert all('物理数值检查通过' in compact[i] or '通过物理数值检查' in compact[i] for i in (0,1))
     all_text='\n'.join(texts)
+    assert '神经初态＋' not in all_text and 'B＋' not in all_text
+    bplus_fonts = []
+    for page in document:
+        for block in page.get_text('dict')['blocks']:
+            for line in block.get('lines', []):
+                for span in line['spans']:
+                    if 'B+' in span['text']:
+                        assert span['font'] == 'ArialUnicodeMS', span
+                        bplus_fonts.append(span['font'])
+    assert len(bplus_fonts) == 14
     assert all(s not in all_text for s in ('v4.1','2026-09-14','旧版','新增','冻结'))
     unchanged=[]
     for i in (2,3):
@@ -143,10 +155,11 @@ def main():
     sizes=[span['size'] for p in document for block in p.get_text('dict')['blocks'] if 'lines' in block
            for line in block['lines'] for span in line['spans']]
     figure_paths=sorted(name for name in unchanged_sources if name.startswith('paper/figures/'))
-    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='pages 1 and 2 physical-status clarification and saved initial-state overview curves only',
+    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='B+ font and coupled-model wording consistency in text and legend only',
                 pdf=str(pdf.relative_to(ROOT)),pdf_sha256=sha(pdf),page_count=4,base_commit=BASE,
                 csv_numeric_cells_verified_in_pdf_order=102,unchanged_previous_numeric_cells=102,initial_state_numeric_cells=6,
                 overview_series_verified=24,unchanged_original_overview_ordinates=140,initial_state_overview_ordinates=28,
+                unchanged_previous_overview_ordinates=168,bplus_font='ArialUnicodeMS',bplus_spans_verified=len(bplus_fonts),
                 figure_input_hashes_verified=len(figures['input_sha256']),figure_pdf_hashes_verified=len(figures['figures']),
                 documentation_numeric_cells_verified=documentation_cells,additional_result=metadata['initial_state_result'],
                 current_report_input_hashes_verified=len(metadata['input_sha256']),common_original_source_hashes_unchanged=len(unchanged_sources),
