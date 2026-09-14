@@ -1,0 +1,210 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "runtime": "runtime/ootang_rolling_v3/reference",
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor"
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "version": "ootang_overnight_graph.v1.0",
+  "branch": "codex/overnight-fixed-graph",
+  "start_utc": "2026-09-14T18:23:23+00:00",
+  "deadline_utc": "2026-09-15T01:00:00+00:00",
+  "out": "results/ootang_overnight_graph_v1/20260915",
+  "figures": "figures/ootang_overnight_graph_v1/20260915",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "arms": [
+    "GRU_LOCAL",
+    "GRU_GRAPH"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "updates": 200,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200
+  ],
+  "hidden": 8,
+  "feedforward": 16,
+  "history_channels": 14,
+  "future_channels": 10,
+  "dropout": 0.0,
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "residual_penalty": 1.0,
+  "training": {
+    "first_origin": 432,
+    "batch_origins": 4,
+    "distances_per_origin": 16,
+    "max_horizon": 293,
+    "origin_sampling": "uniform integers [432,fit_prefix); distances uniform 1..min(293,fit_prefix-origin), with replacement",
+    "history": "all days [0,origin), no patching or observation feedback after origin",
+    "teacher_rule": "largest frozen fit prefix among 432,612,792 not greater than episode origin",
+    "seed_schedule": "independent numpy default_rng(seed); same draw indices for all arms",
+    "normalization": "training prefix only; same units and statistics for all arms; episodes are training samples, not retrospectively issued online forecasts"
+  },
+  "model": {
+    "history": "shared single-layer GRU(14,8) on all days before origin, zero initial state",
+    "graph": "tanh(Linear(8,8)(A@h)); local A=I; graph A only adds symmetric MJ3-MJ1 edge then row-normalizes",
+    "decoder": "concat local h8, graph context8, own future10, last observed velocity and residual2, h/293 and log1p(h)/log2942, point embedding4; Linear34->16 GELU, zero head16->1",
+    "dual": "same graph body with zero head16->2; slow/fast causal EMA30 residual targets; total output adds both",
+    "future_queries": "pointwise; no prediction-stage measured displacement; given forcing"
+  },
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "DRIFT1",
+    "RR_COND",
+    "OLD_TRANSFORMER",
+    "OLD_HALF",
+    "OLD_REG1",
+    "COND_ATTN",
+    "NO_OBS_ATTN",
+    "POOL_MLP"
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "max_new_fits": 36,
+  "max_optimizer_updates": 7200,
+  "max_physical_forwards": 0,
+  "max_bplus_refits": 0,
+  "push": false,
+  "pdf": true,
+  "rl": false,
+  "pdf_out": "output/pdf/ootang_overnight_graph_v1",
+  "conditional_arm": "GRU_GRAPH_DUAL",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "point_embedding": 4,
+  "conditional_diagnostic": {
+    "blocks": [
+      [
+        432,
+        612,
+        432
+      ],
+      [
+        612,
+        792,
+        612
+      ],
+      [
+        792,
+        972,
+        792
+      ],
+      [
+        972,
+        1152,
+        792
+      ]
+    ],
+    "ema_span": 30,
+    "warmup": 30,
+    "drivers": [
+      "rain7",
+      "rwl_change"
+    ],
+    "lags": [
+      0,
+      7,
+      30
+    ],
+    "abs_correlation_min": 0.3,
+    "fast_variance_ratio_min": 0.1,
+    "consistent_blocks_min": 3,
+    "points_min": 2,
+    "rule": "For at least2 points, the same prespecified driver/lag/sign has abs Pearson correlation >=.3 in >=3/4 blocks; fast residual variance / total residual variance >=.1 in those same blocks. Descriptive trigger only, no p-value or293-day validity claim.",
+    "future_label_max": 1152,
+    "dual_aux_weight": 0.5
+  },
+  "selection": "none; fixed200 allarms; optionaldual triggered only by predeclared residual structure diagnostic, not outer forecast scores"
+}
