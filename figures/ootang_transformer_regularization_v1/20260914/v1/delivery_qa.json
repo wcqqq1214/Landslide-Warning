@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:04:03.102306+00:00",
+  "figures": 2,
+  "panels": 8,
+  "curve_and_band_values_checked": 23408,
+  "max_svg_quantization_difference_mm": 5.4134028459884576e-06,
+  "svg_tolerance_mm": 0.0001,
+  "reason": "six-decimal SVG coordinate serialization only; raw model tolerances unchanged",
+  "exports": [
+    {
+      "figure": "TRANSFORMER_BRES_REG1",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    },
+    {
+      "figure": "all_methods_forecast",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    }
+  ],
+  "excluded_dates": 0,
+  "pdf_audits": "not run: user explicitly requested no PDF",
+  "static_preflight": "rendered SVG geometry, fonts, text collisions and data checked directly; no PDF by user request",
+  "visual_inspection": "pending separate human-visible image inspection; not inferred from automated checks"
+}

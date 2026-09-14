@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:09:39.420992+00:00",
+  "report_sha256": "016a6e2e8d9a7c9a3166ae69828971c2696a5b878549a6640d4e5ee52eb21e99",
+  "tables": 7,
+  "table_rows": 30,
+  "numeric_metric_cells": 105,
+  "independent_cross_score_cells": 864,
+  "readback_csv_cells": 13470,
+  "verified_local_links": 16,
+  "scope": "tables, point/seed caveats, baseline directions, saved diagnostics; no new fitting"
+}

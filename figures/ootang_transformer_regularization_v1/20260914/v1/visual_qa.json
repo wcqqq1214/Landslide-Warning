@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:11:24.960587+00:00",
+  "reviewer": "assistant inspected local PNGs via view_image",
+  "figures": 2,
+  "panels": 8,
+  "checks": [
+    "all four point titles and legends",
+    "full dates and tail retained",
+    "wide 80/95 intervals retained",
+    "curves and units clear",
+    "no visible clipping or annotation collision"
+  ],
+  "note": "near-overlap of old/red and regularized/blue predictions is real; all data remain in CSV",
+  "user_or_supervisor_acceptance": "not provided"
+}

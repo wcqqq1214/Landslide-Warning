@@ -1,0 +1,20 @@
+{
+  "time_utc": "2026-09-14T15:03:35.294659+00:00",
+  "backend": "python",
+  "attempt": "v1",
+  "model_audit_sha256": "5e8208ab918c5d2cb6a54d76cc4cd2dab08f0b85ae01107d11f721ebbbe12d99",
+  "source_script_sha256": "7aed1d656cfac0beb1b869bec85851571871db7785740dd1bf6135dc2532d2f4",
+  "files": {
+    "TRANSFORMER_BRES_REG1.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "TRANSFORMER_BRES_REG1.png": "bf41522dd31d4b33a3a98f18b0e28b13ed10035b0872b92bf8d9a97587016664",
+    "TRANSFORMER_BRES_REG1.svg": "d242a102c4922068a8ff70bb0d99ddda37fb0d79a4f1190710426a62d91daa1e",
+    "TRANSFORMER_BRES_REG1.text_geometry.json": "feac49efd289d5437ee028c9eb5c8a1b3153795670159179b989a53a98912919",
+    "all_methods_forecast.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "all_methods_forecast.png": "d7645118459a4b9058ff2aa6dd87b53754ba561def700e2cc63c5c837ee8b38a",
+    "all_methods_forecast.svg": "3fda0b4936b2b30d6df702c90c048513b6a05dfa16d76371bae184dd7153cc45",
+    "all_methods_forecast.text_geometry.json": "fc78e5593a1ffcc1853d7b39acb61c8455f2471c66c9523eb94be640b8d62d91",
+    "figure_numbers.csv": "397ee9843a43907764a541d2fd2b39b83f61c03992265e8336fcdb2fd0fe5192",
+    "source_arrays.npz": "14b60322952142bf9c9c037307af32ed175a7a6c0edb50ab4a83d7f8502332dc"
+  },
+  "pdf": "not generated as requested; PDF-only audits not run"
+}

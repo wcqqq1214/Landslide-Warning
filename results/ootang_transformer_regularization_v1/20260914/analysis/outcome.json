@@ -1,0 +1,183 @@
+{
+  "time_utc": "2026-09-14T15:09:25.151574+00:00",
+  "phases": [
+    {
+      "phase": "development",
+      "BPLUS_CONTINUOUS_mean_improved": false,
+      "BPLUS_CONTINUOUS_probability_improved": false,
+      "DRIFT1_mean_improved": false,
+      "DRIFT1_probability_improved": false,
+      "RR_COND_mean_improved": true,
+      "RR_COND_probability_improved": false,
+      "TRANSFORMER_BRES_COND_mean_improved": true,
+      "TRANSFORMER_BRES_COND_probability_improved": true,
+      "gates": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": false,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": false,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": false,
+          "ATU5_coverage90": false,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": false
+        }
+      }
+    },
+    {
+      "phase": "final_exploratory",
+      "BPLUS_CONTINUOUS_mean_improved": true,
+      "BPLUS_CONTINUOUS_probability_improved": false,
+      "DRIFT1_mean_improved": true,
+      "DRIFT1_probability_improved": false,
+      "RR_COND_mean_improved": true,
+      "RR_COND_probability_improved": true,
+      "TRANSFORMER_BRES_COND_mean_improved": true,
+      "TRANSFORMER_BRES_COND_probability_improved": true,
+      "gates": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": true,
+          "average_rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": true,
+          "MJ1_rmse": true
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": true,
+          "ATU1_crps": false,
+          "ATU1_interval_score90": false,
+          "ATU1_coverage90": true,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": false,
+          "ATU5_coverage90": true,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": false,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": true
+        }
+      }
+    }
+  ],
+  "final_average_gain_over_bplus_percent": {
+    "mae": 5.249753726066331,
+    "rmse": 2.3765413922775647
+  },
+  "final_seed_rmse_better_than_bplus": 1,
+  "selected_methods": {
+    "time_utc": "2026-09-14T14:58:14.600004+00:00",
+    "source_phase": "development",
+    "fixed_updates": 400,
+    "regularization_lambda": 1,
+    "mean_winner": "DRIFT1",
+    "probability_winner": "DRIFT1",
+    "effects": {
+      "TRANSFORMER_BRES_COND": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": false,
+          "ATU1_crps": false,
+          "ATU1_interval_score90": false,
+          "ATU1_coverage90": false,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": false,
+          "ATU5_coverage90": false,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": false
+        }
+      },
+      "TRANSFORMER_BRES_REG1": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": false,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": false,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": false,
+          "ATU5_coverage90": false,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": false
+        }
+      }
+    },
+    "complete_final_even_if_failed": true
+  },
+  "new_fits": 9,
+  "new_updates": 3600,
+  "stop_after_prespecified_work": true,
+  "exploratory": true
+}

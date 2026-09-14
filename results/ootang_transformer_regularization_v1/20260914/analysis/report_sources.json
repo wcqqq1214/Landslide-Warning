@@ -1,0 +1,17 @@
+{
+  "time_utc": "2026-09-14T15:09:25.153087+00:00",
+  "report": "docs/ootang_transformer_regularization_results.v1.0.md",
+  "report_sha256": "016a6e2e8d9a7c9a3166ae69828971c2696a5b878549a6640d4e5ee52eb21e99",
+  "source_script_sha256": "d2765fd31efe5535a9eaa6076140b2883b968fe04cd428f1527e43f2e1487b2f",
+  "files": {
+    "results/ootang_transformer_regularization_v1/20260914/analysis/calibration_errors.csv": "102c44a143feb3c19e9d3fd7f5fe20bf6d9b14bf291032c12e3527e7d48a4aec",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/calibration_transfer.csv": "baae6add1958c22886efc2fcf7558c9ee177b6c27b19872c255980495f96648b",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/correction_amplitudes.csv": "3f8459e7dd84df3033cad1ef97cb553299e7a36da3fd2f4085158e2653f7b77a",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/cross_scoring.csv": "b2eaaca5e4cb16aeccf8711a24a10a0bc8e9a1b6b1914682caa5a84a97d9f8aa",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/fitting_summary.csv": "f048ffd3374e442d227fab18c69f8b99ea157d11dbaac450991f3368568d339d",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/metrics_by_point.csv": "0a82e9cb95d9bbc1424e573be7004a84a9d0af202db64512821dbd6fc17d014b",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/phase_summary.csv": "ab2a0be13741e2b7b0685af568157a7c116fc1aaa848236ddda28edafbb62c7a",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/regularization_pairing.csv": "14a17992cb035516914d9d54f504c09db89b9dbef8b910d298f1924301bff371",
+    "results/ootang_transformer_regularization_v1/20260914/analysis/seed_summary.csv": "9b5a8f3a6efe01b17de66973c32907993b30e190fd19ddec618c8c65e17ab266"
+  }
+}

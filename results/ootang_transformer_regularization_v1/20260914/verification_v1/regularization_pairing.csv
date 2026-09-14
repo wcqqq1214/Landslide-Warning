@@ -1,0 +1,5 @@
+phase,type,ensemble_improved,seed_agreement,paired_pass
+development,mean,True,3,True
+development,probability,True,3,True
+final_exploratory,mean,True,2,True
+final_exploratory,probability,True,3,True

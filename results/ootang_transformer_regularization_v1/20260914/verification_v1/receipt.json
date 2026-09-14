@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:02:57.539257+00:00",
+  "formal_new_fits": 0,
+  "optimizer_updates": 0,
+  "model_checkpoints": 45,
+  "numerical_values_checked": 696320,
+  "max_abs_difference": 5.4569682106375694e-12,
+  "source_files_checked": 779,
+  "execution_errors": 0,
+  "formal_fits_audited": 9,
+  "formal_updates_audited": 3600,
+  "formal_training_seconds": 73.15392654202878,
+  "source_control_refits": 0,
+  "cross_combinations": 18,
+  "cross_point_rows": 72,
+  "calibration_error_rows": 2160,
+  "event_rows": 40,
+  "verification_end_utc": "2026-09-14T15:03:07.785593+00:00"
+}
