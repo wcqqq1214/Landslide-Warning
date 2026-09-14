@@ -1,0 +1,18 @@
+{
+  "time_utc": "2026-09-14T18:40:15.586635+00:00",
+  "files": {
+    "code/overnight_graph/run.py": "982461041f778d53a2c1d9b6244085f50532fd94cfb6fd7d7d1ee9f6612e4804",
+    "code/overnight_graph/__init__.py": "aff1e5096adb0fc1f2f164888bb7380159479b4ccc4930bbba8e9867203ec48d",
+    "code/overnight_graph/core.py": "d89680e75799642c6c9a612049ddf94e6239815c8b3be4b517e13448a2d2cd62",
+    "code/overnight_graph/diagnostic.py": "e82d9ce01ed7e3b1e3f79cd24184942f3f06b9a4c88ad80beaf535c2448818cb",
+    "code/overnight_graph/preflight.py": "b318e8c10cdfacbbefe23cbb5ebc5f339887d1b566562bf0bc4b2ef9ef2125c7",
+    "config/ootang_overnight_graph.v1_0.json": "79bd46e4162c49d288e1d8f654b142f3ef8a994ba2acb794001b656704198a91",
+    "docs/ootang_overnight_graph_sources.v1.0.json": "2e37ee7fb065adfed92907ce04659f2f0b588ef7d5eea40069a98db7a93d58e9",
+    "docs/ootang_overnight_graph_plan.v1.0.md": "3f9541591331f49ad4758c5fdfba757606ec93a684ac8d8048a52b589eedeccc",
+    "docs/ootang_overnight_graph_implementation.v1.0.md": "cac3d740a0eba6533f050d85bdbb48a2cdc0257cd77fb6ac5ff6522ce4a503a4",
+    "results/ootang_overnight_graph_v1/20260915/preflight/GRU_GRAPH_probe.pt": "06524ec1bf9a1e930c74115dc3f0c62f8d529f58e410f183121d5774e6e684e7",
+    "results/ootang_overnight_graph_v1/20260915/preflight/GRU_LOCAL_probe.pt": "97418502dc8fa3975b136cc5ae06d8d0bfcd592f5bd9b852fd7c37b43a61a6e2",
+    "results/ootang_overnight_graph_v1/20260915/preflight/GRU_GRAPH_DUAL_probe.pt": "c279934568afb91ab8d55c8f49045c6b2a6c48d2b409821357ee9c85fba21a8f",
+    "results/ootang_overnight_graph_v1/20260915/preflight/receipt.json": "d8443d459a485eb7abfdd626034bcfa431252bb8418dd71f79cc859299ccf4be"
+  }
+}

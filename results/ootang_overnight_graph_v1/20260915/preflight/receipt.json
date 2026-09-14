@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T18:40:15.586158+00:00",
+  "source_files": 301,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "label_prefix_max": 612,
+  "parameters": {
+    "GRU_LOCAL": 1241,
+    "GRU_GRAPH": 1241,
+    "GRU_GRAPH_DUAL": 1258
+  },
+  "checks": {
+    "all12_schedules_teacher_target_bounds": "passed",
+    "node_local_preprocessing": "passed",
+    "future_labels_cannot_change_inputs": "passed",
+    "ema_future_isolation": "passed",
+    "GRU_LOCAL_neighbor_effect_mm_normalized": [
+      0.0,
+      0.0,
+      0.0,
+      0.004406345654959343
+    ],
+    "GRU_GRAPH_neighbor_effect_mm_normalized": [
+      0.0,
+      0.0,
+      0.00022367396968055175,
+      0.0040909259867745375
+    ],
+    "GRU_GRAPH_DUAL_neighbor_effect_mm_normalized": [
+      0.0,
+      0.0,
+      0.0002236739696805587,
+      0.00409092598677454
+    ],
+    "zero_fallback_common_initialization_reload_queries_gradient": "passed for all3"
+  },
+  "one_batch_forward_backward_seconds": {
+    "GRU_LOCAL": 0.06060691690072417,
+    "GRU_GRAPH": 0.02923933370038867,
+    "GRU_GRAPH_DUAL": 0.02715808292850852
+  }
+}
