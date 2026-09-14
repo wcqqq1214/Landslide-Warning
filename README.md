@@ -3,7 +3,13 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前（2026-09-14）：按导师条件重新训练 TCN 已完整执行并交付，实验结束。** [图文对比报告](docs/ootang_tcn_conditional_training_results.v1.0.md)／[三张中文四点PNG/SVG](figures/ootang_tcn_conditional_v1/20260914/README.md)／[两阶段CSV](results/ootang_tcn_conditional_v1/20260914/analysis/phase_summary.csv)。给定逐日未来降雨/水位、原B+连续状态、无预测段位移反馈；18次拟合/3600次更新、完整376日开发和293日最终评价。最终平均RMSE：B+9.12、DRIFT1 12.98、岭回归12.34、TCN直接43.25、残差12.86 mm。残差版改善直接版均值，但两臂仍未超过B+、工作条件失败，保留负结果；66检查点和全部评分/图件核验完成。只本地提交，不追加模型/训练，不push/PDF。
+**当前（2026-09-14）：轻量 Transformer 与 CNN-Mamba 的完整条件实验已跑通并交付。** [完整对比报告](docs/ootang_sequence_conditional_results.v1.0.md)／[五张中文四点PNG/SVG](figures/ootang_sequence_conditional_v1/20260914/README.md)／[九方法CSV](results/ootang_sequence_conditional_v1/20260914/analysis/phase_summary.csv)。两个结构各直接/残差三种子，36次拟合、14400次更新，完整开发376日和最终293日，未因效果差中断；180检查点及全部预测/评分已独立核验。
+
+最终四点平均RMSE：B+ **9.1242**、DRIFT1 **12.9777**、岭回归 **12.3382**；TCN直接/残差 **43.2534/12.8621**，Transformer **36.4169/9.2791**，CNN-Mamba **39.6101/10.3756 mm**。两种新残差版的均值优于旧TCN残差版；Transformer残差MAE6.8838略低于B+6.9017，但RMSE及概率未同时改善。四个新方法两阶段完整工作条件均0/4，保留负结果。最终残差均值改善各3/3种子，开发不稳定、概率配对两阶段均0/3；宽区间和重复历史日期限制保留。
+
+本次按给定未来逐日驱动、无预测段位移反馈的导师条件协议，CPU Mamba-1已对官方参考与独立串行递推核对；不混用旧8点Mamba或七日滚动任务成绩。见[计划](docs/ootang_sequence_conditional_plan.v1.0.md)、[核验](docs/ootang_sequence_conditional_validation.v1.0.md)、[最终回执](results/ootang_sequence_conditional_v1/20260914/final_receipt.json)。分支`codex/transformer-mamba-conditional`仅本地提交，不push/PDF，不追加模型或训练。
+
+**上一轮：按导师条件重新训练 TCN 已完整执行并交付，实验结束。** [图文对比报告](docs/ootang_tcn_conditional_training_results.v1.0.md)／[三张中文四点PNG/SVG](figures/ootang_tcn_conditional_v1/20260914/README.md)／[两阶段CSV](results/ootang_tcn_conditional_v1/20260914/analysis/phase_summary.csv)。给定逐日未来降雨/水位、原B+连续状态、无预测段位移反馈；18次拟合/3600次更新、完整376日开发和293日最终评价。最终平均RMSE：B+9.12、DRIFT1 12.98、岭回归12.34、TCN直接43.25、残差12.86 mm。残差版改善直接版均值，但两臂仍未超过B+、工作条件失败，保留负结果；66检查点和全部评分/图件核验完成。只本地提交，不追加模型/训练，不push/PDF。
 
 此前[训练计划](docs/ootang_tcn_conditional_training_plan.v1.0.md)的“尚未执行”是形成时状态，后续授权与实际执行见[执行补充](docs/ootang_tcn_conditional_execution.v1.0.md)和[最终回执](results/ootang_tcn_conditional_v1/20260914/final_receipt.json)。下方两个旧TCN实验也均已完成，结果保持，跨协议不混排。
 

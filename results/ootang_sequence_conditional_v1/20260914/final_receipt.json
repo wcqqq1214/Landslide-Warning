@@ -1,0 +1,291 @@
+{
+  "status": "complete",
+  "implementation": "verified",
+  "fixed_training": "all complete",
+  "evaluation": "complete development and final exploratory windows; all dates retained",
+  "acceptance": "user/mentor acceptance not provided",
+  "branch": "codex/transformer-mamba-conditional",
+  "start_utc": "2026-09-14T12:33:39+00:00",
+  "deadline_utc": "2026-09-14T14:33:39+00:00",
+  "completed_artifacts_utc": "2026-09-14T13:14:56.034762+00:00",
+  "elapsed_seconds": 2477.034762,
+  "elapsed_minutes": 41.283912699999995,
+  "duration_scope": "from first task clock through prepared and verified artifacts; final manifest and local commit bookkeeping follow",
+  "formal_fits": 36,
+  "optimizer_updates": 14400,
+  "checkpoint_count": 180,
+  "training_loop_seconds": 617.9741324596107,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "selected_updates": {
+    "TRANSFORMER": 400,
+    "CNN_MAMBA": 400
+  },
+  "new_old_model_fits": 0,
+  "new_bplus_refits": 0,
+  "new_physical_forwards": 0,
+  "source_count": 73,
+  "numerical_values_checked": 2220800,
+  "numerical_max_difference": 1.4722445484949276e-11,
+  "figures": 5,
+  "panels": 20,
+  "svg_values_checked": 77224,
+  "figure_qa": "passed; visual review separate and completed",
+  "future_displacement_feedback": false,
+  "given_future_forcing": true,
+  "development_joint_pass_count": 0,
+  "final_joint_pass_count": 0,
+  "development_winners": {
+    "mean": "DRIFT1",
+    "probability": "DRIFT1"
+  },
+  "residual_seed_agreement": {
+    "development": {
+      "TRANSFORMER": {
+        "mean": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      "CNN_MAMBA": {
+        "mean": {
+          "improving_seeds": 1,
+          "by_seed": [
+            false,
+            false,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "final_exploratory": {
+      "TRANSFORMER": {
+        "mean": {
+          "improving_seeds": 3,
+          "by_seed": [
+            true,
+            true,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      "CNN_MAMBA": {
+        "mean": {
+          "improving_seeds": 3,
+          "by_seed": [
+            true,
+            true,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Repeated historical windows, exploratory evaluation, not a fresh blind test.",
+    "Known future daily forcing is conditional information.",
+    "Fixed marginal RMS90 scale transferred between refitted stages; excessive width retained.",
+    "Original teacher nonconvergence and data as-of limits retained.",
+    "Mamba-1 CPU float64 adaptation verified; no official CUDA execution or old 8-point weight reuse."
+  ],
+  "formal_training_errors": 0,
+  "observed_diagnostics": [
+    "Official source API rate limited; immutable public Git sources used.",
+    "Pre-training unused import corrected; no model fitting repeated.",
+    "Independent ridge NumPy matmul warnings preserved, finite arrays agree numerically.",
+    "Static PDF-only checks not applicable; actual SVG/PNG dimensions/alignment/text/values checked."
+  ],
+  "budget_remaining_transferred": false,
+  "extra_candidates": 0,
+  "push": false,
+  "pdf": false,
+  "commits_before_delivery": [
+    "4803fe9 feat: verify sequence results and comparison artifacts",
+    "e15cfa5 feat: complete fixed transformer and mamba experiments",
+    "818720f feat: implement and verify conditional sequence models",
+    "655b041 docs: freeze transformer and mamba conditional experiment"
+  ],
+  "report": "docs/ootang_sequence_conditional_results.v1.0.md",
+  "figure_index": "figures/ootang_sequence_conditional_v1/20260914/README.md",
+  "verification_files": {
+    "models": "68700c828ccd7d2e2b89648671a097204e0daf5fdfeb4fe3dfd3745220b22b0a",
+    "figures": "4863ef5945e515ddb6bdd538542df49158783d545c7cfa3397a1f9bf7a08360c",
+    "visual_review": "55aa2cf887a88b386e8acee8064b7f09c3fd7f0ae617a932d181e726fda971ee"
+  },
+  "final_all_method_scores": {
+    "BPLUS_CONTINUOUS": {
+      "n_per_point": 293,
+      "mae": 6.901689250361964,
+      "rmse": 9.124173217774597,
+      "crps": 16.154436020259663,
+      "coverage80": 1.0,
+      "width80": 171.46866018184943,
+      "interval_score80": 171.46866018184943,
+      "coverage90": 1.0,
+      "width90": 220.07764275077767,
+      "interval_score90": 220.07764275077767,
+      "coverage95": 1.0,
+      "width95": 262.23868587835307,
+      "interval_score95": 262.23868587835307
+    },
+    "DRIFT1": {
+      "n_per_point": 293,
+      "mae": 9.109845279087784,
+      "rmse": 12.9777345313275,
+      "crps": 7.277586720603404,
+      "coverage80": 0.5580204778156996,
+      "width80": 18.47638823828197,
+      "interval_score80": 54.77568021272784,
+      "coverage90": 0.6808873720136518,
+      "width90": 23.714187570584983,
+      "interval_score90": 78.31358831977961,
+      "coverage95": 0.7960750853242321,
+      "width95": 28.257197357504115,
+      "interval_score95": 118.5121179321772
+    },
+    "RR_COND": {
+      "n_per_point": 293,
+      "mae": 11.318236548369157,
+      "rmse": 12.338213669009026,
+      "crps": 18.572699509267117,
+      "coverage80": 1.0,
+      "width80": 194.25307811229553,
+      "interval_score80": 194.25307811229553,
+      "coverage90": 1.0,
+      "width90": 249.32112657028864,
+      "interval_score90": 249.32112657028864,
+      "coverage95": 1.0,
+      "width95": 297.0844460904333,
+      "interval_score95": 297.0844460904333
+    },
+    "TCN_DIRECT_COND": {
+      "n_per_point": 293,
+      "mae": 39.48799583588641,
+      "rmse": 43.25335670757466,
+      "crps": 37.43602173539068,
+      "coverage80": 1.0,
+      "width80": 347.80465934349786,
+      "interval_score80": 347.80465934349786,
+      "coverage90": 1.0,
+      "width90": 446.40244744944204,
+      "interval_score90": 446.40244744944204,
+      "coverage95": 1.0,
+      "width95": 531.9213243509196,
+      "interval_score95": 531.9213243509196
+    },
+    "TCN_BRES_COND": {
+      "n_per_point": 293,
+      "mae": 11.495659945329464,
+      "rmse": 12.862059398748798,
+      "crps": 18.814220063409955,
+      "coverage80": 1.0,
+      "width80": 196.5437456985451,
+      "interval_score80": 196.5437456985451,
+      "coverage90": 1.0,
+      "width90": 252.26116658793842,
+      "interval_score90": 252.26116658793842,
+      "coverage95": 1.0,
+      "width95": 300.58771984882827,
+      "interval_score95": 300.58771984882827
+    },
+    "TRANSFORMER_DIRECT_COND": {
+      "n_per_point": 293,
+      "mae": 32.84790521418843,
+      "rmse": 36.41685844101815,
+      "crps": 22.82284336792871,
+      "coverage80": 0.8873720136518771,
+      "width80": 138.30035359437292,
+      "interval_score80": 157.48589170828058,
+      "coverage90": 0.9189419795221843,
+      "width90": 177.50658212625657,
+      "interval_score90": 197.9257088622365,
+      "coverage95": 0.947098976109215,
+      "width95": 211.51213839681589,
+      "interval_score95": 229.89020184841138
+    },
+    "TRANSFORMER_BRES_COND": {
+      "n_per_point": 293,
+      "mae": 6.883835616636941,
+      "rmse": 9.27908197971311,
+      "crps": 19.176916655313555,
+      "coverage80": 1.0,
+      "width80": 204.77835314544103,
+      "interval_score80": 204.77835314544103,
+      "coverage90": 1.0,
+      "width90": 262.8301708244495,
+      "interval_score90": 262.8301708244495,
+      "coverage95": 1.0,
+      "width95": 313.1814651624495,
+      "interval_score95": 313.1814651624495
+    },
+    "CNN_MAMBA_DIRECT_COND": {
+      "n_per_point": 293,
+      "mae": 36.249985041741326,
+      "rmse": 39.61011918014843,
+      "crps": 26.29436093583977,
+      "coverage80": 0.8839590443686007,
+      "width80": 173.3899145496582,
+      "interval_score80": 194.64741891354896,
+      "coverage90": 0.9155290102389079,
+      "width90": 222.54354603563203,
+      "interval_score90": 248.1010920935316,
+      "coverage95": 0.9360068259385665,
+      "width95": 265.17699087308443,
+      "interval_score95": 293.3705341592801
+    },
+    "CNN_MAMBA_BRES_COND": {
+      "n_per_point": 293,
+      "mae": 8.49882484225024,
+      "rmse": 10.375614434729393,
+      "crps": 18.99048992028832,
+      "coverage80": 1.0,
+      "width80": 202.01421265964365,
+      "interval_score80": 202.01421265964365,
+      "coverage90": 1.0,
+      "width90": 259.28243491923445,
+      "interval_score90": 259.28243491923445,
+      "coverage95": 1.0,
+      "width95": 308.9540770915921,
+      "interval_score95": 308.9540770915921
+    }
+  }
+}

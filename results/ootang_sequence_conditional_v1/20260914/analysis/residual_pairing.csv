@@ -1,0 +1,5 @@
+phase,family,mean_ensemble,probability_ensemble,mean_seeds,probability_seeds,rmse_difference,crps_difference,is90_difference,mean_paired_condition,probability_paired_condition
+development,TRANSFORMER,False,False,0,0,11.329825235472846,11.970985163599913,317.49983883982406,False,False
+development,CNN_MAMBA,False,False,1,0,2.5502444453213471,7.7393166981511143,273.63182670003539,False,False
+final_exploratory,TRANSFORMER,True,False,3,0,-27.137776461305037,-3.6459267126151538,64.90446196221302,True,False
+final_exploratory,CNN_MAMBA,True,False,3,0,-29.234504745419038,-7.3038710155514508,11.181342825702842,True,False

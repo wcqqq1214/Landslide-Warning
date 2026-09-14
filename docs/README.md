@@ -1,5 +1,8 @@
 # 项目文档导航
 
+**最新完成（2026-09-14）：轻量 Transformer / CNN-Mamba 条件实验。**
+[完整对比报告](ootang_sequence_conditional_results.v1.0.md)／[冻结计划](ootang_sequence_conditional_plan.v1.0.md)／[独立核验](ootang_sequence_conditional_validation.v1.0.md)／[五张四点图](../figures/ootang_sequence_conditional_v1/20260914/README.md)／[九方法CSV](../results/ootang_sequence_conditional_v1/20260914/analysis/phase_summary.csv)。36次拟合/14400次更新，完整开发/最终已跑通，效果负结果保留，停止追加训练；不push/PDF。
+
 **当前：TCN 按导师条件重新训练、完整评价和交付已完成。** [完整报告](ootang_tcn_conditional_training_results.v1.0.md)／[三张中文四点图](../figures/ootang_tcn_conditional_v1/20260914/README.md)／[两阶段CSV](../results/ootang_tcn_conditional_v1/20260914/analysis/phase_summary.csv)／[核验](ootang_tcn_conditional_validation.v1.0.md)。18次拟合/3600次更新，固定100次完整开发与最终评价，不因开发失败停跑。最终B+9.1242、DIRECT43.2534、BRES12.8621 mm；残差版均值改善直接版但仍未超过B+，概率区间过宽，保留全部负结果。原[计划](ootang_tcn_conditional_training_plan.v1.0.md)、[执行补充](ootang_tcn_conditional_execution.v1.0.md)、[最终回执](../results/ootang_tcn_conditional_v1/20260914/final_receipt.json)分开保存。当前结束，不自动加模型、训练、PDF或push。
 
 **此前：导师风格8:2无位移反馈递推已完成并停止。** [简短图文报告](ootang_tcn_independent_results.v1.0.md)／[两张中文四点图](../figures/ootang_tcn_independent_v1/20260914/README.md)／[五方法表](../results/ootang_tcn_independent_v1/20260914/score/summary.csv)／[逐点表](../results/ootang_tcn_independent_v1/20260914/score/metrics_by_point.csv)／[最终回执](../results/ootang_tcn_independent_v1/20260914/final_receipt.json)。固定短期TCN以自身输出递推完整293日，新增训练0；DIRECT/BRES平均RMSE90.73/211.83 mm，均明显落后B+10.17 mm与DRIFT1，保留完整负结果。[事前协议](ootang_tcn_independent_plan.v1.0.md)／[配置](../config/ootang_tcn_independent.v1_0.json)／[来源](ootang_tcn_independent_sources.v1.0.json)／[核验边界](ootang_tcn_independent_validation.v1.0.md)。两张最终图已核对，旧滚动结论保持，不作新盲测，不制作PDF或追加训练。

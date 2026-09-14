@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T13:06:49.132592+00:00",
+  "reviewer": "Codex via view_image; not user or mentor acceptance",
+  "files": {
+    "TRANSFORMER_BRES_COND.png": "ac8f2784ff1e56766603a1c4bbe6a1d4bd706c85753ebe80a380c243e14dacd7",
+    "all_methods_forecast.png": "ef3cf9e57824d910b7855e101aaccdf0501bca862ac81273aef23f5a1e6d43a3",
+    "TRANSFORMER_DIRECT_COND.png": "25a71748e52acc72e80ea55103f012bb1c6ddd09578fe00cb50d3d0d7b0047f8",
+    "CNN_MAMBA_DIRECT_COND.png": "61140ad437d01b5d6a846c7186ec20cfbc48af23561a8ee6f5de1bdb3c0017cd",
+    "CNN_MAMBA_BRES_COND.png": "4323dc2939535aa37ced2575ce80edd5f0af23b9938fba6b1fd7caf863762519"
+  },
+  "figures": 5,
+  "panels": 20,
+  "inspected": "Complete 300-dpi PNGs, all four panels each; legible Chinese text and legends, intact axes and full date ranges, no clipped annotations or missing glyphs",
+  "scientific_notes": [
+    "Large intervals preserved without narrowing; 100% coverage is not efficacy.",
+    "Direct models flatten in prediction; poor curves retained.",
+    "Residual predictions improve some points; all four points and difficult final dates retained.",
+    "Comparison has all nine fixed methods; color plus line styles distinguish the curves."
+  ],
+  "acceptance": "not requested or inferred"
+}

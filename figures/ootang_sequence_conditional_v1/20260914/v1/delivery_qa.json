@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T13:04:48.166065+00:00",
+  "figures": 5,
+  "panels": 20,
+  "curve_and_band_values_checked": 77224,
+  "max_svg_quantization_difference_mm": 5.520617150978069e-06,
+  "svg_tolerance_mm": 0.0001,
+  "reason": "six-decimal SVG coordinate serialization only; raw model tolerances unchanged",
+  "exports": [
+    {
+      "figure": "TRANSFORMER_DIRECT_COND",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    },
+    {
+      "figure": "TRANSFORMER_BRES_COND",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    },
+    {
+      "figure": "CNN_MAMBA_DIRECT_COND",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    },
+    {
+      "figure": "CNN_MAMBA_BRES_COND",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    },
+    {
+      "figure": "all_methods_forecast",
+      "width_mm": 240.00000013055555,
+      "height_mm": 170.00000007777777,
+      "png_pixels": [
+        2834,
+        2007
+      ],
+      "font": "Arial Unicode MS",
+      "missing_glyphs": []
+    }
+  ],
+  "excluded_dates": 0,
+  "pdf_audits": "not run: user explicitly requested no PDF",
+  "static_preflight": "rendered SVG geometry, fonts, text collisions and data checked directly; no PDF by user request",
+  "visual_inspection": "pending separate human-visible image inspection; not inferred from automated checks"
+}

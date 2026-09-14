@@ -1,0 +1,9 @@
+phase,model,mean_condition,probability_condition,joint_condition,BPLUS_CONTINUOUS_mean_both,BPLUS_CONTINUOUS_probability_both,DRIFT1_mean_both,DRIFT1_probability_both,RR_COND_mean_both,RR_COND_probability_both,TCN_DIRECT_COND_mean_both,TCN_DIRECT_COND_probability_both,TCN_BRES_COND_mean_both,TCN_BRES_COND_probability_both
+development,TRANSFORMER_DIRECT_COND,False,False,False,True,True,False,False,True,True,True,True,True,True
+development,TRANSFORMER_BRES_COND,False,False,False,False,False,False,False,False,False,True,False,True,False
+development,CNN_MAMBA_DIRECT_COND,False,False,False,False,True,False,False,False,True,True,True,True,True
+development,CNN_MAMBA_BRES_COND,False,False,False,False,False,False,False,False,False,True,False,False,False
+final_exploratory,TRANSFORMER_DIRECT_COND,False,False,False,False,False,False,False,False,False,True,True,False,False
+final_exploratory,TRANSFORMER_BRES_COND,False,False,False,False,False,True,False,True,False,True,True,True,False
+final_exploratory,CNN_MAMBA_DIRECT_COND,False,False,False,False,False,False,False,False,False,True,True,False,False
+final_exploratory,CNN_MAMBA_BRES_COND,False,False,False,False,False,True,False,True,False,True,True,True,False

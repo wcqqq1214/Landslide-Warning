@@ -1,0 +1,21 @@
+figure,point,all_dates_preserved,curve_values_checked,axis_units_verified,interval,alignment,text_geometry
+TRANSFORMER_DIRECT_COND,ATU1,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_DIRECT_COND,ATU5,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_DIRECT_COND,MJ3,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_DIRECT_COND,MJ1,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_BRES_COND,ATU1,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_BRES_COND,ATU5,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_BRES_COND,MJ3,True,True,True,80/95% frozen marginal,PASS,PASS
+TRANSFORMER_BRES_COND,MJ1,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_DIRECT_COND,ATU1,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_DIRECT_COND,ATU5,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_DIRECT_COND,MJ3,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_DIRECT_COND,MJ1,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_BRES_COND,ATU1,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_BRES_COND,ATU5,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_BRES_COND,MJ3,True,True,True,80/95% frozen marginal,PASS,PASS
+CNN_MAMBA_BRES_COND,MJ1,True,True,True,80/95% frozen marginal,PASS,PASS
+all_methods_forecast,ATU1,True,True,True,mean only; intervals in companion figures,PASS,PASS
+all_methods_forecast,ATU5,True,True,True,mean only; intervals in companion figures,PASS,PASS
+all_methods_forecast,MJ3,True,True,True,mean only; intervals in companion figures,PASS,PASS
+all_methods_forecast,MJ1,True,True,True,mean only; intervals in companion figures,PASS,PASS

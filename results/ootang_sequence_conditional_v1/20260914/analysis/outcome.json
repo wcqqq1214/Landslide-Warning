@@ -1,0 +1,220 @@
+{
+  "status": "executed_and_verified",
+  "joint_pass_counts": {
+    "development": 0,
+    "final_exploratory": 0
+  },
+  "final_mean_rank_minimum": "TRANSFORMER_BRES_COND",
+  "final_probability_rank_minimum": "DRIFT1",
+  "final_rmse_minimum": "BPLUS_CONTINUOUS",
+  "development_selection": {
+    "time_utc": "2026-09-14T12:55:15.358644+00:00",
+    "source_phase": "development",
+    "selected_updates": {
+      "TRANSFORMER": 400,
+      "CNN_MAMBA": 400
+    },
+    "mean_winner": "DRIFT1",
+    "probability_winner": "DRIFT1",
+    "effects": {
+      "TRANSFORMER_DIRECT_COND": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": true,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": true,
+          "MJ3_rmse": true,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": true,
+          "average_interval_score90": true,
+          "coverage90_average": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "ATU5_coverage90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": true
+        }
+      },
+      "TRANSFORMER_BRES_COND": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": false,
+          "ATU1_crps": false,
+          "ATU1_interval_score90": false,
+          "ATU1_coverage90": false,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": false,
+          "ATU5_coverage90": false,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": false
+        }
+      },
+      "CNN_MAMBA_DIRECT_COND": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": true,
+          "MJ3_rmse": true,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": true,
+          "average_interval_score90": true,
+          "coverage90_average": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": true,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": true,
+          "ATU5_coverage90": true,
+          "MJ3_crps": true,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": false,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": true,
+          "MJ1_coverage90": true
+        }
+      },
+      "CNN_MAMBA_BRES_COND": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": false,
+          "ATU1_rmse": false,
+          "ATU5_mae": false,
+          "ATU5_rmse": false,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": false,
+          "average_interval_score90": false,
+          "coverage90_average": false,
+          "ATU1_crps": false,
+          "ATU1_interval_score90": false,
+          "ATU1_coverage90": false,
+          "ATU5_crps": false,
+          "ATU5_interval_score90": true,
+          "ATU5_coverage90": false,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": true,
+          "MJ3_coverage90": true,
+          "MJ1_crps": false,
+          "MJ1_interval_score90": false,
+          "MJ1_coverage90": false
+        }
+      }
+    },
+    "complete_final_even_if_failed": true
+  },
+  "residual_pairing": [
+    {
+      "phase": "development",
+      "family": "TRANSFORMER",
+      "mean_ensemble": false,
+      "probability_ensemble": false,
+      "mean_seeds": 0,
+      "probability_seeds": 0,
+      "rmse_difference": 11.329825235472846,
+      "crps_difference": 11.970985163599913,
+      "is90_difference": 317.49983883982406,
+      "mean_paired_condition": false,
+      "probability_paired_condition": false
+    },
+    {
+      "phase": "development",
+      "family": "CNN_MAMBA",
+      "mean_ensemble": false,
+      "probability_ensemble": false,
+      "mean_seeds": 1,
+      "probability_seeds": 0,
+      "rmse_difference": 2.550244445321347,
+      "crps_difference": 7.739316698151114,
+      "is90_difference": 273.6318267000354,
+      "mean_paired_condition": false,
+      "probability_paired_condition": false
+    },
+    {
+      "phase": "final_exploratory",
+      "family": "TRANSFORMER",
+      "mean_ensemble": true,
+      "probability_ensemble": false,
+      "mean_seeds": 3,
+      "probability_seeds": 0,
+      "rmse_difference": -27.137776461305037,
+      "crps_difference": -3.6459267126151538,
+      "is90_difference": 64.90446196221302,
+      "mean_paired_condition": true,
+      "probability_paired_condition": false
+    },
+    {
+      "phase": "final_exploratory",
+      "family": "CNN_MAMBA",
+      "mean_ensemble": true,
+      "probability_ensemble": false,
+      "mean_seeds": 3,
+      "probability_seeds": 0,
+      "rmse_difference": -29.234504745419038,
+      "crps_difference": -7.303871015551451,
+      "is90_difference": 11.181342825702842,
+      "mean_paired_condition": true,
+      "probability_paired_condition": false
+    }
+  ],
+  "new_fits": 36,
+  "optimizer_updates": 14400,
+  "checkpoints": 180,
+  "old_model_fits": 0,
+  "physical_calls": 0,
+  "user_or_mentor_acceptance": "not provided",
+  "exploratory": true
+}

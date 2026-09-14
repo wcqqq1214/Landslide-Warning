@@ -18,6 +18,8 @@
 
 # Current Stage Plan
 
+- **最新完成：Transformer / CNN-Mamba 按导师条件的全部实验与交付已完成。** 先读 `docs/ootang_sequence_conditional_results.v1.0.md`、`docs/ootang_sequence_conditional_validation.v1.0.md` 和 `results/ootang_sequence_conditional_v1/20260914/final_receipt.json`。两个固定结构各DIRECT/BRES三种子，内部均选400次；36次拟合/14400次更新、180检查点，完整376日开发和293日最终评价，训练异常0。最终平均RMSE B+9.124173、DRIFT1 12.977735、RR12.338214、旧TCN43.253357/12.862059、Transformer36.416858/9.279082、CNN-Mamba39.610119/10.375614 mm。新残差版均值改善旧TCN，Transformer残差MAE略低于B+但RMSE及概率未同时改善；四臂两阶段完整条件均0/4。最终残差均值各3/3种子，开发不稳定；概率配对两阶段均0/3。2220800数值、完整发出顺序、五图20面板及报告核对通过；旧NumPy矩阵警告保留，原结果和宽区间不改。此为重复历史日期的探索性条件预测；CPU Mamba-1适配不冒称旧8点CUDA分支同任务。分支 `codex/transformer-mamba-conditional`，分步本地提交，不push/PDF，不自动追加训练；独立12:33:39—14:33:39 UTC剩余窗口不转用，实际用时见回执。下方授权的“尚未训练”是形成时记录。
+
 - **最新授权：轻量 Transformer 与 CNN-Mamba 条件训练完整实验。** 用户要求两个模型同样跑完；依据 `docs/ootang_sequence_conditional_plan.v1.0.md` 和配置。分支 `codex/transformer-mamba-conditional`，独立 2026-09-14 12:33:39—14:33:39 UTC；两个固定结构各DIRECT/BRES三种子，沿用导师条件驱动、无位移反馈，完整开发376日和最终293日，效果失败不停止。旧同协议TCN/B+/DRIFT1/RR只复用，最多新增36次拟合/14400次更新；不扫描结构、不push/PDF。当前先冻结与实现核验，尚未开始新训练；下方TCN完成状态保持，不覆盖这次明确新授权。
 
 - **最新完成：按导师条件从头训练 TCN，所有阶段与交付已跑通并结束。** 见 `docs/ootang_tcn_conditional_training_results.v1.0.md`、`docs/ootang_tcn_conditional_validation.v1.0.md` 与 `results/ootang_tcn_conditional_v1/20260914/final_receipt.json`。6996参数、两臂三种子，18次拟合/3600次更新，内部共选100次；完整376日开发与293日最终评价，未因效果差中止。最终B+/DRIFT1/RR/DIRECT/BRES平均RMSE9.124173/12.977735/12.338214/43.253357/12.862059 mm，两臂整体失败，保留负结果。BRES较DIRECT均值在两阶段和3/3种子改善，概率收益有阶段/测点限制；其四点主要评分仍差于B+。66检查点独立前向、509586数值、完整发出顺序及三图12面板/38612个SVG值核对通过。首次图件打包键冲突修复为v2，原件保留，训练未重跑。来源冻结`d68cecc`、实现`c880721`、训练结果`9ade9a2`；只在`codex/tcn-conditional-training`本地提交，不push/PDF，不自动追加候选或更新，独立120分钟余额不转用。下方本轮授权及仅计划文字保留形成时状态。
