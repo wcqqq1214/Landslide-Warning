@@ -1,0 +1,19 @@
+{
+  "time_utc": "2026-09-14T16:42:43.579303+00:00",
+  "files": {
+    "code/transformer_temporal/__init__.py": "4296f36fc75a4e3413c52a7d46e01c982bdba34306e66c0e59af841c6af25fcb",
+    "code/transformer_temporal/core.py": "fb0aabc454bbc97fb79096f3b317148b9bf51f22710c1640cd65992ba4a3d306",
+    "code/transformer_temporal/preflight.py": "0aafa07daa7c36bb4d97cbb887032d34c597525b137a03ff6443db97b1a5e9b6",
+    "code/transformer_temporal/run.py": "a4eefc0a5200d39994315b157a66bfa5ebef48537881c59334e224bd8af63e43",
+    "config/ootang_transformer_temporal.v1_0.json": "200e48c6f7782e963b1556f1b9d30d8f0b3f053eaf675ca15f7b48ffaeae8089",
+    "docs/ootang_transformer_temporal_plan.v1.0.md": "1824202f46ab358b597c2e7d2dcf976440db28b95e1af74d9caf7b9adef5c12e",
+    "docs/ootang_transformer_temporal_sources.v1.0.json": "73e5db09e657f3d5f2d9159ddb30db76379459b87a87ec77a93b062800f9c590",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/receipt.json": "2df226fd6f5842613c52b689387353f6d3383e60af74ac1a2a74d2467421ed57",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/teacher_1168.npz": "246f561e69e8a15ecc08dd875005fc2560df75468d70aba1a6bdb0778961a6a7",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/teacher_432.npz": "8529411b37c891ecc3bf9b012fa27a2c33f80a04eebcf80cd888a042c81ac9ee",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/teacher_612.npz": "e6e993355482c8a65d47525a6424a48ab1abc1b7b9b0e61ebc8d30a5b4b1141d",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/teacher_792.npz": "38cf31f2416c1694ee4145cf3ef15704334830cbb1d9332e5391b79b261e39b0",
+    "results/ootang_transformer_temporal_v1/20260914/implementation_verification/teacher_972.npz": "a4b5e299e039be4866e85f7649e47e1c2801c521a04826eaf290898270c74cf8",
+    "tests/test_transformer_temporal.py": "3c029877c864ad66dbf9b710f5372827a9ce11f309282ecc45681777c5cf623e"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "unit_checks": "6 unittest cases, including four lambda gradient subcases",
+  "lint": "passed",
+  "initial_test_command": "pytest not installed; no tests or training executed by that command; equivalent cases run through standard-library unittest",
+  "formal_training": 0,
+  "preflight": "passed",
+  "physical_forwards": 11
+}
