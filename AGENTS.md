@@ -18,6 +18,8 @@
 
 # Current Stage Plan
 
+- **最新授权：轻量 Transformer 与 CNN-Mamba 条件训练完整实验。** 用户要求两个模型同样跑完；依据 `docs/ootang_sequence_conditional_plan.v1.0.md` 和配置。分支 `codex/transformer-mamba-conditional`，独立 2026-09-14 12:33:39—14:33:39 UTC；两个固定结构各DIRECT/BRES三种子，沿用导师条件驱动、无位移反馈，完整开发376日和最终293日，效果失败不停止。旧同协议TCN/B+/DRIFT1/RR只复用，最多新增36次拟合/14400次更新；不扫描结构、不push/PDF。当前先冻结与实现核验，尚未开始新训练；下方TCN完成状态保持，不覆盖这次明确新授权。
+
 - **最新完成：按导师条件从头训练 TCN，所有阶段与交付已跑通并结束。** 见 `docs/ootang_tcn_conditional_training_results.v1.0.md`、`docs/ootang_tcn_conditional_validation.v1.0.md` 与 `results/ootang_tcn_conditional_v1/20260914/final_receipt.json`。6996参数、两臂三种子，18次拟合/3600次更新，内部共选100次；完整376日开发与293日最终评价，未因效果差中止。最终B+/DRIFT1/RR/DIRECT/BRES平均RMSE9.124173/12.977735/12.338214/43.253357/12.862059 mm，两臂整体失败，保留负结果。BRES较DIRECT均值在两阶段和3/3种子改善，概率收益有阶段/测点限制；其四点主要评分仍差于B+。66检查点独立前向、509586数值、完整发出顺序及三图12面板/38612个SVG值核对通过。首次图件打包键冲突修复为v2，原件保留，训练未重跑。来源冻结`d68cecc`、实现`c880721`、训练结果`9ade9a2`；只在`codex/tcn-conditional-training`本地提交，不push/PDF，不自动追加候选或更新，独立120分钟余额不转用。下方本轮授权及仅计划文字保留形成时状态。
 
 - **最新执行授权：用户要求无论效果多差都跑通 TCN 新实验。** 见 `docs/ootang_tcn_conditional_execution.v1.0.md` 与配置；分支 `codex/tcn-conditional-training`，独立 2026-09-14 11:44:16—13:44:16 UTC。执行整段条件训练，两臂/三种子和完整开发/最终评价；效果门不阻塞后续，代码问题修复后继续，保留负结果。旧参数/数据/切分不变，不加候选、轮数或恢复旧预算，只本地分步 commit，不 push/PDF。此项覆盖下方“先计划、尚未授权执行”的形成时记录。

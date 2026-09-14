@@ -1,0 +1,29 @@
+{
+  "upstream_commit": "e9594ce1c732d97440f0332fdc43170a2294dbfa",
+  "historical_branch_commit": "8b7e965211f7023a7871d400262c4771518e23fd",
+  "retrieval_note": "GitHub API rate limited (403); resolved public HEAD through git ls-remote, downloaded immutable raw paths. No models executed.",
+  "files": {
+    "mamba_simple.py": {
+      "url": "https://raw.githubusercontent.com/state-spaces/mamba/e9594ce1c732d97440f0332fdc43170a2294dbfa/mamba_ssm/modules/mamba_simple.py",
+      "sha256": "a17e4c51b582dc0d4d690a649eba521cd0c1ee3dc8f0473a0967cdc9ec0874e3"
+    },
+    "selective_scan_interface.py": {
+      "url": "https://raw.githubusercontent.com/state-spaces/mamba/e9594ce1c732d97440f0332fdc43170a2294dbfa/mamba_ssm/ops/selective_scan_interface.py",
+      "sha256": "a570f4f15a2eebabf62024a9ffb0d1dde04280300405e1632f43809f448bfb1a"
+    },
+    "LICENSE": {
+      "url": "https://raw.githubusercontent.com/state-spaces/mamba/e9594ce1c732d97440f0332fdc43170a2294dbfa/LICENSE",
+      "sha256": "760939b000194d04548ede6a857bbe735d1695d8422ec85955c8e2bd7f4b95c5"
+    },
+    "historical_cnn_mamba_model.py": {
+      "git_commit": "8b7e965211f7023a7871d400262c4771518e23fd",
+      "path": "code/cnn_mamba/model.py",
+      "sha256": "22bb2f795da63363d948bd881758ad6458cb6077f43e74097908046b0e6e0564"
+    },
+    "historical_run.json": {
+      "git_commit": "8b7e965211f7023a7871d400262c4771518e23fd",
+      "path": "figures/pipeline/cnn_mamba_wsl2_120.json",
+      "sha256": "cbd090624cf160269ca8d838142bf998c2a3835bf3a309357d78da15d97e9f16"
+    }
+  }
+}
