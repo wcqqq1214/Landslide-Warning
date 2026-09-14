@@ -1,0 +1,61 @@
+{
+  "selection": {
+    "time_utc": "2026-09-14T15:54:19.783197+00:00",
+    "selection_phase": "development",
+    "mean_winner": "DRIFT1",
+    "probability_winner": "DRIFT1__LAST90",
+    "seed_reg_beats_half": [
+      true,
+      true,
+      true
+    ],
+    "search_trigger_checks": {
+      "average_mae": true,
+      "average_rmse": false,
+      "ATU1_mae": true,
+      "ATU1_rmse": true,
+      "ATU5_mae": true,
+      "ATU5_rmse": true,
+      "MJ3_mae": true,
+      "MJ3_rmse": true,
+      "MJ1_mae": false,
+      "MJ1_rmse": false,
+      "two_paired_seeds": true,
+      "bplus_mean_gate": false
+    },
+    "search_recommendation": false,
+    "new_training_authorized_in_this_config": false,
+    "final_labels_used": false
+  },
+  "mean": {
+    "n_per_point": 293,
+    "mae": 9.109845279087784,
+    "rmse": 12.9777345313275,
+    "crps": 7.277586720603404,
+    "coverage80": 0.5580204778156996,
+    "width80": 18.47638823828197,
+    "interval_score80": 54.77568021272784,
+    "coverage90": 0.6808873720136518,
+    "width90": 23.714187570584983,
+    "interval_score90": 78.31358831977961,
+    "coverage95": 0.7960750853242321,
+    "width95": 28.257197357504115,
+    "interval_score95": 118.5121179321772
+  },
+  "probability": {
+    "n_per_point": 293,
+    "mae": 9.109845279087784,
+    "rmse": 12.9777345313275,
+    "crps": 7.277586720603404,
+    "coverage80": 0.5580204778156996,
+    "width80": 18.47638823828197,
+    "interval_score80": 54.77568021272784,
+    "coverage90": 0.6808873720136518,
+    "width90": 23.714187570584983,
+    "interval_score90": 78.31358831977961,
+    "coverage95": 0.7960750853242321,
+    "width95": 28.257197357504115,
+    "interval_score95": 118.5121179321772
+  },
+  "selection_changed": false
+}

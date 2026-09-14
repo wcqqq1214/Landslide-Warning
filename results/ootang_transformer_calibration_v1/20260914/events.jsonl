@@ -1,0 +1,13 @@
+{"time_utc": "2026-09-14T15:54:19.557162+00:00", "event": "phase_started", "phase": "development"}
+{"time_utc": "2026-09-14T15:54:19.571765+00:00", "event": "means_locked", "phase": "development"}
+{"time_utc": "2026-09-14T15:54:19.574660+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "development_mature_calibration_and_units"}
+{"time_utc": "2026-09-14T15:54:19.606301+00:00", "event": "distribution_locked", "phase": "development", "last_calibration_index": 791, "forecast_start": 792}
+{"time_utc": "2026-09-14T15:54:19.606349+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "development_scoring_after_lock"}
+{"time_utc": "2026-09-14T15:54:19.783501+00:00", "event": "development_selection_locked", "mean_winner": "DRIFT1", "probability_winner": "DRIFT1__LAST90"}
+{"time_utc": "2026-09-14T15:54:19.786910+00:00", "event": "phase_completed", "phase": "development", "distributions": 18, "new_fits": 0}
+{"time_utc": "2026-09-14T15:54:40.763624+00:00", "event": "phase_started", "phase": "final_exploratory"}
+{"time_utc": "2026-09-14T15:54:40.780389+00:00", "event": "means_locked", "phase": "final_exploratory"}
+{"time_utc": "2026-09-14T15:54:40.783857+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "final_exploratory_mature_calibration_and_units"}
+{"time_utc": "2026-09-14T15:54:40.825432+00:00", "event": "distribution_locked", "phase": "final_exploratory", "last_calibration_index": 1167, "forecast_start": 1168}
+{"time_utc": "2026-09-14T15:54:40.825477+00:00", "event": "label_prefix_read", "rows": 1461, "last_index": 1460, "purpose": "final_exploratory_scoring_after_lock"}
+{"time_utc": "2026-09-14T15:54:40.975899+00:00", "event": "phase_completed", "phase": "final_exploratory", "distributions": 18, "new_fits": 0}

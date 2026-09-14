@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T15:54:19.606051+00:00",
+  "phase": "development",
+  "latest_observed_index": 791,
+  "source_indices": [
+    702,
+    792
+  ],
+  "source_teacher_prefix": 612,
+  "source_phase": "internal",
+  "update_during_forecast": false,
+  "files": {
+    "calibration_history.npz": "cebab927bb6b004f2359a7f1420ebc6f79bd715f30cca9a696f0fe7396060baa",
+    "issued_distribution.npz": "de61f8d8505322309ec312c52966908476e36acf0f1cf9b899631e85d6087733"
+  }
+}

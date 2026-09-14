@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:58:26.443371+00:00",
+  "numerical_values_checked": 1171142,
+  "max_abs_difference": 2.9558577807620168e-12,
+  "model_checkpoints": 18,
+  "ridge_reloads": 3,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "source_files_checked": 1012,
+  "event_records": 13,
+  "distributions_checked": 36,
+  "summary_rows": 36,
+  "point_rows": 144,
+  "seed_summary_rows": 54,
+  "daily_rows_checked": 48168,
+  "distance_support_rows": 2007,
+  "final_selection_unchanged": true,
+  "calibration_has_no_current_target_labels": true,
+  "old_last90_predictions_preserved": true,
+  "source_guard_after": 1012
+}

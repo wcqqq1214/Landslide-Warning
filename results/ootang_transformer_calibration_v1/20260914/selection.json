@@ -1,0 +1,28 @@
+{
+  "time_utc": "2026-09-14T15:54:19.783197+00:00",
+  "selection_phase": "development",
+  "mean_winner": "DRIFT1",
+  "probability_winner": "DRIFT1__LAST90",
+  "seed_reg_beats_half": [
+    true,
+    true,
+    true
+  ],
+  "search_trigger_checks": {
+    "average_mae": true,
+    "average_rmse": false,
+    "ATU1_mae": true,
+    "ATU1_rmse": true,
+    "ATU5_mae": true,
+    "ATU5_rmse": true,
+    "MJ3_mae": true,
+    "MJ3_rmse": true,
+    "MJ1_mae": false,
+    "MJ1_rmse": false,
+    "two_paired_seeds": true,
+    "bplus_mean_gate": false
+  },
+  "search_recommendation": false,
+  "new_training_authorized_in_this_config": false,
+  "final_labels_used": false
+}

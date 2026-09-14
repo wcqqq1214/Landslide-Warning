@@ -1,0 +1,77 @@
+{
+  "status": "passed_with_recorded_warnings",
+  "time_utc": "2026-09-14T15:59:24.818712+00:00",
+  "numpy_version": "2.2.6",
+  "records": [
+    {
+      "phase": "internal",
+      "rows": 792,
+      "input_finite": true,
+      "both_replays_finite": true,
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "matrix_fsum_max_abs_difference": 1.3322676295501878e-15,
+      "saved_prediction_max_abs_difference_mm": 2.2737367544323206e-13
+    },
+    {
+      "phase": "development",
+      "rows": 1168,
+      "input_finite": true,
+      "both_replays_finite": true,
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "matrix_fsum_max_abs_difference": 1.3322676295501878e-15,
+      "saved_prediction_max_abs_difference_mm": 2.2737367544323206e-13
+    },
+    {
+      "phase": "final_exploratory",
+      "rows": 1461,
+      "input_finite": true,
+      "both_replays_finite": true,
+      "warnings": [
+        {
+          "category": "RuntimeWarning",
+          "message": "divide by zero encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "overflow encountered in matmul"
+        },
+        {
+          "category": "RuntimeWarning",
+          "message": "invalid value encountered in matmul"
+        }
+      ],
+      "matrix_fsum_max_abs_difference": 1.1102230246251565e-15,
+      "saved_prediction_max_abs_difference_mm": 2.2737367544323206e-13
+    }
+  ],
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "core_or_saved_results_changed": false,
+  "interpretation": "Finite outputs match explicit scalar summation; underlying NumPy/BLAS warning cause is not established or claimed fixed."
+}

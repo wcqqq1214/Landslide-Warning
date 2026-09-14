@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T15:54:40.825081+00:00",
+  "phase": "final_exploratory",
+  "latest_observed_index": 1167,
+  "source_indices": [
+    792,
+    1168
+  ],
+  "source_teacher_prefix": 792,
+  "source_phase": "development",
+  "update_during_forecast": false,
+  "files": {
+    "calibration_history.npz": "f3878f5fe97c947fd79d80d97f7419ff20e66a7f6b26d4910b8d0aee6dfdf01d",
+    "issued_distribution.npz": "8a4e986dc9394f4d7a562329e29483a5ca690d3d4129f6d1dab556f097f1cf2b"
+  }
+}

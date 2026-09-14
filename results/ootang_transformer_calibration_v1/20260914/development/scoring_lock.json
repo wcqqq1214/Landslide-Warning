@@ -1,0 +1,22 @@
+{
+  "time_utc": "2026-09-14T15:54:19.783632+00:00",
+  "phase": "development",
+  "methods": 6,
+  "distributions": 18,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "files": {
+    "calibration_history.npz": "cebab927bb6b004f2359a7f1420ebc6f79bd715f30cca9a696f0fe7396060baa",
+    "daily_predictions.csv": "2ea84ceb52ee5dfc8431ab7f82b21095bc2c0062b7c6a7b2fa9fb53ab6ef1b57",
+    "distribution_lock.json": "be7a9661ebb41ae7efa2d3b6d9f6c3ef01d32770da8dc4ef5dd1fe1925a10618",
+    "effect_gates.json": "3ca2b33b237e8019fd1294bd32c05374ab96b8be39aa5d423084a2cfe764fe51",
+    "full_means.npz": "51171943a8cc484fd8d7d8e48750a89947a1cef7b12b0f6b75871b1c1c0af973",
+    "issued_distribution.npz": "de61f8d8505322309ec312c52966908476e36acf0f1cf9b899631e85d6087733",
+    "mean_lock.json": "2ef72191a9f481656e5b25c15a40d1d51f927c66b45c4a75646900c6f9ab9a8c",
+    "means.npz": "b7a06d11029004f5160383ae4b02d3be34e6f83b270565aed9eaac774ef69122",
+    "metrics_by_point.csv": "3622d859ef4ab878068938aa7f3c3be2b16a759c6f83e4402b771ed38b008ae3",
+    "seed_full_means.npz": "6c54bcbac90f15fe5727f5d84ae719eeb16caf27c9969808fd8ed619b98f47a4",
+    "seed_metrics.csv": "c82d9fe4cb505600fc813b3385dfafd350ea83e0f013aabb1994975a10878a22",
+    "summary.csv": "266e7c4b03ea1f300930e8610d95669b495d461f89aeb02d2de5e56405eef929"
+  }
+}

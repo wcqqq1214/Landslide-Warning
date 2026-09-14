@@ -1,0 +1,10 @@
+{
+  "time_utc": "2026-09-14T15:54:40.779942+00:00",
+  "phase": "final_exploratory",
+  "rows": 293,
+  "files": {
+    "full_means.npz": "2de44a201289a2662a4607e784b2e6c1e88c15f09f857ead2552defaee282cd4",
+    "means.npz": "484d83d53e8d58fa59e6368b91c0aecae446567deb6f299ff6af1c0aad713306",
+    "seed_full_means.npz": "3be491a3dc7bddafdaca8cd2d6ce05f918f3f7241efa5799492e822d907e4ee5"
+  }
+}
