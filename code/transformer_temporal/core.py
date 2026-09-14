@@ -40,6 +40,13 @@ def spec():
     return read_json(CONFIG)
 
 
+def checkpoint_updates(saved):
+    values = [saved[k] for k in ("step", "updates") if k in saved]
+    if not values or any(v != values[0] for v in values):
+        raise ValueError("Missing or conflicting checkpoint update metadata")
+    return int(values[0])
+
+
 def guard():
     files = read_json(SOURCES)["files"]
     for p, h in files.items():

@@ -1,0 +1,11 @@
+{"time_utc": "2026-09-14T16:43:45.871133+00:00", "event": "label_prefix_read", "rows": 432, "last_index": 431, "purpose": "alpha_origin_432_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:43:45.887478+00:00", "event": "fit_started", "origin": 432, "key": "L0", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:43:48.236349+00:00", "event": "fit_completed", "origin": 432, "key": "L0", "seed": 0, "updates": 400, "elapsed_seconds": 2.3535917080007493}
+{"time_utc": "2026-09-14T16:43:48.239887+00:00", "event": "fit_started", "origin": 432, "key": "L0", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:43:50.633787+00:00", "event": "fit_completed", "origin": 432, "key": "L0", "seed": 1, "updates": 400, "elapsed_seconds": 2.394577708095312}
+{"time_utc": "2026-09-14T16:43:50.635448+00:00", "event": "fit_started", "origin": 432, "key": "L0", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:43:52.957630+00:00", "event": "fit_completed", "origin": 432, "key": "L0", "seed": 2, "updates": 400, "elapsed_seconds": 2.322837000247091}
+{"time_utc": "2026-09-14T16:43:52.960532+00:00", "event": "ridge_fitted", "origin": 432, "training_rows": 432}
+{"time_utc": "2026-09-14T16:43:52.971191+00:00", "event": "candidate_means_locked", "origin": 432, "phase": "alpha", "lock_sha256": "c12e12627286cc8590ca90b7e82b0d53ca047cb411461ab4e423fc0bed42032a"}
+{"time_utc": "2026-09-14T16:43:52.971336+00:00", "event": "trajectory_issued", "origin": 432, "phase": "alpha", "bootstrap": true}
+{"time_utc": "2026-09-14T16:43:52.973405+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "alpha_origin_612_training_selection_calibration"}

@@ -9,6 +9,7 @@ import torch
 
 from transformer_temporal.core import (
     ALPHAS,
+    checkpoint_updates,
     ARM,
     TrajectoryModel,
     objective,
@@ -113,6 +114,12 @@ def test_selection_tie_prefers_smaller_alpha():
 
 
 class TemporalContracts(unittest.TestCase):
+    def test_checkpoint_schemas(self):
+        self.assertEqual(checkpoint_updates({"updates": 400}), 400)
+        self.assertEqual(checkpoint_updates({"step": 400}), 400)
+        with self.assertRaises(ValueError):
+            checkpoint_updates({"updates": 200, "step": 400})
+
     def test_label_prefix(self):
         with tempfile.TemporaryDirectory() as temp:
             test_future_labels_are_not_read(Path(temp))

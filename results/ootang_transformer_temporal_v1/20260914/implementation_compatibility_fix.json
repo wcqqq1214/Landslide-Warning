@@ -1,0 +1,24 @@
+{
+  "time_utc": "2026-09-14T16:45:20.041808+00:00",
+  "reason": "legacy L0 stores updates; REG1 stores step",
+  "changes": {
+    "code/transformer_temporal/core.py": {
+      "before": "fb0aabc454bbc97fb79096f3b317148b9bf51f22710c1640cd65992ba4a3d306",
+      "after": "d537193c9b7fbde17f37e1966cb70786f17d7650cd95ca9de5622b4b07e1927f"
+    },
+    "code/transformer_temporal/run.py": {
+      "before": "a4eefc0a5200d39994315b157a66bfa5ebef48537881c59334e224bd8af63e43",
+      "after": "3ec5245e38089dff6f55b97d2b5bff676922b0b7b5e040b816d392b092a2f2a1"
+    },
+    "tests/test_transformer_temporal.py": {
+      "before": "3c029877c864ad66dbf9b710f5372827a9ce11f309282ecc45681777c5cf623e",
+      "after": "144e94c473bcb2d7360e67cd352a9401df71bf080603a4ad1a419f4822335a87"
+    }
+  },
+  "frozen_design_changed": false,
+  "completed_fits_preserved": 3,
+  "completed_updates_preserved": 1200,
+  "old_lock": "results/ootang_transformer_temporal_v1/20260914/implementation_lock.v1.json",
+  "sources_verified": 156,
+  "resume": "skip locked origin432, continue old checkpoint reuse at612; no repeated training"
+}

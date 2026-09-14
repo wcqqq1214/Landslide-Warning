@@ -18,6 +18,7 @@ from .core import (
     ROOT,
     TrajectoryModel,
     check_deadline,
+    checkpoint_updates,
     drift,
     effect,
     event,
@@ -61,7 +62,7 @@ def fit_one(cfg, n, key, seed, data, y):
     if source is not None:
         model, oldscale, saved = reload_model(source, cfg)
         assert oldscale.state == scale.state
-        assert saved["training_prefix"] == n and saved["step"] == 400
+        assert saved["training_prefix"] == n and checkpoint_updates(saved) == 400
         if key == "L1":
             assert saved["regularization_lambda"] == strength
         mean = predict(model, scale, ARM, data["x"], data["mean"])

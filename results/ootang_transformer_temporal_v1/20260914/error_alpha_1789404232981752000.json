@@ -1,0 +1,4 @@
+{
+  "time": "2026-09-14T16:43:52.981756+00:00",
+  "traceback": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py\", line 482, in main\n    run_phase(args.phase)\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py\", line 276, in run_phase\n    [fit_one(cfg, n, \"L0\", s, data, y) for s in cfg[\"neural\"][\"seeds\"]]\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py\", line 276, in <listcomp>\n    [fit_one(cfg, n, \"L0\", s, data, y) for s in cfg[\"neural\"][\"seeds\"]]\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py\", line 64, in fit_one\n    assert saved[\"training_prefix\"] == n and saved[\"step\"] == 400\nKeyError: 'step'\n"
+}
