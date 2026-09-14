@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "started_utc": "2026-09-14T18:05:16.575130+00:00",
+  "values_checked": 9027212,
+  "max_difference": 2.1600499167107046e-12,
+  "checkpoint_count": 144,
+  "fits_checked": 36,
+  "updates_checked": 7200,
+  "new_fits": 0,
+  "new_updates": 0,
+  "physical_forwards": 0,
+  "source_files": 253,
+  "finished_utc": "2026-09-14T18:05:19.932746+00:00",
+  "events_checked": 83,
+  "summary_rows": 27,
+  "point_rows": 108,
+  "seed_rows": 81,
+  "daily_rows": 31644,
+  "audit_script_sha256": "16f650a67211ec06ca0daacb2276c3a480e92ea77c68799779557b5fa4233380"
+}
