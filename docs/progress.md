@@ -1,5 +1,7 @@
 # 藕塘科研进度
 
+**新授权：Transformer残差幅度正则化单假设验证。** 用户要求按建议继续验证；冻结[计划](ootang_transformer_regularization_plan.v1.0.md)、配置及来源。仅λ=1输出修正平方惩罚，结构/种子/400次保持；9拟合/3600更新、完整开发376日及最终293日，不因效果差停止。原版与B+/DRIFT1/RR复用，概率规则保持，另做固定均值/尺度交叉诊断。独立14:48:30—16:48:30 UTC包含准备；分支`codex/transformer-residual-regularization`，本地提交，不push/PDF，旧结果及预算保持。当前新训练0，先实现核验。
+
 **两种新结构的完整比较与交付已完成。** [Transformer / CNN-Mamba完整报告](ootang_sequence_conditional_results.v1.0.md)／[五张四点PNG/SVG](../figures/ootang_sequence_conditional_v1/20260914/README.md)／[九方法CSV](../results/ootang_sequence_conditional_v1/20260914/analysis/phase_summary.csv)。36次拟合/14400次更新，两个结构各两臂三种子内部共选400次；开发376日与最终293日全部完成，未因效果差停止。最终新四臂RMSE分别36.416858/9.279082/39.610119/10.375614 mm；B+9.124173，旧TCN残差12.862059。新残差均值更接近B+，Transformer残差MAE稍优，但四臂两阶段完整条件均失败；开发配对不稳定、概率配对0/3，最终配对均值各3/3。完整180检查点、2220800数值、五图20面板/77224图元数值、报告34行表格及3190CSV单元格已核验和目视；源警告及负结果保留。全部预定工作完成，只本地提交，不push/PDF、不追加候选或更新；实际总用时见[最终回执](../results/ootang_sequence_conditional_v1/20260914/final_receipt.json)，旧预算不恢复，余额不转用。
 
 **Transformer / CNN-Mamba 独立复核与图件核验完成。** 180检查点逐个重载一致，独立NumPy因果注意力/串行Mamba及原岭回归SVD核对2220800个数值，最大差1.47e-11。所有发出顺序、成熟误差尺度、评分、选择和门槛均通过。五图20面板/77224个实际SVG值、尺寸/字体/1.5pt对齐及目视通过；报告34行表格/160个数值/3190个CSV单元格复核通过。旧NumPy矩阵警告保留，有限结果与原解一致；PDF相关静态检查不适用，未宣称全部静态门通过。没有新增拟合，接着只完成导航/最终回执与本地提交。

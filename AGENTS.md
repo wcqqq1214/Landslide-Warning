@@ -18,6 +18,8 @@
 
 # Current Stage Plan
 
+- **最新授权：Transformer残差幅度正则化单假设验证。** 用户要求进一步验证，依据`docs/ootang_transformer_regularization_plan.v1.0.md`和配置。仅新增λ=1输出幅度平方惩罚，原结构/三种子/400更新不变；9拟合3600更新，完整开发376日及最终293日，效果差不停止。原版/B+/DRIFT1/RR和物理缓存复用，主概率规则不变，固定3×3均值/尺度仅诊断。新分支`codex/transformer-residual-regularization`，自限14:48:30—16:48:30 UTC含准备；本地分步commit，不push/PDF，旧预算不恢复。当前先冻结实现核验，新训练0；下方完成记录不阻止这次明确新授权。
+
 - **最新完成：Transformer / CNN-Mamba 按导师条件的全部实验与交付已完成。** 先读 `docs/ootang_sequence_conditional_results.v1.0.md`、`docs/ootang_sequence_conditional_validation.v1.0.md` 和 `results/ootang_sequence_conditional_v1/20260914/final_receipt.json`。两个固定结构各DIRECT/BRES三种子，内部均选400次；36次拟合/14400次更新、180检查点，完整376日开发和293日最终评价，训练异常0。最终平均RMSE B+9.124173、DRIFT1 12.977735、RR12.338214、旧TCN43.253357/12.862059、Transformer36.416858/9.279082、CNN-Mamba39.610119/10.375614 mm。新残差版均值改善旧TCN，Transformer残差MAE略低于B+但RMSE及概率未同时改善；四臂两阶段完整条件均0/4。最终残差均值各3/3种子，开发不稳定；概率配对两阶段均0/3。2220800数值、完整发出顺序、五图20面板及报告核对通过；旧NumPy矩阵警告保留，原结果和宽区间不改。此为重复历史日期的探索性条件预测；CPU Mamba-1适配不冒称旧8点CUDA分支同任务。分支 `codex/transformer-mamba-conditional`，分步本地提交，不push/PDF，不自动追加训练；独立12:33:39—14:33:39 UTC剩余窗口不转用，实际用时见回执。下方授权的“尚未训练”是形成时记录。
 
 - **最新授权：轻量 Transformer 与 CNN-Mamba 条件训练完整实验。** 用户要求两个模型同样跑完；依据 `docs/ootang_sequence_conditional_plan.v1.0.md` 和配置。分支 `codex/transformer-mamba-conditional`，独立 2026-09-14 12:33:39—14:33:39 UTC；两个固定结构各DIRECT/BRES三种子，沿用导师条件驱动、无位移反馈，完整开发376日和最终293日，效果失败不停止。旧同协议TCN/B+/DRIFT1/RR只复用，最多新增36次拟合/14400次更新；不扫描结构、不push/PDF。当前先冻结与实现核验，尚未开始新训练；下方TCN完成状态保持，不覆盖这次明确新授权。

@@ -1,0 +1,203 @@
+{
+  "version": "ootang_transformer_regularization.v1.0",
+  "plan": "docs/ootang_transformer_regularization_plan.v1.0.md",
+  "start_utc": "2026-09-14T14:48:30+00:00",
+  "deadline_utc": "2026-09-14T16:48:30+00:00",
+  "branch": "codex/transformer-residual-regularization",
+  "run_id": "20260914",
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "out": "results/ootang_transformer_regularization_v1/20260914",
+  "figures": "figures/ootang_transformer_regularization_v1/20260914",
+  "runtime": "runtime/ootang_rolling_v3/reference",
+  "stages": {
+    "internal": [
+      612,
+      792
+    ],
+    "development": [
+      792,
+      1168
+    ],
+    "final_exploratory": [
+      1168,
+      1461
+    ]
+  },
+  "internal_selection_indices": [
+    612,
+    702
+  ],
+  "initial_calibration_indices": [
+    702,
+    792
+  ],
+  "final_calibration_indices": [
+    1078,
+    1168
+  ],
+  "methods": [
+    "BPLUS_CONTINUOUS",
+    "DRIFT1",
+    "RR_COND",
+    "TRANSFORMER_BRES_COND",
+    "TRANSFORMER_BRES_REG1"
+  ],
+  "arms": [
+    "TRANSFORMER_BRES_REG1"
+  ],
+  "neural": {
+    "input_channels": 22,
+    "hidden": 16,
+    "output_channels": 4,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "checkpoints": [
+      50,
+      100,
+      200,
+      400
+    ],
+    "batch": "full_training_sequence",
+    "dtype": "float64",
+    "device": "cpu",
+    "threads": 1,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0,
+    "head_initialization": "zero",
+    "clip_grad": null,
+    "dropout": 0.0,
+    "transformer": {
+      "hidden": 16,
+      "heads": 2,
+      "layers": 2,
+      "feedforward": 32,
+      "activation": "gelu",
+      "norm_first": true,
+      "layer_norm_eps": 1e-05,
+      "causal_attention": true,
+      "position": "fixed sinusoidal absolute daily index from day zero; base 10000",
+      "input_projection": "linear 22 to 16 with bias",
+      "final_layer_norm": true
+    }
+  },
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "ridge": {
+    "alpha": 1.0,
+    "fit_intercept": true
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "selection": {
+    "tie_tolerance": 1e-12,
+    "quality": "fixed lambda=1 and inherited 400 updates; no internal tuning",
+    "mean_keys": [
+      "mae",
+      "rmse"
+    ],
+    "probability_keys": [
+      "crps",
+      "interval_score90"
+    ],
+    "reuse_tcn_updates": 100
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "teacher_sources": {
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json"
+  },
+  "teacher_parameter_records": {
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json"
+  },
+  "teacher_limits": "frozen existing parameter estimates; historic optimizer nonconvergence retained",
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor"
+  },
+  "max_neural_fits": 9,
+  "max_optimizer_updates": 3600,
+  "max_ridge_fits": 0,
+  "max_bplus_refits": 0,
+  "continue_after_poor_effect": true,
+  "new_candidates": false,
+  "push": false,
+  "pdf": false,
+  "reuse": "results/ootang_tcn_conditional_v1/20260914",
+  "max_physical_forwards": 0,
+  "families": {
+    "TRANSFORMER": [
+      "TRANSFORMER_BRES_COND",
+      "TRANSFORMER_BRES_REG1"
+    ]
+  },
+  "reuse_methods": [
+    "BPLUS_CONTINUOUS",
+    "DRIFT1",
+    "RR_COND",
+    "TRANSFORMER_BRES_COND"
+  ],
+  "reuse_sequence": "results/ootang_sequence_conditional_v1/20260914",
+  "regularization": {
+    "lambda": 1.0,
+    "penalty": "mean squared normalized network correction on training rows only",
+    "canonical_model_arm": "TRANSFORMER_BRES_COND",
+    "fixed_updates": 400,
+    "select_strength": false,
+    "select_updates": false
+  },
+  "cross_diagnostics": [
+    "BPLUS_CONTINUOUS",
+    "TRANSFORMER_BRES_COND",
+    "TRANSFORMER_BRES_REG1"
+  ]
+}
