@@ -1,0 +1,13 @@
+figure,panel,role,center,uncertainty,replicate,numeric,alignment,geometry,visual
+COND_ATTN_mentor,ATU1,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_mentor,ATU5,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_mentor,MJ3,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_mentor,MJ1,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_full,ATU1,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_full,ATU5,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_full,MJ3,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+COND_ATTN_full,MJ1,complete point-specific trajectory,ensemble prediction only after origin,Gaussian 80/95% marginal prediction intervals,three fixed seeds,passed,PASS,PASS,passed
+comparison,a,temporal error direction,score of equal-seed ensemble forecast,all three seed scores as faint points; no significance claim,overlapping time windows and seeds,passed,PASS,PASS,passed
+comparison,b,paired information/attention comparison,score of equal-seed ensemble forecast,all three seed scores as faint points; no significance claim,overlapping time windows and seeds,passed,PASS,PASS,passed
+comparison,c,final spatial error,score of equal-seed ensemble forecast,all three seed scores as faint points; no significance claim,overlapping time windows and seeds,passed,PASS,PASS,passed
+comparison,d,temporal probability coverage,score of equal-seed ensemble forecast,all three seed scores as faint points; no significance claim,overlapping time windows and seeds,passed,PASS,PASS,passed

@@ -1,0 +1,32 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T18:11:15.815907+00:00",
+  "figures": 3,
+  "panels": 12,
+  "values_checked": 35247,
+  "max_svg_quantization_difference_mm": 5.030572424402635e-06,
+  "exports": [
+    {
+      "figure": "COND_ATTN_mentor",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "COND_ATTN_full",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "comparison",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    }
+  ],
+  "audit_script_sha256": "b087f6438b0d929865bc57354201990e5bec8a1d03a7a62a2f47103b7f06ac8b",
+  "pdf_audits": "not performed: user requested no PDF",
+  "visual_inspection": "passed: all 12 panels reviewed; final trajectory PNG hashes equal the two reviewed previews; comparison reviewed after final export",
+  "visual_time_utc": "2026-09-14T18:15:34.481539+00:00"
+}

@@ -1,0 +1,38 @@
+{
+  "time_utc": "2026-09-14T18:09:43.277503+00:00",
+  "exports": [
+    {
+      "figure": "COND_ATTN_mentor",
+      "kind": "trajectory",
+      "method": "COND_ATTN"
+    },
+    {
+      "figure": "COND_ATTN_full",
+      "kind": "trajectory",
+      "method": "COND_ATTN"
+    },
+    {
+      "figure": "comparison",
+      "kind": "comparison"
+    }
+  ],
+  "source_script_sha256": "81dd2870a878ea08d720c0a9b9288dc1fe565426eb5361faeadff3c5462eaef6",
+  "contract_sha256": "165ac5148961745d81a5eade89aebab42638a19847338f4d9d678b9fbb977e90",
+  "files": {
+    "COND_ATTN_full.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "COND_ATTN_full.png": "6a206c19f324fd73327a93e82091643da1aba7835585fa4f28c805fde6b90883",
+    "COND_ATTN_full.svg": "9c86e7838a337cd5f851d05369feb184e11ea0bcd3da046f0a0266725a543158",
+    "COND_ATTN_full.text_geometry.json": "feac49efd289d5437ee028c9eb5c8a1b3153795670159179b989a53a98912919",
+    "COND_ATTN_mentor.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "COND_ATTN_mentor.png": "2379f67bfdc17a55848c6c3269bce5a79fb5df5c0f8f985e8328a3781e3ac9f6",
+    "COND_ATTN_mentor.svg": "7ed07b4b9cb06025f48b3497aebf125a4807e3b539fbd3d6afe99bd2828deb9f",
+    "COND_ATTN_mentor.text_geometry.json": "6377ddf83e6c997e4cfdabdb8d3e5b2497d174ef084469b89d912552b5e14dd4",
+    "comparison.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "comparison.png": "097001b22b1f8110e5e387559cb82115b201665243419a3dee5c4c194b24d58e",
+    "comparison.svg": "d0214f8c0d2d8b901dab4273d75cbb60b8bd465080248c3d6f647a222aabca65",
+    "comparison.text_geometry.json": "d2b074a40429537ac7c44bf31146cf4158013f37db4e2e414e4daff942f61f21",
+    "figure_numbers.csv": "cbb3bcbebb089e8fe82a53c204dd7a718bba1085c72d450712488d14c3239142",
+    "plot_records.json": "bf6e74e8e6af51a7f390311c879d754cb1bd78d35fa696f914b7ba2d3ffd1711",
+    "source_arrays.npz": "14ad9d3ce822b0d6571944b7fd5834623e8fb432125199304ddc9130ffb6294c"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "status": "failed_before_comparison_export",
+  "reason": "TypeError: Object of type int64 is not JSON serializable",
+  "location": "write_json(plot_records.json); np.arange(4) passed through list preserves numpy int64",
+  "scope": "plot record serialization only; two trajectory previews preserved; no training/scoring changed"
+}

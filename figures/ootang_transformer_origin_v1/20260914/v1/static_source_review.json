@@ -1,0 +1,22 @@
+{
+  "status": "resolved_by_export_evidence_and_user_scope",
+  "raw_counts": {
+    "PASS": 16,
+    "WARN": 2,
+    "FAIL": 3
+  },
+  "editable_text": "SVG contains editable text, min7.6pt and complete Arial Unicode MS glyphs; PDF font setting irrelevant to user no-PDF scope",
+  "export_vector": "SVG produced by imported transformer_regularization.figures.save; actual 240x170mm checked. PDF explicitly excluded",
+  "export_raster": "PNG produced by imported save; actual 2834x2007 pixels and 300dpi checked",
+  "final_width": "Mentor presentation 240x170mm, not a Nature submission-size claim",
+  "collision": "Every final render measured all text boxes and annotation-data strokes; no PDF collision report created",
+  "visual": {
+    "a": "three-model error curves and all seeds fit; B+ ratio reference at1",
+    "b": "both matched contrasts and seed differences readable, zero reference visible",
+    "c": "MJ3/MJ1 deterioration and all seeds visible",
+    "d": "coverage lines, seeds and90% target visible; width warning in caption",
+    "trajectory": "four point labels/ticks/units/grid/separation correct; neural curve begins at1168; true bands displayed, full copy shows all extents"
+  },
+  "qualification": "Raw static FAIL results remain recorded; no claim of full automatic static pass",
+  "time_utc": "2026-09-14T18:15:34.483324+00:00"
+}
