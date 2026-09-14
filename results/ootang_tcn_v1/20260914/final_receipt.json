@@ -1,0 +1,71 @@
+{
+  "status": "complete_fixed_experiment_and_delivery",
+  "implementation_validation": "passed",
+  "predictive_effectiveness": "both_tcn_arms_failed_frozen_complete_working_conditions",
+  "user_or_supervisor_acceptance": "not_provided",
+  "branch": "codex/tcn-short-horizon",
+  "start_utc": "2026-09-14T09:24:37+00:00",
+  "deadline_utc": "2026-09-14T11:24:37+00:00",
+  "deliverables_locked_at_utc": "2026-09-14T10:13:32.443916+00:00",
+  "elapsed_minutes_to_delivery_lock": 48.924065266666666,
+  "remaining_minutes_not_reallocated": 71.07593473333333,
+  "all_work_completed_within_fixed_window": true,
+  "fixed_fits_completed": 18,
+  "optimizer_updates": 7200,
+  "selected_updates_both_arms": 400,
+  "training_loop_seconds_sum": 55.790469167754054,
+  "post_training_optimizer_updates": 0,
+  "checkpoints_loaded": 72,
+  "prediction_backed_checkpoints_recomputed": 36,
+  "frozen_sources_checked": 83,
+  "current_artifact_and_implementation_hashes_checked": 246,
+  "csv_rows_checked": 117600,
+  "working_condition_cells_checked": 1960,
+  "unscored_issued_scale_cells_checked": 1932,
+  "final_figures": 16,
+  "formats": [
+    "markdown",
+    "csv",
+    "npz",
+    "pt",
+    "json",
+    "svg",
+    "png"
+  ],
+  "pdf_generated": false,
+  "delivery_manifest": "results/ootang_tcn_v1/20260914/final_artifact_manifest.json",
+  "delivery_manifest_sha256": "0f5af7f95adac91a5729c37b5941a15b6d961c7b63356242d204aaae4cde8b80",
+  "locked_file_count": 432,
+  "local_document_links_checked": 197,
+  "validation_receipts": [
+    "implementation_verification/receipt.json",
+    "verification/receipt.json",
+    "verification/delivery_receipt_v2.json",
+    "verification/figure_qa_disposition.json"
+  ],
+  "visual_receipt": "figures/ootang_tcn_v1/20260914/v3/visual_review.json",
+  "commits_before_final_documentation_commit": {
+    "frozen_plan": "ee4f63d",
+    "implementation": "db4dae5",
+    "inner_selection": "aae77a9",
+    "development_lock": "3202209",
+    "complete_later": "2f6231d",
+    "intervening_user_documentation": "11a9060",
+    "analysis_verification_tools": "5272b7c",
+    "verified_tables_figures": "dfb30fb"
+  },
+  "documentation_commit": "the local commit containing this receipt",
+  "push_performed_by_this_experiment_task": false,
+  "historical_user_documentation_commit_preserved": true,
+  "stopping_decision": "No additional architecture, model, seed, update, retraining, or PDF; retain negative findings and exploratory later evaluation.",
+  "conclusions": {
+    "better_than_bplus": "Both arms improve four-point average MAE/RMSE/CRPS/IS90 for every h in development and later; this does not imply pointwise protections or complete coverage passed.",
+    "better_than_drift1_or_ridge": "Neither TCN arm improves those four scores over either control for any h in development or later.",
+    "residual_output_benefit": "Partial ensemble mean benefit only; later h=1,2 RMSE and all seven IS90 worsen, and seed directions disagree."
+  },
+  "integrity_notes": [
+    "Frozen plan, configuration and sources byte-identical to pre-training commit.",
+    "Generated Matplotlib SVG path whitespace retained to preserve exported artifacts; source/document whitespace checks passed.",
+    "Figure v1/v2 and raw audit findings retained; PDF-only audit items are inapplicable, not passed."
+  ]
+}

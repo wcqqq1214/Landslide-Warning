@@ -3,11 +3,12 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前状态（2026-09-14）：小型 TCN 的内部、开发和完整后期比较已完成，训练已停止；最终交付仍在收尾。**
+**当前状态（2026-09-14）：小型 TCN 的内部、开发和完整后期比较、独立核验与交付均已完成，实验停止。**
 本轮在 `codex/tcn-short-horizon` 比较 TCN_DIRECT 与 TCN_BRES，内部共同选定400次更新，
 三个种子、三阶段共18次拟合、7200次更新。预测数组、检查点、逐点/七步长表与开发名单已保存；
-首次本地独立复算通过，核验器补充及回执尚未提交，最终 Markdown、汇总 CSV 和图件尚未全部交付。
-本页更新不代表整体效果达标或用户/导师验收。
+72份权重重载，36份评价检查点全量前向复算通过；117600行预测明细、全部结果表和16张最终图已核对。
+[完整结论](docs/ootang_tcn_results.v1.0.md)／[CSV汇总](results/ootang_tcn_v1/20260914/analysis/summary_by_horizon.csv)／[图件索引](figures/ootang_tcn_v1/20260914/README.md)／[最终回执](results/ootang_tcn_v1/20260914/final_receipt.json)。
+实施与核验通过，整体效果未达标；用户/导师效果验收未提供。
 
 两版 TCN 在开发及后期的七个步长均降低了相对 B_ANCHOR 的平均 MAE、RMSE、CRPS 和90%区间评分，
 但这些指标均落后于 DRIFT1 和普通 RR_DIRECT，两版 TCN 均未通过完整工作条件。
@@ -30,7 +31,7 @@
 [逐点表](results/ootang_tcn_v1/20260914/later_exploratory/metrics_by_point_horizon.csv)、
 [开发七步长表](results/ootang_tcn_v1/20260914/development/summary_by_horizon.csv)。
 残差版在开发段的四项平均误差评分均优于直接版；后期第3—7天平均 MAE/RMSE 较低，
-但第1—2天 RMSE 较高，七个步长90%区间评分均更差。因此只支持部分均值收益，未建立稳定的整体概率增益。
+但第1—2天 RMSE 较高，七个步长90%区间评分均更差。后期种子1的RMSE改善，种子0/2全部七步长退步；因此只支持部分集成均值收益，未建立稳定整体收益。
 
 本轮每日收到新观测后，用最近30日观测和合法 B+ 物理背景，一次预测四点未来第1—7天，保留已发预测。
 两版 TCN 使用相同输入、结构、种子、批次、单位与训练次数，只改变输出基线及监督目标；
@@ -43,6 +44,7 @@ C16 仅作历史补充，不参与本轮选模或门槛；ConvLSTM/PINN 不重�
 | [AGENTS.md](AGENTS.md) | 当前范围、导师目标与协作规则 |
 | [当前进度](docs/progress.md) | 当前状态、最近维护与后续边界 |
 | [文档导航](docs/README.md) | 当前决策、四点实验和历史八点成果的来源 |
+| [TCN 完整结果](docs/ootang_tcn_results.v1.0.md) / [核验与解释边界](docs/ootang_tcn_validation.v1.0.md) / [图件](figures/ootang_tcn_v1/20260914/README.md) | 已完成的固定配对实验、全部七步长曲线、负结果和独立核验 |
 | [TCN 冻结计划](docs/ootang_tcn_plan.v1.0.md) / [配置](config/ootang_tcn.v1_0.json) / [来源清单](docs/ootang_tcn_sources.v1.0.json) | 本轮固定结构、日期、教师、共同检查点、校准与效果条件 |
 | [TCN 实验目录](results/ootang_tcn_v1/20260914/) / [训练登记](results/ootang_tcn_v1/20260914/fit_registry.json) | 三阶段保存结果、各种子权重、日志和实际训练次数 |
 | [v4.0 短期比较](docs/ootang_short_horizon_comparison_results.v4.0.md) | 同任务历史对照、在线回归结果、PINN 物理失败及限制 |
@@ -77,6 +79,6 @@ M2 方程内修正混合模型；M2 不称经典 PINN。旧293日、30日滚动�
 | `data/` | 数据来源与派生文件；新出现的用户文件不自动纳入实验 |
 
 复查优先读取已保存数组、CSV与核验记录；运行入口和旧配置不自动构成重训授权。
-本轮仅按原计划完成核验与 Markdown/CSV/图件收尾，不追加结构、模型或训练轮数，不制作 PDF。
+本轮已按原计划完成核验与 Markdown/CSV/图件收尾；不追加结构、模型或训练轮数，不制作 PDF，剩余额度不转用。
 v1.26 未运行的计划、配置与草稿已删除，Git `7fc5f29` 保留原字节。
 原始数据、教师参数、冻结方案及历史失败记录保持；研究工作条件不冒充导师或工程验收。

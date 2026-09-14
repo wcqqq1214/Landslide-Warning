@@ -1,6 +1,6 @@
 # 项目文档导航
 
-**新独立 TCN 实验：** [冻结计划](ootang_tcn_plan.v1.0.md)／[配置](../config/ootang_tcn.v1_0.json)／[来源清单](ootang_tcn_sources.v1.0.json)。120分钟独立窗口，旧实验不恢复，C16仅历史补充。
+**独立 TCN 实验与交付已完成：** [完整结论](ootang_tcn_results.v1.0.md)／[七步长CSV](../results/ootang_tcn_v1/20260914/analysis/summary_by_horizon.csv)／[全部图件](../figures/ootang_tcn_v1/20260914/README.md)／[最终回执](../results/ootang_tcn_v1/20260914/final_receipt.json)。两版TCN改善B+平均评分，但均落后DRIFT1和普通岭回归，残差额外收益不稳定；保留完整后期探索结果，停止追加训练。事前依据：[冻结计划](ootang_tcn_plan.v1.0.md)／[配置](../config/ootang_tcn.v1_0.json)／[来源清单](ootang_tcn_sources.v1.0.json)。C16仅历史补充，无PDF交付。
 
 本页只维护入口，不重复记录各版结果或下一步。此前神经实验限定 ConvLSTM/PINN；293 日复核已完成，
 v2.3 已完成开发段训练但未达标，已停止；其实现、完整数组与复算记录均保留。
@@ -17,7 +17,7 @@ v2.0 按原标准未达标并已停止。
 
 ## 当前入口
 
-**本轮实验及报告整理均已结束。** 用户已要求删除四页短期对比 PDF；源码仅作[历史归档](../paper/README.md)，不再作为交付或待执行入口。已提交的实验结果保持，Vajont 仅按用户授权归档，不开启新案例。
+**此前 ConvLSTM/PINN 实验及 PDF 报告整理均已结束。** 用户已要求删除四页短期对比 PDF；源码仅作[历史归档](../paper/README.md)，不再作为交付或待执行入口。已提交的实验结果保持，Vajont 仅按用户授权归档，不开启新案例。
 
 **初态续评已完成全部阶段与独立核验：[完整结果](ootang_neural_initial_state_results.v1.1.md)／[续评协议](ootang_neural_initial_state_continuation.v1.1.md)／[完整后期补充](ootang_neural_initial_state_later_report.v1.2.md)。** 4707 条轨迹通过原求解器容差物理门；开发整体失败，后期七天平均均值改善、第 3—7 天概率门通过，逐点均值保护仍未过。7 天后期 RMSE 1.554626、CRPS 0.802606 mm，仍落后于在线回归。无待补训练；旧停止与软 PINN 失败保留。
 
