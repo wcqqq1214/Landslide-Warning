@@ -1,0 +1,31 @@
+origin=432 L0 seed=0 update=0
+origin=432 L0 seed=0 update=50
+origin=432 L0 seed=0 update=100
+origin=432 L0 seed=0 update=200
+origin=432 L0 seed=0 update=400
+origin=432 L0 seed=1 update=0
+origin=432 L0 seed=1 update=50
+origin=432 L0 seed=1 update=100
+origin=432 L0 seed=1 update=200
+origin=432 L0 seed=1 update=400
+origin=432 L0 seed=2 update=0
+origin=432 L0 seed=2 update=50
+origin=432 L0 seed=2 update=100
+origin=432 L0 seed=2 update=200
+origin=432 L0 seed=2 update=400
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py", line 491, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py", line 482, in main
+    run_phase(args.phase)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py", line 276, in run_phase
+    [fit_one(cfg, n, "L0", s, data, y) for s in cfg["neural"]["seeds"]]
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py", line 276, in <listcomp>
+    [fit_one(cfg, n, "L0", s, data, y) for s in cfg["neural"]["seeds"]]
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/transformer_temporal/run.py", line 64, in fit_one
+    assert saved["training_prefix"] == n and saved["step"] == 400
+KeyError: 'step'

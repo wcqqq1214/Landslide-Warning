@@ -1,0 +1,57 @@
+{
+  "previous_origin": 432,
+  "issue_origin": 612,
+  "selection_indices": [
+    432,
+    522
+  ],
+  "calibration_indices": [
+    522,
+    612
+  ],
+  "last_label_index": 611,
+  "selected": "A0",
+  "scores": {
+    "BPLUS_CONTINUOUS": {
+      "n_per_point": 90,
+      "mae": 42.962583003595974,
+      "rmse": 45.69782276237344
+    },
+    "DRIFT1": {
+      "n_per_point": 90,
+      "mae": 55.83149652407073,
+      "rmse": 76.3202615150518
+    },
+    "RR_COND": {
+      "n_per_point": 90,
+      "mae": 61.49200467935869,
+      "rmse": 64.07461318055543
+    },
+    "A0": {
+      "n_per_point": 90,
+      "mae": 42.962583003595974,
+      "rmse": 45.69782276237344
+    },
+    "A025": {
+      "n_per_point": 90,
+      "mae": 43.47991255173857,
+      "rmse": 46.202625989056834
+    },
+    "A05": {
+      "n_per_point": 90,
+      "mae": 44.01789510852034,
+      "rmse": 46.714359814679526
+    },
+    "A075": {
+      "n_per_point": 90,
+      "mae": 44.57627161779434,
+      "rmse": 47.232476147395055
+    },
+    "A1": {
+      "n_per_point": 90,
+      "mae": 45.13804703514,
+      "rmse": 47.756481858103456
+    }
+  },
+  "displacement_feedback": false
+}

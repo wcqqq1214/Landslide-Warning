@@ -1,0 +1,8 @@
+{
+  "source": "results/ootang_sequence_conditional_v1/20260914/final_exploratory/TRANSFORMER_BRES_COND/seed_0/e400.pt",
+  "source_sha256": "9c3be30b81f9b12ba8bb818ef13d0db2eb8eef44d2ef262507ea5259744e0224",
+  "training_prefix": 1168,
+  "seed": 0,
+  "strength": 0,
+  "mean_overlap_max_abs": 0.0
+}

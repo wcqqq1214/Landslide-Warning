@@ -1,0 +1,9 @@
+{
+  "time_utc": "2026-09-14T16:45:49.967268+00:00",
+  "origin": 972,
+  "training_last_index": 971,
+  "files": {
+    "alpha_candidate_means.npz": "1d92f83d4bf27b2442e5c5615f758f9ffb2d8876c9d4a44c6a81ab4a21697e39",
+    "alpha_candidate_seeds.npz": "9c74bdad95819394fb13b179ba8242867de9f11298ea8e21a4e3b6109fc8d32b"
+  }
+}

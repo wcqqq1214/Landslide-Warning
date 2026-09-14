@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-14T16:45:50.197521+00:00",
+  "status": "complete",
+  "phase": "alpha",
+  "full_outer_scores_read": false,
+  "files": {
+    "origin_1168/alpha_issue_lock.json": "96668060a726779265e504818648defe4c5fb91c0b3df16eed8aa00ea983abb3",
+    "origin_432/alpha_issue_lock.json": "24d0438808f7fbdd9349bade4172443895694d3f9bf5b57adbdb62160259cdfb",
+    "origin_612/alpha_issue_lock.json": "a54d6458879195dd729de1735b2626ce2f1b53f93bfc98db259a37f343170826",
+    "origin_792/alpha_issue_lock.json": "16f047023d3b2a99d8549d74f88036593a7bfd7eb8559f53367a7679ed11b874",
+    "origin_972/alpha_issue_lock.json": "3002739356b0747cb45e5c21f5fd0c547f0f3327ed7ed99eb68a18c92499104c"
+  }
+}

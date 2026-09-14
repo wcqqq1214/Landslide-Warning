@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T16:45:21.756640+00:00",
+  "status": "issued",
+  "origin": 792,
+  "selected": "A0",
+  "last_calibration_label": 791,
+  "displacement_feedback": false,
+  "files": {
+    "alpha_calibration_errors.npz": "6ba697d2fe73f7b4d9088fc766578e0b44108b386ea6fbc5c864e74cc1ef938a",
+    "alpha_candidate_lock.json": "4db18e62f048c9ac3d606b1d7060ee7e4badd99e08053c55e609b51efabf23f3",
+    "alpha_means.npz": "8a5e19dcd32c026fcfdc6e762ac9f0d2dd0439e8ec316a860811e9fc1236ae8b",
+    "alpha_seeds.npz": "b4af3a678b9716261ec7991214fae5ed26a80600a688bd3457789e21b54bdb04",
+    "alpha_selection.json": "e940fc34ff72f5e19d6498d3675e914f3d150970e05dc0a14ac29335280cb953",
+    "alpha_sigmas.npz": "78f12fe84274542879f53db81aa1a6164b86b5b3306877f3df1badd65e62b0f9"
+  }
+}

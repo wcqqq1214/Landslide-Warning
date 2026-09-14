@@ -9,3 +9,34 @@
 {"time_utc": "2026-09-14T16:43:52.971191+00:00", "event": "candidate_means_locked", "origin": 432, "phase": "alpha", "lock_sha256": "c12e12627286cc8590ca90b7e82b0d53ca047cb411461ab4e423fc0bed42032a"}
 {"time_utc": "2026-09-14T16:43:52.971336+00:00", "event": "trajectory_issued", "origin": 432, "phase": "alpha", "bootstrap": true}
 {"time_utc": "2026-09-14T16:43:52.973405+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "alpha_origin_612_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:45:21.439785+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "alpha_origin_612_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:45:21.502611+00:00", "event": "model_reused", "origin": 612, "key": "L0", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.539928+00:00", "event": "model_reused", "origin": 612, "key": "L0", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.559227+00:00", "event": "model_reused", "origin": 612, "key": "L0", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.561095+00:00", "event": "ridge_fitted", "origin": 612, "training_rows": 612}
+{"time_utc": "2026-09-14T16:45:21.574247+00:00", "event": "candidate_means_locked", "origin": 612, "phase": "alpha", "lock_sha256": "e99ee0e95b316fd23010e24338ce6be710b09d89fac6da487762a6a4f10a7ef1"}
+{"time_utc": "2026-09-14T16:45:21.593250+00:00", "event": "trajectory_issued", "origin": 612, "phase": "alpha", "selected": "A0", "lock_sha256": "a54d6458879195dd729de1735b2626ce2f1b53f93bfc98db259a37f343170826"}
+{"time_utc": "2026-09-14T16:45:21.595863+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "alpha_origin_792_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:45:21.658966+00:00", "event": "model_reused", "origin": 792, "key": "L0", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.684101+00:00", "event": "model_reused", "origin": 792, "key": "L0", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.708808+00:00", "event": "model_reused", "origin": 792, "key": "L0", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:45:21.709717+00:00", "event": "ridge_fitted", "origin": 792, "training_rows": 792}
+{"time_utc": "2026-09-14T16:45:21.731234+00:00", "event": "candidate_means_locked", "origin": 792, "phase": "alpha", "lock_sha256": "4db18e62f048c9ac3d606b1d7060ee7e4badd99e08053c55e609b51efabf23f3"}
+{"time_utc": "2026-09-14T16:45:21.757374+00:00", "event": "trajectory_issued", "origin": 792, "phase": "alpha", "selected": "A0", "lock_sha256": "16f047023d3b2a99d8549d74f88036593a7bfd7eb8559f53367a7679ed11b874"}
+{"time_utc": "2026-09-14T16:45:21.760073+00:00", "event": "label_prefix_read", "rows": 972, "last_index": 971, "purpose": "alpha_origin_972_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:45:21.762887+00:00", "event": "fit_started", "origin": 972, "key": "L0", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-14T16:45:31.151231+00:00", "event": "fit_completed", "origin": 972, "key": "L0", "seed": 0, "updates": 400, "elapsed_seconds": 9.388923333957791}
+{"time_utc": "2026-09-14T16:45:31.152818+00:00", "event": "fit_started", "origin": 972, "key": "L0", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-14T16:45:40.520040+00:00", "event": "fit_completed", "origin": 972, "key": "L0", "seed": 1, "updates": 400, "elapsed_seconds": 9.367680124938488}
+{"time_utc": "2026-09-14T16:45:40.522017+00:00", "event": "fit_started", "origin": 972, "key": "L0", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-14T16:45:49.940472+00:00", "event": "fit_completed", "origin": 972, "key": "L0", "seed": 2, "updates": 400, "elapsed_seconds": 9.419131000060588}
+{"time_utc": "2026-09-14T16:45:49.942830+00:00", "event": "ridge_fitted", "origin": 972, "training_rows": 972}
+{"time_utc": "2026-09-14T16:45:49.967970+00:00", "event": "candidate_means_locked", "origin": 972, "phase": "alpha", "lock_sha256": "66fa27f5853e07a5a009bb4d43de7887a380c787059fec55cb96a9607b7a3745"}
+{"time_utc": "2026-09-14T16:45:50.000117+00:00", "event": "trajectory_issued", "origin": 972, "phase": "alpha", "selected": "A0", "lock_sha256": "3002739356b0747cb45e5c21f5fd0c547f0f3327ed7ed99eb68a18c92499104c"}
+{"time_utc": "2026-09-14T16:45:50.002688+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "alpha_origin_1168_training_selection_calibration"}
+{"time_utc": "2026-09-14T16:45:50.055158+00:00", "event": "model_reused", "origin": 1168, "key": "L0", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-14T16:45:50.094893+00:00", "event": "model_reused", "origin": 1168, "key": "L0", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-14T16:45:50.133831+00:00", "event": "model_reused", "origin": 1168, "key": "L0", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-14T16:45:50.134844+00:00", "event": "ridge_fitted", "origin": 1168, "training_rows": 1168}
+{"time_utc": "2026-09-14T16:45:50.163123+00:00", "event": "candidate_means_locked", "origin": 1168, "phase": "alpha", "lock_sha256": "3c3ae3df24ef156fda96fbc052991a8a0a5ed61e649c17c7e4a3bd89127e5ab4"}
+{"time_utc": "2026-09-14T16:45:50.197451+00:00", "event": "trajectory_issued", "origin": 1168, "phase": "alpha", "selected": "A1", "lock_sha256": "96668060a726779265e504818648defe4c5fb91c0b3df16eed8aa00ea983abb3"}

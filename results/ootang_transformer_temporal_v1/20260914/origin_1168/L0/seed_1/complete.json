@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-09-14T16:45:50.094990+00:00",
+  "status": "complete",
+  "origin": 1168,
+  "key": "L0",
+  "seed": 1,
+  "new_fits": 0,
+  "updates": 0,
+  "elapsed_seconds": 0.03929274994879961,
+  "files": {
+    "e400_mean.npy": "8d195c8bee27b45d4105991ef837d73785bf6cf290498f26af3ec2169c533ad0",
+    "reused.json": "d191c649f3fdd2a2ae69d88c5b0e09dfa990971d4ab135849aad64f1517d59ff"
+  }
+}
