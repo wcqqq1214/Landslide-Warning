@@ -1,0 +1,10 @@
+{
+  "time_utc": "2026-09-14T15:53:57.251349+00:00",
+  "files": {
+    "code/transformer_calibration/run.py": "7cf4aaad36da8fdee6205650d4995de21fd430446e56e165a3276d53f91102e3",
+    "code/transformer_calibration/__init__.py": "ad135f51ec5c8cc65c4143b50fbda5d9be9e96a228f27f3182c7f30318d67c19",
+    "code/transformer_calibration/core.py": "a3ee11bdd87f19e2a8022410882dc8874df20d8c4e4b494fe87456268a644937",
+    "code/transformer_calibration/preflight.py": "b14ea4c2251c21cc73fa7cb8016a1e8ec1f8b8bebea71789e5db3d2ced9b97d3",
+    "tests/test_transformer_calibration.py": "227124f46b90080f45f7da1f3b3beb32c401efbdeb1b808617a79a9a48f89323"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T15:53:57.251668+00:00",
+  "tests_run": 8,
+  "source_files_checked": 1012,
+  "date_and_mean_checks": [
+    {
+      "phase": "internal",
+      "training_prefix": 612,
+      "start": "2018-03-05",
+      "end": "2018-08-31",
+      "all_finite": true
+    },
+    {
+      "phase": "development",
+      "training_prefix": 792,
+      "start": "2018-09-01",
+      "end": "2019-09-11",
+      "all_finite": true
+    },
+    {
+      "phase": "final_exploratory",
+      "training_prefix": 1168,
+      "start": "2019-09-12",
+      "end": "2020-06-30",
+      "all_finite": true
+    }
+  ],
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "candidate_scores_evaluated": 0,
+  "full_label_reads": 0
+}

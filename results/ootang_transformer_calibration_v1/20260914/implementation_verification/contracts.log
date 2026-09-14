@@ -1,0 +1,13 @@
+test_development_distance_rule_degenerates (test_transformer_calibration.CalibrationContracts) ... ok
+test_distance_count_unique_ties_and_boundary (test_transformer_calibration.CalibrationContracts) ... ok
+test_saved_arrays_reload_exactly (test_transformer_calibration.CalibrationContracts) ... ok
+test_selection_exclusion_and_unmatured_rejection (test_transformer_calibration.CalibrationContracts) ... ok
+test_shrink_fallback_and_ensemble_commute (test_transformer_calibration.CalibrationContracts) ... ok
+test_target_label_poison_cannot_enter_prefix_reader (test_transformer_calibration.CalibrationContracts) ... ok
+test_units_only_use_the_two_fitting_prefixes (test_transformer_calibration.CalibrationContracts) ... ok
+test_zero_errors_floor_and_invalid_rule (test_transformer_calibration.CalibrationContracts) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.053s
+
+OK
