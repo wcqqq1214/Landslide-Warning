@@ -18,6 +18,8 @@
 
 # Current Stage Plan
 
+- **最新执行授权：用户要求无论效果多差都跑通 TCN 新实验。** 见 `docs/ootang_tcn_conditional_execution.v1.0.md` 与配置；分支 `codex/tcn-conditional-training`，独立 2026-09-14 11:44:16—13:44:16 UTC。执行整段条件训练，两臂/三种子和完整开发/最终评价；效果门不阻塞后续，代码问题修复后继续，保留负结果。旧参数/数据/切分不变，不加候选、轮数或恢复旧预算，只本地分步 commit，不 push/PDF。此项覆盖下方“先计划、尚未授权执行”的形成时记录。
+
 - **当前用户要求：先写按导师方案重新训练 TCN 的 plan，尚未授权本轮立即执行。** 见 `docs/ootang_tcn_conditional_training_plan.v1.0.md`。旧七天滚动实验和 293 日固定权重递推均已完成；新计划对齐原 PDF/ZIP 的给定未来降雨/水位、连续原 B+ 和无位移反馈 8:2 条件预测，从头训练整段 DIRECT/BRES 轨迹。当前仅文档及来源核对，正式配置/实现/训练未启动；拟议独立 120 分钟窗口未计时，不恢复旧额度，不自动加入 Transformer/Mamba，不 push/PDF。后续先读新计划与最新 progress，再按需核读下方已完成结果；旧负结果、冻结计划和最终回执不改写。
 
 - **最新：8:2无位移反馈TCN新实验及导师图件已完成并停止。** 见 `docs/ootang_tcn_independent_results.v1.0.md`、`docs/ootang_tcn_independent_validation.v1.0.md` 及 `results/ootang_tcn_independent_v1/20260914/final_receipt.json`。前1168日、后293日一次发出；复用固定400次/三种子短期TCN，以自身预测每7天递推，未来降雨/水位起点固定；新增拟合/更新0。完整293日四点平均RMSE：B+10.169685、DRIFT1 12.977735、RR_DIRECT 137.895650、DIRECT 90.731455、BRES 211.827864 mm；两版TCN在四点均值和主要概率评分均落后B+/DRIFT1，残差版更差。118项来源、382校准起点、294个最终块、240评分及71197项交付数值核对通过；两张中文四点PNG/SVG已目视，保留各点/种子/日期/失败。核验实现 `afc252d`、评分图件 `6a93058`。探索性固定权重迁移，不是新293日直接输出训练、不推论整个TCN家族；旧滚动结果保持。分支 `codex/tcn-independent-forecast` 只本地提交，不push/PDF，不自动追加训练；实际用时见最终回执，自限窗口10:20—12:20 UTC不转用。下方本轮事前及历史阶段记录不覆盖此完成状态。
