@@ -18,13 +18,15 @@
 
 # Current Stage Plan
 
+- **最新：8:2无位移反馈TCN新实验及导师图件已完成并停止。** 见 `docs/ootang_tcn_independent_results.v1.0.md`、`docs/ootang_tcn_independent_validation.v1.0.md` 及 `results/ootang_tcn_independent_v1/20260914/final_receipt.json`。前1168日、后293日一次发出；复用固定400次/三种子短期TCN，以自身预测每7天递推，未来降雨/水位起点固定；新增拟合/更新0。完整293日四点平均RMSE：B+10.169685、DRIFT1 12.977735、RR_DIRECT 137.895650、DIRECT 90.731455、BRES 211.827864 mm；两版TCN在四点均值和主要概率评分均落后B+/DRIFT1，残差版更差。118项来源、382校准起点、294个最终块、240评分及71197项交付数值核对通过；两张中文四点PNG/SVG已目视，保留各点/种子/日期/失败。核验实现 `afc252d`、评分图件 `6a93058`。探索性固定权重迁移，不是新293日直接输出训练、不推论整个TCN家族；旧滚动结果保持。分支 `codex/tcn-independent-forecast` 只本地提交，不push/PDF，不自动追加训练；实际用时见最终回执，自限窗口10:20—12:20 UTC不转用。下方本轮事前及历史阶段记录不覆盖此完成状态。
+
 - **新授权：参照导师图开展8:2无位移反馈独立递推实验。** 用户已明确选择独立预测方式的新实验；分支 `codex/tcn-independent-forecast`，依据 `docs/ootang_tcn_independent_plan.v1.0.md`。复用已有前80%训练检查点，两版TCN/三种子按7天块递推完整293天；不接收预测段位移或驱动。前1168日内的382个历史起点独立回放形成每距离最近90条成熟误差的固定区间。新增拟合/更新0；不能将本轮称为新训练的293日直接输出模型。自限窗口10:20—12:20 UTC含前置读图与澄清，只本地分步提交。先冻结和核验，再执行及出中文四点PNG/SVG；保留旧滚动结果，不按新结果换结构/轮数或删日期，未授权PDF/push。
 
 - **最新状态：TCN 完整实验、独立核验及 Markdown/CSV/图件交付已完成，停止追加实验。** 见 `docs/ootang_tcn_results.v1.0.md` 与 `results/ootang_tcn_v1/20260914/final_receipt.json`。两臂内部共同选择400次，三个种子、三阶段共18次拟合/7200次更新；72份权重重载，36份评价检查点完整前向复算，预测及尺度最大差0，评分差4.97e-14 mm；117600行预测明细、七步长/逐点表和16张最终SVG/PNG已核对。开发和探索性后期七步长平均 MAE/RMSE/CRPS/90%区间评分均优于 B_ANCHOR，但均落后 DRIFT1 与 RR_DIRECT，两版 TCN 完整工作条件均0/7。开发均值/概率优胜者七步长均为RR_DIRECT，共同推荐仅1—6天，第7天空缺保持。后期残差版仅第3—7天集成MAE/RMSE同时改善，七步长区间评分全部退步；种子1的RMSE改善、种子0/2均退步，未建立稳定残差收益。7天RMSE：DIRECT 0.856186、BRES 0.771781、DRIFT1 0.278587、RR_DIRECT 0.037318、B_ANCHOR 1.784162 mm；BRES的90%覆盖76.8293%。执行核验通过与效果未达标分别保留，不声称用户/导师验收。此次后续核验与交付只作本地提交，不自动追加模型/轮数，不制作PDF；独立120分钟窗口的剩余额度不转用。
 
 - **本次入口维护及推送授权。** 2026-09-14 用户明确要求更新 `README.md`、`AGENTS.md` 并 commit and push。新增提交仅包含这两个入口文件，按 Git Rules 推送到 `main`；该明确请求覆盖本次推送相关的历史“不push”文字。当前 `codex/tcn-short-horizon` 已提交历史随正常快进推送保留，未提交的核验器与产物保持本地，不擅自纳入提交，也不切换或重置主任务工作分支。本条不授权新实验或扩展预算。
 
-- **当前读取顺序。** 先读本入口、`README.md`、最新 `docs/progress.md`、`docs/ootang_tcn_plan.v1.0.md`、`config/ootang_tcn.v1_0.json`、本轮 `internal_selection.json`/`selection.json` 及开发/后期 CSV，再按需追溯 v4.0 与旧结果。下方旧“开始或恢复工作”的长列表作为历史来源索引，不要求为文档维护重跑旧实验；“尚未训练／当前结束／不push”等均按形成时间及后续明确授权解释。
+- **当前读取顺序。** 先读本入口、`README.md`、最新 `docs/progress.md`、独立预测的 `docs/ootang_tcn_independent_results.v1.0.md` / `docs/ootang_tcn_independent_plan.v1.0.md` / `config/ootang_tcn_independent.v1_0.json` 及其最终回执；需要短期比较时再读`docs/ootang_tcn_plan.v1.0.md`、`config/ootang_tcn.v1_0.json`、本轮 `internal_selection.json`/`selection.json` 及开发/后期 CSV，再按需追溯 v4.0 与旧结果。下方旧“开始或恢复工作”的长列表作为历史来源索引，不要求为文档维护重跑旧实验；“尚未训练／当前结束／不push”等均按形成时间及后续明确授权解释。
 
 下方入口维护推送授权仅对应当次明确范围，不自动扩展到后续核验与图文交付。以下保留事前授权与历史阶段记录，不覆盖上述实际完成状态。
 

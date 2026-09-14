@@ -1,0 +1,135 @@
+{
+  "status": "complete_with_negative_effectiveness_result",
+  "artifact_lock_time_utc": "2026-09-14T11:12:09.214032+00:00",
+  "window_start_utc": "2026-09-14T10:20:00+00:00",
+  "window_deadline_utc": "2026-09-14T12:20:00+00:00",
+  "elapsed_minutes_to_artifact_lock": 52.1535672,
+  "timing_boundary": "Conservative self-imposed window includes reference review and clarification; final local documentation commit follows this artifact lock.",
+  "branch": "codex/tcn-independent-forecast",
+  "base_commit": "21ee399",
+  "plan_commit": "35a33c3",
+  "inference_commit": "44654bb",
+  "calibration_commit": "0ce55a0",
+  "forecast_lock_commit": "53237e8",
+  "verification_figure_code_commit": "afc252d",
+  "scores_figures_commit": "6a93058",
+  "new_fits": 0,
+  "new_optimizer_updates": 0,
+  "reused_tcn_weight_files": 18,
+  "final_tcn_weight_files": 6,
+  "reused_ridge_models": 3,
+  "source_hashes_unchanged": 118,
+  "frozen_plan_config_sources_unchanged": true,
+  "implementation_hashes_unchanged": true,
+  "training_prefix_days": 1168,
+  "forecast_start": "2019-09-12",
+  "forecast_end": "2020-06-30",
+  "forecast_days": 293,
+  "calibration_origins": 382,
+  "calibration_days_across_origins": 69148,
+  "calibration_errors_per_point_and_lead": 90,
+  "production_physical_forwards": 388,
+  "reproduction_physical_forwards": 386,
+  "implementation_checks": 8,
+  "independently_replayed_final_blocks": 294,
+  "independently_recomputed_point_score_cells": 240,
+  "additional_csv_export_numeric_values": 71197,
+  "forecast_mean_max_difference_mm": 0.0,
+  "calibration_sigma_max_difference_mm": 1.1368683772161603e-13,
+  "independent_score_max_difference_mm": 5.6843418860808015e-12,
+  "additional_csv_export_max_difference_mm": 5.229594535194337e-12,
+  "all_five_models_complete": true,
+  "descriptive_comparisons": [
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "B_ANCHOR",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "B_ANCHOR",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "DRIFT1",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "DRIFT1",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "TCN_DIRECT",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "RR_DIRECT",
+      "improving_points": {
+        "mae": 4,
+        "rmse": 4,
+        "crps": 4,
+        "interval_score90": 2
+      }
+    }
+  ],
+  "residual_rmse_worse_for_each_seed_four_point_average": true,
+  "final_figure_attempt": "v3",
+  "final_figures": 2,
+  "visually_reviewed_panels": 8,
+  "formats": [
+    "Markdown",
+    "CSV",
+    "NPZ",
+    "PNG",
+    "SVG"
+  ],
+  "probability_intervals": "frozen pre-forecast, lead-specific empirical Gaussian marginal intervals; correlated historical errors; no coverage guarantee",
+  "efficacy": "Both fixed short-horizon TCNs fail to improve B+ or DRIFT1 in this 293-day recursive transfer; residual arm worse.",
+  "limitations": [
+    "Previously exposed dates and checkpoint selection; exploratory transfer, not a new blind test.",
+    "No new long-horizon-specific training; do not generalize to all TCN models.",
+    "Training curves use observed-history one-step reconstruction, not independent validation.",
+    "Fixed future forcing scenario; no attribution of failure to a single mechanism.",
+    "Original daily-data availability, preprocessing and physical library warnings retained."
+  ],
+  "implementation_validation": "passed",
+  "effectiveness_target": "failed",
+  "user_advisor_effect_acceptance": "not_provided",
+  "push_performed": false,
+  "pdf_created": false,
+  "additional_training_authorized_by_this_receipt": false,
+  "stopped": true,
+  "remaining_budget_transferred": false,
+  "verification_receipt_sha256": "9ed04c1bc50eeac4dbd5c6242752d9dd177deec61c0806266ea7a1bd74dfd477",
+  "delivery_receipt_sha256": "c99df5bf003e4c7067e873962750c0d373c551da9af89da97e3917b188136b4e",
+  "visual_review_sha256": "6e1edb2c6dca8b35c8bb5dbf8dc846c83618eeb79532639c6b40aa2db53ec2fe"
+}

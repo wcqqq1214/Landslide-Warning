@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T11:12:09.226466+00:00",
+  "checked_links": 53,
+  "summary_table_rows": 5,
+  "point_rmse_table_rows": 4,
+  "report_sha256": "c7e7668b88e0e03ae48bfbcbaae0c43772ea014ecab1f1aac213864d083e7e00",
+  "descriptive_comparisons": [
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "B_ANCHOR",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "B_ANCHOR",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "DRIFT1",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "DRIFT1",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_BRES",
+      "baseline": "TCN_DIRECT",
+      "improving_points": {
+        "mae": 0,
+        "rmse": 0,
+        "crps": 0,
+        "interval_score90": 0
+      }
+    },
+    {
+      "candidate": "TCN_DIRECT",
+      "baseline": "RR_DIRECT",
+      "improving_points": {
+        "mae": 4,
+        "rmse": 4,
+        "crps": 4,
+        "interval_score90": 2
+      }
+    }
+  ],
+  "new_fits": 0
+}

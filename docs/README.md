@@ -1,6 +1,8 @@
 # 项目文档导航
 
-**独立 TCN 实验与交付已完成：** [完整结论](ootang_tcn_results.v1.0.md)／[七步长CSV](../results/ootang_tcn_v1/20260914/analysis/summary_by_horizon.csv)／[全部图件](../figures/ootang_tcn_v1/20260914/README.md)／[最终回执](../results/ootang_tcn_v1/20260914/final_receipt.json)。两版TCN改善B+平均评分，但均落后DRIFT1和普通岭回归，残差额外收益不稳定；保留完整后期探索结果，停止追加训练。事前依据：[冻结计划](ootang_tcn_plan.v1.0.md)／[配置](../config/ootang_tcn.v1_0.json)／[来源清单](ootang_tcn_sources.v1.0.json)。C16仅历史补充，无PDF交付。
+**最新：导师风格8:2无位移反馈预测已完成并停止。** [简短图文报告](ootang_tcn_independent_results.v1.0.md)／[两张中文四点图](../figures/ootang_tcn_independent_v1/20260914/README.md)／[五方法表](../results/ootang_tcn_independent_v1/20260914/score/summary.csv)／[逐点表](../results/ootang_tcn_independent_v1/20260914/score/metrics_by_point.csv)／[最终回执](../results/ootang_tcn_independent_v1/20260914/final_receipt.json)。固定短期TCN以自身输出递推完整293日，新增训练0；DIRECT/BRES平均RMSE90.73/211.83 mm，均明显落后B+10.17 mm与DRIFT1，保留完整负结果。[事前协议](ootang_tcn_independent_plan.v1.0.md)／[配置](../config/ootang_tcn_independent.v1_0.json)／[来源](ootang_tcn_independent_sources.v1.0.json)／[核验边界](ootang_tcn_independent_validation.v1.0.md)。两张最终图已核对，旧滚动结论保持，不作新盲测，不制作PDF或追加训练。
+
+**此前1—7天滚动 TCN 实验与交付已完成：** [完整结论](ootang_tcn_results.v1.0.md)／[七步长CSV](../results/ootang_tcn_v1/20260914/analysis/summary_by_horizon.csv)／[全部图件](../figures/ootang_tcn_v1/20260914/README.md)／[最终回执](../results/ootang_tcn_v1/20260914/final_receipt.json)。两版TCN改善B+平均评分，但均落后DRIFT1和普通岭回归，残差额外收益不稳定；保留完整后期探索结果，停止追加训练。事前依据：[冻结计划](ootang_tcn_plan.v1.0.md)／[配置](../config/ootang_tcn.v1_0.json)／[来源清单](ootang_tcn_sources.v1.0.json)。C16仅历史补充，无PDF交付。
 
 本页只维护入口，不重复记录各版结果或下一步。此前神经实验限定 ConvLSTM/PINN；293 日复核已完成，
 v2.3 已完成开发段训练但未达标，已停止；其实现、完整数组与复算记录均保留。

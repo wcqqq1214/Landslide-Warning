@@ -3,7 +3,20 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前状态（2026-09-14）：小型 TCN 的内部、开发和完整后期比较、独立核验与交付均已完成，实验停止。**
+**当前状态（2026-09-14）：按导师图开展的8:2无位移反馈独立预测及图文交付已完成，实验停止。**
+前1168日为训练/校准期，后293日（2019-09-12—2020-06-30）一次发出预测，全期不接收实测位移或驱动。
+复用此前固定400次/三种子TCN，以自身输出按7天块递推；本轮新增训练和优化器更新均为0。
+完整293日四点平均RMSE：B_ANCHOR **10.17**、DRIFT1 **12.98**、RR_DIRECT **137.90**、
+TCN_DIRECT **90.73**、TCN_BRES **211.83 mm**。两版TCN的四点均值误差和主要概率评分都落后B+与DRIFT1；残差版更差。
+这个负结果针对既有短窗TCN的长期递推，不是整个TCN家族的定论；历史标签和选择已暴露，评价明确为探索性。
+
+[独立预测图文报告](docs/ootang_tcn_independent_results.v1.0.md)／[两张中文四点PNG/SVG](figures/ootang_tcn_independent_v1/20260914/README.md)／
+[五方法CSV](results/ootang_tcn_independent_v1/20260914/score/summary.csv)／[逐点CSV](results/ootang_tcn_independent_v1/20260914/score/metrics_by_point.csv)／
+[冻结计划](docs/ootang_tcn_independent_plan.v1.0.md)／[最终回执](results/ootang_tcn_independent_v1/20260914/final_receipt.json)。
+118项来源、382个校准起点完整复现、294个最终递推块重放及评分核验通过；两张最终图的8个面板已目视。
+原短期结果保持，独立分支 `codex/tcn-independent-forecast` 仅本地提交；不追加模型/训练、不push、不制作PDF。
+
+**此前1—7天滚动TCN实验已完成并停止。以下段落专指每天接收新观测的旧任务，与上述独立293日结果分别解释。**
 本轮在 `codex/tcn-short-horizon` 比较 TCN_DIRECT 与 TCN_BRES，内部共同选定400次更新，
 三个种子、三阶段共18次拟合、7200次更新。预测数组、检查点、逐点/七步长表与开发名单已保存；
 72份权重重载，36份评价检查点全量前向复算通过；117600行预测明细、全部结果表和16张最终图已核对。
@@ -44,6 +57,7 @@ C16 仅作历史补充，不参与本轮选模或门槛；ConvLSTM/PINN 不重�
 | [AGENTS.md](AGENTS.md) | 当前范围、导师目标与协作规则 |
 | [当前进度](docs/progress.md) | 当前状态、最近维护与后续边界 |
 | [文档导航](docs/README.md) | 当前决策、四点实验和历史八点成果的来源 |
+| [独立293日结果](docs/ootang_tcn_independent_results.v1.0.md) / [实现与来源](docs/ootang_tcn_independent_plan.v1.0.md) | 导师风格两张四点图、完整无反馈预测与负结果 |
 | [TCN 完整结果](docs/ootang_tcn_results.v1.0.md) / [核验与解释边界](docs/ootang_tcn_validation.v1.0.md) / [图件](figures/ootang_tcn_v1/20260914/README.md) | 已完成的固定配对实验、全部七步长曲线、负结果和独立核验 |
 | [TCN 冻结计划](docs/ootang_tcn_plan.v1.0.md) / [配置](config/ootang_tcn.v1_0.json) / [来源清单](docs/ootang_tcn_sources.v1.0.json) | 本轮固定结构、日期、教师、共同检查点、校准与效果条件 |
 | [TCN 实验目录](results/ootang_tcn_v1/20260914/) / [训练登记](results/ootang_tcn_v1/20260914/fit_registry.json) | 三阶段保存结果、各种子权重、日志和实际训练次数 |
@@ -68,6 +82,7 @@ M2 方程内修正混合模型；M2 不称经典 PINN。旧293日、30日滚动�
 | 目录/文件 | 用途 |
 | --- | --- |
 | `code/physics_guided*`、`config/` | 各版四点方法、诊断实现与冻结配置，按对应版本查证 |
+| `code/tcn_independent/`、`results/ootang_tcn_independent_v1/` | 固定短期权重的293日无反馈递推、成熟独立回放校准和两张四点图 |
 | `code/tcn_short_horizon/`、`results/ootang_tcn_v1/` | 独立 TCN 入口、两臂固定实验和保存产物 |
 | `code/short_horizon/`、`results/ootang_short_horizon_v4/` | v4.0 数据、物理、校准评分接口及历史同任务对照 |
 | `results/ootang_bplus_v1_*/`、`results/ootang_convlstm_v2_0/` | 已完成四点实验的权重、日志、指标、核验与负结果 |
