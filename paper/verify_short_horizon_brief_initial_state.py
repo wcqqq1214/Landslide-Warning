@@ -13,7 +13,11 @@ import pymupdf
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = 'c956401'
+BASE = '143cc17'
+PRESENTATION_INPUTS = {
+    'paper/figures/short_horizon_zh/horizon_comparison.pdf',
+    'paper/figures/short_horizon_zh/sources.json',
+}
 
 
 def sha(path):
@@ -42,10 +46,11 @@ def main():
     assert sha(ROOT / 'paper/ootang_short_horizon_brief.v4.1.tex') == metadata['tex_sha256']
     old = json.loads(git_file('paper/ootang_short_horizon_brief.v4.1.sources.json'))
     common = set(old['input_sha256']) & set(metadata['input_sha256'])
-    assert all(old['input_sha256'][name] == metadata['input_sha256'][name] for name in common)
+    unchanged_sources = common - PRESENTATION_INPUTS
+    assert all(old['input_sha256'][name] == metadata['input_sha256'][name] for name in unchanged_sources)
     expected = metadata['displayed_numeric_cells']
     assert len(expected) == 102
-    assert expected[:64] + expected[70:] == old['displayed_numeric_cells']
+    assert expected == old['displayed_numeric_cells']
     initial = ROOT / 'results/ootang_neural_initial_state_v1_1/20260914'
     receipt = json.loads((initial / 'verification/receipt.json').read_text())
     assert receipt['status'] == 'passed' and receipt['physics_pass']
@@ -58,6 +63,34 @@ def main():
     cells = [f'{d.rmse:.4f}', f'{a.rmse:.4f}', f'{a.crps:.4f}', f'{100*a.coverage90:.2f}',
              f'{a.width90:.4f}', f'{a.interval_score90:.4f}']
     assert cells == expected[64:70]
+    # Independently check every plotted overview value against frozen CSV sources.
+    figures = json.loads((ROOT/'paper/figures/short_horizon_zh/sources.json').read_text())
+    assert sha(ROOT/'paper/build_short_horizon_brief_figures_zh.py') == figures['builder_sha256']
+    for name, digest in figures['input_sha256'].items():
+        assert sha(ROOT/name) == digest, name
+    for name, values in figures['figures'].items():
+        assert sha(ROOT/f'paper/figures/short_horizon_zh/{name}.pdf') == values['pdf_sha256'], name
+    run = ROOT/'results/ootang_short_horizon_v4/20260913_short_horizon/analysis'
+    families = pd.read_csv(run/'family_representatives.csv')
+    scores = pd.read_csv(run/'summary_by_horizon.csv')
+    expected_keys = {(phase,family,metric) for phase in ('development','later_exploratory')
+                     for family in ('B+','ConvLSTM','PINN','Ridge','DRIFT1','NIS_BPLUS')
+                     for metric in ('rmse','crps')}
+    seen = set()
+    for series in figures['overview_series']:
+        phase, family, metric = series['phase'], series['family'], series['metric']
+        key = phase,family,metric
+        assert key not in seen and key in expected_keys
+        seen.add(key)
+        if family == 'NIS_BPLUS':
+            source = (development if phase == 'development' else later).loc[family].sort_index()
+        elif family == 'DRIFT1':
+            source = scores[(scores.phase == phase) & (scores.model == family)].set_index('horizon').sort_index()
+        else:
+            source = families[(families.phase == phase) & (families.family == family)].set_index('horizon').sort_index()
+        assert series['horizon'] == source.index.tolist() == list(range(1,8))
+        assert series['value'] == source[metric].tolist()
+    assert seen == expected_keys
     # Check every data row in the new Markdown tables against its saved CSV.
     report = (ROOT/'docs/ootang_neural_initial_state_results.v1.1.md').read_text()
     documentation_cells = 0
@@ -86,10 +119,14 @@ def main():
     ordered(texts[2]+texts[3],expected[94:])
     assert '4707' in texts[1] and '尚未评价' not in texts[1]
     assert '逐点均值门未过' in texts[1] and '软约束状态PINN：物理一致性未达标' in texts[1]
+    compact = [''.join(t.split()) for t in texts]
+    assert '神经初态＋B+（数值检查通过）' in compact[0]
+    assert '软约束PINN（物理未达标）' in compact[0]
+    assert all('物理数值检查通过' in compact[i] or '通过物理数值检查' in compact[i] for i in (0,1))
     all_text='\n'.join(texts)
     assert all(s not in all_text for s in ('v4.1','2026-09-14','旧版','新增','冻结'))
     unchanged=[]
-    for i in (0,2,3):
+    for i in (2,3):
         oldpix=previous[i].get_pixmap(matrix=pymupdf.Matrix(1.5,1.5))
         newpix=document[i].get_pixmap(matrix=pymupdf.Matrix(1.5,1.5))
         assert oldpix.samples==newpix.samples
@@ -105,12 +142,14 @@ def main():
     geometry=namespace['geometry'](document)
     sizes=[span['size'] for p in document for block in p.get_text('dict')['blocks'] if 'lines' in block
            for line in block['lines'] for span in line['spans']]
-    figure_paths=[name for name in common if name.startswith('paper/figures/')]
-    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='page 2 complete initial-state result synchronization only',
+    figure_paths=sorted(name for name in unchanged_sources if name.startswith('paper/figures/'))
+    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='pages 1 and 2 physical-status clarification and saved initial-state overview curves only',
                 pdf=str(pdf.relative_to(ROOT)),pdf_sha256=sha(pdf),page_count=4,base_commit=BASE,
-                csv_numeric_cells_verified_in_pdf_order=102,unchanged_original_numeric_cells=96,new_model_numeric_cells=6,
+                csv_numeric_cells_verified_in_pdf_order=102,unchanged_previous_numeric_cells=102,initial_state_numeric_cells=6,
+                overview_series_verified=24,unchanged_original_overview_ordinates=140,initial_state_overview_ordinates=28,
+                figure_input_hashes_verified=len(figures['input_sha256']),figure_pdf_hashes_verified=len(figures['figures']),
                 documentation_numeric_cells_verified=documentation_cells,additional_result=metadata['initial_state_result'],
-                current_report_input_hashes_verified=len(metadata['input_sha256']),common_original_source_hashes_unchanged=len(common),
+                current_report_input_hashes_verified=len(metadata['input_sha256']),common_original_source_hashes_unchanged=len(unchanged_sources),
                 original_figure_source_files_unchanged=figure_paths,unchanged_pages_pixel_identical=unchanged,
                 tex_sha256_verified=True,minimum_font_size_pt=min(sizes),page_geometry=geometry,
                 geometry_method='original geometry function extracted without importing experiment or statistics',

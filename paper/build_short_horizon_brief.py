@@ -134,9 +134,9 @@ def main():
 \newcommand{\reportfigure}[2]{\begin{minipage}{\textwidth}\includegraphics[width=\linewidth]{#1}\captionof{figure}{#2}\end{minipage}\par}
 \begin{document}
 \pagetitle{1\quad 七个步长，分别比较}
-\takeaway{\textbf{主要结果：}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
+\takeaway{\textbf{神经初态＋B+严格递推已通过物理数值检查，预测整体收益仍未达标。}在线回归＋短期误差反馈表现最好；B+ 物理参照的额外收益尚不稳定。}
 {\small 每天使用过去 30 天观测，预测第 1、2、3、4、5、6、7 天后的位移；已发出的预测固定保存。四点：ATU1、ATU5、MJ3、MJ1。}\par
-\reportfigure{horizon_comparison.pdf}{同一步长比较同一组起点。各类代表按开发 RMSE 选择，后期沿用；纵轴为对数。}
+\reportfigure{horizon_comparison.pdf}{同一步长、同组起点；神经初态模型为固定候选，其余各类代表按开发 RMSE 选择并沿用至后期。纵轴为对数，越低越好。}
 \textbf{兼顾均值与区间的推荐方法}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
 \begin{center}\footnotesize
 \begin{tabular}{clrrrr}\toprule
@@ -149,7 +149,7 @@ def main():
 {\footnotesize\color{gray}开发：2018-09-01 至 2019-09-11；后期：2019-09-12 至 2020-06-30。后期各步长每点样本数为 293、292、291、290、289、288、287。}
 \clearpage
 \pagetitle{2\quad 四类模型与残差学习}
-{\small 固定看 7 天后位移。所有模型采用相同的观测截止与成熟误差校准；已知未来真实驱动的 B+ 不参加主比较。}\par
+{\small 第 7 天位移比较：观测截止、成熟误差校准相同；未来真实驱动 B+ 不参加主比较。}\par
 \begin{center}\fontsize{8.7}{11}\selectfont\setlength{\tabcolsep}{3pt}
 \begin{tabular}{lrrrrrr}\toprule
 模型 & 开发 RMSE & 后期 RMSE & CRPS & 90\% 覆盖 & 区间宽度 & 区间评分\\\midrule
@@ -158,9 +158,9 @@ def main():
 \end{center}
 {\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
 \reportfigure{paired_effects.pdf}{配对方法的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
-\takeaway{\textbf{ConvLSTM：}直接预测与残差学习均未超过速度外推。\quad\textbf{软约束状态 PINN：}物理一致性未达标。}
+\takeaway{\textbf{软约束状态 PINN：物理一致性未达标。}\quad\textbf{神经初态＋B+：物理数值检查通过。}}
 \begingroup\fontsize{9}{12}\selectfont
-在线回归包含趋势特征、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
+ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含趋势、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
 \textbf{神经初态＋B+严格递推：}内部、开发及后期共 @@INITIAL_TRAJECTORIES@@ 条轨迹通过求解器数值容差检查；零修正的额外严格子步诊断仍保留异常。\textbf{开发整体未改善；后期 1--7 天平均误差下降，3--7 天概率门通过，但逐点均值门未过，仍落后在线回归。}后期按完整比较补齐，未重选。\par
 {\color{gray}B+ 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 无方程约束对照仍保留相同物理背景。\par}
 \endgroup
@@ -211,7 +211,7 @@ def main():
     RECEIPT.write_text(
         json.dumps({
             "role": "presentation_revision_only",
-            "experiment": "v4.0 unchanged; verified complete initial-state comparison on page 2",
+            "experiment": "v4.0 unchanged; verified complete initial-state comparison on pages 1 and 2",
             "presentation": "v4.1",
             "new_training": 0,
             "new_model_selection": 0,
@@ -220,7 +220,7 @@ def main():
             "expected_pages": 4,
             "displayed_numeric_cells": expected,
             "initial_state_result": {
-                "page": 2,
+                "pages": [1, 2],
                 "all_evaluated_trajectories": initial["counts"]["trajectories"],
                 "numerical_physics_pass": True,
                 "strict_zero_control_diagnostic_failures": initial["strict_diagnostic_failures"],

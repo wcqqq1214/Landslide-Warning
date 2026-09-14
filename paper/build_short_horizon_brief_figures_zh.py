@@ -2,11 +2,13 @@
 
 Adapt the existing six quantitative panels at their original 166 mm width.
 All legal dates, selected methods, scores and 90% marginal prediction bands
-are retained. Only labels and label spacing change. No smoothing, fitting,
+are retained. The overview also includes the verified initial-state candidate.
+No smoothing, fitting,
 selection or scoring is performed. The existing experiment figures are inputs,
 never output targets. PDF text remains editable; previews use 300 dpi.
 """
 
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -23,6 +25,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN = ROOT / "results/ootang_short_horizon_v4/20260913_short_horizon"
+INITIAL_STATE = ROOT / "results/ootang_neural_initial_state_v1_1/20260914"
 ORIGINAL = ROOT / "figures/ootang_short_horizon_v4/20260913_short_horizon"
 OUT = ROOT / "paper/figures/short_horizon_zh"
 SCRATCH = ROOT / "tmp/pdfs/short_horizon_zh_edit"
@@ -48,13 +51,15 @@ plt.rcParams.update({
     "legend.frameon": False,
 })
 COLORS = {"B+": "#777777", "ConvLSTM": "#c97934", "PINN": "#93719d",
-          "Ridge": "#365f91", "DRIFT1": "#6f8e72"}
+          "NIS_BPLUS": "#23897e", "Ridge": "#365f91", "DRIFT1": "#6f8e72"}
 LABELS = {"B+": "B+物理模型", "ConvLSTM": "ConvLSTM",
-          "PINN": "软约束PINN（物理未达标）", "Ridge": "在线回归＋反馈",
+          "PINN": "软约束PINN（物理未达标）",
+          "NIS_BPLUS": "神经初态＋B+（数值检查通过）", "Ridge": "在线回归＋反馈",
           "DRIFT1": "速度外推"}
 PHASES = [("development", "开发段"), ("later_exploratory", "后期评价")]
 OUTPUTS = {}
 PLOTTED_LINES = 0
+OVERVIEW_SERIES = []
 
 
 def sha(path):
@@ -91,22 +96,34 @@ def finish(fig, name):
 def horizon_comparison():
     frame = pd.read_csv(RUN / "analysis/family_representatives.csv")
     scores = pd.read_csv(RUN / "analysis/summary_by_horizon.csv")
+    receipt = json.loads((INITIAL_STATE / "verification/receipt.json").read_text())
+    assert receipt["status"] == "passed" and receipt["physics_pass"]
+    assert receipt["counts"]["trajectories"] == 4707
+    initial = {phase: pd.read_csv(INITIAL_STATE / phase / "summary_by_horizon.csv")
+               for phase, _ in PHASES}
     fig, axs = plt.subplots(2, 2, figsize=(166 / 25.4, 118 / 25.4), sharex=True)
     for row, (phase, title) in enumerate(PHASES):
         for col, metric in enumerate(["rmse", "crps"]):
             ax = axs[row, col]
             for family in COLORS:
-                part = (frame[(frame.phase == phase) & (frame.family == family)]
+                part = (initial[phase][initial[phase].model == family]
+                        if family == "NIS_BPLUS" else
+                        frame[(frame.phase == phase) & (frame.family == family)]
                         if family != "DRIFT1" else
                         scores[(scores.phase == phase) & (scores.model == family)])
                 part = part.sort_values("horizon")
                 assert part.horizon.tolist() == list(range(1, 8))
+                assert np.isfinite(part[metric]).all()
                 assert (part[metric] > 0).all()
                 line(ax, part.horizon, part[metric],
                      marker={"B+": "s", "ConvLSTM": "^", "PINN": "D",
-                             "Ridge": "o", "DRIFT1": "x"}[family],
+                             "NIS_BPLUS": "v", "Ridge": "o", "DRIFT1": "x"}[family],
                      markersize=3, color=COLORS[family], label=LABELS[family],
-                     ls="--" if family == "DRIFT1" else "-")
+                     ls={"DRIFT1": "--", "NIS_BPLUS": "-."}.get(family, "-"))
+                OVERVIEW_SERIES.append({
+                    "phase": phase, "family": family, "metric": metric,
+                    "horizon": part.horizon.tolist(), "value": part[metric].tolist(),
+                })
             ax.set_yscale("log")
             ax.yaxis.set_major_formatter(FuncFormatter(lambda value, _: f"{value:g}"))
             ax.set_xticks(range(1, 8))
@@ -209,21 +226,50 @@ def point_curves():
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--horizon-only", action="store_true",
+                        help="Update the overview while preserving the other five PDFs.")
+    args = parser.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     SCRATCH.mkdir(parents=True, exist_ok=True)
     inputs = [RUN / f"analysis/{name}.csv" for name in [
         "family_representatives", "summary_by_horizon", "paired_differences",
         "metrics_by_point_horizon",
     ]] + [ORIGINAL / "curve_source_data.csv"]
+    inputs += [INITIAL_STATE / phase / "summary_by_horizon.csv" for phase, _ in PHASES]
+    inputs += [INITIAL_STATE / "verification/receipt.json"]
+    if args.horizon_only:
+        previous = json.loads((OUT / "sources.json").read_text())
+        for name, digest in previous["input_sha256"].items():
+            assert sha(ROOT / name) == digest, name
+        for name, metadata in previous["figures"].items():
+            if name != "horizon_comparison":
+                assert sha(OUT / f"{name}.pdf") == metadata["pdf_sha256"], name
+                OUTPUTS[name] = metadata
     horizon_comparison()
-    paired_effects()
-    rows = point_curves()
-    assert rows == 1148 and PLOTTED_LINES == 64 and len(OUTPUTS) == 6
+    if args.horizon_only:
+        rows = previous["complete_h7_curve_rows"]
+        assert PLOTTED_LINES == 24
+    else:
+        paired_effects()
+        rows = point_curves()
+        assert PLOTTED_LINES == 68
+    assert rows == 1148 and len(OUTPUTS) == 6 and len(OVERVIEW_SERIES) == 24
     (OUT / "sources.json").write_text(json.dumps({
         "role": "Chinese presentation adaptation of saved quantitative figures",
         "input_sha256": {str(p.relative_to(ROOT)): sha(p) for p in inputs},
         "builder_sha256": sha(Path(__file__)),
-        "plotted_lines_checked_against_saved_ordinates": PLOTTED_LINES,
+        "plotted_lines_checked_against_saved_ordinates": 68,
+        "lines_checked_this_run": PLOTTED_LINES,
+        "reused_figures": sorted(set(OUTPUTS) - {"horizon_comparison"}) if args.horizon_only else [],
+        "overview_series": OVERVIEW_SERIES,
+        "overview_contract": {
+            "claim": "Numerical physical consistency passes for the initial-state coupling; online regression remains more accurate.",
+            "mapping": "phase × horizon (1–7 days) × model/family → saved four-point mean RMSE or CRPS in mm",
+            "selection": "original family representatives unchanged; NIS_BPLUS is the single fixed initial-state candidate",
+            "uncertainty": "saved aggregate point scores, not seed means with inferential error bars; no uncertainty recalculation",
+            "reuse": "structural adaptation; original 140 ordinates plus 28 saved initial-state ordinates; no exclusions",
+        },
         "complete_h7_curve_rows": rows,
         "band_source": "saved band_lower and band_upper; 90% marginal prediction interval",
         "increment_transform": "saved increments for observed/mean; bplus/drift minus last_observed",
