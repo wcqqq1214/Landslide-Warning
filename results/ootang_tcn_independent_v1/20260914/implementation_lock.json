@@ -1,0 +1,6 @@
+{
+  "code/tcn_independent/run.py": "4407930967cab3eddeb5d2f7ac19818e3a087bd9155c2c578e3d281af9bf560f",
+  "code/tcn_independent/__init__.py": "98e15f53380a7197e4a90f3aea992eccf9f283c48fc74660100c28af4cd6de8e",
+  "code/tcn_independent/engine.py": "de153bca4618ce6af5c897980250e14a7be4e575908139e186e24ca5ed07eb21",
+  "tests/test_tcn_independent.py": "8a7d4daa28575fd5595f4a1b31bf387f24c0b0d62cf053f52f2c89000fb49733"
+}

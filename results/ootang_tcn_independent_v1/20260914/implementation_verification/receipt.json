@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "recorded_utc": "2026-09-14T10:40:35.206327+00:00",
+  "checks": 8,
+  "source_hashes_verified": 118,
+  "new_fits": 0,
+  "new_optimizer_updates": 0,
+  "files": {
+    "code/tcn_independent/run.py": "4407930967cab3eddeb5d2f7ac19818e3a087bd9155c2c578e3d281af9bf560f",
+    "code/tcn_independent/__init__.py": "98e15f53380a7197e4a90f3aea992eccf9f283c48fc74660100c28af4cd6de8e",
+    "code/tcn_independent/engine.py": "de153bca4618ce6af5c897980250e14a7be4e575908139e186e24ca5ed07eb21",
+    "tests/test_tcn_independent.py": "8a7d4daa28575fd5595f4a1b31bf387f24c0b0d62cf053f52f2c89000fb49733"
+  },
+  "original_physical_warnings": "retained in checks.txt; finite outputs and replay contract passed; no underlying library fix claimed",
+  "first_block": "all five means and six TCN seed outputs agree with existing rolling forecasts within 1e-9 mm",
+  "uncertainty_boundary": "all 293 lead-specific pools have exactly 90 targets strictly before split"
+}
