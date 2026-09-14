@@ -1,0 +1,6 @@
+verified origin 432: 60 checkpoints
+verified origin 612: 96 checkpoints
+verified origin 792: 132 checkpoints
+verified origin 972: 192 checkpoints
+verified origin 1168: 228 checkpoints
+{"status": "passed", "started_utc": "2026-09-14T16:55:23.644076+00:00", "values_checked": 3339568, "max_difference": 1.8189894035458565e-11, "checkpoint_count": 228, "new_fits": 42, "reused_fits": 18, "updates": 16800, "ridge_replays": 5, "source_files": 156, "completed_utc": "2026-09-14T16:56:10.350574+00:00", "events_checked": 141, "selected": [{"origin": 612, "phase": "alpha", "selected": "A0"}, {"origin": 612, "phase": "lambda", "selected": "L3"}, {"origin": 792, "phase": "alpha", "selected": "A0"}, {"origin": 792, "phase": "lambda", "selected": "L3"}, {"origin": 972, "phase": "alpha", "selected": "A0"}, {"origin": 972, "phase": "lambda", "selected": "L3"}, {"origin": 1168, "phase": "alpha", "selected": "A1"}, {"origin": 1168, "phase": "lambda", "selected": "L0"}], "point_rows": 224, "summary_rows": 56, "seed_rows": 168, "daily_rows": 65632, "limitations": ["overlapping windows and previously exposed data", "selection horizon90 vs test293", "972 uses frozen792 B+ teacher", "90 adjacent errors are dependent", "optimizer nonconvergence flags retained", "given future forcing, not operational forecasting"]}

@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T17:05:50.081596+00:00",
+  "reviewer": "Codex inline visual inspection",
+  "figures": [
+    "ALPHA_SELECTED_mentor",
+    "ALPHA_SELECTED_full",
+    "LAMBDA_SELECTED_mentor",
+    "LAMBDA_SELECTED_full",
+    "temporal_validation"
+  ],
+  "panels_inspected": 20,
+  "notes": [
+    "all five final PNGs inspected",
+    "temporal legends moved clear of curves and seed points",
+    "mentor and full-range output pairs inspected for all four points",
+    "final alpha and lambda trajectories intentionally identical: selected alpha1/lambda0",
+    "true wide intervals retained; mentor display clips bands, full-range copy preserves them"
+  ],
+  "previous_preview": "draft_legend_review: numerical checks passed, temporal legends required revision",
+  "user_or_supervisor_acceptance": "not provided",
+  "files": {
+    "ALPHA_SELECTED_mentor.png": "c86a1d88f3b678854b2cd84e3b3fafad7dc04adc8306c2e28379fc6657ab1e1d",
+    "ALPHA_SELECTED_full.png": "6718c5914dcd02d07afeeedaebbebbc373b94c901fab6cdd4d6c974914f39667",
+    "LAMBDA_SELECTED_mentor.png": "e845590d0a0ca25d45f9c2ad82aad7b7ae2e7574b1661d7f3bdb1ba54a315f89",
+    "LAMBDA_SELECTED_full.png": "95d5de3445aae334e7cb6ccb7e2b95165f47d491ec14064dab276932540a9772",
+    "temporal_validation.png": "19d0418664bdf6cc4edbc6a889ae7e25a9bd4a21ac10fb4494e3fbe21aad4438"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "reason": "temporal panel a/b/c/d legends can overlap data; visual review requires clearer placement and padding",
+  "data_changed": false,
+  "training_changed": false,
+  "previous_preview": "figures/ootang_transformer_temporal_v1/20260914/draft_legend_review",
+  "action": "move a legend to empty center-left, add b/c upper plotting margin, d single-row legend below all curves"
+}

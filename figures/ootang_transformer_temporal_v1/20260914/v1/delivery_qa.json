@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T17:03:29.617051+00:00",
+  "figures": 5,
+  "panels": 20,
+  "values_checked": 88936,
+  "max_svg_quantization_difference_mm": 5.154641257831827e-06,
+  "exports": [
+    {
+      "figure": "ALPHA_SELECTED_mentor",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "ALPHA_SELECTED_full",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "LAMBDA_SELECTED_mentor",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "LAMBDA_SELECTED_full",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    },
+    {
+      "figure": "temporal_validation",
+      "min_font_pt": 7.6,
+      "alignment": "PASS",
+      "geometry": "PASS"
+    }
+  ],
+  "pdf_audits": "not performed: user requested no PDF",
+  "visual_inspection": "pending"
+}

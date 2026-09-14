@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "text_count": 61,
+  "excluded_undrawn_tick_artists": 24,
+  "minimum_font_pt": 7.6,
+  "text_text_collisions": [],
+  "canvas_clipping": [],
+  "boundary": "Matplotlib text rectangles; PDF audits not run; data-stroke overlap reviewed visually"
+}

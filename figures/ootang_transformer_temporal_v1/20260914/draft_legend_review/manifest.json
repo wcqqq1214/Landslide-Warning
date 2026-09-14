@@ -1,0 +1,60 @@
+{
+  "time_utc": "2026-09-14T16:57:13.217959+00:00",
+  "exports": [
+    {
+      "figure": "ALPHA_SELECTED_mentor",
+      "kind": "trajectory",
+      "method": "ALPHA_SELECTED",
+      "display": "mentor"
+    },
+    {
+      "figure": "ALPHA_SELECTED_full",
+      "kind": "trajectory",
+      "method": "ALPHA_SELECTED",
+      "display": "full"
+    },
+    {
+      "figure": "LAMBDA_SELECTED_mentor",
+      "kind": "trajectory",
+      "method": "LAMBDA_SELECTED",
+      "display": "mentor"
+    },
+    {
+      "figure": "LAMBDA_SELECTED_full",
+      "kind": "trajectory",
+      "method": "LAMBDA_SELECTED",
+      "display": "full"
+    },
+    {
+      "figure": "temporal_validation",
+      "kind": "temporal"
+    }
+  ],
+  "source_script_sha256": "cbe152499b5671dcbfef22e1c7e0e6e6eb951f0ccbe3559b9088569af56587c0",
+  "files": {
+    "ALPHA_SELECTED_full.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "ALPHA_SELECTED_full.png": "6718c5914dcd02d07afeeedaebbebbc373b94c901fab6cdd4d6c974914f39667",
+    "ALPHA_SELECTED_full.svg": "97cd0a4d8cbee627f36ce821770252313ab73023b50275fa224b095925f914bd",
+    "ALPHA_SELECTED_full.text_geometry.json": "12980c68146e450e42dea2c659cf1d1a8efa6a3bc7ab7574ce6e7011cc52dc89",
+    "ALPHA_SELECTED_mentor.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "ALPHA_SELECTED_mentor.png": "c86a1d88f3b678854b2cd84e3b3fafad7dc04adc8306c2e28379fc6657ab1e1d",
+    "ALPHA_SELECTED_mentor.svg": "c6471db42e18ceea1ac60b31e085e3617c9890242d86ff80a89f82e00d5db0f3",
+    "ALPHA_SELECTED_mentor.text_geometry.json": "6377ddf83e6c997e4cfdabdb8d3e5b2497d174ef084469b89d912552b5e14dd4",
+    "LAMBDA_SELECTED_full.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "LAMBDA_SELECTED_full.png": "95d5de3445aae334e7cb6ccb7e2b95165f47d491ec14064dab276932540a9772",
+    "LAMBDA_SELECTED_full.svg": "4a47d7323c450ddd3e6994b04242d1ff96a2c729cd3d6d6d8f2858a9c32eae17",
+    "LAMBDA_SELECTED_full.text_geometry.json": "12980c68146e450e42dea2c659cf1d1a8efa6a3bc7ab7574ce6e7011cc52dc89",
+    "LAMBDA_SELECTED_mentor.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "LAMBDA_SELECTED_mentor.png": "e845590d0a0ca25d45f9c2ad82aad7b7ae2e7574b1661d7f3bdb1ba54a315f89",
+    "LAMBDA_SELECTED_mentor.svg": "b8dd95fbe59a97d98d88ffc69d8409865a42e3d8e47215fa4b3fd310fee80c38",
+    "LAMBDA_SELECTED_mentor.text_geometry.json": "6377ddf83e6c997e4cfdabdb8d3e5b2497d174ef084469b89d912552b5e14dd4",
+    "figure_numbers.csv": "dd2f1b663eaa43b0f8a1d522fbb87b0425a7b0374c828a4d19ecd2f6960cde25",
+    "selected_parameters.json": "fdb991cbbf2358e6445375e82d1f180a8cab30556314373071da0ece2333debb",
+    "source_arrays.npz": "9766dfac88827156911638553838b65547570ae30c543d37124ee70ffd849d0c",
+    "temporal_plot_records.json": "b97be09a924d64eac59220496f0e5e67ac8de3806abcd5c0057f29cfcc8b3ee7",
+    "temporal_validation.alignment.json": "b3bfdfb85daee39d37399093a5a185eddb773d01d1826706e0f5401fedaf548e",
+    "temporal_validation.png": "5336fc95633680695474e2e59eb2afa085a0383802695b60e3b5c8875ef7e731",
+    "temporal_validation.svg": "bd44e1f79bf2da4eb5a3155d78b27cf3157edfadbb3cc428cf78429a2136272e",
+    "temporal_validation.text_geometry.json": "cb074b0e36ec41b9d0ff7ac94fe9f4d6b25c2222433b48688f87800fba3213ac"
+  }
+}
