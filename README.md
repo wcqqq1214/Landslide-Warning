@@ -3,7 +3,13 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前（2026-09-14）：轻量 Transformer 与 CNN-Mamba 的完整条件实验已跑通并交付。** [完整对比报告](docs/ootang_sequence_conditional_results.v1.0.md)／[五张中文四点PNG/SVG](figures/ootang_sequence_conditional_v1/20260914/README.md)／[九方法CSV](results/ootang_sequence_conditional_v1/20260914/analysis/phase_summary.csv)。两个结构各直接/残差三种子，36次拟合、14400次更新，完整开发376日和最终293日，未因效果差中断；180检查点及全部预测/评分已独立核验。
+**当前（2026-09-14）：Transformer残差幅度正则化的进一步验证已完整完成。** [图文报告](docs/ootang_transformer_regularization_results.v1.0.md)／[两张四点PNG/SVG](figures/ootang_transformer_regularization_v1/20260914/README.md)／[五方法CSV](results/ootang_transformer_regularization_v1/20260914/analysis/phase_summary.csv)。唯一新增λ=1输出幅度平方惩罚，结构/三种子/400更新保持，9拟合3600更新45检查点，完整开发376日与最终293日，未因效果差中断。
+
+正则版相对原版在两阶段均值/概率配对均改善；最终平均MAE **6.5394**、RMSE **8.9073 mm**，B+ **6.9017/9.1242**，分别降低5.25%/2.38%。但开发RMSE **44.4136**仍高于B+ **41.3684**，最终MJ3退步、只有1/3种子RMSE超过B+，主概率评分也未超过B+，两阶段完整条件均未通过。区间交叉诊断显示旧误差尺度转移解释了大部分最终CRPS差距，不替换主输出或据最终标签重校区间。
+
+779来源、45检查点、696320数值、完整事件顺序、2图8面板/23408个SVG值、报告及交叉评分核验通过；保留负结果和探索性限制。[冻结计划](docs/ootang_transformer_regularization_plan.v1.0.md)／[核验](docs/ootang_transformer_regularization_validation.v1.0.md)／[最终回执](results/ootang_transformer_regularization_v1/20260914/final_receipt.json)。分支`codex/transformer-residual-regularization`仅本地提交，本轮结束，不追加λ/结构/训练，不push/PDF。
+
+**上一轮（2026-09-14）：轻量 Transformer 与 CNN-Mamba 的完整条件实验已跑通并交付。** [完整对比报告](docs/ootang_sequence_conditional_results.v1.0.md)／[五张中文四点PNG/SVG](figures/ootang_sequence_conditional_v1/20260914/README.md)／[九方法CSV](results/ootang_sequence_conditional_v1/20260914/analysis/phase_summary.csv)。两个结构各直接/残差三种子，36次拟合、14400次更新，完整开发376日和最终293日，未因效果差中断；180检查点及全部预测/评分已独立核验。
 
 最终四点平均RMSE：B+ **9.1242**、DRIFT1 **12.9777**、岭回归 **12.3382**；TCN直接/残差 **43.2534/12.8621**，Transformer **36.4169/9.2791**，CNN-Mamba **39.6101/10.3756 mm**。两种新残差版的均值优于旧TCN残差版；Transformer残差MAE6.8838略低于B+6.9017，但RMSE及概率未同时改善。四个新方法两阶段完整工作条件均0/4，保留负结果。最终残差均值改善各3/3种子，开发不稳定、概率配对两阶段均0/3；宽区间和重复历史日期限制保留。
 
