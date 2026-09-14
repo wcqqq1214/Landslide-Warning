@@ -1,0 +1,205 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "runtime": "runtime/ootang_rolling_v3/reference",
+  "neural": {
+    "input_channels": 22,
+    "hidden": 16,
+    "output_channels": 4,
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "checkpoints": [
+      50,
+      100,
+      200,
+      400
+    ],
+    "batch": "full_training_sequence",
+    "dtype": "float64",
+    "device": "cpu",
+    "threads": 1,
+    "optimizer": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0,
+    "head_initialization": "zero",
+    "clip_grad": null,
+    "dropout": 0.0,
+    "transformer": {
+      "hidden": 16,
+      "heads": 2,
+      "layers": 2,
+      "feedforward": 32,
+      "activation": "gelu",
+      "norm_first": true,
+      "layer_norm_eps": 1e-05,
+      "causal_attention": true,
+      "position": "fixed sinusoidal absolute daily index from day zero; base 10000",
+      "input_projection": "linear 22 to 16 with bias",
+      "final_layer_norm": true
+    }
+  },
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "ridge": {
+    "alpha": 1.0,
+    "fit_intercept": true
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor"
+  },
+  "version": "ootang_transformer_temporal.v1.0",
+  "branch": "codex/transformer-temporal-shrinkage",
+  "start_utc": "2026-09-14T16:31:07+00:00",
+  "deadline_utc": "2026-09-14T18:31:07+00:00",
+  "out": "results/ootang_transformer_temporal_v1/20260914",
+  "figures": "figures/ootang_transformer_temporal_v1/20260914",
+  "origins": [
+    432,
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    612,
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "alphas": [
+    0,
+    0.25,
+    0.5,
+    0.75,
+    1
+  ],
+  "lambdas": {
+    "L0": 0,
+    "L033": 0.3333333333333333,
+    "L1": 1,
+    "L3": 3
+  },
+  "updates": 400,
+  "families": {
+    "TRANSFORMER": [
+      "TRANSFORMER_BRES_COND"
+    ]
+  },
+  "selection": {
+    "first_days": 90,
+    "calibration_next_days": 90,
+    "keys": [
+      "mae",
+      "rmse"
+    ],
+    "tie_tolerance": 1e-12,
+    "alpha_order": [
+      "A0",
+      "A025",
+      "A05",
+      "A075",
+      "A1"
+    ],
+    "lambda_order": [
+      "L3",
+      "L1",
+      "L033",
+      "L0"
+    ],
+    "rule": "previous origin first90; single common parameter across four points and all seeds; freeze for complete issued trajectory"
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "reuse": {
+    "L0": "results/ootang_sequence_conditional_v1/20260914",
+    "L1": "results/ootang_transformer_regularization_v1/20260914"
+  },
+  "reuse_phases": {
+    "612": "internal",
+    "792": "development",
+    "1168": "final_exploratory"
+  },
+  "max_new_fits": 42,
+  "max_optimizer_updates": 16800,
+  "max_reused_fits": 18,
+  "max_new_ridge_fits": 5,
+  "max_bplus_refits": 0,
+  "max_physical_forwards": 11,
+  "continue_after_poor_effect": true,
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "stable_mean_rule": "all three historical origin windows satisfy original mean gate and >=2/3 seed MAE/RMSE improvements vs B+; final evaluated separately",
+  "probability_rule": "previous origin issued candidate last90 of first180, RMS per point fixed for entire next293",
+  "defer_outer_scoring_until_all_issue_locks": true
+}
