@@ -1,0 +1,1437 @@
+{
+  "tables": {
+    "choices": {
+      "headers": [
+        "起点",
+        "历史选择索引",
+        "校准索引",
+        "选出的 α",
+        "选出的 λ"
+      ],
+      "rows": [
+        [
+          "612",
+          "[432,522)",
+          "[522,612)",
+          "0",
+          "3"
+        ],
+        [
+          "792",
+          "[612,702)",
+          "[702,792)",
+          "0",
+          "3"
+        ],
+        [
+          "972",
+          "[792,882)",
+          "[882,972)",
+          "0",
+          "3"
+        ],
+        [
+          "1168",
+          "[972,1062)",
+          "[1062,1152)",
+          "1",
+          "0"
+        ]
+      ]
+    },
+    "mean": {
+      "headers": [
+        "起点",
+        "方法",
+        "MAE / mm",
+        "RMSE / mm"
+      ],
+      "rows": [
+        [
+          "612",
+          "B+",
+          "29.431283",
+          "34.949548"
+        ],
+        [
+          "612",
+          "DRIFT1",
+          "19.879082",
+          "22.780898"
+        ],
+        [
+          "612",
+          "普通岭回归",
+          "32.792665",
+          "38.231832"
+        ],
+        [
+          "612",
+          "历史选 α",
+          "29.431283",
+          "34.949548"
+        ],
+        [
+          "612",
+          "历史选 λ",
+          "29.505689",
+          "34.927836"
+        ],
+        [
+          "792",
+          "B+",
+          "23.582514",
+          "27.313325"
+        ],
+        [
+          "792",
+          "DRIFT1",
+          "4.960013",
+          "5.824270"
+        ],
+        [
+          "792",
+          "普通岭回归",
+          "27.493401",
+          "31.315924"
+        ],
+        [
+          "792",
+          "历史选 α",
+          "23.582514",
+          "27.313325"
+        ],
+        [
+          "792",
+          "历史选 λ",
+          "24.222704",
+          "28.101706"
+        ],
+        [
+          "972",
+          "B+",
+          "61.563106",
+          "67.167389"
+        ],
+        [
+          "972",
+          "DRIFT1",
+          "8.637339",
+          "10.594506"
+        ],
+        [
+          "972",
+          "普通岭回归",
+          "43.445352",
+          "48.588248"
+        ],
+        [
+          "972",
+          "历史选 α",
+          "61.563106",
+          "67.167389"
+        ],
+        [
+          "972",
+          "历史选 λ",
+          "58.579759",
+          "64.541391"
+        ],
+        [
+          "1168",
+          "B+",
+          "6.901689",
+          "9.124173"
+        ],
+        [
+          "1168",
+          "DRIFT1",
+          "9.109845",
+          "12.977735"
+        ],
+        [
+          "1168",
+          "普通岭回归",
+          "11.318237",
+          "12.338214"
+        ],
+        [
+          "1168",
+          "历史选 α",
+          "6.883836",
+          "9.279082"
+        ],
+        [
+          "1168",
+          "历史选 λ",
+          "6.883836",
+          "9.279082"
+        ]
+      ]
+    },
+    "alpha_grid": {
+      "headers": [
+        "固定 α",
+        "612窗 RMSE",
+        "792窗 RMSE",
+        "972窗 RMSE",
+        "1168窗 RMSE"
+      ],
+      "rows": [
+        [
+          "0",
+          "34.949548",
+          "27.313325",
+          "67.167389",
+          "9.124173"
+        ],
+        [
+          "0.25",
+          "34.836424",
+          "28.484649",
+          "65.507465",
+          "8.927240"
+        ],
+        [
+          "0.5",
+          "34.758173",
+          "29.789181",
+          "63.980507",
+          "8.867132"
+        ],
+        [
+          "0.75",
+          "34.720121",
+          "31.181573",
+          "62.603178",
+          "8.977292"
+        ],
+        [
+          "1",
+          "34.731633",
+          "32.638862",
+          "61.393257",
+          "9.279082"
+        ]
+      ]
+    },
+    "lambda_grid": {
+      "headers": [
+        "固定 λ",
+        "612窗 RMSE",
+        "792窗 RMSE",
+        "972窗 RMSE",
+        "1168窗 RMSE"
+      ],
+      "rows": [
+        [
+          "0",
+          "34.731633",
+          "32.638862",
+          "61.393257",
+          "9.279082"
+        ],
+        [
+          "0.333333",
+          "34.826160",
+          "30.897719",
+          "62.481427",
+          "9.037042"
+        ],
+        [
+          "1",
+          "34.871079",
+          "29.408014",
+          "63.148258",
+          "8.907333"
+        ],
+        [
+          "3",
+          "34.927836",
+          "28.101706",
+          "64.541391",
+          "8.998911"
+        ]
+      ]
+    },
+    "probability": {
+      "headers": [
+        "起点",
+        "方法",
+        "CRPS / mm",
+        "90%区间评分 / mm",
+        "90%覆盖 / %",
+        "90%宽度 / mm"
+      ],
+      "rows": [
+        [
+          "612",
+          "B+",
+          "34.552637",
+          "472.091090",
+          "77.90",
+          "221.191539"
+        ],
+        [
+          "612",
+          "历史选 α",
+          "34.552637",
+          "472.091090",
+          "77.90",
+          "221.191539"
+        ],
+        [
+          "612",
+          "历史选 λ",
+          "34.691638",
+          "473.913710",
+          "77.56",
+          "220.239178"
+        ],
+        [
+          "792",
+          "B+",
+          "24.157337",
+          "366.241971",
+          "56.83",
+          "96.272998"
+        ],
+        [
+          "792",
+          "历史选 α",
+          "24.157337",
+          "366.241971",
+          "56.83",
+          "96.272998"
+        ],
+        [
+          "792",
+          "历史选 λ",
+          "24.223415",
+          "365.670463",
+          "57.94",
+          "96.273758"
+        ],
+        [
+          "972",
+          "B+",
+          "48.091953",
+          "535.730275",
+          "44.20",
+          "86.842089"
+        ],
+        [
+          "972",
+          "历史选 α",
+          "48.091953",
+          "535.730275",
+          "44.20",
+          "86.842089"
+        ],
+        [
+          "972",
+          "历史选 λ",
+          "45.402482",
+          "503.110283",
+          "47.18",
+          "88.701155"
+        ],
+        [
+          "1168",
+          "B+",
+          "14.894908",
+          "201.642014",
+          "100.00",
+          "201.642014"
+        ],
+        [
+          "1168",
+          "历史选 α",
+          "14.141969",
+          "189.836396",
+          "100.00",
+          "189.836396"
+        ],
+        [
+          "1168",
+          "历史选 λ",
+          "14.141969",
+          "189.836396",
+          "100.00",
+          "189.836396"
+        ]
+      ]
+    },
+    "final_points": {
+      "headers": [
+        "测点",
+        "B+ MAE",
+        "选择版 MAE",
+        "B+ RMSE",
+        "选择版 RMSE"
+      ],
+      "rows": [
+        [
+          "ATU1",
+          "5.431794",
+          "4.121325",
+          "8.068246",
+          "7.483541"
+        ],
+        [
+          "ATU5",
+          "8.108033",
+          "5.538352",
+          "9.115007",
+          "6.646954"
+        ],
+        [
+          "MJ3",
+          "8.779059",
+          "11.936891",
+          "13.016274",
+          "16.488313"
+        ],
+        [
+          "MJ1",
+          "5.287871",
+          "5.938774",
+          "6.297166",
+          "6.497519"
+        ]
+      ]
+    },
+    "pairing": {
+      "headers": [
+        "起点",
+        "比较",
+        "三种子同时降低 MAE/RMSE",
+        "均值门",
+        "概率门"
+      ],
+      "rows": [
+        [
+          "612",
+          "历史选 α 对 B+",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "612",
+          "历史选 λ 对 B+",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "612",
+          "历史选 λ 对 历史选 α",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "792",
+          "历史选 α 对 B+",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "792",
+          "历史选 λ 对 B+",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "792",
+          "历史选 λ 对 历史选 α",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "972",
+          "历史选 α 对 B+",
+          "0/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "972",
+          "历史选 λ 对 B+",
+          "2/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "972",
+          "历史选 λ 对 历史选 α",
+          "2/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "1168",
+          "历史选 α 对 B+",
+          "1/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "1168",
+          "历史选 λ 对 B+",
+          "1/3",
+          "未通过",
+          "未通过"
+        ],
+        [
+          "1168",
+          "历史选 λ 对 历史选 α",
+          "0/3",
+          "未通过",
+          "未通过"
+        ]
+      ]
+    },
+    "final_seeds": {
+      "headers": [
+        "种子",
+        "α选择版 MAE",
+        "α选择版 RMSE",
+        "λ选择版 MAE",
+        "λ选择版 RMSE"
+      ],
+      "rows": [
+        [
+          "0",
+          "8.538734",
+          "11.092461",
+          "8.538734",
+          "11.092461"
+        ],
+        [
+          "1",
+          "6.812506",
+          "9.008236",
+          "6.812506",
+          "9.008236"
+        ],
+        [
+          "2",
+          "9.164564",
+          "11.493235",
+          "9.164564",
+          "11.493235"
+        ]
+      ]
+    }
+  },
+  "numeric": [
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": null,
+      "value": 29.431282942901532
+    },
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.94954821347779
+    },
+    {
+      "origin": 612,
+      "method": "DRIFT1",
+      "metric": "mae",
+      "point": null,
+      "value": 19.879082093017622
+    },
+    {
+      "origin": 612,
+      "method": "DRIFT1",
+      "metric": "rmse",
+      "point": null,
+      "value": 22.780897914938627
+    },
+    {
+      "origin": 612,
+      "method": "RR_COND",
+      "metric": "mae",
+      "point": null,
+      "value": 32.79266501311606
+    },
+    {
+      "origin": 612,
+      "method": "RR_COND",
+      "metric": "rmse",
+      "point": null,
+      "value": 38.23183160801933
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 29.431282942901532
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.94954821347779
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 29.50568898341601
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.9278362428097
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": null,
+      "value": 23.582514327478208
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": null,
+      "value": 27.313324693235963
+    },
+    {
+      "origin": 792,
+      "method": "DRIFT1",
+      "metric": "mae",
+      "point": null,
+      "value": 4.960013375828391
+    },
+    {
+      "origin": 792,
+      "method": "DRIFT1",
+      "metric": "rmse",
+      "point": null,
+      "value": 5.824269689498327
+    },
+    {
+      "origin": 792,
+      "method": "RR_COND",
+      "metric": "mae",
+      "point": null,
+      "value": 27.493400923428062
+    },
+    {
+      "origin": 792,
+      "method": "RR_COND",
+      "metric": "rmse",
+      "point": null,
+      "value": 31.315923952310108
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 23.582514327478208
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 27.313324693235963
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 24.222704245535542
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 28.1017063850028
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": null,
+      "value": 61.56310565471519
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": null,
+      "value": 67.16738918938411
+    },
+    {
+      "origin": 972,
+      "method": "DRIFT1",
+      "metric": "mae",
+      "point": null,
+      "value": 8.637339233933382
+    },
+    {
+      "origin": 972,
+      "method": "DRIFT1",
+      "metric": "rmse",
+      "point": null,
+      "value": 10.594506460633186
+    },
+    {
+      "origin": 972,
+      "method": "RR_COND",
+      "metric": "mae",
+      "point": null,
+      "value": 43.44535202214723
+    },
+    {
+      "origin": 972,
+      "method": "RR_COND",
+      "metric": "rmse",
+      "point": null,
+      "value": 48.58824759015907
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 61.56310565471519
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 67.16738918938411
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 58.579759157639984
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 64.5413907261475
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": null,
+      "value": 6.901689250361964
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.124173217774597
+    },
+    {
+      "origin": 1168,
+      "method": "DRIFT1",
+      "metric": "mae",
+      "point": null,
+      "value": 9.109845279087784
+    },
+    {
+      "origin": 1168,
+      "method": "DRIFT1",
+      "metric": "rmse",
+      "point": null,
+      "value": 12.9777345313275
+    },
+    {
+      "origin": 1168,
+      "method": "RR_COND",
+      "metric": "mae",
+      "point": null,
+      "value": 11.318236548369155
+    },
+    {
+      "origin": 1168,
+      "method": "RR_COND",
+      "metric": "rmse",
+      "point": null,
+      "value": 12.338213669009026
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 6.883835616636941
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.27908197971311
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": null,
+      "value": 6.883835616636941
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.27908197971311
+    },
+    {
+      "origin": 612,
+      "method": "A0",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.94954821347779
+    },
+    {
+      "origin": 792,
+      "method": "A0",
+      "metric": "rmse",
+      "point": null,
+      "value": 27.313324693235963
+    },
+    {
+      "origin": 972,
+      "method": "A0",
+      "metric": "rmse",
+      "point": null,
+      "value": 67.16738918938411
+    },
+    {
+      "origin": 1168,
+      "method": "A0",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.124173217774597
+    },
+    {
+      "origin": 612,
+      "method": "A025",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.836424310437366
+    },
+    {
+      "origin": 792,
+      "method": "A025",
+      "metric": "rmse",
+      "point": null,
+      "value": 28.4846490703496
+    },
+    {
+      "origin": 972,
+      "method": "A025",
+      "metric": "rmse",
+      "point": null,
+      "value": 65.50746534376766
+    },
+    {
+      "origin": 1168,
+      "method": "A025",
+      "metric": "rmse",
+      "point": null,
+      "value": 8.927240479477707
+    },
+    {
+      "origin": 612,
+      "method": "A05",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.758173035237846
+    },
+    {
+      "origin": 792,
+      "method": "A05",
+      "metric": "rmse",
+      "point": null,
+      "value": 29.789180827174597
+    },
+    {
+      "origin": 972,
+      "method": "A05",
+      "metric": "rmse",
+      "point": null,
+      "value": 63.98050682356094
+    },
+    {
+      "origin": 1168,
+      "method": "A05",
+      "metric": "rmse",
+      "point": null,
+      "value": 8.867132443968167
+    },
+    {
+      "origin": 612,
+      "method": "A075",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.72012096616565
+    },
+    {
+      "origin": 792,
+      "method": "A075",
+      "metric": "rmse",
+      "point": null,
+      "value": 31.18157256370228
+    },
+    {
+      "origin": 972,
+      "method": "A075",
+      "metric": "rmse",
+      "point": null,
+      "value": 62.60317802128315
+    },
+    {
+      "origin": 1168,
+      "method": "A075",
+      "metric": "rmse",
+      "point": null,
+      "value": 8.977292106742846
+    },
+    {
+      "origin": 612,
+      "method": "A1",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.73163267191508
+    },
+    {
+      "origin": 792,
+      "method": "A1",
+      "metric": "rmse",
+      "point": null,
+      "value": 32.63886183756137
+    },
+    {
+      "origin": 972,
+      "method": "A1",
+      "metric": "rmse",
+      "point": null,
+      "value": 61.39325733625313
+    },
+    {
+      "origin": 1168,
+      "method": "A1",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.27908197971311
+    },
+    {
+      "origin": 612,
+      "method": "L0",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.73163267191508
+    },
+    {
+      "origin": 792,
+      "method": "L0",
+      "metric": "rmse",
+      "point": null,
+      "value": 32.63886183756137
+    },
+    {
+      "origin": 972,
+      "method": "L0",
+      "metric": "rmse",
+      "point": null,
+      "value": 61.39325733625313
+    },
+    {
+      "origin": 1168,
+      "method": "L0",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.27908197971311
+    },
+    {
+      "origin": 612,
+      "method": "L033",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.826160086891285
+    },
+    {
+      "origin": 792,
+      "method": "L033",
+      "metric": "rmse",
+      "point": null,
+      "value": 30.897719016759293
+    },
+    {
+      "origin": 972,
+      "method": "L033",
+      "metric": "rmse",
+      "point": null,
+      "value": 62.48142733378137
+    },
+    {
+      "origin": 1168,
+      "method": "L033",
+      "metric": "rmse",
+      "point": null,
+      "value": 9.037041948419528
+    },
+    {
+      "origin": 612,
+      "method": "L1",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.87107937231071
+    },
+    {
+      "origin": 792,
+      "method": "L1",
+      "metric": "rmse",
+      "point": null,
+      "value": 29.40801440368979
+    },
+    {
+      "origin": 972,
+      "method": "L1",
+      "metric": "rmse",
+      "point": null,
+      "value": 63.14825835457485
+    },
+    {
+      "origin": 1168,
+      "method": "L1",
+      "metric": "rmse",
+      "point": null,
+      "value": 8.90733346455108
+    },
+    {
+      "origin": 612,
+      "method": "L3",
+      "metric": "rmse",
+      "point": null,
+      "value": 34.9278362428097
+    },
+    {
+      "origin": 792,
+      "method": "L3",
+      "metric": "rmse",
+      "point": null,
+      "value": 28.1017063850028
+    },
+    {
+      "origin": 972,
+      "method": "L3",
+      "metric": "rmse",
+      "point": null,
+      "value": 64.5413907261475
+    },
+    {
+      "origin": 1168,
+      "method": "L3",
+      "metric": "rmse",
+      "point": null,
+      "value": 8.998911336724223
+    },
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "crps",
+      "point": null,
+      "value": 34.55263670158947
+    },
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 472.09108954613487
+    },
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "width90",
+      "point": null,
+      "value": 221.19153873012215
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 34.55263670158947
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 472.09108954613487
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 221.19153873012215
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 34.69163797831747
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 473.9137096242454
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 220.2391775828051
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "crps",
+      "point": null,
+      "value": 24.157336515615388
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 366.2419708732928
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "width90",
+      "point": null,
+      "value": 96.27299832870453
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 24.157336515615388
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 366.2419708732928
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 96.27299832870453
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 24.223414816764688
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 365.67046265077823
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 96.27375814087209
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "crps",
+      "point": null,
+      "value": 48.09195283382784
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 535.7302746094462
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "width90",
+      "point": null,
+      "value": 86.84208891773405
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 48.09195283382784
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 535.7302746094462
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 86.84208891773405
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 45.40248209328495
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 503.11028267066047
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 88.70115537354545
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "crps",
+      "point": null,
+      "value": 14.894908209734146
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 201.64201365146147
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "width90",
+      "point": null,
+      "value": 201.64201365146147
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 14.141968702417442
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 189.8363962448608
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 189.8363962448608
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "crps",
+      "point": null,
+      "value": 14.141968702417442
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "interval_score90",
+      "point": null,
+      "value": 189.8363962448608
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "width90",
+      "point": null,
+      "value": 189.8363962448608
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": "ATU1",
+      "value": 5.431794127410311
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": "ATU1",
+      "value": 4.121325129553896
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": "ATU1",
+      "value": 8.06824598915759
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": "ATU1",
+      "value": 7.483541191338646
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": "ATU5",
+      "value": 8.108033069793414
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": "ATU5",
+      "value": 5.5383521892462735
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": "ATU5",
+      "value": 9.115006709976656
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": "ATU5",
+      "value": 6.6469539925140575
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": "MJ3",
+      "value": 8.77905889907337
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": "MJ3",
+      "value": 11.936891338898093
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": "MJ3",
+      "value": 13.016273948901418
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": "MJ3",
+      "value": 16.48831331410919
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "mae",
+      "point": "MJ1",
+      "value": 5.287870905170764
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "mae",
+      "point": "MJ1",
+      "value": 5.9387738088495015
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "metric": "rmse",
+      "point": "MJ1",
+      "value": 6.297166223062725
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "metric": "rmse",
+      "point": "MJ1",
+      "value": 6.4975194208905505
+    }
+  ],
+  "derived": {
+    "final_selected_rmse_change_percent": 1.6977840977058456,
+    "final_half_rmse_change_percent": -2.81714044299044,
+    "origin972_lambda_rmse_change_percent": -3.9096330748131236
+  },
+  "report_sha256": "1c942146eaec2292816b97f7f9c9eb0284f2f877ad2046a117915db4af105514",
+  "generated_utc": "2026-09-14T17:11:19.253819+00:00"
+}

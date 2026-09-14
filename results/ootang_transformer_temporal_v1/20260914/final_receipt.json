@@ -1,0 +1,208 @@
+{
+  "status": "complete",
+  "experiment": "ootang_transformer_temporal.v1.0",
+  "branch": "codex/transformer-temporal-shrinkage",
+  "all_three_experiment_steps_complete": true,
+  "steps": {
+    "chronological_multi_origin_validation": "complete_verified",
+    "fixed_alpha_grid_and_historical_selection": "complete_verified",
+    "fixed_lambda_training_and_full_evaluation": "complete_verified"
+  },
+  "start_utc": "2026-09-14T16:31:07+00:00",
+  "deadline_utc": "2026-09-14T18:31:07+00:00",
+  "delivery_locked_utc": "2026-09-14T17:16:34.277181+00:00",
+  "elapsed_seconds_through_delivery_lock": 2727.277181,
+  "completion_within_budget": true,
+  "time_note": "Includes preparation, implementation, all prescribed experiments, numerical and figure checks, and report. Final local documentation commit follows this lock; unused budget is not transferred.",
+  "implementation_validation": "passed",
+  "effect": "prespecified stable benefit and complete mean/probability gates not met",
+  "user_or_mentor_acceptance": "not provided",
+  "formal_new_fits": 42,
+  "optimizer_updates": 16800,
+  "reused_fits": 18,
+  "ridge_fits": 5,
+  "bplus_refits": 0,
+  "physical_forwards": 11,
+  "new_neural_fit_elapsed_seconds_including_checkpoint_io": 370.6619150848128,
+  "audit": {
+    "receipt": "verification_v1/receipt.json",
+    "checkpoint_count": 228,
+    "values_checked": 3339568,
+    "maximum_absolute_difference": 1.8189894035458565e-11,
+    "events_checked": 141,
+    "source_files": 156
+  },
+  "outputs": {
+    "complete_293day_windows": 4,
+    "distributions": 56,
+    "summary_rows": 56,
+    "point_rows": 224,
+    "seed_rows": 168,
+    "daily_rows": 65632,
+    "final_figures": 5,
+    "figure_panels": 20,
+    "figure_values_checked": 88936,
+    "report_tables": 8,
+    "report_table_rows": 64
+  },
+  "historical_selections": [
+    {
+      "origin": 612,
+      "phase": "alpha",
+      "selected": "A0"
+    },
+    {
+      "origin": 612,
+      "phase": "lambda",
+      "selected": "L3"
+    },
+    {
+      "origin": 792,
+      "phase": "alpha",
+      "selected": "A0"
+    },
+    {
+      "origin": 792,
+      "phase": "lambda",
+      "selected": "L3"
+    },
+    {
+      "origin": 972,
+      "phase": "alpha",
+      "selected": "A0"
+    },
+    {
+      "origin": 972,
+      "phase": "lambda",
+      "selected": "L3"
+    },
+    {
+      "origin": 1168,
+      "phase": "alpha",
+      "selected": "A1"
+    },
+    {
+      "origin": 1168,
+      "phase": "lambda",
+      "selected": "L0"
+    }
+  ],
+  "conclusions": {
+    "ALPHA_SELECTED": {
+      "historical_mean_pass_origins": [],
+      "stable_mean_support": false,
+      "final": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": true,
+          "average_interval_score90": true,
+          "coverage90_average": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "ATU5_coverage90": true,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": false,
+          "MJ3_coverage90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "MJ1_coverage90": true
+        }
+      }
+    },
+    "LAMBDA_SELECTED": {
+      "historical_mean_pass_origins": [],
+      "stable_mean_support": false,
+      "final": {
+        "mean_pass": false,
+        "probability_pass": false,
+        "joint_pass": false,
+        "mean_checks": {
+          "average_mae": false,
+          "average_rmse": false,
+          "ATU1_mae": true,
+          "ATU1_rmse": true,
+          "ATU5_mae": true,
+          "ATU5_rmse": true,
+          "MJ3_mae": false,
+          "MJ3_rmse": false,
+          "MJ1_mae": false,
+          "MJ1_rmse": false
+        },
+        "probability_checks": {
+          "average_crps": true,
+          "average_interval_score90": true,
+          "coverage90_average": true,
+          "ATU1_crps": true,
+          "ATU1_interval_score90": true,
+          "ATU1_coverage90": true,
+          "ATU5_crps": true,
+          "ATU5_interval_score90": true,
+          "ATU5_coverage90": true,
+          "MJ3_crps": false,
+          "MJ3_interval_score90": false,
+          "MJ3_coverage90": true,
+          "MJ1_crps": true,
+          "MJ1_interval_score90": true,
+          "MJ1_coverage90": true
+        }
+      }
+    }
+  },
+  "report": "docs/ootang_transformer_temporal_results.v1.0.md",
+  "report_sha256": "1c942146eaec2292816b97f7f9c9eb0284f2f877ad2046a117915db4af105514",
+  "report_check": "passed",
+  "navigation_check": "passed",
+  "figure_numeric_and_geometry_check": "passed",
+  "figure_visual_check": "passed",
+  "static_figure_check": "Original 15 PASS, 3 WARN, 3 FAIL retained; imported helper export and no-PDF scope differences documented separately. Actual SVG/PNG and visual checks passed.",
+  "anomalies_preserved": [
+    "Old checkpoint updates/step metadata compatibility failure after three completed fits; reader fixed, completed models not retrained.",
+    "Initial pytest invocation unavailable; same relevant contracts completed using standard-library unittest.",
+    "First figure preview retained; final legend placement revised without changing numerical data."
+  ],
+  "limitations": [
+    "overlapping windows and previously exposed data",
+    "selection horizon90 vs test293",
+    "972 uses frozen792 B+ teacher",
+    "90 adjacent errors are dependent",
+    "optimizer nonconvergence flags retained",
+    "given future forcing, not operational forecasting",
+    "Final calibration differs from previous DIST90 version; cross-version probability changes are not solely alpha or lambda effects.",
+    "Marginal Gaussian intervals do not guarantee simultaneous trajectory coverage.",
+    "Fixed half-residual final local gain is preserved; it was not selected by the historical procedure."
+  ],
+  "completed_local_step_commits": [
+    "4011772",
+    "854188f",
+    "134a8fb",
+    "80cdcdc",
+    "1e6ccb6",
+    "2115fca"
+  ],
+  "final_documentation_commit": "contains this receipt; resolve from Git history without self-referential hash",
+  "rl_run": false,
+  "pdf_created": false,
+  "push_performed": false,
+  "additional_training_planned": false,
+  "all_negative_results_preserved": true,
+  "unrelated_user_file_preserved_untracked": "docs/ootang_mentor_figure_rules.v1.0.md",
+  "new_neural_fit_elapsed_seconds_from_events": 370.65334271034226,
+  "fit_timing_source": "Sum of 42 new-fit complete.json records; event timings are also retained and end a few milliseconds earlier."
+}

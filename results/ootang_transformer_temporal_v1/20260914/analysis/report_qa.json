@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T17:11:20.056533+00:00",
+  "tables": 8,
+  "rows": 64,
+  "traced_numeric_values": 128,
+  "derived_ratios": 3,
+  "local_links": 16,
+  "source_numerical_audit": "verification_v1/receipt.json",
+  "report_sha256": "1c942146eaec2292816b97f7f9c9eb0284f2f877ad2046a117915db4af105514"
+}

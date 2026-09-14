@@ -4,24 +4,24 @@
 
 ## 当前结果
 
-**截至 2026-09-15（本地时间），Transformer 半残差与区间校准验证已完整完成：均值改善大部分可由固定收缩复现，校准有探索性收益，整体效果条件仍未通过。**
+**截至2026-09-15（本地时间），跨起点验证、α五点对照和λ四点训练/搜索三步全部完成；仍未建立稳定的四点B+优势。**
 
-[最新图文报告](docs/ootang_transformer_calibration_results.v1.0.md) · [四点 PNG / SVG](figures/ootang_transformer_calibration_v1/20260914/README.md) · [完整 36 组 CSV](results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv)
+[最新完整图文报告](docs/ootang_transformer_temporal_results.v1.0.md) · [跨起点及四点PNG/SVG](figures/ootang_transformer_temporal_v1/20260914/README.md) · [全部56组CSV](results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv)
 
-下表为四个测点各自 RMSE 的平均值，单位 mm；完整逐点、种子和概率评分见报告。
+每个窗口完整293日；下表为四点RMSE的平均值，单位mm。α/λ均只用上一起点已成熟的前90日选择，随后90日校准，完整外层标签在所有预测锁定后释放。
 
-| 方法 | 开发段 376 日 | 最终探索段 293 日 |
-| --- | ---: | ---: |
-| 改进 B+ | 41.3684 | 9.1242 |
-| DRIFT1 | 6.5413 | 12.9777 |
-| 普通岭回归 | 45.8998 | 12.3382 |
-| Transformer 残差原版 | 48.1866 | 9.2791 |
-| Transformer 残差正则版 REG1 | 44.4136 | 8.9073 |
-| Transformer 半残差 HALF | 44.6203 | 8.8671 |
+| 起点（已观测天数） | B+ | 历史选α | 历史选λ | 选出α / λ |
+| --- | ---: | ---: | ---: | --- |
+| 612 | 34.949548 | 34.949548 | 34.927836 | 0 / 3 |
+| 792 | 27.313325 | 27.313325 | 28.101706 | 0 / 3 |
+| 972 | 67.167389 | 67.167389 | 64.541391 | 0 / 3 |
+| 1168，最终探索 | 9.124173 | 9.279082 | 9.279082 | 1 / 0 |
 
-HALF 固定保留原网络一半修正，新增训练为 0；其最终均值与 REG1 接近且略优，开发仍落后 B+。固定 REG1 均值后，按预测距离校准使最终 CRPS 从 17.6571 降至 7.7804，但同规则 B+ 为 7.5602。最终概率局部收益、MJ3 等逐点失败及开发失败共同保留，不据此宣布稳定神经增益或可靠覆盖。开发名单仍为 DRIFT1 / LAST90，搜索触发未通过，不追加 λ 或 RL。
+固定半残差最终RMSE仍为8.867132mm，但历史选择没有选中它；新加λ=1/3、3在最终均值误差上未超过已有λ=1。972窗口λ有平均改善，但MJ3退步；两流程历史完整均值门均0/3，最终也未过。42次新拟合、16800更新和全部负结果保留，不自动追加训练或RL。
 
-本轮按导师条件提供未来逐日降雨和库水位，预测段不接收位移观测；最终以前 1168 日训练、后 293 日预测。它与每天接收新观测的 1—7 日滚动预测、固定驱动的长期递推不同。历史日期已反复用于研究，结果属于探索性条件预测。
+当前协议给定未来逐日降雨/库水位，每条预测路径不接收实测位移反馈。窗口部分重叠、历史日期已经暴露，属于探索性条件预测；972沿用已可用的792日B+参数，不能推广为每个起点都重新拟合物理参数。它与逐日更新的1—7日滚动任务、固定驱动长期递推分开解释。
+
+[上一轮半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。
 
 ## 阅读入口
 
@@ -36,7 +36,8 @@ HALF 固定保留原网络一半修正，新增训练为 0；其最终均值与 
 
 | 目录 | 用途 |
 | --- | --- |
-| [code/transformer_calibration/](code/transformer_calibration/) | 最新保存预测半残差与离线区间校准验证 |
+| [code/transformer_temporal/](code/transformer_temporal/) | 跨起点选参、有限λ训练与完整核验 |
+| [code/transformer_calibration/](code/transformer_calibration/) | 上一轮保存预测半残差与离线区间校准 |
 | [code/transformer_regularization/](code/transformer_regularization/) | 上一轮 Transformer 残差正则化实现 |
 | [code/sequence_conditional/](code/sequence_conditional/) | 同协议 Transformer / CNN-Mamba 对照 |
 | [code/tcn_conditional_trajectory/](code/tcn_conditional_trajectory/) | 同协议 TCN 与基线接口 |

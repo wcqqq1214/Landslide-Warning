@@ -1,18 +1,21 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15（本地时间）已完成的 Transformer 半残差与区间校准验证**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15（本地时间）已完成的跨起点 α / 有限 λ 三步验证**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：半残差与区间校准
+## 最新交付：跨起点 α / 有限 λ
 
-| 文档 / 产物 | 用途 |
+| 文档/产物 | 用途 |
 | --- | --- |
-| [结果报告](ootang_transformer_calibration_results.v1.0.md) | 半残差对照、完整概率比较、逐点失败和下一步判断 |
-| [七张四点图件](../figures/ootang_transformer_calibration_v1/20260914/README.md) · [完整 36 组 CSV](../results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv) | 参考纵轴/完整范围图与逐项查数 |
-| [冻结计划及图件合同](ootang_transformer_calibration_plan.v1.0.md) · [配置](../config/ootang_transformer_calibration.v1_0.json) | 固定 0.5 半残差、三校准规则、开发锁定和停止条件 |
-| [来源清单](ootang_transformer_calibration_sources.v1.0.json) | 1,012 项数据、旧模型与依赖来源 |
-| [独立核验](ootang_transformer_calibration_validation.v1.0.md) · [最终回执](../results/ootang_transformer_calibration_v1/20260914/final_receipt.json) | 重载、数值、信息边界、图件与交付状态 |
+| [完整结果](ootang_transformer_temporal_results.v1.0.md) | 五点α、四点λ、历史锁定选择、四个完整293日比较与负结果 |
+| [五张图及PNG/SVG](../figures/ootang_transformer_temporal_v1/20260914/README.md) · [56组CSV](../results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv) | 跨起点证据、最终四点导师版/完整范围图与原数值 |
+| [冻结计划](ootang_transformer_temporal_plan.v1.0.md) · [配置](../config/ootang_transformer_temporal.v1_0.json) · [156来源](ootang_transformer_temporal_sources.v1.0.json) | 事前网格、时间/教师/信息边界、预算 |
+| [核验](ootang_transformer_temporal_validation.v1.0.md) · [图件合同](ootang_transformer_temporal_figure_contract.v1.0.md) · [最终回执](../results/ootang_transformer_temporal_v1/20260914/final_receipt.json) | 228检查点/3339568数值/事件与图形复算、异常及实际完成状态 |
 
-当前结论：半残差复现大部分均值改善；距离匹配的最终概率收益也适用于 B+，尚无稳定神经增益。开发/逐点保护失败，开发选择不改；新增训练 0，本轮结束，不追加 λ 搜索或 RL。
+当前结论：三步完整完成，42新拟合16800更新；α/λ未建立稳定四点B+优势。最终选择α=1、λ=0，两流程同为9.279082mm RMSE，高于B+9.124173。固定半残差局部收益仍在，旧结论不改；不自动继续搜索或RL。
+
+## 上一轮：固定半残差与区间校准
+
+[结果](ootang_transformer_calibration_results.v1.0.md) · [计划](ootang_transformer_calibration_plan.v1.0.md) · [配置](../config/ootang_transformer_calibration.v1_0.json) · [来源](ootang_transformer_calibration_sources.v1.0.json) · [核验](ootang_transformer_calibration_validation.v1.0.md) · [七图](../figures/ootang_transformer_calibration_v1/20260914/README.md) · [回执](../results/ootang_transformer_calibration_v1/20260914/final_receipt.json)。原开发376日/最终293日的半残差及DIST90探索性收益、逐点失败和校准限制保持；与本轮窗口/误差池分开解释。
 
 ## 同协议对照
 

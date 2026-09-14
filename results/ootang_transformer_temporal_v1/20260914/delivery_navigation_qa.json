@@ -1,0 +1,512 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T17:16:34.276492+00:00",
+  "source_files": 156,
+  "implementation_lock_files": 14,
+  "unchanged_audited_files": 670,
+  "issued_locks": 10,
+  "readme_rmse_values": [
+    {
+      "origin": 612,
+      "method": "BPLUS_CONTINUOUS",
+      "rmse": 34.94954821347779
+    },
+    {
+      "origin": 612,
+      "method": "ALPHA_SELECTED",
+      "rmse": 34.94954821347779
+    },
+    {
+      "origin": 612,
+      "method": "LAMBDA_SELECTED",
+      "rmse": 34.9278362428097
+    },
+    {
+      "origin": 792,
+      "method": "BPLUS_CONTINUOUS",
+      "rmse": 27.313324693235963
+    },
+    {
+      "origin": 792,
+      "method": "ALPHA_SELECTED",
+      "rmse": 27.313324693235963
+    },
+    {
+      "origin": 792,
+      "method": "LAMBDA_SELECTED",
+      "rmse": 28.1017063850028
+    },
+    {
+      "origin": 972,
+      "method": "BPLUS_CONTINUOUS",
+      "rmse": 67.16738918938411
+    },
+    {
+      "origin": 972,
+      "method": "ALPHA_SELECTED",
+      "rmse": 67.16738918938411
+    },
+    {
+      "origin": 972,
+      "method": "LAMBDA_SELECTED",
+      "rmse": 64.5413907261475
+    },
+    {
+      "origin": 1168,
+      "method": "BPLUS_CONTINUOUS",
+      "rmse": 9.124173217774597
+    },
+    {
+      "origin": 1168,
+      "method": "ALPHA_SELECTED",
+      "rmse": 9.27908197971311
+    },
+    {
+      "origin": 1168,
+      "method": "LAMBDA_SELECTED",
+      "rmse": 9.27908197971311
+    }
+  ],
+  "local_link_count": 109,
+  "local_links": [
+    {
+      "from": "README.md",
+      "target": "docs/ootang_transformer_temporal_results.v1.0.md"
+    },
+    {
+      "from": "README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/README.md"
+    },
+    {
+      "from": "README.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv"
+    },
+    {
+      "from": "README.md",
+      "target": "docs/ootang_transformer_calibration_results.v1.0.md"
+    },
+    {
+      "from": "README.md",
+      "target": "docs/README.md"
+    },
+    {
+      "from": "README.md",
+      "target": "AGENTS.md"
+    },
+    {
+      "from": "README.md",
+      "target": "docs/progress.md"
+    },
+    {
+      "from": "README.md",
+      "target": "docs/history/README.md"
+    },
+    {
+      "from": "README.md",
+      "target": "code/transformer_temporal"
+    },
+    {
+      "from": "README.md",
+      "target": "code/transformer_calibration"
+    },
+    {
+      "from": "README.md",
+      "target": "code/transformer_regularization"
+    },
+    {
+      "from": "README.md",
+      "target": "code/sequence_conditional"
+    },
+    {
+      "from": "README.md",
+      "target": "code/tcn_conditional_trajectory"
+    },
+    {
+      "from": "README.md",
+      "target": "config"
+    },
+    {
+      "from": "README.md",
+      "target": "results"
+    },
+    {
+      "from": "README.md",
+      "target": "figures"
+    },
+    {
+      "from": "README.md",
+      "target": "data"
+    },
+    {
+      "from": "README.md",
+      "target": "docs"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "README.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/README.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/progress.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_transformer_temporal_results.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_transformer_temporal_validation.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_transformer_calibration_results.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_transformer_regularization_results.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_sequence_conditional_results.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/ootang_tcn_conditional_training_results.v1.0.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "docs/history/README.md"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "manuscript.pdf"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "藕塘滑坡_二维模型B加_优化预测报告.pdf"
+    },
+    {
+      "from": "AGENTS.md",
+      "target": "section2d_v4.zip"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_temporal_results.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_temporal_plan.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "config/ootang_transformer_temporal.v1_0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_temporal_sources.v1.0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_temporal_validation.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_temporal_figure_contract.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_calibration_results.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_calibration_plan.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "config/ootang_transformer_calibration.v1_0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_calibration_sources.v1.0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_calibration_validation.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "figures/ootang_transformer_calibration_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_transformer_calibration_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_regularization_results.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_regularization_plan.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "config/ootang_transformer_regularization.v1_0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_regularization_sources.v1.0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_regularization_validation.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_transformer_regularization_figure_contract.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "figures/ootang_transformer_regularization_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_transformer_regularization_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_sequence_conditional_results.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_sequence_conditional_plan.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "config/ootang_sequence_conditional.v1_0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_sequence_conditional_sources.v1.0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_sequence_conditional_validation.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_sequence_figure_contract.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "figures/ootang_sequence_conditional_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_sequence_conditional_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_conditional_training_results.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_conditional_training_plan.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_conditional_execution.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_conditional_sources.v1.0.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_conditional_validation.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/ootang_tcn_figure_contract.v1.0.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "figures/ootang_tcn_conditional_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "results/ootang_tcn_conditional_v1/20260914/final_receipt.json"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/history/README.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "docs/progress.md"
+    },
+    {
+      "from": "docs/README.md",
+      "target": "AGENTS.md"
+    },
+    {
+      "from": "docs/progress.md",
+      "target": "docs/ootang_transformer_temporal_results.v1.0.md"
+    },
+    {
+      "from": "docs/progress.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/README.md"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/ALPHA_SELECTED_mentor.png"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/ALPHA_SELECTED_mentor.svg"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/ALPHA_SELECTED_full.png"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/ALPHA_SELECTED_full.svg"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/LAMBDA_SELECTED_mentor.png"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/LAMBDA_SELECTED_mentor.svg"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/LAMBDA_SELECTED_full.png"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/LAMBDA_SELECTED_full.svg"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/temporal_validation.png"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/temporal_validation.svg"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "docs/ootang_transformer_temporal_results.v1.0.md"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "docs/ootang_transformer_temporal_validation.v1.0.md"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/figure_numbers.csv"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/source_arrays.npz"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/delivery_qa.json"
+    },
+    {
+      "from": "figures/ootang_transformer_temporal_v1/20260914/README.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/visual_qa.json"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "docs/ootang_transformer_temporal_plan.v1.0.md"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "config/ootang_transformer_temporal.v1_0.json"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "docs/ootang_transformer_temporal_sources.v1.0.json"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/temporal_validation.png"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/ALPHA_SELECTED_mentor.png"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/LAMBDA_SELECTED_mentor.png"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/README.md"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "figures/ootang_transformer_temporal_v1/20260914/v1/temporal_validation.png"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "docs/ootang_transformer_temporal_figure_contract.v1.0.md"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "docs/ootang_transformer_temporal_validation.v1.0.md"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/phase_summary.csv"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/metrics_by_point.csv"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/daily_predictions.csv"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/analysis/seed_summary.csv"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/verification_v1/receipt.json"
+    },
+    {
+      "from": "docs/ootang_transformer_temporal_results.v1.0.md",
+      "target": "results/ootang_transformer_temporal_v1/20260914/final_receipt.json"
+    }
+  ],
+  "report_sha256": "1c942146eaec2292816b97f7f9c9eb0284f2f877ad2046a117915db4af105514",
+  "visual_receipt_status": "passed",
+  "training_duration_claim_seconds": 370.66
+}
