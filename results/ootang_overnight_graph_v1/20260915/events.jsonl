@@ -57,3 +57,4 @@
 {"time_utc": "2026-09-14T18:43:57.313831+00:00", "event": "trajectory_issued", "phase": "base", "origin": 1168, "end": 1461, "lock_sha256": "73dd864f0a98d4405c6d3c292c7b8b0b5c7691f6fcf5f82f890797d45fbd7e3b"}
 {"time_utc": "2026-09-14T18:45:37.566666+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "analysis_base_all_issued_before_full_scoring"}
 {"time_utc": "2026-09-14T18:45:37.803115+00:00", "event": "scoring_complete", "analysis": "analysis_base", "summary_rows": 33}
+{"time_utc": "2026-09-14T18:46:17.394899+00:00", "event": "label_prefix_read", "rows": 1152, "purpose": "prespecified_causal_residual_diagnostic_no_final_labels"}

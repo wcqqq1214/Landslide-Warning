@@ -1,0 +1,10 @@
+{
+  "time_utc": "2026-09-14T18:46:17.436024+00:00",
+  "status": "complete",
+  "files": {
+    "components.csv": "e3a971a7a991ee6f12269abe3e4f0f84b2fa5cd0896633271883a2881f007abb",
+    "correlations.csv": "e44f5ac03801d6b8118e94d06a11e27056fdc46438961fa0061754febcc62c90",
+    "decision.json": "bb802c0d1262808d2ab4498851fec579ad9d8918c454e1e55d64f646493a8b44",
+    "variances.csv": "03c1a48aa6bc2e23a4250b1fdad0e48e894a74930319801d09c03f22dde5753a"
+  }
+}

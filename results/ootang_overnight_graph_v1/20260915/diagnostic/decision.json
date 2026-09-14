@@ -1,0 +1,501 @@
+{
+  "time_utc": "2026-09-14T18:46:17.421171+00:00",
+  "triggered": false,
+  "eligible_points": [],
+  "new_neural_fits": 0,
+  "physical_forwards": 0,
+  "label_prefix_max": 1152,
+  "interpretation": "descriptive trigger only; correlation is not causality or 293-day forecast validation",
+  "eligible": [
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [
+        612
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU1",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "ATU5",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [
+        432
+      ],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ3",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rain7",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": -1,
+      "passing_blocks": [],
+      "passed": false
+    },
+    {
+      "point": "MJ1",
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": 1,
+      "passing_blocks": [],
+      "passed": false
+    }
+  ],
+  "groups": [
+    {
+      "driver": "rain7",
+      "lag": 0,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rain7",
+      "lag": 0,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rain7",
+      "lag": 7,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rain7",
+      "lag": 7,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rain7",
+      "lag": 30,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rain7",
+      "lag": 30,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 0,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 7,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": -1,
+      "points": [],
+      "passed": false
+    },
+    {
+      "driver": "rwl_change",
+      "lag": 30,
+      "sign": 1,
+      "points": [],
+      "passed": false
+    }
+  ]
+}
