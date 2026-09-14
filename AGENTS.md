@@ -19,15 +19,15 @@
 # Current Scope and Status
 
 - 范围：藕塘同一剖面 ATU1、ATU5、MJ3、MJ1 的位移均值与概率区间。使用现有固定数据；不自动扩展到新案例、数据补采或真实预警。
-- 最新完成（2026-09-14）：Transformer 残差幅度正则化 REG1，λ=1、原结构与三种子/400 更新保持。开发 376 日与最终 293 日均已完整执行并核验；整体效果条件在两阶段均未通过。
-- 结论：REG1 相对原版两阶段均值/概率配对改善，最终平均 MAE/RMSE 较 B+ 降低 5.25%/2.38%；开发四点落后 B+，最终 MJ3 退步、仅 1/3 种子 RMSE 优于 B+，主概率未优于 B+。局部收益、完整失败和探索性限制同时保留。
+- 最新完成（2026-09-15 本地时间）：Transformer 半残差与冻结区间校准验证。六个固定均值 × 三个校准规则，完整开发 376 日/最终 293 日共 36 组；新增训练/更新/物理调用 0，保存结果、18 份旧权重和七张图全部核验。
+- 结论：HALF 固定保留一半原网络残差；最终 RMSE 8.867132 mm，REG1 8.907333、B+ 9.124173，开发仍失败。REG1 的最终 CRPS 经 DIST90 校准由 17.657105 降至 7.780426，同规则 B+ 7.560232；保留校准局部收益及逐点/开发失败，神经完整条件未通过。开发名单 DRIFT1 / LAST90 保持，λ 搜索触发失败，不自动运行 RL。旧 REG1 的训练收益与负结果原样保留。
 - 本轮实验已结束。后续工作以用户新的明确任务为准；不自动追加模型、超参数、训练轮数、PDF 或 push，旧预算和余额不恢复或转用。历史停止记录不阻止后续明确的新授权，历史授权也不自动延续。
 
 # Reading Order
 
 1. 先读 [README](README.md) 与 [文档导航](docs/README.md)，确定当前任务涉及的版本。
-2. 判断现有效果时，读 [REG1 结果](docs/ootang_transformer_regularization_results.v1.0.md)、[核验](docs/ootang_transformer_regularization_validation.v1.0.md) 和 [最终回执](results/ootang_transformer_regularization_v1/20260914/final_receipt.json)；涉及实现时再读对应冻结计划、配置和来源清单。
-3. 需要同协议比较时，再读 [Transformer / CNN-Mamba](docs/ootang_sequence_conditional_results.v1.0.md) 与 [TCN](docs/ootang_tcn_conditional_training_results.v1.0.md) 结果。
+2. 判断现有效果时，读 [半残差/校准结果](docs/ootang_transformer_calibration_results.v1.0.md)、[核验](docs/ootang_transformer_calibration_validation.v1.0.md) 和 [最终回执](results/ootang_transformer_calibration_v1/20260914/final_receipt.json)；涉及实现时再读对应冻结计划、配置和来源清单。
+3. 需要同协议比较时，再读 [REG1](docs/ootang_transformer_regularization_results.v1.0.md)、[Transformer / CNN-Mamba](docs/ootang_sequence_conditional_results.v1.0.md) 与 [TCN](docs/ootang_tcn_conditional_training_results.v1.0.md) 结果。
 4. 最近维护见 [progress](docs/progress.md) 顶部；旧协议和方法按 [历史导航](docs/history/README.md) 定向查阅。历史文档中的“当前”“尚未训练”、命令和预算均按形成时间解释，不自动加载为待办或执行指令。
 
 # Experimental Boundaries
@@ -36,6 +36,7 @@
 - 重复使用历史日期的后期结果属于探索性评价。公开日序列的来源、预处理和 as-of 限制保留；低误差不等于新盲测或真实预警有效。
 - DIRECT / BRES 使用相同合法物理输入时，配对检验的是残差输出方式，不能称有/无物理信息消融；TCN / Transformer / CNN-Mamba 残差模型不称 PINN，不宣称严格满足 B+ 方程。旧模型身份按原版本记录。
 - 标准化、教师、选模和误差池遵守对应冻结版本的信息边界；主输出、逐点保护与概率规则不因最终成绩改变。完整日期、所有规定种子和失败结果保留，诊断组合不能替代主输出。
+- 最新校准版本排除内部用于选择的前 90 日；开发只有后 90 条合法误差，DIST90 必须退化为 LAST90。最终使用已成熟开发误差按距离匹配，属于探索性验证；不把单条路径的相邻误差当作独立重复，不以概率区间变窄代替逐点评分与覆盖检查。
 - 复核优先使用保存数组、CSV 和检查点。维护导航时保留被配置、源码或来源锁引用的原路径和原字节；退役只撤下默认入口，旧回执与清单不回写。
 
 # Mentor Sources and Goal

@@ -1,0 +1,120 @@
+{
+  "status": "complete",
+  "prepared_at_utc": "2026-09-14T16:21:33.340384+00:00",
+  "local_timezone": "Asia/Shanghai",
+  "budget": {
+    "start_utc": "2026-09-14T15:41:07+00:00",
+    "deadline_utc": "2026-09-14T17:41:07+00:00",
+    "limit_minutes": 120,
+    "elapsed_minutes_until_verified_delivery": 40.439006400000004,
+    "within_budget": true,
+    "unused_budget_not_reused": true
+  },
+  "phase_times": {
+    "development": {
+      "start_utc": "2026-09-14T15:54:19.557162+00:00",
+      "end_utc": "2026-09-14T15:54:19.786910+00:00",
+      "seconds": 0.229748
+    },
+    "final_exploratory": {
+      "start_utc": "2026-09-14T15:54:40.763624+00:00",
+      "end_utc": "2026-09-14T15:54:40.975899+00:00",
+      "seconds": 0.212275
+    }
+  },
+  "branch": "codex/transformer-shrinkage-calibration",
+  "commits": {
+    "plan": "a82c912",
+    "implementation": "c314401",
+    "experiment": "1778098",
+    "figures": "bd84c41"
+  },
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "ridge_refits": 0,
+  "bplus_refits": 0,
+  "physical_forwards": 0,
+  "source_files_checked": 1012,
+  "checkpoints_reloaded": 18,
+  "distributions": 36,
+  "summary_rows": 36,
+  "point_rows": 144,
+  "seed_summary_rows": 54,
+  "daily_prediction_rows": 48168,
+  "numerical_values_checked": 1171142,
+  "maximum_numerical_difference": 2.9558577807620168e-12,
+  "figures": 7,
+  "panels": 28,
+  "figure_numeric_values": 141524,
+  "report_tables": 5,
+  "report_numeric_cells": 192,
+  "selection": {
+    "time_utc": "2026-09-14T15:54:19.783197+00:00",
+    "selection_phase": "development",
+    "mean_winner": "DRIFT1",
+    "probability_winner": "DRIFT1__LAST90",
+    "seed_reg_beats_half": [
+      true,
+      true,
+      true
+    ],
+    "search_trigger_checks": {
+      "average_mae": true,
+      "average_rmse": false,
+      "ATU1_mae": true,
+      "ATU1_rmse": true,
+      "ATU5_mae": true,
+      "ATU5_rmse": true,
+      "MJ3_mae": true,
+      "MJ3_rmse": true,
+      "MJ1_mae": false,
+      "MJ1_rmse": false,
+      "two_paired_seeds": true,
+      "bplus_mean_gate": false
+    },
+    "search_recommendation": false,
+    "new_training_authorized_in_this_config": false,
+    "final_labels_used": false
+  },
+  "outcome": {
+    "time_utc": "2026-09-14T16:17:54.964210+00:00",
+    "mean_selection": "DRIFT1",
+    "probability_selection": "DRIFT1__LAST90",
+    "search_trigger": false,
+    "new_search_fits": 0,
+    "development_half_share_of_reg_average_improvement": {
+      "mae": 0.8965782731993485,
+      "rmse": 0.9452016610957044
+    },
+    "final_distance_changes": {
+      "BPLUS_CONTINUOUS": {
+        "crps": 0.532002750586842,
+        "interval_score90": 0.5876671789715882,
+        "width90": 0.613760508816134
+      },
+      "TRANSFORMER_BRES_REG1": {
+        "crps": 0.5593600576742592,
+        "interval_score90": 0.6229528445060395,
+        "width90": 0.6245299081863085
+      },
+      "TRANSFORMER_BRES_HALF": {
+        "crps": 0.5563005496052138,
+        "interval_score90": 0.6171020712982338,
+        "width90": 0.6171642189203826
+      }
+    },
+    "final_reg_vs_half_within_one_percent": true,
+    "result_status": "complete; no stable joint mean/probability success; final calibration gains exploratory",
+    "acceptance": "not claimed"
+  },
+  "execution_validation": "passed",
+  "stable_joint_scientific_goal": "not achieved",
+  "acceptance": "user/mentor acceptance not claimed",
+  "warnings_preserved": "NumPy matrix warnings; finite explicit scalar-sum verification passed; underlying cause not determined",
+  "display_checks": "7 figures fully inspected; static checker limitations and metadata/marker-audit fixes recorded separately",
+  "protocol": "given observed future rain/RWL, no displacement feedback; final period exploratory",
+  "future_work": "no automatic lambda search, RL, new architecture, new time-origin fit or budget continuation",
+  "unrelated_user_file_unchanged": "docs/ootang_mentor_figure_rules.v1.0.md",
+  "pdf": false,
+  "push": false
+}

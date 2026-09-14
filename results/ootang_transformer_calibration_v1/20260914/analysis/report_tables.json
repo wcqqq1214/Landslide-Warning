@@ -1,0 +1,2617 @@
+{
+  "tables": [
+    {
+      "id": "mean_comparison",
+      "headers": [
+        "方法",
+        "开发 MAE",
+        "开发 RMSE",
+        "最终 MAE",
+        "最终 RMSE"
+      ],
+      "rows": [
+        [
+          "B+",
+          "33.265",
+          "41.368",
+          "6.902",
+          "9.124"
+        ],
+        [
+          "DRIFT1",
+          "5.425",
+          "6.541",
+          "9.110",
+          "12.978"
+        ],
+        [
+          "普通岭回归",
+          "38.182",
+          "45.900",
+          "11.318",
+          "12.338"
+        ],
+        [
+          "Transformer 原版",
+          "39.837",
+          "48.187",
+          "6.884",
+          "9.279"
+        ],
+        [
+          "Transformer REG1",
+          "36.147",
+          "44.414",
+          "6.539",
+          "8.907"
+        ],
+        [
+          "Transformer 半残差",
+          "36.529",
+          "44.620",
+          "6.489",
+          "8.867"
+        ]
+      ]
+    },
+    {
+      "id": "probability_development",
+      "headers": [
+        "均值方法",
+        "校准",
+        "CRPS",
+        "90% 区间评分",
+        "90% 覆盖 / %",
+        "90% 宽度"
+      ],
+      "rows": [
+        [
+          "B+",
+          "LAST90",
+          "31.035",
+          "460.600",
+          "49.80",
+          "96.273"
+        ],
+        [
+          "B+",
+          "DIST90",
+          "31.035",
+          "460.600",
+          "49.80",
+          "96.273"
+        ],
+        [
+          "B+",
+          "DIST90_UNIT",
+          "30.994",
+          "450.332",
+          "50.86",
+          "108.414"
+        ],
+        [
+          "DRIFT1",
+          "LAST90",
+          "6.451",
+          "75.879",
+          "99.73",
+          "75.866"
+        ],
+        [
+          "DRIFT1",
+          "DIST90",
+          "6.451",
+          "75.879",
+          "99.73",
+          "75.866"
+        ],
+        [
+          "DRIFT1",
+          "DIST90_UNIT",
+          "7.276",
+          "89.460",
+          "100.00",
+          "89.460"
+        ],
+        [
+          "普通岭回归",
+          "LAST90",
+          "32.693",
+          "430.653",
+          "50.27",
+          "117.517"
+        ],
+        [
+          "普通岭回归",
+          "DIST90",
+          "32.693",
+          "430.653",
+          "50.27",
+          "117.517"
+        ],
+        [
+          "普通岭回归",
+          "DIST90_UNIT",
+          "32.511",
+          "404.503",
+          "52.93",
+          "132.430"
+        ],
+        [
+          "Transformer 原版",
+          "LAST90",
+          "35.162",
+          "523.597",
+          "48.47",
+          "99.027"
+        ],
+        [
+          "Transformer 原版",
+          "DIST90",
+          "35.162",
+          "523.597",
+          "48.47",
+          "99.027"
+        ],
+        [
+          "Transformer 原版",
+          "DIST90_UNIT",
+          "35.044",
+          "509.888",
+          "51.66",
+          "111.378"
+        ],
+        [
+          "Transformer REG1",
+          "LAST90",
+          "32.755",
+          "487.008",
+          "51.93",
+          "97.123"
+        ],
+        [
+          "Transformer REG1",
+          "DIST90",
+          "32.755",
+          "487.008",
+          "51.93",
+          "97.123"
+        ],
+        [
+          "Transformer REG1",
+          "DIST90_UNIT",
+          "32.685",
+          "476.095",
+          "53.26",
+          "109.267"
+        ],
+        [
+          "Transformer 半残差",
+          "LAST90",
+          "33.095",
+          "494.131",
+          "49.80",
+          "97.251"
+        ],
+        [
+          "Transformer 半残差",
+          "DIST90",
+          "33.095",
+          "494.131",
+          "49.80",
+          "97.251"
+        ],
+        [
+          "Transformer 半残差",
+          "DIST90_UNIT",
+          "33.023",
+          "482.562",
+          "51.20",
+          "109.425"
+        ]
+      ]
+    },
+    {
+      "id": "probability_final_exploratory",
+      "headers": [
+        "均值方法",
+        "校准",
+        "CRPS",
+        "90% 区间评分",
+        "90% 覆盖 / %",
+        "90% 宽度"
+      ],
+      "rows": [
+        [
+          "B+",
+          "LAST90",
+          "16.154",
+          "220.078",
+          "100.00",
+          "220.078"
+        ],
+        [
+          "B+",
+          "DIST90",
+          "7.560",
+          "90.745",
+          "92.75",
+          "85.003"
+        ],
+        [
+          "B+",
+          "DIST90_UNIT",
+          "8.039",
+          "98.147",
+          "92.92",
+          "92.620"
+        ],
+        [
+          "DRIFT1",
+          "LAST90",
+          "7.278",
+          "78.314",
+          "68.09",
+          "23.714"
+        ],
+        [
+          "DRIFT1",
+          "DIST90",
+          "7.568",
+          "98.532",
+          "62.97",
+          "17.628"
+        ],
+        [
+          "DRIFT1",
+          "DIST90_UNIT",
+          "7.549",
+          "96.162",
+          "63.82",
+          "19.263"
+        ],
+        [
+          "普通岭回归",
+          "LAST90",
+          "18.573",
+          "249.321",
+          "100.00",
+          "249.321"
+        ],
+        [
+          "普通岭回归",
+          "DIST90",
+          "9.153",
+          "95.658",
+          "100.00",
+          "95.658"
+        ],
+        [
+          "普通岭回归",
+          "DIST90_UNIT",
+          "9.525",
+          "102.614",
+          "100.00",
+          "102.614"
+        ],
+        [
+          "Transformer 原版",
+          "LAST90",
+          "19.177",
+          "262.830",
+          "100.00",
+          "262.830"
+        ],
+        [
+          "Transformer 原版",
+          "DIST90",
+          "8.391",
+          "100.459",
+          "100.00",
+          "100.459"
+        ],
+        [
+          "Transformer 原版",
+          "DIST90_UNIT",
+          "8.928",
+          "108.805",
+          "100.00",
+          "108.805"
+        ],
+        [
+          "Transformer REG1",
+          "LAST90",
+          "17.657",
+          "241.655",
+          "100.00",
+          "241.655"
+        ],
+        [
+          "Transformer REG1",
+          "DIST90",
+          "7.780",
+          "91.115",
+          "98.12",
+          "90.734"
+        ],
+        [
+          "Transformer REG1",
+          "DIST90_UNIT",
+          "8.289",
+          "98.852",
+          "98.38",
+          "98.638"
+        ],
+        [
+          "Transformer 半残差",
+          "LAST90",
+          "17.619",
+          "241.328",
+          "100.00",
+          "241.328"
+        ],
+        [
+          "Transformer 半残差",
+          "DIST90",
+          "7.818",
+          "92.404",
+          "99.49",
+          "92.389"
+        ],
+        [
+          "Transformer 半残差",
+          "DIST90_UNIT",
+          "8.330",
+          "100.349",
+          "100.00",
+          "100.349"
+        ]
+      ]
+    },
+    {
+      "id": "point_boundary",
+      "headers": [
+        "测点",
+        "B+ RMSE",
+        "REG1 RMSE",
+        "HALF RMSE",
+        "B+ 覆盖 / %",
+        "REG1 覆盖 / %",
+        "HALF 覆盖 / %"
+      ],
+      "rows": [
+        [
+          "ATU1",
+          "8.068",
+          "7.576",
+          "7.598",
+          "100.00",
+          "100.00",
+          "100.00"
+        ],
+        [
+          "ATU5",
+          "9.115",
+          "6.874",
+          "6.999",
+          "100.00",
+          "100.00",
+          "100.00"
+        ],
+        [
+          "MJ3",
+          "13.016",
+          "15.273",
+          "14.697",
+          "70.99",
+          "92.49",
+          "97.95"
+        ],
+        [
+          "MJ1",
+          "6.297",
+          "5.906",
+          "6.174",
+          "100.00",
+          "100.00",
+          "100.00"
+        ]
+      ]
+    },
+    {
+      "id": "seed_pairing",
+      "headers": [
+        "阶段",
+        "比较（MAE 与 RMSE 同时降低）",
+        "种子数量",
+        "种子编号"
+      ],
+      "rows": [
+        [
+          "开发",
+          "HALF 优于原版",
+          "3/3",
+          "0, 1, 2"
+        ],
+        [
+          "开发",
+          "REG1 优于原版",
+          "3/3",
+          "0, 1, 2"
+        ],
+        [
+          "开发",
+          "REG1 优于 HALF",
+          "3/3",
+          "0, 1, 2"
+        ],
+        [
+          "最终（探索）",
+          "HALF 优于原版",
+          "3/3",
+          "0, 1, 2"
+        ],
+        [
+          "最终（探索）",
+          "REG1 优于原版",
+          "2/3",
+          "0, 2"
+        ],
+        [
+          "最终（探索）",
+          "REG1 优于 HALF",
+          "1/3",
+          "0"
+        ]
+      ]
+    }
+  ],
+  "numeric_cells": [
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "mae",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "development",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "DRIFT1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "RR_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_COND",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "LAST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "crps",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "interval_score90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90_UNIT"
+      },
+      "metric": "width90",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "ATU1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "ATU5"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "MJ3"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "rmse",
+      "precision": 3,
+      "multiplier": 1
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "BPLUS_CONTINUOUS",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_REG1",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    },
+    {
+      "file": "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv",
+      "filters": {
+        "phase": "final_exploratory",
+        "model": "TRANSFORMER_BRES_HALF",
+        "rule": "DIST90",
+        "point": "MJ1"
+      },
+      "metric": "coverage90",
+      "precision": 2,
+      "multiplier": 100
+    }
+  ],
+  "source_files": {
+    "results/ootang_transformer_calibration_v1/20260914/analysis/shrinkage_pairing.csv": "9ad68d2e17727a142d3e16070a3a3fd66f4682bfe0e33bf1e78ea5eca7f4d9f3",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/calibration_transfer.csv": "6e318a4b0164cd58374d08ea2b7aadb77894c6307c1875fa6044d7a1060fa708",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/calibration_distance_support.csv": "fdb79f385a0b939d70613bcb7dc2a1f9665e4d6beb1d91a141aa396ced391a22",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/seed_summary.csv": "a525987b5f80be829c96307d863a43d41f1426c46bb3f14d224352addefaf335",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/correction_difference.csv": "db69552c046665ef6740db8ffde2f25a1e5222296087d59550643006a44daf8d",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv": "323997d3a9b158d15623cc234e642ca9e209654cb79fbd3862d99a418263a604",
+    "results/ootang_transformer_calibration_v1/20260914/analysis/metrics_by_point.csv": "423b6fe73e6695fb15096b6a6c609e6a88c49278694c838393bb2930c776107b"
+  },
+  "report_sha256": "f0a15a266292ea8c36fb461f28ce98a5203c7da6865cb24a1a36e589eb83d250"
+}

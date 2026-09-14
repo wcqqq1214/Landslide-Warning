@@ -1,0 +1,13 @@
+# 半残差与校准：导师图件
+
+所有图使用相同保存均值，完整四点和日期；最终段为探索性条件预测。参考纵轴可能裁切区间显示，完整范围副本保留全部区间。PNG 为 300 dpi，SVG 保留可编辑文字；不制作 PDF。
+
+| 内容 | 参考纵轴 PNG / SVG | 完整范围 PNG / SVG |
+| --- | --- | --- |
+| REG1 原 LAST90 区间 | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_LAST90_mentor.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_LAST90_mentor.svg) | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_LAST90_full.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_LAST90_full.svg) |
+| REG1 距离匹配区间 | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_DIST90_mentor.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_DIST90_mentor.svg) | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_DIST90_full.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/REG1_DIST90_full.svg) |
+| HALF 距离匹配区间 | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/HALF_DIST90_mentor.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/HALF_DIST90_mentor.svg) | [PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/HALF_DIST90_full.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/HALF_DIST90_full.svg) |
+
+六方法完整最终均值比较：[PNG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/all_methods_forecast.png) · [SVG](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/all_methods_forecast.svg)。
+
+[结果报告](/Users/wcqqq1214/Project/Landslide-Warning/docs/ootang_transformer_calibration_results.v1.0.md) · [源数组](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/source_arrays.npz) · [图中数值](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/figure_numbers.csv) · [数值/几何核验](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/delivery_qa.json) · [逐图目视记录](/Users/wcqqq1214/Project/Landslide-Warning/figures/ootang_transformer_calibration_v1/20260914/v1/visual_qa.json)。

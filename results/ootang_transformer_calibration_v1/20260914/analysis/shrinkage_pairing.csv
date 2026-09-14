@@ -1,0 +1,7 @@
+phase,pair,candidate,reference,mae_relative_change,rmse_relative_change,seeds_both_mean_improve,seed0,seed1,seed2,descriptively_within_one_percent
+development,reg_vs_half,TRANSFORMER_BRES_REG1,TRANSFORMER_BRES_HALF,-0.010448256921501642,-0.004633710673579761,3,True,True,True,False
+development,half_vs_original,TRANSFORMER_BRES_HALF,TRANSFORMER_BRES_COND,-0.08305460948860277,-0.07401029790710201,3,True,True,True,False
+development,reg_vs_original,TRANSFORMER_BRES_REG1,TRANSFORMER_BRES_COND,-0.09263509051165253,-0.0783010662733149,3,True,True,True,False
+final_exploratory,reg_vs_half,TRANSFORMER_BRES_REG1,TRANSFORMER_BRES_HALF,0.007718761208258318,0.0045337115281571805,1,True,False,False,True
+final_exploratory,half_vs_original,TRANSFORMER_BRES_HALF,TRANSFORMER_BRES_COND,-0.05731648269871792,-0.044395505573244454,3,True,True,True,False
+final_exploratory,reg_vs_original,TRANSFORMER_BRES_REG1,TRANSFORMER_BRES_COND,-0.05004013373370819,-0.04006307046050306,2,True,False,True,False

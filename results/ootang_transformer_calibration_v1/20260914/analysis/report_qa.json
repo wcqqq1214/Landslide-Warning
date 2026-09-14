@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T16:19:21.766433+00:00",
+  "tables": 5,
+  "report_rows": 52,
+  "report_numeric_cells": 192,
+  "analysis_csv_numeric_cells": 18597,
+  "derived_ratios": 11,
+  "seed_rows_independently_checked": 6,
+  "readme_rmse_values": 12,
+  "current_links_checked": 108,
+  "source_files_checked": 1012,
+  "report_sha256": "f0a15a266292ea8c36fb461f28ce98a5203c7da6865cb24a1a36e589eb83d250",
+  "new_training": 0,
+  "scientific_effect_separate_from_execution": true
+}

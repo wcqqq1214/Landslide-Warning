@@ -1,0 +1,31 @@
+{
+  "time_utc": "2026-09-14T16:17:54.964210+00:00",
+  "mean_selection": "DRIFT1",
+  "probability_selection": "DRIFT1__LAST90",
+  "search_trigger": false,
+  "new_search_fits": 0,
+  "development_half_share_of_reg_average_improvement": {
+    "mae": 0.8965782731993485,
+    "rmse": 0.9452016610957044
+  },
+  "final_distance_changes": {
+    "BPLUS_CONTINUOUS": {
+      "crps": 0.532002750586842,
+      "interval_score90": 0.5876671789715882,
+      "width90": 0.613760508816134
+    },
+    "TRANSFORMER_BRES_REG1": {
+      "crps": 0.5593600576742592,
+      "interval_score90": 0.6229528445060395,
+      "width90": 0.6245299081863085
+    },
+    "TRANSFORMER_BRES_HALF": {
+      "crps": 0.5563005496052138,
+      "interval_score90": 0.6171020712982338,
+      "width90": 0.6171642189203826
+    }
+  },
+  "final_reg_vs_half_within_one_percent": true,
+  "result_status": "complete; no stable joint mean/probability success; final calibration gains exploratory",
+  "acceptance": "not claimed"
+}

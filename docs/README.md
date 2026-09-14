@@ -1,19 +1,18 @@
 # 项目文档导航
 
-当前入口以 **2026-09-14 已完成的 Transformer 残差正则化验证**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15（本地时间）已完成的 Transformer 半残差与区间校准验证**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：Transformer REG1
+## 最新交付：半残差与区间校准
 
 | 文档 / 产物 | 用途 |
 | --- | --- |
-| [结果报告](ootang_transformer_regularization_results.v1.0.md) | 完整开发/最终比较、局部收益、负结果和限制 |
-| [四点图件](../figures/ootang_transformer_regularization_v1/20260914/README.md) · [五方法 CSV](../results/ootang_transformer_regularization_v1/20260914/analysis/phase_summary.csv) | 展示与逐项查数 |
-| [冻结计划](ootang_transformer_regularization_plan.v1.0.md) · [配置](../config/ootang_transformer_regularization.v1_0.json) | 单一 λ=1 假设、固定训练和评价规则 |
-| [来源清单](ootang_transformer_regularization_sources.v1.0.json) | 数据、旧模型和依赖的冻结来源 |
-| [独立核验](ootang_transformer_regularization_validation.v1.0.md) · [最终回执](../results/ootang_transformer_regularization_v1/20260914/final_receipt.json) | 重载、数值、信息边界、交付及完成状态 |
-| [图件合同](ootang_transformer_regularization_figure_contract.v1.0.md) | 本版已归档图件的显示与核验约定 |
+| [结果报告](ootang_transformer_calibration_results.v1.0.md) | 半残差对照、完整概率比较、逐点失败和下一步判断 |
+| [七张四点图件](../figures/ootang_transformer_calibration_v1/20260914/README.md) · [完整 36 组 CSV](../results/ootang_transformer_calibration_v1/20260914/analysis/phase_summary.csv) | 参考纵轴/完整范围图与逐项查数 |
+| [冻结计划及图件合同](ootang_transformer_calibration_plan.v1.0.md) · [配置](../config/ootang_transformer_calibration.v1_0.json) | 固定 0.5 半残差、三校准规则、开发锁定和停止条件 |
+| [来源清单](ootang_transformer_calibration_sources.v1.0.json) | 1,012 项数据、旧模型与依赖来源 |
+| [独立核验](ootang_transformer_calibration_validation.v1.0.md) · [最终回执](../results/ootang_transformer_calibration_v1/20260914/final_receipt.json) | 重载、数值、信息边界、图件与交付状态 |
 
-当前结论：REG1 相对原版改善，但两阶段完整工作条件均未通过。最终平均均值误差略优于 B+，开发、逐点稳定性及主概率收益仍有限；本轮已结束。
+当前结论：半残差复现大部分均值改善；距离匹配的最终概率收益也适用于 B+，尚无稳定神经增益。开发/逐点保护失败，开发选择不改；新增训练 0，本轮结束，不追加 λ 搜索或 RL。
 
 ## 同协议对照
 
@@ -21,6 +20,7 @@
 
 | 实验 | 文档与产物 |
 | --- | --- |
+| Transformer REG1 | [结果](ootang_transformer_regularization_results.v1.0.md) · [计划](ootang_transformer_regularization_plan.v1.0.md) · [配置](../config/ootang_transformer_regularization.v1_0.json) · [来源](ootang_transformer_regularization_sources.v1.0.json) · [核验](ootang_transformer_regularization_validation.v1.0.md) · [图件合同](ootang_transformer_regularization_figure_contract.v1.0.md) · [图件](../figures/ootang_transformer_regularization_v1/20260914/README.md) · [回执](../results/ootang_transformer_regularization_v1/20260914/final_receipt.json) |
 | Transformer / CNN-Mamba | [结果](ootang_sequence_conditional_results.v1.0.md) · [计划](ootang_sequence_conditional_plan.v1.0.md) · [配置](../config/ootang_sequence_conditional.v1_0.json) · [来源](ootang_sequence_conditional_sources.v1.0.json) · [核验](ootang_sequence_conditional_validation.v1.0.md) · [图件合同](ootang_sequence_figure_contract.v1.0.md) · [图件](../figures/ootang_sequence_conditional_v1/20260914/README.md) · [回执](../results/ootang_sequence_conditional_v1/20260914/final_receipt.json) |
 | TCN 条件整段训练 | [结果](ootang_tcn_conditional_training_results.v1.0.md) · [计划](ootang_tcn_conditional_training_plan.v1.0.md) · [执行补充](ootang_tcn_conditional_execution.v1.0.md) · [来源](ootang_tcn_conditional_sources.v1.0.json) · [核验](ootang_tcn_conditional_validation.v1.0.md) · [图件合同](ootang_tcn_figure_contract.v1.0.md) · [图件](../figures/ootang_tcn_conditional_v1/20260914/README.md) · [回执](../results/ootang_tcn_conditional_v1/20260914/final_receipt.json) |
 
