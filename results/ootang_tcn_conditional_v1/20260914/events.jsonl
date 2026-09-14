@@ -1,0 +1,58 @@
+{"time_utc": "2026-09-14T11:55:59.525925+00:00", "event": "phase_started", "phase": "internal", "training_rows": 612, "prediction_rows": 180, "given_forcing_last_index": 791, "selected_updates": 400}
+{"time_utc": "2026-09-14T11:55:59.528352+00:00", "event": "label_prefix_read", "rows": 612, "last_index": 611, "purpose": "internal_training"}
+{"time_utc": "2026-09-14T11:55:59.530699+00:00", "event": "ridge_fit_completed", "phase": "internal", "rows": 612}
+{"time_utc": "2026-09-14T11:55:59.533591+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:00.042852+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 400, "elapsed_seconds": 0.5082691670395434}
+{"time_utc": "2026-09-14T11:56:00.043757+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:00.571971+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 400, "elapsed_seconds": 0.5273867091163993}
+{"time_utc": "2026-09-14T11:56:00.572846+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:01.086602+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 400, "elapsed_seconds": 0.5129437078721821}
+{"time_utc": "2026-09-14T11:56:01.087445+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 0, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:01.599396+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 0, "updates": 400, "elapsed_seconds": 0.5111846667714417}
+{"time_utc": "2026-09-14T11:56:01.600164+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 1, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:02.109838+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 1, "updates": 400, "elapsed_seconds": 0.5085964594036341}
+{"time_utc": "2026-09-14T11:56:02.110660+00:00", "event": "fit_started", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 2, "updates": 400, "rows": 612}
+{"time_utc": "2026-09-14T11:56:02.628154+00:00", "event": "fit_completed", "phase": "internal", "arm": "TCN_BRES_COND", "seed": 2, "updates": 400, "elapsed_seconds": 0.5166509998962283}
+{"time_utc": "2026-09-14T11:56:02.637795+00:00", "event": "all_means_locked", "phase": "internal", "lock_sha256": "da014c18d6d55d973e48ecfda653502500e25956abf14ec4025e0919c001f558"}
+{"time_utc": "2026-09-14T11:56:02.637846+00:00", "event": "label_prefix_read", "rows": 702, "last_index": 701, "purpose": "internal_update_selection"}
+{"time_utc": "2026-09-14T11:56:02.640491+00:00", "event": "updates_locked", "selected_updates": 100, "quality": {"50": 0.26284853087720084, "100": 0.12193759209731071, "200": 0.1650756209327306, "400": 0.16208504963639184}}
+{"time_utc": "2026-09-14T11:56:02.640533+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "internal_initial_calibration"}
+{"time_utc": "2026-09-14T11:56:51.233010+00:00", "event": "phase_started", "phase": "development", "training_rows": 792, "prediction_rows": 376, "given_forcing_last_index": 1167, "selected_updates": 100}
+{"time_utc": "2026-09-14T11:56:51.235654+00:00", "event": "label_prefix_read", "rows": 792, "last_index": 791, "purpose": "development_training"}
+{"time_utc": "2026-09-14T11:56:51.240664+00:00", "event": "ridge_fit_completed", "phase": "development", "rows": 792}
+{"time_utc": "2026-09-14T11:56:51.251486+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:51.431576+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 100, "elapsed_seconds": 0.17957995785400271}
+{"time_utc": "2026-09-14T11:56:51.432367+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:51.578462+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 100, "elapsed_seconds": 0.14557083323597908}
+{"time_utc": "2026-09-14T11:56:51.579276+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:51.725044+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 100, "elapsed_seconds": 0.14524966571480036}
+{"time_utc": "2026-09-14T11:56:51.725958+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_BRES_COND", "seed": 0, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:51.888474+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_BRES_COND", "seed": 0, "updates": 100, "elapsed_seconds": 0.161808917298913}
+{"time_utc": "2026-09-14T11:56:51.889298+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_BRES_COND", "seed": 1, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:52.036374+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_BRES_COND", "seed": 1, "updates": 100, "elapsed_seconds": 0.1465169577859342}
+{"time_utc": "2026-09-14T11:56:52.037128+00:00", "event": "fit_started", "phase": "development", "arm": "TCN_BRES_COND", "seed": 2, "updates": 100, "rows": 792}
+{"time_utc": "2026-09-14T11:56:52.182593+00:00", "event": "fit_completed", "phase": "development", "arm": "TCN_BRES_COND", "seed": 2, "updates": 100, "elapsed_seconds": 0.1448884168639779}
+{"time_utc": "2026-09-14T11:56:52.187237+00:00", "event": "all_means_locked", "phase": "development", "lock_sha256": "5426b840dbe538b1409aa0af6e7e478e3c3e78975c7c8babc576c5f8cebfb68a"}
+{"time_utc": "2026-09-14T11:56:52.188982+00:00", "event": "distribution_locked", "phase": "development", "lock_sha256": "5c90459760692d85bf306d4e25aa09834c0b8c8a522907f3a88c71ff9740a4ca"}
+{"time_utc": "2026-09-14T11:56:52.189018+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "development_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T11:56:52.272332+00:00", "event": "development_selection_locked", "mean": "DRIFT1", "probability": "DRIFT1"}
+{"time_utc": "2026-09-14T11:56:52.273460+00:00", "event": "phase_completed", "phase": "development", "mean_rmse": {"BPLUS_CONTINUOUS": 41.36837187193975, "DRIFT1": 6.541317970779125, "RR_COND": 45.899829150075504, "TCN_DIRECT_COND": 91.68410592699266, "TCN_BRES_COND": 49.59822889567976}}
+{"time_utc": "2026-09-14T11:57:30.257767+00:00", "event": "phase_started", "phase": "final_exploratory", "training_rows": 1168, "prediction_rows": 293, "given_forcing_last_index": 1460, "selected_updates": 100}
+{"time_utc": "2026-09-14T11:57:30.261384+00:00", "event": "label_prefix_read", "rows": 1168, "last_index": 1167, "purpose": "final_exploratory_training"}
+{"time_utc": "2026-09-14T11:57:30.264412+00:00", "event": "ridge_fit_completed", "phase": "final_exploratory", "rows": 1168}
+{"time_utc": "2026-09-14T11:57:30.269784+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:30.456744+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 0, "updates": 100, "elapsed_seconds": 0.18641066597774625}
+{"time_utc": "2026-09-14T11:57:30.457736+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:30.641484+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 1, "updates": 100, "elapsed_seconds": 0.18320758268237114}
+{"time_utc": "2026-09-14T11:57:30.642472+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:30.833558+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_DIRECT_COND", "seed": 2, "updates": 100, "elapsed_seconds": 0.1905758329667151}
+{"time_utc": "2026-09-14T11:57:30.834401+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 0, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:31.013038+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 0, "updates": 100, "elapsed_seconds": 0.1781055829487741}
+{"time_utc": "2026-09-14T11:57:31.013859+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 1, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:31.192447+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 1, "updates": 100, "elapsed_seconds": 0.17799154203385115}
+{"time_utc": "2026-09-14T11:57:31.193473+00:00", "event": "fit_started", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 2, "updates": 100, "rows": 1168}
+{"time_utc": "2026-09-14T11:57:31.374176+00:00", "event": "fit_completed", "phase": "final_exploratory", "arm": "TCN_BRES_COND", "seed": 2, "updates": 100, "elapsed_seconds": 0.17979604098945856}
+{"time_utc": "2026-09-14T11:57:31.379492+00:00", "event": "all_means_locked", "phase": "final_exploratory", "lock_sha256": "6ae87a2e18febd8065c325251894be5355c2ad4e17a9f67b7295b0dd549578f0"}
+{"time_utc": "2026-09-14T11:57:31.381098+00:00", "event": "distribution_locked", "phase": "final_exploratory", "lock_sha256": "c4603a6b1953d1be8c55c1b0c7130c8adc4d6cb1b4bb2924c386428f818c9955"}
+{"time_utc": "2026-09-14T11:57:31.381135+00:00", "event": "label_prefix_read", "rows": 1461, "last_index": 1460, "purpose": "final_exploratory_scoring_after_distribution_lock"}
+{"time_utc": "2026-09-14T11:57:31.449630+00:00", "event": "phase_completed", "phase": "final_exploratory", "mean_rmse": {"BPLUS_CONTINUOUS": 9.124173217774597, "DRIFT1": 12.9777345313275, "RR_COND": 12.338213669009026, "TCN_DIRECT_COND": 43.25335670757466, "TCN_BRES_COND": 12.862059398748798}}

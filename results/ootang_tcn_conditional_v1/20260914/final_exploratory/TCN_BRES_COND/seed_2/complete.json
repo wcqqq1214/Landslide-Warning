@@ -1,0 +1,22 @@
+{
+  "time_utc": "2026-09-14T11:57:31.373268+00:00",
+  "status": "fit_complete",
+  "phase": "final_exploratory",
+  "arm": "TCN_BRES_COND",
+  "seed": 2,
+  "updates": 100,
+  "rows": 1168,
+  "elapsed_seconds": 0.17979604098945856,
+  "files": {
+    "e0.pt": "f5e24f8127c893bc0befcee7f5dacc8d9e6dfc9da1027a9811fd517a3a35e123",
+    "e0_fit.json": "9a00ca59a3c1eefbb9857411e189d2a64ea9dcd05de83090af7715d793408842",
+    "e0_mean.npy": "82765a89416d057a14c8d9551cbfb94a2f4636a9c0f57dcb1b9d3d4341e86405",
+    "e100.pt": "f8868d0ff179f79ba8068e5c87bff225bb9d0e9b8b0184159a422b35c7569138",
+    "e100_fit.json": "e8236bdb49fe3dc212b30064c7e09683fb3e75b2c0c0a2996bbaaa88073bd982",
+    "e100_mean.npy": "5cc8cab3d7a94a4c4909b9b4b55c7f7c21371a8b72a3602344ac5961fa6d4abe",
+    "e50.pt": "0dad84f43c5ebe140f1a5564f33abf21c48680c8dae0baf4ccdc7d2bccb62814",
+    "e50_fit.json": "f1f47bc49544663f947ab595ce8eb21b5b2509bfba941dc36645809df0ddb2cb",
+    "e50_mean.npy": "cb032533528f415ca761bf5868e014e985f9426d6d695f13827da241970991f6",
+    "training.jsonl": "b88c4ab98dad01ab1488f2e245b7bdff01eb857d051a5350172097baf3950465"
+  }
+}

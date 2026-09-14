@@ -1,0 +1,10 @@
+{
+  "time_utc": "2026-09-14T11:56:02.643393+00:00",
+  "phase": "internal",
+  "status": "complete",
+  "selected_updates": 100,
+  "files": {
+    "metrics_by_point.csv": "b9143af59a5b83985bcfc7a6cd49bb999b3e77b7fe92bc5977b36373cf06adf6",
+    "next_calibration.json": "31b81e290cabeb547a2574b46e443a1985e37e06f2d58d196f7e491d27741e06"
+  }
+}
