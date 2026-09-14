@@ -58,3 +58,5 @@
 {"time_utc": "2026-09-14T18:45:37.566666+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "analysis_base_all_issued_before_full_scoring"}
 {"time_utc": "2026-09-14T18:45:37.803115+00:00", "event": "scoring_complete", "analysis": "analysis_base", "summary_rows": 33}
 {"time_utc": "2026-09-14T18:46:17.394899+00:00", "event": "label_prefix_read", "rows": 1152, "purpose": "prespecified_causal_residual_diagnostic_no_final_labels"}
+{"time_utc": "2026-09-14T18:47:08.123532+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "analysis_all_issued_before_full_scoring"}
+{"time_utc": "2026-09-14T18:47:08.390717+00:00", "event": "scoring_complete", "analysis": "analysis", "summary_rows": 33}
