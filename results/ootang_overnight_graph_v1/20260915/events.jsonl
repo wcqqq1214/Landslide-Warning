@@ -1,1 +1,59 @@
 {"time_utc": "2026-09-14T18:40:15.300420+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
+{"time_utc": "2026-09-14T18:41:04.991674+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "base_fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-14T18:41:05.012589+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:41:10.266308+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 0, "updates": 200, "elapsed_seconds": 5.253666750155389}
+{"time_utc": "2026-09-14T18:41:10.273002+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:41:15.424044+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 1, "updates": 200, "elapsed_seconds": 5.151000583078712}
+{"time_utc": "2026-09-14T18:41:15.429656+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:41:20.599939+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_LOCAL", "seed": 2, "updates": 200, "elapsed_seconds": 5.170249958988279}
+{"time_utc": "2026-09-14T18:41:20.605805+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:41:25.813214+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 0, "updates": 200, "elapsed_seconds": 5.2073584157042205}
+{"time_utc": "2026-09-14T18:41:25.819528+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:41:31.000931+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 1, "updates": 200, "elapsed_seconds": 5.181349291000515}
+{"time_utc": "2026-09-14T18:41:31.006641+00:00", "event": "fit_started", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:41:36.173051+00:00", "event": "fit_completed", "phase": "base", "origin": 612, "arm": "GRU_GRAPH", "seed": 2, "updates": 200, "elapsed_seconds": 5.166377624962479}
+{"time_utc": "2026-09-14T18:41:36.182353+00:00", "event": "trajectory_issued", "phase": "base", "origin": 612, "end": 905, "lock_sha256": "e64554b71a989517358581e3ca5bc5837c23dc08cb1ccaa0b689da844e0247c7"}
+{"time_utc": "2026-09-14T18:41:36.182463+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "base_fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-14T18:41:36.194020+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:41:42.671960+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 0, "updates": 200, "elapsed_seconds": 6.477911208290607}
+{"time_utc": "2026-09-14T18:41:42.680942+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:41:49.238305+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 1, "updates": 200, "elapsed_seconds": 6.557314000092447}
+{"time_utc": "2026-09-14T18:41:49.244462+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:41:55.682540+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_LOCAL", "seed": 2, "updates": 200, "elapsed_seconds": 6.438030291348696}
+{"time_utc": "2026-09-14T18:41:55.689136+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:42:02.172108+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 0, "updates": 200, "elapsed_seconds": 6.48293458390981}
+{"time_utc": "2026-09-14T18:42:02.178561+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:42:08.643162+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 1, "updates": 200, "elapsed_seconds": 6.464515125378966}
+{"time_utc": "2026-09-14T18:42:08.650943+00:00", "event": "fit_started", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:42:15.108237+00:00", "event": "fit_completed", "phase": "base", "origin": 792, "arm": "GRU_GRAPH", "seed": 2, "updates": 200, "elapsed_seconds": 6.45721329189837}
+{"time_utc": "2026-09-14T18:42:15.119234+00:00", "event": "trajectory_issued", "phase": "base", "origin": 792, "end": 1085, "lock_sha256": "548eb92e5e0b63dcbeee5fe9629baa8cb2a5942118e767ddfe1dbcc95a50e754"}
+{"time_utc": "2026-09-14T18:42:15.119344+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "base_fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-14T18:42:15.131119+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:42:22.963675+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 0, "updates": 200, "elapsed_seconds": 7.832526291720569}
+{"time_utc": "2026-09-14T18:42:22.975021+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:42:30.785626+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 1, "updates": 200, "elapsed_seconds": 7.810560917016119}
+{"time_utc": "2026-09-14T18:42:30.792089+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:42:38.544108+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_LOCAL", "seed": 2, "updates": 200, "elapsed_seconds": 7.751981291919947}
+{"time_utc": "2026-09-14T18:42:38.553437+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:42:46.388048+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 0, "updates": 200, "elapsed_seconds": 7.834555291105062}
+{"time_utc": "2026-09-14T18:42:46.397151+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:42:54.143678+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 1, "updates": 200, "elapsed_seconds": 7.74648916721344}
+{"time_utc": "2026-09-14T18:42:54.151083+00:00", "event": "fit_started", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:43:01.923582+00:00", "event": "fit_completed", "phase": "base", "origin": 972, "arm": "GRU_GRAPH", "seed": 2, "updates": 200, "elapsed_seconds": 7.772421792149544}
+{"time_utc": "2026-09-14T18:43:01.935622+00:00", "event": "trajectory_issued", "phase": "base", "origin": 972, "end": 1265, "lock_sha256": "dce145e95b180d6a7a63841ca2d16181b1e640742a85d76b56bcae9a8a726f4d"}
+{"time_utc": "2026-09-14T18:43:01.935821+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "base_fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-14T18:43:01.949662+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:43:11.225358+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 0, "updates": 200, "elapsed_seconds": 9.275670167058706}
+{"time_utc": "2026-09-14T18:43:11.234675+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:43:20.470961+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 1, "updates": 200, "elapsed_seconds": 9.23618295788765}
+{"time_utc": "2026-09-14T18:43:20.478058+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:43:29.641203+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_LOCAL", "seed": 2, "updates": 200, "elapsed_seconds": 9.16308091674}
+{"time_utc": "2026-09-14T18:43:29.648163+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-14T18:43:38.927339+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 0, "updates": 200, "elapsed_seconds": 9.279133791103959}
+{"time_utc": "2026-09-14T18:43:38.938152+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-14T18:43:48.124597+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 1, "updates": 200, "elapsed_seconds": 9.186385958921164}
+{"time_utc": "2026-09-14T18:43:48.134112+00:00", "event": "fit_started", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-14T18:43:57.301229+00:00", "event": "fit_completed", "phase": "base", "origin": 1168, "arm": "GRU_GRAPH", "seed": 2, "updates": 200, "elapsed_seconds": 9.167050416115671}
+{"time_utc": "2026-09-14T18:43:57.313831+00:00", "event": "trajectory_issued", "phase": "base", "origin": 1168, "end": 1461, "lock_sha256": "73dd864f0a98d4405c6d3c292c7b8b0b5c7691f6fcf5f82f890797d45fbd7e3b"}
+{"time_utc": "2026-09-14T18:45:37.566666+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "analysis_base_all_issued_before_full_scoring"}
+{"time_utc": "2026-09-14T18:45:37.803115+00:00", "event": "scoring_complete", "analysis": "analysis_base", "summary_rows": 33}
