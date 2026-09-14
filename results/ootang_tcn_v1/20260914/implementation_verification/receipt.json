@@ -1,0 +1,29 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T09:43:56.274340+00:00",
+  "checks": 10,
+  "source_hashes_verified": 83,
+  "new_optimizer_updates": 0,
+  "new_fits": 0,
+  "physical_forward_calls": 21,
+  "parameters_per_seed": 14060,
+  "command": "PYTHONPATH=code .venv/bin/python -m unittest discover -s tests -p 'test_tcn_short_horizon.py' -v",
+  "lint": "ruff check passed",
+  "runtime": {
+    "python": "3.10.20",
+    "torch": "2.12.0",
+    "numpy": "2.2.6",
+    "scipy": "1.15.3",
+    "pandas": "2.3.3",
+    "platform": "macOS-26.5.1-arm64-arm-64bit"
+  },
+  "files": {
+    "code/tcn_short_horizon/run.py": "5dc8c331e9b1567d13903f01d1eb58e4803551231674cf67c8b89845fa6074a5",
+    "code/tcn_short_horizon/models.py": "278a2478e99ce0204f72c1d37c05379a726df7bd774c34dd9069579bb197a2e0",
+    "code/tcn_short_horizon/__init__.py": "ecdd5838e358681ac8fe2b66de35fce3194723066072fc1e9b2222e406c68889",
+    "code/tcn_short_horizon/verify.py": "8bcd2733f3ead526e6404d5f58238ec1729af0c0879f2484f68335a72b8fe246",
+    "tests/test_tcn_short_horizon.py": "445baa11ab353c8656926a841da711fbf9791c861b4c086bbdeaaec3baad4512",
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py": "f39ed6e936f937f77dab554d91d6f35cfda878814d93c1f47c2c8f036d85877e"
+  },
+  "warnings": "existing physical library matmul warnings retained; checked arrays finite and replay agrees; no underlying library fix claimed"
+}

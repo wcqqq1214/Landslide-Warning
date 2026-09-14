@@ -1,0 +1,39 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+test_causal_convolutions_and_shape (test_tcn_short_horizon.TCNContracts) ... ok
+test_common_units_and_finite_loss_gradient (test_tcn_short_horizon.TCNContracts) ... ok
+test_date_alignment_and_teacher_boundaries (test_tcn_short_horizon.TCNContracts) ... ok
+test_future_driver_isolation_and_cache (test_tcn_short_horizon.TCNContracts) ... /Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+ok
+test_mature_error_pool_rejects_future_and_duplicates (test_tcn_short_horizon.TCNContracts) ... ok
+test_nonzero_model_reload (test_tcn_short_horizon.TCNContracts) ... ok
+test_paired_initialization_and_batches (test_tcn_short_horizon.TCNContracts) ... ok
+test_thirty_day_observation_boundary (test_tcn_short_horizon.TCNContracts) ... /Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+ok
+test_training_reads_only_prefix (test_tcn_short_horizon.TCNContracts) ... ok
+test_zero_residual_and_direct_baselines (test_tcn_short_horizon.TCNContracts) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.807s
+
+OK
