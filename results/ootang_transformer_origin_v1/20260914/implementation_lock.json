@@ -1,0 +1,17 @@
+{
+  "time_utc": "2026-09-14T17:57:58.791645+00:00",
+  "files": {
+    "code/transformer_origin/__init__.py": "676d63d950e9b458a178ebe38f02a556f4a5c00932b92df2d479dedb8804378a",
+    "code/transformer_origin/core.py": "c20168ca52b8b0c1fb5091bd91f4d56e18ed5c3b79164f0b7c0c6f62fe75837e",
+    "code/transformer_origin/preflight.py": "67cdec355a6a73e5e2177f8ee4e3767db44f2c637b869d208ed3c0897e4188b2",
+    "code/transformer_origin/run.py": "c2d0c05c118eb31ac1af0012781bd36b8134af847b5eb40e532528fcb075dd22",
+    "config/ootang_transformer_origin.v1_0.json": "f368b1fe76924f2bea2dd5fc0e238c84bf822a6d85ac2fc2d27373812e7852ba",
+    "docs/ootang_transformer_origin_plan.v1.0.md": "4fb69e7702d7ce3a2be7ef7bbb0c009d2143121e3618be4c233c1efb7a1fdb37",
+    "docs/ootang_transformer_origin_sources.v1.0.json": "f434b8670539c6ac1bfbc5ff7320194da41edd7a2f26dd2b15a2ccfbd4589640",
+    "results/ootang_transformer_origin_v1/20260914/preflight/receipt.json": "79c8e7594b6f1b5aa3b7711da0a9738775e1021babf462ca26474970fb59b624",
+    "results/ootang_transformer_origin_v1/20260914/preflight/teacher_432.npz": "1609989e884a4651d05677983e120db8be1e327de6d656212f7ebdeea3f68087",
+    "results/ootang_transformer_origin_v1/20260914/preflight/teacher_612.npz": "0296f8fe48d6d43f49dda9e2ec5f9a22c4fa156a9b0d61152c534b8262bbe7d2",
+    "docs/ootang_transformer_origin_implementation.v1.0.md": "191a403914a4a8f56226e14830f5a412e4600b464175c791e4e52266a7b552d4"
+  },
+  "note": "Pretraining lock includes immutable implementation erratum; no extra physical or neural run."
+}

@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T17:56:38.690092+00:00",
+  "source_files": 253,
+  "physical_forwards": 2,
+  "new_fits": 0,
+  "checks": {
+    "teacher_432_overlap": 0.0,
+    "teacher_612_overlap": 0.0,
+    "future_observation_input_difference": 0,
+    "all_12_schedules_teacher_target_indices": "passed",
+    "COND_ATTN_history_observation_effect": 0.07010641206862467,
+    "NO_OBS_ATTN_history_observation_effect": 0.0,
+    "POOL_MLP_history_observation_effect": 0.08835687723388053,
+    "zero_fallback_reload_batch_query_and_gradient": "all three passed"
+  },
+  "parameters": {
+    "COND_ATTN": 3220,
+    "NO_OBS_ATTN": 3220,
+    "POOL_MLP": 2644
+  },
+  "warnings": {
+    "432": [
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul",
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul",
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul"
+    ],
+    "612": [
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul",
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul",
+      "divide by zero encountered in matmul",
+      "overflow encountered in matmul",
+      "invalid value encountered in matmul"
+    ]
+  },
+  "label_prefix_max": 612
+}
