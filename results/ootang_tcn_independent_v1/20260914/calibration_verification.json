@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T10:43:08.395723+00:00",
+  "origins": 382,
+  "pool_cells": 5860,
+  "max_scale_difference_mm": 1.1368683772161603e-13,
+  "all_pool_targets_before": 1168,
+  "final_labels_loaded": false,
+  "new_fits": 0,
+  "new_optimizer_updates": 0
+}

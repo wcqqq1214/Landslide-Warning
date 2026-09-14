@@ -1,0 +1,8 @@
+{
+  "events.jsonl": "c259fd5d525ef86f500121e457bd3b80dc876d3c6dc6140ef8b35acebefb04ff",
+  "forecasts.npz": "2420575cce71b8add0799b138e6c6c44dbc56fb576b73d290ca6c48804eb8275",
+  "origin_audits.json": "304019b9cee6658935aeae86e693fd4107c957feb4a0bc726843b8e814b12151",
+  "receipt.json": "125b959532df647b01d17e120afe8a8c7a75c7de0e807a9929a67001a5657e5d",
+  "scales.npz": "fb4b7c1dfa03b48158fa6fd88e3f89e21bb928174352594e117c8592b344f73d",
+  "seed_forecasts.npz": "5c906b62a58ac4680ac0a07d853dca86dba1c7a35c1e9b2b0f05308312df7185"
+}

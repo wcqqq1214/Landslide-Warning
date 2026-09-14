@@ -1,0 +1,22 @@
+{
+  "forecast_origins": 382,
+  "forecast_days": 69148,
+  "observed_prefix": 1168,
+  "per_lead_pool_size": 90,
+  "targets_before": 1168,
+  "calls": {
+    "reference_forward": 384,
+    "day_forward": 0,
+    "day_backward": 0
+  },
+  "maximum_historical_state_difference": 0.0,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "nonfinite_scale_cells": {
+    "B_ANCHOR": 0,
+    "DRIFT1": 0,
+    "RR_DIRECT": 0,
+    "TCN_DIRECT": 0,
+    "TCN_BRES": 0
+  }
+}
