@@ -1,0 +1,590 @@
+"""Fixed paired training, pre-label locks, reuse controls, full evaluation."""
+
+import argparse
+import json
+import platform
+import time
+import traceback
+
+import numpy as np
+import pandas as pd
+import torch
+from scipy.special import ndtri
+
+from .core import (
+    ARMS,
+    ROOT,
+    Scaling,
+    TrajectoryModel,
+    array_sha,
+    baseline,
+    calibrate,
+    check_deadline,
+    choose,
+    gates,
+    guard_sources,
+    load_npz,
+    predict,
+    read_json,
+    read_labels,
+    ridge_predict,
+    scores,
+    sha,
+    spec,
+    summarize,
+    utc,
+    write_json,
+)
+
+
+def event(root, kind, **values):
+    record = dict(time_utc=utc(), event=kind, **values)
+    with (root / "events.jsonl").open("a") as f:
+        f.write(json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n")
+
+
+def labels(cfg, root, end, purpose):
+    event(root, "label_prefix_read", rows=end, last_index=end - 1, purpose=purpose)
+    return read_labels(ROOT / cfg["data"], end)
+
+
+def verify_lock(path):
+    item = read_json(path)
+    for name, digest in item["files"].items():
+        if sha(path.parent / name) != digest:
+            raise ValueError("Issued artifact changed: " + name)
+    return item
+
+
+def lock(directory, name, paths, **extra):
+    value = dict(
+        time_utc=utc(),
+        **extra,
+        files={str(p.relative_to(directory)): sha(p) for p in sorted(paths)},
+    )
+    write_json(directory / name, value)
+    return value
+
+
+def train_one(cfg, root, phase, arm, seed, updates, data, y, scale):
+    dest = root / phase / arm / f"seed_{seed}"
+    done = dest / "complete.json"
+    if done.exists():
+        verify_lock(done)
+        return read_json(done)
+    dest.mkdir(parents=True, exist_ok=False)
+    n = len(y)
+    model = TrajectoryModel(cfg, seed, arm)
+    optimizer = torch.optim.Adam(
+        model.parameters(),
+        lr=cfg["neural"]["lr"],
+        betas=tuple(cfg["neural"]["betas"]),
+        eps=cfg["neural"]["eps"],
+        weight_decay=0,
+    )
+    train_x = scale.tensor(data["x"][:n])
+    target = torch.tensor(
+        (y - baseline(arm, data["mean"][:n], scale)) / scale.unit, dtype=torch.float64
+    )
+    checkpoints = [0] + [e for e in cfg["neural"]["checkpoints"] if e <= updates]
+    started = time.monotonic()
+    event(root, "fit_started", phase=phase, arm=arm, seed=seed, updates=updates, rows=n)
+    with (dest / "training.jsonl").open("w") as log:
+        for step in range(updates + 1):
+            check_deadline(cfg)
+            if step:
+                model.train()
+                optimizer.zero_grad(set_to_none=True)
+                loss = (model(train_x) - target).square().mean()
+                if not torch.isfinite(loss):
+                    raise ArithmeticError("Nonfinite full-prefix objective")
+                loss.backward()
+                grad = float(
+                    sum(
+                        p.grad.square().sum()
+                        for p in model.parameters()
+                        if p.grad is not None
+                    ).sqrt()
+                )
+                if not np.isfinite(grad):
+                    raise ArithmeticError("Nonfinite gradient")
+                optimizer.step()
+                log.write(
+                    json.dumps(
+                        dict(
+                            step=step,
+                            pre_update_loss=float(loss.detach()),
+                            gradient_norm=grad,
+                            time_utc=utc(),
+                        )
+                    )
+                    + "\n"
+                )
+                log.flush()
+            if step in checkpoints:
+                mu = predict(model, scale, arm, data["x"], data["mean"])
+                fit_loss = float(np.mean(((mu[:n] - y) / scale.unit) ** 2))
+                torch.save(
+                    dict(
+                        state_dict=model.state_dict(),
+                        optimizer_state=optimizer.state_dict(),
+                        scaling=scale.state,
+                        seed=seed,
+                        arm=arm,
+                        updates=step,
+                        training_prefix=n,
+                        config_sha256=sha(
+                            ROOT / "config/ootang_sequence_conditional.v1_0.json"
+                        ),
+                    ),
+                    dest / f"e{step}.pt",
+                )
+                np.save(dest / f"e{step}_mean.npy", mu)
+                write_json(
+                    dest / f"e{step}_fit.json",
+                    dict(
+                        step=step,
+                        normalized_loss=fit_loss,
+                        metrics=scores(y, mu[:n]),
+                        mean_sha256=array_sha(mu),
+                    ),
+                )
+                print(
+                    f"{phase} {arm} seed={seed} update={step} loss={fit_loss:.8f}",
+                    flush=True,
+                )
+    record = lock(
+        dest,
+        "complete.json",
+        list(dest.glob("*")),
+        status="fit_complete",
+        phase=phase,
+        arm=arm,
+        seed=seed,
+        updates=updates,
+        rows=n,
+        elapsed_seconds=time.monotonic() - started,
+    )
+    event(
+        root,
+        "fit_completed",
+        phase=phase,
+        arm=arm,
+        seed=seed,
+        updates=updates,
+        elapsed_seconds=record["elapsed_seconds"],
+    )
+    return record
+
+
+def write_scores(directory, phase, y, means, sigmas, fit_y, fit_means, dates, cfg):
+    metrics, summary, fitting = {}, {}, []
+    for name in cfg["methods"]:
+        metrics[name] = scores(y, means[name], sigmas[name])
+        summary[name] = summarize(metrics[name])
+        if name in fit_means:
+            fitting.extend(
+                dict(model=name, **row) for row in scores(fit_y, fit_means[name])
+            )
+    point_rows = [
+        dict(model=name, **row) for name, rows in metrics.items() for row in rows
+    ]
+    pd.DataFrame(point_rows).to_csv(
+        directory / "metrics_by_point.csv", index=False, float_format="%.17g"
+    )
+    pd.DataFrame([dict(model=m, **v) for m, v in summary.items()]).to_csv(
+        directory / "summary.csv", index=False, float_format="%.17g"
+    )
+    pd.DataFrame(fitting).to_csv(
+        directory / "fitting_by_point.csv", index=False, float_format="%.17g"
+    )
+    rows = []
+    for name in cfg["methods"]:
+        for i, date in enumerate(dates):
+            for p, point in enumerate(cfg["points"]):
+                r = dict(
+                    model=name,
+                    date=str(date),
+                    distance=i + 1,
+                    point=point,
+                    observed=float(y[i, p]),
+                    mean=float(means[name][i, p]),
+                    error=float(means[name][i, p] - y[i, p]),
+                    sigma=float(sigmas[name][p]),
+                )
+                for lev in cfg["calibration"]["levels"]:
+                    z = ndtri((1 + lev) / 2)
+                    r[f"lower{round(100 * lev)}"] = float(
+                        means[name][i, p] - z * sigmas[name][p]
+                    )
+                    r[f"upper{round(100 * lev)}"] = float(
+                        means[name][i, p] + z * sigmas[name][p]
+                    )
+                rows.append(r)
+    pd.DataFrame(rows).to_csv(
+        directory / "daily_predictions.csv", index=False, float_format="%.17g"
+    )
+    write_json(directory / "effect_gates.json", gates(metrics, cfg))
+    return metrics, summary
+
+
+def run(phase):
+    cfg = spec()
+    root, reuse = ROOT / cfg["out"], ROOT / cfg["reuse"]
+    check_deadline(cfg)
+    guard_sources()
+    torch.set_num_threads(cfg["neural"]["threads"])
+    torch.use_deterministic_algorithms(True)
+    for name, digest in read_json(root / "implementation_lock.json")["files"].items():
+        if sha(ROOT / name) != digest:
+            raise ValueError("Implementation changed after preflight: " + name)
+    assert (
+        read_json(root / "implementation_verification/receipt.json")["status"]
+        == "passed"
+    )
+    n, end = cfg["stages"][phase]
+    directory = root / phase
+    directory.mkdir(parents=True, exist_ok=True)
+    if (directory / "scoring_lock.json").exists():
+        verify_lock(directory / "scoring_lock.json")
+        print(phase + " already complete; zero new fits", flush=True)
+        return
+    if phase == "internal":
+        selected = {f: max(cfg["neural"]["checkpoints"]) for f in cfg["families"]}
+    else:
+        selected = read_json(root / "internal_selection.json")["selected_updates"]
+        previous = "internal" if phase == "development" else "development"
+        verify_lock(root / previous / "scoring_lock.json")
+        cal = read_json(root / previous / "next_calibration.json")
+        assert cal["next_origin"] == n and cal["last_label_index"] < n
+        if phase == "final_exploratory":
+            selection = read_json(root / "selection.json")
+            assert selection["source_phase"] == "development"
+    steps = {a: selected[f] for f, pair in cfg["families"].items() for a in pair}
+    event(
+        root,
+        "phase_started",
+        phase=phase,
+        training_rows=n,
+        prediction_rows=end - n,
+        given_forcing_last_index=end - 1,
+        selected_updates=selected,
+    )
+    data = load_npz(reuse / f"implementation_verification/teacher_{n}.npz")
+    y = labels(cfg, root, n, phase + "_training")
+    scale = Scaling(data["x"][:n], y, cfg=cfg)
+    assert scale.state == read_json(reuse / phase / "scaling.json")
+    write_json(directory / "scaling.json", scale.state)
+    basic = load_npz(reuse / phase / "baseline_predictions.npz")
+    old_tcn = load_npz(reuse / phase / "ensemble_e100.npz")
+    basic.update({a: v[n:] for a, v in old_tcn.items()})
+    np.savez_compressed(directory / "reused_predictions.npz", **basic)
+    event(
+        root,
+        "controls_reused",
+        phase=phase,
+        methods=cfg["reuse_methods"],
+        new_fits=0,
+        baseline_sha256=sha(reuse / phase / "baseline_predictions.npz"),
+        tcn_sha256=sha(reuse / phase / "ensemble_e100.npz"),
+    )
+    fits = [
+        train_one(cfg, root, phase, a, seed, steps[a], data, y, scale)
+        for a in ARMS
+        for seed in cfg["neural"]["seeds"]
+    ]
+
+    def ensemble_at(updates):
+        return {
+            a: np.mean(
+                [
+                    np.load(directory / a / f"seed_{s}" / f"e{updates[a]}_mean.npy")
+                    for s in cfg["neural"]["seeds"]
+                ],
+                axis=0,
+            )
+            for a in ARMS
+        }
+
+    if phase == "internal":
+        for e in cfg["neural"]["checkpoints"]:
+            np.savez_compressed(
+                directory / f"ensemble_e{e}.npz", **ensemble_at({a: e for a in ARMS})
+            )
+    else:
+        np.savez_compressed(directory / "ensemble_selected.npz", **ensemble_at(steps))
+    paths = list(directory.glob("**/*.pt")) + list(directory.glob("**/*.npy"))
+    paths += list(directory.glob("*.npz")) + [directory / "scaling.json"]
+    lock(
+        directory,
+        "mean_lock.json",
+        paths,
+        phase=phase,
+        forecast_start=n,
+        forecast_end=end,
+        latest_training_label_index=n - 1,
+        displacement_feedback=False,
+    )
+    event(
+        root,
+        "all_means_locked",
+        phase=phase,
+        lock_sha256=sha(directory / "mean_lock.json"),
+    )
+    if phase == "internal":
+        ys = labels(cfg, root, 702, "internal_update_selection")
+        qualities, selected = {}, {}
+        for family, pair in cfg["families"].items():
+            q = {}
+            for e in cfg["neural"]["checkpoints"]:
+                en = load_npz(directory / f"ensemble_e{e}.npz")
+                q[str(e)] = float(
+                    np.mean(
+                        [
+                            np.sqrt(
+                                np.mean((en[a][612:702] - ys[612:702]) ** 2, axis=0)
+                            )
+                            / scale.unit
+                            for a in pair
+                        ]
+                    )
+                )
+            selected[family] = min(
+                int(k)
+                for k, v in q.items()
+                if v <= min(q.values()) + cfg["selection"]["tie_tolerance"]
+            )
+            qualities[family] = q
+        steps = {a: selected[f] for f, pair in cfg["families"].items() for a in pair}
+        write_json(
+            root / "internal_selection.json",
+            dict(
+                time_utc=utc(),
+                quality=qualities,
+                selected_updates=selected,
+                selection_indices=[612, 702],
+                source_mean_lock_sha256=sha(directory / "mean_lock.json"),
+            ),
+        )
+        event(root, "updates_locked", selected_updates=selected, quality=qualities)
+        ensemble = ensemble_at(steps)
+        np.savez_compressed(directory / "ensemble_selected.npz", **ensemble)
+        yc = labels(cfg, root, 792, "internal_initial_calibration")
+        means = {**basic, **{a: ensemble[a][n:] for a in ARMS}}
+        next_scales = {
+            m: calibrate(yc[702:792] - means[m][90:180], cfg).tolist()
+            for m in cfg["methods"]
+        }
+        old_scales = read_json(reuse / phase / "next_calibration.json")["scales"]
+        for m in cfg["reuse_methods"]:
+            assert next_scales[m] == old_scales[m]
+        write_json(
+            directory / "next_calibration.json",
+            dict(
+                time_utc=utc(),
+                next_origin=792,
+                error_indices=[702, 792],
+                last_label_index=791,
+                scales=next_scales,
+                source_mean_lock_sha256=sha(directory / "mean_lock.json"),
+            ),
+        )
+        pd.DataFrame(
+            [
+                dict(model=m, **r)
+                for m in cfg["methods"]
+                for r in scores(yc[n:], means[m])
+            ]
+        ).to_csv(directory / "metrics_by_point.csv", index=False, float_format="%.17g")
+        lock(
+            directory,
+            "scoring_lock.json",
+            [
+                directory / "metrics_by_point.csv",
+                directory / "next_calibration.json",
+                directory / "ensemble_selected.npz",
+            ],
+            phase=phase,
+            status="complete",
+            selected_updates=selected,
+            neural_fits=len(fits),
+            optimizer_updates=sum(f["updates"] for f in fits),
+        )
+        event(root, "phase_completed", phase=phase, selected_updates=selected)
+        print("internal selected", selected, "Q", qualities, flush=True)
+        return
+    ensemble = load_npz(directory / "ensemble_selected.npz")
+    means = {**basic, **{a: ensemble[a][n:] for a in ARMS}}
+    sigmas = {m: np.array(cal["scales"][m]) for m in cfg["methods"]}
+    np.savez_compressed(
+        directory / "issued_distribution.npz",
+        dates=data["dates"][n:],
+        **{m + "__mean": v for m, v in means.items()},
+        **{m + "__sigma": v for m, v in sigmas.items()},
+    )
+    lock(
+        directory,
+        "distribution_lock.json",
+        [directory / "issued_distribution.npz"],
+        phase=phase,
+        forecast_start=n,
+        forecast_end=end,
+        latest_observed_index=n - 1,
+        calibration_indices=cal["error_indices"],
+        calibration_source_sha256=sha(root / previous / "next_calibration.json"),
+    )
+    event(
+        root,
+        "distribution_locked",
+        phase=phase,
+        lock_sha256=sha(directory / "distribution_lock.json"),
+    )
+    observed = labels(cfg, root, end, phase + "_scoring_after_distribution_lock")
+    rr = ridge_predict(load_npz(reuse / phase / "ridge.npz"), data["x"])
+    fit_means = dict(
+        BPLUS_CONTINUOUS=data["mean"][:n],
+        RR_COND=rr[:n],
+        **{a: v[:n] for a, v in old_tcn.items()},
+        **{a: ensemble[a][:n] for a in ARMS},
+    )
+    metrics, summary = write_scores(
+        directory,
+        phase,
+        observed[n:],
+        means,
+        sigmas,
+        y,
+        fit_means,
+        data["dates"][n:],
+        cfg,
+    )
+    seed_rows = []
+    for a in ARMS:
+        for s in cfg["neural"]["seeds"]:
+            mu = np.load(directory / a / f"seed_{s}" / f"e{steps[a]}_mean.npy")[n:]
+            seed_rows.extend(
+                dict(model=a, seed=s, **r) for r in scores(observed[n:], mu, sigmas[a])
+            )
+    pd.DataFrame(seed_rows).to_csv(
+        directory / "seed_metrics.csv", index=False, float_format="%.17g"
+    )
+    if phase == "development":
+        decision = dict(
+            time_utc=utc(),
+            source_phase=phase,
+            selected_updates=selected,
+            mean_winner=choose(
+                summary, cfg["selection"]["mean_keys"], cfg["methods"], 1e-12
+            ),
+            probability_winner=choose(
+                summary, cfg["selection"]["probability_keys"], cfg["methods"], 1e-12
+            ),
+            effects=gates(metrics, cfg),
+            complete_final_even_if_failed=True,
+        )
+        write_json(root / "selection.json", decision)
+        event(
+            root,
+            "development_selection_locked",
+            mean=decision["mean_winner"],
+            probability=decision["probability_winner"],
+            selection_sha256=sha(root / "selection.json"),
+        )
+        next_scales = {
+            m: calibrate(observed[1078:1168] - means[m][-90:], cfg).tolist()
+            for m in cfg["methods"]
+        }
+        old_scales = read_json(reuse / phase / "next_calibration.json")["scales"]
+        for m in cfg["reuse_methods"]:
+            assert next_scales[m] == old_scales[m]
+        write_json(
+            directory / "next_calibration.json",
+            dict(
+                time_utc=utc(),
+                next_origin=1168,
+                error_indices=[1078, 1168],
+                last_label_index=1167,
+                scales=next_scales,
+                source_distribution_lock_sha256=sha(
+                    directory / "distribution_lock.json"
+                ),
+            ),
+        )
+    else:
+        write_json(
+            directory / "frozen_selection_evaluation.json",
+            dict(
+                selection=selection,
+                final_scores_of_frozen_winners={
+                    k: summary[selection[k]]
+                    for k in ("mean_winner", "probability_winner")
+                },
+                all_method_summary=summary,
+                exploratory=True,
+            ),
+        )
+    paths = list(directory.glob("*.csv")) + [directory / "effect_gates.json"]
+    paths += [
+        p
+        for p in (
+            directory / "next_calibration.json",
+            directory / "frozen_selection_evaluation.json",
+        )
+        if p.exists()
+    ]
+    lock(
+        directory,
+        "scoring_lock.json",
+        paths,
+        phase=phase,
+        status="complete",
+        selected_updates=selected,
+        neural_fits=len(fits),
+        optimizer_updates=sum(f["updates"] for f in fits),
+    )
+    event(
+        root,
+        "phase_completed",
+        phase=phase,
+        mean_rmse={m: s["rmse"] for m, s in summary.items()},
+    )
+    print(
+        json.dumps(dict(phase=phase, summary=summary, effect=gates(metrics, cfg))),
+        flush=True,
+    )
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "phase", choices=["internal", "development", "final_exploratory"]
+    )
+    args = parser.parse_args()
+    cfg = spec()
+    root = ROOT / cfg["out"]
+    if not (root / "environment.json").exists():
+        write_json(
+            root / "environment.json",
+            dict(
+                time_utc=utc(),
+                platform=platform.platform(),
+                torch=str(torch.__version__),
+                numpy=np.__version__,
+                pandas=pd.__version__,
+                config=cfg,
+                source_guard_count=guard_sources(),
+            ),
+        )
+    try:
+        run(args.phase)
+    except Exception:
+        error = traceback.format_exc()
+        event(root, "execution_error", phase=args.phase, traceback=error)
+        (
+            root / ("error_" + args.phase + "_" + str(time.time_ns()) + ".txt")
+        ).write_text(error)
+        raise
+
+
+if __name__ == "__main__":
+    main()

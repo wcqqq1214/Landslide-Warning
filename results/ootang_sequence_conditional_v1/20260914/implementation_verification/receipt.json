@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T12:49:26.676155+00:00",
+  "source_count": 73,
+  "contract_tests": 6,
+  "parameters": {
+    "TRANSFORMER": 4916,
+    "CNN_MAMBA": 7956
+  },
+  "comparisons": {
+    "teacher_612_features_max_difference": 0.0,
+    "teacher_792_features_max_difference": 0.0,
+    "teacher_1168_features_max_difference": 0.0,
+    "TRANSFORMER_real_features_numpy_max_error_mm": 1.2789769243681803e-13,
+    "CNN_MAMBA_real_features_numpy_max_error_mm": 2.2737367544323206e-13
+  },
+  "benchmarks": {
+    "TRANSFORMER": {
+      "rows": 792,
+      "forward_backward_seconds": 0.025009040720760822,
+      "optimizer_updates": 0
+    },
+    "CNN_MAMBA": {
+      "rows": 792,
+      "forward_backward_seconds": 0.0562950000166893,
+      "optimizer_updates": 0
+    }
+  },
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "old_fits": 0,
+  "scope": "CPU float64 scan vs serial gradients; upstream float32 scan and gradients; independent whole models; causal prefix/reload/zero baseline; three reused teacher caches",
+  "files": {
+    "numerical_checks.json": "b13fa855f7291649d830ab2498d4616fdc4e0b8c3fc1b99a427f8c0c6136752b",
+    "unit_tests.txt": "cd39d96db2e916cea4b19874aa5414d1aad792b6c475405880a5e41c175e1ba9"
+  }
+}

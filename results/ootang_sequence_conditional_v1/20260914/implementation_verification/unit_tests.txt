@@ -1,0 +1,11 @@
+test_identical_pair_zero_fallback (test_sequence_conditional.SequenceContracts) ... ok
+test_nonzero_causal_prefix_invariance (test_sequence_conditional.SequenceContracts) ... ok
+test_official_reference_float32_forward_and_gradient (test_sequence_conditional.SequenceContracts) ... ok
+test_parallel_scan_serial_value_and_gradient (test_sequence_conditional.SequenceContracts) ... ok
+test_poison_future_labels_and_scaling (test_sequence_conditional.SequenceContracts) ... ok
+test_reload_independent_forward_and_encoder_gradient (test_sequence_conditional.SequenceContracts) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.442s
+
+OK

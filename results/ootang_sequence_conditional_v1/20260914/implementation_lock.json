@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-09-14T12:49:26.676542+00:00",
+  "frozen_before_training": true,
+  "files": {
+    "code/sequence_conditional/run.py": "db58bbe8950beb396ec92b2d90ef52ce74bfbce777e96b7c99e90dfb8fb6657a",
+    "code/sequence_conditional/models.py": "e4ac01f87907bfcf4a9f10805ff0525654004c33d9801616ea885dbfa571e029",
+    "code/sequence_conditional/__init__.py": "eb70b89503aad763369abab8c3aea03b158ba66d87884ca4bcdd6b2a58fdbd79",
+    "code/sequence_conditional/core.py": "d2ddde1ab58260841b2cf74b912fe6540a5ab155742021d2666d497544f8c9a5",
+    "code/sequence_conditional/independent.py": "db78deef80a2622b770191813c01d68f3a69dc5e462677363e30993400e2e928",
+    "code/sequence_conditional/verify.py": "f474a3fb826954bf84b7793f9570de66d6594c91aa7d297b802ebdac77cfed80",
+    "tests/test_sequence_conditional.py": "8883887783baf25574d9e236dce3c97588b8937dbe07d1e0d765d752c5466109",
+    "results/ootang_sequence_conditional_v1/20260914/implementation_verification/numerical_checks.json": "b13fa855f7291649d830ab2498d4616fdc4e0b8c3fc1b99a427f8c0c6136752b",
+    "results/ootang_sequence_conditional_v1/20260914/implementation_verification/unit_tests.txt": "cd39d96db2e916cea4b19874aa5414d1aad792b6c475405880a5e41c175e1ba9",
+    "results/ootang_sequence_conditional_v1/20260914/implementation_verification/receipt.json": "122a0345e5509322c14a3a6d06cd3c7389045905ac69588972c8acf1e67a5b1f"
+  }
+}

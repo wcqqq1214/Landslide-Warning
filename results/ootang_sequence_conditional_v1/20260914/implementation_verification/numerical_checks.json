@@ -1,0 +1,25 @@
+{
+  "comparisons": {
+    "teacher_612_features_max_difference": 0.0,
+    "teacher_792_features_max_difference": 0.0,
+    "teacher_1168_features_max_difference": 0.0,
+    "TRANSFORMER_real_features_numpy_max_error_mm": 1.2789769243681803e-13,
+    "CNN_MAMBA_real_features_numpy_max_error_mm": 2.2737367544323206e-13
+  },
+  "parameters": {
+    "TRANSFORMER": 4916,
+    "CNN_MAMBA": 7956
+  },
+  "benchmarks": {
+    "TRANSFORMER": {
+      "rows": 792,
+      "forward_backward_seconds": 0.025009040720760822,
+      "optimizer_updates": 0
+    },
+    "CNN_MAMBA": {
+      "rows": 792,
+      "forward_backward_seconds": 0.0562950000166893,
+      "optimizer_updates": 0
+    }
+  }
+}
