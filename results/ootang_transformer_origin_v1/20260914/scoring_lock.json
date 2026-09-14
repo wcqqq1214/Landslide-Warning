@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-14T18:01:53.318617+00:00",
+  "status": "complete",
+  "files": {
+    "analysis/daily_predictions.csv": "58c55514444f53c43e5d7fbe46ea056697974c1de551549af874a0a387a59405",
+    "analysis/effect_gates.json": "5b45111402464a7ebf25e2e30db7661cf3a34adfca112984d9300343eacb1ad8",
+    "analysis/metrics_by_point.csv": "33f650dd31bead274b0e78ae1df052e673b6911b882a7aaef09a3488ac4663db",
+    "analysis/outcome.json": "e8cb2119ba23578317ca8df5085ec385cad554c943e93e238b60c7abc02e5db5",
+    "analysis/pairing.json": "1163a53d1a96449e6669dea93885bdd62b45a2fc590c365cc3fa6b88eb430be7",
+    "analysis/phase_summary.csv": "2d31a36d0d9cfc46353389a06c4d062311f03aecaa9f7c32308d194ffb15bab5",
+    "analysis/seed_summary.csv": "f29c9853ac5c6e5718f400a4a47edec43f8ce20e6c37c4f3188a450d0f7ef32b"
+  }
+}
