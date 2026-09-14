@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T13:02:47.617268+00:00",
+  "attempt": "v1",
+  "max_abs_difference": 1.4722445484949276e-11,
+  "numerical_values_checked": 2220800,
+  "model_checkpoints": 180,
+  "formal_new_fits": 0,
+  "optimizer_updates": 0,
+  "source_files_checked": 73,
+  "completed_utc": "2026-09-14T13:03:12.218444+00:00",
+  "formal_fits_verified": 36,
+  "optimizer_updates_verified": 14400,
+  "training_loop_seconds": 617.9741324596107,
+  "independent_forward": "numpy explicit causal attention and serial Mamba-1 recurrence from all saved weights; exact PyTorch reload",
+  "ridge_verification": "svd algebra, no new optimization",
+  "issue_order_verified": true,
+  "execution_errors": 0,
+  "seed_agreement": {
+    "development": {
+      "TRANSFORMER": {
+        "mean": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      "CNN_MAMBA": {
+        "mean": {
+          "improving_seeds": 1,
+          "by_seed": [
+            false,
+            false,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    },
+    "final_exploratory": {
+      "TRANSFORMER": {
+        "mean": {
+          "improving_seeds": 3,
+          "by_seed": [
+            true,
+            true,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      },
+      "CNN_MAMBA": {
+        "mean": {
+          "improving_seeds": 3,
+          "by_seed": [
+            true,
+            true,
+            true
+          ]
+        },
+        "probability": {
+          "improving_seeds": 0,
+          "by_seed": [
+            false,
+            false,
+            false
+          ]
+        }
+      }
+    }
+  }
+}

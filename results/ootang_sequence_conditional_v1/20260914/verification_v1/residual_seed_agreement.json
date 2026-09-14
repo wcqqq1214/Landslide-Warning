@@ -1,0 +1,78 @@
+{
+  "development": {
+    "TRANSFORMER": {
+      "mean": {
+        "improving_seeds": 0,
+        "by_seed": [
+          false,
+          false,
+          false
+        ]
+      },
+      "probability": {
+        "improving_seeds": 0,
+        "by_seed": [
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "CNN_MAMBA": {
+      "mean": {
+        "improving_seeds": 1,
+        "by_seed": [
+          false,
+          false,
+          true
+        ]
+      },
+      "probability": {
+        "improving_seeds": 0,
+        "by_seed": [
+          false,
+          false,
+          false
+        ]
+      }
+    }
+  },
+  "final_exploratory": {
+    "TRANSFORMER": {
+      "mean": {
+        "improving_seeds": 3,
+        "by_seed": [
+          true,
+          true,
+          true
+        ]
+      },
+      "probability": {
+        "improving_seeds": 0,
+        "by_seed": [
+          false,
+          false,
+          false
+        ]
+      }
+    },
+    "CNN_MAMBA": {
+      "mean": {
+        "improving_seeds": 3,
+        "by_seed": [
+          true,
+          true,
+          true
+        ]
+      },
+      "probability": {
+        "improving_seeds": 0,
+        "by_seed": [
+          false,
+          false,
+          false
+        ]
+      }
+    }
+  }
+}
