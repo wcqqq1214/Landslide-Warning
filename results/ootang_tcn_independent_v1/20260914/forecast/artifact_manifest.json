@@ -1,0 +1,10 @@
+{
+  "events.jsonl": "4ac22f8a04026566ef0c4738fa39ff01f524561901a3bca86d5d656bd7058ba9",
+  "means.npz": "72914fcfa65457f3df51bfd16be5f28efd031278a0cea1d2ad88b667d477c88a",
+  "origin_audit.json": "09ecef6e147ac6123eee7436f2705ca1613dcba88204ece318cbecd5de383b67",
+  "receipt.json": "5295c6113e079c8925e06353f1abad64fc3ed9595a96a11f2a6f48aae28ccf0f",
+  "seed_means.npz": "d039cfb2a7a472b3e09c865176887cf10e2f82c18c99a39d379052f08d490d54",
+  "sigma.npz": "759aad2b02407b84c86cd0495c448c627a688f862b07046a9261e159428d5ba6",
+  "training_reconstruction.npz": "994015036e1b772f98436573eba05ef1a28f8635e4bce4d1dd888950693ed7d2",
+  "training_seed_reconstruction.npz": "31c0ada6e67eff771b7760ead8993100f02b3bf197da8100f50ac2e51ea876d3"
+}

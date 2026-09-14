@@ -1,0 +1,26 @@
+{
+  "origin": 1168,
+  "last_observed_date": "2019-09-11",
+  "forecast_length": 293,
+  "observed_prefix_parsed": 1168,
+  "final_labels_loaded": false,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "calls": {
+    "reference_forward": 4,
+    "day_forward": 0,
+    "day_backward": 0
+  },
+  "nonfinite_mean_cells": {
+    "B_ANCHOR": 0,
+    "DRIFT1": 0,
+    "RR_DIRECT": 0,
+    "TCN_DIRECT": 0,
+    "TCN_BRES": 0
+  },
+  "reconstruction_origins": [
+    252,
+    1167
+  ],
+  "reconstruction_meaning": "training_prefix_h1_reconstruction_not_independent_validation"
+}
