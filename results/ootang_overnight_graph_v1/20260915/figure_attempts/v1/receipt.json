@@ -1,0 +1,10 @@
+{
+  "status": "preserved_incomplete_preview",
+  "pages_written": 3,
+  "failed_page": 4,
+  "reason": "diagnostic annotation overlapped footer; blocked before page export",
+  "repair": "removed redundant per-panel x labels; moved diagnostic annotations higher; no data or scoring changes",
+  "final_attempt": "v2",
+  "new_training": 0,
+  "new_physical_forwards": 0
+}

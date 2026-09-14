@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/overnight_graph/figures.py", line 583, in <module>
+    main(parser.parse_args().attempt)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/overnight_graph/figures.py", line 553, in main
+    finish(fig, name, "diagnostic", pdf)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/overnight_graph/figures.py", line 183, in finish
+    assert geom["passed"], geom
+AssertionError: {'passed': False, 'text_count': 72, 'excluded_undrawn_tick_artists': 0, 'minimum_font_pt': 7.2, 'text_text_collisions': [['同一驱动/滞后/符号同时满足条件：最多 0/4 块（需≥3）', '启动还须 |相关|≥0.3、同符号跨至少3块且至少2点共享；96组预定相关全部保留，符合点0。'], ['同一驱动/滞后/符号同时满足条件：最多 0/4 块（需≥3）', '启动还须 |相关|≥0.3、同符号跨至少3块且至少2点共享；96组预定相关全部保留，符合点0。']], 'canvas_clipping': [], 'boundary': 'Matplotlib text rectangles; PDF audits not run; data-stroke overlap reviewed visually'}

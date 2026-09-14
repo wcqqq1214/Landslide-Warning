@@ -1,0 +1,10 @@
+{
+  "pdf": "output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf",
+  "auditable": true,
+  "minimum_required_pt": 5.0,
+  "minimum_found_pt": 7.2,
+  "text_run_count": 382,
+  "below_minimum_count": 0,
+  "below_minimum": [],
+  "warnings": []
+}

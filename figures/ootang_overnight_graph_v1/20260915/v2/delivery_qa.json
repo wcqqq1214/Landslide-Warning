@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-14T19:02:54.107452+00:00",
+  "figures": 6,
+  "panels": 24,
+  "values_checked": 70346,
+  "max_svg_quantization_difference_mm": 4.700200861407211e-06,
+  "exports": [
+    {
+      "figure": "comparison",
+      "page": 1,
+      "min_font_pt": 7.2
+    },
+    {
+      "figure": "GRU_GRAPH_mentor",
+      "page": 2,
+      "min_font_pt": 7.2
+    },
+    {
+      "figure": "GRU_LOCAL_mentor",
+      "page": 3,
+      "min_font_pt": 7.2
+    },
+    {
+      "figure": "residual_diagnostic",
+      "page": 4,
+      "min_font_pt": 7.2
+    },
+    {
+      "figure": "GRU_GRAPH_full",
+      "page": 5,
+      "min_font_pt": 7.2
+    },
+    {
+      "figure": "GRU_LOCAL_full",
+      "page": 6,
+      "min_font_pt": 7.2
+    }
+  ],
+  "audit_script_sha256": "d43d7d00e9e68d5e8a79de965b5aa82a5d2a3ccdf5a9ea545a2ba5aff4289154",
+  "pdf_pages": 6,
+  "pdf_fonts": "embedded",
+  "pdf_vector": true,
+  "visual_inspection": "passed: six Poppler PDF pages inspected panel by panel, followed by whole-page review",
+  "visual_checked_utc": "2026-09-14T19:05:15.529637+00:00",
+  "pdf_collision_verdict": "PASS: 0 fail / 0 warn",
+  "pdf_min_font_pt": 7.2,
+  "source_static": "18 PASS / 3 WARN / 0 FAIL; warnings reviewed in validation report"
+}

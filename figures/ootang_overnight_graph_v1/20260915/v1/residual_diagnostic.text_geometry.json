@@ -1,0 +1,18 @@
+{
+  "passed": false,
+  "text_count": 72,
+  "excluded_undrawn_tick_artists": 0,
+  "minimum_font_pt": 7.2,
+  "text_text_collisions": [
+    [
+      "同一驱动/滞后/符号同时满足条件：最多 0/4 块（需≥3）",
+      "启动还须 |相关|≥0.3、同符号跨至少3块且至少2点共享；96组预定相关全部保留，符合点0。"
+    ],
+    [
+      "同一驱动/滞后/符号同时满足条件：最多 0/4 块（需≥3）",
+      "启动还须 |相关|≥0.3、同符号跨至少3块且至少2点共享；96组预定相关全部保留，符合点0。"
+    ]
+  ],
+  "canvas_clipping": [],
+  "boundary": "Matplotlib text rectangles; PDF audits not run; data-stroke overlap reviewed visually"
+}

@@ -1,0 +1,78 @@
+{
+  "time_utc": "2026-09-14T19:02:07.954578+00:00",
+  "exports": [
+    {
+      "page": 1,
+      "figure": "comparison",
+      "kind": "comparison"
+    },
+    {
+      "page": 2,
+      "figure": "GRU_GRAPH_mentor",
+      "kind": "trajectory",
+      "method": "GRU_GRAPH",
+      "display": "mentor"
+    },
+    {
+      "page": 3,
+      "figure": "GRU_LOCAL_mentor",
+      "kind": "trajectory",
+      "method": "GRU_LOCAL",
+      "display": "mentor"
+    },
+    {
+      "page": 4,
+      "figure": "residual_diagnostic",
+      "kind": "diagnostic"
+    },
+    {
+      "page": 5,
+      "figure": "GRU_GRAPH_full",
+      "kind": "trajectory",
+      "method": "GRU_GRAPH",
+      "display": "full"
+    },
+    {
+      "page": 6,
+      "figure": "GRU_LOCAL_full",
+      "kind": "trajectory",
+      "method": "GRU_LOCAL",
+      "display": "full"
+    }
+  ],
+  "source_script_sha256": "814b92e03ff0e699e87ee23b88836dad6dbacc551afd81039d5729be70846295",
+  "contract_sha256": "afba220e22e89267cc2836b185445f25377c93bd6e22040e53880aa9608aaeae",
+  "files": {
+    "GRU_GRAPH_full.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "GRU_GRAPH_full.png": "9503cfcfab33a3000e133fab2c13cdd10073e54fe200e721ad81a7d541e451fc",
+    "GRU_GRAPH_full.svg": "e50bbc921331c4300158996060053659eb0f3f333a89721eda5d438d5344548d",
+    "GRU_GRAPH_full.text_geometry.json": "0e447e50fb6680ae1636cbc68e999d147b982f3290b08069adae4d9adb7e2ba5",
+    "GRU_GRAPH_mentor.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "GRU_GRAPH_mentor.png": "58f0bff5eb74aa4a282e82e3f222246189a19a4a40dea036ccfc6e04283d5628",
+    "GRU_GRAPH_mentor.svg": "615cff7beb4c03852c0e263fe8754689196270be7ab08ca7ea382a43e5ddb600",
+    "GRU_GRAPH_mentor.text_geometry.json": "c9d33bab3ab26dcb2804e20d52439d2aeb0eac06ac48c60b98f799915dce77a8",
+    "GRU_LOCAL_full.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "GRU_LOCAL_full.png": "4437ba23f8f461a09ad70bd5a96eeb24604048835d52ea4c5522263a7b56a3e8",
+    "GRU_LOCAL_full.svg": "4c36127a45625a257d4075b71431c3e426427d5b5872f2e10bd05e91c4e17288",
+    "GRU_LOCAL_full.text_geometry.json": "0e447e50fb6680ae1636cbc68e999d147b982f3290b08069adae4d9adb7e2ba5",
+    "GRU_LOCAL_mentor.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "GRU_LOCAL_mentor.png": "73b8064bf5a4c1245a8f77bcb4230f4c2ed58aa56a45819cb189634596bddc97",
+    "GRU_LOCAL_mentor.svg": "4c840a6c37f6797f7793b091c09fe9cd13f85f69207f45290bfc292758aa6564",
+    "GRU_LOCAL_mentor.text_geometry.json": "c9d33bab3ab26dcb2804e20d52439d2aeb0eac06ac48c60b98f799915dce77a8",
+    "comparison.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "comparison.png": "837ded1eccff962b5598b868f53f1ce0f0c032d60000818f55a825952ff048ec",
+    "comparison.svg": "70f7cde72d5569bfdd63c443107a9c35318f39b5e90336ad7b2a4cc27cd5a7a8",
+    "comparison.text_geometry.json": "f8b70b4b1cc368d04a13df57864816193f6fbce496f9edff92ad8bdde03a463e",
+    "figure_numbers.csv": "6a740f486ad8a617bcdee014ebc4acd961ee7b27e80f69cacabbcfd94276091b",
+    "plot_records.json": "aa8ad9f40d1dcf0dce261566c2a29fed097cb369d2dc175e711123c8ac413d70",
+    "residual_diagnostic.alignment.json": "3c360c32484d9c497a57d41f23969914c556e721b3ea22ff13ca0d2795f95c82",
+    "residual_diagnostic.png": "11232d1f2abc3213bfc08ea70f727876b9789cba14728f1a93f2d019e95023b0",
+    "residual_diagnostic.svg": "a0154f9ffd563a408d4214e10aa0f49f1c36fa37cb9d295959246e8aac070221",
+    "residual_diagnostic.text_geometry.json": "feb590add0ffa190152621b0ee9bb4248ac71e4121fcd419e9990d8932b6205f",
+    "source_arrays.npz": "a89f49de74ae7fa1198a65a72e292e76e3fb6c272cf9014eadb9026959cf5a05"
+  },
+  "pdf": "output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf",
+  "pdf_sha256": "973f751b86531c562f7954091c578d134876976cd33711a255506e2be4b11945",
+  "prediction_fits": 0,
+  "physical_forwards": 0
+}
