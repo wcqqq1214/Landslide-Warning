@@ -1,0 +1,13 @@
+{
+  "status": "completed",
+  "models": [
+    "B_ANCHOR",
+    "DRIFT1",
+    "RR_DIRECT",
+    "TCN_DIRECT",
+    "TCN_BRES"
+  ],
+  "selected_updates": 400,
+  "all_planned_methods_evaluated": true,
+  "effect_failure_does_not_skip_later": true
+}

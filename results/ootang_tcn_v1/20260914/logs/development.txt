@@ -1,0 +1,84 @@
+development TCN_DIRECT seed=0 step=50 loss=0.15786583
+development TCN_DIRECT seed=0 step=100 loss=0.055882241
+development TCN_DIRECT seed=0 step=150 loss=0.030171744
+development TCN_DIRECT seed=0 step=200 loss=0.014127966
+development TCN_DIRECT seed=0 step=250 loss=0.012829504
+development TCN_DIRECT seed=0 step=300 loss=0.0072604727
+development TCN_DIRECT seed=0 step=350 loss=0.0060477408
+development TCN_DIRECT seed=0 step=400 loss=0.0033143526
+development TCN_DIRECT seed=1 step=50 loss=0.13046756
+development TCN_DIRECT seed=1 step=100 loss=0.052102503
+development TCN_DIRECT seed=1 step=150 loss=0.020544068
+development TCN_DIRECT seed=1 step=200 loss=0.016814347
+development TCN_DIRECT seed=1 step=250 loss=0.0086985077
+development TCN_DIRECT seed=1 step=300 loss=0.0053664797
+development TCN_DIRECT seed=1 step=350 loss=0.00539401
+development TCN_DIRECT seed=1 step=400 loss=0.0035811418
+development TCN_DIRECT seed=2 step=50 loss=0.09190076
+development TCN_DIRECT seed=2 step=100 loss=0.047757862
+development TCN_DIRECT seed=2 step=150 loss=0.025865078
+development TCN_DIRECT seed=2 step=200 loss=0.018103312
+development TCN_DIRECT seed=2 step=250 loss=0.0071681471
+development TCN_DIRECT seed=2 step=300 loss=0.0049834867
+development TCN_DIRECT seed=2 step=350 loss=0.0031766966
+development TCN_DIRECT seed=2 step=400 loss=0.0038056384
+development TCN_BRES seed=0 step=50 loss=0.12543328
+development TCN_BRES seed=0 step=100 loss=0.023263348
+development TCN_BRES seed=0 step=150 loss=0.014645648
+development TCN_BRES seed=0 step=200 loss=0.0059890843
+development TCN_BRES seed=0 step=250 loss=0.004064439
+development TCN_BRES seed=0 step=300 loss=0.0036828237
+development TCN_BRES seed=0 step=350 loss=0.0021805887
+development TCN_BRES seed=0 step=400 loss=0.0018274515
+development TCN_BRES seed=1 step=50 loss=0.089520921
+development TCN_BRES seed=1 step=100 loss=0.027223774
+development TCN_BRES seed=1 step=150 loss=0.0098861757
+development TCN_BRES seed=1 step=200 loss=0.0063619123
+development TCN_BRES seed=1 step=250 loss=0.0048547941
+development TCN_BRES seed=1 step=300 loss=0.003332061
+development TCN_BRES seed=1 step=350 loss=0.0024240117
+development TCN_BRES seed=1 step=400 loss=0.0019837364
+development TCN_BRES seed=2 step=50 loss=0.094648966
+development TCN_BRES seed=2 step=100 loss=0.028077137
+development TCN_BRES seed=2 step=150 loss=0.0092735398
+development TCN_BRES seed=2 step=200 loss=0.006619007
+development TCN_BRES seed=2 step=250 loss=0.0040982748
+development TCN_BRES seed=2 step=300 loss=0.0036924542
+development TCN_BRES seed=2 step=350 loss=0.0026700575
+development TCN_BRES seed=2 step=400 loss=0.0028089545
+     model  horizon     rmse     crps  coverage90
+  B_ANCHOR        1 0.465830 0.186439    0.898271
+  B_ANCHOR        2 0.949962 0.379391    0.904000
+  B_ANCHOR        3 1.449581 0.579381    0.904412
+  B_ANCHOR        4 1.962171 0.785405    0.901475
+  B_ANCHOR        5 2.485691 0.996777    0.899866
+  B_ANCHOR        6 3.017999 1.212740    0.894879
+  B_ANCHOR        7 3.557036 1.432305    0.893919
+    DRIFT1        1 0.003216 0.001819    0.860372
+    DRIFT1        2 0.009639 0.005474    0.856667
+    DRIFT1        3 0.019255 0.010978    0.853610
+    DRIFT1        4 0.032039 0.018344    0.851206
+    DRIFT1        5 0.047960 0.027578    0.850134
+    DRIFT1        6 0.066981 0.038684    0.849057
+    DRIFT1        7 0.089058 0.051660    0.844595
+ RR_DIRECT        1 0.000918 0.000532    0.893617
+ RR_DIRECT        2 0.003527 0.001997    0.874667
+ RR_DIRECT        3 0.009034 0.005066    0.868984
+ RR_DIRECT        4 0.018749 0.010456    0.861260
+ RR_DIRECT        5 0.033609 0.018751    0.857527
+ RR_DIRECT        6 0.053665 0.030163    0.855795
+ RR_DIRECT        7 0.079264 0.044823    0.852703
+TCN_DIRECT        1 0.196250 0.101067    0.915559
+TCN_DIRECT        2 0.410223 0.209975    0.910000
+TCN_DIRECT        3 0.643023 0.327236    0.904412
+TCN_DIRECT        4 0.894849 0.452959    0.896113
+TCN_DIRECT        5 1.165103 0.587141    0.893145
+TCN_DIRECT        6 1.452962 0.730079    0.887466
+TCN_DIRECT        7 1.757584 0.882427    0.890541
+  TCN_BRES        1 0.127536 0.075566    0.885638
+  TCN_BRES        2 0.235671 0.148620    0.890667
+  TCN_BRES        3 0.362086 0.230762    0.897059
+  TCN_BRES        4 0.545196 0.339993    0.894102
+  TCN_BRES        5 0.783906 0.473369    0.890457
+  TCN_BRES        6 1.068407 0.626871    0.894879
+  TCN_BRES        7 1.397952 0.801272    0.890541
