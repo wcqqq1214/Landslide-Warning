@@ -53,8 +53,8 @@ plt.rcParams.update({
 COLORS = {"B+": "#777777", "ConvLSTM": "#c97934", "PINN": "#93719d",
           "NIS_BPLUS": "#23897e", "Ridge": "#365f91", "DRIFT1": "#6f8e72"}
 LABELS = {"B+": "B+物理模型", "ConvLSTM": "ConvLSTM",
-          "PINN": "软约束PINN（物理未达标）",
-          "NIS_BPLUS": "神经初态估计与 B+ 严格递推（数值检查通过）", "Ridge": "在线回归＋反馈",
+          "PINN": "软约束状态PINN",
+          "NIS_BPLUS": "神经初态估计与 B+ 严格递推", "Ridge": "在线回归＋反馈",
           "DRIFT1": "速度外推"}
 PHASES = [("development", "开发段"), ("later_exploratory", "后期评价")]
 OUTPUTS = {}

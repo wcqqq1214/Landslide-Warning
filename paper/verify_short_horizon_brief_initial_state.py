@@ -13,7 +13,7 @@ import pymupdf
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BASE = 'e898ad5'
+BASE = '1fdacaf'
 PRESENTATION_INPUTS = {
     'paper/figures/short_horizon_zh/horizon_comparison.pdf',
     'paper/figures/short_horizon_zh/sources.json',
@@ -119,13 +119,13 @@ def main():
     ordered(texts[0].split('兼顾均值与区间的推荐方法')[1],expected[:28])
     ordered(texts[1].split('模型\n开发')[1],expected[28:94])
     ordered(texts[2]+texts[3],expected[94:])
-    assert '4707' in texts[1] and '尚未评价' not in texts[1]
-    assert '逐点均值门未过' in texts[1] and '软约束状态PINN：物理一致性未达标' in texts[1]
     compact = [''.join(t.split()) for t in texts]
-    assert '神经初态估计与B+严格递推（数值检查通过）' in compact[0]
-    assert '软约束PINN（物理未达标）' in compact[0]
-    assert all('物理数值检查通过' in compact[i] or '通过物理数值检查' in compact[i] for i in (0,1))
+    assert '神经初态估计与B+严格递推' in compact[0] and '软约束状态PINN' in compact[0]
+    assert '逐点均值条件未满足' in compact[1] and '软约束状态PINN：物理一致性未达标' in compact[1]
+    assert '满足求解器数值容差；预测整体收益仍未达标' in compact[1]
+    assert '3–7天达到预定概率改善条件' in compact[1]
     all_text='\n'.join(texts)
+    assert all(s not in all_text for s in ('4707','子步诊断','检查通过','通过物理数值检查','容差检查','尚未评价'))
     assert '神经初态＋' not in all_text and 'B＋' not in all_text
     bplus_fonts = []
     for page in document:
@@ -135,7 +135,7 @@ def main():
                     if 'B+' in span['text']:
                         assert span['font'] == 'ArialUnicodeMS', span
                         bplus_fonts.append(span['font'])
-    assert len(bplus_fonts) == 14
+    assert len(bplus_fonts) == 13
     assert all(s not in all_text for s in ('v4.1','2026-09-14','旧版','新增','冻结'))
     unchanged=[]
     for i in (2,3):
@@ -155,7 +155,7 @@ def main():
     sizes=[span['size'] for p in document for block in p.get_text('dict')['blocks'] if 'lines' in block
            for line in block['lines'] for span in line['spans']]
     figure_paths=sorted(name for name in unchanged_sources if name.startswith('paper/figures/'))
-    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='B+ font and coupled-model wording consistency in text and legend only',
+    result=dict(checked_at_utc=datetime.now(timezone.utc).isoformat(),scope='remove internal diagnostic wording from the brief; retain concise physics and forecast conclusions',
                 pdf=str(pdf.relative_to(ROOT)),pdf_sha256=sha(pdf),page_count=4,base_commit=BASE,
                 csv_numeric_cells_verified_in_pdf_order=102,unchanged_previous_numeric_cells=102,initial_state_numeric_cells=6,
                 overview_series_verified=24,unchanged_original_overview_ordinates=140,initial_state_overview_ordinates=28,

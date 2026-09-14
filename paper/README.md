@@ -1,32 +1,14 @@
 # 阶段报告编译说明
 
-## 当前四页精简版（2026-09-14）
+## 四页简报已取消，源码归档
 
-[四页 PDF](../output/pdf/ootang_short_horizon_brief.v4.1.pdf)沿用 `process_report` 的蓝色标题，以六组图和两张表展示七步长选择、四类模型与残差配对、四点完整后期 7 天曲线。第 1 页总览已补入[初态耦合模型](../docs/ootang_neural_initial_state_results.v1.1.md)的完整七步长 RMSE／CRPS 曲线，前两页突出区分软约束状态 PINN 的物理失败与初态模型的物理数值检查通过。第 2 页保留全部数值与解释：4707 条已评价轨迹通过原求解器数值容差检查，零修正严格诊断仍保留异常；开发整体未改善，后期七天平均均值改善、3—7 天概率门通过，但逐点均值保护未过，仍落后于在线回归。原 v4.0 数值与结论、下方五页原版和原始实验图件保持不变。
+2026-09-14，用户要求删除四页短期对比 PDF 并停止报告整理。`output/pdf/ootang_short_horizon_brief.v4.1.pdf` 已移除；最后已提交的 PDF 可从 Git `6093dc7` 追溯。本节不再提供当前交付或待运行命令。
 
-当前展示按用户要求去除了页眉、版本号、制作日期及“旧版／新增”等过程性措辞，保留数据时段与页码；文件名中的版本仅用于归档。图中坐标、图例和面板标题采用中文，以“软约束状态 PINN”和“神经初态估计与 B+ 严格递推”区分方法；物理检查与预测效果分别说明。正文、表格和图例中的 B+ 统一使用 Arial Unicode MS、半角加号和直立常规字形；TeX 将 B+ 作为不可拆分整体，不再以全角加号连接初态模型名称。
+已有未提交的措辞精简与图例调整按原内容归档：[TeX 源码](ootang_short_horizon_brief.v4.1.tex)、[生成脚本](build_short_horizon_brief.py)、[中文图件脚本](build_short_horizon_brief_figures_zh.py)及对应图件保留。它们仅是历史备份，本次没有生成报告、训练、选模或重新评分。
 
-可编辑源码：[ootang_short_horizon_brief.v4.1.tex](ootang_short_horizon_brief.v4.1.tex)。[中文图件脚本](build_short_horizon_brief_figures_zh.py)从已保存 CSV 生成六组中文图，输出到 `paper/figures/short_horizon_zh/`，不覆盖实验原图。[简报生成脚本](build_short_horizon_brief.py)读取已保存 CSV、中文图件与初态核验回执，自动填入表格、图注及对应结果，不训练、重新评分或选模。在仓库根目录执行：
+[来源清单](ootang_short_horizon_brief.v4.1.sources.json)、[中文图件来源](figures/short_horizon_zh/sources.json)和[删除前核验记录](ootang_short_horizon_brief.v4.1.qa.json)描述各自形成时的产物，不代表本次重新进行 PDF 核验；对应核验脚本依赖已删除的 PDF，当前不执行。
 
-```bash
-.venv/bin/python paper/build_short_horizon_brief_figures_zh.py --horizon-only
-.venv/bin/python paper/build_short_horizon_brief.py
-mkdir -p tmp/pdfs/short_horizon_brief_v4_1
-```
-
-在 `paper/` 目录将下列编译命令执行两次，再把生成的 PDF 复制到上述交付路径：
-
-```bash
-xelatex -interaction=nonstopmode -halt-on-error \
-  -output-directory ../tmp/pdfs/short_horizon_brief_v4_1 \
-  ootang_short_horizon_brief.v4.1.tex
-```
-
-[来源清单](ootang_short_horizon_brief.v4.1.sources.json)记录 21 项输入及 TeX 哈希；[中文图件来源](figures/short_horizon_zh/sources.json)记录 7 份 CSV、1 份物理核验回执和全部 1148 行七日曲线数据。本次仅更新首页图例文字，全部 168 个纵坐标（含初态模型 28 个）保持，其余五幅 PDF 哈希不变。`--horizon-only` 保留这五幅图，省略此参数可重建全部六图。
-
-[交付核验](ootang_short_horizon_brief.v4.1.qa.json)对照 `e898ad5`，确认全部 102 个表格／图注数字、168 个总览纵坐标及 19 项共有输入不变，另核对 196 个结果页表格数字和 4707 条轨迹计数。实际 PDF 的 14 处 B+ 均使用同一字体；总览重新执行字体、对齐和碰撞检查，前两页实际渲染通过，第 3、4 页逐像素不变。原实验收尾回执保留形成时 PDF 哈希，当前展示以本次交付核验为准。保留公开序列结构、探索性评价、软 PINN 物理失败及初态模型整体收益未达标的解释边界，不称真实预警已验证。
-
-完成结果同步后，可运行 `.venv/bin/python paper/verify_short_horizon_brief_initial_state.py` 核对保存 PDF、全部新旧数字及来源；此入口不导入训练或评分模型。
+科学结论仍以[短期对比完整结果](../docs/ootang_short_horizon_comparison_results.v4.0.md)及[初态耦合完整结果](../docs/ootang_neural_initial_state_results.v1.1.md)为准。下方原报告和实验图件继续作为历史记录保留。
 
 ## 五页原版（2026-09-13）
 

@@ -19,7 +19,7 @@
 \newcommand{\reportfigure}[2]{\begin{minipage}{\textwidth}\includegraphics[width=\linewidth]{#1}\captionof{figure}{#2}\end{minipage}\par}
 \begin{document}
 \pagetitle{1\quad 七个步长，分别比较}
-\takeaway{\textbf{神经初态估计与 \Bplus{} 严格递推已通过物理数值检查，预测整体收益仍未达标。}在线回归＋短期误差反馈表现最好；\Bplus{} 物理参照的额外收益尚不稳定。}
+\takeaway{\textbf{在线回归＋短期误差反馈表现最好。}神经初态模型的预测整体收益仍未达标；\Bplus{} 物理参照的额外收益尚不稳定。}
 {\small 每天使用过去 30 天观测，预测第 1、2、3、4、5、6、7 天后的位移；已发出的预测固定保存。四点：ATU1、ATU5、MJ3、MJ1。}\par
 \reportfigure{horizon_comparison.pdf}{同一步长、同组起点；神经初态模型为固定候选，其余各类代表按开发 RMSE 选择并沿用至后期。纵轴为对数，越低越好。}
 \textbf{兼顾均值与区间的推荐方法}\quad{\footnotesize 下表均为后期结果；误差单位 mm。}
@@ -60,10 +60,10 @@ PINN 无方程约束对照 & 3.5004 & 1.3053 & 0.7531 & 81.97\% & 4.2005 & 6.641
 \end{center}
 {\footnotesize 除“开发 RMSE”外均为后期结果，误差／宽度／评分单位 mm。覆盖率接近目标且区间评分低更好；神经结果先合并三种子均值再评分。}\par
 \reportfigure{paired_effects.pdf}{配对方法的平均 RMSE 差：负值表示前者更好。四面板纵轴尺度不同。}
-\takeaway{\textbf{软约束状态 PINN：物理一致性未达标。}\quad\textbf{神经初态估计与 \Bplus{} 严格递推：物理数值检查通过。}}
+\takeaway{\textbf{神经初态模型采用 \Bplus{} 严格递推，满足求解器数值容差；预测整体收益仍未达标。}}
 \begingroup\fontsize{9}{12}\selectfont
-ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含趋势、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
-\textbf{神经初态估计与 \Bplus{} 严格递推：}内部、开发及后期共 4707 条轨迹通过求解器数值容差检查；零修正的额外严格子步诊断仍保留异常。\textbf{开发整体未改善；后期 1--7 天平均误差下降，3--7 天概率门通过，但逐点均值门未过，仍落后在线回归。}后期按完整比较补齐，未重选。\par
+\textbf{软约束状态 PINN：物理一致性未达标。}ConvLSTM 直接预测与残差学习均未超过速度外推。在线回归含趋势、在线更新与误差反馈；神经与普通岭回归在阶段内固定权重。\par
+\textbf{神经初态估计与 \Bplus{} 严格递推：}开发整体未改善；后期 1--7 天平均误差下降，3--7 天达到预定概率改善条件，但逐点均值条件未满足，仍落后在线回归。后期按完整比较补齐，未重选。\par
 {\color{gray}\Bplus{} 采用最近七日平均降雨和最新库水位保持；概率层统一使用最近 90 条成熟预测误差。PINN 无方程约束对照仍保留相同物理背景。\par}
 \endgroup
 \endgroup

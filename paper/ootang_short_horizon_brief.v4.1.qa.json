@@ -1,10 +1,10 @@
 {
-  "checked_at_utc": "2026-09-14T07:02:53.811818+00:00",
-  "scope": "B+ font and coupled-model wording consistency in text and legend only",
+  "checked_at_utc": "2026-09-14T07:09:44.334741+00:00",
+  "scope": "remove internal diagnostic wording from the brief; retain concise physics and forecast conclusions",
   "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
-  "pdf_sha256": "723d4ed59b52aa64adf5bcc87c6d430df3a25ea1c28c58689837bcea9acdc7e8",
+  "pdf_sha256": "6fedb8a6fb645e52f35f5708d310d516dbec6a9f7cd3995f99371b1688566aea",
   "page_count": 4,
-  "base_commit": "e898ad5",
+  "base_commit": "1fdacaf",
   "csv_numeric_cells_verified_in_pdf_order": 102,
   "unchanged_previous_numeric_cells": 102,
   "initial_state_numeric_cells": 6,
@@ -13,7 +13,7 @@
   "initial_state_overview_ordinates": 28,
   "unchanged_previous_overview_ordinates": 168,
   "bplus_font": "ArialUnicodeMS",
-  "bplus_spans_verified": 14,
+  "bplus_spans_verified": 13,
   "figure_input_hashes_verified": 8,
   "figure_pdf_hashes_verified": 6,
   "documentation_numeric_cells_verified": 196,
@@ -49,13 +49,13 @@
   "page_geometry": [
     {
       "page": 1,
-      "glyphs": 930,
+      "glyphs": 901,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 2,
-      "glyphs": 1148,
+      "glyphs": 1122,
       "clipped": [],
       "collisions": []
     },
@@ -81,85 +81,5 @@
   "new_model_selection": 0,
   "new_prediction_or_scoring": 0,
   "new_physical_calls": 0,
-  "verifier_sha256": "35bb2be52299455d4bdddac027d4f18d6422997f5d6bb0d381a20f0de9d2f586",
-  "overview_render_qa": {
-    "width_mm": 165.99999889797633,
-    "height_mm": 118.00000025431314,
-    "source_preflight": {
-      "fail": 0,
-      "warn": 4,
-      "reviews": {
-        "EXPORT-RASTER": "Delivery is editable vector PDF; TIFF is not required for this brief.",
-        "RASTER-DPI": "300 dpi PNG is a QA preview only; the report embeds vector PDF.",
-        "FINAL-WIDTH": "Static parser misread 166/25.4; exported page is verified as 166 by 118 mm.",
-        "LOG-GUARD": "Every saved ordinate is asserted finite and strictly positive before plotting."
-      }
-    },
-    "pdf_text_audit": {
-      "minimum_required_pt": 6.5,
-      "minimum_found_pt": 6.5,
-      "text_runs": 52,
-      "below_minimum": 0
-    },
-    "collision_audit": {
-      "pdf": "paper/figures/short_horizon_zh/horizon_comparison.pdf",
-      "auditable": true,
-      "verdict": "PASS",
-      "page_count": 1,
-      "visible_text_box_count": 52,
-      "text_trace_count": 52,
-      "stroke_path_count": 421,
-      "filled_region_count": 370,
-      "image_region_count": 0,
-      "summary": {
-        "fail": 0,
-        "warn": 0,
-        "contained_fill_overlays": 0,
-        "contained_image_overlays": 0
-      },
-      "thresholds": {
-        "text_inset_pt": 0.6,
-        "min_overlap_ratio": 0.05,
-        "clipping_tolerance_pt": 0.5
-      },
-      "findings": []
-    },
-    "alignment_receipt": "paper/figures/short_horizon_zh/sources.json:figures.horizon_comparison.panel_alignment",
-    "panel_visual_review": [
-      {
-        "panel": "a",
-        "evidence": "Development mean accuracy",
-        "passed": true,
-        "uncertainty": "Saved aggregate scores; no inferential intervals added."
-      },
-      {
-        "panel": "b",
-        "evidence": "Development probabilistic score",
-        "passed": true,
-        "uncertainty": "Saved aggregate scores; no inferential intervals added."
-      },
-      {
-        "panel": "c",
-        "evidence": "Later exploratory mean accuracy",
-        "passed": true,
-        "uncertainty": "Saved aggregate scores; no inferential intervals added."
-      },
-      {
-        "panel": "d",
-        "evidence": "Later exploratory probabilistic score",
-        "passed": true,
-        "uncertainty": "Saved aggregate scores; no inferential intervals added."
-      }
-    ],
-    "legend_review": "Full coupled-model name uses wording instead of a full-width joining plus. All six methods readable, with the same model colors and markers."
-  },
-  "manual_visual_review": {
-    "pages_reviewed": [
-      1,
-      2
-    ],
-    "render_scale": 1.6,
-    "result": "Passed: B+ is upright and consistent in text, table and legend; longer model name fits without clipping or an extra page. All prior results remain visible.",
-    "remaining_pages": "Pages 3 and 4 are pixel-identical to e898ad5; their B+ legend font was already Arial Unicode MS."
-  }
+  "verifier_sha256": "9813676c6b0c38f26c78b4a29d3742cd2d443a2bf2824170ff6cb25fc72d9d68"
 }

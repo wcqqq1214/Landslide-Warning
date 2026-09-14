@@ -10,7 +10,7 @@
     "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/summary_by_horizon.csv": "bb5b9a4ffb8ac2068a6457cc13126d9d9b5b9421dd2f609c780198224b0b8360",
     "results/ootang_neural_initial_state_v1_1/20260914/verification/receipt.json": "cbe5fba7e1d6be11c5548ab036d48b6a5b206f6639e29289f20789c2e4cb2b4e"
   },
-  "builder_sha256": "a7d81c1e6a2aa39c64ac96936f8550a391f67addf0c31b5f8792ae27df651940",
+  "builder_sha256": "621a3147623cc4b38a03b276eb90e140eb1eb478304d7c80c19809115a5c925a",
   "plotted_lines_checked_against_saved_ordinates": 68,
   "lines_checked_this_run": 24,
   "reused_figures": [
@@ -1054,7 +1054,7 @@
       }
     },
     "horizon_comparison": {
-      "pdf_sha256": "c9582b6def910123b2397dd1c27c8bf15c3110db6e9889e5849aa0bce94ef1e5",
+      "pdf_sha256": "41a02546110e93caa39dbe5bc013c39288c2127b36c6e763845def7c7ccc2bb7",
       "panel_alignment": {
         "schema_version": 1,
         "applicable": true,

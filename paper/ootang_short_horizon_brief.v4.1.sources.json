@@ -6,6 +6,7 @@
   "new_model_selection": 0,
   "new_prediction_or_scoring": 0,
   "figure_language": "Chinese labels, axes, legends and panel titles; saved data unchanged",
+  "report_focus": "prediction results and concise physical consistency conclusion; diagnostic counts and tolerances remain in technical records",
   "bplus_typography": {
     "model_name": "B+",
     "font": "Arial Unicode MS",
@@ -135,8 +136,8 @@
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/selection_by_horizon.csv": "6696bf0334fd44e31ae825852ec7c67529854d7662fd56e516993a3395eda8ee",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/metrics_by_point_horizon.csv": "20f3c4438e12fba08fa529e10126446ff49dadcfd6f5cc331976400386fff06d",
-    "paper/figures/short_horizon_zh/sources.json": "f46af389c6c41ad263c4a6e62858487e16ed5e0b2a4e45c1ef6f64cc298019b6",
-    "paper/figures/short_horizon_zh/horizon_comparison.pdf": "c9582b6def910123b2397dd1c27c8bf15c3110db6e9889e5849aa0bce94ef1e5",
+    "paper/figures/short_horizon_zh/sources.json": "23b07ae11ffa1a3f523070000d81589b8da0b8f7f2d46cdf542c5a5f96c52417",
+    "paper/figures/short_horizon_zh/horizon_comparison.pdf": "41a02546110e93caa39dbe5bc013c39288c2127b36c6e763845def7c7ccc2bb7",
     "paper/figures/short_horizon_zh/paired_effects.pdf": "68cec7a623dd86a2deea09c4cba5dca1b1519de8ff24a697be6204b88c4900c1",
     "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf": "4a04396b1548e397d9d7a1f7538285869551e116980296328d2fc60433b6db9a",
     "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf": "6d91e8c1dbcd9fb90ffbc18128da9716537f2fe2445c0ca31fd5949c4b2d8229",
@@ -154,5 +155,5 @@
     "results/ootang_neural_initial_state_v1_1/20260914/development/decision.json": "7938c2fa29601a1aff706ecfacd0253f21ee056252dad6514434a9c612923237",
     "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/decision.json": "2d1f7d1d69441edf89775ad190dfb097131c8f1b8ade07fedcb56dcc356c51ca"
   },
-  "tex_sha256": "2115f2cb745a086410653e35241e09a3515bb33af2aa83faba24db1077efb3aa"
+  "tex_sha256": "b44316c895b871e52dbcddb0dec749fc2ad60b8a76100f9bcfad2ae477e82465"
 }
