@@ -1,0 +1,43 @@
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: divide by zero encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: overflow encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:31: RuntimeWarning: invalid value encountered in matmul
+  tab=np.load(ROOT/'results/reservoir_force_lookup_final.npz');self.levels=tab['levels'];self.pore=tab['pore']@self.T;self.ext=tab['external']@self.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: divide by zero encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: overflow encountered in matmul
+  pred=u@ctx.obs.T
+/Users/wcqqq1214/Project/Landslide-Warning/runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py:63: RuntimeWarning: invalid value encountered in matmul
+  pred=u@ctx.obs.T
+Independent reproduction: 1/382
+Independent reproduction: 61/382
+Independent reproduction: 121/382
+Independent reproduction: 181/382
+Independent reproduction: 241/382
+Independent reproduction: 301/382
+Independent reproduction: 361/382
+{
+  "passed": true,
+  "time_utc": "2026-09-14T10:46:27.594955+00:00",
+  "elapsed_seconds": 21.66773558408022,
+  "source_hashes": 118,
+  "calibration_origins_reproduced": 382,
+  "calibration_model_trajectories": 2674,
+  "final_recursive_blocks_independently_replayed": 294,
+  "score_cells": 240,
+  "forecast_csv_rows": 5860,
+  "max_mean_difference_mm": 0.0,
+  "max_scale_difference_mm": 1.1368683772161603e-13,
+  "max_score_or_csv_difference_mm": 5.6843418860808015e-12,
+  "forecast_lock_precedes_label_release": true,
+  "new_fits": 0,
+  "new_optimizer_updates": 0,
+  "calls": {
+    "reference_forward": 386,
+    "day_forward": 0,
+    "day_backward": 0
+  },
+  "verifier_sha256": "275f8650b78e8ba6e1e971b7172b62b5f9173a31b89d467b18be83362ecace9e"
+}
+

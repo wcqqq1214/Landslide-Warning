@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_independent/package.py", line 174, in <module>
+    main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/tcn_independent/package.py", line 120, in main
+    assert len(texts) == geometry["text_count"]
+AssertionError

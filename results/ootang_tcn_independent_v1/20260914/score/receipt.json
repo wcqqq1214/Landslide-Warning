@@ -1,0 +1,10 @@
+{
+  "final_label_first": 1168,
+  "final_label_last": 1460,
+  "forecast_days": 293,
+  "point_metric_rows": 20,
+  "forecast_rows": 5860,
+  "training_curve_rows": 18320,
+  "new_fits": 0,
+  "optimizer_updates": 0
+}

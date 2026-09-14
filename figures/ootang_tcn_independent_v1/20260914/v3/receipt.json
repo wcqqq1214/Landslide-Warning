@@ -1,0 +1,197 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T10:57:53.469128+00:00",
+  "script_sha256": "1ddb2cb261b22e6d8df05be0719fd9735b8c84d7160b5025dfca81fd09446eed",
+  "alignment_helper_sha256": "43958e6b49d897f326ff64e73cbed0bf057e17c06533b5b57d3dededf8111e76",
+  "source_csv_sha256": {
+    "summary.csv": "95a5b2d566e4ed9cc6be9ae0f293e305b3d546cd4b5ff9d9d4ba75b476b9a3fd",
+    "forecasts.csv": "674106c4d99e8386419567c07e45f615bbca5b74e6f56d85430f0d1fa647ee5f",
+    "training_metrics.csv": "cfd0bec4e570861acf4047f04ef782d114493cdfd8afd60a3819d475c02ed39b",
+    "training_reconstruction.csv": "93b17b74d94ff4e937fc4f08ed68630e7fd6d18e873ce7e04622554a2e52dfb4",
+    "metrics_by_point.csv": "5f8ac22b0c87308e331bd7373436ac17f0429fcd22a20e9435dad1eb8ca43e05",
+    "seed_metrics.csv": "367bdd621bf4d6fae5e04f6b1c4db66a52c93142d30036057749c9fcfe0de058",
+    "observations.csv": "d1b8b4ac7692ae3e9bfcb333e33906ef761fddf95b2bbb0e70263735670a7b2c"
+  },
+  "figure_count": 2,
+  "formats": [
+    "svg",
+    "png"
+  ],
+  "width_mm": 183,
+  "height_mm": 128,
+  "dpi": 300,
+  "visual_review": "pending",
+  "pdf_specific_qa": "not_applicable_user_requested_no_pdf",
+  "figures": [
+    {
+      "model": "TCN_DIRECT",
+      "panels": [
+        {
+          "point": "ATU1",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 0.0,
+          "rmse_mm": 127.800071644401,
+          "baseline_rmse_mm": 11.3776042323069,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "ATU5",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 0.0,
+          "rmse_mm": 145.870866882327,
+          "baseline_rmse_mm": 7.7643788967785,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "MJ3",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 944.542666666666,
+          "rmse_mm": 62.6691912026307,
+          "baseline_rmse_mm": 15.0261529201891,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "MJ1",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 673.746666666667,
+          "rmse_mm": 26.5856915475094,
+          "baseline_rmse_mm": 6.51060588894484,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        }
+      ]
+    },
+    {
+      "model": "TCN_BRES",
+      "panels": [
+        {
+          "point": "ATU1",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 0.0,
+          "rmse_mm": 280.187423315744,
+          "baseline_rmse_mm": 11.3776042323069,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "ATU5",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 0.0,
+          "rmse_mm": 315.031848594112,
+          "baseline_rmse_mm": 7.7643788967785,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "MJ3",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 944.542666666666,
+          "rmse_mm": 179.189251160666,
+          "baseline_rmse_mm": 15.0261529201891,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        },
+        {
+          "point": "MJ1",
+          "mean": "equal average of three complete seed paths",
+          "forecast_n": 293,
+          "training_reconstruction_n": 916,
+          "zero_offset_mm": 673.746666666667,
+          "rmse_mm": 72.9029344212759,
+          "baseline_rmse_mm": 6.51060588894484,
+          "annotation": {
+            "location": [
+              0.025,
+              0.955
+            ],
+            "horizontal_alignment": "left",
+            "vertical_alignment": "top",
+            "local_envelope_clear": true,
+            "data_and_reference_strokes_clear": true
+          },
+          "complete_curve_and_80_95_band_vertices_verified": true
+        }
+      ]
+    }
+  ]
+}

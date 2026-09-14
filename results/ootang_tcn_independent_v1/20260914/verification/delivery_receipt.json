@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "time_utc": "2026-09-14T11:01:54.230249+00:00",
+  "verifier_sha256": "df771f25d61bce304ddecdc3a045d626b4e28da1cdf02f0a570b368229e81c57",
+  "checked_numeric_values": 71197,
+  "maximum_difference_mm": 5.229594535194337e-12,
+  "forecast_rows": 5860,
+  "training_rows": 18320,
+  "observation_rows": 5844,
+  "seed_metric_rows": 24,
+  "model_summary_rows": 5,
+  "export_size_px": [
+    2161,
+    1511
+  ],
+  "export_dpi": 300,
+  "font_path": "/System/Library/Fonts/Supplemental/Arial Unicode.ttf",
+  "exports": [
+    {
+      "model": "TCN_DIRECT",
+      "panel_count": 4,
+      "svg_editable_text_count": 66,
+      "png_sha256": "a41821bf6a99aafdb2e64f18c0280eb6cecde9286b9ce65ed3bca803fbf97af0",
+      "svg_sha256": "2cb7abcc31d15e2506bba2cb26416dd1e6a40186430337a528da3c626faf0cdb",
+      "glyphs_present": true,
+      "alignment": "PASS",
+      "text_geometry": "PASS"
+    },
+    {
+      "model": "TCN_BRES",
+      "panel_count": 4,
+      "svg_editable_text_count": 65,
+      "png_sha256": "bd346b470296652d34d35bdd616a07e1a1c6cc70cfd46e07d758de5de96e5af6",
+      "svg_sha256": "d89cf0038a1d050c94433ef872617256b93aa4b769071038bbd415768174e721",
+      "glyphs_present": true,
+      "alignment": "PASS",
+      "text_geometry": "PASS"
+    }
+  ],
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "visual_review": "separate manual record required",
+  "generic_static_audit": "17 PASS; two PDF-specific FAIL not applicable; two raster preference WARN accepted for requested PNG/SVG brief"
+}
