@@ -3,54 +3,80 @@
 藕塘滑坡四点位移概率预测科研原型。研究范围为 ATU1、ATU5、MJ3、MJ1，目标是通过
 改进 B+ 物理引导，降低均值误差并改善概率区间；当前不开展预警或新案例。
 
-**当前状态：v2.3 概率 PINN 已完成开发段实验，均值、概率和神经近似均未达标，已停止。**
-完整 376 日开发段平均 MAE 为 177.5373 mm（B+ 33.2651），CRPS 为 166.6350 mm（原 e0 28.1156），
-90% 覆盖率为 0%；未进入最终 293 日训练。代码与复算通过，效果失败，保留 B+。
-来源、完整曲线、判据与限制见[v2.3 结果](docs/ootang_probability_pinn_results.v2.3.md)。原 v2.1 与力探针继续暂缓。
-冻结均值/尺度交叉评分也已完成，见该报告第 5 节：有局部概率收益，均值无增益且 MJ3 CRPS 变差；
-仅作诊断，停止结论保持，本次不再重复送审或启动新训练。
+**当前状态（2026-09-14）：小型 TCN 的内部、开发和完整后期比较已完成，训练已停止；最终交付仍在收尾。**
+本轮在 `codex/tcn-short-horizon` 比较 TCN_DIRECT 与 TCN_BRES，内部共同选定400次更新，
+三个种子、三阶段共18次拟合、7200次更新。预测数组、检查点、逐点/七步长表与开发名单已保存；
+首次本地独立复算通过，核验器补充及回执尚未提交，最终 Markdown、汇总 CSV 和图件尚未全部交付。
+本页更新不代表整体效果达标或用户/导师验收。
 
-最新[方法筛选决策](docs/ootang_method_selection_2026-09-12.md)已完成：三篇原始论文未支持本轮启动一个新的长窗候选。
-建议与导师讨论有新观测的短期滚动任务；仅为建议，当前范围与协议保持，未启动新实验。
+两版 TCN 在开发及后期的七个步长均降低了相对 B_ANCHOR 的平均 MAE、RMSE、CRPS 和90%区间评分，
+但这些指标均落后于 DRIFT1 和普通 RR_DIRECT，两版 TCN 均未通过完整工作条件。
+开发七步长的均值和概率优胜者均为 RR_DIRECT；共同条件推荐为第1—6天，第7天没有通过者，
+不能将“评分最低”写成“全部条件达标”。来源见[开发锁定](results/ootang_tcn_v1/20260914/selection.json)
+与[后期固定名单评价](results/ootang_tcn_v1/20260914/later_exploratory/frozen_selection_evaluation.json)。
 
-此前导师最终 293 日的已有预测复核保持：
-按冻结 `e48d3e1` 对齐 1168 日拟合参数与 2019-09-12—2020-06-30 全窗：M1/M2 均为零修正，
-三组四点平均 RMSE 9.1242 mm、合并 RMSE 9.4506 mm，没有神经均值增益。M0 概率指标不适用。
-导师允许圈出末端的局部偏差，用户已明确没有指定日期；不再把获取截点作为当前工作的前置条件。
-全窗曲线、逐日误差、已有概率评分和补审处理见[293 日复核报告](docs/ootang_293day_prediction_audit_2026-09-11.md)。
-方法仍只限定 ConvLSTM/PINN；v2.0 按原完整窗标准未达标，已停止。
-此前的[v2.0 结果](docs/ootang_convlstm_direct_results.v2.0.md)严格均值改善 5/8，但第一窗误差和两窗 CRPS 变差。
-八轮主要学习的 16 个变体中，没有一个同时降低两个预测窗的平均 RMSE，严格四项改善最高 3/8。
-完整误差、概率评分与失败证据见[路线复盘](docs/ootang_route_review_2026-09-11.md)。
+下表为后期第7天的四点指标平均值；RMSE、CRPS和区间评分单位为 mm，覆盖率为百分比，
+每点287个合法起点，目标日期为2019-09-18—2020-06-30。
+
+| 方法 | RMSE | CRPS | 90%区间评分 | 90%覆盖率 |
+| --- | ---: | ---: | ---: | ---: |
+| B_ANCHOR | 1.784162 | 0.904383 | 9.246043 | 78.6585% |
+| DRIFT1 | 0.278587 | 0.126017 | 1.360112 | 75.3484% |
+| RR_DIRECT | 0.037318 | 0.021510 | 0.222347 | 86.6725% |
+| TCN_DIRECT | 0.856186 | 0.475485 | 3.727784 | 85.6272% |
+| TCN_BRES | 0.771781 | 0.424421 | 3.982303 | 76.8293% |
+
+完整来源：[后期七步长表](results/ootang_tcn_v1/20260914/later_exploratory/summary_by_horizon.csv)、
+[逐点表](results/ootang_tcn_v1/20260914/later_exploratory/metrics_by_point_horizon.csv)、
+[开发七步长表](results/ootang_tcn_v1/20260914/development/summary_by_horizon.csv)。
+残差版在开发段的四项平均误差评分均优于直接版；后期第3—7天平均 MAE/RMSE 较低，
+但第1—2天 RMSE 较高，七个步长90%区间评分均更差。因此只支持部分均值收益，未建立稳定的整体概率增益。
+
+本轮每日收到新观测后，用最近30日观测和合法 B+ 物理背景，一次预测四点未来第1—7天，保留已发预测。
+两版 TCN 使用相同输入、结构、种子、批次、单位与训练次数，只改变输出基线及监督目标；
+这检验 B+ 残差输出方式，不等于有/无物理信息消融，也不是 PINN 或严格物理约束预测。
+未来降雨为过去七日均值、库水位保持最后值；概率层为最近90条已兑现误差的经验高斯校准。
+C16 仅作历史补充，不参与本轮选模或门槛；ConvLSTM/PINN 不重新训练。
 
 | 入口 | 用途 |
 | --- | --- |
 | [AGENTS.md](AGENTS.md) | 当前范围、导师目标与协作规则 |
 | [当前进度](docs/progress.md) | 当前状态、最近维护与后续边界 |
 | [文档导航](docs/README.md) | 当前决策、四点实验和历史八点成果的来源 |
-| [方法筛选决策](docs/ootang_method_selection_2026-09-12.md) | 三篇原始论文与旧路线对照、候选为零的决定、可直接使用的导师沟通稿 |
+| [TCN 冻结计划](docs/ootang_tcn_plan.v1.0.md) / [配置](config/ootang_tcn.v1_0.json) / [来源清单](docs/ootang_tcn_sources.v1.0.json) | 本轮固定结构、日期、教师、共同检查点、校准与效果条件 |
+| [TCN 实验目录](results/ootang_tcn_v1/20260914/) / [训练登记](results/ootang_tcn_v1/20260914/fit_registry.json) | 三阶段保存结果、各种子权重、日志和实际训练次数 |
+| [v4.0 短期比较](docs/ootang_short_horizon_comparison_results.v4.0.md) | 同任务历史对照、在线回归结果、PINN 物理失败及限制 |
+| [神经初态完整结果](docs/ootang_neural_initial_state_results.v1.1.md) | 数值物理检查与预测收益分开报告；已停止 |
+| [加性 GP v2 结果](docs/ootang_bplus_additive_gp_results.v2.md) / [GP v1 结果](docs/ootang_bplus_gp_results.v1.md) | 已完成的局部收益、完整条件失败和停止记录 |
+| [方法筛选决策](docs/ootang_method_selection_2026-09-12.md) | 当时长窗候选为零的历史决定，不覆盖后续独立授权 |
 | [v2.3 结果](docs/ootang_probability_pinn_results.v2.3.md) / [冻结方案](docs/ootang_probability_pinn_plan.v2.3.md) | 开发段失败并停止；完整模型、物理对照、概率指标和复算依据 |
 | [293 日复核与当前方向](docs/ootang_293day_prediction_audit_2026-09-11.md) | 来源/参数/日期、全窗图表、最新尾段解释及停止点 |
 | [v2.2 需求记录](docs/ootang_tail_scope_and_direction.v2.2.md) | 保留形成时的尾段要求；后续澄清以当前复核报告为准 |
 | [v2.1 暂缓候选](docs/ootang_probability_pinn_plan.v2.1.md) | 原概率 PINN 方案保留，未实现或训练 |
 | [v2.0 结果](docs/ootang_convlstm_direct_results.v2.0.md) | 一次有界 ConvLSTM 实验的效果、完整判据与停止决定 |
 
-最初三组为 M0 改进 B+、M1 ConvLSTM、M2 方程内修正混合模型；后续另有状态 PINN。
-M2 不是经典 PINN。原始日值当时的可用性仍未知，未来降雨/库水位作为给定驱动，
-这些反复使用的历史窗口不能称新盲测或现场验证。
+历史长窗及旧模型停止结论保持，不由本轮短期结果改判。最初三组为 M0 改进 B+、M1 ConvLSTM、
+M2 方程内修正混合模型；M2 不称经典 PINN。旧293日、30日滚动和当前1—7日任务分别解释。
+导师允许困难尾部存在偏差，但没有指定删去日期；完整窗口和负结果继续保留。
+
+原始日值 as-of、既有预处理和历史窗口反复暴露的限制保持；当前后期评价明确为探索性，
+不是新盲测、现场部署或真实预警验证。当前可用驱动场景与历史已知未来实测驱动对照分别记录。
+旧报告源码、图件和形成时记录保留作历史备份；已取消的短期简报 PDF 不再作为当前交付入口。
 
 | 目录/文件 | 用途 |
 | --- | --- |
 | `code/physics_guided*`、`config/` | 各版四点方法、诊断实现与冻结配置，按对应版本查证 |
+| `code/tcn_short_horizon/`、`results/ootang_tcn_v1/` | 独立 TCN 入口、两臂固定实验和保存产物 |
+| `code/short_horizon/`、`results/ootang_short_horizon_v4/` | v4.0 数据、物理、校准评分接口及历史同任务对照 |
 | `results/ootang_bplus_v1_*/`、`results/ootang_convlstm_v2_0/` | 已完成四点实验的权重、日志、指标、核验与负结果 |
 | `results/ootang_probability_pinn_v2_3/` | v2.3 代码快照、权重、状态数组、物理对照、图表和失败证据 |
 | `results/ootang_293day_audit/`、`scripts/audit_ootang_293day_predictions.py` | 冻结预测的复核产物与重评分脚本，无模型训练 |
 | `docs/` | 当前入口及必须保留的版本化方法、结果和来源记录 |
 | `main.py`、`code/convlstm/`、`code/warning/` | 历史八点预测及代理预警流程，不是当前四点实验入口 |
-| `figures/`、`models/`、`paper/` | 历史八点阶段产物、权重与已提交报告 |
+| `figures/`、`models/`、`paper/` | 各阶段图件、权重与历史报告源码，按版本区分 |
 | `data/` | 数据来源与派生文件；新出现的用户文件不自动纳入实验 |
 
-复现某次实验时查阅对应版本的实现说明与配置；本页不提供会覆盖旧输出或重启训练的快捷命令。
+复查优先读取已保存数组、CSV与核验记录；运行入口和旧配置不自动构成重训授权。
+本轮仅按原计划完成核验与 Markdown/CSV/图件收尾，不追加结构、模型或训练轮数，不制作 PDF。
 v1.26 未运行的计划、配置与草稿已删除，Git `7fc5f29` 保留原字节。
-一次复核已完成，没有分段评分；不按模型成绩挑截点。
-v2.3 的 MAE 与概率门槛是新候选建议，不是导师已确认的验收，也不用于改判旧结果或重置预算。
+原始数据、教师参数、冻结方案及历史失败记录保持；研究工作条件不冒充导师或工程验收。
