@@ -1,0 +1,6 @@
+{
+  "code/tcn_short_horizon/__init__.py": "ecdd5838e358681ac8fe2b66de35fce3194723066072fc1e9b2222e406c68889",
+  "code/tcn_short_horizon/models.py": "278a2478e99ce0204f72c1d37c05379a726df7bd774c34dd9069579bb197a2e0",
+  "code/tcn_short_horizon/run.py": "5dc8c331e9b1567d13903f01d1eb58e4803551231674cf67c8b89845fa6074a5",
+  "config/ootang_tcn.v1_0.json": "7d6ffe189b9f00eccddff927811952f91a4ecb28004a72c7a507ed78d17daa6e"
+}

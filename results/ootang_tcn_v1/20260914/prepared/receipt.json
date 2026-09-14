@@ -1,0 +1,14 @@
+{
+  "input_sha256": "30e31a21158322869f93bd9387daa1a619b41fe1448c15a259f49529b04f2286",
+  "rows": 1209,
+  "source": "results/ootang_short_horizon_v4/20260913_short_horizon/prepared/inputs.npz",
+  "source_sha256": "b2c7fed16beaba029ca4dfd65bfd5fc77768ee5e96497843d5c899b75f72f77b",
+  "reused_verified_physical_cache": true,
+  "removed_fields": [
+    "oracle",
+    "b_raw"
+  ],
+  "new_physical_fits": 0,
+  "new_physical_forward_calls": 0,
+  "forecast_inputs_are_origin_local": true
+}

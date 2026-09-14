@@ -1,0 +1,41 @@
+{
+  "step": 400,
+  "candidates": [
+    {
+      "step": 50,
+      "arms": {
+        "TCN_DIRECT": 49.58929590475946,
+        "TCN_BRES": 45.68364453696313
+      },
+      "paired_score": 47.6364702208613
+    },
+    {
+      "step": 100,
+      "arms": {
+        "TCN_DIRECT": 38.37200035798505,
+        "TCN_BRES": 33.277148319847186
+      },
+      "paired_score": 35.82457433891612
+    },
+    {
+      "step": 200,
+      "arms": {
+        "TCN_DIRECT": 35.538757681180556,
+        "TCN_BRES": 30.751479589902488
+      },
+      "paired_score": 33.14511863554152
+    },
+    {
+      "step": 400,
+      "arms": {
+        "TCN_DIRECT": 34.46444206214218,
+        "TCN_BRES": 28.76088582082786
+      },
+      "paired_score": 31.61266394148502
+    }
+  ],
+  "selection_stage": "inner",
+  "latest_selection_target": 791,
+  "time_utc": "2026-09-14T09:44:37.397486+00:00",
+  "config_sha256": "7d6ffe189b9f00eccddff927811952f91a4ecb28004a72c7a507ed78d17daa6e"
+}
