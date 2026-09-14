@@ -1,16 +1,24 @@
 {
-  "checked_at_utc": "2026-09-13T21:33:12.751229+00:00",
-  "scope": "page 2 complete initial-state result synchronization only",
+  "checked_at_utc": "2026-09-14T06:29:32.626057+00:00",
+  "scope": "pages 1 and 2 physical-status clarification and saved initial-state overview curves only",
   "pdf": "output/pdf/ootang_short_horizon_brief.v4.1.pdf",
-  "pdf_sha256": "51a735ae47e3b00a968fd3ea4c54f803ffa8aba2cdeba67bf0ecdc45d08947ce",
+  "pdf_sha256": "22dd375f82fdd26302f89860bbbba488cfe8e97f2750b4812294c72ceb6c14f8",
   "page_count": 4,
-  "base_commit": "c956401",
+  "base_commit": "143cc17",
   "csv_numeric_cells_verified_in_pdf_order": 102,
-  "unchanged_original_numeric_cells": 96,
-  "new_model_numeric_cells": 6,
+  "unchanged_previous_numeric_cells": 102,
+  "initial_state_numeric_cells": 6,
+  "overview_series_verified": 24,
+  "unchanged_original_overview_ordinates": 140,
+  "initial_state_overview_ordinates": 28,
+  "figure_input_hashes_verified": 8,
+  "figure_pdf_hashes_verified": 6,
   "documentation_numeric_cells_verified": 196,
   "additional_result": {
-    "page": 2,
+    "pages": [
+      1,
+      2
+    ],
     "all_evaluated_trajectories": 4707,
     "numerical_physics_pass": true,
     "strict_zero_control_diagnostic_failures": 3,
@@ -21,18 +29,15 @@
     "forecast_effectiveness": "later aggregate improvement over B+, no stable overall benefit; weaker than online regression"
   },
   "current_report_input_hashes_verified": 21,
-  "common_original_source_hashes_unchanged": 15,
+  "common_original_source_hashes_unchanged": 19,
   "original_figure_source_files_unchanged": [
-    "paper/figures/short_horizon_zh/paired_effects.pdf",
-    "paper/figures/short_horizon_zh/horizon_comparison.pdf",
-    "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf",
-    "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf",
     "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf",
     "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf",
-    "paper/figures/short_horizon_zh/sources.json"
+    "paper/figures/short_horizon_zh/forecast_mj1_h7.pdf",
+    "paper/figures/short_horizon_zh/forecast_mj3_h7.pdf",
+    "paper/figures/short_horizon_zh/paired_effects.pdf"
   ],
   "unchanged_pages_pixel_identical": [
-    1,
     3,
     4
   ],
@@ -41,13 +46,13 @@
   "page_geometry": [
     {
       "page": 1,
-      "glyphs": 862,
+      "glyphs": 922,
       "clipped": [],
       "collisions": []
     },
     {
       "page": 2,
-      "glyphs": 1136,
+      "glyphs": 1138,
       "clipped": [],
       "collisions": []
     },
@@ -73,16 +78,85 @@
   "new_model_selection": 0,
   "new_prediction_or_scoring": 0,
   "new_physical_calls": 0,
-  "verifier_sha256": "5e584527627664249ff555a28b56de90ab4b2ddeb639e16a2f226a206ee231bb",
-  "visual_review": {
-    "reviewed_at_utc": "2026-09-13T21:34:39.548597+00:00",
-    "pages": [
-      1,
-      2,
-      3,
-      4
+  "verifier_sha256": "f4a506d615049f2d681b479c2568f1a28a55321b413c3ee1e90f858080637b2d",
+  "overview_render_qa": {
+    "width_mm": 165.99999889797633,
+    "height_mm": 118.00000025431314,
+    "source_preflight": {
+      "fail": 0,
+      "warn": 4,
+      "reviews": {
+        "EXPORT-RASTER": "Delivery is editable vector PDF; TIFF is not required for this brief.",
+        "RASTER-DPI": "300 dpi PNG is a QA preview only; the report embeds vector PDF.",
+        "FINAL-WIDTH": "Static parser misread 166/25.4; exported page is verified as 166 by 118 mm.",
+        "LOG-GUARD": "Every saved ordinate is asserted finite and strictly positive before plotting."
+      }
+    },
+    "pdf_text_audit": {
+      "minimum_required_pt": 6.5,
+      "minimum_found_pt": 6.5,
+      "text_runs": 52,
+      "below_minimum": 0
+    },
+    "collision_audit": {
+      "pdf": "paper/figures/short_horizon_zh/horizon_comparison.pdf",
+      "auditable": true,
+      "verdict": "PASS",
+      "page_count": 1,
+      "visible_text_box_count": 52,
+      "text_trace_count": 52,
+      "stroke_path_count": 421,
+      "filled_region_count": 370,
+      "image_region_count": 0,
+      "summary": {
+        "fail": 0,
+        "warn": 0,
+        "contained_fill_overlays": 0,
+        "contained_image_overlays": 0
+      },
+      "thresholds": {
+        "text_inset_pt": 0.6,
+        "min_overlap_ratio": 0.05,
+        "clipping_tolerance_pt": 0.5
+      },
+      "findings": []
+    },
+    "alignment_receipt": "paper/figures/short_horizon_zh/sources.json:figures.horizon_comparison.panel_alignment",
+    "panel_visual_review": [
+      {
+        "panel": "a",
+        "evidence": "Development mean accuracy",
+        "passed": true,
+        "uncertainty": "Saved aggregate scores; no inferential intervals added."
+      },
+      {
+        "panel": "b",
+        "evidence": "Development probabilistic score",
+        "passed": true,
+        "uncertainty": "Saved aggregate scores; no inferential intervals added."
+      },
+      {
+        "panel": "c",
+        "evidence": "Later exploratory mean accuracy",
+        "passed": true,
+        "uncertainty": "Saved aggregate scores; no inferential intervals added."
+      },
+      {
+        "panel": "d",
+        "evidence": "Later exploratory probabilistic score",
+        "passed": true,
+        "uncertainty": "Saved aggregate scores; no inferential intervals added."
+      }
     ],
-    "status": "passed",
-    "notes": "Rendered pages inspected: new page 2 row and text fit without collision; original Chinese figures, no header/date/version; pages 1,3,4 also pixel-identical."
+    "legend_review": "All six methods visible; initial-state model uses distinct teal dash-dot line and downward triangle. Historical PINN failure remains labeled."
+  },
+  "manual_visual_review": {
+    "pages_reviewed": [
+      1,
+      2
+    ],
+    "render_scale": 1.6,
+    "result": "Passed: overview and physical-status callouts readable, all table rows present, no cropped text or extra page.",
+    "remaining_pages": "Pages 3 and 4 are pixel-identical to the previous report."
   }
 }

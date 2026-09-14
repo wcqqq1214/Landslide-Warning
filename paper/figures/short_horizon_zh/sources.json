@@ -5,10 +5,582 @@
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/paired_differences.csv": "df33c408fb02a55a3fd305d31206d9982cb288a23cdd8da7487ca7dd078ca3c6",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/metrics_by_point_horizon.csv": "20f3c4438e12fba08fa529e10126446ff49dadcfd6f5cc331976400386fff06d",
-    "figures/ootang_short_horizon_v4/20260913_short_horizon/curve_source_data.csv": "1f0d779dc526288806ce41551be787f5a3774c04b4cf3db68dff72556031986a"
+    "figures/ootang_short_horizon_v4/20260913_short_horizon/curve_source_data.csv": "1f0d779dc526288806ce41551be787f5a3774c04b4cf3db68dff72556031986a",
+    "results/ootang_neural_initial_state_v1_1/20260914/development/summary_by_horizon.csv": "222c43c60f1c5de196f1f0c39b5a6f405be6c8f53e608284d3eb985f3e1c3025",
+    "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/summary_by_horizon.csv": "bb5b9a4ffb8ac2068a6457cc13126d9d9b5b9421dd2f609c780198224b0b8360",
+    "results/ootang_neural_initial_state_v1_1/20260914/verification/receipt.json": "cbe5fba7e1d6be11c5548ab036d48b6a5b206f6639e29289f20789c2e4cb2b4e"
   },
-  "builder_sha256": "39c03ae4babed78158cf25986cce62b7d4ecba070c37c9767dae7fa423a2f071",
-  "plotted_lines_checked_against_saved_ordinates": 64,
+  "builder_sha256": "fe493dda44a3effe4fa1f5cea6bb87de0718962c9cb1591811dfe9acb18e951c",
+  "plotted_lines_checked_against_saved_ordinates": 68,
+  "lines_checked_this_run": 24,
+  "reused_figures": [
+    "forecast_atu1_h7",
+    "forecast_atu5_h7",
+    "forecast_mj1_h7",
+    "forecast_mj3_h7",
+    "paired_effects"
+  ],
+  "overview_series": [
+    {
+      "phase": "development",
+      "family": "B+",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.465829533648836,
+        0.949962461457055,
+        1.44958076194871,
+        1.96217121845656,
+        2.48569124901913,
+        3.01799936955298,
+        3.55703560971604
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "ConvLSTM",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.228968554949258,
+        0.464534076006189,
+        0.700701840987422,
+        0.93461481399677,
+        1.16460308161901,
+        1.38790920166556,
+        1.60264107297311
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "PINN",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.395943638335157,
+        0.865951310428937,
+        1.3639539196392,
+        1.8770244744519,
+        2.40366849757479,
+        2.94344202402961,
+        3.49474029936378
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "NIS_BPLUS",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.789685436703612,
+        1.19230804044769,
+        1.60132993323787,
+        2.04639188146601,
+        2.52017802191194,
+        3.01488373960439,
+        3.52429118968839
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "Ridge",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        8.34242765866008e-05,
+        0.0003609835117302,
+        0.0009465280143737,
+        0.0019531415882761,
+        0.0035095273806108,
+        0.0057547104031376,
+        0.008827028332068
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "DRIFT1",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0032156636508074,
+        0.0096394483402233,
+        0.019254971200131,
+        0.0320385218401438,
+        0.0479595194903097,
+        0.0669805715601617,
+        0.0890575090641191
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "B+",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.186439190153941,
+        0.379391474549557,
+        0.579381005965086,
+        0.785404953842402,
+        0.996776851042793,
+        1.21274023965756,
+        1.43230546149746
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "ConvLSTM",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.128006852081533,
+        0.260544825163823,
+        0.394818986473008,
+        0.528474325610333,
+        0.660144433780669,
+        0.787689032550729,
+        0.909895866291186
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "PINN",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.175646184421622,
+        0.365056824526449,
+        0.570150998124116,
+        0.782274126897825,
+        1.00082121007209,
+        1.22634369913809,
+        1.45873753347549
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "NIS_BPLUS",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.437988030531333,
+        0.617263495180381,
+        0.778840455817168,
+        0.950005651065983,
+        1.13236056626694,
+        1.32443202212117,
+        1.52357182568351
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "Ridge",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0001860899466374,
+        0.0006110012248248,
+        0.0013340302968416,
+        0.0024237810846138,
+        0.0039553966763989,
+        0.0060103301515137,
+        0.0086706281316609
+      ]
+    },
+    {
+      "phase": "development",
+      "family": "DRIFT1",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0018187956192182,
+        0.0054735760187775,
+        0.0109781958063372,
+        0.0183437500030579,
+        0.0275780267978448,
+        0.0386842811029426,
+        0.0516596146640934
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "B+",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.298429938169496,
+        0.562356187807008,
+        0.80892247877238,
+        1.05225135602225,
+        1.2954041145249,
+        1.5393807797898,
+        1.78416245875774
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "ConvLSTM",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.138709978004755,
+        0.283239361111919,
+        0.42980195260962,
+        0.575677421541981,
+        0.717314448521501,
+        0.853425328922968,
+        0.982854778153963
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "PINN",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.157370406686764,
+        0.34590692197316,
+        0.569609979654359,
+        0.79607708327304,
+        1.02914369581784,
+        1.27280210801334,
+        1.52754313416501
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "NIS_BPLUS",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.261167383164123,
+        0.482539139859228,
+        0.690929153089552,
+        0.90045433210119,
+        1.11383727482074,
+        1.33205794061108,
+        1.5546261960167
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "Ridge",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.000208745332316,
+        0.0008992863481267,
+        0.0023990315675311,
+        0.0051432672338045,
+        0.0096117858968333,
+        0.0162769354583289,
+        0.0255796349180615
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "DRIFT1",
+      "metric": "rmse",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0100916533884798,
+        0.0301954829648851,
+        0.0602409031819953,
+        0.100163591712152,
+        0.149902749195309,
+        0.209398220000513,
+        0.278587483000087
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "B+",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.143019386343396,
+        0.272489413236718,
+        0.396035897642927,
+        0.519952308561874,
+        0.645730803611316,
+        0.773839703056163,
+        0.904383370802034
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "ConvLSTM",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0708668856085706,
+        0.145903707247547,
+        0.223042661124588,
+        0.301145449221127,
+        0.378678916409544,
+        0.454706019686479,
+        0.528578831545052
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "PINN",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0859063018848053,
+        0.180709237504457,
+        0.295447504224381,
+        0.413872247825914,
+        0.538159930266618,
+        0.670251914817678,
+        0.810066830853906
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "NIS_BPLUS",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.143656233062742,
+        0.250429824527856,
+        0.352888005734556,
+        0.45883461387812,
+        0.569119630439897,
+        0.683848420897694,
+        0.802606248432836
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "Ridge",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        6.53458785313794e-05,
+        0.0002956877560787,
+        0.0008197733171855,
+        0.0018291693015387,
+        0.0035413915520997,
+        0.0061848496321371,
+        0.0099777354784114
+      ]
+    },
+    {
+      "phase": "later_exploratory",
+      "family": "DRIFT1",
+      "metric": "crps",
+      "horizon": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "value": [
+        0.0044084105457141,
+        0.0132711245298007,
+        0.0266360063637457,
+        0.0445508654420066,
+        0.0670608467965423,
+        0.0942056698260393,
+        0.126016956939423
+      ]
+    }
+  ],
+  "overview_contract": {
+    "claim": "Numerical physical consistency passes for the initial-state coupling; online regression remains more accurate.",
+    "mapping": "phase × horizon (1–7 days) × model/family → saved four-point mean RMSE or CRPS in mm",
+    "selection": "original family representatives unchanged; NIS_BPLUS is the single fixed initial-state candidate",
+    "uncertainty": "saved aggregate point scores, not seed means with inferential error bars; no uncertainty recalculation",
+    "reuse": "structural adaptation; original 140 ordinates plus 28 saved initial-state ordinates; no exclusions"
+  },
   "complete_h7_curve_rows": 1148,
   "band_source": "saved band_lower and band_upper; 90% marginal prediction interval",
   "increment_transform": "saved increments for observed/mean; bplus/drift minus last_observed",
@@ -16,127 +588,6 @@
   "new_selection": 0,
   "new_prediction_or_scoring": 0,
   "figures": {
-    "horizon_comparison": {
-      "pdf_sha256": "609cdcbb56ecab80ceeacac28049088b24efd77d182a403c192441b3aa32253a",
-      "panel_alignment": {
-        "schema_version": 1,
-        "applicable": true,
-        "auditable": true,
-        "verdict": "PASS",
-        "backend": "python-matplotlib",
-        "summary": {
-          "fail": 0,
-          "warn": 0,
-          "comparisons": 4,
-          "exemptions": 0
-        },
-        "tolerances": {
-          "alignment_pt": 1.5,
-          "gutter_pt": 1.5
-        },
-        "layout": {
-          "schema_version": 1,
-          "backend": "python-matplotlib",
-          "figure": {
-            "width_pt": 470.5511811023622,
-            "height_pt": 334.488188976378
-          },
-          "panels": [
-            {
-              "id": "a",
-              "bbox_pt": [
-                54.113385826771655,
-                170.72834645669298,
-                228.31744010722062,
-                267.5905511811024
-              ],
-              "grid_id": "matplotlib-grid-1",
-              "row_start": 0,
-              "row_stop": 1,
-              "col_start": 0,
-              "col_stop": 1
-            },
-            {
-              "id": "b",
-              "bbox_pt": [
-                289.28885910537775,
-                170.72834645669298,
-                463.4929133858267,
-                267.5905511811024
-              ],
-              "grid_id": "matplotlib-grid-1",
-              "row_start": 0,
-              "row_stop": 1,
-              "col_start": 1,
-              "col_stop": 2
-            },
-            {
-              "id": "c",
-              "bbox_pt": [
-                54.113385826771655,
-                35.121259842519684,
-                228.31744010722062,
-                131.98346456692917
-              ],
-              "grid_id": "matplotlib-grid-1",
-              "row_start": 1,
-              "row_stop": 2,
-              "col_start": 0,
-              "col_stop": 1
-            },
-            {
-              "id": "d",
-              "bbox_pt": [
-                289.28885910537775,
-                35.121259842519684,
-                463.4929133858267,
-                131.98346456692917
-              ],
-              "grid_id": "matplotlib-grid-1",
-              "row_start": 1,
-              "row_stop": 2,
-              "col_start": 1,
-              "col_stop": 2
-            }
-          ],
-          "row_groups": [
-            {
-              "id": "inferred-row-1",
-              "panels": [
-                "a",
-                "b"
-              ]
-            },
-            {
-              "id": "inferred-row-2",
-              "panels": [
-                "c",
-                "d"
-              ]
-            }
-          ],
-          "column_groups": [
-            {
-              "id": "inferred-column-1",
-              "panels": [
-                "a",
-                "c"
-              ]
-            },
-            {
-              "id": "inferred-column-2",
-              "panels": [
-                "b",
-                "d"
-              ]
-            }
-          ],
-          "boundary_groups": [],
-          "exemptions": []
-        },
-        "findings": []
-      }
-    },
     "paired_effects": {
       "pdf_sha256": "68cec7a623dd86a2deea09c4cba5dca1b1519de8ff24a697be6204b88c4900c1",
       "panel_alignment": {
@@ -593,6 +1044,127 @@
                 "a",
                 "b",
                 "c"
+              ]
+            }
+          ],
+          "boundary_groups": [],
+          "exemptions": []
+        },
+        "findings": []
+      }
+    },
+    "horizon_comparison": {
+      "pdf_sha256": "98e4f45b810dbd11e134c5a96a3897ff6d008eb9504b2a4102f1d7b2d8f0f0fd",
+      "panel_alignment": {
+        "schema_version": 1,
+        "applicable": true,
+        "auditable": true,
+        "verdict": "PASS",
+        "backend": "python-matplotlib",
+        "summary": {
+          "fail": 0,
+          "warn": 0,
+          "comparisons": 4,
+          "exemptions": 0
+        },
+        "tolerances": {
+          "alignment_pt": 1.5,
+          "gutter_pt": 1.5
+        },
+        "layout": {
+          "schema_version": 1,
+          "backend": "python-matplotlib",
+          "figure": {
+            "width_pt": 470.5511811023622,
+            "height_pt": 334.488188976378
+          },
+          "panels": [
+            {
+              "id": "a",
+              "bbox_pt": [
+                54.113385826771655,
+                170.72834645669298,
+                228.31744010722062,
+                267.5905511811024
+              ],
+              "grid_id": "matplotlib-grid-1",
+              "row_start": 0,
+              "row_stop": 1,
+              "col_start": 0,
+              "col_stop": 1
+            },
+            {
+              "id": "b",
+              "bbox_pt": [
+                289.28885910537775,
+                170.72834645669298,
+                463.4929133858267,
+                267.5905511811024
+              ],
+              "grid_id": "matplotlib-grid-1",
+              "row_start": 0,
+              "row_stop": 1,
+              "col_start": 1,
+              "col_stop": 2
+            },
+            {
+              "id": "c",
+              "bbox_pt": [
+                54.113385826771655,
+                35.121259842519684,
+                228.31744010722062,
+                131.98346456692917
+              ],
+              "grid_id": "matplotlib-grid-1",
+              "row_start": 1,
+              "row_stop": 2,
+              "col_start": 0,
+              "col_stop": 1
+            },
+            {
+              "id": "d",
+              "bbox_pt": [
+                289.28885910537775,
+                35.121259842519684,
+                463.4929133858267,
+                131.98346456692917
+              ],
+              "grid_id": "matplotlib-grid-1",
+              "row_start": 1,
+              "row_stop": 2,
+              "col_start": 1,
+              "col_stop": 2
+            }
+          ],
+          "row_groups": [
+            {
+              "id": "inferred-row-1",
+              "panels": [
+                "a",
+                "b"
+              ]
+            },
+            {
+              "id": "inferred-row-2",
+              "panels": [
+                "c",
+                "d"
+              ]
+            }
+          ],
+          "column_groups": [
+            {
+              "id": "inferred-column-1",
+              "panels": [
+                "a",
+                "c"
+              ]
+            },
+            {
+              "id": "inferred-column-2",
+              "panels": [
+                "b",
+                "d"
               ]
             }
           ],

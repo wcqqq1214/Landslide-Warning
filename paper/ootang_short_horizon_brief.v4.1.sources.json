@@ -1,6 +1,6 @@
 {
   "role": "presentation_revision_only",
-  "experiment": "v4.0 unchanged; verified complete initial-state comparison on page 2",
+  "experiment": "v4.0 unchanged; verified complete initial-state comparison on pages 1 and 2",
   "presentation": "v4.1",
   "new_training": 0,
   "new_model_selection": 0,
@@ -112,7 +112,10 @@
     "91.64"
   ],
   "initial_state_result": {
-    "page": 2,
+    "pages": [
+      1,
+      2
+    ],
     "all_evaluated_trajectories": 4707,
     "numerical_physics_pass": true,
     "strict_zero_control_diagnostic_failures": 3,
@@ -126,8 +129,8 @@
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/summary_by_horizon.csv": "3064c6324d06ba5de0902377938465cd8b73c8b278d61855c81946a297d123f4",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/selection_by_horizon.csv": "6696bf0334fd44e31ae825852ec7c67529854d7662fd56e516993a3395eda8ee",
     "results/ootang_short_horizon_v4/20260913_short_horizon/analysis/metrics_by_point_horizon.csv": "20f3c4438e12fba08fa529e10126446ff49dadcfd6f5cc331976400386fff06d",
-    "paper/figures/short_horizon_zh/sources.json": "fd6f24a47e82a2fef81399be70285520cf288659c2d8f4a9fac5bb757ef41e72",
-    "paper/figures/short_horizon_zh/horizon_comparison.pdf": "609cdcbb56ecab80ceeacac28049088b24efd77d182a403c192441b3aa32253a",
+    "paper/figures/short_horizon_zh/sources.json": "b22b597967216011cd8b7e55a374a91351bdaf17e943345c62aed4e878d81c92",
+    "paper/figures/short_horizon_zh/horizon_comparison.pdf": "98e4f45b810dbd11e134c5a96a3897ff6d008eb9504b2a4102f1d7b2d8f0f0fd",
     "paper/figures/short_horizon_zh/paired_effects.pdf": "68cec7a623dd86a2deea09c4cba5dca1b1519de8ff24a697be6204b88c4900c1",
     "paper/figures/short_horizon_zh/forecast_atu1_h7.pdf": "4a04396b1548e397d9d7a1f7538285869551e116980296328d2fc60433b6db9a",
     "paper/figures/short_horizon_zh/forecast_atu5_h7.pdf": "6d91e8c1dbcd9fb90ffbc18128da9716537f2fe2445c0ca31fd5949c4b2d8229",
@@ -145,5 +148,5 @@
     "results/ootang_neural_initial_state_v1_1/20260914/development/decision.json": "7938c2fa29601a1aff706ecfacd0253f21ee056252dad6514434a9c612923237",
     "results/ootang_neural_initial_state_v1_1/20260914/later_exploratory/decision.json": "2d1f7d1d69441edf89775ad190dfb097131c8f1b8ade07fedcb56dcc356c51ca"
   },
-  "tex_sha256": "02a022dde26c47d55c7f2d007ceb9d831d2d76ee9d3e2ccf48762126f4f8727b"
+  "tex_sha256": "d1d3017f38085061ec8a6b206d2d9fd5c71ed68623430793c700af4d13382fcb"
 }
