@@ -1,0 +1,8 @@
+{
+  "code/tide_fusion/run.py": "85e921adbc3ac41a5b0fa4edabca832919ee83ff0dcbaa485c5c4ca4ea447058",
+  "code/tide_fusion/audit.py": "1a90ac135af3e036d3e675a306e825d9f44902b022a37804bca7b923fdcd689b",
+  "code/tide_fusion/numpy_model.py": "d9c99e4eed2ac1aafd1f20f4dea0e6577b904dfb15d39087575f70d06243b949",
+  "code/tide_fusion/__init__.py": "79be5b69334fdaecba8fb5cbf066b74cf76dc00c8a6f85ebcc2b165f5ec2bc98",
+  "code/tide_fusion/core.py": "4a7c507877aa2ec6d5d699af0d2544701f33aa065c23a3229118cd904392dc16",
+  "code/tide_fusion/preflight.py": "97a5f31d42374974c4516e7549c1d7263450ed28d42cbd9384c7103a2cfb7ab2"
+}
