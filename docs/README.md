@@ -1,8 +1,16 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的小型TiDE直接预测配对**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的TiDE物理特征分组消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新研究：小型TiDE直接预测配对
+## 最新研究：TiDE物理特征分组消融
+
+[研究记录](ootang_tide_features_results.v1.0.md) · [完整27组CSV](../results/ootang_tide_features_v1/20260915/analysis/phase_summary.csv) · [2520行因素效应](../results/ootang_tide_features_v1/20260915/analysis/factorial_effects.csv) · [四张研究图](../figures/ootang_tide_features_v1/20260915/README.md)
+
+[冻结计划](ootang_tide_features_plan.v1.0.md) · [配置](../config/ootang_tide_features.v1_0.json) · [751来源](ootang_tide_features_sources.v1.0.json) · [成熟支持](../results/ootang_tide_features_v1/20260915/mature_support.json) · [实现](ootang_tide_features_implementation.v1.0.md) · [核验](ootang_tide_features_validation.v1.0.md) · [图件合同](ootang_tide_features_figure_contract.v1.0.md) · [回执](../results/ootang_tide_features_v1/20260915/final_receipt.json)
+
+同一TiDE以K（B+位移/日增量）与H（B+水文状态）作2×2消融。新增KIN/HYD各12次拟合，精确复用DATA/PHYS；共24新拟合9600更新、240新旧检查点和四条293日发报完成。KIN三主窗RMSE22.907124/5.534082/7.540029，HYD29.660967/25.069860/8.476753mm；完整PHYS14.859012/12.114521/8.921779。H在K存在时第一窗有益、后两窗负收益；两新组最终MJ3均值仍差于B+，KIN三点覆盖不足80%，四组B+联合均0/3。187837220独立数值、四图16面板核验通过。下一研究假设是分组编码与受限融合，不属于本轮追加；不按最终成绩拼点或搜索RL。只保存研究记录/CSV/PNG/SVG。
+
+## 上一轮研究：小型TiDE直接预测配对
 
 [研究记录](ootang_tide_direct_results.v1.0.md) · [完整21组CSV](../results/ootang_tide_direct_v1/20260915/analysis/phase_summary.csv) · [三张研究图](../figures/ootang_tide_direct_v1/20260915/README.md)
 

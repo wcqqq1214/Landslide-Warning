@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15，小型TiDE配对已完整完成：有平均误差改善信号，尚未达到逐点均值与概率联合目标。**
+**截至2026-09-15，TiDE物理特征分组消融已完整完成：输入组合的收益随时段改变，尚未达到四点跨窗均值与概率联合目标。**
 
-[研究记录](docs/ootang_tide_direct_results.v1.0.md) · [三张研究图](figures/ootang_tide_direct_v1/20260915/README.md) · [完整21组CSV](results/ootang_tide_direct_v1/20260915/analysis/phase_summary.csv) · [核验](docs/ootang_tide_direct_validation.v1.0.md)
+[研究记录](docs/ootang_tide_features_results.v1.0.md) · [四张研究图](figures/ootang_tide_features_v1/20260915/README.md) · [完整27组CSV](results/ootang_tide_features_v1/20260915/analysis/phase_summary.csv) · [因素效应CSV](results/ootang_tide_features_v1/20260915/analysis/factorial_effects.csv) · [核验](docs/ootang_tide_features_validation.v1.0.md)
 
-同一小型TiDE直接预测起点位移增量，TiDE_DATA只用历史位移/驱动，TiDE_PHYS另加合法B+特征；同结构、样本、三种子和固定400次更新。24拟合9600更新、120检查点和四条293日路径全部完成，无B+重拟合/物理前向。表为三种子集成预测的四点平均RMSE，单位mm。
+K为B+位移/日增量，H为B+水文状态。四组同一TiDE、180日历史、样本、三种子和固定400更新；共同降雨/水位驱动始终保留。新增KIN/HYD共24拟合9600更新、120检查点，精确复用DATA/PHYS的24拟合120检查点；四条293日路径全部完成，无B+重拟合/物理前向。表为三种子集成预测的四点平均RMSE，单位mm。
 
-| 起点 | B+ | 既有GRU | TiDE_DATA | TiDE_PHYS |
-| --- | ---: | ---: | ---: | ---: |
-| 792 | 27.313325 | 19.372056 | 50.874904 | 14.859012 |
-| 972 | 67.167389 | 22.660456 | 33.672205 | 12.114521 |
-| 1168 | 9.124173 | 10.600134 | 7.278984 | 8.921779 |
+| 起点 | B+ | 既有GRU | TiDE_DATA | TiDE_KIN | TiDE_HYD | TiDE_PHYS |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 792 | 27.313325 | 19.372056 | 50.874904 | 22.907124 | 29.660967 | 14.859012 |
+| 972 | 67.167389 | 22.660456 | 33.672205 | 5.534082 | 25.069860 | 12.114521 |
+| 1168 | 9.124173 | 10.600134 | 7.278984 | 7.540029 | 8.476753 | 8.921779 |
 
-加物理版三窗平均MAE/RMSE/CRPS低于既有GRU，但逐点保护和同种子一致性不足。纯数据版最终RMSE较低却在历史窗明显退步；加物理版最终MJ3/MJ1仍有退步。两版B+联合门均0/3；PHYS最终概率门通过，DATA的MJ3覆盖67.58%。不把最终平均改善改判为整体达标。
+K组在第二与最终窗平均误差低于完整PHYS，第一窗退步；K存在时加入H的RMSE差为−8.048112、+6.580439、+1.381750mm。两新组最终MJ3仍差于B+，K组ATU1/MJ3/MJ1的90%覆盖不足80%。四组B+联合门均0/3，不将局部平均改善改判为整体达标。最终DATA平均最小也不能抵消前两窗的明显失败。
 
-261来源、93991564独立数值及三图12面板核验通过。180日历史、成熟尾部掩码、给定未来驱动、窗口重叠和反复暴露等限制保持；这是TiDE适配，不是官方实验复现或严格物理约束。下一研究问题是物理输入分组在不同点的收益来源，本轮不自动追加实验。只保存研究记录/CSV/PNG/SVG、本地提交，不push/PDF；用户/导师尚未验收。
+751来源、240检查点、187837220独立数值及四图16面板核验通过。窗口已暴露且重叠，条件预测给定完整未来驱动，分组效应不等于物理因果。下一研究假设为K/H分开编码与受限融合，本轮未追加结构/训练/λ/RL；不按最终点成绩拼接模型。只保存研究记录/CSV/PNG/SVG、本地提交，无push/PR/PDF汇报，用户/导师尚未验收。
 
-[上一轮历史教师更新](docs/ootang_teacher_refresh_results.v1.0.md)、[200/400训练对照](docs/ootang_training_sufficiency_results.v1.0.md)、[GRU/Transformer起点表达](docs/ootang_backbone_anchor_results.v1.0.md)和[旧半残差](docs/ootang_transformer_temporal_results.v1.0.md)的正负结果均保留。
+[上一轮TiDE小试](docs/ootang_tide_direct_results.v1.0.md)、[历史教师更新](docs/ootang_teacher_refresh_results.v1.0.md)、[200/400训练对照](docs/ootang_training_sufficiency_results.v1.0.md)、[GRU/Transformer起点表达](docs/ootang_backbone_anchor_results.v1.0.md)及[旧半残差](docs/ootang_transformer_temporal_results.v1.0.md)的正负结果均保留。
 
 ## 阅读入口
 
@@ -35,6 +35,7 @@
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/tide_features/](code/tide_features/) | TiDE物理特征分组2×2消融、旧两端复用与独立核验 |
 | [code/tide_direct/](code/tide_direct/) | 小型TiDE直接位移配对、全293日预测及独立核验 |
 | [code/teacher_refresh/](code/teacher_refresh/) | 历史B+教师政策配对、固定GRU训练、独立数值与图文核验 |
 | [code/training_sufficiency/](code/training_sufficiency/) | 固定检查点诊断、一次条件性预算对照与图文核验 |

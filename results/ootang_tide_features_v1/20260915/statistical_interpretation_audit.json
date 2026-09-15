@@ -1,0 +1,67 @@
+{
+  "status": "completed",
+  "scope": "11 interpretation checks; no change to frozen design or thresholds",
+  "checked": 11,
+  "items": [
+    {
+      "name": "simpson_paradox",
+      "assessment": "risk retained",
+      "reason": "Average and per-point results are both shown; final mean improvement does not override MJ3 failure or ATU5 paired MAE regression."
+    },
+    {
+      "name": "ecological_fallacy",
+      "assessment": "risk retained",
+      "reason": "Four-point average cannot describe every point or other landslides; no family-wide claim."
+    },
+    {
+      "name": "berkson_paradox",
+      "assessment": "not identified as a design mechanism",
+      "reason": "No sample inclusion is conditioned on favorable model scores; all fixed points/dates/seeds kept. Earlier research choices remain exploratory."
+    },
+    {
+      "name": "collider_bias",
+      "assessment": "causal interpretation prohibited",
+      "reason": "No physical causal graph or adjustment-effect claim. Correlated K/H masks and shared driving do not identify separate physical mechanisms."
+    },
+    {
+      "name": "base_rate_fallacy",
+      "assessment": "not applicable to event diagnosis",
+      "reason": "Displacement/interval study contains no warning classifier or hazard probability interpretation."
+    },
+    {
+      "name": "regression_to_mean",
+      "assessment": "risk retained",
+      "reason": "Changing periods and repeated refits can improve after poor windows without stable model benefit; all three windows and paired seeds retained."
+    },
+    {
+      "name": "survivorship_bias",
+      "assessment": "controlled for this fixed experiment",
+      "reason": "Both new arms completed all24 fits regardless of scores; oldDATA/PHYS and five controls retained with exact source arrays."
+    },
+    {
+      "name": "look_elsewhere_effect",
+      "assessment": "risk retained",
+      "reason": "Design is informed by prior exposed results. No p-values or confirmatory significance; no final-window champion selection."
+    },
+    {
+      "name": "garden_of_forking_paths",
+      "assessment": "risk retained",
+      "reason": "Masks, budget, seeds, gates and outputs committed before training; future gated-branch idea is a new hypothesis, not a successful result."
+    },
+    {
+      "name": "correlation_vs_causation",
+      "assessment": "causal interpretation prohibited",
+      "reason": "Factor contrasts concern the specified retraining procedure and metric nonadditivity; they do not show physical interactions or failure causes."
+    },
+    {
+      "name": "reverse_causation",
+      "assessment": "not estimated",
+      "reason": "Teacher states derive from fixed fitted physics. Legitimate time boundaries audited, but neither time order nor source legality proves directional physical causation."
+    }
+  ],
+  "independence": "Overlapping origins/windows, adjacent errors and three seeds are not independent scientific replicates.",
+  "calibration": "Same previous-path legal error-pool rule for all arms; marginal Gaussian intervals do not guarantee simultaneous293-day coverage.",
+  "model_dependence_not_physical_causation": true,
+  "posthoc_tuning": false,
+  "acceptance": "pending"
+}
