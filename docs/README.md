@@ -1,8 +1,16 @@
 # 项目文档导航
 
-当前入口以 **2026-09-16本地时间已完成的TiDE冻结基模型与历史样本外校正**为准（实验日期为2026-09-15 UTC）。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-16本地时间已完成的原TiDE_KIN距离诊断**为准（实验日期为2026-09-15 UTC）。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新研究：冻结KIN与历史样本外校正
+## 最新研究：原TiDE_KIN距离与跨时段诊断
+
+[研究记录](ootang_tide_kin_diagnostic_results.v1.0.md) · [四张诊断图](../figures/ootang_tide_kin_diagnostic_v1/20260915/README.md) · [全部距离/点/种子CSV](../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_by_point.csv) · [监督权重CSV](../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/supervision_weights.csv)
+
+[冻结计划](ootang_tide_kin_diagnostic_plan.v1.0.md) · [配置](../config/ootang_tide_kin_diagnostic.v1_0.json) · [283来源](ootang_tide_kin_diagnostic_sources.v1.0.json) · [实现](ootang_tide_kin_diagnostic_implementation.v1.0.md) · [核验](ootang_tide_kin_diagnostic_validation.v1.0.md) · [图形契约](ootang_tide_kin_diagnostic_figure_contract.v1.0.md) · [回执](../results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json)
+
+60原检查点、1816起点—前缀组合/27240起点评价、48条可见性种子路径完整完成；新训练/优化/B+拟合/前向均0。第一窗前30日KIN/DRIFT1平均RMSE为7.987134/0.651233mm，最终MJ3尾段占全窗SSE的97.991179%、90%覆盖15.044248%。监督权重偏近与未来情景依赖同时存在，不能断言唯一原因。45766892独立数值、四图16面板/21088图形值、目视及11项解释检查通过；旧发报/门槛不变，612概率保持缺失。下一候选为按h隔离更晚协变量的KIN输入规则，尚未实施，不与损失再加权同时改变；无H/RL/追加训练。仅研究记录/CSV/PNG/SVG。
+
+## 历史研究：冻结KIN与历史样本外校正
 
 [研究记录](ootang_tide_correction_results.v1.0.md) · [完整39组CSV](../results/ootang_tide_correction_v1/20260915/analysis/phase_summary.csv) · [1080配对指标差](../results/ootang_tide_correction_v1/20260915/analysis/paired_metric_effects.csv) · [128行分量](../results/ootang_tide_correction_v1/20260915/analysis/component_summary.csv) · [四张研究图](../figures/ootang_tide_correction_v1/20260915/README.md)
 

@@ -2,7 +2,15 @@
 
 藕塘滑坡四点位移概率预测科研原型，研究 ATU1、ATU5、MJ3、MJ1。目标是利用改进 B+ 物理引导，降低位移均值误差并改善概率区间；当前范围不含真实预警或新案例。
 
-## 当前结果
+## 当前研究
+
+**截至2026-09-16本地时间，已完成回到原TiDE_KIN的跨时段与预测距离诊断。** 原60检查点全部重放，新训练/优化/B+拟合/物理前向均0，旧e400发报不变。第一窗前30日KIN平均RMSE为7.987134mm，DRIFT1为0.651233mm；失败不能只归为远期监督不足。181—293日期望损失权重在三个主窗为14.259250%/22.361684%/26.677111%，最终MJ3尾段持续低估且区间覆盖不足。未来可见范围影响早期输出，但尚未确认为失败原因。
+
+[诊断研究记录](docs/ootang_tide_kin_diagnostic_results.v1.0.md) · [四张诊断图](figures/ootang_tide_kin_diagnostic_v1/20260915/README.md) · [全量分距离CSV](results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_by_point.csv) · [核验](docs/ootang_tide_kin_diagnostic_validation.v1.0.md) · [最终回执](results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json)
+
+283来源、45766892独立数值、四图16面板/21088图形值和11项解释检查完成。仍是已暴露重叠窗口的探索性分析；执行通过不代表新的效果改善，用户/导师尚未验收。下一候选是按预测距离隔离更晚协变量的TiDE_KIN输入规则，尚未实施；距离均衡损失另作后续配对，不同时改动，不追加H/RL/轮数或重选检查点。仅本地Markdown/CSV/PNG/SVG，无push/PR/PDF汇报。
+
+## 前轮结果（历史完成）
 
 **截至2026-09-16本地时间，冻结TiDE_KIN与历史样本外校正已完整完成：CAL、HCAL三窗集成误差均高于原KIN，当前H附加校正路线按冻结规则收束。** 实验目录沿用2026-09-15 UTC日期。
 
@@ -35,6 +43,7 @@ HCAL对CAL只在最终窗集成均值改善，同种子MAE/RMSE同时改善数3/
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/tide_kin_diagnostic/](code/tide_kin_diagnostic/) | 原KIN全部检查点重放、成熟监督/误差/可见性诊断及独立核验 |
 | [code/tide_correction/](code/tide_correction/) | 原KIN冻结、完整成熟历史训练外残差、小校正配对及独立核验 |
 | [code/tide_fusion/](code/tide_fusion/) | TiDE独立H支、固定限幅配对、完整训练及分量/图文核验 |
 | [code/tide_features/](code/tide_features/) | TiDE物理特征分组2×2消融、旧两端复用与独立核验 |

@@ -1,0 +1,232 @@
+{
+  "status": "complete",
+  "implementation": "complete",
+  "validation": "passed",
+  "scientific_scope": "fixed zero-training original TiDE_KIN diagnostics",
+  "effectiveness": "no new model or improvement claim; original B+ joint gate 0/3 unchanged",
+  "user_mentor_acceptance": "pending",
+  "branch": "codex/tide-kin-horizon-diagnostic",
+  "start_utc": "2026-09-15T17:27:16+00:00",
+  "deadline_utc": "2026-09-15T18:27:16+00:00",
+  "completed_utc": "2026-09-15T18:11:56.873087+00:00",
+  "elapsed_seconds": 2680.873087,
+  "budget_minutes": 60,
+  "budget_includes": "preparation,implementation,replay,numerical audit,figures,documentation and final packaging",
+  "old_budget_resumed": false,
+  "unused_budget_transferred": false,
+  "source_files": 283,
+  "original_model_parameters": 110392,
+  "original_lookback": 180,
+  "original_seeds": [
+    0,
+    1,
+    2
+  ],
+  "original_primary_step": 400,
+  "checkpoints": 60,
+  "training_origin_prefix_pairs": 1816,
+  "training_origin_evaluations": 27240,
+  "visibility_seed_paths": 48,
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "primary_origins": [
+    792,
+    972,
+    1168
+  ],
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "new_issued_forecasts": 0,
+  "original_forecasts_unchanged": true,
+  "checkpoints_reselected": false,
+  "diagnostic": {
+    "status": "complete",
+    "new_fits": 0,
+    "optimizer_updates": 0,
+    "new_bplus_fits": 0,
+    "new_physical_forwards": 0,
+    "source_files": 283,
+    "checkpoints": 60,
+    "training_origin_evaluations": 27240,
+    "visibility_seed_paths": 48,
+    "rows": {
+      "supervision_weights": 17580,
+      "training_by_point": 1200,
+      "checkpoint_forecast_by_point": 1600,
+      "issued_by_point": 1920,
+      "mse_decomposition": 480,
+      "tail_sse": 384,
+      "visibility_sensitivity": 256,
+      "training_summary": 300,
+      "checkpoint_forecast_summary": 400,
+      "issued_summary": 480
+    },
+    "all_fixed_diagnostics_complete": true,
+    "checkpoint_selection": false,
+    "original_forecasts_changed": false,
+    "bootstrap_probability": "unavailable"
+  },
+  "preflight": {
+    "status": "passed",
+    "source_files": 283,
+    "checks": 141,
+    "values": 978945,
+    "max_difference": 1.687538997430238e-14,
+    "new_training": 0,
+    "optimizer_updates": 0,
+    "new_bplus_fits": 0,
+    "new_physical_forwards": 0,
+    "bootstrap_probability": "unavailable"
+  },
+  "numerical_audit": {
+    "status": "passed",
+    "source_files": 283,
+    "checkpoints": 60,
+    "original_training_origins": 1816,
+    "training_origin_evaluations": 27240,
+    "visibility_seed_paths": 48,
+    "checks": 1789,
+    "values": 45766892,
+    "max_difference": 1.1641532182693481e-09,
+    "unavailable_cells_verified": 6300,
+    "original_forecasts_unchanged": true,
+    "new_fits": 0,
+    "optimizer_updates": 0,
+    "new_bplus_fits": 0,
+    "new_physical_forwards": 0,
+    "bootstrap_probability": "unavailable"
+  },
+  "figure_audit": {
+    "status": "passed",
+    "source_max_difference": 7.105427357601002e-15,
+    "svg_max_difference_pt": 4.997838232156937e-07,
+    "figures": 4,
+    "panels": 16,
+    "records": 152,
+    "checks": 468,
+    "values": 21088,
+    "all_scientific_marks_inside_axes": true,
+    "rendered_audits": [
+      {
+        "figure": "supervision_weights",
+        "audit": "text",
+        "returncode": 0
+      },
+      {
+        "figure": "supervision_weights",
+        "audit": "collision",
+        "returncode": 0
+      },
+      {
+        "figure": "error_by_distance",
+        "audit": "text",
+        "returncode": 0
+      },
+      {
+        "figure": "error_by_distance",
+        "audit": "collision",
+        "returncode": 0
+      },
+      {
+        "figure": "checkpoint_fit",
+        "audit": "text",
+        "returncode": 0
+      },
+      {
+        "figure": "checkpoint_fit",
+        "audit": "collision",
+        "returncode": 0
+      },
+      {
+        "figure": "visibility_sensitivity",
+        "audit": "text",
+        "returncode": 0
+      },
+      {
+        "figure": "visibility_sensitivity",
+        "audit": "collision",
+        "returncode": 0
+      }
+    ],
+    "visual_review": "separate manual record"
+  },
+  "document_audit": {
+    "status": "passed",
+    "tables": 6,
+    "table_rows": 25,
+    "table_numeric_values": 125,
+    "narrative_claims": 8,
+    "comparisons": 20,
+    "values": 258,
+    "local_links": 63,
+    "interpretation_checks": 11,
+    "new_training": 0,
+    "checkpoints_reselected": 0,
+    "bootstrap_probability": "unavailable",
+    "time_utc": "2026-09-15T18:10:13.062129+00:00"
+  },
+  "statistical_interpretation_checks": 11,
+  "formal_diagnostic_failures": 0,
+  "numerical_audit_failures": 0,
+  "figure_failures": 0,
+  "document_audit_failures": 1,
+  "document_audit_retries": 1,
+  "preparation_issue": "612 absent sigma was incorrectly expected before freeze; retained and corrected without retrospective calibration",
+  "document_issue": "Missing assembly receipt after lint dependency; v1 retained, v2 passed; data and figures unchanged",
+  "bootstrap_probability": "unavailable: original612 has no sigma; no retrospective pool",
+  "exploratory": true,
+  "causal_mechanism_identified": false,
+  "findings": {
+    "first_window_early_kin_rmse": 7.987133792454907,
+    "first_window_early_drift_rmse": 0.6512332198076205,
+    "tail_expected_weight_percent": [
+      14.25924958583588,
+      22.361684024231987,
+      26.67711106207346
+    ],
+    "final_mj3_tail_sse_percent": 97.991179,
+    "final_mj3_tail_coverage90_percent": 15.044248,
+    "original_kin_rmse": [
+      22.907124,
+      5.534082,
+      7.540029
+    ],
+    "bplus_final_rmse": 9.124173,
+    "future_visibility": "changes common early outputs; not accuracy comparison, leakage evidence or physical causality"
+  },
+  "next_hypothesis": "Unimplemented: isolate covariates later than predicted h in TiDE_KIN; preserve loss weights first, report capacity/interface differences; separate horizon reweighting later",
+  "next_model_trained": false,
+  "additional_h_correction": false,
+  "additional_rl": false,
+  "push": false,
+  "pull_request": false,
+  "pdf_delivery": false,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.2.6",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "torch": "2.12.0",
+    "executable": "/tmp/ootang-tide-env-20260915/bin/python",
+    "original_environment_modified": false
+  },
+  "commits": {
+    "plan": "7e4c80a4",
+    "implementation": "cee419ad",
+    "diagnostic": "e31b00fb",
+    "independent_audit": "39961aca",
+    "figures": "92019b75",
+    "tables_and_document_audit": "8ae825f4",
+    "parent_of_final_documentation": "8ae825f4c773abcd4f8f09bf8b0299adb83d3ab6",
+    "final_documentation": "commit containing this receipt; omitted here to avoid self-reference"
+  },
+  "mentor_rules_untouched_sha256": "cbdb207366eda8f591965235d549ed3270910b9e8d8a1bf2d5f72496964dcf08",
+  "results_document": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+  "figures_entry": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md"
+}
