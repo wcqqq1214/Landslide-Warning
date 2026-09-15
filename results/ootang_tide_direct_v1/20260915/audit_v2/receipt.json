@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "source_files": 261,
+  "max_difference": 2.1600499167107046e-12,
+  "checkpoints": 120,
+  "formal_fits": 24,
+  "optimizer_updates": 9600,
+  "all_training_origins_verified": 3632,
+  "full293_origin_arm_instances": 1520,
+  "point_rows": 84,
+  "summary_rows": 21,
+  "seed_rows": 63,
+  "daily_rows": 24612,
+  "paired_comparisons": 33,
+  "event_count": 62,
+  "label_issue_order_verified": true,
+  "new_bplus_refits": 0,
+  "new_physical_forwards": 0,
+  "formal_fit_failures": 0,
+  "checks": 20001,
+  "values": 93991564
+}

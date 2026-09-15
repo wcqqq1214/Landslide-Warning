@@ -1,0 +1,10 @@
+{
+  "code/tide_direct/run.py": "df42700001413359761a8ce2813899ed48a5c5100723915418a97d341c71cd89",
+  "code/tide_direct/audit.py": "1093e584df93028cb2f11848f2cd65142c3fd962fc2c0a11258ee2563fb29186",
+  "code/tide_direct/numpy_model.py": "70001d99389ee79974caf53dcb9a1eed6ce00fbb77763ec9d9e3b7dae29f2acf",
+  "code/tide_direct/__init__.py": "30ce5428c3e20c69d80f12d8f18ed445d044ab796b1c76d0595101397ff36718",
+  "code/tide_direct/core.py": "c7867fac20932c818f1d1a5cceb32a4910706ec19e327469f59cb9ee83a4e2bf",
+  "code/tide_direct/figures.py": "355957535a3eb26fcc856ec9b22c695cd2650d2b132a5113861cefd7e482584c",
+  "code/tide_direct/preflight.py": "5676690aa1690a9735c2b3325e4312a42143882cee300fbd51fc4d7cb8127d89",
+  "code/tide_direct/figure_audit.py": "dc9248ce6019ee34f38d2b7206f8292bed0a8443d7f53ee8c944c912b9a0e362"
+}
