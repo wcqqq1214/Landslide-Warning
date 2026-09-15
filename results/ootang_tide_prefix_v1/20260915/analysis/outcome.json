@@ -1,0 +1,26 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 12,
+  "updates": 4800,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "summary_rows": 21,
+  "point_rows": 84,
+  "seed_rows": 63,
+  "daily_rows": 24612,
+  "endpoint_rows": 1008,
+  "paired_rows": 360,
+  "distance_point_rows": 2240,
+  "distance_summary_rows": 560,
+  "stable_prefix_mean_vs_kin": false,
+  "stable_prefix_joint_vs_kin": false,
+  "reused_fits": 12,
+  "reused_checkpoints": 60,
+  "new_checkpoints": 60,
+  "joint_bplus_pass_counts": {
+    "TiDE_KIN": 0,
+    "TiDE_KIN_PREFIX": 0
+  },
+  "replacement_goal_met": false,
+  "selection": false
+}

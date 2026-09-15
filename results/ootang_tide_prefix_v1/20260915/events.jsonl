@@ -1,0 +1,38 @@
+{"time_utc": "2026-09-15T18:27:00.734996+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T18:27:00.746596+00:00", "event": "old_endpoints_reused", "origin": 612, "methods": ["TiDE_KIN"]}
+{"time_utc": "2026-09-15T18:27:00.781028+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T18:27:03.734151+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400, "elapsed_seconds": 2.9475260829967738}
+{"time_utc": "2026-09-15T18:27:03.736243+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T18:27:06.676098+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400, "elapsed_seconds": 2.9342621250034426}
+{"time_utc": "2026-09-15T18:27:06.678141+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T18:27:09.712119+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400, "elapsed_seconds": 3.0283840840020275}
+{"time_utc": "2026-09-15T18:27:09.717221+00:00", "event": "trajectory_issued", "origin": 612, "end": 905, "lock_sha256": "6e1c0eb41cd9a3f74506a90909e7185793bb05d7ab1158fe5e46ccd2e4776146"}
+{"time_utc": "2026-09-15T18:27:09.717406+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T18:27:09.721102+00:00", "event": "old_endpoints_reused", "origin": 792, "methods": ["TiDE_KIN"]}
+{"time_utc": "2026-09-15T18:27:09.774167+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T18:27:12.818892+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400, "elapsed_seconds": 3.038840375000291}
+{"time_utc": "2026-09-15T18:27:12.820948+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T18:27:15.804419+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400, "elapsed_seconds": 2.9778510830001323}
+{"time_utc": "2026-09-15T18:27:15.806409+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T18:27:18.897889+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400, "elapsed_seconds": 3.085892540999339}
+{"time_utc": "2026-09-15T18:27:18.904473+00:00", "event": "trajectory_issued", "origin": 792, "end": 1085, "lock_sha256": "3617c2b76a5463a4b84a5aab072c4db35a1adf7b3f95503578394e9923557b18"}
+{"time_utc": "2026-09-15T18:27:18.904558+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T18:27:18.908693+00:00", "event": "old_endpoints_reused", "origin": 972, "methods": ["TiDE_KIN"]}
+{"time_utc": "2026-09-15T18:27:18.998595+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T18:27:22.048232+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400, "elapsed_seconds": 3.043606750001345}
+{"time_utc": "2026-09-15T18:27:22.050473+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T18:27:25.209564+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400, "elapsed_seconds": 3.1535405419999734}
+{"time_utc": "2026-09-15T18:27:25.211668+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T18:27:28.414762+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400, "elapsed_seconds": 3.1970787909995124}
+{"time_utc": "2026-09-15T18:27:28.421435+00:00", "event": "trajectory_issued", "origin": 972, "end": 1265, "lock_sha256": "414121f29759aff658307fd9a0b976b9ef5e4cc92a731710d379913e40fc2d4c"}
+{"time_utc": "2026-09-15T18:27:28.421534+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T18:27:28.425458+00:00", "event": "old_endpoints_reused", "origin": 1168, "methods": ["TiDE_KIN"]}
+{"time_utc": "2026-09-15T18:27:28.549370+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T18:27:31.671246+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 0, "updates": 400, "elapsed_seconds": 3.1162024160003057}
+{"time_utc": "2026-09-15T18:27:31.673355+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T18:27:34.775567+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 1, "updates": 400, "elapsed_seconds": 3.0967287499988743}
+{"time_utc": "2026-09-15T18:27:34.777629+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T18:27:37.910402+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_KIN_PREFIX", "seed": 2, "updates": 400, "elapsed_seconds": 3.127129459000571}
+{"time_utc": "2026-09-15T18:27:37.917743+00:00", "event": "trajectory_issued", "origin": 1168, "end": 1461, "lock_sha256": "5c816f2601692092119f90aa25096365bdc515bdfc76c0cfa1a63f96b6f27776"}
+{"time_utc": "2026-09-15T18:29:21.360282+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_issued_before_full_scoring"}
+{"time_utc": "2026-09-15T18:29:21.595734+00:00", "event": "scoring_complete", "all_prescribed_windows_complete": true, "new_fits": 12, "updates": 4800, "new_bplus_fits": 0, "new_physical_forwards": 0, "summary_rows": 21, "point_rows": 84, "seed_rows": 63, "daily_rows": 24612, "endpoint_rows": 1008, "paired_rows": 360, "distance_point_rows": 2240, "distance_summary_rows": 560, "stable_prefix_mean_vs_kin": false, "stable_prefix_joint_vs_kin": false, "reused_fits": 12, "reused_checkpoints": 60, "new_checkpoints": 60, "joint_bplus_pass_counts": {"TiDE_KIN": 0, "TiDE_KIN_PREFIX": 0}, "replacement_goal_met": false, "selection": false}
