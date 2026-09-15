@@ -1,0 +1,4 @@
+{"time_utc": "2026-09-15T17:42:47.804681+00:00", "event": "prefix_replayed", "origin": 612, "checkpoints": 15, "new_training": 0, "purpose": "diagnostic_not_new_forecast"}
+{"time_utc": "2026-09-15T17:42:48.441595+00:00", "event": "prefix_replayed", "origin": 792, "checkpoints": 30, "new_training": 0, "purpose": "diagnostic_not_new_forecast"}
+{"time_utc": "2026-09-15T17:42:49.344016+00:00", "event": "prefix_replayed", "origin": 972, "checkpoints": 45, "new_training": 0, "purpose": "diagnostic_not_new_forecast"}
+{"time_utc": "2026-09-15T17:42:50.521433+00:00", "event": "prefix_replayed", "origin": 1168, "checkpoints": 60, "new_training": 0, "purpose": "diagnostic_not_new_forecast"}

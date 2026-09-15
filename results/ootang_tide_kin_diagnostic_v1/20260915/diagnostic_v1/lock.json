@@ -1,0 +1,19 @@
+{
+  "time_utc": "2026-09-15T17:42:50.664219+00:00",
+  "status": "complete",
+  "files": {
+    "checkpoint_forecast_by_point.csv": "53dacc00eedabe1c22d144a641d7f47ebaaeb1cff2494522f56cb94a1031e6ec",
+    "checkpoint_forecast_summary.csv": "b7d2dda3c4e624a419bee6db1596008dfd16d87d8f4e97f1736aa27aeebb0a32",
+    "checkpoint_forecasts.npz": "9e6d828459842cb24c9c2b1d282e2a4c8d89e3123f4066d0351136fdf9c049f7",
+    "issued_by_point.csv": "3d231b2ec8e6118bd39d46ec570e8bd0c81ec7fb2417ccafa1eff1b72689ad1c",
+    "issued_summary.csv": "02681a34bd112e4276c08bc34d0ef558e843de2706f44e9a84bba55d21b09101",
+    "mse_decomposition.csv": "3d1179421a766c78343be029a9f30d2d9b1c0088d9f8107d5b677d09ddf69a71",
+    "receipt.json": "5982250c91c1338591274a2b0f10837cd637bc5d643526181979f29e8acd4d34",
+    "supervision_weights.csv": "2cb0e0e5814233480d7d04fe601e23fe38065d06ac072e42ebd6a846de5f6f85",
+    "tail_sse.csv": "139d40c89e620d6caa072a93e44dc8c610c576941e21e81decddaecd4c26b358",
+    "training_by_point.csv": "787659d32e5cedddccc1ca7f0c0b4d29b875ceef306b25166e80e5ba3f35adcf",
+    "training_summary.csv": "b82fd22df89828b2f7f076fc9d530281484a283a087bb97921591d035cdef49f",
+    "visibility_forecasts.npz": "8dab840a1a78ef38d45c2b88656a8f28c68e31c72449f00c5349c13343c182f6",
+    "visibility_sensitivity.csv": "6a468d70650ed44a576180176f6a0eee63a93a108ef4388ea394ff64b527ada0"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "time_utc": "2026-09-15T17:42:50.665808+00:00",
+  "status": "complete",
+  "files": {
+    "diagnostic_v1/lock.json": "a641ee218d7220c8ae19aeaca189914d64c96fc31c019d4c19b6ef5ae99a9c27"
+  },
+  "attempt": "diagnostic_v1"
+}

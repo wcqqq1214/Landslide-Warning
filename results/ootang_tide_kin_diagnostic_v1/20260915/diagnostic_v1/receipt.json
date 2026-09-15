@@ -1,0 +1,27 @@
+{
+  "status": "complete",
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "source_files": 283,
+  "checkpoints": 60,
+  "training_origin_evaluations": 27240,
+  "visibility_seed_paths": 48,
+  "rows": {
+    "supervision_weights": 17580,
+    "training_by_point": 1200,
+    "checkpoint_forecast_by_point": 1600,
+    "issued_by_point": 1920,
+    "mse_decomposition": 480,
+    "tail_sse": 384,
+    "visibility_sensitivity": 256,
+    "training_summary": 300,
+    "checkpoint_forecast_summary": 400,
+    "issued_summary": 480
+  },
+  "all_fixed_diagnostics_complete": true,
+  "checkpoint_selection": false,
+  "original_forecasts_changed": false,
+  "bootstrap_probability": "unavailable"
+}
