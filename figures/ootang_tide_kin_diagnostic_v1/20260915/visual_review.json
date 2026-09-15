@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "reviewed_utc": "2026-09-15T18:00:22.757825+00:00",
+  "reviewer": "Codex manual image inspection",
+  "figures": 4,
+  "panels": 16,
+  "minimum_rendered_font_pt": 7.2,
+  "collision_failures": 0,
+  "collision_warnings": 0,
+  "inspected": [
+    "supervision_weights",
+    "error_by_distance",
+    "checkpoint_fit",
+    "visibility_sensitivity"
+  ],
+  "observations": [
+    "四图16面板逐一目视；标题/共享图例/轴标签/图注清晰，未发现相撞或截字。",
+    "监督图保留h1到293全部期望/各种子权重；近似重合是真实数值接近，不是漏画。各前缀纵轴不同，刻度明确。",
+    "误差图保留792早期偏差、972 B+高误差及最终MJ3尾段；四点分开，主方法粗实线/基线虚点线可区分。",
+    "检查点图展示全部5步与三种子，训练种子平均与发报种子平均同口径，另列集成；无选择性省略高误差种子。",
+    "可见性图纵轴为预测变化而非实测误差，全部种子与293日零变化对照完整；不同d日期集合限制写于图注。"
+  ],
+  "source_warnings": [
+    {
+      "check_id": "EXPORT-RASTER",
+      "disposition": "本轮冻结PNG预览和SVG矢量，非投稿交付，无TIFF要求。"
+    },
+    {
+      "check_id": "RASTER-DPI",
+      "disposition": "冻结300dpi，实际PNG的DPI已核验；SVG用于无损放大。"
+    },
+    {
+      "check_id": "FINAL-WIDTH",
+      "disposition": "静态扫描误把240/25.4表达式识别为240英寸；实际SVG测量240×170mm，符合研究图契约。"
+    },
+    {
+      "check_id": "UNCERTAINTY-ENCODING",
+      "disposition": "监督图有三种子曲线；拟合/可见性图有全部种子散点。误差图为原发报集成评分，按契约不画推断CI，完整各方法/种子指标在CSV。"
+    }
+  ],
+  "numerical_figures": {
+    "records": 152,
+    "values": 21088,
+    "source_max_difference": 7.105427357601002e-15,
+    "svg_max_difference_pt": 4.997838232156937e-07
+  },
+  "user_mentor_acceptance": "pending",
+  "pdf_delivery": false
+}

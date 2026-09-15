@@ -1,0 +1,41 @@
+{
+  "figures": [
+    {
+      "name": "supervision_weights",
+      "png": "supervision_weights.png",
+      "svg": "supervision_weights.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-kin-diagnostic-qa-12_ldcrd/supervision_weights.pdf",
+      "panels": 4
+    },
+    {
+      "name": "error_by_distance",
+      "png": "error_by_distance.png",
+      "svg": "error_by_distance.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-kin-diagnostic-qa-12_ldcrd/error_by_distance.pdf",
+      "panels": 4
+    },
+    {
+      "name": "checkpoint_fit",
+      "png": "checkpoint_fit.png",
+      "svg": "checkpoint_fit.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-kin-diagnostic-qa-12_ldcrd/checkpoint_fit.pdf",
+      "panels": 4
+    },
+    {
+      "name": "visibility_sensitivity",
+      "png": "visibility_sensitivity.png",
+      "svg": "visibility_sensitivity.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-kin-diagnostic-qa-12_ldcrd/visibility_sensitivity.pdf",
+      "panels": 4
+    }
+  ],
+  "source_code_sha256": "ba0214cedeaea9ac754dedbf4049154679d1979a269dcf04a2b2280ecae90ce3",
+  "source_tables": {
+    "supervision_weights": "2cb0e0e5814233480d7d04fe601e23fe38065d06ac072e42ebd6a846de5f6f85",
+    "issued_by_point": "3d231b2ec8e6118bd39d46ec570e8bd0c81ec7fb2417ccafa1eff1b72689ad1c",
+    "training_summary": "b82fd22df89828b2f7f076fc9d530281484a283a087bb97921591d035cdef49f",
+    "checkpoint_forecast_summary": "b7d2dda3c4e624a419bee6db1596008dfd16d87d8f4e97f1736aa27aeebb0a32",
+    "visibility_sensitivity": "6a468d70650ed44a576180176f6a0eee63a93a108ef4388ea394ff64b527ada0"
+  },
+  "contract_sha256": "b910e6a6dda07d3ac5239ef0ead02bcd05ac883b73261f1dfa9780a0f4850151"
+}

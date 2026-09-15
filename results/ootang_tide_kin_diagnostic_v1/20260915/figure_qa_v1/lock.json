@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T17:57:58.976316+00:00",
+  "status": "passed",
+  "files": {
+    "checkpoint_fit.collision.json": "78d66e6e2e683a758cff94aad36435bc4bb1d3e99bb3f8a43b7c28d687f5f6a3",
+    "checkpoint_fit.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checkpoint_fit.text.json": "8633bcd96aa1cd4f7378bf1fdba42baf286376958a70afd3bd7b3e9fb3f39b70",
+    "checkpoint_fit.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checks.json": "5b0bc310f605bc05e5f8d8fb4ab1389da10617c5bdd506d167660554424e1da8",
+    "error_by_distance.collision.json": "21d544fc9529b0a9649ea4cc3345210ce5a05d56143a5471c6e6acb27a1406b2",
+    "error_by_distance.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "error_by_distance.text.json": "b3cb6e7b9d074966ddf0bc3106a1730e3d9635e38cc5684b73889bde3c811d00",
+    "error_by_distance.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt.json": "ea6eff3564433afd1eba625f2eecb809d894a2458605dadc057ae0d9e4e96dec",
+    "source_code.json": "b6d4a895abcea525658cc7907067f44f4162917c3588db9bde14161ca6c16122",
+    "source_qa.json": "ffbddd2cc8e3e5b5e1599c4180b3d7950d7bb80b8edfb445f4ca800a3ddb348a",
+    "supervision_weights.collision.json": "96c7ba314c04ed8e62ad094a020e5c40eed4ac7d8823ae3d8e15ae124dc27712",
+    "supervision_weights.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision_weights.text.json": "6827a2105a651503b7ebe59d1ae5039b214fa1d125f64a1d31233e82b1533c86",
+    "supervision_weights.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "visibility_sensitivity.collision.json": "2b17e09b80f95a8ad684145ec72ec02b9249b99ced932255834aca840f80b21c",
+    "visibility_sensitivity.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "visibility_sensitivity.text.json": "3d256a86caf3e7a27af9c0de4f00fcb5f7dd567c6f1b84471126efdb8039bc9f",
+    "visibility_sensitivity.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
