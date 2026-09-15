@@ -1,0 +1,571 @@
+{
+  "status": "passed",
+  "source_files": 261,
+  "parameters": 110392,
+  "checks": [
+    {
+      "name": "teacher-independent units",
+      "values": 4,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "rain sum7 independent",
+      "values": 1461,
+      "max_abs": 3.524291969370097e-12,
+      "tolerance": 1e-08
+    },
+    {
+      "name": "rain sum30 independent",
+      "values": 1461,
+      "max_abs": 5.6843418860808015e-12,
+      "tolerance": 1e-08
+    },
+    {
+      "name": "TiDE_DATA history m432",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA target m432",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA unknown feature zero m432",
+      "values": 4520,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA history m500",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA target m500",
+      "values": 448,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA unknown feature zero m500",
+      "values": 7240,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA history m611",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA target m611",
+      "values": 4,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA unknown feature zero m611",
+      "values": 11680,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA future displacement isolation 0",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA future displacement isolation 1",
+      "values": 22752,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA unknown future drivers isolation 0",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA unknown future drivers isolation 1",
+      "values": 22752,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS history m432",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS target m432",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS unknown feature zero m432",
+      "values": 4520,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS history m500",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS target m500",
+      "values": 448,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS unknown feature zero m500",
+      "values": 7240,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS history m611",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS target m611",
+      "values": 4,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS unknown feature zero m611",
+      "values": 11680,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS future displacement isolation 0",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS future displacement isolation 1",
+      "values": 22752,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS unknown future drivers isolation 0",
+      "values": 720,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS unknown future drivers isolation 1",
+      "values": 22752,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired identical histories",
+      "values": 2160,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired identical targets",
+      "values": 3516,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired identical mature masks",
+      "values": 879,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "DATA requires no teacher and ignores physics scaler 0",
+      "values": 2160,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "DATA requires no teacher and ignores physics scaler 1",
+      "values": 68256,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "DATA requires no teacher and ignores physics scaler 2",
+      "values": 3516,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "DATA requires no teacher and ignores physics scaler 3",
+      "values": 879,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n612 s0",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n612 s1",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n612 s2",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n792 s0",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n792 s1",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n792 s2",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n972 s0",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n972 s1",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n972 s2",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n1168 s0",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n1168 s1",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired schedule n1168 s2",
+      "values": 3200,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.a.weight",
+      "values": 192,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.a.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.b.weight",
+      "values": 32,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.b.bias",
+      "values": 2,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.skip.weight",
+      "values": 24,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init feature.skip.bias",
+      "values": 2,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.a.weight",
+      "values": 18112,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.a.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.b.weight",
+      "values": 256,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.b.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.skip.weight",
+      "values": 18112,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init encoder.skip.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.a.weight",
+      "values": 256,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.a.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.b.weight",
+      "values": 9408,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.b.bias",
+      "values": 588,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.skip.weight",
+      "values": 9408,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init decoder.skip.bias",
+      "values": 588,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.a.weight",
+      "values": 64,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.a.bias",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.b.weight",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.b.bias",
+      "values": 1,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.skip.weight",
+      "values": 4,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init temporal.skip.bias",
+      "values": 1,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init linear.weight",
+      "values": 52920,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init linear.bias",
+      "values": 294,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "paired init point.weight",
+      "values": 16,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA zero output persistence",
+      "values": 1172,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS zero output persistence",
+      "values": 1172,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA anchored h0",
+      "values": 12,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_DATA independent numpy",
+      "values": 3528,
+      "max_abs": 6.661338147750939e-16,
+      "tolerance": 1e-09
+    },
+    {
+      "name": "TiDE_DATA batch independence",
+      "values": 3528,
+      "max_abs": 5.551115123125783e-17,
+      "tolerance": 1e-09
+    },
+    {
+      "name": "TiDE_DATA finite difference encoder gradient",
+      "values": 1,
+      "max_abs": 5.115913575881375e-13,
+      "tolerance": 1e-07
+    },
+    {
+      "name": "TiDE_PHYS anchored h0",
+      "values": 12,
+      "max_abs": 0.0,
+      "tolerance": 0
+    },
+    {
+      "name": "TiDE_PHYS independent numpy",
+      "values": 3528,
+      "max_abs": 6.661338147750939e-16,
+      "tolerance": 1e-09
+    },
+    {
+      "name": "TiDE_PHYS batch independence",
+      "values": 3528,
+      "max_abs": 1.1102230246251565e-16,
+      "tolerance": 1e-09
+    },
+    {
+      "name": "TiDE_PHYS finite difference encoder gradient",
+      "values": 1,
+      "max_abs": 0.0,
+      "tolerance": 1e-07
+    },
+    {
+      "name": "TiDE_DATA reload",
+      "values": 1172,
+      "max_abs": 0.0,
+      "tolerance": 1e-09
+    },
+    {
+      "name": "TiDE_PHYS reload",
+      "values": 1172,
+      "max_abs": 0.0,
+      "tolerance": 1e-09
+    }
+  ],
+  "values": 399342,
+  "support": [
+    {
+      "n": 612,
+      "origins": 180,
+      "full293": 0,
+      "last_full_origin": null,
+      "issue_date": "2018-03-04",
+      "first_target": "2018-03-05",
+      "last_target": "2018-12-22"
+    },
+    {
+      "n": 792,
+      "origins": 360,
+      "full293": 68,
+      "last_full_origin": 499,
+      "issue_date": "2018-08-31",
+      "first_target": "2018-09-01",
+      "last_target": "2019-06-20"
+    },
+    {
+      "n": 972,
+      "origins": 540,
+      "full293": 248,
+      "last_full_origin": 679,
+      "issue_date": "2019-02-27",
+      "first_target": "2019-02-28",
+      "last_target": "2019-12-17"
+    },
+    {
+      "n": 1168,
+      "origins": 736,
+      "full293": 444,
+      "last_full_origin": 875,
+      "issue_date": "2019-09-11",
+      "first_target": "2019-09-12",
+      "last_target": "2020-06-30"
+    }
+  ],
+  "optimizer_updates": 0,
+  "later_given_driver_changes_early_output": 4.9125083167157746e-05,
+  "scope": "preflight uses actual labels through 612 only; later-prefix checks use synthetic labels"
+}

@@ -1,0 +1,11 @@
+{
+  "semantic_ast_unchanged": true,
+  "files": {
+    "code/tide_direct/run.py": "52b20b3670686cc725823dfcb7fb18c7cdff5300bbb6403816eb509e25dd98d4",
+    "code/tide_direct/numpy_model.py": "8f72df14c3f0945d621bcea3e99c2458ee120db639165c10422916b680977d03",
+    "code/tide_direct/__init__.py": "04ecd7e89ef8e53cc82c2eb25bccfb0db1be931568d263914c697afaabcadc7c",
+    "code/tide_direct/core.py": "53f91cd08ea25f7fbdb39d6f384d7a2eb932d686dbdf5192f798de4760b68319",
+    "code/tide_direct/preflight.py": "66c4076c02a816f896ef489b5a658e6d887f8d56a8bafd3f22fc434877beb03a"
+  },
+  "numpy_probe_note": "initial BLAS matmul produced floating-point status warnings while all finite values matched; explicit non-BLAS einsum independently reverified without warnings"
+}

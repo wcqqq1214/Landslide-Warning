@@ -1,0 +1,4 @@
+{"time_utc": "2026-09-15T14:28:25.428920+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
+{"time_utc": "2026-09-15T14:28:25.595952+00:00", "event": "preflight_passed", "checks": 87, "values": 399342, "optimizer_updates": 0}
+{"time_utc": "2026-09-15T14:28:58.222416+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
+{"time_utc": "2026-09-15T14:28:58.369773+00:00", "event": "preflight_passed", "checks": 87, "values": 399342, "optimizer_updates": 0}
