@@ -1,0 +1,13 @@
+{
+  "start_utc": "2026-09-15T18:13:36+00:00",
+  "deadline_utc": "2026-09-15T20:13:36+00:00",
+  "source_files": 308,
+  "new_training": 0,
+  "source_lookups": [
+    "model definition found in core.py, not nonexistent model.py",
+    "scoring found in run.py, not nonexistent analyze.py"
+  ],
+  "previous_delivery_verified": true,
+  "mentor_rules_sha256": "cbdb207366eda8f591965235d549ed3270910b9e8d8a1bf2d5f72496964dcf08",
+  "old_budget_resumed": false
+}
