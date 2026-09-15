@@ -11,3 +11,13 @@
 实现锁含当前新入口源码哈希；预检探针权重仅为零头/非零导数核验，不是正式拟合。正式训练完成后另补全部192检查点、48拟合记录、原G00复现、概率误差池/评分、四对配对与交互复算。训练前核验通过不代表效果达标或用户/导师验收。
 
 [预检回执](../results/ootang_gru_ablation_v1/20260915/preflight/receipt.json) · [采样覆盖](../results/ootang_gru_ablation_v1/20260915/preflight/sampling_coverage.csv) · [检查明细](../results/ootang_gru_ablation_v1/20260915/preflight/checks.json) · [实现锁](../results/ootang_gru_ablation_v1/20260915/implementation_lock.json)。
+
+**正式训练及独立复算**
+
+完整实验提交`36b6135`。48拟合/9600更新/192检查点、四个完整发报窗均完成；实际优化器循环及检查点保存累计347.572秒。06:57:58 UTC最后一条路径锁定，06:58:21才读取完整1461日标签评分。
+
+07:02:28 UTC独立核验通过：708来源、8148检查记录/3439904数值、192检查点重载与独立NumPy GRU/固定图/解码复算，最大差2.16e−12（各量原单位）；G00全部48检查点复现原GRU_GRAPH。核验还覆盖实际抽样表、同初始化/单位、成熟标签、全部e200未来位移污染、h=0连接、零头回退、三种子平均、4个对照来源、90条校准误差/尺度、24汇总/96逐点/72种子/288种子逐点、28128点日、1152端点及360行因子效应。60组保护门/种子配对及108事件顺序均一致。独立概率公式与判定实现未调用生产评分器；本次核验新增拟合/更新/物理前向均0。
+
+首个只读核验尝试在读取旧初始化权重时，因旧`reload`需要额外cfg参数而退出；原[失败回执](../results/ootang_gru_ablation_v1/20260915/independent_audit/receipt.json)和日志保留。修订只改独立核验器，以`torch.load(weights_only=True)`读取旧权重；正式训练、预测、评分和实现锁不变。第二次完整核验通过，Pandas未排序索引产生的PerformanceWarning原样保存（性能提示，全部逐项匹配通过）。
+
+[独立核验回执](../results/ootang_gru_ablation_v1/20260915/independent_audit_v2/receipt.json) · [检查明细](../results/ootang_gru_ablation_v1/20260915/independent_audit_v2/checks.json) · [复算入口](../code/gru_ablation/audit.py)。核验通过证明执行与输出一致，不把最终窗均值失败改判为达标；图件/文档核验及用户/导师验收另述。

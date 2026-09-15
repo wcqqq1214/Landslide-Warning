@@ -1,0 +1,16 @@
+{
+  "status": "failed",
+  "started_utc": "2026-09-15T07:01:52.768210+00:00",
+  "values_checked": 89265,
+  "max_difference": 0.0,
+  "checkpoints": 0,
+  "original_checkpoints": 0,
+  "fits_verified": 1,
+  "updates_verified": 200,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "source_files": 708,
+  "completed_utc": "2026-09-15T07:01:52.932591+00:00",
+  "error": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/audit.py\", line 138, in main\n    init = o.reload(prior/'GRU_GRAPH'/f'seed_{seed}'/'e0.pt')[2]['state_dict']\nTypeError: reload() missing 1 required positional argument: 'cfg'\n"
+}

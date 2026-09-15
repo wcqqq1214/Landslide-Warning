@@ -1,0 +1,164 @@
+[
+  {
+    "check": "612/forcing",
+    "values": 1810,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/normalization_mean",
+    "values": 56,
+    "max_difference": 0.0,
+    "tolerance": 1e-12
+  },
+  {
+    "check": "612/normalization_std",
+    "values": 56,
+    "max_difference": 0.0,
+    "tolerance": 1e-12
+  },
+  {
+    "check": "612/unit",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/y0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/continuous",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/anchored_control",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/drift",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/BPLUS_CONTINUOUS/source_mean",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/BPLUS_CONTINUOUS/source_seeds",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/DRIFT1/source_mean",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/DRIFT1/source_seeds",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/RR_COND/source_mean",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/RR_COND/source_seeds",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/anchor_seeds",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/input_0",
+    "values": 34272,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/input_1",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/input_2",
+    "values": 11720,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/input_3",
+    "values": 586,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/origins",
+    "values": 800,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/horizons",
+    "values": 12800,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/loss",
+    "values": 200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/0/reload",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/0/reload_change",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/0/numpy",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-07
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/0/numpy_change",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-07
+  },
+  {
+    "check": "612/G00_RAW_UNIFORM/0/zero_reference",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  }
+]

@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/audit.py", line 258, in <module>
+    main(parser.parse_args().attempt)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/audit.py", line 138, in main
+    init = o.reload(prior/'GRU_GRAPH'/f'seed_{seed}'/'e0.pt')[2]['state_dict']
+TypeError: reload() missing 1 required positional argument: 'cfg'
