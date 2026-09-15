@@ -1,5 +1,7 @@
 # 藕塘科研进度
 
+**统一接口骨干消融固定实验与完整评分完成。** 24次Transformer新拟合4800更新/96新检查点、24份GRU复用已完成。四前缀完整293日发报锁定后评分，36汇总/144逐点/108种子/42192点日记录；集成四点RMSE（mm）：792: G00_RAW_UNIFORM=30.145471, G10_ANCHOR_UNIFORM=26.778773, T00_RAW_UNIFORM=29.468347, T10_ANCHOR_UNIFORM=29.102037；972: G00_RAW_UNIFORM=37.481242, G10_ANCHOR_UNIFORM=20.445223, T00_RAW_UNIFORM=40.587372, T10_ANCHOR_UNIFORM=20.640218；1168: G00_RAW_UNIFORM=14.257499, G10_ANCHOR_UNIFORM=11.141437, T00_RAW_UNIFORM=15.981473, T10_ANCHOR_UNIFORM=13.290363。初步数值待独立复算；全部负结果保留，不追加训练。
+
 **统一接口骨干消融实现核验通过。** 1106来源、465记录/596805数值，旧GRU两臂96检查点从公共接口重载预测/变化差0；Transformer稠密因果前向与梯度、padding/未来位移隔离、同初始化/样本、成熟目标、起点回退与重载通过，最大差1.78e-15。参数手算笔误在训练前更正为1241/1249，结构不变。实现锁路径封装异常在0拟合/0更新时被入口保护阻断，原异常留档，已修锁清单。接着固定24新拟合4800更新和完整评分。
 
 **2026-09-15：用户授权统一接口GRU/Transformer×起点表达小型消融。** 新分支`codex/transformer-anchor-ablation`；[计划](ootang_backbone_anchor_plan.v1.0.md)/[配置](../config/ootang_backbone_anchor.v1_0.json)冻结四组、原均匀采样/三种子/e200。先核验复用24份GRU拟合，新增两组Transformer共24拟合4800更新；共用14维输入、图与解码器，完整模型1241/1249参数差异保留。新自限09:18:32—11:18:32 UTC含准备核验，不恢复旧预算。当前新拟合0；全部主要293日窗无论结果完整评价，本地分步commit/Markdown/CSV/PNG/SVG，不push/PDF/RL。

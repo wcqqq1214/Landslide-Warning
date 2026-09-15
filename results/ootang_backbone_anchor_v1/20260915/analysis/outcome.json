@@ -1,0 +1,12 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 24,
+  "updates": 4800,
+  "reused_fits": 24,
+  "summary_rows": 36,
+  "point_rows": 144,
+  "seed_rows": 108,
+  "daily_rows": 42192,
+  "endpoint_rows": 1728,
+  "selection": false
+}
