@@ -1,0 +1,26 @@
+[
+  {
+    "table": "rmse",
+    "rows": 6
+  },
+  {
+    "table": "paired_changes",
+    "rows": 3
+  },
+  {
+    "table": "final_points",
+    "rows": 4
+  },
+  {
+    "table": "final_probability",
+    "rows": 6
+  },
+  {
+    "table": "gates",
+    "rows": 2
+  },
+  {
+    "table": "teacher_fits",
+    "rows": 10
+  }
+]

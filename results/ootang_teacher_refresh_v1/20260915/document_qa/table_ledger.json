@@ -1,0 +1,1938 @@
+{
+  "report": "docs/ootang_teacher_refresh_results.v1.0.md",
+  "source_files": {
+    "summary": "results/ootang_teacher_refresh_v1/20260915/analysis/phase_summary.csv",
+    "points": "results/ootang_teacher_refresh_v1/20260915/analysis/metrics_by_point.csv",
+    "fits": "results/ootang_teacher_refresh_v1/20260915/audit/teacher_fit_points.csv",
+    "differences": "results/ootang_teacher_refresh_v1/20260915/analysis/paired_differences.csv"
+  },
+  "tables": [
+    {
+      "name": "rmse",
+      "headers": [
+        "方法",
+        "792历史窗",
+        "972历史窗",
+        "1168最终探索"
+      ],
+      "rows": [
+        [
+          {
+            "text": "改进 B+"
+          },
+          {
+            "text": "27.313325",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "67.167389",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "9.124173",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "起点校正 B+"
+          },
+          {
+            "text": "27.297235",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "40.433365",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "9.116413",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "DRIFT1"
+          },
+          {
+            "text": "5.824270",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "10.594506",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "12.977735",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "普通岭回归"
+          },
+          {
+            "text": "31.315924",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "48.588248",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "12.338214",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "旧教师 GRU"
+          },
+          {
+            "text": "19.372056",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "22.660456",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "10.600134",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "更新教师 GRU"
+          },
+          {
+            "text": "24.684374",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 792,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "23.804193",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 972,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "11.068245",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "paired_changes",
+      "headers": [
+        "起点",
+        "旧教师MAE",
+        "更新教师MAE",
+        "RMSE变化/mm",
+        "RMSE变化/%",
+        "同种子均值同时改善"
+      ],
+      "rows": [
+        [
+          {
+            "text": "792"
+          },
+          {
+            "text": "16.733052",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 792,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "22.053266",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 792,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "5.312318",
+            "places": 6,
+            "rule": {
+              "table": "differences",
+              "column": "difference",
+              "filters": {
+                "origin": 792,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "27.42",
+            "places": 2,
+            "rule": {
+              "table": "differences",
+              "column": "relative_change",
+              "filters": {
+                "origin": 792,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "0/3"
+          }
+        ],
+        [
+          {
+            "text": "972"
+          },
+          {
+            "text": "18.279701",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 972,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "18.575362",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 972,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "1.143737",
+            "places": 6,
+            "rule": {
+              "table": "differences",
+              "column": "difference",
+              "filters": {
+                "origin": 972,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "5.05",
+            "places": 2,
+            "rule": {
+              "table": "differences",
+              "column": "relative_change",
+              "filters": {
+                "origin": 972,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "2/3"
+          }
+        ],
+        [
+          {
+            "text": "1168"
+          },
+          {
+            "text": "7.066454",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "7.243168",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "mae",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.468112",
+            "places": 6,
+            "rule": {
+              "table": "differences",
+              "column": "difference",
+              "filters": {
+                "origin": 1168,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "4.42",
+            "places": 2,
+            "rule": {
+              "table": "differences",
+              "column": "relative_change",
+              "filters": {
+                "origin": 1168,
+                "seed": "ensemble",
+                "point": "average",
+                "metric": "rmse"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "1/3"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "final_points",
+      "headers": [
+        "测点",
+        "B+ RMSE",
+        "旧教师 RMSE",
+        "更新教师 RMSE",
+        "旧教师90%覆盖/%",
+        "更新教师90%覆盖/%"
+      ],
+      "rows": [
+        [
+          {
+            "text": "ATU1"
+          },
+          {
+            "text": "8.068246",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "ATU1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "11.317766",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "ATU1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "12.653763",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "ATU1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "92.83",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "ATU1"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "69.62",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "ATU1"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          }
+        ],
+        [
+          {
+            "text": "ATU5"
+          },
+          {
+            "text": "9.115007",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "ATU5"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "8.719453",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "ATU5"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "8.183557",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "ATU5"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "53.92",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "ATU5"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "ATU5"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          }
+        ],
+        [
+          {
+            "text": "MJ3"
+          },
+          {
+            "text": "13.016274",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "MJ3"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "17.278757",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "MJ3"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "17.915326",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "MJ3"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "MJ3"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "MJ3"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          }
+        ],
+        [
+          {
+            "text": "MJ1"
+          },
+          {
+            "text": "6.297166",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "MJ1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "5.084558",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "MJ1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "5.520335",
+            "places": 6,
+            "rule": {
+              "table": "points",
+              "column": "rmse",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "MJ1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED",
+                "point": "MJ1"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "points",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH",
+                "point": "MJ1"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "final_probability",
+      "headers": [
+        "方法",
+        "CRPS/mm",
+        "90%区间评分/mm",
+        "90%覆盖/%",
+        "90%宽度/mm"
+      ],
+      "rows": [
+        [
+          {
+            "text": "改进 B+"
+          },
+          {
+            "text": "14.894908",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "201.642014",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "201.642014",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "起点校正 B+"
+          },
+          {
+            "text": "8.882457",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "107.975357",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "99.83",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "107.922665",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "DRIFT1"
+          },
+          {
+            "text": "7.585014",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "88.559116",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "71.08",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "28.421471",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "普通岭回归"
+          },
+          {
+            "text": "13.077240",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "165.170365",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "100.00",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "165.170365",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "旧教师 GRU"
+          },
+          {
+            "text": "7.264525",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "79.368409",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "86.69",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "66.734261",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_CACHED"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ],
+        [
+          {
+            "text": "更新教师 GRU"
+          },
+          {
+            "text": "7.277227",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "crps",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "81.211827",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "interval_score90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          },
+          {
+            "text": "92.41",
+            "places": 2,
+            "rule": {
+              "table": "summary",
+              "column": "coverage90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 100
+            }
+          },
+          {
+            "text": "66.895350",
+            "places": 6,
+            "rule": {
+              "table": "summary",
+              "column": "width90",
+              "filters": {
+                "origin": 1168,
+                "method": "G_REFRESH"
+              },
+              "aggregate": "single",
+              "scale": 1
+            }
+          }
+        ]
+      ]
+    },
+    {
+      "name": "gates",
+      "headers": [
+        "方法",
+        "对B+均值门：792/972/1168",
+        "对B+概率门",
+        "对B+联合门",
+        "对DRIFT1均值门",
+        "对岭回归均值门"
+      ],
+      "rows": [
+        [
+          {
+            "text": "旧教师 GRU"
+          },
+          {
+            "text": "过 / 过 / 未过"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "1/3"
+          }
+        ],
+        [
+          {
+            "text": "更新教师 GRU"
+          },
+          {
+            "text": "未过 / 过 / 未过"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "0/3"
+          },
+          {
+            "text": "1/3"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "teacher_fits",
+      "headers": [
+        "拟合前缀",
+        "旧教师拟合RMSE",
+        "更新后拟合RMSE",
+        "旧教师终点绝对误差",
+        "更新后终点绝对误差",
+        "新拟合状态"
+      ],
+      "rows": [
+        [
+          {
+            "text": "492"
+          },
+          {
+            "text": "17.261280",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 492,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "9.594169",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 492,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "45.644519",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 492,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.008771",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 492,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "552"
+          },
+          {
+            "text": "25.656998",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 552,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "10.830979",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 552,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "65.464763",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 552,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.013047",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 552,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "672"
+          },
+          {
+            "text": "7.270909",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 672,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "7.902481",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 672,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "10.882265",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 672,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.012472",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 672,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "732"
+          },
+          {
+            "text": "9.828254",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 732,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "8.865933",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 732,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "26.332294",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 732,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.020708",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 732,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "852"
+          },
+          {
+            "text": "12.238562",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 852,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "11.980458",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 852,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "6.598712",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 852,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.029561",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 852,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "912"
+          },
+          {
+            "text": "13.166155",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 912,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "14.138303",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 912,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "25.428173",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 912,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.069294",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 912,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "972"
+          },
+          {
+            "text": "14.776316",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 972,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "12.058186",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 972,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "29.069266",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 972,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.035503",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 972,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "1032"
+          },
+          {
+            "text": "16.468255",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1032,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "14.711385",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1032,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "33.244246",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1032,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.071626",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1032,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "1092"
+          },
+          {
+            "text": "18.865446",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1092,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "12.540341",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1092,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "54.839581",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1092,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.027706",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1092,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ],
+        [
+          {
+            "text": "1152"
+          },
+          {
+            "text": "24.175353",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1152,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "11.832259",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "fit_rmse",
+              "filters": {
+                "fit_prefix": 1152,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean",
+              "scale": 1
+            }
+          },
+          {
+            "text": "75.903678",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1152,
+                "policy": "G_CACHED"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "0.020346",
+            "places": 6,
+            "rule": {
+              "table": "fits",
+              "column": "terminal_error",
+              "filters": {
+                "fit_prefix": 1152,
+                "policy": "G_REFRESH"
+              },
+              "aggregate": "mean_abs",
+              "scale": 1
+            }
+          },
+          {
+            "text": "未收敛"
+          }
+        ]
+      ]
+    }
+  ]
+}

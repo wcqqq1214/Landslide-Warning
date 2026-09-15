@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15，训练充分性诊断及固定200对400次比较已完成。训练拟合继续改善，追加训练没有带来跨时段稳定的预测收益。**
+**截至2026-09-15，历史B+教师更新配对实验已完整完成。更新教师组在三个完整293日窗口均未改善集成MAE/RMSE，两组均未达到相对B+的均值与概率联合目标。**
 
-[最新比较报告](docs/ootang_training_sufficiency_results.v1.0.md) · [四张PNG/SVG](figures/ootang_training_sufficiency_v1/20260915/README.md) · [完整24组CSV](results/ootang_training_sufficiency_v1/20260915/extension/analysis/phase_summary.csv) · [核验](docs/ootang_training_sufficiency_validation.v1.0.md)
+[最新比较报告](docs/ootang_teacher_refresh_results.v1.0.md) · [三张PNG/SVG](figures/ootang_teacher_refresh_v1/20260915/README.md) · [完整18组CSV](results/ootang_teacher_refresh_v1/20260915/analysis/phase_summary.csv) · [核验](docs/ootang_teacher_refresh_validation.v1.0.md)
 
-固定起点表达、输入/结构/λ/种子，先用96旧检查点和成熟历史窗核验，触发后完成两骨干24次400更新拟合。原200步精确重放，9600次实际更新包含4800重放与4800追加。表为完整293日、三种子集成预测的四点平均RMSE，单位mm。
+同一小型起点GRU、共同训练网格/样本/单位/种子/200次更新，仅配对历史教师政策：沿用最近合法旧教师，或在历史前缀更新教师。新增10次物理拟合、24次GRU拟合4800更新，完整96份检查点和所有窗口保留；外层B+不重拟合。表为三种子集成预测的四点平均RMSE，单位mm。
 
-| 起点 | B+ | GRU200 | GRU400 | TF200 | TF400 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 792历史窗 | 27.313325 | 26.778773 | 21.725008 | 29.102037 | 27.310036 |
-| 972历史窗 | 67.167389 | 20.445223 | 24.737119 | 20.640218 | 24.154311 |
-| 1168最终探索 | 9.124173 | 11.141437 | 11.339123 | 13.290363 | 13.653310 |
+| 起点 | B+ | 旧教师GRU | 更新教师GRU |
+| --- | ---: | ---: | ---: |
+| 792历史窗 | 27.313325 | 19.372056 | 24.684374 |
+| 972历史窗 | 67.167389 | 22.660456 | 23.804193 |
+| 1168最终探索 | 9.124173 | 10.600134 | 11.068245 |
 
-400次的固定训练面板MSE继续下降16.21%—21.87%，但两模型仅792窗降低RMSE，972及最终均退步。最终相对B+的概率门均通过、均值门未过，三个窗口联合仍0/3；不能把训练继续下降或区间变宽后的覆盖改善当作稳定总体收益。
+新教师8/10个历史前缀的拟合RMSE下降、终点偏差缩小，却未转化为预测收益。10次物理拟合全部达到800次函数评价上限且未收敛，保留该限制。最终旧组ATU5和更新组ATU1的90%覆盖分别53.92%和69.62%，均未通过逐点保护；两组B+联合门均0/3。
 
-全部原200步日志/参数/预测精确一致；96旧/72新检查点、1329来源、诊断及追加独立数值、四图16面板已核验。未来驱动给定、预测路径不反馈位移，窗口已暴露且部分重叠，结论限于当前探索性条件协议。
+203来源、10物理教师、96检查点和5588338数值独立复算、三图12面板已核验。未来驱动给定、预测路径不反馈位移；完整成熟长窗监督少且重叠、窗口已暴露，结论限于当前有限预算探索性协议。教师同时改变输入/基线/目标，不能识别唯一失败原因。
 
-[上一轮起点表达消融](docs/ootang_backbone_anchor_results.v1.0.md)的平均收益、[GRU边界采样](docs/ootang_gru_ablation_results.v1.0.md)及[旧Transformer半残差](docs/ootang_transformer_temporal_results.v1.0.md)的局部结果均保留。本轮已停止追加训练/结构/λ/RL；Markdown/CSV/PNG/SVG，本地分步提交，不push或交付PDF。
+[上一轮200/400训练对照](docs/ootang_training_sufficiency_results.v1.0.md)、[起点表达消融](docs/ootang_backbone_anchor_results.v1.0.md)、[GRU边界采样](docs/ootang_gru_ablation_results.v1.0.md)及[旧Transformer半残差](docs/ootang_transformer_temporal_results.v1.0.md)的正负结果保持。旧教师组使用本轮共同网格，不冒充旧G10精确复现。本轮收束已检验的教师更新残差路线，不自动追加模型/轮数/λ/RL；Markdown/CSV/PNG/SVG、本地提交，不push或交付PDF，用户/导师尚未验收。
 
 ## 阅读入口
 
@@ -35,6 +35,7 @@
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/teacher_refresh/](code/teacher_refresh/) | 历史B+教师政策配对、固定GRU训练、独立数值与图文核验 |
 | [code/training_sufficiency/](code/training_sufficiency/) | 固定检查点诊断、一次条件性预算对照与图文核验 |
 | [code/backbone_anchor/](code/backbone_anchor/) | 统一骨干×起点表达、GRU复用、固定TF训练及图文核验 |
 | [code/gru_ablation/](code/gru_ablation/) | 上轮GRU起点表达×边界采样2×2消融 |

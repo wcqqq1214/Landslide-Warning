@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的训练充分性核验与固定200对400次对照**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的历史B+教师更新配对**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：训练充分性与固定预算对照
+## 最新交付：历史教师更新配对
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [完整比较报告](ootang_teacher_refresh_results.v1.0.md) · [三张PNG/SVG](../figures/ootang_teacher_refresh_v1/20260915/README.md) | 三窗教师政策配对、两组四点导师式图与负结果 |
+| [18组完整CSV](../results/ootang_teacher_refresh_v1/20260915/analysis/phase_summary.csv) · [逐点结果](../results/ootang_teacher_refresh_v1/20260915/analysis/metrics_by_point.csv) · [教师拟合](../results/ootang_teacher_refresh_v1/20260915/audit/teacher_fit_points.csv) | 四点/种子/完整日期、拟合与预测分开解释 |
+| [计划](ootang_teacher_refresh_plan.v1.0.md) · [配置](../config/ootang_teacher_refresh.v1_0.json) · [203来源](ootang_teacher_refresh_sources.v1.0.json) · [成熟支持](ootang_teacher_refresh_support.v1.0.csv) | 同网格/结构/样本，固定10次物理更新、24次GRU拟合 |
+| [实现](ootang_teacher_refresh_implementation.v1.0.md) · [核验](ootang_teacher_refresh_validation.v1.0.md) · [图件合同](ootang_teacher_refresh_figure_contract.v1.0.md) · [最终回执](../results/ootang_teacher_refresh_v1/20260915/final_receipt.json) | 96检查点/5588338数值，三图12面板与原来源归档 |
+
+更新组三个主要窗集成MAE/RMSE均高于旧教师组，最终RMSE11.068245对10.600134mm，B+9.124173；两组联合门均0/3。8/10个历史前缀拟合RMSE改善未转化为预测增益；10次物理拟合均未收敛，有限预算限制保留。本轮完整完成并收束，不自动追加训练/教师密度/λ/RL或换模型。
+
+## 上一轮交付：训练充分性与固定预算对照
 
 | 文档/产物 | 用途 |
 | --- | --- |

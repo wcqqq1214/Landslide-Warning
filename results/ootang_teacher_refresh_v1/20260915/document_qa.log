@@ -1,0 +1,1 @@
+{"status": "passed", "tables": 6, "table_rows": 31, "numeric_cells": 114, "links": 196, "paired_changes_independently_reconstructed": true, "gate_and_seed_counts_verified": true, "teacher_fit_interpretation_verified": true, "narrative_key_numbers_verified": true, "readme_metric_cells": 9, "new_fits": 0, "optimizer_updates": 0, "physical_forwards": 0}
