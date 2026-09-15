@@ -1,0 +1,48 @@
+{
+  "figures": [
+    {
+      "name": "teacher_policy_comparison",
+      "png": "teacher_policy_comparison.png",
+      "svg": "teacher_policy_comparison.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-teacher-refresh-qa-k75wjv8g/teacher_policy_comparison.pdf",
+      "panels": 4
+    },
+    {
+      "name": "cached_final",
+      "png": "cached_final.png",
+      "svg": "cached_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-teacher-refresh-qa-k75wjv8g/cached_final.pdf",
+      "panels": 4
+    },
+    {
+      "name": "refresh_final",
+      "png": "refresh_final.png",
+      "svg": "refresh_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-teacher-refresh-qa-k75wjv8g/refresh_final.pdf",
+      "panels": 4
+    }
+  ],
+  "common_limits": [
+    [
+      -24.19303855067378,
+      561.8161174545356
+    ],
+    [
+      -31.61161038016579,
+      734.0918410505167
+    ],
+    [
+      -17.13391036297371,
+      397.88747398461174
+    ],
+    [
+      -17.328287758600823,
+      400.2420973974689
+    ]
+  ],
+  "qa_only_directory": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-teacher-refresh-qa-k75wjv8g",
+  "source_code_sha256": "0a7a248f537f2b69074a767ddb47947b69ea5399b6f1dc99ea25385203dad30a",
+  "backend": "python",
+  "width_mm": 240,
+  "height_mm": 170
+}

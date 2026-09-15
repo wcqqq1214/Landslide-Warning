@@ -1,0 +1,21 @@
+{
+  "time_utc": "2026-09-15T11:37:43.293889+00:00",
+  "status": "passed",
+  "files": {
+    "cached_final.collision.json": "abdda2b0eb422cd4c7c7f5df9b9d2a32968509a60c763855a41a2e12539a828a",
+    "cached_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cached_final.text.json": "8b64a1256c818cb1af5b3f37f0aa893acede8fe6fefcce3492f1bbed1ed3305e",
+    "cached_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checks.json": "0ddfae5ef3a3cf62f482925ec2abf5b3a2d7952a974188229ea089f2b1a3323a",
+    "receipt.json": "4b0bab51fe63744f4bf5dad34af8cdd4050001c58606b9a14fae69116588308e",
+    "refresh_final.collision.json": "159c69132c7d055c174cbffa0770cbbf3b5ecb51ba1fd24bd56c5678390c02aa",
+    "refresh_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "refresh_final.text.json": "f128662c71e880e92558b85778d1553433567757fa74de391e5ddd6fb4177c97",
+    "refresh_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source_qa.json": "d0f93109ef078269621469d69b4436e18645d19018ac2b5dbecc36ce9fdba15d",
+    "teacher_policy_comparison.collision.json": "8a949032d90b43f21c2ad934c32c8985b25addfaa180fd19365383cea6df3799",
+    "teacher_policy_comparison.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "teacher_policy_comparison.text.json": "2258cf1508d833cd0519d8eba7cc060b7eb4494ecec5e72522520eadddcd0a84",
+    "teacher_policy_comparison.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_max_difference": 0.0,
+  "svg_max_difference_pt": 7.203996119642397e-07,
+  "figures": 3,
+  "panels": 12,
+  "records": 88,
+  "checks": 349,
+  "values": 222772,
+  "all_scientific_marks_inside_axes": true,
+  "rendered_audits": [
+    {
+      "figure": "teacher_policy_comparison",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "teacher_policy_comparison",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "cached_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "cached_final",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "refresh_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "refresh_final",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate manual record",
+  "source_warning_review": [
+    "PNG300dpi/SVG are the frozen outputs; no TIFF required",
+    "Final width240mm and glyph sizes measured after rendering",
+    "Annotations below each plot area are checked in rendered output"
+  ]
+}

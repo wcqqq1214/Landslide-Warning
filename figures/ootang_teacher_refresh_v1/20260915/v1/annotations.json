@@ -1,0 +1,74 @@
+[
+  {
+    "figure": "cached_final",
+    "method": "G_CACHED",
+    "point": "ATU1",
+    "rmse": 11.317766030481517,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 92.83276450511946,
+    "width90": 44.482357427711236
+  },
+  {
+    "figure": "cached_final",
+    "method": "G_CACHED",
+    "point": "ATU5",
+    "rmse": 8.719453263353852,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 53.92491467576792,
+    "width90": 15.45038271947442
+  },
+  {
+    "figure": "cached_final",
+    "method": "G_CACHED",
+    "point": "MJ3",
+    "rmse": 17.278756799548503,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 100.0,
+    "width90": 123.96850658156472
+  },
+  {
+    "figure": "cached_final",
+    "method": "G_CACHED",
+    "point": "MJ1",
+    "rmse": 5.084558394277414,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 83.03579744754349
+  },
+  {
+    "figure": "refresh_final",
+    "method": "G_REFRESH",
+    "point": "ATU1",
+    "rmse": 12.65376292952393,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 69.6245733788396,
+    "width90": 19.66958676337663
+  },
+  {
+    "figure": "refresh_final",
+    "method": "G_REFRESH",
+    "point": "ATU5",
+    "rmse": 8.183556882427178,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 100.0,
+    "width90": 71.02906176333067
+  },
+  {
+    "figure": "refresh_final",
+    "method": "G_REFRESH",
+    "point": "MJ3",
+    "rmse": 17.915325910656794,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 100.0,
+    "width90": 115.33977247555003
+  },
+  {
+    "figure": "refresh_final",
+    "method": "G_REFRESH",
+    "point": "MJ1",
+    "rmse": 5.520334880069167,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 61.54298034779187
+  }
+]

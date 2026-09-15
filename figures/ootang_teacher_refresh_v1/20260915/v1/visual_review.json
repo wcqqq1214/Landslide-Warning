@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "reviewed_utc": "2026-09-15T11:43:04.791648+00:00",
+  "method": "All three exported PNG files visually inspected with view_image; numerical and rendered audits recorded separately.",
+  "figures": [
+    {
+      "file": "teacher_policy_comparison.png",
+      "panels": {
+        "a": "All six methods and all three full-window means visible; old/refreshed teacher policy identified consistently.",
+        "b": "Three per-seed dots and ensemble difference visible; ensemble RMSE differences positive in all windows.",
+        "c": "Four monitoring points retained; final MJ3 errors and relative B+ results visible.",
+        "d": "Full 0-105% range retained; cached ATU5 and refreshed ATU1 undercoverage visible."
+      },
+      "png_sha256": "6ac8731696ebf4d4fdde28e3e65540c460ba8167625de0793f81e9bca05addd1",
+      "svg_sha256": "2bd46445f62c3b3841103468ab8936cba7047e85326f2b0f82d9a96055a68c9e"
+    },
+    {
+      "file": "cached_final.png",
+      "panels": {
+        "a": "ATU1 observed tail rise and model discrepancy visible; actual bands and seeds retained.",
+        "b": "ATU5 narrow interval and uncovered observations visible.",
+        "c": "MJ3 flat trajectory and broad uncertainty visible across the whole prediction period.",
+        "d": "MJ1 full trajectory and finite interval visible."
+      },
+      "png_sha256": "b4e95ca9a73bfbedd5429e16bfddd46e7acab2b8829b3575311507e205221c03",
+      "svg_sha256": "ca9e9364636ec9f0840cc62af30a723d824a0de7cb3f42d664d9a14803d81a37"
+    },
+    {
+      "file": "refresh_final.png",
+      "panels": {
+        "a": "ATU1 tail underprediction and undercoverage visible.",
+        "b": "ATU5 improved RMSE and wider uncertainty visible.",
+        "c": "MJ3 flat/down-biased prediction retained with no tail removal.",
+        "d": "MJ1 discrepancy and full interval retained."
+      },
+      "png_sha256": "614aadd3bea4ec5515be607315220937ba28ca7c0071e5c652686ddeed6ecaea",
+      "svg_sha256": "2ce06b4df7db2f008d8e39a8f93852810be913a8e68711d96d1596160edfecbb"
+    }
+  ],
+  "layout": "Titles, legends, dates, units and below-panel annotations readable; no clipped data or observed overlap. Four-point figures use identical pointwise axes.",
+  "limits": "Visual inspection establishes legibility, not model effectiveness or mentor acceptance."
+}

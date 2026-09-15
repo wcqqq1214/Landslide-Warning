@@ -1,0 +1,22 @@
+{
+  "time_utc": "2026-09-15T11:37:20.584382+00:00",
+  "status": "rendered_pending_visual_and_data_audit",
+  "files": {
+    "annotations.json": "776afff11cee93287eb990311d108c89cf03c4336f4b7789d82472a35b68e047",
+    "cached_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "cached_final.png": "b4e95ca9a73bfbedd5429e16bfddd46e7acab2b8829b3575311507e205221c03",
+    "cached_final.svg": "ca9e9364636ec9f0840cc62af30a723d824a0de7cb3f42d664d9a14803d81a37",
+    "cached_final.text_geometry.json": "424c29f1a57d8ac5afa2db4b62a3fe9f874c9dae9735cf9d83df17d27c7e62b7",
+    "exports.json": "0865dcd3640b8642ef3f737fe0b3d88097bd819491b51090f1f6131b8ba5d102",
+    "plot_records.json": "2b1750d8b37a6ef10f112b26cb2c9a86fed697a471176e4cb40b952376f68b9c",
+    "refresh_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "refresh_final.png": "614aadd3bea4ec5515be607315220937ba28ca7c0071e5c652686ddeed6ecaea",
+    "refresh_final.svg": "2ce06b4df7db2f008d8e39a8f93852810be913a8e68711d96d1596160edfecbb",
+    "refresh_final.text_geometry.json": "424c29f1a57d8ac5afa2db4b62a3fe9f874c9dae9735cf9d83df17d27c7e62b7",
+    "source_arrays.npz": "b6afaae487d96b37df4c12571950e207f352c73dd5606545cc7829679ca1cfd1",
+    "teacher_policy_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "teacher_policy_comparison.png": "6ac8731696ebf4d4fdde28e3e65540c460ba8167625de0793f81e9bca05addd1",
+    "teacher_policy_comparison.svg": "2bd46445f62c3b3841103468ab8936cba7047e85326f2b0f82d9a96055a68c9e",
+    "teacher_policy_comparison.text_geometry.json": "829cfd7ab758b3a67d8a830cd0e1d413875284bb0893b61512ec57fe8eb8252e"
+  }
+}
