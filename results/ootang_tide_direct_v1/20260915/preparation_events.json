@@ -1,0 +1,12 @@
+[
+  {
+    "event": "environment_import_failure",
+    "attempts": [
+      "original .venv scipy 1.15.3",
+      "fresh scipy 1.15.3 /tmp/ootang-tide-scipy-20260915"
+    ],
+    "error": "Mach-O _spropack __DATA/__thread_bss zero-fill section offset nonzero",
+    "action": "independent Python 3.12.13 environment /tmp/ootang-tide-env-20260915; scipy 1.16.3; leave original environment intact",
+    "training_started": false
+  }
+]

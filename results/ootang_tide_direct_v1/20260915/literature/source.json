@@ -1,0 +1,10 @@
+{
+  "paper": "https://arxiv.org/html/2304.08424v5",
+  "repository": "https://github.com/google-research/google-research/tree/5b09c22d73a9d35eb6c5d2a99b95677a45053466/tide",
+  "commit": "5b09c22d73a9d35eb6c5d2a99b95677a45053466",
+  "access_utc": "2026-09-15T14:23:20.177127+00:00",
+  "files": {
+    "models.py": "ad8fd8d498809deeed9c847a169cada42134cbd0351b03e750706132a5d151c7",
+    "README.md": "57c6e2ee1c48d889c3ea6e81607871c6e6f76042e60f716582b94e0d6ed368e8"
+  }
+}
