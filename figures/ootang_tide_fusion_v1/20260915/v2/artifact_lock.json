@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T16:12:01.985975+00:00",
+  "status": "rendered_pending_visual_and_data_audit",
+  "files": {
+    "annotations.json": "85579dce66622b5f45499d7c70dc0e2da8d0ac8f6ffa2e018ef679e569f58cfb",
+    "bound_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "bound_final.png": "80835ae1ee848f1ceb765e68a51da5cdf0fb52f74fcdf91fbbfdad1167b4fe82",
+    "bound_final.svg": "b4c8d13449f18922e3ac7739a2b0d5770c0b4437eba3e933d14379091fa8a9f7",
+    "bound_final.text_geometry.json": "d38d643bd8c6a4cbc1b8cdfc14c337646801c723081c425ff78901289f45a282",
+    "exports.json": "e1c9d5c0d126efd3bd2759b540c27d9a7c10739b6ace87d7a1958f6a143fe93b",
+    "fusion_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "fusion_comparison.png": "9e20704539a1fea40db97261ba4fa73a9c6c5db9ea8db384c8b74a6b3af0c6ae",
+    "fusion_comparison.svg": "577aa8acc20776098a6784eefafa316963c71c989dcbfb70f63785a5a3ef1f44",
+    "fusion_comparison.text_geometry.json": "46d71c1ae10624b407586011a6a0119b959282fe6d39a8cde756c49ecaa48a17",
+    "hydro_contributions.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "hydro_contributions.png": "d47ae72440767d96d6e99bf373bb4ebb5a99dff6056a41d0675f40491eafbf48",
+    "hydro_contributions.svg": "7eaf0e504f6d020e178db114a7a125b357c19b83ffc5a3df270f68bc09a1a181",
+    "hydro_contributions.text_geometry.json": "def3e91ba529b5f8e50cdb458651822ef11a3d6a48f32fd1f963cb9c2a6f1425",
+    "plot_records.json": "99c3faee970ee5c1bfb1c66f63cf4f9185474be98c1db36e06c14418b4945cbc",
+    "source_arrays.npz": "c04293e3574d69f628f1365d2a1633eb9e4b39a06c0afba4c31c900241c700b3",
+    "split_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "split_final.png": "da21afcf5f34f78d9f535bc066fc59b030a05820de784fb2ac165a7c71bd70f7",
+    "split_final.svg": "ae18511f981df4adc2f3a358115ccd720e09547eb041e960218ba018337ece4e",
+    "split_final.text_geometry.json": "d38d643bd8c6a4cbc1b8cdfc14c337646801c723081c425ff78901289f45a282"
+  }
+}

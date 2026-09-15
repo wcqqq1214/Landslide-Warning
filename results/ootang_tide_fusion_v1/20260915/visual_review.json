@@ -1,0 +1,65 @@
+{
+  "status": "passed",
+  "reviewer": "Codex primary agent; manual image inspection, not an independent human reviewer",
+  "version": "v2",
+  "figures": 4,
+  "panels": 16,
+  "reviewed_utc": "2026-09-15T16:17:10.348270+00:00",
+  "inspections": [
+    {
+      "figure": "fusion_comparison",
+      "panels": 4,
+      "observations": [
+        "All eleven methods and all three complete windows retained, including poor SPLIT first window",
+        "Ensemble and all three paired seeds shown; final weak or adverse seed differences retained",
+        "Final per-point RMSE exposes MJ3 underperformance",
+        "Coverage panel exposes BOUND MJ3/MJ1 failures; legend and footnotes readable"
+      ]
+    },
+    {
+      "figure": "hydro_contributions",
+      "panels": 4,
+      "observations": [
+        "Four origins include calibration-only612; every seed and large SPLIT component retained",
+        "Common axes do not clip any outliers; MJ3/MJ1 use the same scale",
+        "BOUND actual H below prefix-derived cap throughout; raw curve separately identified",
+        "v2 changes only subtitle from solid lines to curves so dashed ensemble curve is correctly described; manual v2 recheck passed"
+      ]
+    },
+    {
+      "figure": "split_final",
+      "panels": 4,
+      "observations": [
+        "All four complete observed histories and full293-day predictions visible",
+        "Seed paths,80/95% intervals and full late MJ3 error retained",
+        "Wide ATU1/ATU5 intervals and low MJ3 coverage remain explicit",
+        "No neural training reconstruction invented; captions, shared axes and full intervals readable"
+      ]
+    },
+    {
+      "figure": "bound_final",
+      "panels": 4,
+      "observations": [
+        "Same per-point axes as SPLIT, all293days retained",
+        "MJ3/MJ1 underprediction and narrow interval failures visible",
+        "90% coverage41.64%/56.31% reported with width, not hidden by average metrics",
+        "Historical observations/B+ only; full path/seed/interval lines readable"
+      ]
+    }
+  ],
+  "unchanged_pngs_byte_identical": [
+    "fusion_comparison",
+    "split_final",
+    "bound_final"
+  ],
+  "all_v1_v2_source_arrays_identical": true,
+  "all_actual_svg_coordinates_audited": true,
+  "no_data_clipped": true,
+  "source_warnings_accepted": [
+    "Frozen PNG300dpi and editable SVG; no TIFF requested",
+    "Temporary same-backend PDF for glyph/collision checks only; no PDF deliverable",
+    "Common contribution-axis range intentionally retains extreme failures; compressed low-amplitude paths kept"
+  ],
+  "user_acceptance": "pending",
+  "mentor_acceptance": "pending"
+}

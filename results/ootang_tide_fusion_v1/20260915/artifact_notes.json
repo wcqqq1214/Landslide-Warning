@@ -1,0 +1,18 @@
+{
+  "formal_training_failures": 0,
+  "formal_training_retries": 0,
+  "notes": [
+    {
+      "stage": "visual record packaging",
+      "issue": "Attempted unavailable o.now helper; failed before writes",
+      "resolution": "Used datetime timezone UTC; inspected lock signature before retry",
+      "scientific_artifacts_changed": false
+    },
+    {
+      "stage": "figure wording",
+      "issue": "v1 subtitle described ensemble curves as solid though raw-H ensemble curve is dashed",
+      "resolution": "v2 changes only this word; all source arrays identical and other3PNGs byte-identical",
+      "scientific_artifacts_changed": false
+    }
+  ]
+}

@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "source_max_difference": 0.0,
+  "svg_max_difference_pt": 7.202787060123228e-07,
+  "figures": 4,
+  "panels": 16,
+  "records": 149,
+  "checks": 550,
+  "values": 247192,
+  "all_scientific_marks_inside_axes": true,
+  "rendered_audits": [
+    {
+      "figure": "fusion_comparison",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "fusion_comparison",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "hydro_contributions",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "hydro_contributions",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "split_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "split_final",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "bound_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "bound_final",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate manual record",
+  "source_warning_review": [
+    "PNG300dpi/SVG are the frozen outputs; no TIFF required",
+    "Final width240mm and glyph sizes measured after rendering",
+    "Annotations below each plot area are checked in rendered output"
+  ]
+}

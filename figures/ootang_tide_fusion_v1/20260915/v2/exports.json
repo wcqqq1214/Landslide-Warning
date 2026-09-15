@@ -1,0 +1,55 @@
+{
+  "figures": [
+    {
+      "name": "fusion_comparison",
+      "png": "fusion_comparison.png",
+      "svg": "fusion_comparison.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-fusion-qa-mci3euec/fusion_comparison.pdf",
+      "panels": 4
+    },
+    {
+      "name": "hydro_contributions",
+      "png": "hydro_contributions.png",
+      "svg": "hydro_contributions.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-fusion-qa-mci3euec/hydro_contributions.pdf",
+      "panels": 4
+    },
+    {
+      "name": "split_final",
+      "png": "split_final.png",
+      "svg": "split_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-fusion-qa-mci3euec/split_final.pdf",
+      "panels": 4
+    },
+    {
+      "name": "bound_final",
+      "png": "bound_final.png",
+      "svg": "bound_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-fusion-qa-mci3euec/bound_final.pdf",
+      "panels": 4
+    }
+  ],
+  "common_limits": [
+    [
+      -25.244283764198478,
+      586.2283674130535
+    ],
+    [
+      -33.623107089658845,
+      780.8032646376332
+    ],
+    [
+      -15.82103069757599,
+      367.3994906437091
+    ],
+    [
+      -15.978656257682312,
+      368.900654765028
+    ]
+  ],
+  "qa_only_directory": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-fusion-qa-mci3euec",
+  "source_code_sha256": "792033f489d7bdd62e97a94c653dc2912d5aa844e63b54699154418fc09cf6b7",
+  "backend": "python",
+  "width_mm": 240,
+  "height_mm": 170
+}
