@@ -1,0 +1,707 @@
+[
+  {
+    "name": "three-origin expected weight",
+    "values": 3,
+    "max_difference": 1.1102230246251565e-16
+  },
+  {
+    "name": "three-origin expected support",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "three-origin actual support",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "expected mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "actual mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 source schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612e0 mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612e50 mass",
+    "values": 1,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n612e100 mass",
+    "values": 1,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n612e200 mass",
+    "values": 1,
+    "max_difference": 6.661338147750939e-16
+  },
+  {
+    "name": "n612e400 mass",
+    "values": 1,
+    "max_difference": 2.4424906541753444e-15
+  },
+  {
+    "name": "n612m432 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612m432 covariates",
+    "values": 22752,
+    "max_difference": 1.0980799602933189e-15
+  },
+  {
+    "name": "n612m582 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612m582 covariates",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612m611 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612m611 covariates",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 unobserved forcing isolation",
+    "values": 68256,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 future labels absent from history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 numpy",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16
+  },
+  {
+    "name": "n612 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 exact original mean",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d30 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d30 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d30 independent forward",
+    "values": 1176,
+    "max_difference": 3.469446951953614e-16
+  },
+  {
+    "name": "n612d30 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d90 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d90 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d90 independent forward",
+    "values": 1176,
+    "max_difference": 2.3592239273284576e-16
+  },
+  {
+    "name": "n612d90 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d180 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d180 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d180 independent forward",
+    "values": 1176,
+    "max_difference": 4.718447854656915e-16
+  },
+  {
+    "name": "n612d180 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d293 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d293 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612d293 independent forward",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16
+  },
+  {
+    "name": "n612d293 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n612 zero checkpoint",
+    "values": 1176,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792 source schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792e0 mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792e50 mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792e100 mass",
+    "values": 1,
+    "max_difference": 6.661338147750939e-16
+  },
+  {
+    "name": "n792e200 mass",
+    "values": 1,
+    "max_difference": 1.5543122344752192e-15
+  },
+  {
+    "name": "n792e400 mass",
+    "values": 1,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n792m432 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792m432 covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14
+  },
+  {
+    "name": "n792m762 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792m762 covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14
+  },
+  {
+    "name": "n792m791 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792m791 covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14
+  },
+  {
+    "name": "n792 unobserved forcing isolation",
+    "values": 68256,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792 future labels absent from history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792 numpy",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16
+  },
+  {
+    "name": "n792 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792 exact original mean",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d30 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d30 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d30 independent forward",
+    "values": 1176,
+    "max_difference": 4.440892098500626e-16
+  },
+  {
+    "name": "n792d30 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d90 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d90 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d90 independent forward",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16
+  },
+  {
+    "name": "n792d90 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d180 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d180 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d180 independent forward",
+    "values": 1176,
+    "max_difference": 4.440892098500626e-16
+  },
+  {
+    "name": "n792d180 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d293 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d293 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792d293 independent forward",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16
+  },
+  {
+    "name": "n792d293 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792 zero checkpoint",
+    "values": 1176,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972 source schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972e0 mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972e50 mass",
+    "values": 1,
+    "max_difference": 1.7763568394002505e-15
+  },
+  {
+    "name": "n972e100 mass",
+    "values": 1,
+    "max_difference": 1.1102230246251565e-15
+  },
+  {
+    "name": "n972e200 mass",
+    "values": 1,
+    "max_difference": 1.9984014443252818e-15
+  },
+  {
+    "name": "n972e400 mass",
+    "values": 1,
+    "max_difference": 7.105427357601002e-15
+  },
+  {
+    "name": "n972m432 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972m432 covariates",
+    "values": 22752,
+    "max_difference": 1.071365218763276e-14
+  },
+  {
+    "name": "n972m942 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972m942 covariates",
+    "values": 22752,
+    "max_difference": 1.687538997430238e-14
+  },
+  {
+    "name": "n972m971 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972m971 covariates",
+    "values": 22752,
+    "max_difference": 1.687538997430238e-14
+  },
+  {
+    "name": "n972 unobserved forcing isolation",
+    "values": 68256,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972 future labels absent from history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972 numpy",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16
+  },
+  {
+    "name": "n972 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972 exact original mean",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d30 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d30 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d30 independent forward",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16
+  },
+  {
+    "name": "n972d30 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d90 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d90 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d90 independent forward",
+    "values": 1176,
+    "max_difference": 2.1510571102112408e-16
+  },
+  {
+    "name": "n972d90 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d180 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d180 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d180 independent forward",
+    "values": 1176,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n972d180 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d293 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d293 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972d293 independent forward",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16
+  },
+  {
+    "name": "n972d293 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972 zero checkpoint",
+    "values": 1176,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168 source schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168e0 mass",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168e50 mass",
+    "values": 1,
+    "max_difference": 3.552713678800501e-15
+  },
+  {
+    "name": "n1168e100 mass",
+    "values": 1,
+    "max_difference": 6.661338147750939e-16
+  },
+  {
+    "name": "n1168e200 mass",
+    "values": 1,
+    "max_difference": 8.881784197001252e-16
+  },
+  {
+    "name": "n1168e400 mass",
+    "values": 1,
+    "max_difference": 1.5987211554602254e-14
+  },
+  {
+    "name": "n1168m432 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168m432 covariates",
+    "values": 22752,
+    "max_difference": 1.1178558079194545e-14
+  },
+  {
+    "name": "n1168m1138 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168m1138 covariates",
+    "values": 22752,
+    "max_difference": 9.048317650695026e-15
+  },
+  {
+    "name": "n1168m1167 history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168m1167 covariates",
+    "values": 22752,
+    "max_difference": 9.048317650695026e-15
+  },
+  {
+    "name": "n1168 unobserved forcing isolation",
+    "values": 68256,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168 future labels absent from history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168 numpy",
+    "values": 1176,
+    "max_difference": 1.942890293094024e-16
+  },
+  {
+    "name": "n1168 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168 exact original mean",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d30 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d30 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d30 independent forward",
+    "values": 1176,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n1168d30 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d90 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d90 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d90 independent forward",
+    "values": 1176,
+    "max_difference": 2.220446049250313e-16
+  },
+  {
+    "name": "n1168d90 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d180 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d180 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d180 independent forward",
+    "values": 1176,
+    "max_difference": 1.6653345369377348e-16
+  },
+  {
+    "name": "n1168d180 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d293 exact mask",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d293 fixed history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168d293 independent forward",
+    "values": 1176,
+    "max_difference": 1.942890293094024e-16
+  },
+  {
+    "name": "n1168d293 h0",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168 zero checkpoint",
+    "values": 1176,
+    "max_difference": 0.0
+  }
+]

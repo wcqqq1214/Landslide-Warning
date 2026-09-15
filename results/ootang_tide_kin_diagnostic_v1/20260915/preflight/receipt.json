@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "source_files": 283,
+  "checks": 141,
+  "values": 978945,
+  "max_difference": 1.687538997430238e-14,
+  "new_training": 0,
+  "optimizer_updates": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "bootstrap_probability": "unavailable"
+}

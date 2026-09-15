@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-15T17:42:44.544477+00:00",
+  "status": "passed",
+  "files": {
+    "../../../code/tide_kin_diagnostic/__init__.py": "58217ca24d37b7da4591bd1ec66ae513433c5bd6ec867676ebcd365f97396897",
+    "../../../code/tide_kin_diagnostic/core.py": "520c12c5f18769058d83baa8bf04980f4677c8a33217fb9aa3ab4b9e2791bf6d",
+    "../../../code/tide_kin_diagnostic/preflight.py": "5db03358d95134de50a31711c2f030bb1dec42f5eb7c342d9acf5deab5ee888f",
+    "../../../code/tide_kin_diagnostic/run.py": "01c65faa13562e5e8ecdea8df9b12fc6d484b5712147dc32de1979999d7cff14",
+    "../../../config/ootang_tide_kin_diagnostic.v1_0.json": "15b0f58327c2d6c063dbccbc1683ebc6a8bfc59be13275d88878bec5b8a54beb",
+    "../../../docs/ootang_tide_kin_diagnostic_sources.v1.0.json": "6bfa2880fdf00e01763c5f9a3236308f99cc5c77827e004ea004a084f5c8f1a4",
+    "../../../docs/ootang_tide_kin_diagnostic_plan.v1.0.md": "854c1810c476c528ec2ab1c7c0fafa18a7dd5c1e93d72064c17aa282fca77d6d",
+    "preflight/receipt.json": "1c6d384fa8989ffef86700906d57dd5531914649dd534db78625d4f3fc636c7b"
+  },
+  "new_training": 0
+}
