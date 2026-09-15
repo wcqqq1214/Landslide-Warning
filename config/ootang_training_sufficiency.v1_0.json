@@ -1,0 +1,324 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor",
+    "neural_anchor": "A-on changes output reference only; the B+ state remains continuous and unchanged."
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "updates": 200,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "version": "ootang_training_sufficiency.v1.0",
+  "branch": "codex/training-sufficiency-audit",
+  "start_utc": "2026-09-15T10:08:15+00:00",
+  "deadline_utc": "2026-09-15T11:08:15+00:00",
+  "out": "results/ootang_training_sufficiency_v1/20260915",
+  "figures": "figures/ootang_training_sufficiency_v1/20260915",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "backbone": "shared node history, graph and decoder; temporal encoder GRU versus one-layer Transformer",
+  "parameters": {
+    "GRU": 1241,
+    "TF": 1249
+  },
+  "residual_penalty": 1.0,
+  "arms": [
+    "G10_ANCHOR_UNIFORM",
+    "T10_ANCHOR_UNIFORM"
+  ],
+  "factors": {
+    "G00_RAW_UNIFORM": {
+      "anchor": false,
+      "boundary": false,
+      "backbone": "GRU"
+    },
+    "G10_ANCHOR_UNIFORM": {
+      "anchor": true,
+      "boundary": false,
+      "backbone": "GRU"
+    },
+    "T00_RAW_UNIFORM": {
+      "anchor": false,
+      "boundary": false,
+      "backbone": "TF"
+    },
+    "T10_ANCHOR_UNIFORM": {
+      "anchor": true,
+      "boundary": false,
+      "backbone": "TF"
+    }
+  },
+  "training": {
+    "first_origin": 432,
+    "batch_origins": 4,
+    "distances_per_origin": 16,
+    "max_horizon": 293,
+    "uniform": "exact original numpy default_rng(seed) schedule"
+  },
+  "output": {
+    "raw": "mu=B+unit*f(h); loss MSE(f,r/unit)+mean(f^2)",
+    "anchored": "g(h)=f(h)-f(0); mu=B+r0+unit*g(h); loss MSE(g,(r-r0)/unit)+mean(g^2)",
+    "reference_query": "h0 uses teacher physical state at m-1 and zero distance features; no future label; original input code untouched. h0 is a context/reference query, never a newly sampled target.",
+    "factor_scope": "A bundles output anchor, centered target and penalty on learned change; B bundles teacher-age and short-horizon sampling changes."
+  },
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "RR_COND"
+  ],
+  "prior_controls_out": "results/ootang_overnight_graph_v1/20260915/base",
+  "reference_reproduction": "Both reused GRU arms: all96 checkpoints reload through common wrapper, identical inputs/scales/schedules/output/objective; zero new GRU updates. Historical baselines have different architectures/training and are descriptive controls.",
+  "max_new_fits": 24,
+  "max_optimizer_updates": 9600,
+  "max_physical_forwards": 0,
+  "max_bplus_refits": 0,
+  "selection": "none; diagnostic gate only; old e200 conclusions retained",
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "reporting": {
+    "primary_windows": [
+      792,
+      972,
+      1168
+    ],
+    "bootstrap_only": 612,
+    "boundary_diagnostic_horizons": [
+      1,
+      7,
+      30
+    ],
+    "paired_edges": [
+      [
+        "G10_ANCHOR_UNIFORM",
+        "G00_RAW_UNIFORM"
+      ],
+      [
+        "T10_ANCHOR_UNIFORM",
+        "T00_RAW_UNIFORM"
+      ],
+      [
+        "T00_RAW_UNIFORM",
+        "G00_RAW_UNIFORM"
+      ],
+      [
+        "T10_ANCHOR_UNIFORM",
+        "G10_ANCHOR_UNIFORM"
+      ]
+    ],
+    "factorial": "A expression effect at GRU and TF; TF-minus-GRU at raw and anchor; average effects; interaction=(T10-T00)-(G10-G00). Negative only favorable for error/loss, no independence/p-value claims."
+  },
+  "new_arms": [
+    "T00_RAW_UNIFORM",
+    "T10_ANCHOR_UNIFORM"
+  ],
+  "reuse_arms": [
+    "G00_RAW_UNIFORM",
+    "G10_ANCHOR_UNIFORM"
+  ],
+  "reuse_out": "results/ootang_gru_ablation_v1/20260915",
+  "reused_fits": 24,
+  "reused_historical_updates": 4800,
+  "transformer": {
+    "d_model": 8,
+    "heads": 2,
+    "layers": 1,
+    "ffn": 8,
+    "dropout": 0.0,
+    "norm_first": true,
+    "layer_norm_eps": 1e-05,
+    "position": "fixed sinusoidal absolute historical day 0..m-1, base10000",
+    "readout": "last valid historical token",
+    "attention": "last-query exact evaluation of single causal self-attention block; all historical keys/values retained",
+    "initialization": "construct original GraphGRU(seed), keep shared modules unchanged, remove GRU and initialize Transformer from resulting RNG state",
+    "parameter_ratio": 1.0064464141821112
+  },
+  "historical_controls": [
+    "OLD_TRANSFORMER",
+    "OLD_HALF",
+    "OLD_REG1",
+    "G11_ANCHOR_BOUNDARY"
+  ],
+  "source_experiment": "results/ootang_backbone_anchor_v1/20260915",
+  "diagnostic": {
+    "checkpoints": [
+      0,
+      50,
+      100,
+      200
+    ],
+    "training_origins": [
+      612,
+      792,
+      972,
+      1168
+    ],
+    "panel_origins": 128,
+    "panel_horizons": 32,
+    "batch_origins": 8,
+    "panel_rule": "origins=432+floor((i+0.5)*(n-432)/128); horizon=1+floor((j+0.5)*min(293,n-m)/32); repeat small-support distances with equal slot weights",
+    "decision_asof": 1168,
+    "historical_origins": [
+      612,
+      792
+    ],
+    "historical_ends": [
+      905,
+      1085
+    ],
+    "excluded_from_trigger": [
+      972,
+      1168
+    ],
+    "read_label_max": 1168,
+    "new_fits": 0,
+    "updates": 0
+  },
+  "trigger": {
+    "candidate": "T10_ANCHOR_UNIFORM",
+    "before": 100,
+    "after": 200,
+    "training_relative_improvement": 0.01,
+    "training_metrics": [
+      "mse",
+      "objective"
+    ],
+    "minimum_same_seed_training": 2,
+    "minimum_training_prefixes": 3,
+    "historical_average_relative_improvement": 0.01,
+    "historical_metrics": [
+      "mae",
+      "rmse"
+    ],
+    "historical_window_max_regression": 0.05,
+    "minimum_same_seed_historical": 2,
+    "require_both_training_and_historical": true,
+    "interpretation": "exploratory warrant for one additional fixed-budget comparison, not a convergence or efficacy certificate"
+  },
+  "conditional_extension": {
+    "enabled_only_if_triggered": true,
+    "arms": [
+      "G10_ANCHOR_UNIFORM",
+      "T10_ANCHOR_UNIFORM"
+    ],
+    "updates": 400,
+    "comparison": [
+      200,
+      400
+    ],
+    "max_new_fits": 24,
+    "max_optimizer_updates": 9600,
+    "replayed_updates": 4800,
+    "additional_updates_beyond_old": 4800,
+    "optimizer_state_missing": "replay original first200 exactly from initialization; verify all e200 parameters and predictions; retain Adam state and extend200",
+    "schedule": "original200 origins/horizons then next200 origin/horizon block from same RNG after the original draws; same schedule across backbones",
+    "selection": false,
+    "full_primary_origins": [
+      792,
+      972,
+      1168
+    ],
+    "full_primary_horizon": 293,
+    "complete_regardless_of_effect": true
+  }
+}
