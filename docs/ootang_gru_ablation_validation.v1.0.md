@@ -49,3 +49,7 @@
 图形核验v1未展开SVG隐式闭合点而退出，修改只影响验证器；v2自动碰撞检查阻断总览图例穿过网格线，最终制图v2移除该面板网格、将四点指标移至绘图区上方。核验v3全部数值与渲染已通过；v4只修回执在最后5个尺寸检查之前提前统计条数的问题，并将数据/图形/尺寸误差分列，重新核对最终产物。初稿与全部尝试保留，未改任何训练、均值、尺度或评分。临时同源PDF只用于字体/碰撞检查，不交付或提交。
 
 [最终图件](../figures/ootang_gru_ablation_v1/20260915/README.md) · [图形核验](../results/ootang_gru_ablation_v1/20260915/figure_qa_v4/receipt.json) · [逐图目视](../figures/ootang_gru_ablation_v1/20260915/v2/visual_review.json)。文档数字/链接和最终完成回执另行核对。
+
+**文档与交付核验完成**
+
+9张表/45行、106个数值与锁定CSV逐项匹配，按mm六位小数、覆盖百分数两位小数的显示精度核对；配对种子/保护门、日期、README汇总和156个本地链接通过。新报告中的24.35%改善、两个ATU1覆盖百分数均直接复算。闭合阶段只补充本段与进度/回执说明，其新增链接另行核对。见[文档回执](../results/ootang_gru_ablation_v1/20260915/document_qa/receipt.json)及[最终回执](../results/ootang_gru_ablation_v1/20260915/final_receipt.json)。没有重新训练或更改评分；用户/导师验收仍未获得。

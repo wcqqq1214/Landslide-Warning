@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15（本地时间）已完成的夜间固定小图与因果残差诊断**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的起点残差表达×边界采样2×2消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：夜间固定小图小试
+## 最新交付：GRU两因素消融
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [结果报告](ootang_gru_ablation_results.v1.0.md) · [五张PNG/SVG](../figures/ootang_gru_ablation_v1/20260915/README.md) | 两因素配对、三个完整293日窗、四组四点曲线及负结果 |
+| [24组汇总](../results/ootang_gru_ablation_v1/20260915/analysis/phase_summary.csv) · [逐点/种子/因子效应](../results/ootang_gru_ablation_v1/20260915/analysis/factorial_seed_points.csv) | 所有候选、对照、点和种子保持 |
+| [冻结计划](ootang_gru_ablation_plan.v1.0.md) · [配置](../config/ootang_gru_ablation.v1_0.json) · [708来源](ootang_gru_ablation_sources.v1.0.json) | 固定四组、合法教师/采样、独立预算和原诊断归档 |
+| [核验](ootang_gru_ablation_validation.v1.0.md) · [图件约定](ootang_gru_ablation_figure_contract.v1.0.md) · [回执](../results/ootang_gru_ablation_v1/20260915/final_receipt.json) | 48拟合/192检查点复算、20面板图文核验和限制 |
+
+G11最终RMSE10.785141mm，优于G00的14.257499，仍高于B+9.124173；首日跳偏明显缩小，ATU1/MJ3后续均值与ATU1覆盖仍不足。四组B+联合门均0/3。全部预定训练完成，本地提交，未push，不追加模型/训练。
+
+## 上一轮交付：夜间固定小图小试
 
 | 文档/产物 | 用途 |
 | --- | --- |

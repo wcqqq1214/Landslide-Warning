@@ -18,9 +18,9 @@
 
 # Current Scope and Status
 
-- 新授权（2026-09-15）：用户要求继续执行诊断后的2×2消融。分支`codex/gru-boundary-ablation`，见`docs/ootang_gru_ablation_plan.v1.0.md`；固定同一GRU_GRAPH，起点残差表达×更新边界采样四组，四前缀/三种子/e200，48拟合9600更新，独立06:30—08:30 UTC含准备/核验。原B+与仅起点校正B+均为对照，全部组和完整窗口均完成；旧停止状态不阻止此特定授权。当前冻结准备，尚未训练；本地分步commit，不push/PDF/RL，不恢复旧预算。下方夜间记录保持形成时完成状态。
+- 最新完成（2026-09-15）：用户授权的起点残差表达×边界采样2×2消融。分支`codex/gru-boundary-ablation`，见`docs/ootang_gru_ablation_results.v1.0.md`和最终回执。48拟合9600更新/192检查点、四前缀/三种子/e200全部完成；612校准启动，三个主要窗完整293日评分，无B+重拟合/物理前向。708来源/3439904数值独立复算、G00旧模型48检查点复现、5图20面板/406161图形及数据值核验通过。最终G00/G10/G01/G11 RMSE14.257499/11.141437/11.563858/10.785141mm，均高于B+9.124173；G11首日跳偏减小但ATU1/MJ3均值仍退步，ATU1覆盖67.24%。两因素平均效应改善，条件效应不稳定；四组B+联合门均0/3。独立06:30—08:30 UTC包含准备核验，实际结束见回执，剩余预算不转用。Markdown/CSV/PNG/SVG、本地分步commit完成，不push、不追加训练或RL；未交付PDF，仅临时同源图形QA载体。用户/导师尚未验收。下方夜间记录保持历史完成状态。
 - 范围：藕塘同一剖面ATU1、ATU5、MJ3、MJ1的位移均值与概率区间；现有固定数据，不自动扩展案例、补采或真实预警。
-- 最新完成（2026-09-15本地时间）：用户新授权的夜间固定小图与因果残差诊断。GRU_LOCAL/GRU_GRAPH各1241参数，只有固定MJ3—MJ1邻接边不同；全历史GRU8、固定200更新/λ=1/三种子，612校准启动、792/972/1168完整293日评价。24拟合4800更新、96检查点，新增B+拟合/物理前向0。
+- 上一轮完成（2026-09-15本地时间）：用户新授权的夜间固定小图与因果残差诊断。GRU_LOCAL/GRU_GRAPH各1241参数，只有固定MJ3—MJ1邻接边不同；全历史GRU8、固定200更新/λ=1/三种子，612校准启动、792/972/1168完整293日评价。24拟合4800更新、96检查点，新增B+拟合/物理前向0。
 - 结果：两臂仅过972历史均值门，792/最终未过；最终概率门通过，但均值/概率联合门三窗均未过。最终LOCAL/GRAPH平均RMSE14.283633/14.257499，B+9.124173mm；图相对本点的均值/概率门三窗均未过。前1152日因果EMA30诊断符合点0，未触发GRU_GRAPH_DUAL，双头拟合0；不推广为全部空间/分解方法无效。
 - 301来源、96检查点重载/独立NumPy前向、11110304数值/62事件核对通过，最大差3.30e-12；六页PDF/24面板/70346图形值和逐页面视、字体/1.5pt对齐/碰撞通过。初版诊断页注释碰撞与三页预览保留，最终v2只修排版，不改数据/训练。用户/导师验收尚未获得。
 - 本轮新授权窗口18:23:23—次日01:00 UTC（北京时间09:00前），已提前结束；新授权明确允许本轮PDF，不追溯覆盖旧无PDF记录。各步本地commit，不push；不自动增加图边/结构/轮数、双头或RL，剩余时间不转用。前一轮起点小试36拟合7200更新的失败和旧半残差8.867132mm局部正结果保持。
@@ -28,7 +28,7 @@
 # Reading Order
 
 1. 先读[README](README.md)、[文档导航](docs/README.md)和最新[progress](docs/progress.md)。
-2. 当前效果读[夜间简报及PDF](docs/ootang_overnight_graph_results.v1.0.md)、[核验](docs/ootang_overnight_graph_validation.v1.0.md)、[最终回执](results/ootang_overnight_graph_v1/20260915/final_receipt.json)；实现时再读对应冻结计划、实现说明、配置、301来源和图件合同。
+2. 当前效果读[2×2消融报告](docs/ootang_gru_ablation_results.v1.0.md)、[核验](docs/ootang_gru_ablation_validation.v1.0.md)、[最终回执](results/ootang_gru_ablation_v1/20260915/final_receipt.json)；实现时再读对应冻结计划、配置、708来源和图件合同。上一轮读[夜间简报及PDF](docs/ootang_overnight_graph_results.v1.0.md)，不恢复其预算。
 3. 需要对照时再读[起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/校准](docs/ootang_transformer_calibration_results.v1.0.md)、[REG1](docs/ootang_transformer_regularization_results.v1.0.md)、[Transformer/CNN-Mamba](docs/ootang_sequence_conditional_results.v1.0.md)、[TCN](docs/ootang_tcn_conditional_training_results.v1.0.md)。
 4. 旧协议按[历史导航](docs/history/README.md)定向追溯。历史预算、命令和形成时“尚未训练”不是当前待办。
 

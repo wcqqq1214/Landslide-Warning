@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15（本地时间），夜间固定小图与因果残差诊断已完整完成，仍未达到均值和概率同时优于B+的目标。**
+**截至2026-09-15，起点残差表达×边界采样的2×2消融已完整完成。改动改善了原GRU，但最终窗仍未达到均值和概率同时优于B+的目标。**
 
-[最新简报与PDF链接](docs/ootang_overnight_graph_results.v1.0.md) · [六页PDF](output/pdf/ootang_overnight_graph_v1/v2/ootang_spatial_pilot_figures.pdf) · [PNG/SVG](figures/ootang_overnight_graph_v1/20260915/README.md) · [完整33组CSV](results/ootang_overnight_graph_v1/20260915/analysis/phase_summary.csv)
+[最新消融报告](docs/ootang_gru_ablation_results.v1.0.md) · [五张PNG/SVG](figures/ootang_gru_ablation_v1/20260915/README.md) · [完整24组CSV](results/ootang_gru_ablation_v1/20260915/analysis/phase_summary.csv) · [核验](docs/ootang_gru_ablation_validation.v1.0.md)
 
-全历史GRU的本点版与固定图版仅改变MJ3—MJ1神经传递边，均为1241参数、固定200更新和三种子。每个窗口完整293日；下表为四点RMSE的平均值，单位mm。
+四组共用1241参数固定图GRU、三个种子和固定200更新。G00原样，G10起点残差表达，G01边界采样，G11两项合用。每窗完整293日；下表为集成预测的四点平均RMSE，单位mm。
 
-| 起点（已观测天数） | B+ | GRU 本点 | GRU 固定图 |
-| --- | ---: | ---: | ---: |
-| 792 | 27.313325 | 30.127621 | 30.145471 |
-| 972 | 67.167389 | 37.666177 | 37.481242 |
-| 1168，最终探索 | 9.124173 | 14.283633 | 14.257499 |
+| 起点（已观测天数） | B+ | G00 | G10 | G01 | G11 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 792 | 27.313325 | 30.145471 | 26.778773 | 26.249552 | 20.382465 |
+| 972 | 67.167389 | 37.481242 | 20.445223 | 35.158832 | 20.732781 |
+| 1168，最终探索 | 9.124173 | 14.257499 | 11.141437 | 11.563858 | 10.785141 |
 
-两版只过972历史均值门，最终概率门通过但均值未过；图相对本点的均值/概率门三窗均未过。24新拟合4800更新、96检查点和全部负结果已保存并独立复算。前1152日因果残差诊断未触发双头候选，新增双头拟合0；本轮提前结束，不追加模型、训练或RL。图文和每步本地提交已完成，未push。
+48拟合9600更新/192检查点、三个完整评价窗已保存并独立复算；G00复现旧固定图GRU。G11最终RMSE较G00下降24.35%，第1天平均绝对误差15.314678→1.229503mm，但ATU1/MJ3均值仍劣于B+，ATU1的90%覆盖仅67.24%。两因素收益存在交互，不能将平均改善推广到每点或全部时期。四组对B+联合门均0/3；本轮图文已完成，不按结果追加训练，只本地提交、未push。
 
 当前协议给定未来逐日降雨/库水位，每条预测路径不接收实测位移反馈。窗口部分重叠、历史日期已经暴露，属于探索性条件预测；972沿用已可用的792日B+参数，不能推广为每个起点都重新拟合物理参数。它与逐日更新的1—7日滚动任务、固定驱动长期递推分开解释。
 
-[上一轮起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。旧半残差最终8.867132mm的局部正结果不改，不据此重新选模。
+[上一轮固定小图及其PDF](docs/ootang_overnight_graph_results.v1.0.md)、[起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。旧半残差最终8.867132mm的局部正结果不改，不据此重新选模。
 
 ## 阅读入口
 
