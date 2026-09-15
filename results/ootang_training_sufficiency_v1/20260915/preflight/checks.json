@@ -1,0 +1,447 @@
+[
+  {
+    "check": "612/panel_origin",
+    "values": 128,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/panel_horizon",
+    "values": 4096,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/0/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/0/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/0/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/0/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/1/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/1/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/1/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/1/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/2/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/2/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/2/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "612/2/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/panel_origin",
+    "values": 128,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/panel_horizon",
+    "values": 4096,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/0/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/0/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/0/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/0/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/1/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/1/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/1/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/1/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/2/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/2/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/2/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "792/2/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/panel_origin",
+    "values": 128,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/panel_horizon",
+    "values": 4096,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/0/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/0/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/0/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/0/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/1/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/1/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/1/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/1/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/2/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/2/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/2/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "972/2/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/panel_origin",
+    "values": 128,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/panel_horizon",
+    "values": 4096,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/0/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/0/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/0/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/0/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/1/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/1/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/1/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/1/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/2/G10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/2/G10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/2/T10_ANCHOR_UNIFORM/original200_origins",
+    "values": 800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "1168/2/T10_ANCHOR_UNIFORM/original200_horizons",
+    "values": 12800,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/direct_target",
+    "values": 36,
+    "max_difference": 1.1102230246251565e-16
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/batch_single",
+    "values": 36,
+    "max_difference": 2.7755575615628914e-17
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/loss_identity",
+    "values": 4,
+    "max_difference": 6.938893903907228e-18
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/432/no_future_y/0",
+    "values": 24192,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/432/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/432/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/432/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/612/no_future_y/0",
+    "values": 34272,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/612/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/612/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/612/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/687/no_future_y/0",
+    "values": 38472,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/687/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/687/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/687/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "G10_ANCHOR_UNIFORM/unmatured_target_rejected",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/direct_target",
+    "values": 36,
+    "max_difference": 1.1102230246251565e-16
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/batch_single",
+    "values": 36,
+    "max_difference": 4.163336342344337e-17
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/loss_identity",
+    "values": 4,
+    "max_difference": 6.938893903907228e-18
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/432/no_future_y/0",
+    "values": 24192,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/432/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/432/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/432/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/612/no_future_y/0",
+    "values": 34272,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/612/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/612/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/612/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/687/no_future_y/0",
+    "values": 38472,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/687/no_future_y/1",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/687/no_future_y/2",
+    "values": 160,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/687/no_future_y/3",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "check": "T10_ANCHOR_UNIFORM/unmatured_target_rejected",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "check": "gate_positive_negative_and_final_row_invariance",
+    "values": 4,
+    "max_difference": 0.0
+  }
+]

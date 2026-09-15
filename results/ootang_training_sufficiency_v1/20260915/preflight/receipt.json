@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "source_files": 1329,
+  "checks": 89,
+  "values": 538340,
+  "max_difference": 1.1102230246251565e-16,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "max_label_rows": 1168
+}

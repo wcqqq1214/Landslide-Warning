@@ -1,0 +1,9 @@
+{
+  "time_utc": "2026-09-15T10:17:47.322759+00:00",
+  "files": {
+    "code/training_sufficiency/__init__.py": "44d0eb05eeea0e80cc629738e302982adae7fe466bcf4997a518c4978c1ed107",
+    "code/training_sufficiency/core.py": "534350d62572a9af0af41d8babc01e7ca267ba1537c4f94032c44f7f6ad66d07",
+    "code/training_sufficiency/diagnose.py": "633208a160dd1074aea72c7d3ea59bebe8bddd36568f5a857221489e4b9af2e7",
+    "code/training_sufficiency/preflight.py": "7955f53145c5ff075ad4f119a521569c023de30e949ca3527820019f5d34e1d2"
+  }
+}
