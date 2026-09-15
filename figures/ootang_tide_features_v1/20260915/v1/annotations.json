@@ -1,0 +1,74 @@
+[
+  {
+    "figure": "kin_final",
+    "method": "TiDE_KIN",
+    "point": "ATU1",
+    "rmse": 6.80814157663481,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 70.64846416382252,
+    "width90": 7.567465778566088
+  },
+  {
+    "figure": "kin_final",
+    "method": "TiDE_KIN",
+    "point": "ATU5",
+    "rmse": 5.388625119780112,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 82.5938566552901,
+    "width90": 13.29110485652609
+  },
+  {
+    "figure": "kin_final",
+    "method": "TiDE_KIN",
+    "point": "MJ3",
+    "rmse": 13.284550831485642,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 67.23549488054607,
+    "width90": 20.65016654688543
+  },
+  {
+    "figure": "kin_final",
+    "method": "TiDE_KIN",
+    "point": "MJ1",
+    "rmse": 4.678797230661176,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 72.6962457337884,
+    "width90": 7.4424658010145786
+  },
+  {
+    "figure": "hyd_final",
+    "method": "TiDE_HYD",
+    "point": "ATU1",
+    "rmse": 7.260089619756109,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 100.0,
+    "width90": 122.76469023466971
+  },
+  {
+    "figure": "hyd_final",
+    "method": "TiDE_HYD",
+    "point": "ATU5",
+    "rmse": 7.310317437679937,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 100.0,
+    "width90": 150.41819940134837
+  },
+  {
+    "figure": "hyd_final",
+    "method": "TiDE_HYD",
+    "point": "MJ3",
+    "rmse": 14.268078258311991,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 75.42662116040955,
+    "width90": 33.970600955949976
+  },
+  {
+    "figure": "hyd_final",
+    "method": "TiDE_HYD",
+    "point": "MJ1",
+    "rmse": 5.068527468433019,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 64.95489502722354
+  }
+]

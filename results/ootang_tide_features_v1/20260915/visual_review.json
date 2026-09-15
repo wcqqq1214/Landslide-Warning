@@ -1,0 +1,54 @@
+{
+  "status": "passed",
+  "reviewer": "assistant visual inspection; user/mentor acceptance pending",
+  "figures": [
+    {
+      "name": "feature_group_comparison",
+      "panels": [
+        "a: all nine methods and three full windows visible; PHYS first-window and K second-window differences retained",
+        "b: both new arms and all paired seeds visible, direction inconsistency retained",
+        "c: final four-point RMSE preserves MJ3 failures and DATA ATU5 failure",
+        "d: K low coverage and H/DATA MJ3 failures visible"
+      ],
+      "whole": "Legend, axes, footnotes readable; no clipped scientific values"
+    },
+    {
+      "name": "feature_factor_effects",
+      "panels": [
+        "ATU1: conditional H reverses between first and second windows",
+        "ATU5: K improvements differ by H setting",
+        "MJ3: positive and negative conditional differences remain visible on common scale",
+        "MJ1: H with K changes sign between first and second windows"
+      ],
+      "whole": "Four shared scales, all conditions and zero reference retained; these are metric differences, not causal effects"
+    },
+    {
+      "name": "kin_final",
+      "panels": [
+        "ATU1: terminal underprediction and70.6% coverage retained",
+        "ATU5:5.39 vs9.12mm RMSE and82.6% coverage shown",
+        "MJ3:13.28 vs13.02mm RMSE and67.2% coverage retained",
+        "MJ1:72.7% coverage and full final discrepancy visible"
+      ],
+      "whole": "Original-resolution PNG and SVG titles verified; shared axes with H, all seeds and full intervals visible"
+    },
+    {
+      "name": "hyd_final",
+      "panels": [
+        "ATU1: wide122.8mm interval retained",
+        "ATU5: wide150.4mm interval retained",
+        "MJ3:14.27 vs13.02mm and75.4% coverage retain failure",
+        "MJ1:65.0mm interval and full path retained"
+      ],
+      "whole": "Same axes as K; no neural reconstruction invented"
+    }
+  ],
+  "warnings_reviewed": [
+    "In-app reduced image preview omitted some labels; original-resolution PNG and SVG have all panel titles",
+    "Top-row captions share a horizontal band with lower-row titles but remain spatially separate; rendered collision checks passed",
+    "100% marginal coverage alone is not probability success; widths printed",
+    "Overlapping reference curves retained and disambiguated in source CSV"
+  ],
+  "no_manual_data_changes": true,
+  "reviewed_utc": "2026-09-15T15:10:16.009910+00:00"
+}

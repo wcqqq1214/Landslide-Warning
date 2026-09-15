@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T15:05:53.528549+00:00",
+  "status": "rendered_pending_visual_and_data_audit",
+  "files": {
+    "annotations.json": "0ee7d3730ed3472209a1ba7c0ee0b712e247163c381786316192abe83906b02e",
+    "exports.json": "5175a30d76322dd6eb1ad1e360d19364a1ecb2af67312685caa62b4a15197729",
+    "feature_factor_effects.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "feature_factor_effects.png": "735f414e9e5778ae200f19c3f0c45640e6d1f9150dbb6a58f6d2fb8c30f99428",
+    "feature_factor_effects.svg": "2e92f5335020296056eb3349c630eb7636d8cd3dd334cb379fe8132f7824e401",
+    "feature_factor_effects.text_geometry.json": "9bf69d646efa1576e61a412c93328a1b014dc4148ddf934076a35d366618b9dd",
+    "feature_group_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "feature_group_comparison.png": "c44f61a654c59904a8b82f20fc1b973cacf842f0a182358d046aaa4e434c71a6",
+    "feature_group_comparison.svg": "97a0a5955f18354bb4432353c082b6b6e395d2e99888ee08bdb3ee1e093fc754",
+    "feature_group_comparison.text_geometry.json": "e81eaf0c886cbcdec42034dc26eb1344d93d884263ddf3ef1694e2af76f0363d",
+    "hyd_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "hyd_final.png": "866960f377ecd411a7e1f19568425decd5e1a55d4c5fd05f58d6dae9715be978",
+    "hyd_final.svg": "4a1b5b83dfbc601c413170843a7ee31f4713d2f92ac90958b30c2ec11eb7c6ae",
+    "hyd_final.text_geometry.json": "d002e413978a2bec3996b047347638af60a24a49efcce92bfff962161744fdbc",
+    "kin_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "kin_final.png": "4288a29563fb0fce38a958759f7d449e8993908f71dfbe310fc14bebefe660ea",
+    "kin_final.svg": "48f48a647833bd477e26190fd65dec77e468fc24b86439202551187b2e42f1a7",
+    "kin_final.text_geometry.json": "d002e413978a2bec3996b047347638af60a24a49efcce92bfff962161744fdbc",
+    "plot_records.json": "dd4c4c187c2f3f6fca938c8aaa16113cd6f6f2bfa6fce3204c3beb88c3854560",
+    "source_arrays.npz": "358104d25e967e23a795d5ac822f96267d176b8016b41dff114118c90447050d"
+  }
+}
