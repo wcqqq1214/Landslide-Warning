@@ -7,3 +7,62 @@
 {"time_utc": "2026-09-15T10:18:16.332373+00:00", "event": "diagnostic_locked", "extend": true, "optimizer_updates": 0}
 {"time_utc": "2026-09-15T10:20:18.194946+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "independent_diagnostic_replay_no_final_labels"}
 {"time_utc": "2026-09-15T10:21:39.934787+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "independent_diagnostic_replay_no_final_labels"}
+{"time_utc": "2026-09-15T10:24:57.063097+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "conditional_fit_current_prefix_and_calibration"}
+{"time_utc": "2026-09-15T10:24:57.094027+00:00", "event": "extension_fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:25:07.623530+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 10.528978792019188}
+{"time_utc": "2026-09-15T10:25:07.634042+00:00", "event": "extension_fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:25:18.143589+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 10.5091193751432}
+{"time_utc": "2026-09-15T10:25:18.153353+00:00", "event": "extension_fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:25:28.626866+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 10.47306550014764}
+{"time_utc": "2026-09-15T10:25:28.637163+00:00", "event": "extension_fit_started", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:25:29.620685+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 0.9829457919113338}
+{"time_utc": "2026-09-15T10:25:29.630027+00:00", "event": "extension_fit_started", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:25:30.620555+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 0.9897758751176298}
+{"time_utc": "2026-09-15T10:25:30.629869+00:00", "event": "extension_fit_started", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:25:31.628435+00:00", "event": "extension_fit_completed", "origin": 612, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 0.9979838747531176}
+{"time_utc": "2026-09-15T10:25:31.632569+00:00", "event": "extension_trajectory_issued", "origin": 612, "end": 905}
+{"time_utc": "2026-09-15T10:25:31.632643+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "conditional_fit_current_prefix_and_calibration"}
+{"time_utc": "2026-09-15T10:25:31.649080+00:00", "event": "extension_fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:25:44.766726+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 13.11724808299914}
+{"time_utc": "2026-09-15T10:25:44.777878+00:00", "event": "extension_fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:25:57.859767+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 13.08145329169929}
+{"time_utc": "2026-09-15T10:25:57.870897+00:00", "event": "extension_fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:26:10.970357+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 13.098945874720812}
+{"time_utc": "2026-09-15T10:26:10.981679+00:00", "event": "extension_fit_started", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:26:12.062606+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 1.0803880412131548}
+{"time_utc": "2026-09-15T10:26:12.072806+00:00", "event": "extension_fit_started", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:26:13.198441+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 1.1245501250959933}
+{"time_utc": "2026-09-15T10:26:13.209513+00:00", "event": "extension_fit_started", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:26:14.326040+00:00", "event": "extension_fit_completed", "origin": 792, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 1.115826416760683}
+{"time_utc": "2026-09-15T10:26:14.338317+00:00", "event": "extension_trajectory_issued", "origin": 792, "end": 1085}
+{"time_utc": "2026-09-15T10:26:14.338411+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "conditional_fit_current_prefix_and_calibration"}
+{"time_utc": "2026-09-15T10:26:14.359747+00:00", "event": "extension_fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:26:30.221172+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 15.861062000039965}
+{"time_utc": "2026-09-15T10:26:30.234334+00:00", "event": "extension_fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:26:45.903720+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 15.66901412466541}
+{"time_utc": "2026-09-15T10:26:45.914868+00:00", "event": "extension_fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:27:01.623605+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 15.708372250199318}
+{"time_utc": "2026-09-15T10:27:01.635114+00:00", "event": "extension_fit_started", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:27:02.885788+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 1.2500107497908175}
+{"time_utc": "2026-09-15T10:27:02.897081+00:00", "event": "extension_fit_started", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:27:04.311559+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 1.4138420829549432}
+{"time_utc": "2026-09-15T10:27:04.322911+00:00", "event": "extension_fit_started", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:27:05.627504+00:00", "event": "extension_fit_completed", "origin": 972, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 1.303949666209519}
+{"time_utc": "2026-09-15T10:27:05.636373+00:00", "event": "extension_trajectory_issued", "origin": 972, "end": 1265}
+{"time_utc": "2026-09-15T10:27:05.636584+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "conditional_fit_current_prefix_and_calibration"}
+{"time_utc": "2026-09-15T10:27:05.656054+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:27:24.314360+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 18.657461415976286}
+{"time_utc": "2026-09-15T10:27:24.326215+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:27:42.891708+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 18.562869499903172}
+{"time_utc": "2026-09-15T10:27:42.903699+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:28:01.458120+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 18.55141800036654}
+{"time_utc": "2026-09-15T10:28:01.470489+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T10:28:02.875494+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 0, "updates": 400, "elapsed_seconds": 1.4044297910295427}
+{"time_utc": "2026-09-15T10:28:02.886701+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T10:28:04.379813+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 1, "updates": 400, "elapsed_seconds": 1.492453457787633}
+{"time_utc": "2026-09-15T10:28:04.391511+00:00", "event": "extension_fit_started", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T10:28:05.820611+00:00", "event": "extension_fit_completed", "origin": 1168, "arm": "T10_ANCHOR_UNIFORM", "seed": 2, "updates": 400, "elapsed_seconds": 1.4284292086958885}
+{"time_utc": "2026-09-15T10:28:05.829507+00:00", "event": "extension_trajectory_issued", "origin": 1168, "end": 1461}
+{"time_utc": "2026-09-15T10:28:21.694696+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_conditional_paths_locked_before_full_scoring"}
+{"time_utc": "2026-09-15T10:28:21.872086+00:00", "event": "extension_scoring_completed", "new_fits": 24, "actual_updates": 9600}
+{"time_utc": "2026-09-15T10:28:40.479570+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "independent_extension_audit_after_all_paths_and_scores_locked"}

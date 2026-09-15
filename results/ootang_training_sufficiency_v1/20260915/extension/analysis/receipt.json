@@ -1,0 +1,13 @@
+{
+  "status": "complete",
+  "new_fits": 24,
+  "actual_updates": 9600,
+  "replayed_updates": 4800,
+  "additional_updates": 4800,
+  "summary_rows": 24,
+  "point_rows": 96,
+  "seed_rows": 72,
+  "daily_rows": 28128,
+  "pairs": 57,
+  "checkpoint_selection": false
+}
