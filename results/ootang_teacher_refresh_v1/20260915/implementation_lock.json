@@ -1,0 +1,20 @@
+{
+  "time_utc": "2026-09-15T11:18:28.857247+00:00",
+  "files": {
+    "code/teacher_refresh/__init__.py": "3bc4746bc3389e96e303586b3452e02cef37ae6c59a5e6d91c83ab064d4af1f3",
+    "code/teacher_refresh/core.py": "bddeb98e5147a3f5d5d3629e8b0c6d47561041571e680045b3d4fcdf8019fa10",
+    "code/teacher_refresh/preflight.py": "ab76c1ca4327df9e875f063bee27a66f356b82238c3f5ec2e2cdeafd8c777925",
+    "code/teacher_refresh/run.py": "6fa71e486d38df40d95592c2d9cce33761380102145d1db0d8c91e9a5c18f4ce",
+    "code/teacher_refresh/teachers.py": "24d4060f05f83ace61996cae5576ef7c0789915d30eba10ea950ed0ff3d8ec1b",
+    "config/ootang_teacher_refresh.v1_0.json": "c82343d6ccc9bbc1343e9c5bfd5e44de2459174e428f97381a2811f48e67e0e7",
+    "docs/ootang_teacher_refresh_implementation.v1.0.md": "481355b895da6267cccec594b1a29cb6fd9b41b5a8efcdfeb61352cfdf1d88d1",
+    "docs/ootang_teacher_refresh_plan.v1.0.md": "3a5fe3ed3c8a3a4cb66b7d6526d8cd2fd6321e8b42003d3dbf76a89a89912fe4",
+    "docs/ootang_teacher_refresh_sources.v1.0.json": "6c182f2b873bd63399370ecce5d0220a278bcb1e3f72f29006ca1a6f3629835b",
+    "docs/ootang_teacher_refresh_support.v1.0.csv": "44bdf2eb874258ee42fd1debd3e7093618ce8e60b3608055f0fead25ca61e340",
+    "results/ootang_teacher_refresh_v1/20260915/preflight/checks.csv": "8727b7772d682bf8f720e50d13185fa55b0456a82eb579fb90b6a239a3fcf129",
+    "results/ootang_teacher_refresh_v1/20260915/preflight/receipt.json": "bdb6e6af99212fee60ba4d82da553fccc4404d72da9724631d25c15713ebfb81",
+    "results/ootang_teacher_refresh_v1/20260915/preflight_v2/checks.csv": "08dc231a12e77a4c028f6995e67c4de5a8544dbd79b87ae66a06766ab8b8ba9c",
+    "results/ootang_teacher_refresh_v1/20260915/preflight_v2/receipt.json": "977a8b12be46409aacbee3c1bb246e4da3bb0cb8ced65edb0f3b5e46accd9c44",
+    "results/ootang_teacher_refresh_v1/20260915/preflight_v2.log": "2493097758915cb798b42b09d9f5c5bd25dd445f94a801bc0e260089283f678f"
+  }
+}

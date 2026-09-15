@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-15T11:14:38.370604+00:00",
+  "source_files": 203,
+  "checks": 147,
+  "values_checked": 281512,
+  "max_difference": 7.145661840013418e-11,
+  "new_neural_fits": 0,
+  "new_bplus_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 2,
+  "max_label_prefix": 612,
+  "synthetic_teacher": "preflight fixture only; never saved or used in training"
+}
