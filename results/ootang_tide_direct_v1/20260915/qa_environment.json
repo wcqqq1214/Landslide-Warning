@@ -1,0 +1,7 @@
+{
+  "python": "/tmp/ootang-tide-env-20260915/bin/python",
+  "pymupdf": "1.26.7",
+  "installation": "uv pip install --python /tmp/ootang-tide-env-20260915/bin/python --no-deps pymupdf==1.26.7",
+  "purpose": "temporary same-backend PDF geometry inspection only; no PDF deliverable",
+  "earlier_probe": "bundled Python lacks fitz; no drawing or model changes were made"
+}

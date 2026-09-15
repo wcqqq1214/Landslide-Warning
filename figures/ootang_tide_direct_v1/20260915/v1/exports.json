@@ -1,0 +1,48 @@
+{
+  "figures": [
+    {
+      "name": "tide_comparison",
+      "png": "tide_comparison.png",
+      "svg": "tide_comparison.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-qa-oh4renhy/tide_comparison.pdf",
+      "panels": 4
+    },
+    {
+      "name": "data_final",
+      "png": "data_final.png",
+      "svg": "data_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-qa-oh4renhy/data_final.pdf",
+      "panels": 4
+    },
+    {
+      "name": "phys_final",
+      "png": "phys_final.png",
+      "svg": "phys_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-qa-oh4renhy/phys_final.pdf",
+      "panels": 4
+    }
+  ],
+  "common_limits": [
+    [
+      -26.167504042298766,
+      607.6675938711603
+    ],
+    [
+      -36.15001196624163,
+      839.4836112160557
+    ],
+    [
+      -15.82103069757599,
+      367.3994906437091
+    ],
+    [
+      -17.442836241401885,
+      402.9021677202936
+    ]
+  ],
+  "qa_only_directory": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-qa-oh4renhy",
+  "source_code_sha256": "355957535a3eb26fcc856ec9b22c695cd2650d2b132a5113861cefd7e482584c",
+  "backend": "python",
+  "width_mm": 240,
+  "height_mm": 170
+}

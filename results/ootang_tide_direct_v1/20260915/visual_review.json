@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "reviewer": "assistant visual inspection; user/mentor acceptance pending",
+  "figures": [
+    {
+      "name": "tide_comparison",
+      "panels": [
+        "a: all seven methods and three windows visible, final differences overlap but are decomposed below",
+        "b: all three paired seed differences and ensemble line retained, sign reversal at1168 visible",
+        "c: four points and B+ references, MJ3 and MJ1 failures visible",
+        "d: all four points, DATA MJ3 coverage below80% retained"
+      ],
+      "whole": "legend unobstructed, axes aligned, footer readable, no scientific marks clipped"
+    },
+    {
+      "name": "data_final",
+      "panels": [
+        "ATU1: full observed terminal rise and three predictions, broad intervals retained",
+        "ATU5: broad interval not mistaken for mean improvement; RMSE10.29 vs9.12 printed",
+        "MJ3: observed tail outside narrow band,67.6% coverage clearly printed",
+        "MJ1: all series,3seeds and intervals visible; RMSE2.89 vs6.30 printed"
+      ],
+      "whole": "common axes with PHYS, actual full history and293-day forecast, no invented neural history"
+    },
+    {
+      "name": "phys_final",
+      "panels": [
+        "ATU1: terminal underprediction visible and95.2%90-interval coverage printed",
+        "ATU5: reduced error and narrower interval visible,95.6% coverage printed",
+        "MJ3: terminal underprediction retained;RMSE14.65 vs13.02 printed",
+        "MJ1: final lag retained;RMSE7.73 vs6.30 printed"
+      ],
+      "whole": "matching DATA panel scales; uncertainty and captions unobstructed"
+    }
+  ],
+  "warnings_reviewed": [
+    "Dense overlapping B+ and origin-anchor lines have matching values; separate source CSV preserves distinction",
+    "Upper-row captions remain below their axes and above lower-row data; automated collisions passed",
+    "Gaussian intervals describe marginal calibrated errors, not seed uncertainty or joint293-day coverage"
+  ],
+  "no_manual_data_changes": true
+}

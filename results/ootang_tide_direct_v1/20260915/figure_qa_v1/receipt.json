@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "source_max_difference": 0.0,
+  "svg_max_difference_pt": 7.204565122265194e-07,
+  "figures": 3,
+  "panels": 12,
+  "records": 89,
+  "checks": 355,
+  "values": 227476,
+  "all_scientific_marks_inside_axes": true,
+  "rendered_audits": [
+    {
+      "figure": "tide_comparison",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "tide_comparison",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "data_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "data_final",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "phys_final",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "phys_final",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate manual record",
+  "source_warning_review": [
+    "PNG300dpi/SVG are the frozen outputs; no TIFF required",
+    "Final width240mm and glyph sizes measured after rendering",
+    "Annotations below each plot area are checked in rendered output"
+  ]
+}

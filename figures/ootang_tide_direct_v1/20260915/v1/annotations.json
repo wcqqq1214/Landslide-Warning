@@ -1,0 +1,74 @@
+[
+  {
+    "figure": "data_final",
+    "method": "TiDE_DATA",
+    "point": "ATU1",
+    "rmse": 6.526238786054525,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 100.0,
+    "width90": 114.79727660948821
+  },
+  {
+    "figure": "data_final",
+    "method": "TiDE_DATA",
+    "point": "ATU5",
+    "rmse": 10.289435348614239,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 100.0,
+    "width90": 190.3515443999897
+  },
+  {
+    "figure": "data_final",
+    "method": "TiDE_DATA",
+    "point": "MJ3",
+    "rmse": 9.409748254423143,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 67.57679180887372,
+    "width90": 10.169294470177647
+  },
+  {
+    "figure": "data_final",
+    "method": "TiDE_DATA",
+    "point": "MJ1",
+    "rmse": 2.8905155859834,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 76.35578074745267
+  },
+  {
+    "figure": "phys_final",
+    "method": "TiDE_PHYS",
+    "point": "ATU1",
+    "rmse": 7.738357855378591,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 95.22184300341297,
+    "width90": 39.499737727154645
+  },
+  {
+    "figure": "phys_final",
+    "method": "TiDE_PHYS",
+    "point": "ATU5",
+    "rmse": 5.565490632066101,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 95.56313993174061,
+    "width90": 22.35278433724102
+  },
+  {
+    "figure": "phys_final",
+    "method": "TiDE_PHYS",
+    "point": "MJ3",
+    "rmse": 14.651745974053407,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 96.58703071672356,
+    "width90": 66.94397409467274
+  },
+  {
+    "figure": "phys_final",
+    "method": "TiDE_PHYS",
+    "point": "MJ1",
+    "rmse": 7.731520778464969,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 45.912796590462676
+  }
+]

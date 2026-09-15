@@ -1,0 +1,22 @@
+{
+  "time_utc": "2026-09-15T14:37:51.641410+00:00",
+  "status": "rendered_pending_visual_and_data_audit",
+  "files": {
+    "annotations.json": "468dba1e6cf5db844a8d742a84f740bbd0933c099cc9a6d560a51387d97920a5",
+    "data_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "data_final.png": "cae567ec94d7b705ef8a1e04d13a1b1031b30fabf8cfef8bcc2dd33e20ed21cd",
+    "data_final.svg": "754dc0e6f5f34e3be625a71f02e41d465c15c95fd8cc3334c86230a6ada63a11",
+    "data_final.text_geometry.json": "d002e413978a2bec3996b047347638af60a24a49efcce92bfff962161744fdbc",
+    "exports.json": "9398279e4ba042217aecc8e2c382aad4e47c51734a8f833ea8d455e3e787fedf",
+    "phys_final.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "phys_final.png": "a4698f0faa84bfe43b4328aa2590877fb964cec1d772edd161f171968fe06de6",
+    "phys_final.svg": "1e93eb8ce50303caf0c72db0fd7ea8b92d6efcd9baba52b1804f42706e51aaa3",
+    "phys_final.text_geometry.json": "d002e413978a2bec3996b047347638af60a24a49efcce92bfff962161744fdbc",
+    "plot_records.json": "5bba80faf77a01ba42dbbcae4825a8080b0ec9b1f707b471ae4155637c7670bb",
+    "source_arrays.npz": "5da19019236c156694df2cbb7f4c9044d0a0a8a6b146bc72ce9acdd880621412",
+    "tide_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "tide_comparison.png": "ca43abf099eaaadf099c7002eed573eef2609864b031191df9f646a4d291d878",
+    "tide_comparison.svg": "be432dd1280d82a2b856d28774e12c06af06d7eac51c33d7ea08956a6b3d17f8",
+    "tide_comparison.text_geometry.json": "59ab990b7ccab48f5ad8cba3465fb4da63c3c562b597460dd634d1912f4d0732"
+  }
+}

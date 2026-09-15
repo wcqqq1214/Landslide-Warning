@@ -1,0 +1,21 @@
+{
+  "time_utc": "2026-09-15T14:38:31.454619+00:00",
+  "status": "passed",
+  "files": {
+    "checks.json": "332db453ccfa3cf7e8aa0826231613fd9ffe47ba6cd98998d9f6cdacaa268f46",
+    "data_final.collision.json": "86598e5b93103c01e20c795a980034110729f9343d95d50930af67a2cb6e1e12",
+    "data_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "data_final.text.json": "ac453174febb6a9b1dfaf480b609aa8b9f8e3123c61299103ebcb37ac8a01e52",
+    "data_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "phys_final.collision.json": "7004a5654a0d5954b309444b24584245ef7c2f1c075864e140a28619ca9d1e84",
+    "phys_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "phys_final.text.json": "9df748c9e19e42f267261ce6144fae52233af8afed32d1e88dc71600aafaa6b2",
+    "phys_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt.json": "d7f68431b5b553c074960db7c53c121ae679bb8ea141ccfd79b6fe4e965a0365",
+    "source_qa.json": "6f4b8535c5a169e2516aefd15fe4dd24d50e3574fa3f684706c3483f540fe990",
+    "tide_comparison.collision.json": "d248c4cc47756bafac6c89df7b7b0bbb5444c2a577c5c66a9efd93d6db805cc3",
+    "tide_comparison.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tide_comparison.text.json": "61a13eba2fa9ab82a3073df7b9199873c6441715f93f54a1339e17efa06c9a8f",
+    "tide_comparison.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}
