@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T17:07:46.390847+00:00",
+  "status": "rendered_pending_visual_and_data_audit",
+  "files": {
+    "annotations.json": "e1ca799c0f3e145d4b0b3805b1d9fa74dfcde7a47532d48056721abaf0a86176",
+    "cal_final.alignment.json": "c53ae5118c992e4a427f6b796e55b1d05cffa7b7fe4e6c29de64669885dfbfd5",
+    "cal_final.png": "3b955b178d268a6cda970d92a8922d0b02188536e23d57e2eecdc3a941e23b91",
+    "cal_final.svg": "16ab078c40862eb58ef5d7b14220d754ecc7d989e5324b13b866e2a0e654c770",
+    "cal_final.text_geometry.json": "9885a8a584d2fdb82fd5dac0996a2a6e8fe8e32ce9f00db0703877a217eeb330",
+    "correction_comparison.alignment.json": "103bf2c65fc589bc1d266ba0c8b2ebf3ed5a5be0d60d7e1598ba302d6897e36b",
+    "correction_comparison.png": "17f4850f2ebd19193c2a6e6f299af0de54193112723ff8e6dba60c7f83d7ebc6",
+    "correction_comparison.svg": "bcfa4359019707635af5fceb48de1aa988f25e65fc7a0ad5e5b9c92c991ce2fb",
+    "correction_comparison.text_geometry.json": "3715dce0b73fe11d6e586544d3b913206884c7efd6fc156949b752b892c90463",
+    "exports.json": "348ebf818a779168c6aed1fc5b00d09a0619d3101928dcb6e00188ca928b2074",
+    "hcal_final.alignment.json": "c53ae5118c992e4a427f6b796e55b1d05cffa7b7fe4e6c29de64669885dfbfd5",
+    "hcal_final.png": "9ece9a86e71f4fae02a254810358543a24cf4e1e54621c88115e639c2de6f2f5",
+    "hcal_final.svg": "827c1740d7e513bfa21258c42c93106db02f4bdde65c9fd30ec55f9485c56ad8",
+    "hcal_final.text_geometry.json": "9885a8a584d2fdb82fd5dac0996a2a6e8fe8e32ce9f00db0703877a217eeb330",
+    "oof_support.alignment.json": "103bf2c65fc589bc1d266ba0c8b2ebf3ed5a5be0d60d7e1598ba302d6897e36b",
+    "oof_support.png": "0fa9e7571dda044be9e83b90e2621aebfe4bc8919a59883c4c597fd86c1b5559",
+    "oof_support.svg": "e0a8f8c64bfb4a7278f8c57af3579f12ada6140c114cf83e4c0500de1420e79c",
+    "oof_support.text_geometry.json": "11dbaa33c4f24bfd25f076b27d62319cf9ef84f50437577c195c7abbc208970b",
+    "plot_records.json": "557888be697fcd2dd0a38c3eb650140cf4a853a182f54eac091c9dbec4c35aa7",
+    "source_arrays.npz": "29d9e7c0742d31e2debf4dcce4a1b8cd0bbd43f06b6d8ffd4867cfd803856cc1"
+  }
+}

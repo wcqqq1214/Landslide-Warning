@@ -1,0 +1,55 @@
+{
+  "figures": [
+    {
+      "name": "correction_comparison",
+      "png": "correction_comparison.png",
+      "svg": "correction_comparison.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-correction-qa-rwz8yv8p/correction_comparison.pdf",
+      "panels": 4
+    },
+    {
+      "name": "oof_support",
+      "png": "oof_support.png",
+      "svg": "oof_support.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-correction-qa-rwz8yv8p/oof_support.pdf",
+      "panels": 4
+    },
+    {
+      "name": "cal_final",
+      "png": "cal_final.png",
+      "svg": "cal_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-correction-qa-rwz8yv8p/cal_final.pdf",
+      "panels": 4
+    },
+    {
+      "name": "hcal_final",
+      "png": "hcal_final.png",
+      "svg": "hcal_final.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-correction-qa-rwz8yv8p/hcal_final.pdf",
+      "panels": 4
+    }
+  ],
+  "common_limits": [
+    [
+      -26.589209654311272,
+      617.4605353056729
+    ],
+    [
+      -34.39997433581468,
+      798.8438484650299
+    ],
+    [
+      -15.82103069757599,
+      367.3994906437091
+    ],
+    [
+      -16.413077862690315,
+      378.9888898146583
+    ]
+  ],
+  "qa_only_directory": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-tide-correction-qa-rwz8yv8p",
+  "source_code_sha256": "a5ee4cf66efd1f2c5b7c925788495c99c85c97bc73fd15289aa98580c7d0bc6a",
+  "backend": "python",
+  "width_mm": 240,
+  "height_mm": 170
+}

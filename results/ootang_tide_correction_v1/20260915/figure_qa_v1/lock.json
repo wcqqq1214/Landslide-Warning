@@ -1,0 +1,25 @@
+{
+  "time_utc": "2026-09-15T17:09:01.899840+00:00",
+  "status": "passed",
+  "files": {
+    "cal_final.collision.json": "57170bc99a2495c1ce8ccf424e3c4aed5eadde598b0cb14e01c68c1f17c8c014",
+    "cal_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cal_final.text.json": "6e2d99f95bfbeca6f8ac18e151b7e046618bb17b9dbf83791a2aea446df6c359",
+    "cal_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checks.json": "28bd6ec2379520bfcd82ed668569099a429dada54a07dd5c7731cff3b89d97ff",
+    "correction_comparison.collision.json": "16b52ff7bbca45e2274f17698c3c9285b045502e9293ac74d4bccbf4451ccf51",
+    "correction_comparison.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "correction_comparison.text.json": "ec905e11787cd1e533de2a98fac4f83aaa3be29f24fbffb2faee81ed65a20aec",
+    "correction_comparison.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hcal_final.collision.json": "d4504ed02e5bff1b25e09a3fa776bc840f389f3452bf3b292c8844f36eb66b94",
+    "hcal_final.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hcal_final.text.json": "ede7ed5c028b34678c2d666876a24409da7a9cb41156a2fde6e1121a334b3998",
+    "hcal_final.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "oof_support.collision.json": "8d7340f6d71ea14489cae9f10afcea293ac132b037a88cd473364f40603dcca6",
+    "oof_support.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "oof_support.text.json": "ee987cced0589ade1b88d7690aa886786c789e123dc0f9307e8d67a459e01007",
+    "oof_support.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt.json": "f1cce00597fc95389963c1afe71a59c8307aa3f6ab941b61d3b0afd5d360261d",
+    "source_qa.json": "106da6b69d0dacb6c177b21eccda371fbe5de65dceb276d1ddd54896b36dfc22"
+  }
+}

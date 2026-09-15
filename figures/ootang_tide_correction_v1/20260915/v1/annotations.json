@@ -1,0 +1,74 @@
+[
+  {
+    "figure": "cal_final",
+    "method": "TiDE_CAL",
+    "point": "ATU1",
+    "rmse": 14.407181411696909,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 100.0,
+    "width90": 100.04235938812087
+  },
+  {
+    "figure": "cal_final",
+    "method": "TiDE_CAL",
+    "point": "ATU5",
+    "rmse": 25.698651487703934,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 100.0,
+    "width90": 99.95897029966159
+  },
+  {
+    "figure": "cal_final",
+    "method": "TiDE_CAL",
+    "point": "MJ3",
+    "rmse": 8.638195759333705,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 82.93515358361775,
+    "width90": 21.078356431049997
+  },
+  {
+    "figure": "cal_final",
+    "method": "TiDE_CAL",
+    "point": "MJ1",
+    "rmse": 7.788921674707708,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 31.341828563374758
+  },
+  {
+    "figure": "hcal_final",
+    "method": "TiDE_HCAL",
+    "point": "ATU1",
+    "rmse": 12.199034662060672,
+    "rmse_bplus": 8.06824598915759,
+    "coverage90": 100.0,
+    "width90": 116.22668929224018
+  },
+  {
+    "figure": "hcal_final",
+    "method": "TiDE_HCAL",
+    "point": "ATU5",
+    "rmse": 7.853717132819517,
+    "rmse_bplus": 9.115006709976656,
+    "coverage90": 100.0,
+    "width90": 101.90630148939726
+  },
+  {
+    "figure": "hcal_final",
+    "method": "TiDE_HCAL",
+    "point": "MJ3",
+    "rmse": 15.061866266766307,
+    "rmse_bplus": 13.016273948901418,
+    "coverage90": 62.116040955631405,
+    "width90": 23.47039922819613
+  },
+  {
+    "figure": "hcal_final",
+    "method": "TiDE_HCAL",
+    "point": "MJ1",
+    "rmse": 7.052446762826157,
+    "rmse_bplus": 6.297166223062725,
+    "coverage90": 100.0,
+    "width90": 31.437139571851507
+  }
+]

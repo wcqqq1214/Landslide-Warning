@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "reviewer": "Codex primary agent, manual inspection of all four full PNGs",
+  "time_utc": "2026-09-15T17:10:11.828094+00:00",
+  "version": "v1",
+  "panels": 16,
+  "images": [
+    {
+      "name": "correction_comparison",
+      "png_sha256": "17f4850f2ebd19193c2a6e6f299af0de54193112723ff8e6dba60c7f83d7ebc6",
+      "verdict": "passed"
+    },
+    {
+      "name": "oof_support",
+      "png_sha256": "0fa9e7571dda044be9e83b90e2621aebfe4bc8919a59883c4c597fd86c1b5559",
+      "verdict": "passed"
+    },
+    {
+      "name": "cal_final",
+      "png_sha256": "3b955b178d268a6cda970d92a8922d0b02188536e23d57e2eecdc3a941e23b91",
+      "verdict": "passed"
+    },
+    {
+      "name": "hcal_final",
+      "png_sha256": "9ece9a86e71f4fae02a254810358543a24cf4e1e54621c88115e639c2de6f2f5",
+      "verdict": "passed"
+    }
+  ],
+  "observations": [
+    "All thirteen methods and all paired seeds shown; ensemble/per-seed reversal visible and retained.",
+    "Support graph includes zero bootstrap and all396 overlapping paths; oldest base has only48day maximum mature target distance.",
+    "Both four-point figures share axis limits and retain full observations,all seeds and95percent intervals.",
+    "Chinese glyphs,legends,panels and annotations readable without overlap; no fabricated neural history curves.",
+    "CAL wide ATU bands and HCAL MJ3 undercoverage remain visible; no smoothing or clipped forecast data."
+  ],
+  "scientific_changes": false,
+  "formal_training_retries": 0,
+  "user_acceptance": "pending",
+  "mentor_acceptance": "pending"
+}
