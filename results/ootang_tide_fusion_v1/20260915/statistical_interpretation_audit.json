@@ -1,0 +1,77 @@
+{
+  "status": "passed_with_explicit_limitations",
+  "checked": 11,
+  "reviewer": "Codex primary agent; evidence-based interpretation audit",
+  "items": [
+    {
+      "topic": "simpson_aggregation",
+      "review": "Ensemble prediction metrics checked separately from per-seed metrics. BOUND vs KIN at792 improves MAE/RMSE in3/3 seeds yet has worse ensemble MAE/RMSE; both retained, no aggregation substitution.",
+      "evidence": "analysis/phase_summary.csv; analysis/pairing.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "ecological_fallacy",
+      "review": "Four-point averages do not imply per-point benefit. Final BOUND MJ3 mean errors and MJ1 RMSE exceed B+; individual coverage failures retained.",
+      "evidence": "analysis/metrics_by_point.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "berkson_selection",
+      "review": "Every prescribed arm,seed,origin and complete date retained regardless of poor performance; no conditioning reported results on success.",
+      "evidence": "training_complete.json; analysis/daily_predictions.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "collider_conditioning",
+      "review": "No subgroup selected by final error, gate pass or branch amplitude. Component plots describe predefined windows, not causal effects of conditioned subgroups.",
+      "evidence": "config/ootang_tide_fusion.v1_0.json; analysis/component_summary.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "base_rate",
+      "review": "293 adjacent errors and4 points are not independent trials; nominal90% intervals reported with observed coverage,width and scores. No operational warning/event rate inferred.",
+      "evidence": "analysis/metrics_by_point.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "regression_to_mean",
+      "review": "Previously exposed KIN/PHYS outcomes motivated the hypothesis; overlapping exploratory windows do not constitute fresh independent confirmation. No local rebound generalized.",
+      "evidence": "docs/ootang_tide_fusion_plan.v1.0.md",
+      "status": "addressed"
+    },
+    {
+      "topic": "survivorship",
+      "review": "24 new fits,all9600updates,120new and120reused checkpoints complete. Poor SPLIT first window and BOUND final coverage retained; zero formal fit retries.",
+      "evidence": "audit_v1/receipt.json; analysis/outcome.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "look_elsewhere",
+      "review": "Numerous previous experiments remain exploratory. No p-values or family superiority claimed; all original gates and all11 methods preserved. No cap scan after scoring.",
+      "evidence": "docs/ootang_tide_fusion_results.v1.0.md; analysis/pairing.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "forking_paths",
+      "review": "Plan/config committed before training; fixed400updates,3seeds,30day cap scale,1mm floor. All4 issuance locks preceded full-label scoring. Figurev2 wording correction leaves arrays unchanged.",
+      "evidence": "implementation_lock.json; events.jsonl; visual_review.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "correlation_causation",
+      "review": "K/H correlated with shared driving. Branch cap intervention is algorithm comparison, not identified hydrological mechanism. New/old capacity differs; paired BOUND/SPLIT jointly retrained.",
+      "evidence": "docs/ootang_tide_fusion_plan.v1.0.md; audit_v1/receipt.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "reverse_causality",
+      "review": "Scalers/cap/targets use lawful prefixes and teachers no later than pseudo-origin. Full future driving explicitly given conditionally, not predicted; forecast displacements never fed back. Main/H compensation only a future hypothesis.",
+      "evidence": "preflight/receipt.json; audit_v1/receipt.json",
+      "status": "addressed"
+    }
+  ],
+  "effectiveness": "not achieved",
+  "scientific_replication": "no new independent external validation",
+  "user_acceptance": "pending",
+  "mentor_acceptance": "pending"
+}

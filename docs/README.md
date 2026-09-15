@@ -1,8 +1,16 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的TiDE物理特征分组消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-16本地时间已完成的TiDE分开编码与受限H融合**为准（实验日期为2026-09-15 UTC）。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新研究：TiDE物理特征分组消融
+## 最新研究：TiDE分开编码与受限H融合
+
+[研究记录](ootang_tide_fusion_results.v1.0.md) · [完整33组CSV](../results/ootang_tide_fusion_v1/20260915/analysis/phase_summary.csv) · [1800配对指标差](../results/ootang_tide_fusion_v1/20260915/analysis/paired_metric_effects.csv) · [128行分量](../results/ootang_tide_fusion_v1/20260915/analysis/component_summary.csv) · [四张研究图](../figures/ootang_tide_fusion_v1/20260915/README.md)
+
+[冻结计划](ootang_tide_fusion_plan.v1.0.md) · [配置](../config/ootang_tide_fusion.v1_0.json) · [1272来源](ootang_tide_fusion_sources.v1.0.json) · [成熟支持](../results/ootang_tide_fusion_v1/20260915/mature_support.json) · [实现](ootang_tide_fusion_implementation.v1.0.md) · [核验](ootang_tide_fusion_validation.v1.0.md) · [图件合同](ootang_tide_fusion_figure_contract.v1.0.md) · [回执](../results/ootang_tide_fusion_v1/20260915/final_receipt.json)
+
+新增SPLIT/BOUND共24拟合9600更新120检查点，精确复用KIN/PHYS24拟合120检查点，全部四条293日路径完成。SPLIT三主窗RMSE52.630851/15.600443/9.230440，BOUND25.340337/7.703676/9.038071mm；两新版三窗平均MAE/RMSE仍高于旧KIN。BOUND相对SPLIT均值门1/3、同种子同时改善3/2/1个，三种主要配对的稳定判定均false；四组B+联合均0/3。最终BOUND的MJ3/MJ1覆盖41.64%/56.31%，幅度限制生效不代表效果达标。1272来源、188863268数值、四图16面板/247192图形值核验完成。新旧容量不同、两支共同训练、已暴露重叠窗口等限制保持；本轮不追加cap/结构/轮数/RL。仅研究记录/CSV/PNG/SVG。
+
+## 历史研究：TiDE物理特征分组消融
 
 [研究记录](ootang_tide_features_results.v1.0.md) · [完整27组CSV](../results/ootang_tide_features_v1/20260915/analysis/phase_summary.csv) · [2520行因素效应](../results/ootang_tide_features_v1/20260915/analysis/factorial_effects.csv) · [四张研究图](../figures/ootang_tide_features_v1/20260915/README.md)
 
