@@ -1,0 +1,1983 @@
+{
+  "paths": [
+    {
+      "origin": 680,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 679,
+      "target_start": 680,
+      "target_end_exclusive": 973,
+      "given_driver_end_exclusive": 973,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 681,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 680,
+      "target_start": 681,
+      "target_end_exclusive": 974,
+      "given_driver_end_exclusive": 974,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 682,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 681,
+      "target_start": 682,
+      "target_end_exclusive": 975,
+      "given_driver_end_exclusive": 975,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 683,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 682,
+      "target_start": 683,
+      "target_end_exclusive": 976,
+      "given_driver_end_exclusive": 976,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 684,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 683,
+      "target_start": 684,
+      "target_end_exclusive": 977,
+      "given_driver_end_exclusive": 977,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 685,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 684,
+      "target_start": 685,
+      "target_end_exclusive": 978,
+      "given_driver_end_exclusive": 978,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 686,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 685,
+      "target_start": 686,
+      "target_end_exclusive": 979,
+      "given_driver_end_exclusive": 979,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 687,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 686,
+      "target_start": 687,
+      "target_end_exclusive": 980,
+      "given_driver_end_exclusive": 980,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 688,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 687,
+      "target_start": 688,
+      "target_end_exclusive": 981,
+      "given_driver_end_exclusive": 981,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 689,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 688,
+      "target_start": 689,
+      "target_end_exclusive": 982,
+      "given_driver_end_exclusive": 982,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 690,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 689,
+      "target_start": 690,
+      "target_end_exclusive": 983,
+      "given_driver_end_exclusive": 983,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 691,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 690,
+      "target_start": 691,
+      "target_end_exclusive": 984,
+      "given_driver_end_exclusive": 984,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 692,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 691,
+      "target_start": 692,
+      "target_end_exclusive": 985,
+      "given_driver_end_exclusive": 985,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 693,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 692,
+      "target_start": 693,
+      "target_end_exclusive": 986,
+      "given_driver_end_exclusive": 986,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 694,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 693,
+      "target_start": 694,
+      "target_end_exclusive": 987,
+      "given_driver_end_exclusive": 987,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 695,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 694,
+      "target_start": 695,
+      "target_end_exclusive": 988,
+      "given_driver_end_exclusive": 988,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 696,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 695,
+      "target_start": 696,
+      "target_end_exclusive": 989,
+      "given_driver_end_exclusive": 989,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 697,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 696,
+      "target_start": 697,
+      "target_end_exclusive": 990,
+      "given_driver_end_exclusive": 990,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 698,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 697,
+      "target_start": 698,
+      "target_end_exclusive": 991,
+      "given_driver_end_exclusive": 991,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 699,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 698,
+      "target_start": 699,
+      "target_end_exclusive": 992,
+      "given_driver_end_exclusive": 992,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 700,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 699,
+      "target_start": 700,
+      "target_end_exclusive": 993,
+      "given_driver_end_exclusive": 993,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 701,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 700,
+      "target_start": 701,
+      "target_end_exclusive": 994,
+      "given_driver_end_exclusive": 994,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 702,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 701,
+      "target_start": 702,
+      "target_end_exclusive": 995,
+      "given_driver_end_exclusive": 995,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 703,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 702,
+      "target_start": 703,
+      "target_end_exclusive": 996,
+      "given_driver_end_exclusive": 996,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 704,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 703,
+      "target_start": 704,
+      "target_end_exclusive": 997,
+      "given_driver_end_exclusive": 997,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 705,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 704,
+      "target_start": 705,
+      "target_end_exclusive": 998,
+      "given_driver_end_exclusive": 998,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 706,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 705,
+      "target_start": 706,
+      "target_end_exclusive": 999,
+      "given_driver_end_exclusive": 999,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 707,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 706,
+      "target_start": 707,
+      "target_end_exclusive": 1000,
+      "given_driver_end_exclusive": 1000,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 708,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 707,
+      "target_start": 708,
+      "target_end_exclusive": 1001,
+      "given_driver_end_exclusive": 1001,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 709,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 708,
+      "target_start": 709,
+      "target_end_exclusive": 1002,
+      "given_driver_end_exclusive": 1002,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 710,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 709,
+      "target_start": 710,
+      "target_end_exclusive": 1003,
+      "given_driver_end_exclusive": 1003,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 711,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 710,
+      "target_start": 711,
+      "target_end_exclusive": 1004,
+      "given_driver_end_exclusive": 1004,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 712,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 711,
+      "target_start": 712,
+      "target_end_exclusive": 1005,
+      "given_driver_end_exclusive": 1005,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 713,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 712,
+      "target_start": 713,
+      "target_end_exclusive": 1006,
+      "given_driver_end_exclusive": 1006,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 714,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 713,
+      "target_start": 714,
+      "target_end_exclusive": 1007,
+      "given_driver_end_exclusive": 1007,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 715,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 714,
+      "target_start": 715,
+      "target_end_exclusive": 1008,
+      "given_driver_end_exclusive": 1008,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 716,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 715,
+      "target_start": 716,
+      "target_end_exclusive": 1009,
+      "given_driver_end_exclusive": 1009,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 717,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 716,
+      "target_start": 717,
+      "target_end_exclusive": 1010,
+      "given_driver_end_exclusive": 1010,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 718,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 717,
+      "target_start": 718,
+      "target_end_exclusive": 1011,
+      "given_driver_end_exclusive": 1011,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 719,
+      "base_fit_prefix": 660,
+      "teacher_fit_prefix": 612,
+      "history_max": 718,
+      "target_start": 719,
+      "target_end_exclusive": 1012,
+      "given_driver_end_exclusive": 1012,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 720,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 719,
+      "target_start": 720,
+      "target_end_exclusive": 1013,
+      "given_driver_end_exclusive": 1013,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 721,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 720,
+      "target_start": 721,
+      "target_end_exclusive": 1014,
+      "given_driver_end_exclusive": 1014,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 722,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 721,
+      "target_start": 722,
+      "target_end_exclusive": 1015,
+      "given_driver_end_exclusive": 1015,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 723,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 722,
+      "target_start": 723,
+      "target_end_exclusive": 1016,
+      "given_driver_end_exclusive": 1016,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 724,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 723,
+      "target_start": 724,
+      "target_end_exclusive": 1017,
+      "given_driver_end_exclusive": 1017,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 725,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 724,
+      "target_start": 725,
+      "target_end_exclusive": 1018,
+      "given_driver_end_exclusive": 1018,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 726,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 725,
+      "target_start": 726,
+      "target_end_exclusive": 1019,
+      "given_driver_end_exclusive": 1019,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 727,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 726,
+      "target_start": 727,
+      "target_end_exclusive": 1020,
+      "given_driver_end_exclusive": 1020,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 728,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 727,
+      "target_start": 728,
+      "target_end_exclusive": 1021,
+      "given_driver_end_exclusive": 1021,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 729,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 728,
+      "target_start": 729,
+      "target_end_exclusive": 1022,
+      "given_driver_end_exclusive": 1022,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 730,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 729,
+      "target_start": 730,
+      "target_end_exclusive": 1023,
+      "given_driver_end_exclusive": 1023,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 731,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 730,
+      "target_start": 731,
+      "target_end_exclusive": 1024,
+      "given_driver_end_exclusive": 1024,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 732,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 731,
+      "target_start": 732,
+      "target_end_exclusive": 1025,
+      "given_driver_end_exclusive": 1025,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 733,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 732,
+      "target_start": 733,
+      "target_end_exclusive": 1026,
+      "given_driver_end_exclusive": 1026,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 734,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 733,
+      "target_start": 734,
+      "target_end_exclusive": 1027,
+      "given_driver_end_exclusive": 1027,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 735,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 734,
+      "target_start": 735,
+      "target_end_exclusive": 1028,
+      "given_driver_end_exclusive": 1028,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 736,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 735,
+      "target_start": 736,
+      "target_end_exclusive": 1029,
+      "given_driver_end_exclusive": 1029,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 737,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 736,
+      "target_start": 737,
+      "target_end_exclusive": 1030,
+      "given_driver_end_exclusive": 1030,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 738,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 737,
+      "target_start": 738,
+      "target_end_exclusive": 1031,
+      "given_driver_end_exclusive": 1031,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 739,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 738,
+      "target_start": 739,
+      "target_end_exclusive": 1032,
+      "given_driver_end_exclusive": 1032,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 740,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 739,
+      "target_start": 740,
+      "target_end_exclusive": 1033,
+      "given_driver_end_exclusive": 1033,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 741,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 740,
+      "target_start": 741,
+      "target_end_exclusive": 1034,
+      "given_driver_end_exclusive": 1034,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 742,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 741,
+      "target_start": 742,
+      "target_end_exclusive": 1035,
+      "given_driver_end_exclusive": 1035,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 743,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 742,
+      "target_start": 743,
+      "target_end_exclusive": 1036,
+      "given_driver_end_exclusive": 1036,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 744,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 743,
+      "target_start": 744,
+      "target_end_exclusive": 1037,
+      "given_driver_end_exclusive": 1037,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 745,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 744,
+      "target_start": 745,
+      "target_end_exclusive": 1038,
+      "given_driver_end_exclusive": 1038,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 746,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 745,
+      "target_start": 746,
+      "target_end_exclusive": 1039,
+      "given_driver_end_exclusive": 1039,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 747,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 746,
+      "target_start": 747,
+      "target_end_exclusive": 1040,
+      "given_driver_end_exclusive": 1040,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 748,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 747,
+      "target_start": 748,
+      "target_end_exclusive": 1041,
+      "given_driver_end_exclusive": 1041,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 749,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 748,
+      "target_start": 749,
+      "target_end_exclusive": 1042,
+      "given_driver_end_exclusive": 1042,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 750,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 749,
+      "target_start": 750,
+      "target_end_exclusive": 1043,
+      "given_driver_end_exclusive": 1043,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 751,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 750,
+      "target_start": 751,
+      "target_end_exclusive": 1044,
+      "given_driver_end_exclusive": 1044,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 752,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 751,
+      "target_start": 752,
+      "target_end_exclusive": 1045,
+      "given_driver_end_exclusive": 1045,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 753,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 752,
+      "target_start": 753,
+      "target_end_exclusive": 1046,
+      "given_driver_end_exclusive": 1046,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 754,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 753,
+      "target_start": 754,
+      "target_end_exclusive": 1047,
+      "given_driver_end_exclusive": 1047,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 755,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 754,
+      "target_start": 755,
+      "target_end_exclusive": 1048,
+      "given_driver_end_exclusive": 1048,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 756,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 755,
+      "target_start": 756,
+      "target_end_exclusive": 1049,
+      "given_driver_end_exclusive": 1049,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 757,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 756,
+      "target_start": 757,
+      "target_end_exclusive": 1050,
+      "given_driver_end_exclusive": 1050,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 758,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 757,
+      "target_start": 758,
+      "target_end_exclusive": 1051,
+      "given_driver_end_exclusive": 1051,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 759,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 758,
+      "target_start": 759,
+      "target_end_exclusive": 1052,
+      "given_driver_end_exclusive": 1052,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 760,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 759,
+      "target_start": 760,
+      "target_end_exclusive": 1053,
+      "given_driver_end_exclusive": 1053,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 761,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 760,
+      "target_start": 761,
+      "target_end_exclusive": 1054,
+      "given_driver_end_exclusive": 1054,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 762,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 761,
+      "target_start": 762,
+      "target_end_exclusive": 1055,
+      "given_driver_end_exclusive": 1055,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 763,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 762,
+      "target_start": 763,
+      "target_end_exclusive": 1056,
+      "given_driver_end_exclusive": 1056,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 764,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 763,
+      "target_start": 764,
+      "target_end_exclusive": 1057,
+      "given_driver_end_exclusive": 1057,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 765,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 764,
+      "target_start": 765,
+      "target_end_exclusive": 1058,
+      "given_driver_end_exclusive": 1058,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 766,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 765,
+      "target_start": 766,
+      "target_end_exclusive": 1059,
+      "given_driver_end_exclusive": 1059,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 767,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 766,
+      "target_start": 767,
+      "target_end_exclusive": 1060,
+      "given_driver_end_exclusive": 1060,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 768,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 767,
+      "target_start": 768,
+      "target_end_exclusive": 1061,
+      "given_driver_end_exclusive": 1061,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 769,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 768,
+      "target_start": 769,
+      "target_end_exclusive": 1062,
+      "given_driver_end_exclusive": 1062,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 770,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 769,
+      "target_start": 770,
+      "target_end_exclusive": 1063,
+      "given_driver_end_exclusive": 1063,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 771,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 770,
+      "target_start": 771,
+      "target_end_exclusive": 1064,
+      "given_driver_end_exclusive": 1064,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 772,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 771,
+      "target_start": 772,
+      "target_end_exclusive": 1065,
+      "given_driver_end_exclusive": 1065,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 773,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 772,
+      "target_start": 773,
+      "target_end_exclusive": 1066,
+      "given_driver_end_exclusive": 1066,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 774,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 773,
+      "target_start": 774,
+      "target_end_exclusive": 1067,
+      "given_driver_end_exclusive": 1067,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 775,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 774,
+      "target_start": 775,
+      "target_end_exclusive": 1068,
+      "given_driver_end_exclusive": 1068,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 776,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 775,
+      "target_start": 776,
+      "target_end_exclusive": 1069,
+      "given_driver_end_exclusive": 1069,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 777,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 776,
+      "target_start": 777,
+      "target_end_exclusive": 1070,
+      "given_driver_end_exclusive": 1070,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 778,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 777,
+      "target_start": 778,
+      "target_end_exclusive": 1071,
+      "given_driver_end_exclusive": 1071,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 779,
+      "base_fit_prefix": 720,
+      "teacher_fit_prefix": 612,
+      "history_max": 778,
+      "target_start": 779,
+      "target_end_exclusive": 1072,
+      "given_driver_end_exclusive": 1072,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 780,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 779,
+      "target_start": 780,
+      "target_end_exclusive": 1073,
+      "given_driver_end_exclusive": 1073,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 781,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 780,
+      "target_start": 781,
+      "target_end_exclusive": 1074,
+      "given_driver_end_exclusive": 1074,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 782,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 781,
+      "target_start": 782,
+      "target_end_exclusive": 1075,
+      "given_driver_end_exclusive": 1075,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 783,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 782,
+      "target_start": 783,
+      "target_end_exclusive": 1076,
+      "given_driver_end_exclusive": 1076,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 784,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 783,
+      "target_start": 784,
+      "target_end_exclusive": 1077,
+      "given_driver_end_exclusive": 1077,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 785,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 784,
+      "target_start": 785,
+      "target_end_exclusive": 1078,
+      "given_driver_end_exclusive": 1078,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 786,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 785,
+      "target_start": 786,
+      "target_end_exclusive": 1079,
+      "given_driver_end_exclusive": 1079,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 787,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 786,
+      "target_start": 787,
+      "target_end_exclusive": 1080,
+      "given_driver_end_exclusive": 1080,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 788,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 787,
+      "target_start": 788,
+      "target_end_exclusive": 1081,
+      "given_driver_end_exclusive": 1081,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 789,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 788,
+      "target_start": 789,
+      "target_end_exclusive": 1082,
+      "given_driver_end_exclusive": 1082,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 790,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 789,
+      "target_start": 790,
+      "target_end_exclusive": 1083,
+      "given_driver_end_exclusive": 1083,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 791,
+      "base_fit_prefix": 780,
+      "teacher_fit_prefix": 612,
+      "history_max": 790,
+      "target_start": 791,
+      "target_end_exclusive": 1084,
+      "given_driver_end_exclusive": 1084,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 792,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 791,
+      "target_start": 792,
+      "target_end_exclusive": 1085,
+      "given_driver_end_exclusive": 1085,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 793,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 792,
+      "target_start": 793,
+      "target_end_exclusive": 1086,
+      "given_driver_end_exclusive": 1086,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 794,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 793,
+      "target_start": 794,
+      "target_end_exclusive": 1087,
+      "given_driver_end_exclusive": 1087,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 795,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 794,
+      "target_start": 795,
+      "target_end_exclusive": 1088,
+      "given_driver_end_exclusive": 1088,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 796,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 795,
+      "target_start": 796,
+      "target_end_exclusive": 1089,
+      "given_driver_end_exclusive": 1089,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 797,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 796,
+      "target_start": 797,
+      "target_end_exclusive": 1090,
+      "given_driver_end_exclusive": 1090,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 798,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 797,
+      "target_start": 798,
+      "target_end_exclusive": 1091,
+      "given_driver_end_exclusive": 1091,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 799,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 798,
+      "target_start": 799,
+      "target_end_exclusive": 1092,
+      "given_driver_end_exclusive": 1092,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 800,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 799,
+      "target_start": 800,
+      "target_end_exclusive": 1093,
+      "given_driver_end_exclusive": 1093,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 801,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 800,
+      "target_start": 801,
+      "target_end_exclusive": 1094,
+      "given_driver_end_exclusive": 1094,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 802,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 801,
+      "target_start": 802,
+      "target_end_exclusive": 1095,
+      "given_driver_end_exclusive": 1095,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 803,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 802,
+      "target_start": 803,
+      "target_end_exclusive": 1096,
+      "given_driver_end_exclusive": 1096,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 804,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 803,
+      "target_start": 804,
+      "target_end_exclusive": 1097,
+      "given_driver_end_exclusive": 1097,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 805,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 804,
+      "target_start": 805,
+      "target_end_exclusive": 1098,
+      "given_driver_end_exclusive": 1098,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 806,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 805,
+      "target_start": 806,
+      "target_end_exclusive": 1099,
+      "given_driver_end_exclusive": 1099,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 807,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 806,
+      "target_start": 807,
+      "target_end_exclusive": 1100,
+      "given_driver_end_exclusive": 1100,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 808,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 807,
+      "target_start": 808,
+      "target_end_exclusive": 1101,
+      "given_driver_end_exclusive": 1101,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 809,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 808,
+      "target_start": 809,
+      "target_end_exclusive": 1102,
+      "given_driver_end_exclusive": 1102,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 810,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 809,
+      "target_start": 810,
+      "target_end_exclusive": 1103,
+      "given_driver_end_exclusive": 1103,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 811,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 810,
+      "target_start": 811,
+      "target_end_exclusive": 1104,
+      "given_driver_end_exclusive": 1104,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 812,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 811,
+      "target_start": 812,
+      "target_end_exclusive": 1105,
+      "given_driver_end_exclusive": 1105,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 813,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 812,
+      "target_start": 813,
+      "target_end_exclusive": 1106,
+      "given_driver_end_exclusive": 1106,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 814,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 813,
+      "target_start": 814,
+      "target_end_exclusive": 1107,
+      "given_driver_end_exclusive": 1107,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 815,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 814,
+      "target_start": 815,
+      "target_end_exclusive": 1108,
+      "given_driver_end_exclusive": 1108,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 816,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 815,
+      "target_start": 816,
+      "target_end_exclusive": 1109,
+      "given_driver_end_exclusive": 1109,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 817,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 816,
+      "target_start": 817,
+      "target_end_exclusive": 1110,
+      "given_driver_end_exclusive": 1110,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 818,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 817,
+      "target_start": 818,
+      "target_end_exclusive": 1111,
+      "given_driver_end_exclusive": 1111,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 819,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 818,
+      "target_start": 819,
+      "target_end_exclusive": 1112,
+      "given_driver_end_exclusive": 1112,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 820,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 819,
+      "target_start": 820,
+      "target_end_exclusive": 1113,
+      "given_driver_end_exclusive": 1113,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 821,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 820,
+      "target_start": 821,
+      "target_end_exclusive": 1114,
+      "given_driver_end_exclusive": 1114,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 822,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 821,
+      "target_start": 822,
+      "target_end_exclusive": 1115,
+      "given_driver_end_exclusive": 1115,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 823,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 822,
+      "target_start": 823,
+      "target_end_exclusive": 1116,
+      "given_driver_end_exclusive": 1116,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 824,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 823,
+      "target_start": 824,
+      "target_end_exclusive": 1117,
+      "given_driver_end_exclusive": 1117,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 825,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 824,
+      "target_start": 825,
+      "target_end_exclusive": 1118,
+      "given_driver_end_exclusive": 1118,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 826,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 825,
+      "target_start": 826,
+      "target_end_exclusive": 1119,
+      "given_driver_end_exclusive": 1119,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 827,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 826,
+      "target_start": 827,
+      "target_end_exclusive": 1120,
+      "given_driver_end_exclusive": 1120,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 828,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 827,
+      "target_start": 828,
+      "target_end_exclusive": 1121,
+      "given_driver_end_exclusive": 1121,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 829,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 828,
+      "target_start": 829,
+      "target_end_exclusive": 1122,
+      "given_driver_end_exclusive": 1122,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 830,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 829,
+      "target_start": 830,
+      "target_end_exclusive": 1123,
+      "given_driver_end_exclusive": 1123,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 831,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 830,
+      "target_start": 831,
+      "target_end_exclusive": 1124,
+      "given_driver_end_exclusive": 1124,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 832,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 831,
+      "target_start": 832,
+      "target_end_exclusive": 1125,
+      "given_driver_end_exclusive": 1125,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 833,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 832,
+      "target_start": 833,
+      "target_end_exclusive": 1126,
+      "given_driver_end_exclusive": 1126,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 834,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 833,
+      "target_start": 834,
+      "target_end_exclusive": 1127,
+      "given_driver_end_exclusive": 1127,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 835,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 834,
+      "target_start": 835,
+      "target_end_exclusive": 1128,
+      "given_driver_end_exclusive": 1128,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 836,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 835,
+      "target_start": 836,
+      "target_end_exclusive": 1129,
+      "given_driver_end_exclusive": 1129,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 837,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 836,
+      "target_start": 837,
+      "target_end_exclusive": 1130,
+      "given_driver_end_exclusive": 1130,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 838,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 837,
+      "target_start": 838,
+      "target_end_exclusive": 1131,
+      "given_driver_end_exclusive": 1131,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 839,
+      "base_fit_prefix": 792,
+      "teacher_fit_prefix": 792,
+      "history_max": 838,
+      "target_start": 839,
+      "target_end_exclusive": 1132,
+      "given_driver_end_exclusive": 1132,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 840,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 839,
+      "target_start": 840,
+      "target_end_exclusive": 1133,
+      "given_driver_end_exclusive": 1133,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 841,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 840,
+      "target_start": 841,
+      "target_end_exclusive": 1134,
+      "given_driver_end_exclusive": 1134,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 842,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 841,
+      "target_start": 842,
+      "target_end_exclusive": 1135,
+      "given_driver_end_exclusive": 1135,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 843,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 842,
+      "target_start": 843,
+      "target_end_exclusive": 1136,
+      "given_driver_end_exclusive": 1136,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 844,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 843,
+      "target_start": 844,
+      "target_end_exclusive": 1137,
+      "given_driver_end_exclusive": 1137,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 845,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 844,
+      "target_start": 845,
+      "target_end_exclusive": 1138,
+      "given_driver_end_exclusive": 1138,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 846,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 845,
+      "target_start": 846,
+      "target_end_exclusive": 1139,
+      "given_driver_end_exclusive": 1139,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 847,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 846,
+      "target_start": 847,
+      "target_end_exclusive": 1140,
+      "given_driver_end_exclusive": 1140,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 848,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 847,
+      "target_start": 848,
+      "target_end_exclusive": 1141,
+      "given_driver_end_exclusive": 1141,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 849,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 848,
+      "target_start": 849,
+      "target_end_exclusive": 1142,
+      "given_driver_end_exclusive": 1142,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 850,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 849,
+      "target_start": 850,
+      "target_end_exclusive": 1143,
+      "given_driver_end_exclusive": 1143,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 851,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 850,
+      "target_start": 851,
+      "target_end_exclusive": 1144,
+      "given_driver_end_exclusive": 1144,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 852,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 851,
+      "target_start": 852,
+      "target_end_exclusive": 1145,
+      "given_driver_end_exclusive": 1145,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 853,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 852,
+      "target_start": 853,
+      "target_end_exclusive": 1146,
+      "given_driver_end_exclusive": 1146,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 854,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 853,
+      "target_start": 854,
+      "target_end_exclusive": 1147,
+      "given_driver_end_exclusive": 1147,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 855,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 854,
+      "target_start": 855,
+      "target_end_exclusive": 1148,
+      "given_driver_end_exclusive": 1148,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 856,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 855,
+      "target_start": 856,
+      "target_end_exclusive": 1149,
+      "given_driver_end_exclusive": 1149,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 857,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 856,
+      "target_start": 857,
+      "target_end_exclusive": 1150,
+      "given_driver_end_exclusive": 1150,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 858,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 857,
+      "target_start": 858,
+      "target_end_exclusive": 1151,
+      "given_driver_end_exclusive": 1151,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 859,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 858,
+      "target_start": 859,
+      "target_end_exclusive": 1152,
+      "given_driver_end_exclusive": 1152,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 860,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 859,
+      "target_start": 860,
+      "target_end_exclusive": 1153,
+      "given_driver_end_exclusive": 1153,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 861,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 860,
+      "target_start": 861,
+      "target_end_exclusive": 1154,
+      "given_driver_end_exclusive": 1154,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 862,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 861,
+      "target_start": 862,
+      "target_end_exclusive": 1155,
+      "given_driver_end_exclusive": 1155,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 863,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 862,
+      "target_start": 863,
+      "target_end_exclusive": 1156,
+      "given_driver_end_exclusive": 1156,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 864,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 863,
+      "target_start": 864,
+      "target_end_exclusive": 1157,
+      "given_driver_end_exclusive": 1157,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 865,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 864,
+      "target_start": 865,
+      "target_end_exclusive": 1158,
+      "given_driver_end_exclusive": 1158,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 866,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 865,
+      "target_start": 866,
+      "target_end_exclusive": 1159,
+      "given_driver_end_exclusive": 1159,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 867,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 866,
+      "target_start": 867,
+      "target_end_exclusive": 1160,
+      "given_driver_end_exclusive": 1160,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 868,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 867,
+      "target_start": 868,
+      "target_end_exclusive": 1161,
+      "given_driver_end_exclusive": 1161,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 869,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 868,
+      "target_start": 869,
+      "target_end_exclusive": 1162,
+      "given_driver_end_exclusive": 1162,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 870,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 869,
+      "target_start": 870,
+      "target_end_exclusive": 1163,
+      "given_driver_end_exclusive": 1163,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 871,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 870,
+      "target_start": 871,
+      "target_end_exclusive": 1164,
+      "given_driver_end_exclusive": 1164,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 872,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 871,
+      "target_start": 872,
+      "target_end_exclusive": 1165,
+      "given_driver_end_exclusive": 1165,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 873,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 872,
+      "target_start": 873,
+      "target_end_exclusive": 1166,
+      "given_driver_end_exclusive": 1166,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 874,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 873,
+      "target_start": 874,
+      "target_end_exclusive": 1167,
+      "given_driver_end_exclusive": 1167,
+      "mature_prefix": 1168
+    },
+    {
+      "origin": 875,
+      "base_fit_prefix": 840,
+      "teacher_fit_prefix": 792,
+      "history_max": 874,
+      "target_start": 875,
+      "target_end_exclusive": 1168,
+      "given_driver_end_exclusive": 1168,
+      "mature_prefix": 1168
+    }
+  ],
+  "base_checkpoint_hashes": {
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_660/seed_0/e400.pt": "e80ee6838c9878331c3f3da80b771103fb093a4b2f195e86d18ba36559924f27",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_660/seed_1/e400.pt": "b459259f1be20746b53c181f059622f436651ca916523fe5f5a9875364ca3bf8",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_660/seed_2/e400.pt": "bbd4085ad4ea824df6d45e9380db66559e032ae80d158b6bf2436ff7702c9869",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_720/seed_0/e400.pt": "90c6a503bcdc3dac34ba85fce88e804d7f6023c4d840634a5e8e8fefec8ceb53",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_720/seed_1/e400.pt": "e7a531025bd578242811655d523f3a8edeac9b7b6a32391a1e019e8b69af83e1",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_720/seed_2/e400.pt": "254333ef0d4e4e000c13b6bc24e2c77ca99749e55a92abb8fd74427350917197",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_780/seed_0/e400.pt": "af981bca255227663ba19116519a06b0a88f2012d60229e843e197af0df84c94",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_780/seed_1/e400.pt": "183b94f8fd796dbd6af082576e891c066e924a200752d1a1490183790d92ea1a",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_780/seed_2/e400.pt": "be875afe41f18748f5e08006a7d62b73c110e581ff3abe8b7f751d613fbf2c88",
+    "results/ootang_tide_features_v1/20260915/origin_792/TiDE_KIN/seed_0/e400.pt": "41c637ed8e706199bd479eb43afba5052d93f2ff57a797d6e1215b992e45d676",
+    "results/ootang_tide_features_v1/20260915/origin_792/TiDE_KIN/seed_1/e400.pt": "3dfd9352d3c9480b7a7880049f40af8c3ef419a8c712d9084e87ff9193a8f0b6",
+    "results/ootang_tide_features_v1/20260915/origin_792/TiDE_KIN/seed_2/e400.pt": "6a28d626466486283b1d20aa4060713a01da7fd6927247c19b75328f646bd800",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_840/seed_0/e400.pt": "8da53f211fbf9482831b2fe999d6ce27a5ef189116c8ac0016bfab8f536b8f65",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_840/seed_1/e400.pt": "cfc87ef64f5efbe012b9ece9e9a7148dde7e47527becee11e55b6e0760b9fa8e",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_840/seed_2/e400.pt": "85533aa7f855c8e4c2f8543fe3c674034dfb7af5c7d199344b48de4502463b4c"
+  },
+  "reconstructed": true,
+  "not_actual_historical_publication": true
+}

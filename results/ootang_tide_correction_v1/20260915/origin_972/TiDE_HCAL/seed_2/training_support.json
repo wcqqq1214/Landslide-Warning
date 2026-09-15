@@ -1,0 +1,15 @@
+{
+  "count": 200,
+  "first": 480,
+  "last": 679,
+  "target_max": 971,
+  "base_prefixes": [
+    480,
+    540,
+    600,
+    612,
+    660
+  ],
+  "all_full293": true,
+  "seed_matched": true
+}

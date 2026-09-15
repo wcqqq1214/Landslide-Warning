@@ -1,0 +1,11 @@
+{
+  "time_utc": "2026-09-15T16:56:10.491119+00:00",
+  "status": "issued_oof",
+  "mature_prefix": 1168,
+  "count": 196,
+  "latest_target_exclusive": 1168,
+  "files": {
+    "paths.npz": "1acfa8e832103ec8a7b8912f6796546ef759123f6f928f69ef9ac364d19c3331",
+    "provenance.json": "50f8e5d286afe7935a636feaf25f689b1cfa7c659b4a9ef39006a648c90d69a1"
+  }
+}

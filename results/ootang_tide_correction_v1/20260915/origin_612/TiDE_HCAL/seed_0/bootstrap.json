@@ -1,0 +1,18 @@
+{
+  "time_utc": "2026-09-15T16:55:44.853316+00:00",
+  "status": "bootstrap_zero",
+  "kind": "correction_head",
+  "origin": 612,
+  "arm": "TiDE_HCAL",
+  "seed": 0,
+  "updates": 0,
+  "elapsed_seconds": 0.0019565000002330635,
+  "files": {
+    "e0.pt": "b825ca103c0d2eafe8bb2fd2e263630c9b3ecdada720cb1a90c2167c49c7e46b",
+    "e0_base_mm.npy": "5776385efc11cf16a52674ce60152ddb5c85bb6fecdc4a9cf5e0d2954684c159",
+    "e0_correction_mm.npy": "15e33ec4c380e5291a322e2f0d76ec587bdd36f70c7539c27955ff433b8f20a7",
+    "e0_mean.npy": "5776385efc11cf16a52674ce60152ddb5c85bb6fecdc4a9cf5e0d2954684c159",
+    "e0_raw_mm.npy": "15e33ec4c380e5291a322e2f0d76ec587bdd36f70c7539c27955ff433b8f20a7",
+    "training.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

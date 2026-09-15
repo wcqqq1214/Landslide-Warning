@@ -1,0 +1,211 @@
+{
+  "paths": [
+    {
+      "origin": 480,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 479,
+      "target_start": 480,
+      "target_end_exclusive": 773,
+      "given_driver_end_exclusive": 773,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 481,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 480,
+      "target_start": 481,
+      "target_end_exclusive": 774,
+      "given_driver_end_exclusive": 774,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 482,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 481,
+      "target_start": 482,
+      "target_end_exclusive": 775,
+      "given_driver_end_exclusive": 775,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 483,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 482,
+      "target_start": 483,
+      "target_end_exclusive": 776,
+      "given_driver_end_exclusive": 776,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 484,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 483,
+      "target_start": 484,
+      "target_end_exclusive": 777,
+      "given_driver_end_exclusive": 777,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 485,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 484,
+      "target_start": 485,
+      "target_end_exclusive": 778,
+      "given_driver_end_exclusive": 778,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 486,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 485,
+      "target_start": 486,
+      "target_end_exclusive": 779,
+      "given_driver_end_exclusive": 779,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 487,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 486,
+      "target_start": 487,
+      "target_end_exclusive": 780,
+      "given_driver_end_exclusive": 780,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 488,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 487,
+      "target_start": 488,
+      "target_end_exclusive": 781,
+      "given_driver_end_exclusive": 781,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 489,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 488,
+      "target_start": 489,
+      "target_end_exclusive": 782,
+      "given_driver_end_exclusive": 782,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 490,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 489,
+      "target_start": 490,
+      "target_end_exclusive": 783,
+      "given_driver_end_exclusive": 783,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 491,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 490,
+      "target_start": 491,
+      "target_end_exclusive": 784,
+      "given_driver_end_exclusive": 784,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 492,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 491,
+      "target_start": 492,
+      "target_end_exclusive": 785,
+      "given_driver_end_exclusive": 785,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 493,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 492,
+      "target_start": 493,
+      "target_end_exclusive": 786,
+      "given_driver_end_exclusive": 786,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 494,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 493,
+      "target_start": 494,
+      "target_end_exclusive": 787,
+      "given_driver_end_exclusive": 787,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 495,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 494,
+      "target_start": 495,
+      "target_end_exclusive": 788,
+      "given_driver_end_exclusive": 788,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 496,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 495,
+      "target_start": 496,
+      "target_end_exclusive": 789,
+      "given_driver_end_exclusive": 789,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 497,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 496,
+      "target_start": 497,
+      "target_end_exclusive": 790,
+      "given_driver_end_exclusive": 790,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 498,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 497,
+      "target_start": 498,
+      "target_end_exclusive": 791,
+      "given_driver_end_exclusive": 791,
+      "mature_prefix": 792
+    },
+    {
+      "origin": 499,
+      "base_fit_prefix": 480,
+      "teacher_fit_prefix": 432,
+      "history_max": 498,
+      "target_start": 499,
+      "target_end_exclusive": 792,
+      "given_driver_end_exclusive": 792,
+      "mature_prefix": 792
+    }
+  ],
+  "base_checkpoint_hashes": {
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_480/seed_0/e400.pt": "0599a9e1542e877839cec33903955cf9eb61e0147bd37db753c12226d6c81981",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_480/seed_1/e400.pt": "9c668541754fef40711963dbc3911a18d53ca57cd5de1dd9ae33bfa71af38908",
+    "results/ootang_tide_correction_v1/20260915/historical_bases/fit_480/seed_2/e400.pt": "80fd17fc44f59394057f22b4b0771fe79b196a6346e566f808b58ba2e6c6087f"
+  },
+  "reconstructed": true,
+  "not_actual_historical_publication": true
+}

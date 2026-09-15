@@ -1,2 +1,99 @@
 {"time_utc": "2026-09-15T16:54:41.156054+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_only612_no_new_training"}
 {"time_utc": "2026-09-15T16:54:41.294571+00:00", "event": "preflight_passed", "status": "passed", "source_files": 2216, "checks": 150, "values": 470005, "max_difference": 2.2737367544323206e-13, "optimizer_updates": 0, "base_refits": 0, "frozen_base_in_optimizer": false, "bootstrap612": "zero without fit", "eligible_counts": [0, 20, 200, 396], "base_regime_counts": [0, 1, 5, 9]}
+{"time_utc": "2026-09-15T16:55:44.809992+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "current_prefix_for_mature_oof_correction_and_calibration"}
+{"time_utc": "2026-09-15T16:55:44.830045+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_CAL", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.842508+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_CAL", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.846612+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_CAL", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.851267+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_HCAL", "seed": 0, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.855382+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_HCAL", "seed": 1, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.859601+00:00", "event": "bootstrap_zero_head", "origin": 612, "arm": "TiDE_HCAL", "seed": 2, "updates": 0}
+{"time_utc": "2026-09-15T16:55:44.869055+00:00", "event": "trajectory_issued", "origin": 612, "end": 905, "lock_sha256": "e3e55d70e0585c5c7604358e03c3633ff69c8f91b98275f0cff9aac9a751600a"}
+{"time_utc": "2026-09-15T16:55:44.869146+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "current_prefix_for_mature_oof_correction_and_calibration"}
+{"time_utc": "2026-09-15T16:55:44.880252+00:00", "event": "base_fit_started", "prefix": 480, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:45.661065+00:00", "event": "base_fit_completed", "prefix": 480, "seed": 0, "updates": 400, "elapsed_seconds": 0.7757505410008889}
+{"time_utc": "2026-09-15T16:55:45.668319+00:00", "event": "base_fit_started", "prefix": 480, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:46.464898+00:00", "event": "base_fit_completed", "prefix": 480, "seed": 1, "updates": 400, "elapsed_seconds": 0.7913770420000219}
+{"time_utc": "2026-09-15T16:55:46.472149+00:00", "event": "base_fit_started", "prefix": 480, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:47.288617+00:00", "event": "base_fit_completed", "prefix": 480, "seed": 2, "updates": 400, "elapsed_seconds": 0.8112413329999981}
+{"time_utc": "2026-09-15T16:55:47.351227+00:00", "event": "oof_batch_locked", "mature_prefix": 792, "count": 20, "first": 480, "last": 499, "lock_sha256": "a860549a2a7f7c476598c5f205d0da997c05c5c1f262054dd6494eb2a0d891a1"}
+{"time_utc": "2026-09-15T16:55:47.361293+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_CAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:47.756154+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_CAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.39276854200033995}
+{"time_utc": "2026-09-15T16:55:47.760327+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_CAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:48.151306+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_CAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.38899566600048274}
+{"time_utc": "2026-09-15T16:55:48.155489+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_CAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:48.597341+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_CAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.4392838750009105}
+{"time_utc": "2026-09-15T16:55:48.601862+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_HCAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:49.029505+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_HCAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.4253576669998438}
+{"time_utc": "2026-09-15T16:55:49.034350+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_HCAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:49.455333+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_HCAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.418808958000227}
+{"time_utc": "2026-09-15T16:55:49.459620+00:00", "event": "head_fit_started", "origin": 792, "arm": "TiDE_HCAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:49.876154+00:00", "event": "head_fit_completed", "origin": 792, "arm": "TiDE_HCAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.41440379100095015}
+{"time_utc": "2026-09-15T16:55:49.888027+00:00", "event": "trajectory_issued", "origin": 792, "end": 1085, "lock_sha256": "a3e00ef2faa46044ad0a84e32cd27f2207f3e67cd2c024d332186f9d84fb6332"}
+{"time_utc": "2026-09-15T16:55:49.888115+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "current_prefix_for_mature_oof_correction_and_calibration"}
+{"time_utc": "2026-09-15T16:55:49.925887+00:00", "event": "base_fit_started", "prefix": 540, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:50.762306+00:00", "event": "base_fit_completed", "prefix": 540, "seed": 0, "updates": 400, "elapsed_seconds": 0.8310552500006452}
+{"time_utc": "2026-09-15T16:55:50.778073+00:00", "event": "base_fit_started", "prefix": 540, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:51.705963+00:00", "event": "base_fit_completed", "prefix": 540, "seed": 1, "updates": 400, "elapsed_seconds": 0.9221141670004727}
+{"time_utc": "2026-09-15T16:55:51.722400+00:00", "event": "base_fit_started", "prefix": 540, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:52.568424+00:00", "event": "base_fit_completed", "prefix": 540, "seed": 2, "updates": 400, "elapsed_seconds": 0.840034791999642}
+{"time_utc": "2026-09-15T16:55:52.594334+00:00", "event": "base_fit_started", "prefix": 600, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:53.418747+00:00", "event": "base_fit_completed", "prefix": 600, "seed": 0, "updates": 400, "elapsed_seconds": 0.819000874998892}
+{"time_utc": "2026-09-15T16:55:53.440945+00:00", "event": "base_fit_started", "prefix": 600, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:54.279037+00:00", "event": "base_fit_completed", "prefix": 600, "seed": 1, "updates": 400, "elapsed_seconds": 0.8319397079994815}
+{"time_utc": "2026-09-15T16:55:54.305324+00:00", "event": "base_fit_started", "prefix": 600, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:55.160346+00:00", "event": "base_fit_completed", "prefix": 600, "seed": 2, "updates": 400, "elapsed_seconds": 0.8494477090007422}
+{"time_utc": "2026-09-15T16:55:55.197731+00:00", "event": "base_fit_started", "prefix": 660, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:56.064966+00:00", "event": "base_fit_completed", "prefix": 660, "seed": 0, "updates": 400, "elapsed_seconds": 0.8613507910013141}
+{"time_utc": "2026-09-15T16:55:56.097083+00:00", "event": "base_fit_started", "prefix": 660, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:56.950168+00:00", "event": "base_fit_completed", "prefix": 660, "seed": 1, "updates": 400, "elapsed_seconds": 0.8471944159991835}
+{"time_utc": "2026-09-15T16:55:56.982654+00:00", "event": "base_fit_started", "prefix": 660, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:57.859228+00:00", "event": "base_fit_completed", "prefix": 660, "seed": 2, "updates": 400, "elapsed_seconds": 0.8706507500010048}
+{"time_utc": "2026-09-15T16:55:58.360737+00:00", "event": "oof_batch_locked", "mature_prefix": 972, "count": 180, "first": 500, "last": 679, "lock_sha256": "279dcc0e1b8652ff9e3eb508a2ed93fb96d72a1aefd416ffc3462277e693da39"}
+{"time_utc": "2026-09-15T16:55:58.413399+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_CAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:55:58.848229+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_CAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.43138100000032864}
+{"time_utc": "2026-09-15T16:55:58.860902+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_CAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:55:59.288765+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_CAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.4245274999993853}
+{"time_utc": "2026-09-15T16:55:59.300388+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_CAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:55:59.735075+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_CAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.4317932079993625}
+{"time_utc": "2026-09-15T16:55:59.745352+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_HCAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:00.167506+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_HCAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.4192732089995843}
+{"time_utc": "2026-09-15T16:56:00.177637+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_HCAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:00.647530+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_HCAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.4667760409993207}
+{"time_utc": "2026-09-15T16:56:00.658190+00:00", "event": "head_fit_started", "origin": 972, "arm": "TiDE_HCAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:01.106029+00:00", "event": "head_fit_completed", "origin": 972, "arm": "TiDE_HCAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.44484066699988034}
+{"time_utc": "2026-09-15T16:56:01.118429+00:00", "event": "trajectory_issued", "origin": 972, "end": 1265, "lock_sha256": "b4df3122b4847c21e37ebd74b1bd5da38413237caf3411f543bcc8a627c76e0a"}
+{"time_utc": "2026-09-15T16:56:01.118527+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "current_prefix_for_mature_oof_correction_and_calibration"}
+{"time_utc": "2026-09-15T16:56:01.220271+00:00", "event": "base_fit_started", "prefix": 720, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:02.110952+00:00", "event": "base_fit_completed", "prefix": 720, "seed": 0, "updates": 400, "elapsed_seconds": 0.885254625000016}
+{"time_utc": "2026-09-15T16:56:02.153717+00:00", "event": "base_fit_started", "prefix": 720, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:03.037650+00:00", "event": "base_fit_completed", "prefix": 720, "seed": 1, "updates": 400, "elapsed_seconds": 0.87827712500075}
+{"time_utc": "2026-09-15T16:56:03.080143+00:00", "event": "base_fit_started", "prefix": 720, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:03.995488+00:00", "event": "base_fit_completed", "prefix": 720, "seed": 2, "updates": 400, "elapsed_seconds": 0.9089964159993542}
+{"time_utc": "2026-09-15T16:56:04.060878+00:00", "event": "base_fit_started", "prefix": 780, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:04.999097+00:00", "event": "base_fit_completed", "prefix": 780, "seed": 0, "updates": 400, "elapsed_seconds": 0.9321587089998502}
+{"time_utc": "2026-09-15T16:56:05.050914+00:00", "event": "base_fit_started", "prefix": 780, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:05.952277+00:00", "event": "base_fit_completed", "prefix": 780, "seed": 1, "updates": 400, "elapsed_seconds": 0.895255334000467}
+{"time_utc": "2026-09-15T16:56:06.004706+00:00", "event": "base_fit_started", "prefix": 780, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:06.920741+00:00", "event": "base_fit_completed", "prefix": 780, "seed": 2, "updates": 400, "elapsed_seconds": 0.9101771249988815}
+{"time_utc": "2026-09-15T16:56:06.986689+00:00", "event": "base_fit_started", "prefix": 840, "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:07.971128+00:00", "event": "base_fit_completed", "prefix": 840, "seed": 0, "updates": 400, "elapsed_seconds": 0.9787574170004518}
+{"time_utc": "2026-09-15T16:56:08.033233+00:00", "event": "base_fit_started", "prefix": 840, "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:08.945833+00:00", "event": "base_fit_completed", "prefix": 840, "seed": 1, "updates": 400, "elapsed_seconds": 0.90675766700042}
+{"time_utc": "2026-09-15T16:56:09.009730+00:00", "event": "base_fit_started", "prefix": 840, "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:09.898663+00:00", "event": "base_fit_completed", "prefix": 840, "seed": 2, "updates": 400, "elapsed_seconds": 0.8819682920002379}
+{"time_utc": "2026-09-15T16:56:10.496990+00:00", "event": "oof_batch_locked", "mature_prefix": 1168, "count": 196, "first": 680, "last": 875, "lock_sha256": "b1ad617f1090ef9da5ea977210004181f0ee864f2936eb613ec82476f4b869d7"}
+{"time_utc": "2026-09-15T16:56:10.595672+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_CAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:11.098965+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_CAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.49865329199928965}
+{"time_utc": "2026-09-15T16:56:11.118715+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_CAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:11.620404+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_CAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.497259584000858}
+{"time_utc": "2026-09-15T16:56:11.643043+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_CAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:12.164473+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_CAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.5166659589995106}
+{"time_utc": "2026-09-15T16:56:12.184864+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_HCAL", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:56:12.687377+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_HCAL", "seed": 0, "updates": 400, "elapsed_seconds": 0.4982809590001125}
+{"time_utc": "2026-09-15T16:56:12.707506+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_HCAL", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:56:13.228701+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_HCAL", "seed": 1, "updates": 400, "elapsed_seconds": 0.5171008750003239}
+{"time_utc": "2026-09-15T16:56:13.251597+00:00", "event": "head_fit_started", "origin": 1168, "arm": "TiDE_HCAL", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:56:13.759160+00:00", "event": "head_fit_completed", "origin": 1168, "arm": "TiDE_HCAL", "seed": 2, "updates": 400, "elapsed_seconds": 0.5032134159991983}
+{"time_utc": "2026-09-15T16:56:13.774586+00:00", "event": "trajectory_issued", "origin": 1168, "end": 1461, "lock_sha256": "aeb723ec0f1dfb30326ef13475aed692c6dc557557a07c7f02eca48e57d0c61b"}
+{"time_utc": "2026-09-15T16:56:37.592148+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_issued_before_full_scoring"}
+{"time_utc": "2026-09-15T16:56:37.848287+00:00", "event": "scoring_complete", "all_prescribed_windows_complete": true, "new_fits": 39, "updates": 15600, "new_bplus_fits": 0, "summary_rows": 39, "point_rows": 156, "seed_rows": 117, "daily_rows": 45708, "endpoint_rows": 1872, "stable_hcal_vs_references": {"TiDE_CAL": false, "TiDE_KIN": false}, "contribution_rows": 128, "reused_fits": 12, "reused_checkpoints": 60, "new_checkpoints": 201, "new_base_fits": 21, "new_head_fits": 18, "bootstrap_heads": 6, "paired_metric_rows": 1080, "joint_bplus_pass_counts": {"TiDE_KIN": 0, "TiDE_CAL": 0, "TiDE_HCAL": 0}, "replacement_goal_met": false, "selection": false}

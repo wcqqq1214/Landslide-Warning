@@ -1,0 +1,30 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 39,
+  "updates": 15600,
+  "new_bplus_fits": 0,
+  "summary_rows": 39,
+  "point_rows": 156,
+  "seed_rows": 117,
+  "daily_rows": 45708,
+  "endpoint_rows": 1872,
+  "stable_hcal_vs_references": {
+    "TiDE_CAL": false,
+    "TiDE_KIN": false
+  },
+  "contribution_rows": 128,
+  "reused_fits": 12,
+  "reused_checkpoints": 60,
+  "new_checkpoints": 201,
+  "new_base_fits": 21,
+  "new_head_fits": 18,
+  "bootstrap_heads": 6,
+  "paired_metric_rows": 1080,
+  "joint_bplus_pass_counts": {
+    "TiDE_KIN": 0,
+    "TiDE_CAL": 0,
+    "TiDE_HCAL": 0
+  },
+  "replacement_goal_met": false,
+  "selection": false
+}
