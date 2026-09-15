@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-09-15T10:28:49.032603+00:00",
+  "status": "passed",
+  "files": {
+    "audit/checks.json": "4c54afd999e563e011432a925af5ac311f3002f5765c788d44786af9a7a42f08",
+    "audit/panel400_1168.npz": "d4e1f1de34130e9b83c3681b3dc728f415f6f81593912329e2671e75422b19d8",
+    "audit/panel400_612.npz": "7d05e82edfce1c24b142543c28c6876f8ce6dd6b58da70a94e99891b21995742",
+    "audit/panel400_792.npz": "b5bf5b76136a5c14887f161145e5dc0808c2dd7c2e0cd88c2872f003bcd608a3",
+    "audit/panel400_972.npz": "89382b2ae9d420e1a752d60ef9461f0817385c8ce9ff02117fc6ae02c543c0bd",
+    "audit/receipt.json": "aa3f67ca767c72d980787961c677f5611dc3473dacb91ffe05f98834ddc47156",
+    "audit/training400_points.csv": "e1e9d11e303ec1ddea8c835c8afd70b2c024d4ed2a266e4a044a8c3e3f015ba0",
+    "audit/training400_summary.csv": "694ad6628b79c5eaab04629890b512b6666279665f089a8025306aa8a8b16839"
+  }
+}

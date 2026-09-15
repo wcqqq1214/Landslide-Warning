@@ -1,0 +1,5 @@
+n=612: optimizer replay, all weights, panel400 and complete scores verified
+n=792: optimizer replay, all weights, panel400 and complete scores verified
+n=972: optimizer replay, all weights, panel400 and complete scores verified
+n=1168: optimizer replay, all weights, panel400 and complete scores verified
+{"status": "passed", "checkpoints": 72, "verified_fits": 24, "verified_actual_updates": 9600, "new_fits_in_audit": 0, "optimizer_updates_in_audit": 0, "checks": 3968, "values": 1265488, "max_difference": 2.1600499167107046e-12, "all_original200_traces_and_parameters_exact": true, "final_labels_after_all_issued": true, "independent_numpy_panel_slots": [0, 42, 85, 127], "gradient_norm": "finite and parameters unchanged; not independently differenced"}
