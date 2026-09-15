@@ -710,8 +710,8 @@
     "runtime/ootang_rolling_v3/reference/section2d_v4/results/geometry_matrices.npz": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9",
     "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c",
     "runtime/ootang_rolling_v3/reference/section2d_v4/results/reservoir_force_lookup_final.npz": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e",
-    "config/ootang_backbone_anchor.v1_0.json": "84412df8da9d45f47278991aef5a6659b916d62248d011a0e4b9ec110d733c79",
-    "docs/ootang_backbone_anchor_plan.v1.0.md": "734762e04a545c12ff6366a3d652add01980cd3d9a32ac802710dcf83ac272cc",
+    "config/ootang_backbone_anchor.v1_0.json": "d389a16f97df5c27470ac5305f04d6118170587ed846bfc6dd30ced2184de1da",
+    "docs/ootang_backbone_anchor_plan.v1.0.md": "7b92bacad09848a0c19c0d00e338c4031b62539489cf60a11095b0de6d93e178",
     "docs/ootang_gru_ablation_sources.v1.0.json": "5bed6e59f7d97855f29e9254fae94d19168da032e58274e811f2b60fd0a4449d",
     "docs/ootang_gru_ablation_results.v1.0.md": "1f45a5974706bf97e790726049b9c49df9f73f37ace3bac59131b773d28988d9",
     "code/gru_ablation/run.py": "71ea155e5d571e35ad6393f4ab96b3f58610ce116d02073921d7f98da30257d3",
@@ -1109,5 +1109,5 @@
     "results/ootang_gru_ablation_v1/20260915/origin_1168/G10_ANCHOR_UNIFORM/seed_0/e50_mean.npy": "b342f3ac3c6f86e15f25fc55025022d696cf100e3741a1a64a0ee8c38538ebeb",
     "results/ootang_gru_ablation_v1/20260915/origin_1168/G10_ANCHOR_UNIFORM/seed_0/e50.pt": "4fbd4cb0294aa2ab360d609c81eacfae84f859cde232aefa311d7fdac55a0806"
   },
-  "notes": "Frozen before implementation and training; legacy shared code, teachers, data and reused models. Untracked mentor figure rule not changed or included."
+  "notes": "Frozen before implementation and training; legacy shared code, teachers, data and reused models. Untracked mentor figure rule not changed or included. Pretraining arithmetic erratum1349->1249; same architecture; zero new fits."
 }

@@ -118,7 +118,7 @@
   "backbone": "shared node history, graph and decoder; temporal encoder GRU versus one-layer Transformer",
   "parameters": {
     "GRU": 1241,
-    "TF": 1349
+    "TF": 1249
   },
   "residual_penalty": 1.0,
   "arms": [
@@ -233,7 +233,7 @@
     "readout": "last valid historical token",
     "attention": "last-query exact evaluation of single causal self-attention block; all historical keys/values retained",
     "initialization": "construct original GraphGRU(seed), keep shared modules unchanged, remove GRU and initialize Transformer from resulting RNG state",
-    "parameter_ratio": 1.0870265914585011
+    "parameter_ratio": 1.0064464141821112
   },
   "historical_controls": [
     "OLD_TRANSFORMER",
