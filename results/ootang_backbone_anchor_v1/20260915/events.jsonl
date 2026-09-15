@@ -1,0 +1,5 @@
+{"time_utc": "2026-09-15T09:26:34.017999+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "reuse_preflight_only"}
+{"time_utc": "2026-09-15T09:26:34.186138+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "reuse_preflight_only"}
+{"time_utc": "2026-09-15T09:26:34.340639+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "reuse_preflight_only"}
+{"time_utc": "2026-09-15T09:26:34.503251+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "reuse_preflight_only"}
+{"time_utc": "2026-09-15T09:26:34.707503+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "new_model_preflight_only_612"}

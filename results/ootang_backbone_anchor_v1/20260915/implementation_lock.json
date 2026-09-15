@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "new_training": 0,
+  "time_utc": "2026-09-15T09:28:36.773943+00:00",
+  "path_base": "repository root",
+  "files": {
+    "code/backbone_anchor/run.py": "2a85a2069e55eb998d29c3fbecafc9f2f86cdb17b68a9008d536c9190426b75d",
+    "code/backbone_anchor/__init__.py": "b14a93a6f52be66830954838061a4d7e14c7373b874b108d932b33cb733641da",
+    "code/backbone_anchor/core.py": "72656b9a2f7d3e39ad77b456ec5942280d4cccb79bafc6515de7d6e04ba90ad0",
+    "code/backbone_anchor/preflight.py": "3c64a79adbd5b7dddd54b434fdd1d7ded50502f9425ef2d9bcf167813613d06e",
+    "results/ootang_backbone_anchor_v1/20260915/preflight/receipt.json": "accebf357c3322fb97e063f7278323bc73f09a1ff06db91cea2186cdc916c746",
+    "results/ootang_backbone_anchor_v1/20260915/preflight/checks.json": "bc6dd2f66264bba0822ee672aec23d47b3ab7efaeb01fc347c954e728e116b30",
+    "results/ootang_backbone_anchor_v1/20260915/preflight/lock.json": "2eb21c302aebcdd0bee9bfe13c4def3f6470a56ae1fa10ed34c4aaea7ad488d4"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-09-15T09:26:34.845920+00:00",
+  "status": "passed",
+  "files": {
+    "T00_RAW_UNIFORM_seed_0.pt": "87172c0b77c75a88c8c8a0b200641334f9d704aa109b0cb19ab23dd99b97880c",
+    "T00_RAW_UNIFORM_seed_1.pt": "95c7c680e95f315ac61d2f0b7167888680fc604ace39083dc7a9d2a10cf9196d",
+    "T00_RAW_UNIFORM_seed_2.pt": "2eceda07f37a765eb5b2b7d8ccf0b4d3c7a182b02af672e966811c0b78605b7a",
+    "T10_ANCHOR_UNIFORM_seed_0.pt": "dc2d194a3b978f49e0347ed4e8533baee574960b10f9947299e1f5ef2e22b05f",
+    "T10_ANCHOR_UNIFORM_seed_1.pt": "e0cea3c2e1665c6833227f9abe660ee82b09c0e277631e92dcb39d027d7ff69d",
+    "T10_ANCHOR_UNIFORM_seed_2.pt": "924904661a86dfcbff8d8049efc57f27839810d4285fd7a19d0ea03b9ace2aa3",
+    "checks.json": "bc6dd2f66264bba0822ee672aec23d47b3ab7efaeb01fc347c954e728e116b30",
+    "receipt.json": "accebf357c3322fb97e063f7278323bc73f09a1ff06db91cea2186cdc916c746"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "status": "resolved_before_any_fit",
+  "error": "Used directory-relative artifact lock for repository-relative implementation source paths; preparation failed and an attempted entry invocation was blocked by missing lock.",
+  "fix": "Write an explicit repository-relative implementation manifest as required by core.guard.",
+  "source_or_config_changed": false,
+  "new_fits_before_fix": 0,
+  "optimizer_updates_before_fix": 0,
+  "original_trace": "pretraining_guard_failure.stdout.log"
+}
