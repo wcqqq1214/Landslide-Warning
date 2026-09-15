@@ -1,0 +1,8 @@
+{
+  "status": "failed",
+  "phase": "document assembly links",
+  "reason": "Final receipt creation was skipped after a preceding lint failure; document audit was launched by an independent shell line and found the missing final_receipt.json.",
+  "scientific_data_changed": false,
+  "new_training": 0,
+  "time_utc": "2026-09-15T18:10:02.566772+00:00"
+}

@@ -1,0 +1,17 @@
+{
+  "path": "code/tide_kin_diagnostic/document_audit.py",
+  "sha256": "a09917c50d8b0b25161d4e376e7a09d46b2d8128e02e1801c6aa4a9b81d1ed3e",
+  "inspected_documents": {
+    "docs/ootang_tide_kin_diagnostic_results.v1.0.md": "962ffbae7b95e3944ae8f180bdbf64936a6b0872e89d8415662f53dd15fea21e",
+    "docs/ootang_tide_kin_diagnostic_plan.v1.0.md": "854c1810c476c528ec2ab1c7c0fafa18a7dd5c1e93d72064c17aa282fca77d6d",
+    "docs/ootang_tide_kin_diagnostic_figure_contract.v1.0.md": "b910e6a6dda07d3ac5239ef0ead02bcd05ac883b73261f1dfa9780a0f4850151",
+    "docs/ootang_tide_kin_diagnostic_implementation.v1.0.md": "b3e69628ddd7d7074964199244ff6208f1d29de535f6e3511ee47c404fdef430",
+    "docs/ootang_tide_kin_diagnostic_validation.v1.0.md": "dd5a4bf7c652437ae5760a503a3d7496d942ee8bfcf321f0b618595a7664071c",
+    "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md": "e658a2ce4d4aaaa3cfc4171849ead18b83765af828292ec176ef23c4d6048876",
+    "README.md": "4ce4bc963cd90c6e2706594b63d7015f10c44d9918b0e8b2bdc461a2c3b22fff",
+    "docs/README.md": "90777ad3984517a327d05578ef8e16b8fb41ded697247b1c5d1d5b4607dd6149",
+    "docs/progress.md": "bacd4b30d4e1b3b425cdcce2f84d7e93053a7e392fdf5bfdc6eaa3220b00a828",
+    "AGENTS.md": "d2b824afc58e8ba4e51bcf4bbff1b6f5670ebde7c77612ac9c5fd0eb61d81636"
+  },
+  "historical_outcome_sha256": "44ee851c2d07fa3f163265d913a0975fd7e10c3754ea6e020b62fc1738ba1ed6"
+}

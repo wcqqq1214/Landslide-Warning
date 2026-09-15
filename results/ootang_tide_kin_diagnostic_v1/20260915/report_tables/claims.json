@@ -1,0 +1,10 @@
+{
+  "early_kin": 7.987133792454907,
+  "early_drift": 0.6512332198076205,
+  "uniform_tail_percent": 38.56655290102389,
+  "mj1_972_seed_mse": 178.168212847365,
+  "mj1_972_ensemble_mse": 3.4157331252158674,
+  "mj3_final_spread_percent": 1.348527934621897,
+  "first_coverage90": 100.0,
+  "first_width90": 229.4168351565685
+}

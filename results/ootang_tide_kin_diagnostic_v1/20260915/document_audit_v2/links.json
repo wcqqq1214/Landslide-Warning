@@ -1,0 +1,254 @@
+[
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "ootang_tide_kin_diagnostic_plan.v1.0.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_by_point.csv"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_summary.csv"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/v1/error_by_distance.png"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/supervision_weights.csv"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/v1/supervision_weights.png"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/v1/checkpoint_fit.png"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/mse_decomposition.csv"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/v1/visibility_sensitivity.png"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "ootang_tide_features_results.v1.0.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/statistical_interpretation_audit.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_results.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_implementation.v1.0.md",
+    "target": "ootang_tide_kin_diagnostic_plan.v1.0.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_implementation.v1.0.md",
+    "target": "../config/ootang_tide_kin_diagnostic.v1_0.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_implementation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/preflight/receipt.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../config/ootang_tide_kin_diagnostic.v1_0.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "ootang_tide_kin_diagnostic_plan.v1.0.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "ootang_tide_kin_diagnostic_sources.v1.0.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/audit_v1/receipt.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/README.md"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/figure_qa_v1/receipt.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/statistical_interpretation_audit.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/document_audit_v2/receipt.json"
+  },
+  {
+    "file": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/document_assembly_issue.json"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/supervision_weights.png"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/supervision_weights.svg"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/error_by_distance.png"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/error_by_distance.svg"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/checkpoint_fit.png"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/checkpoint_fit.svg"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/visibility_sensitivity.png"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "v1/visibility_sensitivity.svg"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "../../../docs/ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "../../../docs/ootang_tide_kin_diagnostic_figure_contract.v1.0.md"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "../../../docs/ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md",
+    "target": "visual_review.json"
+  },
+  {
+    "file": "README.md",
+    "target": "docs/ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "README.md",
+    "target": "figures/ootang_tide_kin_diagnostic_v1/20260915/README.md"
+  },
+  {
+    "file": "README.md",
+    "target": "results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_by_point.csv"
+  },
+  {
+    "file": "README.md",
+    "target": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "README.md",
+    "target": "results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  },
+  {
+    "file": "README.md",
+    "target": "code/tide_kin_diagnostic/"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/README.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/issued_by_point.csv"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/diagnostic_v1/supervision_weights.csv"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_plan.v1.0.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "../config/ootang_tide_kin_diagnostic.v1_0.json"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_sources.v1.0.json"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_implementation.v1.0.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "ootang_tide_kin_diagnostic_figure_contract.v1.0.md"
+  },
+  {
+    "file": "docs/README.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  },
+  {
+    "file": "docs/progress.md",
+    "target": "ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "docs/progress.md",
+    "target": "../figures/ootang_tide_kin_diagnostic_v1/20260915/README.md"
+  },
+  {
+    "file": "docs/progress.md",
+    "target": "../results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "docs/ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "docs/ootang_tide_kin_diagnostic_results.v1.0.md"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "docs/ootang_tide_kin_diagnostic_validation.v1.0.md"
+  },
+  {
+    "file": "AGENTS.md",
+    "target": "results/ootang_tide_kin_diagnostic_v1/20260915/final_receipt.json"
+  }
+]

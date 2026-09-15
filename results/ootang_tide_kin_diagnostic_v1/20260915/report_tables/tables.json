@@ -1,0 +1,75 @@
+{
+  "full_rmse": {
+    "headers": [
+      "方法",
+      "792历史窗",
+      "972历史窗",
+      "1168最终探索"
+    ],
+    "rows": 6,
+    "numeric_cells": 18
+  },
+  "kin_distance": {
+    "headers": [
+      "前缀",
+      "1—30日",
+      "31—90日",
+      "91—180日",
+      "181—293日",
+      "完整293日"
+    ],
+    "rows": 3,
+    "numeric_cells": 15
+  },
+  "supervision_support": {
+    "headers": [
+      "前缀",
+      "合法起点数",
+      "完整293日起点数",
+      "尾段期望权重%",
+      "种子0实际%",
+      "种子1实际%",
+      "种子2实际%"
+    ],
+    "rows": 4,
+    "numeric_cells": 24
+  },
+  "checkpoint_fit": {
+    "headers": [
+      "前缀",
+      "训练e200",
+      "训练e400",
+      "发报种子均值e200",
+      "发报种子均值e400",
+      "发报集成e200",
+      "发报集成e400"
+    ],
+    "rows": 4,
+    "numeric_cells": 24
+  },
+  "visibility": {
+    "headers": [
+      "前缀",
+      "d30变化",
+      "d90变化",
+      "d180变化",
+      "d293变化"
+    ],
+    "rows": 4,
+    "numeric_cells": 16
+  },
+  "final_points": {
+    "headers": [
+      "点",
+      "KIN全窗RMSE",
+      "B+全窗RMSE",
+      "KIN尾段偏差",
+      "KIN尾段RMSE",
+      "KIN全窗90%覆盖%",
+      "KIN尾段90%覆盖%",
+      "尾段SSE占全窗%"
+    ],
+    "rows": 4,
+    "numeric_cells": 28
+  }
+}

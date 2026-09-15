@@ -1,0 +1,71 @@
+{
+  "status": "complete",
+  "reviewed_utc": "2026-09-15T18:06:45.755403+00:00",
+  "coverage": "11/11",
+  "interpretation": "descriptive exploratory",
+  "hypothesis_tests": 0,
+  "p_values": 0,
+  "new_confidence_intervals": 0,
+  "independent_replicates": "not established: adjacent origins/days, four points, overlapping windows and three random seeds are not independent scientific replications",
+  "metrics": "pointwise RMSE then mean across four points; seed average and forecast ensemble separate; MSE identities use population divisor",
+  "checks": [
+    {
+      "check": "simpson",
+      "disposition": "reviewed",
+      "evidence": "分窗/点/距离/种子完整保留；四点平均不替代逐点门。792早期误差与最终MJ3尾段各自呈现，未称已证实辛普森反转。"
+    },
+    {
+      "check": "ecological",
+      "disposition": "reviewed",
+      "evidence": "汇总RMSE不推出每一点或每个种子均受益；972 MJ1集成抵消与最终MJ3共同偏差明确区分。"
+    },
+    {
+      "check": "berkson",
+      "disposition": "reviewed",
+      "evidence": "诊断对象是既有一处滑坡四点和已研究的KIN，选择背景公开；不推广到一般模型/滑坡总体。"
+    },
+    {
+      "check": "collider",
+      "disposition": "reviewed",
+      "evidence": "未通过按结果筛点/筛日或控制事后成功指标建立因果关系；输入掩码试验仅描述模型依赖。"
+    },
+    {
+      "check": "base_rate",
+      "disposition": "reviewed",
+      "evidence": "本轮只预测位移及边际区间，没有预警分类、发生率或灵敏度结论；覆盖率必须连同宽度和评分解释。"
+    },
+    {
+      "check": "regression_to_mean",
+      "disposition": "reviewed",
+      "evidence": "从失败经验出发但不把不同窗变化归为干预效果；未新训练，无前后改善的因果宣称。"
+    },
+    {
+      "check": "survivorship",
+      "disposition": "reviewed",
+      "evidence": "固定60检查点/四窗/六方法/三种子全部保留；无成熟目标及612无sigma明确不可用，负结果和准备错误不删除。"
+    },
+    {
+      "check": "look_elsewhere",
+      "disposition": "reviewed",
+      "evidence": "四距离段、五检查点、四可见距离均执行前固定；全量CSV交付，不把极端例子当显著发现，不新选e50/e200。"
+    },
+    {
+      "check": "forking_paths",
+      "disposition": "reviewed",
+      "evidence": "计划、配置、来源在执行前提交；继承已暴露历史选项，全部探索性；不在结果后改阈值、均衡损失或追加训练。"
+    },
+    {
+      "check": "correlation_causation",
+      "disposition": "reviewed",
+      "evidence": "距离权重不是梯度；跨前缀支持量与误差不是控制实验。可见性变化证明输入依赖，不证明信息有害、标签泄露或物理因果。"
+    },
+    {
+      "check": "reverse_causality",
+      "disposition": "reviewed",
+      "evidence": "训练输入和成熟目标的日期边界已独立核验；无预测期位移反馈。时间合法与后续扰动敏感并不建立现实中的因果方向。"
+    }
+  ],
+  "new_model_effectiveness": "not evaluated: zero new training",
+  "old_joint_bplus_gate": "0/3 unchanged",
+  "user_mentor_acceptance": "pending"
+}

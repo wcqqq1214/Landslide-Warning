@@ -1,0 +1,8 @@
+{
+  "failed_attempt": "document_audit_v1",
+  "original_error": "missing final_receipt.json",
+  "preceding_lint": "E712 comparison to False",
+  "resolution": "Use explicit sequential dependency calls, create assembling receipt, allow versioned audit attempts, write running self-receipt before link audit, preserve failed code and receipt.",
+  "scientific_results_changed": false,
+  "document_audit_retries": 1
+}

@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-15T18:03:34.156248+00:00",
+  "status": "rendered awaiting document audit",
+  "files": {
+    "checkpoint_fit.csv": "b32e91cabe314f59362b39a1ac13d796a494fb2dd6cc52af5c8357988841b321",
+    "claims.json": "ef2dd15fd2a4a421d340ae5029bbfaad41e53884e148761e4b6f1ccdc729b938",
+    "final_points.csv": "72336de3461d78bcc5816176657f774a0ef40eea9d69ff704a8201f513f2eec8",
+    "full_rmse.csv": "39078a53935c5135c88dab38c37ddf8f3b8b80e97bff69e6c0c1646e8c79a685",
+    "kin_distance.csv": "5dc0828f6ab85b15654a99e41ae973718ca2c25ece03815e72e93504e6bf54d9",
+    "source_code.json": "e323f47b9a6e2ec4f221f22ee24f2d71758ed0d70676ce9dfc31890b47fcf551",
+    "supervision_support.csv": "9e5dfe98b4127daa497c80f8475dc9addedbf19273fd552b4d3115843654782b",
+    "tables.json": "718eeaa11d32fad4aa521f089a320a45556b54ce39a9e2e0a2d0b7ad6b263455",
+    "visibility.csv": "6f22c3dcbe3cae650ee9a6da1693b08ae0065fd5e3d89bde50650d25569781a0"
+  }
+}

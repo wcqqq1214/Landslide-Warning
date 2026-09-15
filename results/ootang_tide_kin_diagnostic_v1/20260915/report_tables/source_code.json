@@ -1,0 +1,17 @@
+{
+  "path": "code/tide_kin_diagnostic/report.py",
+  "sha256": "a10deb7572a3c81bef6e6a5d2ca5c079250e3d88d89f632667c0950b6a0863a5",
+  "source_tables": {
+    "issued_summary": "02681a34bd112e4276c08bc34d0ef558e843de2706f44e9a84bba55d21b09101",
+    "issued_by_point": "3d231b2ec8e6118bd39d46ec570e8bd0c81ec7fb2417ccafa1eff1b72689ad1c",
+    "supervision_weights": "2cb0e0e5814233480d7d04fe601e23fe38065d06ac072e42ebd6a846de5f6f85",
+    "training_summary": "b82fd22df89828b2f7f076fc9d530281484a283a087bb97921591d035cdef49f",
+    "checkpoint_forecast_summary": "b7d2dda3c4e624a419bee6db1596008dfd16d87d8f4e97f1736aa27aeebb0a32",
+    "visibility_sensitivity": "6a468d70650ed44a576180176f6a0eee63a93a108ef4388ea394ff64b527ada0",
+    "tail_sse": "139d40c89e620d6caa072a93e44dc8c610c576941e21e81decddaecd4c26b358",
+    "mse_decomposition": "3d1179421a766c78343be029a9f30d2d9b1c0088d9f8107d5b677d09ddf69a71"
+  },
+  "historical_references": {
+    "docs/ootang_tide_features_results.v1.0.md": "406b69edf317f7ef2ae6ba9ac02ef57027a3a3c196dd2ba43c77249aa8a26ef9"
+  }
+}

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "full_rmse/source",
+    "values": 18,
+    "max_difference": 3.552713678800501e-15,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "full_rmse/markdown",
+    "values": 18,
+    "max_difference": 4.6867249992033067e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "kin_distance/source",
+    "values": 15,
+    "max_difference": 3.552713678800501e-15,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "kin_distance/markdown",
+    "values": 15,
+    "max_difference": 4.6162728306597955e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "supervision_support/source",
+    "values": 24,
+    "max_difference": 6.181721801112872e-13,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "supervision_support/markdown",
+    "values": 24,
+    "max_difference": 4.530504433830629e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "checkpoint_fit/source",
+    "values": 24,
+    "max_difference": 1.4210854715202004e-14,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "checkpoint_fit/markdown",
+    "values": 24,
+    "max_difference": 4.797592429994779e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "visibility/source",
+    "values": 16,
+    "max_difference": 4.440892098500626e-16,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "visibility/markdown",
+    "values": 16,
+    "max_difference": 4.85675178296674e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "final_points/source",
+    "values": 28,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "final_points/markdown",
+    "values": 28,
+    "max_difference": 4.923676186763259e-07,
+    "tolerance": 5.0001e-07
+  },
+  {
+    "name": "claim/early_kin",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/early_drift",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/uniform_tail_percent",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/mj1_972_seed_mse",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/mj1_972_ensemble_mse",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/mj3_final_spread_percent",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/first_coverage90",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "claim/first_width90",
+    "values": 1,
+    "max_difference": 2.842170943040401e-14,
+    "tolerance": 1e-09
+  }
+]

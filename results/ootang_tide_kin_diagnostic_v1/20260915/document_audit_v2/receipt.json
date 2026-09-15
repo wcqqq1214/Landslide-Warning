@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "tables": 6,
+  "table_rows": 25,
+  "table_numeric_values": 125,
+  "narrative_claims": 8,
+  "comparisons": 20,
+  "values": 258,
+  "local_links": 63,
+  "interpretation_checks": 11,
+  "new_training": 0,
+  "checkpoints_reselected": 0,
+  "bootstrap_probability": "unavailable",
+  "time_utc": "2026-09-15T18:10:13.062129+00:00"
+}
