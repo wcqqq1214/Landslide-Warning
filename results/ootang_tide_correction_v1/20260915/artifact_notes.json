@@ -1,0 +1,21 @@
+{
+  "time_utc": "2026-09-15T17:20:43.201158+00:00",
+  "audit_source_cleanup": {
+    "first_attempt": "audit_v1 passed",
+    "second_attempt": "audit_v2 passed after removal of unused os import",
+    "receipts_identical": true,
+    "v1_source_archived": "audit_source_archive/audit_v1.py",
+    "new_training": 0
+  },
+  "document_rounding": {
+    "failed_initial_check": "document_qa_v1/receipt.json",
+    "change": "Final HCAL-CAL RMSE difference corrected from subtraction of displayed rounded values to full-precision subtraction: -3.591471mm",
+    "prediction_changes": false,
+    "scoring_changes": false,
+    "figure_changes": false
+  },
+  "figure_revision": "Onlyv1; no revised or discarded result panels",
+  "pdf_policy": "Temporary same-source PDFs under/tmp used only for text/collision QA; no PDF deliverables",
+  "formal_fit_failures": 0,
+  "formal_fit_retries": 0
+}

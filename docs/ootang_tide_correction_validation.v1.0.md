@@ -14,6 +14,12 @@
 
 156逐点、39平均、117种子平均、45708点日、1872边界误差、99配对门、1080配对指标与128分量记录独立复算一致。十个旧对照精确复用。每方法概率尺度来自自身上一条已发报路径第91—180日成熟误差；最终池[1062,1152)，16日间隔。99个事件核对确认全部四条外层发报锁定后才读取完整1461行标签评分。
 
-audit_v1已通过；仅删除未使用的os导入后完整复跑audit_v2以匹配交付源码哈希，两次数值回执完全相同。旧核验源码按原哈希归档。此为核验源码清理，无正式训练失败、重试或预测修改。图件及研究文字另作独立核验，相关结果写入最终回执。
+audit_v1已通过；仅删除未使用的os导入后完整复跑audit_v2以匹配交付源码哈希，两次数值回执完全相同。旧核验源码按原哈希归档。此为核验源码清理，无正式训练失败、重试或预测修改。
+
+四张最终v1图共16面板、101图形记录，412项/257388图形与数据值检查通过，源差0、真实SVG最大差7.203991856385983e−7pt。实际图形坐标、源数组、逐点注释、全范围显示、可编辑中文、1.5pt对齐、字体和碰撞检查通过，逐图人工目视通过；仅PNG/SVG交付。图形支持数据从冻结日期独立复算，不把396条重叠路径称为独立实验。
+
+研究初稿的最终RMSE差曾由已舍入显示值相减写成−3.591472mm，文字核验阻断后按完整精度−3.591471377242401修为−3.591471mm。初稿、核验源码和失败回执原样留档；预测/评分/图形未变。最终七表43行/171数值单元、78项正文数值结论与当前文档本地链接通过；既有四条缺失历史PDF链接按原文保留。11项统计解释检查完成，不把内部检查称独立科学重复或导师验收。
+
+[图形核验](../results/ootang_tide_correction_v1/20260915/figure_qa_v1/receipt.json) · [目视记录](../results/ootang_tide_correction_v1/20260915/visual_review.json) · [初稿舍入更正](../results/ootang_tide_correction_v1/20260915/document_qa_v1/receipt.json) · [文字核验](../results/ootang_tide_correction_v1/20260915/document_audit.json) · [统计解释](../results/ootang_tide_correction_v1/20260915/statistical_interpretation_audit.json)
 
 [冻结计划](ootang_tide_correction_plan.v1.0.md) · [配置](../config/ootang_tide_correction.v1_0.json) · [预检](../results/ootang_tide_correction_v1/20260915/preflight/receipt.json) · [数值回执](../results/ootang_tide_correction_v1/20260915/audit_v2/receipt.json) · [核验源码清理记录](../results/ootang_tide_correction_v1/20260915/audit_source_archive/revision_note.json)

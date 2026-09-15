@@ -1,0 +1,78 @@
+{
+  "status": "passed_with_explicit_limitations",
+  "checked": 11,
+  "reviewer": "Codex primary agent; not an independent external reviewer",
+  "items": [
+    {
+      "topic": "aggregation",
+      "review": "HCAL vs CAL at792 improves both mean metrics in all3 seeds but worsens ensemble; final ensemble improves with0 same-seed joint improvements. Both kept.",
+      "evidence": "analysis/pairing.json; analysis/phase_summary.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "per_point",
+      "review": "Final CAL improves onlyMJ3 vsB+; HCAL onlyATU5. HCAL all4points worse thanKIN; averaging does not override point protections.",
+      "evidence": "analysis/metrics_by_point.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "selection",
+      "review": "All39 fits,3seeds,4issuances,13methods and full293day paths retained. No pruning unsuccessful fits or dates.",
+      "evidence": "training_complete.json; analysis/daily_predictions.csv",
+      "status": "addressed"
+    },
+    {
+      "topic": "conditioning",
+      "review": "No point/subgroup/cap selected based on final performance. Component statistics describe every prescribed point/window.",
+      "evidence": "analysis/component_summary.csv; config/ootang_tide_correction.v1_0.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "non_independence",
+      "review": "20/200/396 historical paths overlap heavily,0/1/5/9 base prefixes are not independent scientific replicates;90 errors and3seeds are not independent replications.",
+      "evidence": "mature_support.json; docs/ootang_tide_correction_results.v1.0.md",
+      "status": "addressed"
+    },
+    {
+      "topic": "temporal_exposure",
+      "review": "Previously exposed overlapping windows motivated this design. No fresh confirmatory test, p-value or model-family superiority claimed.",
+      "evidence": "docs/ootang_tide_correction_plan.v1.0.md",
+      "status": "addressed"
+    },
+    {
+      "topic": "failure_preservation",
+      "review": "All15600updates and261checkpoints complete; both new groups worseKIN in3windows. Formal failures/retries0. Bootstrap612 is preplanned zero-update,not failed training.",
+      "evidence": "audit_v2/receipt.json; analysis/outcome.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "multiple_experiments",
+      "review": "Prior negative and local positive outcomes preserved. Fixed gates unchanged, no post-result cap/structure/epoch/lambda/RL search or winner stitching.",
+      "evidence": "docs/ootang_tide_correction_results.v1.0.md",
+      "status": "addressed"
+    },
+    {
+      "topic": "frozen_choices",
+      "review": "Plan/config committed before training; same head initializations,seed targets,schedules,scalers,caps. All four issuance locks precede full1461label scoring.",
+      "evidence": "implementation_lock.json; events.jsonl",
+      "status": "addressed"
+    },
+    {
+      "topic": "causality_and_transfer",
+      "review": "HCAL/CAL differ only H readability in head; old versus new pipeline also changes freezing and target sample generation. Older weak base errors may differ from finalKIN, but transfer mismatch is not identified sole cause.",
+      "evidence": "audit_v2/receipt.json; mature_support.json",
+      "status": "addressed"
+    },
+    {
+      "topic": "information_and_probability",
+      "review": "OOF targets strictly outside historical base training; complete293day drivers and labels mature before entering head fit. Given future scenario explicit, no displacement feedback. Probability pool uses actual previous-issued means,not newly fit residuals; widened intervals not effectiveness proof. Original as-of/preprocessing/physics nonconvergence retained.",
+      "evidence": "preflight/receipt.json; audit_v2/receipt.json",
+      "status": "addressed"
+    }
+  ],
+  "effectiveness": "not achieved",
+  "current_H_additive_route": "closed at frozen stopping rule",
+  "scientific_replication": "no independent external validation",
+  "user_acceptance": "pending",
+  "mentor_acceptance": "pending"
+}

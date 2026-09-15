@@ -1,0 +1,10 @@
+{
+  "status": "failed",
+  "failed_check": "paired RMSE delta1168",
+  "cause": "Draft subtracted already rounded summary values; full precision difference rounds to -3.591471, not -3.591472.",
+  "reported": -3.591472,
+  "full_precision": -3.591471377242401,
+  "correct_rounded": -3.591471,
+  "science_arrays_changed": false,
+  "formal_training_retries": 0
+}

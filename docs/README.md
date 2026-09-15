@@ -1,8 +1,16 @@
 # 项目文档导航
 
-当前入口以 **2026-09-16本地时间已完成的TiDE分开编码与受限H融合**为准（实验日期为2026-09-15 UTC）。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-16本地时间已完成的TiDE冻结基模型与历史样本外校正**为准（实验日期为2026-09-15 UTC）。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新研究：TiDE分开编码与受限H融合
+## 最新研究：冻结KIN与历史样本外校正
+
+[研究记录](ootang_tide_correction_results.v1.0.md) · [完整39组CSV](../results/ootang_tide_correction_v1/20260915/analysis/phase_summary.csv) · [1080配对指标差](../results/ootang_tide_correction_v1/20260915/analysis/paired_metric_effects.csv) · [128行分量](../results/ootang_tide_correction_v1/20260915/analysis/component_summary.csv) · [四张研究图](../figures/ootang_tide_correction_v1/20260915/README.md)
+
+[冻结计划](ootang_tide_correction_plan.v1.0.md) · [配置](../config/ootang_tide_correction.v1_0.json) · [2216来源](ootang_tide_correction_sources.v1.0.json) · [成熟支持](../results/ootang_tide_correction_v1/20260915/mature_support.json) · [实现](ootang_tide_correction_implementation.v1.0.md) · [核验](ootang_tide_correction_validation.v1.0.md) · [图件约定](ootang_tide_correction_figure_contract.v1.0.md) · [回执](../results/ootang_tide_correction_v1/20260915/final_receipt.json)
+
+冻结原KIN，配对同13179参数CAL/HCAL，只有H输入可用性不同。39新拟合15600更新、261新旧/启动检查点、四条完整293日发报完成。CAL三窗RMSE42.602315/17.984216/14.133238，HCAL42.799103/19.006908/10.541766，原KIN22.907124/5.534082/7.540029mm；两新版三窗集成MAE/RMSE/CRPS均退步。HCAL相对CAL同种子同时改善3/0/0个、两个稳定判定均false；三组B+联合均0/3。2216来源、89997623数值、四图16面板/257388图形值核验完成。历史完整路径0/20/200/396且重叠，弱基模型残差迁移限制保留，未确认唯一原因。按冻结规则收束当前H附加校正路线，不追加结构/轮数/cap/λ/RL。仅研究记录/CSV/PNG/SVG。
+
+## 历史研究：TiDE分开编码与受限H融合
 
 [研究记录](ootang_tide_fusion_results.v1.0.md) · [完整33组CSV](../results/ootang_tide_fusion_v1/20260915/analysis/phase_summary.csv) · [1800配对指标差](../results/ootang_tide_fusion_v1/20260915/analysis/paired_metric_effects.csv) · [128行分量](../results/ootang_tide_fusion_v1/20260915/analysis/component_summary.csv) · [四张研究图](../figures/ootang_tide_fusion_v1/20260915/README.md)
 

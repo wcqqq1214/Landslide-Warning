@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-16本地时间，TiDE分开编码与受限H融合已完整完成：限幅减轻无约束版退步，但未获得相对旧KIN/PHYS的稳定收益。** 实验目录沿用2026-09-15 UTC日期。
+**截至2026-09-16本地时间，冻结TiDE_KIN与历史样本外校正已完整完成：CAL、HCAL三窗集成误差均高于原KIN，当前H附加校正路线按冻结规则收束。** 实验目录沿用2026-09-15 UTC日期。
 
-[研究记录](docs/ootang_tide_fusion_results.v1.0.md) · [四张研究图](figures/ootang_tide_fusion_v1/20260915/README.md) · [完整33组CSV](results/ootang_tide_fusion_v1/20260915/analysis/phase_summary.csv) · [分量CSV](results/ootang_tide_fusion_v1/20260915/analysis/component_summary.csv) · [核验](docs/ootang_tide_fusion_validation.v1.0.md)
+[研究记录](docs/ootang_tide_correction_results.v1.0.md) · [四张研究图](figures/ootang_tide_correction_v1/20260915/README.md) · [完整39组CSV](results/ootang_tide_correction_v1/20260915/analysis/phase_summary.csv) · [历史监督支持](results/ootang_tide_correction_v1/20260915/mature_support.json) · [核验](docs/ootang_tide_correction_validation.v1.0.md)
 
-SPLIT将K主支与H支分别编码后相加，BOUND用训练段30日位移变化RMS限定H贡献；两版均123571参数、180日历史、三种子、固定400更新、从头联合训练。新增24拟合9600更新120检查点，精确复用旧KIN/PHYS24拟合120检查点；四条293日条件预测全部完成，无位移观测反馈，无B+重拟合/物理前向。表为三种子集成预测的四点平均RMSE，单位mm。
+原KIN权重与发报精确保留，CAL/HCAL同13179可训练参数，只改变校正器是否读取H。残差来自按当时可用数据重建的历史训练外预测，全部293日条件驱动和标签兑现后才能训练校正器。新增21个历史基模型与18个校正器，共39拟合15600更新；201新/启动检查点加60原KIN检查点全部核验。四起点完整293日条件预测完成，无预测期位移反馈，无B+重拟合/物理前向。以下是三种子集成的四点平均RMSE，单位mm。
 
-| 起点 | B+ | TiDE_KIN | TiDE_PHYS | TiDE_SPLIT | TiDE_BOUND |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 792 | 27.313325 | 22.907124 | 14.859012 | 52.630851 | 25.340337 |
-| 972 | 67.167389 | 5.534082 | 12.114521 | 15.600443 | 7.703676 |
-| 1168 | 9.124173 | 7.540029 | 8.921779 | 9.230440 | 9.038071 |
+| 起点 | B+ | TiDE_KIN | TiDE_CAL | TiDE_HCAL |
+| --- | ---: | ---: | ---: | ---: |
+| 792 | 27.313325 | 22.907124 | 42.602315 | 42.799103 |
+| 972 | 67.167389 | 5.534082 | 17.984216 | 19.006908 |
+| 1168 | 9.124173 | 7.540029 | 14.133238 | 10.541766 |
 
-BOUND相对SPLIT的平均MAE/RMSE/CRPS三窗均降低，但严格均值门只过第一窗，同种子均值同时改善3/2/1个。两新组平均MAE/RMSE三窗均高于旧KIN；BOUND最终比B+的平均RMSE仅改善0.94%，MJ3/MJ1逐点保护失败，90%覆盖仅41.64%/56.31%。四组B+联合均0/3，不将平均改善改判为整体达标。
+HCAL对CAL只在最终窗集成均值改善，同种子MAE/RMSE同时改善数3/0/0，与集成方向并不一致；三窗均值门均未通过。两新版对KIN三窗MAE/RMSE/CRPS都退步，三组B+联合均0/3。CAL最终对B+概率门通过但均值失败；HCAL的MJ3覆盖仅62.12%。不按点、种子或统计口径挑选赢家。
 
-1272来源、240检查点、188863268独立数值及四图16面板/247192图形值核验通过。幅度限制工作正常不等于预测有效；两支联合训练，新版比旧版增加约12%参数，不能视为容量匹配消融或物理因果。窗口重叠且已暴露，全部探索性。本轮已完成，不追加cap搜索/训练/RL；仅研究记录/CSV/PNG/SVG、本地提交，无push/PR/PDF汇报，用户/导师尚未验收。
+2216来源、261检查点、89997623独立数值及四图16面板/257388图形值核验通过。完整历史路径数0/20/200/396，第一评价窗只来自同一480前缀弱基模型，路径高度重叠；残差可迁移性未获证明。窗口已暴露且重叠，全部探索性。本轮结束，不追加训练/上界搜索/RL。仅研究记录/CSV/PNG/SVG、本地提交，无push/PR/PDF汇报，用户/导师尚未验收。
 
-[上一轮K/H输入消融](docs/ootang_tide_features_results.v1.0.md)、[原TiDE配对](docs/ootang_tide_direct_results.v1.0.md)、[历史教师更新](docs/ootang_teacher_refresh_results.v1.0.md)、[200/400训练对照](docs/ootang_training_sufficiency_results.v1.0.md)、[GRU/Transformer起点表达](docs/ootang_backbone_anchor_results.v1.0.md)及[旧半残差](docs/ootang_transformer_temporal_results.v1.0.md)的正负结果均保留。
+[前轮联合融合](docs/ootang_tide_fusion_results.v1.0.md)、[K/H输入消融](docs/ootang_tide_features_results.v1.0.md)、[原TiDE配对](docs/ootang_tide_direct_results.v1.0.md)、[历史教师更新](docs/ootang_teacher_refresh_results.v1.0.md)、[200/400训练对照](docs/ootang_training_sufficiency_results.v1.0.md)、[GRU/Transformer起点表达](docs/ootang_backbone_anchor_results.v1.0.md)及[旧半残差](docs/ootang_transformer_temporal_results.v1.0.md)的正负结果均保留。
 
 ## 阅读入口
 
@@ -35,6 +35,7 @@ BOUND相对SPLIT的平均MAE/RMSE/CRPS三窗均降低，但严格均值门只过
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/tide_correction/](code/tide_correction/) | 原KIN冻结、完整成熟历史训练外残差、小校正配对及独立核验 |
 | [code/tide_fusion/](code/tide_fusion/) | TiDE独立H支、固定限幅配对、完整训练及分量/图文核验 |
 | [code/tide_features/](code/tide_features/) | TiDE物理特征分组2×2消融、旧两端复用与独立核验 |
 | [code/tide_direct/](code/tide_direct/) | 小型TiDE直接位移配对、全293日预测及独立核验 |

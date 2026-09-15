@@ -1,0 +1,9 @@
+{
+  "time_utc": "2026-09-15T17:18:06.082921+00:00",
+  "status": "failed_document_rounding_preserved",
+  "files": {
+    "document_audit.py": "1092c298c85682d9b7b5a12e6fc7f8a103a5ee93d33e57ac5516ad6c3d326751",
+    "receipt.json": "3b1f880c62c60bdbe976d42bad8521fdea8105151417e38108d64959afbdac39",
+    "results_draft.md": "7c3570090954e2f29872946d7f2b8e9fe34a92262ae43e6a1341df0c75d6d8ca"
+  }
+}
