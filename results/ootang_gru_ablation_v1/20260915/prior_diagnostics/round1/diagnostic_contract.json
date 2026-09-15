@@ -1,0 +1,38 @@
+{
+  "started_utc": "2026-09-15T06:01:55.682837+00:00",
+  "arms": [
+    "GRU_LOCAL",
+    "GRU_GRAPH",
+    "COND_ATTN"
+  ],
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "teacher_overlap_days": {
+    "612": 292,
+    "792": 292,
+    "972": 112,
+    "1168": 97
+  },
+  "training_probe": "All 200 saved batches, 4 origins and 16 distances per batch, retaining repetitions and exact sampling weights; fixed within each seed/checkpoint sequence.",
+  "probability": "Not recalibrated; mean failure diagnosis only.",
+  "comparisons": "Full 293-day existing forecast for training-vs-time transfer; teacher sensitivity only existing cache overlap and fixed e200; cross teacher baseline/input combinations are arithmetic diagnostics, not new valid candidates.",
+  "limits": "Exposed/overlapping dates; no retraining; total penalized objective has per-sample unconstrained lower bound .5 E[r^2] for lambda=1, not a feasible forecast baseline.",
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "source_guards": "301 graph sources plus 253 origin sources and implementation locks"
+}

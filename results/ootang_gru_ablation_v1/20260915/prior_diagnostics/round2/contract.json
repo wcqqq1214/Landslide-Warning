@@ -1,0 +1,18 @@
+{
+  "scope": "Read-only second diagnosis of frozen e200 GRU_LOCAL, GRU_GRAPH and COND_ATTN; no training or experiment changes.",
+  "origins": [612, 792, 972, 1168],
+  "seeds": [0, 1, 2],
+  "forecast_horizon": 293,
+  "primary_origins": [792, 972, 1168],
+  "checkpoint": 200,
+  "reference": "Use existing h=1 model output. h=0 is outside the frozen public input contract and will not be queried.",
+  "decomposition": "r0=y[n-1]-B[n-1]; c(h)=saved_mu(h)-B(h); shape(h)=c(h)-c(1). Evaluate B, B+r0, B+shape, B+r0+shape, and original B+c. The anchored shape holds the residual at r0 for h=1, so it omits the first day's residual increment. This is a mechanical diagnostic, not a trained boundary constraint.",
+  "teacher_support": "All saved 200 batches, 4 origins and 16 distances per origin; preserve repetitions. Predefined teacher-age bins 0, 1-29, 30-89, >=90. No resampling or weight adjustment.",
+  "teacher_factorial": "At each origin use the existing overlap with the preceding saved teacher: swap all physical history/query features and historical residual features as two separate factors. Observed displacement, preprocessing, weights and future forcing stay fixed. Mixed inputs are sensitivity diagnostics, not operational candidates.",
+  "teacher_overlap_days": {"612": 292, "792": 292, "972": 112, "1168": 97},
+  "selection": "Report every predefined variant, seed, point and full window. No model or checkpoint selection.",
+  "probability": "No new calibration or probability scores; original probability results remain frozen.",
+  "limits": "Post-hoc exposed and overlapping dates. Attribution is algebraic/model dependence, not identification of a unique failure cause or validation of a fix.",
+  "training_updates": 0,
+  "physical_forwards": 0
+}

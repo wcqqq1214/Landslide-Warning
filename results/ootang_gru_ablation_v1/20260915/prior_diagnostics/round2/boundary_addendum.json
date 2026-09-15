@@ -1,0 +1,9 @@
+{
+  "trigger": "The predefined teacher-age support diagnosis found only 144 fresh-teacher queries and one fresh-teacher h=1 query across 38400 final-fit draws.",
+  "question": "Does the first-day mismatch also occur at all available historical teacher-refit origins inside each fitting prefix?",
+  "checks": "For each frozen e200 checkpoint evaluate h=1 at every available historical fit origin 432/612/792 strictly before that checkpoint's fit prefix, plus its actual issuance origin. No origin or seed selection.",
+  "label_use": "Historical queries are in-sample diagnostics, not held-out evidence; actual issuance queries are post-hoc checks. Only observations before each queried origin enter inputs.",
+  "training_updates": 0,
+  "physical_forwards": 0,
+  "h0_queries": 0
+}

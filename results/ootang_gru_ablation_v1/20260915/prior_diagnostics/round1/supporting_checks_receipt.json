@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checked_utc": "2026-09-15T06:12:51.087765+00:00",
+  "original_summary_metric_checks": 18,
+  "maximum_summary_difference": 1.4210854715202004e-14,
+  "decreasing_training_checkpoint_sequences": 36,
+  "final_e200_seed_forecasts_worse_than_bplus": 9,
+  "mj3_final_positive_residual_days": 293,
+  "mj3_training_negative_target_fraction": 0.9820833333333333,
+  "final_first_day_true_residual_mm": [
+    -0.045136880491611464,
+    0.027144679769662616,
+    0.13216155801728746,
+    -0.10156478709393468
+  ],
+  "final_maximum_absolute_initial_residual_mm": 0.016300767301913766,
+  "training_updates": 0,
+  "physical_forwards": 0,
+  "source_guard": {
+    "graph_source_entries": 301,
+    "origin_source_entries": 253,
+    "status": "passed",
+    "checked_utc": "2026-09-15T06:08:32.367960+00:00"
+  }
+}

@@ -1,0 +1,8102 @@
+[
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 8.304468224196171e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.907985046680551e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 3.9968028886505635e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.730349362740526e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 3.907985046680551e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.973799150320701e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.730349362740526e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.3734794391857577e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 8.604228440844963e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.796163466380676e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 4.085620730620576e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.5067062021407764e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 2.6645352591003757e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.907985046680551e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 4.796163466380676e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.197442310920451e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.1013412404281553e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 9.947598300641403e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 8.171241461241152e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0658141036401503e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 6.394884621840902e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 1168,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 7.105427357601002e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.417888360170764e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 6.572520305780927e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.3290705182007514e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.973799150320701e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.973799150320701e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0835776720341528e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0302869668521453e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.3290705182007514e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.973799150320701e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 7.061018436615996e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 7.460698725481052e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 448,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 6.750155989720952e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0835776720341528e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 7.105427357601002e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.2434497875801753e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 9.237055564881302e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0658141036401503e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.2434497875801753e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.0302869668521453e-13
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 8.171241461241152e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.6645352591003757e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.4868995751603507e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 5.5067062021407764e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "numpy_mixed_teacher_forward",
+    "values": 388,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "boundary_matches_saved_h1",
+    "values": 4,
+    "difference": 1.7763568394002505e-14
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-16
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 5.329070518200751e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 0.0
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 8.881784197001252e-15
+  },
+  {
+    "label": "path_identity",
+    "values": 1172,
+    "difference": 0.0
+  },
+  {
+    "label": "summary_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "point_scores",
+    "values": 2,
+    "difference": 7.105427357601002e-15
+  }
+]

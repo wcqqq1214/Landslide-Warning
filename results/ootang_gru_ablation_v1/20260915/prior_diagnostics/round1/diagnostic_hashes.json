@@ -1,0 +1,16 @@
+{
+  "diagnose.py": "3adc0edfb3ec74cc55e964991f628edd56124e69017bc488d0917f4862915023",
+  "origin_state_support.csv": "234fb2e0de0e9a9efdf1ba7cc61a2e1a66502d7461dcac1bdb1ff3fbd7754f19",
+  "outer_by_point.csv": "a26ee7de8acf55d278c1f3203c329a4c849e4d919efa05c115a1961c17b12e17",
+  "outer_summary.csv": "f485c1d2a1c3970a3f5a5f35e73a1961de74c0b5dc8577dd62366748271d4c35",
+  "receipt.json": "49f133068d85b573fb7b5e160680d84d4dd3fc5da7fc9b74cf890df802398651",
+  "same_date_target_shift.csv": "94b0b7fd6250e9f8a25c8e168466f017c40e219b17a04f9a62afe632eb7a61ac",
+  "source_guard_receipt.json": "04130656e5a14403dfdf21b478e7a2bf0849e1029495cb3ed9a39a50a30d3041",
+  "supporting_checks.py": "7fb4162c241bb7d4d960a8212fb05f7d1e4d9c4e9c6903134fd6f75cfda00125",
+  "teacher_counterfactual_by_point.csv": "34e1e4ced371203d8cbff1300fd9f1100039c5db42f1d3b106205e5dd8a6dede",
+  "teacher_counterfactual_lambda_adjusted.csv": "9c0ff5ea94cd4c51d4986ebf243fa8b3db3e304dee27de8e019291dd1afc3868",
+  "teacher_counterfactual_summary.csv": "bc4672e96430a1503c2ba5dc4a47d104a04129709f565bea563f168198bb32b8",
+  "training_by_point.csv": "bc708b06fb47b268ccb212cb1bdfeed6ecf682a0610dd2aa54e9a04f0150b0c1",
+  "training_by_teacher.csv": "5b0986194d91276a8923a650253921d49b22f4588628c4fa2d36fa0b072ac701",
+  "training_summary.csv": "45a9ea568f37f564400fe002c59960385650c1305f77ad70fd057522a8b0c8f8"
+}

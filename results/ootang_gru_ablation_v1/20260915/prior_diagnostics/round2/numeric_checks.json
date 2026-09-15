@@ -1,0 +1,3122 @@
+[
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 2448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 2448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4896,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 4.440892098500626e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 2448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.7284841053187847e-12
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 3.552713678800501e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.3642420526593924e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 6336,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 1168,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.263256414560601e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.2789769243681803e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 7.105427357601002e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.947598300641403e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 1168,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3888,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.7763568394002505e-15
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3888,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 7776,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 1.0658141036401503e-14
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 3888,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 448,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 448,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 3.637978807091713e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 2.1316282072803006e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4672,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.7284841053187847e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 3.9968028886505635e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4672,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 9.094947017729282e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 1.8189894035458565e-12
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "training_target_energy",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 9344,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "same_observed_channels",
+    "values": 4672,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_old_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "prior_new_teacher",
+    "values": 388,
+    "difference": 0.0
+  },
+  {
+    "label": "saved_issued_forecast",
+    "values": 388,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 7.105427357601002e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 8.526512829121202e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.9895196601282805e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.842170943040401e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 2.2737367544323206e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.831690603168681e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 0.0
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 5.684341886080802e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.4210854715202004e-14
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 4.547473508864641e-13
+  },
+  {
+    "label": "forecast_error_decomposition",
+    "values": 1,
+    "difference": 1.1368683772161603e-13
+  },
+  {
+    "label": "factor_effect_sum",
+    "values": 388,
+    "difference": 7.105427357601002e-15
+  }
+]

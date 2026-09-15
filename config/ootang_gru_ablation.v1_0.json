@@ -1,0 +1,227 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor",
+    "neural_anchor": "A-on changes output reference only; the B+ state remains continuous and unchanged."
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "updates": 200,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "version": "ootang_gru_ablation.v1.0",
+  "branch": "codex/gru-boundary-ablation",
+  "start_utc": "2026-09-15T06:30:00+00:00",
+  "deadline_utc": "2026-09-15T08:30:00+00:00",
+  "out": "results/ootang_gru_ablation_v1/20260915",
+  "figures": "figures/ootang_gru_ablation_v1/20260915",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "backbone": "frozen overnight_graph GraphGRU, GRU_GRAPH identity",
+  "parameters": 1241,
+  "residual_penalty": 1.0,
+  "arms": [
+    "G00_RAW_UNIFORM",
+    "G10_ANCHOR_UNIFORM",
+    "G01_RAW_BOUNDARY",
+    "G11_ANCHOR_BOUNDARY"
+  ],
+  "factors": {
+    "G00_RAW_UNIFORM": {
+      "anchor": false,
+      "boundary": false
+    },
+    "G10_ANCHOR_UNIFORM": {
+      "anchor": true,
+      "boundary": false
+    },
+    "G01_RAW_BOUNDARY": {
+      "anchor": false,
+      "boundary": true
+    },
+    "G11_ANCHOR_BOUNDARY": {
+      "anchor": true,
+      "boundary": true
+    }
+  },
+  "training": {
+    "first_origin": 432,
+    "batch_origins": 4,
+    "distances_per_origin": 16,
+    "max_horizon": 293,
+    "uniform": "exact original numpy default_rng(seed) schedule",
+    "boundary": "copy uniform schedule; retain slots 0/1. Slot2 cycles teacher fit origins <n. Slot3 cycles the next teacher and uniform age1..29. For slots2/3 distances1..7 fixed plus9 uniform legal distances. Independent SeedSequence([seed,20260915,1]); no label-dependent selection.",
+    "boundary_teacher_cycle": [
+      432,
+      612,
+      792
+    ],
+    "near_age_min": 1,
+    "near_age_max": 29,
+    "fixed_short_horizons": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "auxiliary_seed_words": [
+      20260915,
+      1
+    ]
+  },
+  "output": {
+    "raw": "mu=B+unit*f(h); loss MSE(f,r/unit)+mean(f^2)",
+    "anchored": "g(h)=f(h)-f(0); mu=B+r0+unit*g(h); loss MSE(g,(r-r0)/unit)+mean(g^2)",
+    "reference_query": "h0 uses teacher physical state at m-1 and zero distance features; no future label; original input code untouched. h0 is a context/reference query, never a newly sampled target.",
+    "factor_scope": "A bundles output anchor, centered target and penalty on learned change; B bundles teacher-age and short-horizon sampling changes."
+  },
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "RR_COND"
+  ],
+  "prior_controls_out": "results/ootang_overnight_graph_v1/20260915/base",
+  "reference_reproduction": "G00 matches frozen GRU_GRAPH schedules, normalization, init, objective and all saved checkpoint forecasts within1e-7mm",
+  "max_new_fits": 48,
+  "max_optimizer_updates": 9600,
+  "max_physical_forwards": 0,
+  "max_bplus_refits": 0,
+  "selection": "none; fixed e200; all methods/windows completed regardless of effect",
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "reporting": {
+    "primary_windows": [
+      792,
+      972,
+      1168
+    ],
+    "bootstrap_only": 612,
+    "boundary_diagnostic_horizons": [
+      1,
+      7,
+      30
+    ],
+    "paired_edges": [
+      [
+        "G10_ANCHOR_UNIFORM",
+        "G00_RAW_UNIFORM"
+      ],
+      [
+        "G01_RAW_BOUNDARY",
+        "G00_RAW_UNIFORM"
+      ],
+      [
+        "G11_ANCHOR_BOUNDARY",
+        "G01_RAW_BOUNDARY"
+      ],
+      [
+        "G11_ANCHOR_BOUNDARY",
+        "G10_ANCHOR_UNIFORM"
+      ]
+    ],
+    "factorial": "For each fixed metric, A effect=.5[(10-00)+(11-01)], B effect=.5[(01-00)+(11-10)], interaction=11-10-01+00; negative is favorable only for loss/error/width, coverage descriptive. Report all points/seeds/windows, no p-values."
+  }
+}

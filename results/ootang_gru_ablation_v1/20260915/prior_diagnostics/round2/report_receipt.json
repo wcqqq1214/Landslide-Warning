@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "existing_local_links": 18,
+  "training_half_origin_gap_reduction_mean": 0.622535139454874,
+  "final_fresh_query_count": 144,
+  "final_fresh_h1_count": 1,
+  "report_sha256": "f8d7cad579667651e74dcdc6931e9625029c194b0b7043c1ee5dcb4c28978a31"
+}
