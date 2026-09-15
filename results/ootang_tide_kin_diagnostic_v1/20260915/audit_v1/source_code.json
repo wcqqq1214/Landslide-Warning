@@ -1,0 +1,7 @@
+{
+  "code/tide_kin_diagnostic/run.py": "01c65faa13562e5e8ecdea8df9b12fc6d484b5712147dc32de1979999d7cff14",
+  "code/tide_kin_diagnostic/audit.py": "08ef98dc9d7aed59fd0b6ddac5c595492c392a1561ce1f46cee76c3a157c2315",
+  "code/tide_kin_diagnostic/__init__.py": "58217ca24d37b7da4591bd1ec66ae513433c5bd6ec867676ebcd365f97396897",
+  "code/tide_kin_diagnostic/core.py": "520c12c5f18769058d83baa8bf04980f4677c8a33217fb9aa3ab4b9e2791bf6d",
+  "code/tide_kin_diagnostic/preflight.py": "5db03358d95134de50a31711c2f030bb1dec42f5eb7c342d9acf5deab5ee888f"
+}

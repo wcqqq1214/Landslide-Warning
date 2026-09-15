@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "source_files": 283,
+  "checkpoints": 60,
+  "original_training_origins": 1816,
+  "training_origin_evaluations": 27240,
+  "visibility_seed_paths": 48,
+  "checks": 1789,
+  "values": 45766892,
+  "max_difference": 1.1641532182693481e-09,
+  "unavailable_cells_verified": 6300,
+  "original_forecasts_unchanged": true,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "bootstrap_probability": "unavailable"
+}
