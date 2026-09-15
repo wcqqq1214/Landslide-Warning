@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "started_utc": "2026-09-15T11:35:20.919938+00:00",
+  "values_checked": 5588338,
+  "max_difference": 2.1600499167107046e-12,
+  "checkpoints": 96,
+  "teacher_fits_verified": 10,
+  "neural_fits_verified": 24,
+  "updates_verified": 4800,
+  "audit_new_fits": 0,
+  "audit_optimizer_updates": 0,
+  "audit_physical_forwards": 20,
+  "source_files": 203,
+  "finished_utc": "2026-09-15T11:35:23.365146+00:00",
+  "checks": 5022,
+  "paired_gates": 27,
+  "events": 94,
+  "independent_full_prediction_paths": 96,
+  "teacher_projection": "original C state replay and explicit observation contraction",
+  "numerical_independence": "separate NumPy GRU, feature construction and score formulas; physics uses original native solver"
+}

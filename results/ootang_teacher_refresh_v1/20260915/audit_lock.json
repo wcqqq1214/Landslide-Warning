@@ -1,0 +1,13 @@
+{
+  "time_utc": "2026-09-15T11:35:23.373584+00:00",
+  "status": "passed",
+  "files": {
+    "audit/checks.csv": "52bf1052de3e0645626865dd33455f13d932782f3c70eef82f1330d80a9eb330",
+    "audit/implementation.json": "6971e4cf7a3cef65604667c66df5f51f6ccd330dafa76a7e9ca826cacd4b196a",
+    "audit/receipt.json": "152d0525855178d368ae5f0e633aa6ff6bfc15497a6cd39aadf0c1e3cfc6b2eb",
+    "audit/sample_coverage.csv": "2fb55f7f3e30cad619da9cef2478810ea5969cb2d4125cf6c4ac471e618a202f",
+    "audit/teacher_fit_points.csv": "0089a2ddbbd67cf788a25255ad753e1fee823555b2d1c0d31c82375d9be9bc37",
+    "audit/training_target_support.csv": "ed2a2612edce7985ea584cf3a35b782b0000867c353aa911c047d1e3a8a3fd1a",
+    "audit/warnings.json": "eb9acfd19123b277c0866c400d8a44db34532aaee379f0b1c4017ef538b46df7"
+  }
+}

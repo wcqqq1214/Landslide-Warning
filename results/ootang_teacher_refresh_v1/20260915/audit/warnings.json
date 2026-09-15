@@ -1,0 +1,482 @@
+[
+  {
+    "fit_prefix": 492,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 492,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 552,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 672,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 732,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 852,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 912,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 972,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1032,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1092,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "invalid value encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "divide by zero encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "overflow encountered in matmul"
+  },
+  {
+    "fit_prefix": 1152,
+    "message": "invalid value encountered in matmul"
+  }
+]
