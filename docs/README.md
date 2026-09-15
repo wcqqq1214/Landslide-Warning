@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的起点残差表达×边界采样2×2消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的统一接口GRU/Transformer×起点残差表达消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：GRU两因素消融
+## 最新交付：统一接口骨干×起点表达
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [完整比较报告](ootang_backbone_anchor_results.v1.0.md) · [九张PNG/SVG](../figures/ootang_backbone_anchor_v1/20260915/README.md) | 三窗骨干/表达配对、四组导师式及完整范围图 |
+| [36组汇总](../results/ootang_backbone_anchor_v1/20260915/analysis/phase_summary.csv) · [逐点/种子因子效应](../results/ootang_backbone_anchor_v1/20260915/analysis/factorial_seed_points.csv) | 12方法、全部293日/四点/种子，保留旧半残差与G11 |
+| [计划](ootang_backbone_anchor_plan.v1.0.md) · [配置](../config/ootang_backbone_anchor.v1_0.json) · [1106来源](ootang_backbone_anchor_sources.v1.0.json) | 同输入/解码/样本、固定两骨干及24新拟合 |
+| [实现](ootang_backbone_anchor_implementation.v1.0.md) · [核验](ootang_backbone_anchor_validation.v1.0.md) · [图件约定](ootang_backbone_anchor_figure_contract.v1.0.md) · [回执](../results/ootang_backbone_anchor_v1/20260915/final_receipt.json) | 192新旧检查点、3813856数值、九图36面板及结论边界 |
+
+TF原残差/起点表达最终RMSE15.981473/13.290363mm，GRU起点版11.141437、B+9.124173；A的平均收益跨骨干出现，不能推广每点/种子或网络家族。四组B+联合门仍0/3；24新拟合4800更新已完成，旧GRU复用，不自动追加实验。
+
+## 上一轮交付：GRU两因素消融
 
 | 文档/产物 | 用途 |
 | --- | --- |

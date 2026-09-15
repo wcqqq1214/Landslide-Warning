@@ -18,7 +18,8 @@
 
 # Current Scope and Status
 
-- 最新完成（2026-09-15）：用户授权的起点残差表达×边界采样2×2消融。分支`codex/gru-boundary-ablation`，见`docs/ootang_gru_ablation_results.v1.0.md`和最终回执。48拟合9600更新/192检查点、四前缀/三种子/e200全部完成；612校准启动，三个主要窗完整293日评分，无B+重拟合/物理前向。708来源/3439904数值独立复算、G00旧模型48检查点复现、5图20面板/406161图形及数据值核验通过。最终G00/G10/G01/G11 RMSE14.257499/11.141437/11.563858/10.785141mm，均高于B+9.124173；G11首日跳偏减小但ATU1/MJ3均值仍退步，ATU1覆盖67.24%。两因素平均效应改善，条件效应不稳定；四组B+联合门均0/3。独立06:30—08:30 UTC包含准备核验，实际结束见回执，剩余预算不转用。Markdown/CSV/PNG/SVG、本地分步commit完成，不push、不追加训练或RL；未交付PDF，仅临时同源图形QA载体。用户/导师尚未验收。下方夜间记录保持历史完成状态。
+- 最新完成（2026-09-15）：用户授权统一接口GRU/Transformer×起点表达消融，分支`codex/transformer-anchor-ablation`，见`docs/ootang_backbone_anchor_results.v1.0.md`及最终回执。固定14维输入/图/解码/uniform样本/三种子/e200/λ=1，GRU1241、单层TF1249参数。复用24份GRU拟合，新增24份TF拟合4800更新；全部192新旧检查点、1106来源、3813856数值及九图36面板核验完成。最终G00/G10/T00/T10 RMSE14.257499/11.141437/15.981473/13.290363mm，B+9.124173；A三窗平均收益可迁移，A开时GRU三窗均值/CRPS更低，但四组B+联合门均0/3。TF起点版ATU1/ATU5覆盖63.82%/47.44%，GRU起点版ATU1覆盖76.11%；旧半残差8.867132及G11 10.785141局部结果保留，不推广骨干家族。新09:18:32—11:18:32 UTC自限窗口含准备核验，实际用时见回执；本轮已停止，不追加网络/λ/RL或转用旧预算。Markdown/CSV/PNG/SVG、本地分步commit，不push/PDF。参数计数与锁路径训练前异常留档，正式24拟合无失败重试；用户/导师尚未验收。
+- 上一轮完成（2026-09-15）：用户授权的起点残差表达×边界采样2×2消融。分支`codex/gru-boundary-ablation`，见`docs/ootang_gru_ablation_results.v1.0.md`和最终回执。48拟合9600更新/192检查点、四前缀/三种子/e200全部完成；612校准启动，三个主要窗完整293日评分，无B+重拟合/物理前向。708来源/3439904数值独立复算、G00旧模型48检查点复现、5图20面板/406161图形及数据值核验通过。最终G00/G10/G01/G11 RMSE14.257499/11.141437/11.563858/10.785141mm，均高于B+9.124173；G11首日跳偏减小但ATU1/MJ3均值仍退步，ATU1覆盖67.24%。两因素平均效应改善，条件效应不稳定；四组B+联合门均0/3。独立06:30—08:30 UTC包含准备核验，实际结束见回执，剩余预算不转用。Markdown/CSV/PNG/SVG、本地分步commit完成，不push、不追加训练或RL；未交付PDF，仅临时同源图形QA载体。用户/导师尚未验收。下方夜间记录保持历史完成状态。
 - 范围：藕塘同一剖面ATU1、ATU5、MJ3、MJ1的位移均值与概率区间；现有固定数据，不自动扩展案例、补采或真实预警。
 - 上一轮完成（2026-09-15本地时间）：用户新授权的夜间固定小图与因果残差诊断。GRU_LOCAL/GRU_GRAPH各1241参数，只有固定MJ3—MJ1邻接边不同；全历史GRU8、固定200更新/λ=1/三种子，612校准启动、792/972/1168完整293日评价。24拟合4800更新、96检查点，新增B+拟合/物理前向0。
 - 结果：两臂仅过972历史均值门，792/最终未过；最终概率门通过，但均值/概率联合门三窗均未过。最终LOCAL/GRAPH平均RMSE14.283633/14.257499，B+9.124173mm；图相对本点的均值/概率门三窗均未过。前1152日因果EMA30诊断符合点0，未触发GRU_GRAPH_DUAL，双头拟合0；不推广为全部空间/分解方法无效。
@@ -28,7 +29,7 @@
 # Reading Order
 
 1. 先读[README](README.md)、[文档导航](docs/README.md)和最新[progress](docs/progress.md)。
-2. 当前效果读[2×2消融报告](docs/ootang_gru_ablation_results.v1.0.md)、[核验](docs/ootang_gru_ablation_validation.v1.0.md)、[最终回执](results/ootang_gru_ablation_v1/20260915/final_receipt.json)；实现时再读对应冻结计划、配置、708来源和图件合同。上一轮读[夜间简报及PDF](docs/ootang_overnight_graph_results.v1.0.md)，不恢复其预算。
+2. 当前效果先读[统一接口骨干×起点表达](docs/ootang_backbone_anchor_results.v1.0.md)、[核验](docs/ootang_backbone_anchor_validation.v1.0.md)、[最终回执](results/ootang_backbone_anchor_v1/20260915/final_receipt.json)；实施追溯对应计划/配置/1106来源/实现与图件约定。上轮读[2×2消融报告](docs/ootang_gru_ablation_results.v1.0.md)、[核验](docs/ootang_gru_ablation_validation.v1.0.md)、[最终回执](results/ootang_gru_ablation_v1/20260915/final_receipt.json)；实现时再读对应冻结计划、配置、708来源和图件合同。上一轮读[夜间简报及PDF](docs/ootang_overnight_graph_results.v1.0.md)，不恢复其预算。
 3. 需要对照时再读[起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/校准](docs/ootang_transformer_calibration_results.v1.0.md)、[REG1](docs/ootang_transformer_regularization_results.v1.0.md)、[Transformer/CNN-Mamba](docs/ootang_sequence_conditional_results.v1.0.md)、[TCN](docs/ootang_tcn_conditional_training_results.v1.0.md)。
 4. 旧协议按[历史导航](docs/history/README.md)定向追溯。历史预算、命令和形成时“尚未训练”不是当前待办。
 
@@ -36,7 +37,7 @@
 
 - 当前条件协议给定未来逐日降雨/水位，预测路径中不反馈实测位移，B+完整状态从首日延续。新起点可用此前观测重新训练，但保留旧发出预测。与1—7日滚动/固定驱动递推分开解释。
 - 跨起点窗口部分重叠，第三历史窗与最终窗重叠97日；历史日期/400次训练选择曾暴露，仍属探索性。972教师参数拟合于792，只代表该固定参数复用流程，不假称每起点都重估B+。原as-of/预处理/物理优化未收敛限制保留。
-- 本轮固定e200、λ=1，无选模，两臂全部报告；唯一双头候选仅按事前残差诊断触发，本次未触发。训练伪起点教师≤m，目标在当前拟合前缀内成熟，标准化用当前训练段而非冒充历史独立在线预测。612只有180日可训练目标、最终1168教师与episode教师≤792的差异保持。
+- 当前骨干×起点表达固定e200、λ=1、原uniform样本，无选模，四组全部报告；旧夜间实验唯一双头候选未触发，不属于当前待办。训练伪起点教师≤m，目标在当前拟合前缀内成熟，标准化用当前训练段而非冒充历史独立在线预测。612只有180日可训练目标、最终1168教师与episode教师≤792的差异保持。
 - 图为固定分区内等权边，不按全序列相关估权；本点神经对照仍有共享权重及B+物理耦合，不等同完全无空间信息。EMA30严格单边，报告协方差；96驱动相关仅描述性，不作因果或显著性宣称。
 - 本轮上一发出路径第91—180日校准，最终[1062,1152)，16日间隔保持。90个相邻误差不是独立重复，距离迁移和高斯边际区间不保证完整293日同时覆盖。旧α/λ选择流程仅为历史，不恢复搜索。
 - 完整候选、日期、种子、原逐点/概率保护和失败记录保留；执行通过与效果/导师验收分别报告。历史输入可影响模型的正控通过不等于历史状态有效可迁移；起点条件原型不制造训练段神经拟合曲线。

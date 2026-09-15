@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "completed_utc": "2026-09-15T09:47:57.154297+00:00",
+  "tables": 9,
+  "table_rows": 53,
+  "numeric_values": 137,
+  "local_links": 170,
+  "rounding_tolerance": "6 decimals for mm; two decimals for coverage percent",
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "source_report_sha256": "998659e967dbc835e909ce7b240769130295799f2f3fead4466c02d96d2d1b12",
+  "boundary": "current report and navigation links; historical progress log links not reclassified"
+}

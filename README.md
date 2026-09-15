@@ -4,23 +4,23 @@
 
 ## 当前结果
 
-**截至2026-09-15，起点残差表达×边界采样的2×2消融已完整完成。改动改善了原GRU，但最终窗仍未达到均值和概率同时优于B+的目标。**
+**截至2026-09-15，统一接口GRU/Transformer×起点残差表达的小型消融已完整完成。起点表达的平均收益能跨两个骨干出现；本轮GRU起点版三窗均值误差更低，但均未达到B+均值与概率联合目标。**
 
-[最新消融报告](docs/ootang_gru_ablation_results.v1.0.md) · [五张PNG/SVG](figures/ootang_gru_ablation_v1/20260915/README.md) · [完整24组CSV](results/ootang_gru_ablation_v1/20260915/analysis/phase_summary.csv) · [核验](docs/ootang_gru_ablation_validation.v1.0.md)
+[最新比较报告](docs/ootang_backbone_anchor_results.v1.0.md) · [九张PNG/SVG](figures/ootang_backbone_anchor_v1/20260915/README.md) · [完整36组CSV](results/ootang_backbone_anchor_v1/20260915/analysis/phase_summary.csv) · [核验](docs/ootang_backbone_anchor_validation.v1.0.md)
 
-四组共用1241参数固定图GRU、三个种子和固定200更新。G00原样，G10起点残差表达，G01边界采样，G11两项合用。每窗完整293日；下表为集成预测的四点平均RMSE，单位mm。
+统一14维历史、图/解码器、样本、三种子与200更新；GRU1241参数、Transformer1249参数。G00/G10复用并逐检查点验证，T00/T10新训练；全部关闭边界采样。每窗完整293日，表为三种子集成预测的四点平均RMSE，单位mm。
 
-| 起点（已观测天数） | B+ | G00 | G10 | G01 | G11 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 792 | 27.313325 | 30.145471 | 26.778773 | 26.249552 | 20.382465 |
-| 972 | 67.167389 | 37.481242 | 20.445223 | 35.158832 | 20.732781 |
-| 1168，最终探索 | 9.124173 | 14.257499 | 11.141437 | 11.563858 | 10.785141 |
+| 起点（已观测天数） | B+ | G00原残差 | G10起点表达 | T00原残差 | T10起点表达 |
+| --- | --- | --- | --- | --- | --- |
+| 792 | 27.313325 | 30.145471 | 26.778773 | 29.468347 | 29.102037 |
+| 972 | 67.167389 | 37.481242 | 20.445223 | 40.587372 | 20.640218 |
+| 1168 | 9.124173 | 14.257499 | 11.141437 | 15.981473 | 13.290363 |
 
-48拟合9600更新/192检查点、三个完整评价窗已保存并独立复算；G00复现旧固定图GRU。G11最终RMSE较G00下降24.35%，第1天平均绝对误差15.314678→1.229503mm，但ATU1/MJ3均值仍劣于B+，ATU1的90%覆盖仅67.24%。两因素收益存在交互，不能将平均改善推广到每点或全部时期。四组对B+联合门均0/3；本轮图文已完成，不按结果追加训练，只本地提交、未push。
+新增24次Transformer拟合4800更新，复用24份GRU拟合；192份新旧检查点、1106来源、3813856数值及九图36面板已核验。TF起点版最终RMSE下降16.84%，仍高于GRU起点版和B+，ATU1/ATU5的90%覆盖仅63.82%/47.44%；GRU起点版ATU1覆盖76.11%仍不足。四组B+联合门均0/3，不以训练跑通或平均改善代替效果达标。
 
-当前协议给定未来逐日降雨/库水位，每条预测路径不接收实测位移反馈。窗口部分重叠、历史日期已经暴露，属于探索性条件预测；972沿用已可用的792日B+参数，不能推广为每个起点都重新拟合物理参数。它与逐日更新的1—7日滚动任务、固定驱动长期递推分开解释。
+本轮给定未来逐日降雨/库水位，每条路径不接收实测位移。历史窗重复暴露且部分重叠，全部为探索性条件预测。它与1—7日滚动及固定驱动递推任务分开解释；972仍用792日教师，不假称每起点重新拟合B+。
 
-[上一轮固定小图及其PDF](docs/ootang_overnight_graph_results.v1.0.md)、[起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ报告](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/区间校准报告](docs/ootang_transformer_calibration_results.v1.0.md)和全部旧结果保持原样。旧半残差最终8.867132mm的局部正结果不改，不据此重新选模。
+[上一轮GRU起点×边界采样](docs/ootang_gru_ablation_results.v1.0.md)的G11最终10.785141mm、[旧Transformer半残差](docs/ootang_transformer_temporal_results.v1.0.md)8.867132mm均保持；不同组/训练组织的历史成绩不纳入本轮纯因素效应，不根据最终窗重选主模型。此次已停止追加，本地分步提交、未push，不交付PDF或启动RL。
 
 ## 阅读入口
 
@@ -35,6 +35,8 @@
 
 | 目录 | 用途 |
 | --- | --- |
+| [code/backbone_anchor/](code/backbone_anchor/) | 统一骨干×起点表达、GRU复用、固定TF训练及图文核验 |
+| [code/gru_ablation/](code/gru_ablation/) | 上轮GRU起点表达×边界采样2×2消融 |
 | [code/overnight_graph/](code/overnight_graph/) | 固定GRU空间配对、因果残差触发、完整核验与六页PDF |
 | [code/transformer_origin/](code/transformer_origin/) | 起点条件化三臂训练、独立复算和图文交付 |
 | [code/transformer_temporal/](code/transformer_temporal/) | 跨起点选参、有限λ训练与完整核验 |
