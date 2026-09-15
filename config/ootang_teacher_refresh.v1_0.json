@@ -1,0 +1,224 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "given observed daily rainfall and reservoir level",
+    "bplus_state": "continuous from day zero; no split anchor",
+    "neural_anchor": "A-on changes output reference only; the B+ state remains continuous and unchanged."
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "updates": 200,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "parameters": 1241,
+  "residual_penalty": 1.0,
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "RR_COND"
+  ],
+  "prior_controls_out": "results/ootang_overnight_graph_v1/20260915/base",
+  "version": "ootang_teacher_refresh.v1.0",
+  "branch": "codex/teacher-refresh-pairing",
+  "start_utc": "2026-09-15T11:01:47+00:00",
+  "deadline_utc": "2026-09-15T13:01:47+00:00",
+  "out": "results/ootang_teacher_refresh_v1/20260915",
+  "figures": "figures/ootang_teacher_refresh_v1/20260915",
+  "runtime": "runtime/ootang_rolling_v3/reference",
+  "arms": [
+    "G_CACHED",
+    "G_REFRESH"
+  ],
+  "backbone_config": "config/ootang_overnight_graph.v1_0.json",
+  "max_new_fits": 24,
+  "max_optimizer_updates": 4800,
+  "max_bplus_refits": 10,
+  "selection": "none; fixed e200; no effect-dependent stopping",
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "training": {
+    "grid_origins": [
+      432,
+      492,
+      552,
+      612,
+      672,
+      732,
+      792,
+      852,
+      912,
+      972,
+      1032,
+      1092,
+      1152
+    ],
+    "batch_origins": 4,
+    "distances_per_origin": 16,
+    "max_horizon": 293,
+    "schedule": "numpy default_rng(seed): uniformly choose grid origins < n for all 200x4 slots, then draw 16 uniform mature horizons per origin"
+  },
+  "teacher_update": {
+    "new_prefixes": [
+      492,
+      552,
+      672,
+      732,
+      852,
+      912,
+      972,
+      1032,
+      1092,
+      1152
+    ],
+    "initialization": "nearest original cached teacher; never chain newly fitted teachers",
+    "terminal_weight_multiplier": 100,
+    "max_nfev": 800,
+    "method": "trf",
+    "loss": "linear",
+    "x_scale": "jac",
+    "ftol": 1e-09,
+    "xtol": 1e-10,
+    "gtol": 1e-07,
+    "jac_relative_step": 2e-06,
+    "substeps": 64,
+    "residual_scale_mm": 100,
+    "nonconvergence": "retain finite valid output and complete prescribed comparison; no retry or extra stages"
+  },
+  "reporting": {
+    "primary_windows": [
+      792,
+      972,
+      1168
+    ],
+    "bootstrap_only": 612,
+    "boundary_diagnostic_horizons": [
+      1,
+      7,
+      30
+    ],
+    "paired_edges": [
+      [
+        "G_REFRESH",
+        "G_CACHED"
+      ]
+    ],
+    "stable_mean_policy": "all three main windows pass existing paired mean gate and at least 2/3 seeds improve MAE and RMSE"
+  },
+  "figure_contract": {
+    "backend": "python",
+    "figures": [
+      "teacher_policy_comparison",
+      "cached_final",
+      "refresh_final"
+    ],
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "full_forecast_days": 293,
+    "plot_limits": "include all observations, means, seed curves and original 95% bounds",
+    "history": "observations and B+ only; no invented neural training reconstruction",
+    "uncertainty": "80% and 95% marginal intervals; same frozen Gaussian scale; no smoothing or clipping"
+  }
+}
