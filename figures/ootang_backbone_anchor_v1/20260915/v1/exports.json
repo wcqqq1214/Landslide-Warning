@@ -1,0 +1,138 @@
+{
+  "completed_utc": "2026-09-15T09:37:21.893069+00:00",
+  "figures": [
+    {
+      "name": "factorial_overview",
+      "png": "factorial_overview.png",
+      "svg": "factorial_overview.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/factorial_overview.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g00_raw_uniform_mentor",
+      "png": "g00_raw_uniform_mentor.png",
+      "svg": "g00_raw_uniform_mentor.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/g00_raw_uniform_mentor.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g00_raw_uniform_full",
+      "png": "g00_raw_uniform_full.png",
+      "svg": "g00_raw_uniform_full.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/g00_raw_uniform_full.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g10_anchor_uniform_mentor",
+      "png": "g10_anchor_uniform_mentor.png",
+      "svg": "g10_anchor_uniform_mentor.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/g10_anchor_uniform_mentor.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g10_anchor_uniform_full",
+      "png": "g10_anchor_uniform_full.png",
+      "svg": "g10_anchor_uniform_full.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/g10_anchor_uniform_full.pdf",
+      "panels": 4
+    },
+    {
+      "name": "t00_raw_uniform_mentor",
+      "png": "t00_raw_uniform_mentor.png",
+      "svg": "t00_raw_uniform_mentor.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/t00_raw_uniform_mentor.pdf",
+      "panels": 4
+    },
+    {
+      "name": "t00_raw_uniform_full",
+      "png": "t00_raw_uniform_full.png",
+      "svg": "t00_raw_uniform_full.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/t00_raw_uniform_full.pdf",
+      "panels": 4
+    },
+    {
+      "name": "t10_anchor_uniform_mentor",
+      "png": "t10_anchor_uniform_mentor.png",
+      "svg": "t10_anchor_uniform_mentor.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/t10_anchor_uniform_mentor.pdf",
+      "panels": 4
+    },
+    {
+      "name": "t10_anchor_uniform_full",
+      "png": "t10_anchor_uniform_full.png",
+      "svg": "t10_anchor_uniform_full.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-backbone-anchor-figure-qa-cakzfs7u/t10_anchor_uniform_full.pdf",
+      "panels": 4
+    }
+  ],
+  "source_data": "/Users/wcqqq1214/Project/Landslide-Warning/results/ootang_backbone_anchor_v1/20260915/analysis",
+  "figure_contract": "docs/ootang_backbone_anchor_figure_contract.v1.0.md",
+  "pdf_delivery": false,
+  "dimensions_mm": [
+    240,
+    170
+  ],
+  "seed_uncertainty": "all individual seeds, no confidence intervals",
+  "sigma": "own previous-issued distance91..180 errors, RMS per point, fixed Gaussian",
+  "transforms": "subtract point initial displacement only",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "observations_removed": 0,
+  "seed_predictions_removed": 0,
+  "main_origins": [
+    792,
+    972,
+    1168
+  ],
+  "curves_origin": 1168,
+  "common_limits": [
+    [
+      -24.348427148862203,
+      565.4245860124668
+    ],
+    [
+      -32.03125638571221,
+      743.8369538459837
+    ],
+    [
+      -16.98098245708873,
+      394.3361481701716
+    ],
+    [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  ],
+  "overview_methods": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "OLD_HALF",
+    "G00_RAW_UNIFORM",
+    "G10_ANCHOR_UNIFORM",
+    "T00_RAW_UNIFORM",
+    "T10_ANCHOR_UNIFORM"
+  ],
+  "mentor_limits": [
+    [
+      -27,
+      565
+    ],
+    [
+      -37,
+      760
+    ],
+    [
+      -17,
+      365
+    ],
+    [
+      -18,
+      399
+    ]
+  ]
+}

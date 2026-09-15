@@ -1,0 +1,642 @@
+[
+  {
+    "figure": "g00_raw_uniform_mentor",
+    "point": "ATU1",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 14.491995349695191,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -27,
+      565
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_mentor",
+    "point": "ATU5",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 10.941765137738344,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -37,
+      760
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_mentor",
+    "point": "MJ3",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 23.23976679966376,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -17,
+      365
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 248
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_mentor",
+    "point": "MJ1",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 8.356466896421257,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18,
+      399
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 1
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_full",
+    "point": "ATU1",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 14.491995349695191,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.348427148862203,
+      565.4245860124668
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_full",
+    "point": "ATU5",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 10.941765137738344,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -32.03125638571221,
+      743.8369538459837
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_full",
+    "point": "MJ3",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 23.23976679966376,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.98098245708873,
+      394.3361481701716
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g00_raw_uniform_full",
+    "point": "MJ1",
+    "arm": "G00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 8.356466896421257,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_mentor",
+    "point": "ATU1",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 12.778882313411854,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -27,
+      565
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_mentor",
+    "point": "ATU5",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 7.051202451116132,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -37,
+      760
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_mentor",
+    "point": "MJ3",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 19.509793770285253,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -17,
+      365
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 52
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_mentor",
+    "point": "MJ1",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 5.225870722773998,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18,
+      399
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_full",
+    "point": "ATU1",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 12.778882313411854,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.348427148862203,
+      565.4245860124668
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_full",
+    "point": "ATU5",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 7.051202451116132,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -32.03125638571221,
+      743.8369538459837
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_full",
+    "point": "MJ3",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 19.509793770285253,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.98098245708873,
+      394.3361481701716
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "g10_anchor_uniform_full",
+    "point": "MJ1",
+    "arm": "G10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 5.225870722773998,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_mentor",
+    "point": "ATU1",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 16.29373122902877,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -27,
+      565
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_mentor",
+    "point": "ATU5",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 12.658406926333264,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -37,
+      760
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_mentor",
+    "point": "MJ3",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 25.142045094236547,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -17,
+      365
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 271
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_mentor",
+    "point": "MJ1",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "mentor",
+    "rmse": 9.831709173489594,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18,
+      399
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 1
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_full",
+    "point": "ATU1",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 16.29373122902877,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.348427148862203,
+      565.4245860124668
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_full",
+    "point": "ATU5",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 12.658406926333264,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -32.03125638571221,
+      743.8369538459837
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_full",
+    "point": "MJ3",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 25.142045094236547,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.98098245708873,
+      394.3361481701716
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t00_raw_uniform_full",
+    "point": "MJ1",
+    "arm": "T00_RAW_UNIFORM",
+    "view": "full",
+    "rmse": 9.831709173489594,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_mentor",
+    "point": "ATU1",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 15.197554873316584,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -27,
+      565
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_mentor",
+    "point": "ATU5",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 10.577748906715923,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -37,
+      760
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_mentor",
+    "point": "MJ3",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 21.43303095349889,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -17,
+      365
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 8
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_mentor",
+    "point": "MJ1",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "mentor",
+    "rmse": 5.953115827264478,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18,
+      399
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_full",
+    "point": "ATU1",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 15.197554873316584,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.348427148862203,
+      565.4245860124668
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_full",
+    "point": "ATU5",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 10.577748906715923,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -32.03125638571221,
+      743.8369538459837
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_full",
+    "point": "MJ3",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 21.43303095349889,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.98098245708873,
+      394.3361481701716
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  },
+  {
+    "figure": "t10_anchor_uniform_full",
+    "point": "MJ1",
+    "arm": "T10_ANCHOR_UNIFORM",
+    "view": "full",
+    "rmse": 5.953115827264478,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ],
+    "clipped": {
+      "observed_days": 0,
+      "bplus_days": 0,
+      "mean_days": 0,
+      "seed_point_days": 0,
+      "band80_days": 0,
+      "band95_days": 0
+    }
+  }
+]

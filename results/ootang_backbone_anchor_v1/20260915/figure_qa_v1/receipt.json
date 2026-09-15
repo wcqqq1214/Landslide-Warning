@@ -1,0 +1,113 @@
+{
+  "status": "passed",
+  "started_utc": "2026-09-15T09:38:22.632329+00:00",
+  "values": 780887,
+  "max_source_difference": 0.0006000000000199179,
+  "max_svg_difference_pt": 7.204687904049933e-07,
+  "max_layout_difference_mm": 1.305555770159117e-07,
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "completed_utc": "2026-09-15T09:38:24.392663+00:00",
+  "figures": 9,
+  "panels": 36,
+  "plot_records": 312,
+  "checks": 1377,
+  "rendered_audits": [
+    {
+      "figure": "factorial_overview",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "factorial_overview",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_mentor",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_mentor",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_full",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_full",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_mentor",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_mentor",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_full",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_full",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "t00_raw_uniform_mentor",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "t00_raw_uniform_mentor",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "t00_raw_uniform_full",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "t00_raw_uniform_full",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "t10_anchor_uniform_mentor",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "t10_anchor_uniform_mentor",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "t10_anchor_uniform_full",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "t10_anchor_uniform_full",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate manual record required",
+  "source_warnings": [
+    "PNG/SVG mentor delivery does not require TIFF",
+    "300dpi meets this frozen display contract",
+    "source parser misreads 240/25.4; SVG measured width is checked as 240mm below"
+  ]
+}
