@@ -1,0 +1,15 @@
+{
+  "python": "3.12.13 (main, Jun 23 2026, 15:44:24) [Clang 22.1.3 ]",
+  "executable": "/tmp/ootang-tide-env-20260915/bin/python",
+  "packages": {
+    "torch": "2.12.0",
+    "numpy": "2.2.6",
+    "scipy": "1.16.3",
+    "pandas": "2.3.3",
+    "matplotlib": "3.10.9",
+    "pymupdf": "1.26.7"
+  },
+  "prior_environment_reused": true,
+  "package_installations": 0,
+  "start_utc": "2026-09-15T15:51:35+00:00"
+}
