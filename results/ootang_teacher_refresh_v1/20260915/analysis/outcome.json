@@ -1,0 +1,18 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 24,
+  "updates": 4800,
+  "new_bplus_fits": 10,
+  "summary_rows": 18,
+  "point_rows": 72,
+  "seed_rows": 54,
+  "daily_rows": 21096,
+  "endpoint_rows": 864,
+  "stable_mean_policy": false,
+  "joint_bplus_pass_counts": {
+    "G_CACHED": 0,
+    "G_REFRESH": 0
+  },
+  "replacement_goal_met": false,
+  "selection": false
+}

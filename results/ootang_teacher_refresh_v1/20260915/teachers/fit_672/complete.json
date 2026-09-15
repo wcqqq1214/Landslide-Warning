@@ -1,0 +1,14 @@
+{
+  "time_utc": "2026-09-15T11:20:55.753644+00:00",
+  "status": "complete",
+  "new_bplus_fits": 1,
+  "fit_prefix": 672,
+  "numeric_valid": true,
+  "optimizer_success": false,
+  "files": {
+    "fit.json": "0337e77466b896b154251f3cfae14dc93b780aa4128dc6de7404841d808d00e3",
+    "input.json": "a241250cbaa16da303ff6dee38bfb378724f8a6133d984aeb37def9065be223c",
+    "progress.json": "7b3170b46685c624fb4f67c8884fb1c8d389905beb4f061e9b1efafc240b3fca",
+    "teacher.npz": "e15790c7beecb8f45618298cbc9efa814f657eade31622af5e049991ecf7dd09"
+  }
+}

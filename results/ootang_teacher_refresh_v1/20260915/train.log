@@ -1,0 +1,179 @@
+{'fit_prefix': 492, 'calls': 5000, 'elapsed_seconds': 4.162014916073531}
+{'fit_prefix': 492, 'calls': 10000, 'elapsed_seconds': 8.266511332709342}
+{'fit_prefix': 492, 'calls': 15000, 'elapsed_seconds': 12.443230915814638}
+{'fit_prefix': 492, 'calls': 20000, 'elapsed_seconds': 16.56634391611442}
+{'fit_prefix': 492, 'calls': 25000, 'elapsed_seconds': 20.684660957660526}
+{'fit_prefix': 492, 'calls': 30000, 'elapsed_seconds': 24.78914791578427}
+{'fit_prefix': 492, 'calls': 35000, 'elapsed_seconds': 28.887391875032336}
+{'teacher_complete': 492, 'nfev': 800, 'converged': False, 'seconds': 30.727222624700516, 'terminal_error_mm': [0.008107494745331678, -0.005453712452265336, -0.0017476213072882274, 0.01977471138067699]}
+{'fit_prefix': 552, 'calls': 5000, 'elapsed_seconds': 4.532321708276868}
+{'fit_prefix': 552, 'calls': 10000, 'elapsed_seconds': 9.04590483289212}
+{'fit_prefix': 552, 'calls': 15000, 'elapsed_seconds': 13.541766582988203}
+{'fit_prefix': 552, 'calls': 20000, 'elapsed_seconds': 18.05157204112038}
+{'fit_prefix': 552, 'calls': 25000, 'elapsed_seconds': 22.584362625144422}
+{'fit_prefix': 552, 'calls': 30000, 'elapsed_seconds': 27.149222708307207}
+{'fit_prefix': 552, 'calls': 35000, 'elapsed_seconds': 31.662499375175685}
+{'teacher_complete': 552, 'nfev': 800, 'converged': False, 'seconds': 32.55817158333957, 'terminal_error_mm': [-0.0035509720709114845, -0.022049255346871632, 0.0037052166528042108, 0.02288165311284729]}
+origin=612 G_CACHED seed=0 update=0
+origin=612 G_CACHED seed=0 update=50
+origin=612 G_CACHED seed=0 update=100
+origin=612 G_CACHED seed=0 update=200
+origin=612 G_CACHED seed=1 update=0
+origin=612 G_CACHED seed=1 update=50
+origin=612 G_CACHED seed=1 update=100
+origin=612 G_CACHED seed=1 update=200
+origin=612 G_CACHED seed=2 update=0
+origin=612 G_CACHED seed=2 update=50
+origin=612 G_CACHED seed=2 update=100
+origin=612 G_CACHED seed=2 update=200
+origin=612 G_REFRESH seed=0 update=0
+origin=612 G_REFRESH seed=0 update=50
+origin=612 G_REFRESH seed=0 update=100
+origin=612 G_REFRESH seed=0 update=200
+origin=612 G_REFRESH seed=1 update=0
+origin=612 G_REFRESH seed=1 update=50
+origin=612 G_REFRESH seed=1 update=100
+origin=612 G_REFRESH seed=1 update=200
+origin=612 G_REFRESH seed=2 update=0
+origin=612 G_REFRESH seed=2 update=50
+origin=612 G_REFRESH seed=2 update=100
+origin=612 G_REFRESH seed=2 update=200
+{'fit_prefix': 672, 'calls': 5000, 'elapsed_seconds': 5.438516250345856}
+{'fit_prefix': 672, 'calls': 10000, 'elapsed_seconds': 10.815259708091617}
+{'fit_prefix': 672, 'calls': 15000, 'elapsed_seconds': 16.227208958007395}
+{'fit_prefix': 672, 'calls': 20000, 'elapsed_seconds': 21.602578000165522}
+{'fit_prefix': 672, 'calls': 25000, 'elapsed_seconds': 27.083891708403826}
+{'fit_prefix': 672, 'calls': 30000, 'elapsed_seconds': 32.50498512526974}
+{'fit_prefix': 672, 'calls': 35000, 'elapsed_seconds': 37.96289883321151}
+{'teacher_complete': 672, 'nfev': 800, 'converged': False, 'seconds': 41.26212091604248, 'terminal_error_mm': [-0.0019510759754552964, 0.0021293028399895775, 0.028679878124535207, -0.017128725209232698]}
+{'fit_prefix': 732, 'calls': 5000, 'elapsed_seconds': 5.88978754170239}
+{'fit_prefix': 732, 'calls': 10000, 'elapsed_seconds': 11.796377874910831}
+{'fit_prefix': 732, 'calls': 15000, 'elapsed_seconds': 17.82757941680029}
+{'fit_prefix': 732, 'calls': 20000, 'elapsed_seconds': 23.949002333916724}
+{'fit_prefix': 732, 'calls': 25000, 'elapsed_seconds': 30.17501924978569}
+{'fit_prefix': 732, 'calls': 30000, 'elapsed_seconds': 36.46941454196349}
+{'fit_prefix': 732, 'calls': 35000, 'elapsed_seconds': 43.06991104176268}
+{'fit_prefix': 732, 'calls': 40000, 'elapsed_seconds': 49.621635833755136}
+{'teacher_complete': 732, 'nfev': 800, 'converged': False, 'seconds': 49.77054541697726, 'terminal_error_mm': [-0.004212731745610654, -0.02668212775211032, 0.048455646644441686, -0.0034794987406883138]}
+origin=792 G_CACHED seed=0 update=0
+origin=792 G_CACHED seed=0 update=50
+origin=792 G_CACHED seed=0 update=100
+origin=792 G_CACHED seed=0 update=200
+origin=792 G_CACHED seed=1 update=0
+origin=792 G_CACHED seed=1 update=50
+origin=792 G_CACHED seed=1 update=100
+origin=792 G_CACHED seed=1 update=200
+origin=792 G_CACHED seed=2 update=0
+origin=792 G_CACHED seed=2 update=50
+origin=792 G_CACHED seed=2 update=100
+origin=792 G_CACHED seed=2 update=200
+origin=792 G_REFRESH seed=0 update=0
+origin=792 G_REFRESH seed=0 update=50
+origin=792 G_REFRESH seed=0 update=100
+origin=792 G_REFRESH seed=0 update=200
+origin=792 G_REFRESH seed=1 update=0
+origin=792 G_REFRESH seed=1 update=50
+origin=792 G_REFRESH seed=1 update=100
+origin=792 G_REFRESH seed=1 update=200
+origin=792 G_REFRESH seed=2 update=0
+origin=792 G_REFRESH seed=2 update=50
+origin=792 G_REFRESH seed=2 update=100
+origin=792 G_REFRESH seed=2 update=200
+{'fit_prefix': 852, 'calls': 5000, 'elapsed_seconds': 8.236880165990442}
+{'fit_prefix': 852, 'calls': 10000, 'elapsed_seconds': 16.678996874950826}
+{'fit_prefix': 852, 'calls': 15000, 'elapsed_seconds': 25.697097749914974}
+{'fit_prefix': 852, 'calls': 20000, 'elapsed_seconds': 34.42629641620442}
+{'fit_prefix': 852, 'calls': 25000, 'elapsed_seconds': 42.590629832819104}
+{'fit_prefix': 852, 'calls': 30000, 'elapsed_seconds': 50.782354165799916}
+{'fit_prefix': 852, 'calls': 35000, 'elapsed_seconds': 59.15749754104763}
+{'fit_prefix': 852, 'calls': 40000, 'elapsed_seconds': 67.30123974988237}
+{'teacher_complete': 852, 'nfev': 800, 'converged': False, 'seconds': 72.9750164160505, 'terminal_error_mm': [0.03865537191575186, 0.016351362026853167, 0.05430336107815492, 0.008934396343818207]}
+{'fit_prefix': 912, 'calls': 5000, 'elapsed_seconds': 8.707270957995206}
+{'fit_prefix': 912, 'calls': 10000, 'elapsed_seconds': 17.353848250117153}
+{'fit_prefix': 912, 'calls': 15000, 'elapsed_seconds': 26.038820541929454}
+{'fit_prefix': 912, 'calls': 20000, 'elapsed_seconds': 34.86921604210511}
+{'fit_prefix': 912, 'calls': 25000, 'elapsed_seconds': 44.32991350023076}
+{'fit_prefix': 912, 'calls': 30000, 'elapsed_seconds': 53.089604374952614}
+{'fit_prefix': 912, 'calls': 35000, 'elapsed_seconds': 62.16805237485096}
+{'fit_prefix': 912, 'calls': 40000, 'elapsed_seconds': 71.11413791682571}
+{'teacher_complete': 912, 'nfev': 800, 'converged': False, 'seconds': 76.63320562522858, 'terminal_error_mm': [0.071491609917814, 0.07331282987991017, 0.08973652072222649, 0.04263489641607521]}
+origin=972 G_CACHED seed=0 update=0
+origin=972 G_CACHED seed=0 update=50
+origin=972 G_CACHED seed=0 update=100
+origin=972 G_CACHED seed=0 update=200
+origin=972 G_CACHED seed=1 update=0
+origin=972 G_CACHED seed=1 update=50
+origin=972 G_CACHED seed=1 update=100
+origin=972 G_CACHED seed=1 update=200
+origin=972 G_CACHED seed=2 update=0
+origin=972 G_CACHED seed=2 update=50
+origin=972 G_CACHED seed=2 update=100
+origin=972 G_CACHED seed=2 update=200
+origin=972 G_REFRESH seed=0 update=0
+origin=972 G_REFRESH seed=0 update=50
+origin=972 G_REFRESH seed=0 update=100
+origin=972 G_REFRESH seed=0 update=200
+origin=972 G_REFRESH seed=1 update=0
+origin=972 G_REFRESH seed=1 update=50
+origin=972 G_REFRESH seed=1 update=100
+origin=972 G_REFRESH seed=1 update=200
+origin=972 G_REFRESH seed=2 update=0
+origin=972 G_REFRESH seed=2 update=50
+origin=972 G_REFRESH seed=2 update=100
+origin=972 G_REFRESH seed=2 update=200
+{'fit_prefix': 972, 'calls': 5000, 'elapsed_seconds': 10.120436291676015}
+{'fit_prefix': 972, 'calls': 10000, 'elapsed_seconds': 20.155267666559666}
+{'fit_prefix': 972, 'calls': 15000, 'elapsed_seconds': 30.29363491665572}
+{'fit_prefix': 972, 'calls': 20000, 'elapsed_seconds': 40.24387704161927}
+{'fit_prefix': 972, 'calls': 25000, 'elapsed_seconds': 50.298471374902874}
+{'fit_prefix': 972, 'calls': 30000, 'elapsed_seconds': 60.38992499979213}
+{'fit_prefix': 972, 'calls': 35000, 'elapsed_seconds': 70.2414223337546}
+{'teacher_complete': 972, 'nfev': 800, 'converged': False, 'seconds': 74.12411629175767, 'terminal_error_mm': [0.03136714992967882, 0.03314849102889639, 0.039073283933419134, 0.038421615614367965]}
+{'fit_prefix': 1032, 'calls': 5000, 'elapsed_seconds': 10.32004320807755}
+{'fit_prefix': 1032, 'calls': 10000, 'elapsed_seconds': 20.65689279139042}
+{'fit_prefix': 1032, 'calls': 15000, 'elapsed_seconds': 31.358102000318468}
+{'fit_prefix': 1032, 'calls': 20000, 'elapsed_seconds': 41.81257912516594}
+{'fit_prefix': 1032, 'calls': 25000, 'elapsed_seconds': 52.217630208004266}
+{'fit_prefix': 1032, 'calls': 30000, 'elapsed_seconds': 62.671497541014105}
+{'fit_prefix': 1032, 'calls': 35000, 'elapsed_seconds': 73.17546604108065}
+{'teacher_complete': 1032, 'nfev': 800, 'converged': False, 'seconds': 81.95903529133648, 'terminal_error_mm': [0.08801441579214497, 0.07488648043874946, 0.08205108779264947, 0.04155082396681564]}
+{'fit_prefix': 1092, 'calls': 5000, 'elapsed_seconds': 11.705585082992911}
+{'fit_prefix': 1092, 'calls': 10000, 'elapsed_seconds': 23.04236645810306}
+{'fit_prefix': 1092, 'calls': 15000, 'elapsed_seconds': 34.20239112479612}
+{'fit_prefix': 1092, 'calls': 20000, 'elapsed_seconds': 45.52427662489936}
+{'fit_prefix': 1092, 'calls': 25000, 'elapsed_seconds': 56.834582624956965}
+{'fit_prefix': 1092, 'calls': 30000, 'elapsed_seconds': 68.69486662512645}
+{'fit_prefix': 1092, 'calls': 35000, 'elapsed_seconds': 80.4539894158952}
+{'teacher_complete': 1092, 'nfev': 800, 'converged': False, 'seconds': 84.6931954161264, 'terminal_error_mm': [0.019948117422131872, 0.03413797693701781, 0.04953551290981295, 0.0072014878527966175]}
+{'fit_prefix': 1152, 'calls': 5000, 'elapsed_seconds': 13.237691125366837}
+{'fit_prefix': 1152, 'calls': 10000, 'elapsed_seconds': 27.63194770924747}
+{'fit_prefix': 1152, 'calls': 15000, 'elapsed_seconds': 42.89764316705987}
+{'fit_prefix': 1152, 'calls': 20000, 'elapsed_seconds': 59.09696891717613}
+{'fit_prefix': 1152, 'calls': 25000, 'elapsed_seconds': 74.80561829218641}
+{'fit_prefix': 1152, 'calls': 30000, 'elapsed_seconds': 90.1232463340275}
+{'fit_prefix': 1152, 'calls': 35000, 'elapsed_seconds': 104.69230875000358}
+{'teacher_complete': 1152, 'nfev': 800, 'converged': False, 'seconds': 115.44531170930713, 'terminal_error_mm': [0.02646256715115669, 0.01912247973984904, -0.008642579988134003, 0.027157087170223804]}
+origin=1168 G_CACHED seed=0 update=0
+origin=1168 G_CACHED seed=0 update=50
+origin=1168 G_CACHED seed=0 update=100
+origin=1168 G_CACHED seed=0 update=200
+origin=1168 G_CACHED seed=1 update=0
+origin=1168 G_CACHED seed=1 update=50
+origin=1168 G_CACHED seed=1 update=100
+origin=1168 G_CACHED seed=1 update=200
+origin=1168 G_CACHED seed=2 update=0
+origin=1168 G_CACHED seed=2 update=50
+origin=1168 G_CACHED seed=2 update=100
+origin=1168 G_CACHED seed=2 update=200
+origin=1168 G_REFRESH seed=0 update=0
+origin=1168 G_REFRESH seed=0 update=50
+origin=1168 G_REFRESH seed=0 update=100
+origin=1168 G_REFRESH seed=0 update=200
+origin=1168 G_REFRESH seed=1 update=0
+origin=1168 G_REFRESH seed=1 update=50
+origin=1168 G_REFRESH seed=1 update=100
+origin=1168 G_REFRESH seed=1 update=200
+origin=1168 G_REFRESH seed=2 update=0
+origin=1168 G_REFRESH seed=2 update=50
+origin=1168 G_REFRESH seed=2 update=100
+origin=1168 G_REFRESH seed=2 update=200

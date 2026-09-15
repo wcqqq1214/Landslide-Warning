@@ -1,2 +1,94 @@
 {"time_utc": "2026-09-15T11:14:38.067287+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
 {"time_utc": "2026-09-15T11:15:45.576195+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
+{"time_utc": "2026-09-15T11:18:41.812532+00:00", "event": "label_prefix_read", "rows": 492, "purpose": "physical_teacher_fit_492_prefix_only"}
+{"time_utc": "2026-09-15T11:18:41.848011+00:00", "event": "teacher_fit_started", "fit_prefix": 492, "initialization_teacher": 432}
+{"time_utc": "2026-09-15T11:19:12.526028+00:00", "event": "teacher_fit_completed", "fit_prefix": 492, "forward_calls": 37155, "elapsed_seconds": 30.727222624700516, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:19:12.526238+00:00", "event": "label_prefix_read", "rows": 552, "purpose": "physical_teacher_fit_552_prefix_only"}
+{"time_utc": "2026-09-15T11:19:12.558467+00:00", "event": "teacher_fit_started", "fit_prefix": 552, "initialization_teacher": 432}
+{"time_utc": "2026-09-15T11:19:45.084263+00:00", "event": "teacher_fit_completed", "fit_prefix": 552, "forward_calls": 35945, "elapsed_seconds": 32.55817158333957, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:19:45.096885+00:00", "event": "teachers_ready_for_neural_prefix", "origin": 612, "training_origins": [432, 492, 552]}
+{"time_utc": "2026-09-15T11:19:45.097009+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T11:19:45.122990+00:00", "event": "fit_started", "origin": 612, "arm": "G_CACHED", "seed": 0, "updates": 200, "teachers": [432]}
+{"time_utc": "2026-09-15T11:19:50.078805+00:00", "event": "fit_completed", "origin": 612, "arm": "G_CACHED", "seed": 0, "updates": 200, "elapsed_seconds": 4.955235625151545}
+{"time_utc": "2026-09-15T11:19:50.085450+00:00", "event": "fit_started", "origin": 612, "arm": "G_CACHED", "seed": 1, "updates": 200, "teachers": [432]}
+{"time_utc": "2026-09-15T11:19:54.982294+00:00", "event": "fit_completed", "origin": 612, "arm": "G_CACHED", "seed": 1, "updates": 200, "elapsed_seconds": 4.896276999730617}
+{"time_utc": "2026-09-15T11:19:54.988223+00:00", "event": "fit_started", "origin": 612, "arm": "G_CACHED", "seed": 2, "updates": 200, "teachers": [432]}
+{"time_utc": "2026-09-15T11:19:59.847397+00:00", "event": "fit_completed", "origin": 612, "arm": "G_CACHED", "seed": 2, "updates": 200, "elapsed_seconds": 4.858601584099233}
+{"time_utc": "2026-09-15T11:19:59.853127+00:00", "event": "fit_started", "origin": 612, "arm": "G_REFRESH", "seed": 0, "updates": 200, "teachers": [432, 492, 552]}
+{"time_utc": "2026-09-15T11:20:04.754680+00:00", "event": "fit_completed", "origin": 612, "arm": "G_REFRESH", "seed": 0, "updates": 200, "elapsed_seconds": 4.9009376661852}
+{"time_utc": "2026-09-15T11:20:04.760273+00:00", "event": "fit_started", "origin": 612, "arm": "G_REFRESH", "seed": 1, "updates": 200, "teachers": [432, 492, 552]}
+{"time_utc": "2026-09-15T11:20:09.595777+00:00", "event": "fit_completed", "origin": 612, "arm": "G_REFRESH", "seed": 1, "updates": 200, "elapsed_seconds": 4.834944500122219}
+{"time_utc": "2026-09-15T11:20:09.601409+00:00", "event": "fit_started", "origin": 612, "arm": "G_REFRESH", "seed": 2, "updates": 200, "teachers": [432, 492, 552]}
+{"time_utc": "2026-09-15T11:20:14.475175+00:00", "event": "fit_completed", "origin": 612, "arm": "G_REFRESH", "seed": 2, "updates": 200, "elapsed_seconds": 4.873159791342914}
+{"time_utc": "2026-09-15T11:20:14.478988+00:00", "event": "trajectory_issued", "origin": 612, "end": 905, "lock_sha256": "8f98f3b89053d94374963412e8afbbbddfff16c6dd433a0947f1c966c703ac13"}
+{"time_utc": "2026-09-15T11:20:14.492360+00:00", "event": "label_prefix_read", "rows": 672, "purpose": "physical_teacher_fit_672_prefix_only"}
+{"time_utc": "2026-09-15T11:20:14.526360+00:00", "event": "teacher_fit_started", "fit_prefix": 672, "initialization_teacher": 612}
+{"time_utc": "2026-09-15T11:20:55.754118+00:00", "event": "teacher_fit_completed", "fit_prefix": 672, "forward_calls": 37870, "elapsed_seconds": 41.26212091604248, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:20:55.754356+00:00", "event": "label_prefix_read", "rows": 732, "purpose": "physical_teacher_fit_732_prefix_only"}
+{"time_utc": "2026-09-15T11:20:55.787546+00:00", "event": "teacher_fit_started", "fit_prefix": 732, "initialization_teacher": 612}
+{"time_utc": "2026-09-15T11:21:45.524475+00:00", "event": "teacher_fit_completed", "fit_prefix": 732, "forward_calls": 40070, "elapsed_seconds": 49.77054541697726, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:21:45.546320+00:00", "event": "teachers_ready_for_neural_prefix", "origin": 792, "training_origins": [432, 492, 552, 612, 672, 732]}
+{"time_utc": "2026-09-15T11:21:45.546463+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T11:21:45.562829+00:00", "event": "fit_started", "origin": 792, "arm": "G_CACHED", "seed": 0, "updates": 200, "teachers": [432, 612]}
+{"time_utc": "2026-09-15T11:21:52.665109+00:00", "event": "fit_completed", "origin": 792, "arm": "G_CACHED", "seed": 0, "updates": 200, "elapsed_seconds": 7.101565749850124}
+{"time_utc": "2026-09-15T11:21:52.672394+00:00", "event": "fit_started", "origin": 792, "arm": "G_CACHED", "seed": 1, "updates": 200, "teachers": [432, 612]}
+{"time_utc": "2026-09-15T11:21:59.570392+00:00", "event": "fit_completed", "origin": 792, "arm": "G_CACHED", "seed": 1, "updates": 200, "elapsed_seconds": 6.897429333999753}
+{"time_utc": "2026-09-15T11:21:59.577102+00:00", "event": "fit_started", "origin": 792, "arm": "G_CACHED", "seed": 2, "updates": 200, "teachers": [432, 612]}
+{"time_utc": "2026-09-15T11:22:06.567680+00:00", "event": "fit_completed", "origin": 792, "arm": "G_CACHED", "seed": 2, "updates": 200, "elapsed_seconds": 6.989997750148177}
+{"time_utc": "2026-09-15T11:22:06.574626+00:00", "event": "fit_started", "origin": 792, "arm": "G_REFRESH", "seed": 0, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732]}
+{"time_utc": "2026-09-15T11:22:13.829660+00:00", "event": "fit_completed", "origin": 792, "arm": "G_REFRESH", "seed": 0, "updates": 200, "elapsed_seconds": 7.254379165824503}
+{"time_utc": "2026-09-15T11:22:13.836740+00:00", "event": "fit_started", "origin": 792, "arm": "G_REFRESH", "seed": 1, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732]}
+{"time_utc": "2026-09-15T11:22:21.097774+00:00", "event": "fit_completed", "origin": 792, "arm": "G_REFRESH", "seed": 1, "updates": 200, "elapsed_seconds": 7.260452417191118}
+{"time_utc": "2026-09-15T11:22:21.104851+00:00", "event": "fit_started", "origin": 792, "arm": "G_REFRESH", "seed": 2, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732]}
+{"time_utc": "2026-09-15T11:22:28.497860+00:00", "event": "fit_completed", "origin": 792, "arm": "G_REFRESH", "seed": 2, "updates": 200, "elapsed_seconds": 7.392363583203405}
+{"time_utc": "2026-09-15T11:22:28.505843+00:00", "event": "trajectory_issued", "origin": 792, "end": 1085, "lock_sha256": "f61e58d762308164a33f7a5d013023645b5bb52f70c67f90eaa157813c136322"}
+{"time_utc": "2026-09-15T11:22:28.522838+00:00", "event": "label_prefix_read", "rows": 852, "purpose": "physical_teacher_fit_852_prefix_only"}
+{"time_utc": "2026-09-15T11:22:28.560133+00:00", "event": "teacher_fit_started", "fit_prefix": 852, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:23:41.497085+00:00", "event": "teacher_fit_completed", "fit_prefix": 852, "forward_calls": 42985, "elapsed_seconds": 72.9750164160505, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:23:41.497979+00:00", "event": "label_prefix_read", "rows": 912, "purpose": "physical_teacher_fit_912_prefix_only"}
+{"time_utc": "2026-09-15T11:23:41.535387+00:00", "event": "teacher_fit_started", "fit_prefix": 912, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:24:58.129893+00:00", "event": "teacher_fit_completed", "fit_prefix": 912, "forward_calls": 43040, "elapsed_seconds": 76.63320562522858, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:24:58.161247+00:00", "event": "teachers_ready_for_neural_prefix", "origin": 972, "training_origins": [432, 492, 552, 612, 672, 732, 792, 852, 912]}
+{"time_utc": "2026-09-15T11:24:58.161425+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T11:24:58.177116+00:00", "event": "fit_started", "origin": 972, "arm": "G_CACHED", "seed": 0, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:25:07.483373+00:00", "event": "fit_completed", "origin": 972, "arm": "G_CACHED", "seed": 0, "updates": 200, "elapsed_seconds": 9.305636208038777}
+{"time_utc": "2026-09-15T11:25:07.490736+00:00", "event": "fit_started", "origin": 972, "arm": "G_CACHED", "seed": 1, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:25:16.692008+00:00", "event": "fit_completed", "origin": 972, "arm": "G_CACHED", "seed": 1, "updates": 200, "elapsed_seconds": 9.200581582728773}
+{"time_utc": "2026-09-15T11:25:16.699708+00:00", "event": "fit_started", "origin": 972, "arm": "G_CACHED", "seed": 2, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:25:26.003670+00:00", "event": "fit_completed", "origin": 972, "arm": "G_CACHED", "seed": 2, "updates": 200, "elapsed_seconds": 9.303403791971505}
+{"time_utc": "2026-09-15T11:25:26.011391+00:00", "event": "fit_started", "origin": 972, "arm": "G_REFRESH", "seed": 0, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912]}
+{"time_utc": "2026-09-15T11:25:35.369621+00:00", "event": "fit_completed", "origin": 972, "arm": "G_REFRESH", "seed": 0, "updates": 200, "elapsed_seconds": 9.35568487457931}
+{"time_utc": "2026-09-15T11:25:35.377092+00:00", "event": "fit_started", "origin": 972, "arm": "G_REFRESH", "seed": 1, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912]}
+{"time_utc": "2026-09-15T11:25:44.988633+00:00", "event": "fit_completed", "origin": 972, "arm": "G_REFRESH", "seed": 1, "updates": 200, "elapsed_seconds": 9.608613582793623}
+{"time_utc": "2026-09-15T11:25:44.996715+00:00", "event": "fit_started", "origin": 972, "arm": "G_REFRESH", "seed": 2, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912]}
+{"time_utc": "2026-09-15T11:25:54.511463+00:00", "event": "fit_completed", "origin": 972, "arm": "G_REFRESH", "seed": 2, "updates": 200, "elapsed_seconds": 9.513158624991775}
+{"time_utc": "2026-09-15T11:25:54.519587+00:00", "event": "trajectory_issued", "origin": 972, "end": 1265, "lock_sha256": "b7394bb862cc42ba7d76dc7fa851b5b72e35f61992e9a03058a31f9ec52cd37f"}
+{"time_utc": "2026-09-15T11:25:54.540293+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "physical_teacher_fit_972_prefix_only"}
+{"time_utc": "2026-09-15T11:25:54.581215+00:00", "event": "teacher_fit_started", "fit_prefix": 972, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:27:08.663419+00:00", "event": "teacher_fit_completed", "fit_prefix": 972, "forward_calls": 36880, "elapsed_seconds": 74.12411629175767, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:27:08.663773+00:00", "event": "label_prefix_read", "rows": 1032, "purpose": "physical_teacher_fit_1032_prefix_only"}
+{"time_utc": "2026-09-15T11:27:08.703500+00:00", "event": "teacher_fit_started", "fit_prefix": 1032, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:28:30.621643+00:00", "event": "teacher_fit_completed", "fit_prefix": 1032, "forward_calls": 38860, "elapsed_seconds": 81.95903529133648, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:28:30.621875+00:00", "event": "label_prefix_read", "rows": 1092, "purpose": "physical_teacher_fit_1092_prefix_only"}
+{"time_utc": "2026-09-15T11:28:30.662153+00:00", "event": "teacher_fit_started", "fit_prefix": 1092, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:29:55.314017+00:00", "event": "teacher_fit_completed", "fit_prefix": 1092, "forward_calls": 36660, "elapsed_seconds": 84.6931954161264, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:29:55.314439+00:00", "event": "label_prefix_read", "rows": 1152, "purpose": "physical_teacher_fit_1152_prefix_only"}
+{"time_utc": "2026-09-15T11:29:55.360502+00:00", "event": "teacher_fit_started", "fit_prefix": 1152, "initialization_teacher": 792}
+{"time_utc": "2026-09-15T11:31:50.758126+00:00", "event": "teacher_fit_completed", "fit_prefix": 1152, "forward_calls": 38860, "elapsed_seconds": 115.44531170930713, "optimizer_success": false}
+{"time_utc": "2026-09-15T11:31:50.813717+00:00", "event": "teachers_ready_for_neural_prefix", "origin": 1168, "training_origins": [432, 492, 552, 612, 672, 732, 792, 852, 912, 972, 1032, 1092, 1152]}
+{"time_utc": "2026-09-15T11:31:50.813953+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T11:31:50.833969+00:00", "event": "fit_started", "origin": 1168, "arm": "G_CACHED", "seed": 0, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:32:04.026483+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_CACHED", "seed": 0, "updates": 200, "elapsed_seconds": 13.191996708046645}
+{"time_utc": "2026-09-15T11:32:04.037935+00:00", "event": "fit_started", "origin": 1168, "arm": "G_CACHED", "seed": 1, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:32:16.317570+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_CACHED", "seed": 1, "updates": 200, "elapsed_seconds": 12.278829500079155}
+{"time_utc": "2026-09-15T11:32:16.326651+00:00", "event": "fit_started", "origin": 1168, "arm": "G_CACHED", "seed": 2, "updates": 200, "teachers": [432, 612, 792]}
+{"time_utc": "2026-09-15T11:32:28.479244+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_CACHED", "seed": 2, "updates": 200, "elapsed_seconds": 12.151385332923383}
+{"time_utc": "2026-09-15T11:32:28.487952+00:00", "event": "fit_started", "origin": 1168, "arm": "G_REFRESH", "seed": 0, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912, 972, 1032, 1092, 1152]}
+{"time_utc": "2026-09-15T11:32:41.383551+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_REFRESH", "seed": 0, "updates": 200, "elapsed_seconds": 12.893240166828036}
+{"time_utc": "2026-09-15T11:32:41.393111+00:00", "event": "fit_started", "origin": 1168, "arm": "G_REFRESH", "seed": 1, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912, 972, 1032, 1092, 1152]}
+{"time_utc": "2026-09-15T11:32:54.085879+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_REFRESH", "seed": 1, "updates": 200, "elapsed_seconds": 12.691606166306883}
+{"time_utc": "2026-09-15T11:32:54.094553+00:00", "event": "fit_started", "origin": 1168, "arm": "G_REFRESH", "seed": 2, "updates": 200, "teachers": [432, 492, 552, 612, 672, 732, 792, 852, 912, 972, 1032, 1092, 1152]}
+{"time_utc": "2026-09-15T11:33:07.028172+00:00", "event": "fit_completed", "origin": 1168, "arm": "G_REFRESH", "seed": 2, "updates": 200, "elapsed_seconds": 12.931233250070363}
+{"time_utc": "2026-09-15T11:33:07.038281+00:00", "event": "trajectory_issued", "origin": 1168, "end": 1461, "lock_sha256": "838536bcf887246a4bdbbc9c8ccfd9e0ac9a7ab92503048ed22be96046ee0a4a"}
+{"time_utc": "2026-09-15T11:34:04.615118+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_issued_before_full_scoring"}
+{"time_utc": "2026-09-15T11:34:04.744910+00:00", "event": "scoring_complete", "all_prescribed_windows_complete": true, "new_fits": 24, "updates": 4800, "new_bplus_fits": 10, "summary_rows": 18, "point_rows": 72, "seed_rows": 54, "daily_rows": 21096, "endpoint_rows": 864, "stable_mean_policy": false, "joint_bplus_pass_counts": {"G_CACHED": 0, "G_REFRESH": 0}, "replacement_goal_met": false, "selection": false}

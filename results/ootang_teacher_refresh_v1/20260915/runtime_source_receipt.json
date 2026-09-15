@@ -1,0 +1,99 @@
+{
+  "tracked_original_sources": 185,
+  "runtime_dependencies_copied": {
+    "runtime/ootang_rolling_v3/reference/results/geometry_O1_interpretation.csv": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/results/geometry_O1_interpretation.csv",
+      "sha256": "063d3e060aaab1c1638b06082acc6cf1e3ee2885267c0f803820ecafd82901c6"
+    },
+    "runtime/ootang_rolling_v3/reference/results/geometry_O2_interpretation.csv": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/results/geometry_O2_interpretation.csv",
+      "sha256": "961b6725a3bcb4f53371fa0e925b8f9e5e99ca50bfa006f8c129817767178256"
+    },
+    "runtime/ootang_rolling_v3/reference/results/geometry_O3_interpretation.csv": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/results/geometry_O3_interpretation.csv",
+      "sha256": "53e72c3431c9b1aa8bbe8af3fd0757974f75a59a1fa68f99e268919fb3d21849"
+    },
+    "runtime/ootang_rolling_v3/reference/results/geometry_ground_interpretation.csv": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/results/geometry_ground_interpretation.csv",
+      "sha256": "666740a0dd45869d17ca11c8dfdbcfa3638066e9a8e336830c71baaa2d91405e"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/calibrate_boundary.py": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/calibrate_boundary.py",
+      "sha256": "42473a3e60573774cc10da381a6beea3f52c3ca2b6407c884727d494f03f68d4"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/geometry.py": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/geometry.py",
+      "sha256": "88e16279186087cc939cf9343539c0f583977abce324ff7208b81d3eca525a4e"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model.py": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/physical_model.py",
+      "sha256": "57034c7c53eb6e5e5623a52cba8ac63ec5fcfb0e59834c7c89610780baf88b09"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model_posix.py": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/physical_model_posix.py",
+      "sha256": "f39ed6e936f937f77dab554d91d6f35cfda878814d93c1f47c2c8f036d85877e"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_solver.c": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/physical_solver.c",
+      "sha256": "1abe8a83e1566d18b0f89404f018c8ec30d0e9eb8a3ce9add05ca8a65698ff95"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_solver.dylib": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/physical_solver.dylib",
+      "sha256": "8c1246a8673fa30e8e1072faff48141be6204bdfe15db69d107536fae72bc7e9"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/predict.py": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/predict.py",
+      "sha256": "ef14e4ec45eeb8b7844ab6bd2493f334981447210bb98a659b045548e6773ae0"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/calibrated.json",
+      "sha256": "a45221fb0ce0a5e5b49b10e71ede40692d2e2b8f55578527ce1d26d3218454b2"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibration_lock.json": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/calibration_lock.json",
+      "sha256": "2692527a5be3fa1248c03d43e525e6b754234a4ccaa870d957e33aa3e60952a8"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/curves.npz": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/curves.npz",
+      "sha256": "a9d06f75fd1eb2a1238b95ca24a8ca83e4fab94f72e07ffa98b8eb8f1873a862"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/geometry_matrices.npz": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/geometry_matrices.npz",
+      "sha256": "05df866a6abfa502721106798cb94e228818dd8e9f5c69fbcffce1dc50d7f9f9"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/metrics.json": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/metrics.json",
+      "sha256": "a96942342da72050199cfe2083b7e343addf365163900ff45257398a2b561b68"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/protocol.json",
+      "sha256": "72495a64b048b1a4bc7c4770bce19e854f2247025d6e03e8eb1c44e346d1187c"
+    },
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/reservoir_force_lookup_final.npz": {
+      "copy": "results/ootang_teacher_refresh_v1/20260915/reproduction_runtime/section2d_v4/results/reservoir_force_lookup_final.npz",
+      "sha256": "1982a5a3ad90f1e9b947d1c9da6bcd6549b9a4e875b24738b1fbabcdcdc57d6e"
+    }
+  },
+  "archive": "section2d_v4.zip",
+  "archive_sha256": "57f3e7c68f004a47875c59ee93d38c384900b5263f111341fdd4aee36fdcc966",
+  "archive_member_equality": {
+    "runtime/ootang_rolling_v3/reference/results/geometry_O1_interpretation.csv": true,
+    "runtime/ootang_rolling_v3/reference/results/geometry_O2_interpretation.csv": true,
+    "runtime/ootang_rolling_v3/reference/results/geometry_O3_interpretation.csv": true,
+    "runtime/ootang_rolling_v3/reference/results/geometry_ground_interpretation.csv": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/calibrate_boundary.py": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/geometry.py": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_model.py": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/physical_solver.c": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/predict.py": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibration_lock.json": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/curves.npz": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/geometry_matrices.npz": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/metrics.json": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json": true,
+    "runtime/ootang_rolling_v3/reference/section2d_v4/results/reservoir_force_lookup_final.npz": true
+  },
+  "derived_files": "physical_model_posix.py changes only package import/library suffix; dylib compiled from original C; replay checked",
+  "posix_adaptation_exact": true
+}

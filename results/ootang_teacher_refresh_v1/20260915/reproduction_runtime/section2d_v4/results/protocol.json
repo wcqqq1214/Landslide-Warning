@@ -1,0 +1,42 @@
+{
+  "fit_start": "2016-07-01",
+  "fit_end": "2019-09-11",
+  "fit_days": 1168,
+  "prediction_start": "2019-09-12",
+  "prediction_end": "2020-06-30",
+  "prediction_days": 293,
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "inputs": [
+    "Rainfall",
+    "RWL"
+  ],
+  "temperature": false,
+  "DA": false,
+  "ML": false,
+  "fractures": false,
+  "substeps": 64,
+  "main": "continuous no reset or offset at split",
+  "comparison": "reused historical 80:20 conditional hindcast; test previously seen, not blind validation",
+  "fitting": "joint four-point least squares plus fitting-terminal penalty, weight116800; no future displacement in parameter objective",
+  "development": "Terminal calibration protocol introduced after viewing the unconstrained B+ hindcast; development-set historical comparison, not blind model selection.",
+  "fixed": {
+    "storage": 0.1,
+    "fast_drain_days": 0.5,
+    "moisture_capacity_mm": 40,
+    "initial_moisture": 0.5,
+    "nu": 0.3,
+    "phi_degrees": [
+      9.5,
+      9.3,
+      9.3,
+      9.3
+    ],
+    "normal_tangent_stiffness_ratio": 3
+  },
+  "parameter_count": 54
+}

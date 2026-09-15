@@ -1,0 +1,12 @@
+{
+  "status": "complete_pending_independent_audit",
+  "new_bplus_fits": 10,
+  "physical_optimizer_success": 0,
+  "physical_nfev": 8000,
+  "physical_optimization_forward_calls": 388325,
+  "physical_postcheck_forward_calls": 20,
+  "physical_fit_seconds": 660.1479412908666,
+  "neural_new_fits": 24,
+  "neural_updates": 4800,
+  "source_runtime_packaging": "results/ootang_teacher_refresh_v1/20260915/runtime_source_receipt.json"
+}
