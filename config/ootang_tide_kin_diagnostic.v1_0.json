@@ -1,0 +1,119 @@
+{
+  "version": "ootang_tide_kin_diagnostic.v1.0",
+  "branch": "codex/tide-kin-horizon-diagnostic",
+  "start_utc": "2026-09-15T17:27:16+00:00",
+  "deadline_utc": "2026-09-15T18:27:16+00:00",
+  "out": "results/ootang_tide_kin_diagnostic_v1/20260915",
+  "figures": "figures/ootang_tide_kin_diagnostic_v1/20260915",
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "primary_origins": [
+    792,
+    972,
+    1168
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "steps": [
+    0,
+    50,
+    100,
+    200,
+    400
+  ],
+  "first_training_origin": 432,
+  "horizon": 293,
+  "lookback": 180,
+  "prior_out": "results/ootang_tide_features_v1/20260915",
+  "methods": [
+    "TiDE_KIN",
+    "BPLUS_CONTINUOUS",
+    "DRIFT1",
+    "RR_COND",
+    "TiDE_PHYS",
+    "G_CACHED"
+  ],
+  "bins": [
+    {
+      "name": "h001_030",
+      "start": 1,
+      "end": 30
+    },
+    {
+      "name": "h031_090",
+      "start": 31,
+      "end": 90
+    },
+    {
+      "name": "h091_180",
+      "start": 91,
+      "end": 180
+    },
+    {
+      "name": "h181_293",
+      "start": 181,
+      "end": 293
+    },
+    {
+      "name": "all",
+      "start": 1,
+      "end": 293
+    }
+  ],
+  "visibility": [
+    30,
+    90,
+    180,
+    293
+  ],
+  "dtype": "float64",
+  "threads": 1,
+  "device": "cpu",
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0,
+  "selection": false,
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "bootstrap_probability": "unavailable: no original sigma at612; leave probability cells empty, no new pool",
+  "source_policy": "exact60 KIN checkpoints/schedules/means, original issued arrays and relevant runtime dependencies; previous full delivery verified before navigation edits",
+  "analyses": [
+    "expected and realized horizon loss coefficients at all five saved update counts",
+    "all legal mature training-origin loss at all60 fixed checkpoints; no checkpoint reselection",
+    "all four issued paths and six methods by fixed horizons, point and seed; bootstrap612 diagnostic only",
+    "MSE decomposition into squared bias/error variation and ensemble versus seed spread; descriptive only",
+    "fixed e400 future-visibility input perturbations; prediction changes only on common known horizons, no accuracy ranking"
+  ],
+  "threshold_policy": "no new effectiveness or trigger threshold; original full-window gates remain historical unchanged",
+  "statistical_policy": "descriptive exploratory,no p-values; dates/points/seeds/overlapping origins not independent replicates",
+  "figures_contract": [
+    "supervision_weights",
+    "error_by_distance",
+    "checkpoint_fit",
+    "visibility_sensitivity"
+  ],
+  "replay_batch": 32,
+  "independent_batch": 16
+}

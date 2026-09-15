@@ -1,0 +1,7 @@
+{
+  "status": "resolved_before_plan_commit",
+  "initial_error": "Source inventory expected sigmas.npz at bootstrap612; original issue has no probability scale. Initial manifest assertion and dependent commit failed before creating config/source artifacts.",
+  "correction": "Inspect original issue artifacts; explicit unavailable bootstrap probability, never calibrate from later labels. All original mean paths and primary-window sigmas retained.",
+  "new_training": 0,
+  "scientific_source_changes": false
+}
