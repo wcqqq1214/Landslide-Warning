@@ -1,0 +1,7 @@
+{
+  "v1_status": "passed",
+  "v2_status": "passed",
+  "change": "Removed unused os import only; reran complete audit to match delivered source hash. No training, prediction, scoring or numerical audit logic changed.",
+  "identical_receipts": true,
+  "v1_source_sha256": "798a40613826a13fe99236e9ec2e6b642a7e8cc62e773d4e3d3468945cd7cddd"
+}
