@@ -1,0 +1,2371 @@
+{
+  "status": "passed",
+  "source_files": 1272,
+  "checks": 472,
+  "values": 1394125,
+  "details": [
+    {
+      "name": "training-only cap",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "matched full inputs and targets 0",
+      "values": 2160,
+      "max_difference": 0.0
+    },
+    {
+      "name": "matched full inputs and targets 1",
+      "values": 68256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "matched full inputs and targets 2",
+      "values": 3516,
+      "max_difference": 0.0
+    },
+    {
+      "name": "matched full inputs and targets 3",
+      "values": 879,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN history 432",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN first target 432",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN maturity 432",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN history 500",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN first target 500",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN maturity 500",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN history 611",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN first target 611",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN maturity 611",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN future displacement isolation",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KIN unavailable future driver isolation",
+      "values": 22752,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS history 432",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS first target 432",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS maturity 432",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS history 500",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS first target 500",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS maturity 500",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS history 611",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS first target 611",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS maturity 611",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS future displacement isolation",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYS unavailable future driver isolation",
+      "values": 22752,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT history 432",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT first target 432",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT maturity 432",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT history 500",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT first target 500",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT maturity 500",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT history 611",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT first target 611",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT maturity 611",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT future displacement isolation",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT unavailable future driver isolation",
+      "values": 22752,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND history 432",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND first target 432",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND maturity 432",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND history 500",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND first target 500",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND maturity 500",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND history 611",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND first target 611",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND maturity 611",
+      "values": 293,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND future displacement isolation",
+      "values": 720,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND unavailable future driver isolation",
+      "values": 22752,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n612s0 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n612s1 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n612s2 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n792s0 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n792s1 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n792s2 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n972s0 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n972s1 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n972s2 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n1168s0 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n1168s1 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "n1168s2 exact old schedule",
+      "values": 3200,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/cap_norm",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 4.336808689942018e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 2.7755575615628914e-17
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/cap_norm",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 4.336808689942018e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/cap_norm",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "pair init/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "original main init/point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND initial output",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.weight",
+      "values": 192,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.weight",
+      "values": 32,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.b.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.weight",
+      "values": 24,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.feature.skip.bias",
+      "values": 2,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.b.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.weight",
+      "values": 18112,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.encoder.skip.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.weight",
+      "values": 256,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.b.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.weight",
+      "values": 9408,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.decoder.skip.bias",
+      "values": 588,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.a.bias",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.weight",
+      "values": 4,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.temporal.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.weight",
+      "values": 52920,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.linear.bias",
+      "values": 294,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/main.point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.weight",
+      "values": 40,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.weight",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.b.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.weight",
+      "values": 5,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_feature.skip.bias",
+      "values": 1,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.b.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.weight",
+      "values": 3824,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_encoder.skip.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.weight",
+      "values": 64,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.a.bias",
+      "values": 8,
+      "max_difference": 0.0
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.weight",
+      "values": 2352,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.b.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.weight",
+      "values": 2352,
+      "max_difference": 6.938893903907228e-18
+    },
+    {
+      "name": "same initial gradient/h_decoder.skip.bias",
+      "values": 294,
+      "max_difference": 8.673617379884035e-19
+    },
+    {
+      "name": "same initial gradient/h_point.weight",
+      "values": 16,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT independent nonzero numpy",
+      "values": 3528,
+      "max_difference": 5.273559366969494e-16
+    },
+    {
+      "name": "TiDE_SPLIT h0",
+      "values": 12,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT batch independence",
+      "values": 3528,
+      "max_difference": 5.551115123125783e-17
+    },
+    {
+      "name": "TiDE_SPLIT H cannot enter main",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT common driving and K cannot enter H",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT zero H fallback to own main",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_SPLIT reload",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND independent nonzero numpy",
+      "values": 3528,
+      "max_difference": 5.551115123125783e-16
+    },
+    {
+      "name": "TiDE_BOUND h0",
+      "values": 12,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND batch independence",
+      "values": 3528,
+      "max_difference": 5.551115123125783e-17
+    },
+    {
+      "name": "TiDE_BOUND H cannot enter main",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND common driving and K cannot enter H",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND zero H fallback to own main",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_BOUND reload",
+      "values": 3528,
+      "max_difference": 0.0
+    },
+    {
+      "name": "bounded extreme positive H",
+      "values": 3516,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs0e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs0e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs0e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs0e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs0e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs1e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs1e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs1e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs1e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs1e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs2e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs2e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs2e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs2e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_KINs2e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs0e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs0e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs0e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs0e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs0e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs1e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs1e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs1e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs1e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs1e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs2e0 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs2e50 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs2e100 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs2e200 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    },
+    {
+      "name": "TiDE_PHYSs2e400 exact old replay",
+      "values": 1172,
+      "max_difference": 0.0
+    }
+  ],
+  "old_checkpoints_replayed": 30,
+  "parameters": 123571,
+  "optimizer_updates": 0
+}
