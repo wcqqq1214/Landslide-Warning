@@ -1,0 +1,68 @@
+[
+  {
+    "origin": 612,
+    "eligible_origins": 0,
+    "first": null,
+    "last": null,
+    "fully_mature_days": 293,
+    "distinct_base_fit_prefixes": [],
+    "base_regimes": 0,
+    "label_index_max": null,
+    "forecast_support_not_independent": true,
+    "bootstrap_no_fit": true
+  },
+  {
+    "origin": 792,
+    "eligible_origins": 20,
+    "first": 480,
+    "last": 499,
+    "fully_mature_days": 293,
+    "distinct_base_fit_prefixes": [
+      480
+    ],
+    "base_regimes": 1,
+    "label_index_max": 791,
+    "forecast_support_not_independent": true,
+    "bootstrap_no_fit": false
+  },
+  {
+    "origin": 972,
+    "eligible_origins": 200,
+    "first": 480,
+    "last": 679,
+    "fully_mature_days": 293,
+    "distinct_base_fit_prefixes": [
+      480,
+      540,
+      600,
+      612,
+      660
+    ],
+    "base_regimes": 5,
+    "label_index_max": 971,
+    "forecast_support_not_independent": true,
+    "bootstrap_no_fit": false
+  },
+  {
+    "origin": 1168,
+    "eligible_origins": 396,
+    "first": 480,
+    "last": 875,
+    "fully_mature_days": 293,
+    "distinct_base_fit_prefixes": [
+      480,
+      540,
+      600,
+      612,
+      660,
+      720,
+      780,
+      792,
+      840
+    ],
+    "base_regimes": 9,
+    "label_index_max": 1167,
+    "forecast_support_not_independent": true,
+    "bootstrap_no_fit": false
+  }
+]

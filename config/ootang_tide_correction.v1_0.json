@@ -1,0 +1,365 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "version": "ootang_tide_correction.v1.0",
+  "branch": "codex/tide-frozen-correction",
+  "start_utc": "2026-09-15T16:41:32+00:00",
+  "deadline_utc": "2026-09-15T18:11:32+00:00",
+  "out": "results/ootang_tide_correction_v1/20260915",
+  "figures": "figures/ootang_tide_correction_v1/20260915",
+  "arms": [
+    "TiDE_KIN",
+    "TiDE_CAL",
+    "TiDE_HCAL"
+  ],
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "RR_COND",
+    "G_CACHED",
+    "TiDE_DATA",
+    "TiDE_HYD",
+    "TiDE_PHYS",
+    "TiDE_SPLIT",
+    "TiDE_BOUND"
+  ],
+  "prior_controls_out": "results/ootang_tide_fusion_v1/20260915",
+  "updates": 400,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200,
+    400
+  ],
+  "max_new_fits": 39,
+  "max_optimizer_updates": 15600,
+  "max_bplus_refits": 0,
+  "max_physical_forwards": 0,
+  "selection": "none; fixed e400; zero-head612 is pre-specified no-sample fallback; all prescribed fits complete",
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "training": {
+    "batch_origins": 8,
+    "max_horizon": 293,
+    "loss": "mean over fully mature293horizons and4points, then equally sampled OOF origins",
+    "target": "seed-matched chronological OOF KIN residual divided by current prefix unit",
+    "schedule": "numpy default_rng(seed).integers(0,len(pool),size=(400,8)); same two heads",
+    "input_boundary": "all OOF path drivers and labels end by current prefix; base fit prefix<=issue; future head input uses given scenario"
+  },
+  "network": {
+    "lookback": 180,
+    "covariate_width": 12,
+    "feature_hidden": 16,
+    "feature_output": 2,
+    "encoder_hidden": 16,
+    "encoder_output": 16,
+    "decoder_hidden": 16,
+    "decoder_output_per_horizon": 2,
+    "temporal_hidden": 16,
+    "point_embedding": 4,
+    "dropout": 0,
+    "layer_norm": false,
+    "activation": "relu",
+    "shared_across_points": true,
+    "output_slots": 294,
+    "max_parameters": 130000,
+    "zero_init": "Correction final maps zero, e0 exact oldKIN; separately reconstructed historical base e0 remains persistence",
+    "anchor": "raw(h)-raw(0); add current observation; no B+ output baseline",
+    "physics_indices": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "features": {
+    "data": [
+      "rainfall",
+      "reservoir_level",
+      "reservoir_difference",
+      "rainfall_sum7",
+      "rainfall_sum30"
+    ],
+    "physics": [
+      "B_minus_first_observation",
+      "B_daily_increment",
+      "moisture",
+      "rain_head",
+      "reservoir_head"
+    ],
+    "fixed": [
+      "relative_distance_over293",
+      "known_covariate_mask"
+    ],
+    "history_y": "180 values centered at current observation, divided by training prefix point std (floor 1 mm)",
+    "scaling": "separate training-prefix forcing and B+ per-point mean/std; DATA physics exactly zero after normalization; y unit has no teacher dependence"
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "whole 293-day observed future rainfall/reservoir provided as conditional scenario at issue time",
+    "full_path_conditioning": true,
+    "later_drivers_may_affect_earlier_outputs": true,
+    "training_future_features": "OOF base fitting covariates/targets masked beyond r; correction only fully mature293day paths m+293<=n, so no driver or label beyond n",
+    "bplus_state": "original cached continuous states, no refit/forward, fit prefix <= pseudo-origin"
+  },
+  "reporting": {
+    "primary_windows": [
+      792,
+      972,
+      1168
+    ],
+    "bootstrap_only": 612,
+    "boundary_diagnostic_horizons": [
+      1,
+      7,
+      30
+    ],
+    "paired_edges": [
+      [
+        "TiDE_CAL",
+        "TiDE_KIN"
+      ],
+      [
+        "TiDE_HCAL",
+        "TiDE_KIN"
+      ],
+      [
+        "TiDE_HCAL",
+        "TiDE_CAL"
+      ]
+    ],
+    "stable_pair_policy": "HCAL vs CAL and KIN separately: all3 mean gates and >=2/3 same-seed simultaneousMAE/RMSE improvement each window; B+ joint separate",
+    "contribution_thresholds": {
+      "raw_cap_exceed": 1.0,
+      "bound_saturation": 0.95
+    }
+  },
+  "figure_contract": {
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "figures": [
+      "correction_comparison",
+      "oof_support",
+      "cal_final",
+      "hcal_final"
+    ],
+    "history": "observations and B+ only; no invented neural reconstruction",
+    "intervals": "unchanged80/95 Gaussian marginal intervals",
+    "limits": "all4 main arms/3seeds/full95 bounds, no clipping or smoothing"
+  },
+  "parameters": 123571,
+  "prior_tide_out": "results/ootang_tide_direct_v1/20260915",
+  "backbone_config": "config/ootang_tide_direct.v1_0.json",
+  "new_arms": [
+    "TiDE_CAL",
+    "TiDE_HCAL"
+  ],
+  "reuse_arms": [
+    "TiDE_KIN"
+  ],
+  "new_checkpoints": 201,
+  "reused_checkpoints": 60,
+  "total_checkpoints": 261,
+  "feature_groups": {
+    "kinematics": {
+      "indices": [
+        5,
+        6
+      ],
+      "meaning": "B+ displacement relative to first observation and B+ daily increment"
+    },
+    "hydrology": {
+      "indices": [
+        7,
+        8,
+        9
+      ],
+      "meaning": "B+ moisture, rain head and reservoir head; observed/given driving remains common"
+    }
+  },
+  "prior_feature_out": "results/ootang_tide_features_v1/20260915",
+  "fusion": {
+    "feature_inputs": [
+      7,
+      8,
+      9,
+      10,
+      11
+    ],
+    "hidden": 8,
+    "projected": 1,
+    "point_embedding": 4,
+    "branch_seed_offset": 10000,
+    "cap_lag_days": 30,
+    "cap_floor_mm": 1.0,
+    "cap_statistic": "RMS of all observed lag30 displacement changes within current training prefix",
+    "bounded_arm": "TiDE_HCAL and TiDE_CAL",
+    "main_parameters": 110392,
+    "branch_parameters": 13179,
+    "total_parameters": 123571,
+    "joint_training": false,
+    "pretrained_main": true,
+    "formula": "q_main + cap_norm*tanh((raw_h(h)-raw_h(0))/cap_norm); unbounded arm omits tanh",
+    "zero_h_fallback": "exact original KIN forecast at that outer origin and seed; no base optimizer"
+  },
+  "correction": {
+    "first_oof_origin": 480,
+    "last_oof_origin": 875,
+    "issue_stride": 1,
+    "refit_prefixes": [
+      480,
+      540,
+      600,
+      660,
+      720,
+      780,
+      840
+    ],
+    "reused_oof_prefixes": [
+      612,
+      792
+    ],
+    "base_refit_updates": 400,
+    "base_fit_first_origin": 432,
+    "min_base_training_origins": 48,
+    "eligibility": "m+293<=current outer prefix; complete conditional driving and labels mature",
+    "oof_base": "latest refit or reused prefix <= m; weights/scaler fit only prefix r; y history ends at m; full given scenario ends at m+293",
+    "bootstrap612": "zero correction, unchanged KIN, no optimizer steps",
+    "head_inputs": [
+      "H_moisture",
+      "H_rain_head",
+      "H_reservoir_head",
+      "relative_distance",
+      "known"
+    ],
+    "CAL_mask": [
+      0,
+      1,
+      2
+    ],
+    "HCAL_mask": [],
+    "output": "original frozen KIN prediction + train-prefix cap*tanh(anchored correction/cap)",
+    "target": "(observed_y - chronological out-of-training KIN forecast)/current prefix unit; seed matched",
+    "trainable_parameters": 13179,
+    "frozen_base_parameters": 110392,
+    "head_schedule": "numpy default_rng(seed).integers(0,eligible_count,size=(400,8))",
+    "historical_reconstruction_not_actual_past_publication": true
+  },
+  "new_base_fits": 21,
+  "new_head_fits": 18,
+  "bootstrap_heads": 6,
+  "new_base_checkpoints": 105,
+  "new_head_checkpoints": 90,
+  "bootstrap_checkpoints": 6,
+  "reused_base_checkpoints": 60,
+  "base_training": {
+    "first_origin": 432,
+    "batch_origins": 8,
+    "max_horizon": 293,
+    "schedule": "numpy default_rng(seed).integers(432,n,size=(400,8)); identical for both arms",
+    "loss": "mean over points and origins of per-origin MSE over mature horizons; no residual penalty",
+    "target": "(y[m+h-1]-y[m-1])/unit, h=1..min(293,n-m)",
+    "input_boundary": "history y[:m]; future driving and teacher features only at indices < n; later channels zero with known=0; targets also masked"
+  }
+}
