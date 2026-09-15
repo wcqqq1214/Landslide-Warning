@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-09-15T16:00:24.585952+00:00",
+  "status": "bootstrap",
+  "origin": 612,
+  "end": 905,
+  "displacement_feedback": false,
+  "files": {
+    "means.npz": "d4fb5bed163ed8ce2c6bfe85958c7be87b6b7d7b0dc4705fe1d467fb8a316c56",
+    "scaling.json": "68baef2e04f1174c851e9f3e369140273b877b6318b1ec28a7c503dcf26f565d",
+    "seeds.npz": "4c6922bd2bf36b7eca3131a18416b37cf78d236d7620c6657d4a3321a993c1a0"
+  }
+}

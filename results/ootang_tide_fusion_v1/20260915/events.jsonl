@@ -1,2 +1,64 @@
 {"time_utc": "2026-09-15T15:59:27.976683+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_prefix_only"}
 {"time_utc": "2026-09-15T15:59:28.236529+00:00", "event": "preflight_passed", "checks": 472, "values": 1394125, "optimizer_updates": 0}
+{"time_utc": "2026-09-15T16:00:15.038079+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T16:00:15.048975+00:00", "event": "old_endpoints_reused", "origin": 612, "methods": ["TiDE_KIN", "TiDE_PHYS"]}
+{"time_utc": "2026-09-15T16:00:15.084003+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:16.530014+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400, "elapsed_seconds": 1.436779708999893}
+{"time_utc": "2026-09-15T16:00:16.532890+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:18.161341+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400, "elapsed_seconds": 1.6194331670003521}
+{"time_utc": "2026-09-15T16:00:18.164026+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:19.643558+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400, "elapsed_seconds": 1.4659547090004708}
+{"time_utc": "2026-09-15T16:00:19.670738+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_BOUND", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:21.247052+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_BOUND", "seed": 0, "updates": 400, "elapsed_seconds": 1.5677650829993581}
+{"time_utc": "2026-09-15T16:00:21.249798+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_BOUND", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:22.939648+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_BOUND", "seed": 1, "updates": 400, "elapsed_seconds": 1.6812077919994408}
+{"time_utc": "2026-09-15T16:00:22.942819+00:00", "event": "fit_started", "origin": 612, "arm": "TiDE_BOUND", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:24.575818+00:00", "event": "fit_completed", "origin": 612, "arm": "TiDE_BOUND", "seed": 2, "updates": 400, "elapsed_seconds": 1.6235897910000858}
+{"time_utc": "2026-09-15T16:00:24.586549+00:00", "event": "trajectory_issued", "origin": 612, "end": 905, "lock_sha256": "913925a17b22e3f6d43bd6e327cb2392b24bb1705b70fb9bdc558ddc69a85990"}
+{"time_utc": "2026-09-15T16:00:24.586669+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T16:00:24.591865+00:00", "event": "old_endpoints_reused", "origin": 792, "methods": ["TiDE_KIN", "TiDE_PHYS"]}
+{"time_utc": "2026-09-15T16:00:24.661470+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:26.251464+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400, "elapsed_seconds": 1.5804615830002149}
+{"time_utc": "2026-09-15T16:00:26.254735+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:27.932118+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400, "elapsed_seconds": 1.668498209000063}
+{"time_utc": "2026-09-15T16:00:27.935012+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:29.299833+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400, "elapsed_seconds": 1.3563967910004067}
+{"time_utc": "2026-09-15T16:00:29.353992+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_BOUND", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:30.746786+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_BOUND", "seed": 0, "updates": 400, "elapsed_seconds": 1.3850646669998241}
+{"time_utc": "2026-09-15T16:00:30.749422+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_BOUND", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:31.936498+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_BOUND", "seed": 1, "updates": 400, "elapsed_seconds": 1.1801007499998377}
+{"time_utc": "2026-09-15T16:00:31.938896+00:00", "event": "fit_started", "origin": 792, "arm": "TiDE_BOUND", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:33.168301+00:00", "event": "fit_completed", "origin": 792, "arm": "TiDE_BOUND", "seed": 2, "updates": 400, "elapsed_seconds": 1.2225630000002639}
+{"time_utc": "2026-09-15T16:00:33.178857+00:00", "event": "trajectory_issued", "origin": 792, "end": 1085, "lock_sha256": "064fd8abc8e09a97391f51e4704d3445858114baccda65a34e856081bb8d95a6"}
+{"time_utc": "2026-09-15T16:00:33.178971+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T16:00:33.185543+00:00", "event": "old_endpoints_reused", "origin": 972, "methods": ["TiDE_KIN", "TiDE_PHYS"]}
+{"time_utc": "2026-09-15T16:00:33.279481+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:34.493586+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400, "elapsed_seconds": 1.2063208750005288}
+{"time_utc": "2026-09-15T16:00:34.496624+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:35.739965+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400, "elapsed_seconds": 1.2348177079993548}
+{"time_utc": "2026-09-15T16:00:35.743125+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:36.997943+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400, "elapsed_seconds": 1.2473900420000064}
+{"time_utc": "2026-09-15T16:00:37.070779+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_BOUND", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:38.375436+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_BOUND", "seed": 0, "updates": 400, "elapsed_seconds": 1.2970958329997302}
+{"time_utc": "2026-09-15T16:00:38.378877+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_BOUND", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:40.000908+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_BOUND", "seed": 1, "updates": 400, "elapsed_seconds": 1.6132945839999593}
+{"time_utc": "2026-09-15T16:00:40.004178+00:00", "event": "fit_started", "origin": 972, "arm": "TiDE_BOUND", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:41.813411+00:00", "event": "fit_completed", "origin": 972, "arm": "TiDE_BOUND", "seed": 2, "updates": 400, "elapsed_seconds": 1.7998097919999054}
+{"time_utc": "2026-09-15T16:00:41.826992+00:00", "event": "trajectory_issued", "origin": 972, "end": 1265, "lock_sha256": "356ac00490e873f8a1b790c7aac4d60799099f79f1e481bdf5da9dd0cefca256"}
+{"time_utc": "2026-09-15T16:00:41.827238+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "neural_fit_prefix_and_mature_previous_errors"}
+{"time_utc": "2026-09-15T16:00:41.833350+00:00", "event": "old_endpoints_reused", "origin": 1168, "methods": ["TiDE_KIN", "TiDE_PHYS"]}
+{"time_utc": "2026-09-15T16:00:41.990515+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:44.011921+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 0, "updates": 400, "elapsed_seconds": 2.009246209000594}
+{"time_utc": "2026-09-15T16:00:44.015538+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:45.815694+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 1, "updates": 400, "elapsed_seconds": 1.790559334000136}
+{"time_utc": "2026-09-15T16:00:45.819667+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:47.336029+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_SPLIT", "seed": 2, "updates": 400, "elapsed_seconds": 1.507957124999848}
+{"time_utc": "2026-09-15T16:00:47.465178+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_BOUND", "seed": 0, "updates": 400}
+{"time_utc": "2026-09-15T16:00:48.941213+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_BOUND", "seed": 0, "updates": 400, "elapsed_seconds": 1.467740834000324}
+{"time_utc": "2026-09-15T16:00:48.944219+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_BOUND", "seed": 1, "updates": 400}
+{"time_utc": "2026-09-15T16:00:50.419595+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_BOUND", "seed": 1, "updates": 400, "elapsed_seconds": 1.466574000000037}
+{"time_utc": "2026-09-15T16:00:50.422864+00:00", "event": "fit_started", "origin": 1168, "arm": "TiDE_BOUND", "seed": 2, "updates": 400}
+{"time_utc": "2026-09-15T16:00:51.909032+00:00", "event": "fit_completed", "origin": 1168, "arm": "TiDE_BOUND", "seed": 2, "updates": 400, "elapsed_seconds": 1.478301332999763}
+{"time_utc": "2026-09-15T16:00:51.923470+00:00", "event": "trajectory_issued", "origin": 1168, "end": 1461, "lock_sha256": "f3ff66aeaa99b4dc33216b9f207594291ac62bd1349685991f082de89b07590d"}
+{"time_utc": "2026-09-15T16:01:42.585175+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_issued_before_full_scoring"}
+{"time_utc": "2026-09-15T16:01:43.072103+00:00", "event": "scoring_complete", "all_prescribed_windows_complete": true, "new_fits": 24, "updates": 9600, "new_bplus_fits": 0, "summary_rows": 33, "point_rows": 132, "seed_rows": 99, "daily_rows": 38676, "endpoint_rows": 1584, "stable_bound_vs_references": {"TiDE_SPLIT": false, "TiDE_KIN": false, "TiDE_PHYS": false}, "contribution_rows": 128, "reused_fits": 24, "reused_checkpoints": 120, "new_checkpoints": 120, "paired_metric_rows": 1800, "joint_bplus_pass_counts": {"TiDE_KIN": 0, "TiDE_PHYS": 0, "TiDE_SPLIT": 0, "TiDE_BOUND": 0}, "replacement_goal_met": false, "selection": false}

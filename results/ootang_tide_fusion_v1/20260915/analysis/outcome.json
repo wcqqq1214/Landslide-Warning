@@ -1,0 +1,29 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 24,
+  "updates": 9600,
+  "new_bplus_fits": 0,
+  "summary_rows": 33,
+  "point_rows": 132,
+  "seed_rows": 99,
+  "daily_rows": 38676,
+  "endpoint_rows": 1584,
+  "stable_bound_vs_references": {
+    "TiDE_SPLIT": false,
+    "TiDE_KIN": false,
+    "TiDE_PHYS": false
+  },
+  "contribution_rows": 128,
+  "reused_fits": 24,
+  "reused_checkpoints": 120,
+  "new_checkpoints": 120,
+  "paired_metric_rows": 1800,
+  "joint_bplus_pass_counts": {
+    "TiDE_KIN": 0,
+    "TiDE_PHYS": 0,
+    "TiDE_SPLIT": 0,
+    "TiDE_BOUND": 0
+  },
+  "replacement_goal_met": false,
+  "selection": false
+}
