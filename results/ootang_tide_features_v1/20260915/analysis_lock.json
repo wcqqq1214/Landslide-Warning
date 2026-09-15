@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-15T14:58:49.060112+00:00",
+  "status": "complete",
+  "files": {
+    "analysis/daily_predictions.csv": "2f10a038919cb84738745a5766d9bde9b232db9f51b13561aecc048d6ca672e1",
+    "analysis/endpoint_errors.csv": "4999889ca352b9c92df571e26c3db8803688856d53fb24b2549d73e5f85ec0a9",
+    "analysis/factorial_effects.csv": "b4e2d0df7b696aaac383b7077a734576352ee91406965486adfa553da104ad9d",
+    "analysis/metrics_by_point.csv": "09bc6ed4463aa0d020deb92ef81cf830a5feb53ab1eb5a00f7790fede1a05f48",
+    "analysis/outcome.json": "44ee851c2d07fa3f163265d913a0975fd7e10c3754ea6e020b62fc1738ba1ed6",
+    "analysis/pairing.json": "c8c8c10a8bbdab3d293e7036a3b3c3e732257c3c202ea47573f72f39f9d4222b",
+    "analysis/phase_summary.csv": "62950f4087f0a1c09cfff1a7fbede3903736a65468621e9596bf54c5fcb18aaf",
+    "analysis/seed_metrics_by_point.csv": "18ea1bda1cc27de28e4b8a2af8f2589821e45e283bdd9c9cbc1f04076317cdc0",
+    "analysis/seed_summary.csv": "0d093f8f854f3db69df7cde37ec675892fa944a9bd2487444d60aa3fa66a08e6"
+  }
+}

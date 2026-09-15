@@ -1,0 +1,27 @@
+{
+  "all_prescribed_windows_complete": true,
+  "new_fits": 24,
+  "updates": 9600,
+  "new_bplus_fits": 0,
+  "summary_rows": 27,
+  "point_rows": 108,
+  "seed_rows": 81,
+  "daily_rows": 31644,
+  "endpoint_rows": 1296,
+  "stable_new_arm_vs_full_physics": {
+    "TiDE_KIN": false,
+    "TiDE_HYD": false
+  },
+  "reused_fits": 24,
+  "reused_checkpoints": 120,
+  "new_checkpoints": 120,
+  "factorial_rows": 2520,
+  "joint_bplus_pass_counts": {
+    "TiDE_DATA": 0,
+    "TiDE_KIN": 0,
+    "TiDE_HYD": 0,
+    "TiDE_PHYS": 0
+  },
+  "replacement_goal_met": false,
+  "selection": false
+}

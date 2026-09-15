@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-09-15T14:58:30.946635+00:00",
+  "status": "issued",
+  "origin": 972,
+  "end": 1265,
+  "displacement_feedback": false,
+  "files": {
+    "calibration.json": "19cca9ac780266382b9e4a611b1ee0794861545826a0255c994dee2ff4d53da8",
+    "calibration_errors.npz": "42145afb174e6ef6cfccc5f1e08f34ef72cdd2b2e39a9fa934094bb374b56336",
+    "means.npz": "31d6e9ea8de702dc7e9ee754394dc559cfd1b34bdf22cc50b94d2f0880844725",
+    "scaling.json": "e77408c27dde89ac0bdc9e43c2e7e0febdab212a1cf366cac517826019bf5130",
+    "seeds.npz": "e26918741aface394b7e3d1b6b9834d1c3357451878de22acd6b857d677df6dd",
+    "sigmas.npz": "895165380d1cc0f4e7d8fa608f7c679cfe0ca334e4a16932ed9d073010f4fd75"
+  }
+}

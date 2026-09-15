@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T14:58:35.472142+00:00",
+  "status": "complete",
+  "new_fits": 1,
+  "updates": 400,
+  "elapsed_seconds": 0.7099423339996065,
+  "files": {
+    "e0.pt": "8c52fc4cb145bba34bb6ec955700ef664b4ea2124892c9f01f2457d7f1598b14",
+    "e0_increment_mm.npy": "15e33ec4c380e5291a322e2f0d76ec587bdd36f70c7539c27955ff433b8f20a7",
+    "e0_mean.npy": "82b337d19e55ed3c5fa84974b8721f07216e50406dbd92db491f93fb95b6f691",
+    "e100.pt": "934b17353b872f103706219cd51a9ea6dbeb288f41b8b683701087dea120bfdf",
+    "e100_increment_mm.npy": "9775e444bd0b81ec4dac3697dd6cf74dc63e6e98787309662a4f80d9296043fc",
+    "e100_mean.npy": "b29cc16f426d29a552ff5418b7752221c65f535ec847e11f9bbe46e3bb8648d1",
+    "e200.pt": "eb8c71aa72c409a053641111c5d6fd2e5becab7683f6b54cd01daa5627fc8935",
+    "e200_increment_mm.npy": "ff66a063c0bc65239486d77285cd6ba38587f9d1413589a8834cdb9f54a89c30",
+    "e200_mean.npy": "2864ef5077468b60f80ea8150dfd186514233df1bf889d8fdcf64eb96398f547",
+    "e400.pt": "5c4f37fc46f5f410f1400c9ddbb131d46dfc6839554051f9af64b2e99bfcf069",
+    "e400_increment_mm.npy": "9f2f7f9a400d36276ceeb154bf40812c390d58060019fdb26aa0e1bbcb6a9343",
+    "e400_mean.npy": "481e134cdf2547a437eebc80ab0993f2c87eb0c85bdadc2e8804b79a5b082e39",
+    "e50.pt": "539a4ea95b305db5a52589e19d90a9bfb54113656e2e6fb7b4604dee8f4bd3c1",
+    "e50_increment_mm.npy": "530a9d070ce85a8f80103437670be61fdd534fedfa53a64887907f201af08abc",
+    "e50_mean.npy": "ce3468b4d7aa12bb7b1efb94017172a76acd2767d8c676277fb15bce863a6480",
+    "schedule.npz": "c3a546563edc834cac121055fc356d902ed80b75634032ad08e38cae4d728fed",
+    "training.jsonl": "effa620f50f5519eaa5bafb43174fe003f16cdedf1c3b2951aaaf84a8537bea1"
+  }
+}
