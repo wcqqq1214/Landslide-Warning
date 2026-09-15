@@ -1,0 +1,752 @@
+[
+  {
+    "name": "cap from prefix only",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "bootstrap refuses optimizer schedule",
+    "values": 0,
+    "max_difference": 0
+  },
+  {
+    "name": "whole path maturity n612",
+    "values": 0,
+    "max_difference": 0
+  },
+  {
+    "name": "n792s0 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792s1 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n792s2 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "whole path maturity n792",
+    "values": 20,
+    "max_difference": 0
+  },
+  {
+    "name": "n972s0 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972s1 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n972s2 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "whole path maturity n972",
+    "values": 200,
+    "max_difference": 0
+  },
+  {
+    "name": "n1168s0 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168s1 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "n1168s2 common schedule",
+    "values": 3200,
+    "max_difference": 0.0
+  },
+  {
+    "name": "whole path maturity n1168",
+    "values": 396,
+    "max_difference": 0
+  },
+  {
+    "name": "partial293day residual rejected",
+    "values": 0,
+    "max_difference": 0
+  },
+  {
+    "name": "synthetic exact full target indices",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "outside target path isolation",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "same model trained beyond issue rejected",
+    "values": 0,
+    "max_difference": 0
+  },
+  {
+    "name": "H fields dates and channels",
+    "values": 18960,
+    "max_difference": 0.0
+  },
+  {
+    "name": "CAL cannot read H",
+    "values": 18960,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r480m432 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r480m432 old covariates",
+    "values": 22752,
+    "max_difference": 9.992007221626409e-16
+  },
+  {
+    "name": "r480m432 target",
+    "values": 192,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r480m479 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r480m479 old covariates",
+    "values": 22752,
+    "max_difference": 3.885780586188048e-16
+  },
+  {
+    "name": "r480m479 target",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input displacement isolation",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input future forcing mask",
+    "values": 45504,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r540m432 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r540m432 old covariates",
+    "values": 22752,
+    "max_difference": 1.0408340855860843e-15
+  },
+  {
+    "name": "r540m432 target",
+    "values": 432,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r540m539 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r540m539 old covariates",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r540m539 target",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input displacement isolation",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input future forcing mask",
+    "values": 45504,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r612m432 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r612m432 old covariates",
+    "values": 22752,
+    "max_difference": 1.0980799602933189e-15
+  },
+  {
+    "name": "r612m432 target",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r612m611 old history",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r612m611 old covariates",
+    "values": 22752,
+    "max_difference": 0.0
+  },
+  {
+    "name": "r612m611 target",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input displacement isolation",
+    "values": 720,
+    "max_difference": 0.0
+  },
+  {
+    "name": "historical input future forcing mask",
+    "values": 45504,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN seed0 unchanged",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN independent forward",
+    "values": 1172,
+    "max_difference": 2.2737367544323206e-13
+  },
+  {
+    "name": "paired init cap_norm",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.weight",
+    "values": 40,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.weight",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.weight",
+    "values": 5,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_point.weight",
+    "values": 16,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 3.469446951953614e-17
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 3.469446951953614e-17
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 1.3877787807814457e-17
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 4.163336342344337e-17
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 3.469446951953614e-17
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 1.3877787807814457e-17
+  },
+  {
+    "name": "reload nonzero",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN seed1 unchanged",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN independent forward",
+    "values": 1172,
+    "max_difference": 2.2737367544323206e-13
+  },
+  {
+    "name": "paired init cap_norm",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.weight",
+    "values": 40,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.weight",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.weight",
+    "values": 5,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_point.weight",
+    "values": 16,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 6.938893903907228e-17
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 6.938893903907228e-17
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 2.0816681711721685e-17
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 6.071532165918825e-17
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 6.245004513516506e-17
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 2.7755575615628914e-17
+  },
+  {
+    "name": "reload nonzero",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN seed2 unchanged",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "original KIN independent forward",
+    "values": 1172,
+    "max_difference": 2.2737367544323206e-13
+  },
+  {
+    "name": "paired init cap_norm",
+    "values": 4,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.weight",
+    "values": 40,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.weight",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.b.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.weight",
+    "values": 5,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_feature.skip.bias",
+    "values": 1,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.b.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.weight",
+    "values": 3824,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_encoder.skip.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.weight",
+    "values": 64,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.a.bias",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.b.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.weight",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_decoder.skip.bias",
+    "values": 294,
+    "max_difference": 0.0
+  },
+  {
+    "name": "paired init h_point.weight",
+    "values": 16,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "zero head exact KIN fallback",
+    "values": 1172,
+    "max_difference": 0.0
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 3.469446951953614e-17
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 3.469446951953614e-17
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 1.3877787807814457e-17
+  },
+  {
+    "name": "nonzero independent raw",
+    "values": 2352,
+    "max_difference": 1.1102230246251565e-16
+  },
+  {
+    "name": "nonzero independent actual",
+    "values": 2352,
+    "max_difference": 1.1102230246251565e-16
+  },
+  {
+    "name": "h0 anchored",
+    "values": 8,
+    "max_difference": 0.0
+  },
+  {
+    "name": "batch independence",
+    "values": 2352,
+    "max_difference": 2.0816681711721685e-17
+  },
+  {
+    "name": "reload nonzero",
+    "values": 2352,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  },
+  {
+    "name": "arbitrary large raw cap",
+    "values": 2344,
+    "max_difference": 0.0
+  }
+]

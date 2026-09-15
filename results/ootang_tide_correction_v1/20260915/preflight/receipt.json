@@ -1,0 +1,23 @@
+{
+  "status": "passed",
+  "source_files": 2216,
+  "checks": 150,
+  "values": 470005,
+  "max_difference": 2.2737367544323206e-13,
+  "optimizer_updates": 0,
+  "base_refits": 0,
+  "frozen_base_in_optimizer": false,
+  "bootstrap612": "zero without fit",
+  "eligible_counts": [
+    0,
+    20,
+    200,
+    396
+  ],
+  "base_regime_counts": [
+    0,
+    1,
+    5,
+    9
+  ]
+}
