@@ -1,0 +1,2 @@
+{"time_utc": "2026-09-15T06:50:27.545439+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_612_only"}
+{"time_utc": "2026-09-15T06:50:27.856565+00:00", "event": "preflight_passed", "checks": 207, "source_entries": 708}

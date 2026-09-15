@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-09-15T06:50:27.856469+00:00",
+  "status": "frozen",
+  "files": {
+    "code/gru_ablation/__init__.py": "c8749b0c2afcccec12d03c43cfe273e11dcb13807ce09b1f5959efdbfb3baf31",
+    "code/gru_ablation/core.py": "a97582c4c919e53d4365dd69d8b82b980f2890348a8f54f8620ccb27d3c17206",
+    "code/gru_ablation/preflight.py": "92095e2c2b27fdee5ee3fa57f62c8c179d95f64a2e457d4ca2909c6d16553e90",
+    "code/gru_ablation/run.py": "71ea155e5d571e35ad6393f4ab96b3f58610ce116d02073921d7f98da30257d3"
+  },
+  "config_sha256": "0198003b5a4e4704e66d005d07f0bef146dee88f160ed2102a0664657389deeb",
+  "preflight": "results/ootang_gru_ablation_v1/20260915/preflight/receipt.json"
+}

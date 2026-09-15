@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-15T06:50:27.856007+00:00",
+  "source_entries": 708,
+  "check_records": 207,
+  "checked_values": 501149,
+  "max_difference": 3.655728497697908e-12,
+  "parameters": 1241,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "label_prefix_read": 612
+}
