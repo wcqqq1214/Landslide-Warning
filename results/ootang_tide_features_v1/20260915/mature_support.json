@@ -1,0 +1,50 @@
+{
+  "arms": {
+    "TiDE_DATA": [
+      0,
+      0
+    ],
+    "TiDE_KIN": [
+      1,
+      0
+    ],
+    "TiDE_HYD": [
+      0,
+      1
+    ],
+    "TiDE_PHYS": [
+      1,
+      1
+    ]
+  },
+  "origins": [
+    {
+      "prefix": 612,
+      "legal_training_origins": 180,
+      "full293_origins": 0,
+      "first_target": 612,
+      "last_target": 904
+    },
+    {
+      "prefix": 792,
+      "legal_training_origins": 360,
+      "full293_origins": 68,
+      "first_target": 792,
+      "last_target": 1084
+    },
+    {
+      "prefix": 972,
+      "legal_training_origins": 540,
+      "full293_origins": 248,
+      "first_target": 972,
+      "last_target": 1264
+    },
+    {
+      "prefix": 1168,
+      "legal_training_origins": 736,
+      "full293_origins": 444,
+      "first_target": 1168,
+      "last_target": 1460
+    }
+  ]
+}

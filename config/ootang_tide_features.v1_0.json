@@ -1,0 +1,378 @@
+{
+  "data": "data/monitoring_data.csv",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "normalization": {
+    "x_std_floor": 1e-06,
+    "target_std_floor_mm": 1.0,
+    "ddof": 0,
+    "future_refit": false
+  },
+  "calibration": {
+    "count": 90,
+    "sigma_floor_mm": 1e-06,
+    "levels": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "bias_correction": false,
+    "update_during_forecast": false
+  },
+  "effect": {
+    "mean_relative_improvement": 0.01,
+    "point_mean_atol_mm": 1e-06,
+    "probability_relative_improvement": 0.01,
+    "point_probability_max_regression": 0.05,
+    "coverage90_average_min": 0.85,
+    "coverage90_point_min": 0.8,
+    "minimum_seed_agreement": 2,
+    "controls_do_not_stop_execution": true
+  },
+  "numerical": {
+    "physical_replay_atol_mm": 1e-08,
+    "reload_atol_mm": 1e-09,
+    "score_atol_mm": 1e-08,
+    "chunk_atol_mm": 1e-08,
+    "parallel_scan_atol": 1e-09,
+    "official_float32_atol": 2e-05,
+    "gradient_atol": 1e-08,
+    "independent_forward_atol_mm": 1e-07
+  },
+  "teacher_sources": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_4/20260911_selection/outer_612_B.npz",
+    "792": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/calibrated.json",
+    "972": "results/ootang_probability_pinn_v2_3/20260912_development/reference.npz"
+  },
+  "teacher_fit_prefixes": {
+    "432": 432,
+    "612": 612,
+    "792": 792,
+    "972": 792,
+    "1168": 1168
+  },
+  "teacher_parameter_records": {
+    "432": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_432/B_continued.json",
+    "612": "results/ootang_bplus_v1_2/20260910_diagnostics/fit_612/B_continued.json",
+    "792": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "972": "results/ootang_bplus_v1_1/20260910_implementation/prefix_calibrated.json",
+    "1168": "runtime/ootang_rolling_v3/reference/section2d_v4/results/protocol.json"
+  },
+  "dtype": "float64",
+  "device": "cpu",
+  "threads": 1,
+  "optimizer": {
+    "name": "Adam",
+    "lr": 0.001,
+    "betas": [
+      0.9,
+      0.999
+    ],
+    "eps": 1e-08,
+    "weight_decay": 0.0
+  },
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "prior_out": "results/ootang_transformer_origin_v1/20260914",
+  "teacher_cache_prior_out": "results/ootang_transformer_temporal_v1/20260914",
+  "origins": [
+    612,
+    792,
+    972,
+    1168
+  ],
+  "ends": [
+    905,
+    1085,
+    1265,
+    1461
+  ],
+  "version": "ootang_tide_features.v1.0",
+  "branch": "codex/tide-feature-ablation",
+  "start_utc": "2026-09-15T14:49:06+00:00",
+  "deadline_utc": "2026-09-15T15:49:06+00:00",
+  "out": "results/ootang_tide_features_v1/20260915",
+  "figures": "figures/ootang_tide_features_v1/20260915",
+  "arms": [
+    "TiDE_DATA",
+    "TiDE_KIN",
+    "TiDE_HYD",
+    "TiDE_PHYS"
+  ],
+  "controls": [
+    "BPLUS_CONTINUOUS",
+    "BPLUS_ORIGIN_ANCHOR",
+    "DRIFT1",
+    "RR_COND",
+    "G_CACHED"
+  ],
+  "prior_controls_out": "results/ootang_tide_direct_v1/20260915",
+  "updates": 400,
+  "checkpoints": [
+    0,
+    50,
+    100,
+    200,
+    400
+  ],
+  "max_new_fits": 24,
+  "max_optimizer_updates": 9600,
+  "max_bplus_refits": 0,
+  "max_physical_forwards": 0,
+  "selection": "none; fixed e400; complete every prescribed fit regardless of effects",
+  "push": false,
+  "pdf": false,
+  "rl": false,
+  "training": {
+    "first_origin": 432,
+    "batch_origins": 8,
+    "max_horizon": 293,
+    "schedule": "numpy default_rng(seed).integers(432,n,size=(400,8)); identical for both arms",
+    "loss": "mean over points and origins of per-origin MSE over mature horizons; no residual penalty",
+    "target": "(y[m+h-1]-y[m-1])/unit, h=1..min(293,n-m)",
+    "input_boundary": "history y[:m]; future driving and teacher features only at indices < n; later channels zero with known=0; targets also masked"
+  },
+  "network": {
+    "lookback": 180,
+    "covariate_width": 12,
+    "feature_hidden": 16,
+    "feature_output": 2,
+    "encoder_hidden": 16,
+    "encoder_output": 16,
+    "decoder_hidden": 16,
+    "decoder_output_per_horizon": 2,
+    "temporal_hidden": 16,
+    "point_embedding": 4,
+    "dropout": 0,
+    "layer_norm": false,
+    "activation": "relu",
+    "shared_across_points": true,
+    "output_slots": 294,
+    "max_parameters": 120000,
+    "zero_init": "linear skip and both output affine maps of final temporal block; e0 is persistence",
+    "anchor": "raw(h)-raw(0); add current observation; no B+ output baseline",
+    "physics_indices": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "features": {
+    "data": [
+      "rainfall",
+      "reservoir_level",
+      "reservoir_difference",
+      "rainfall_sum7",
+      "rainfall_sum30"
+    ],
+    "physics": [
+      "B_minus_first_observation",
+      "B_daily_increment",
+      "moisture",
+      "rain_head",
+      "reservoir_head"
+    ],
+    "fixed": [
+      "relative_distance_over293",
+      "known_covariate_mask"
+    ],
+    "history_y": "180 values centered at current observation, divided by training prefix point std (floor 1 mm)",
+    "scaling": "separate training-prefix forcing and B+ per-point mean/std; DATA physics exactly zero after normalization; y unit has no teacher dependence"
+  },
+  "future_information": {
+    "displacement_feedback": false,
+    "forcing": "whole 293-day observed future rainfall/reservoir provided as conditional scenario at issue time",
+    "full_path_conditioning": true,
+    "later_drivers_may_affect_earlier_outputs": true,
+    "training_future_features": "masked beyond current fitting prefix, even though future scenario is given at issuance",
+    "bplus_state": "original cached continuous states, no refit/forward, fit prefix <= pseudo-origin"
+  },
+  "reporting": {
+    "primary_windows": [
+      792,
+      972,
+      1168
+    ],
+    "bootstrap_only": 612,
+    "boundary_diagnostic_horizons": [
+      1,
+      7,
+      30
+    ],
+    "paired_edges": [
+      [
+        "TiDE_KIN",
+        "TiDE_DATA"
+      ],
+      [
+        "TiDE_PHYS",
+        "TiDE_HYD"
+      ],
+      [
+        "TiDE_HYD",
+        "TiDE_DATA"
+      ],
+      [
+        "TiDE_PHYS",
+        "TiDE_KIN"
+      ],
+      [
+        "TiDE_PHYS",
+        "TiDE_DATA"
+      ],
+      [
+        "TiDE_KIN",
+        "TiDE_PHYS"
+      ],
+      [
+        "TiDE_HYD",
+        "TiDE_PHYS"
+      ]
+    ],
+    "stable_pair_policy": "For each new arm versus full PHYS: all three mean gates and >=2/3 paired seeds improve MAE/RMSE in each window; B+ replacement judged separately",
+    "factorial_effects": {
+      "K_at_H0": [
+        -1,
+        1,
+        0,
+        0
+      ],
+      "K_at_H1": [
+        0,
+        0,
+        -1,
+        1
+      ],
+      "H_at_K0": [
+        -1,
+        0,
+        1,
+        0
+      ],
+      "H_at_K1": [
+        0,
+        -1,
+        0,
+        1
+      ],
+      "K_average": [
+        -0.5,
+        0.5,
+        -0.5,
+        0.5
+      ],
+      "H_average": [
+        -0.5,
+        -0.5,
+        0.5,
+        0.5
+      ],
+      "interaction": [
+        1,
+        -1,
+        -1,
+        1
+      ]
+    },
+    "factorial_arm_order": [
+      "TiDE_DATA",
+      "TiDE_KIN",
+      "TiDE_HYD",
+      "TiDE_PHYS"
+    ]
+  },
+  "figure_contract": {
+    "formats": [
+      "png",
+      "svg"
+    ],
+    "figures": [
+      "feature_group_comparison",
+      "feature_factor_effects",
+      "kin_final",
+      "hyd_final"
+    ],
+    "history": "observations and B+ only; no invented neural reconstruction",
+    "intervals": "unchanged80/95 Gaussian marginal intervals",
+    "limits": "all four TiDE arms/three seeds/full95 bounds, no clipping or smoothing"
+  },
+  "parameters": 110392,
+  "prior_tide_out": "results/ootang_tide_direct_v1/20260915",
+  "backbone_config": "config/ootang_tide_direct.v1_0.json",
+  "new_arms": [
+    "TiDE_KIN",
+    "TiDE_HYD"
+  ],
+  "reuse_arms": [
+    "TiDE_DATA",
+    "TiDE_PHYS"
+  ],
+  "new_checkpoints": 120,
+  "reused_checkpoints": 120,
+  "total_checkpoints": 240,
+  "feature_groups": {
+    "kinematics": {
+      "indices": [
+        5,
+        6
+      ],
+      "meaning": "B+ displacement relative to first observation and B+ daily increment"
+    },
+    "hydrology": {
+      "indices": [
+        7,
+        8,
+        9
+      ],
+      "meaning": "B+ moisture, rain head and reservoir head; observed/given driving remains common"
+    }
+  },
+  "masks": {
+    "TiDE_DATA": [],
+    "TiDE_KIN": [
+      5,
+      6
+    ],
+    "TiDE_HYD": [
+      7,
+      8,
+      9
+    ],
+    "TiDE_PHYS": [
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  },
+  "factors": {
+    "TiDE_DATA": [
+      0,
+      0
+    ],
+    "TiDE_KIN": [
+      1,
+      0
+    ],
+    "TiDE_HYD": [
+      0,
+      1
+    ],
+    "TiDE_PHYS": [
+      1,
+      1
+    ]
+  }
+}
