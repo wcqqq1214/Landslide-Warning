@@ -1,8 +1,16 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的历史B+教师更新配对**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的小型TiDE直接预测配对**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：历史教师更新配对
+## 最新研究：小型TiDE直接预测配对
+
+[研究记录](ootang_tide_direct_results.v1.0.md) · [完整21组CSV](../results/ootang_tide_direct_v1/20260915/analysis/phase_summary.csv) · [三张研究图](../figures/ootang_tide_direct_v1/20260915/README.md)
+
+[冻结计划](ootang_tide_direct_plan.v1.0.md) · [配置](../config/ootang_tide_direct.v1_0.json) · [261来源](ootang_tide_direct_sources.v1.0.json) · [成熟支持](../results/ootang_tide_direct_v1/20260915/mature_support.csv) · [实现](ootang_tide_direct_implementation.v1.0.md) · [核验](ootang_tide_direct_validation.v1.0.md) · [图件合同](ootang_tide_direct_figure_contract.v1.0.md) · [回执](../results/ootang_tide_direct_v1/20260915/final_receipt.json)
+
+TiDE_DATA三主窗RMSE50.874904/33.672205/7.278984，TiDE_PHYS14.859012/12.114521/8.921779mm；最终B+9.124173。加物理版平均误差低于既有GRU，但物理配对收益随窗口/点改变、B+联合均0/3。24拟合9600更新/120检查点完整完成，93991564独立数值、三图12面板通过；保留负结果，继续研究的优先问题是物理特征分组，本轮未追加该实验。仅研究记录/CSV/PNG/SVG，无PDF汇报。
+
+## 上一轮交付：历史教师更新配对
 
 | 文档/产物 | 用途 |
 | --- | --- |

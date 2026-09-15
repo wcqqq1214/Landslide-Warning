@@ -1,0 +1,5 @@
+{
+  "document_update_initial_attempt": "Python stdin Unicode parse error; no files changed; progress and AGENTS updated via apply_patch; no model/data changes",
+  "formal_experiment_failures": 0,
+  "document_link_check": "Initial all-history scan found4 pre-existing missing historical PDF links in unchanged progress text; new/current links pass; old records left unchanged"
+}

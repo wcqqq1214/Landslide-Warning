@@ -18,6 +18,8 @@
 
 # Current Scope and Status
 
+- 最新研究完成（2026-09-15）：用户要求继续寻找模型、无需导师汇报，授权TiDE直接预测配对，分支`codex/tide-direct-physics`。见`docs/ootang_tide_direct_results.v1.0.md`和最终回执。同110392参数/180日历史/三种子/e400，24拟合9600更新、120检查点与四条293日路径完成；B+重拟合/物理前向0。DATA三主窗RMSE50.874904/33.672205/7.278984，PHYS14.859012/12.114521/8.921779mm，最终B+9.124173。PHYS平均MAE/RMSE/CRPS三窗低于G_CACHED，但同种子均值同时改善仅1/2/2；物理配对同向种子3/3/0，稳定均值false。两版B+联合均0/3；DATA最终ATU5退步/MJ3覆盖67.58%，PHYS最终MJ3/MJ1均值保护失败而概率门对B+通过。261来源、93991564独立数值、三图12面板/227476图形值与目视通过。原SciPy兼容故障及同版失败留档，独立Python3.12.13/SciPy1.16.3运行，原环境不改；预检NumPy告警以非BLAS前向复核，正式失败重试0。独立14:13:11—16:13:11 UTC含准备核验，实际完成见回执，旧预算/余额不转用。下一研究优先物理特征分组，本轮不自动追加消融/结构/轮数/RL，不按最终点成绩拼接赢家。仅研究记录/CSV/PNG/SVG、本地commit，无push/PR/PDF汇报；导师规则未跟踪文件保持，用户/导师尚未验收。以下记录是已完成的历史实验。
+
 - 最新完成（2026-09-15）：用户授权的历史B+教师更新政策配对，分支`codex/teacher-refresh-pairing`，见`docs/ootang_teacher_refresh_results.v1.0.md`及最终回执。两臂同GRU起点表达/共同60日网格/三种子/e200，10次历史物理更新、24神经拟合4800更新、96检查点及四条293日发报全部完成。G_CACHED三个主要窗RMSE19.372056/22.660456/10.600134，G_REFRESH24.684374/23.804193/11.068245mm；更新组集成MAE/RMSE三窗均退步，同种子同时改善0/2/1个；两组B+联合门均0/3，最终B+9.124173。历史拟合8/10降低RMSE，但全部物理拟合达到800次上限、未收敛，不能断言所有更新教师方法无效。203来源、5588338独立数值、三图12面板/222772图形值核验与目视通过；18项原运行时依赖已按原字节归档，原资料不改。新独立11:01:47—13:01:47 UTC自限窗口含准备核验，实际用时见回执，旧预算及余额不转用。按冻结计划收束本轮路线，不追加教师密度/轮数/结构/λ/RL，只本地commit/Markdown/CSV/PNG/SVG，不push/PDF。图件封装相对路径错误仅修目录根，图形/预测保持；用户未跟踪导师制图规则原样，用户/导师尚未验收。
 - 上一轮完成（2026-09-15）：训练充分性诊断及一次固定200对400预算对照，分支`codex/training-sufficiency-audit`。见`docs/ootang_training_sufficiency_results.v1.0.md`及最终回执。96旧检查点/128×32固定面板、截止1168日完整成熟的612/792路径触发追加；完整24新拟合9600实际更新（4800重放＋4800追加），72新检查点，前200步日志/参数/预测精确一致。最终GRU11.141437→11.339123、TF13.290363→13.653310mm，B+9.124173；训练MSE仍降16.21%—21.87%，但972/最终RMSE退步。两400版本最终概率门对B+通过、均值失败，联合均0/3；不证明充分收敛或网络家族无效。1329来源、401128/1265488诊断/追加数值、四图16面板已核验。独立10:08:15—11:08:15 UTC含准备交付，实际时间见回执；已停止，不追加800次/结构/λ/RL，不转用旧预算。只本地commit/Markdown/CSV/PNG/SVG，不push/PDF。CSV读取审计及图件初稿错误留档，正式拟合无失败重试；导师/用户尚未验收。
 - 上一轮完成（2026-09-15）：用户授权统一接口GRU/Transformer×起点表达消融，分支`codex/transformer-anchor-ablation`，见`docs/ootang_backbone_anchor_results.v1.0.md`及最终回执。固定14维输入/图/解码/uniform样本/三种子/e200/λ=1，GRU1241、单层TF1249参数。复用24份GRU拟合，新增24份TF拟合4800更新；全部192新旧检查点、1106来源、3813856数值及九图36面板核验完成。最终G00/G10/T00/T10 RMSE14.257499/11.141437/15.981473/13.290363mm，B+9.124173；A三窗平均收益可迁移，A开时GRU三窗均值/CRPS更低，但四组B+联合门均0/3。TF起点版ATU1/ATU5覆盖63.82%/47.44%，GRU起点版ATU1覆盖76.11%；旧半残差8.867132及G11 10.785141局部结果保留，不推广骨干家族。新09:18:32—11:18:32 UTC自限窗口含准备核验，实际用时见回执；本轮已停止，不追加网络/λ/RL或转用旧预算。Markdown/CSV/PNG/SVG、本地分步commit，不push/PDF。参数计数与锁路径训练前异常留档，正式24拟合无失败重试；用户/导师尚未验收。
@@ -30,12 +32,16 @@
 
 # Reading Order
 
+0. 当前先读[TiDE研究记录](docs/ootang_tide_direct_results.v1.0.md)、[核验](docs/ootang_tide_direct_validation.v1.0.md)、[回执](results/ootang_tide_direct_v1/20260915/final_receipt.json)；实现追溯本轮计划/配置/261来源。下列旧实验只按需追溯，不恢复预算。
+
 1. 先读[README](README.md)、[文档导航](docs/README.md)和最新[progress](docs/progress.md)。
 2. 当前效果先读[历史教师更新配对](docs/ootang_teacher_refresh_results.v1.0.md)、[核验](docs/ootang_teacher_refresh_validation.v1.0.md)、[回执](results/ootang_teacher_refresh_v1/20260915/final_receipt.json)；实施追溯对应计划/配置/203来源/成熟支持与实现。上轮读[训练预算核验](docs/ootang_training_sufficiency_results.v1.0.md)、[核验](docs/ootang_training_sufficiency_validation.v1.0.md)、[回执](results/ootang_training_sufficiency_v1/20260915/final_receipt.json)；按需再读[骨干×起点表达](docs/ootang_backbone_anchor_results.v1.0.md)、[GRU两因素消融](docs/ootang_gru_ablation_results.v1.0.md)及[夜间简报](docs/ootang_overnight_graph_results.v1.0.md)，不恢复旧预算。
 3. 需要对照时再读[起点条件化小试](docs/ootang_transformer_origin_results.v1.0.md)、[跨起点α/λ](docs/ootang_transformer_temporal_results.v1.0.md)、[半残差/校准](docs/ootang_transformer_calibration_results.v1.0.md)、[REG1](docs/ootang_transformer_regularization_results.v1.0.md)、[Transformer/CNN-Mamba](docs/ootang_sequence_conditional_results.v1.0.md)、[TCN](docs/ootang_tcn_conditional_training_results.v1.0.md)。
 4. 旧协议按[历史导航](docs/history/README.md)定向追溯。历史预算、命令和形成时“尚未训练”不是当前待办。
 
 # Experimental Boundaries
+
+- 当前TiDE输出直接起点增量，DATA关闭物理通道、PHYS添加合法B+输入；四点共享逐点编码器，无新图，目标/单位不依赖教师。180日历史不冒充完整神经历史状态；整条293日条件驱动可影响较早输出。训练前缀后协变量与标签同时掩码，612缺少181—293日直接监督。训练教师为原432/612/792、拟合前缀≤伪起点；外层612/792/792/1168，缓存不重拟合/延长。合法训练起点180/360/540/736，完整293日成熟0/68/248/444，不是独立重复。与旧GRU同时改变结构/目标/样本/预算，不作骨干单因素或家族优越性结论。下列教师更新“本轮”指历史已完成版本。
 
 - 本轮共同训练起点432至1152、间隔60日，两组同样重训；G_CACHED不冒充旧G10精确复现。更新教师使用当时合法前缀、最近原缓存初始化、单阶段800次上限；改变物理输入/起点基线/目标整项政策，不等于目标单因素或物理因果。外层B+保持原教师，完整成熟293日监督起点0/2/5/8，最终最晚完整起点852，更近教师只具部分成熟目标；未收敛与场景差异限制保持。
 - 当前条件协议给定未来逐日降雨/水位，预测路径中不反馈实测位移，B+完整状态从首日延续。新起点可用此前观测重新训练，但保留旧发出预测。与1—7日滚动/固定驱动递推分开解释。
