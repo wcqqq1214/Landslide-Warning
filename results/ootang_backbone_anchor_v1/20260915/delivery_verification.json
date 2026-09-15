@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-15T09:51:37.933877+00:00",
+  "documentation_commit": "402e3f2d787876565b5bbc98d60fa94a36ad48a5",
+  "files_checked": 571,
+  "all_manifest_files_tracked": true,
+  "manifest_sha256": "401012f80908594207874492e7b95bc4e399d1ed74ffe08718c272dacc3e0dab",
+  "final_receipt_sha256": "b7867df52dfd3378aa49e9f2bd756aa405bce552b796de063592c7bb5f02607e",
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "untouched_untracked": [
+    "docs/ootang_mentor_figure_rules.v1.0.md"
+  ]
+}
