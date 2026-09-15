@@ -1,0 +1,4 @@
+{
+  "error": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py\", line 147, in <module>\n    try: main()\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py\", line 105, in main\n    close(f'{identity}/{point}/daily_y',rows.observed,y[n:end,p],0)\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py\", line 21, in close\n    assert diff<=tol,(name,diff,tol)\nAssertionError: (\"(612, 'G10_ANCHOR_UNIFORM', 'ensemble', 0)/ATU1/daily_y\", 5.684341886080802e-14, 0)\n",
+  "time_utc": "2026-09-15T10:20:19.922965+00:00"
+}

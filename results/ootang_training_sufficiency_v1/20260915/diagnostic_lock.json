@@ -1,0 +1,24 @@
+{
+  "time_utc": "2026-09-15T10:18:16.327399+00:00",
+  "status": "complete",
+  "extend": true,
+  "files": {
+    "diagnostic/historical_daily.csv": "4dbfd7d5eca7c3093e15adbd925abd17722a3cc9be138aaa98cbf9f911fff3c2",
+    "diagnostic/historical_points.csv": "9eff68ce8f4bba5b83034b47b53448149e753e30e1a7c831c6e6211606954554",
+    "diagnostic/historical_predictions.npz": "3e3737e9390600b51e954c06dbc12c1de6d10b81a714ba7b2f204dd948e33576",
+    "diagnostic/historical_summary.csv": "ea965e4c720cc5ebafec97ff706b36541e56390138722598ef3d5696bc7c9365",
+    "diagnostic/panel_1168.csv": "675777c6d167f4ec17d7dbb328d3a27d4212c9dc422c360b2da8cd84c1d682c3",
+    "diagnostic/panel_1168.npz": "11d461608695caa964e9dc0520e39973f83d04c9dfef945508cb7dfc8173f366",
+    "diagnostic/panel_612.csv": "8c421d3b4999b5b3a0fa7cc15a2d8ab0ec7559ef3760c038806b0236d7515db0",
+    "diagnostic/panel_612.npz": "566e74bd20b80d953bd68e8ecfe9b434dfd71880019f161992aa3bf124dc7874",
+    "diagnostic/panel_792.csv": "b038ed6f75eaed302cd2ebd25edc8f56ecdb2bf1cb29039f2d2f68ac60cc117e",
+    "diagnostic/panel_792.npz": "976b207e5ddae71c14f6e6378bf005ec823161d486ad05af87d9e5c20f1041b9",
+    "diagnostic/panel_972.csv": "d048f78f13f5a2700f8e5a351689256671780967fe3a0ee9e2601ee42e3a80ed",
+    "diagnostic/panel_972.npz": "8f10f288bb119c143d8b959f170e3fe7722d5dc054c40323f427ea0aca50727b",
+    "diagnostic/receipt.json": "c693b842b2ab639c7c1a41e3a9bc7f6d659101cc24ee35d05154c1055fc6e9b8",
+    "diagnostic/reload_checks.json": "7fa3fb9ea6fbada7255d9332fef06dfb46d25a0e6ea0c2c0577c819aa08c6543",
+    "diagnostic/training_points.csv": "142b04480a26d0025ac42eee909e8262ddf7596a6b6ef0c0c27854e430c63810",
+    "diagnostic/training_summary.csv": "074917c13dbd7ed560073af06f2486cd6495e81a459013542458705e34791118",
+    "diagnostic/trigger.json": "5db09155cf6fd5bcf91feba0eb8169858cff76234552a5448a6e3633350bfd81"
+  }
+}

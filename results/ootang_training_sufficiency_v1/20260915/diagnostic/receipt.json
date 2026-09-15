@@ -1,0 +1,16 @@
+{
+  "status": "complete",
+  "checkpoints": 96,
+  "source_files": 1329,
+  "training_rows": 96,
+  "training_point_rows": 384,
+  "historical_rows": 64,
+  "historical_point_rows": 256,
+  "daily_rows": 18752,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "physical_forwards": 0,
+  "max_label_rows": 1168,
+  "elapsed_seconds": 27.527643375098705,
+  "extend": true
+}

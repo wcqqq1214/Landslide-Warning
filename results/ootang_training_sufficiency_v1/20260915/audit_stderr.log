@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py", line 147, in <module>
+    try: main()
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py", line 105, in main
+    close(f'{identity}/{point}/daily_y',rows.observed,y[n:end,p],0)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/training_sufficiency/audit.py", line 21, in close
+    assert diff<=tol,(name,diff,tol)
+AssertionError: ("(612, 'G10_ANCHOR_UNIFORM', 'ensemble', 0)/ATU1/daily_y", 5.684341886080802e-14, 0)

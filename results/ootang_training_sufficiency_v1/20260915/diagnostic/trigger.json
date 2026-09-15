@@ -1,0 +1,385 @@
+{
+  "version": "ootang_training_sufficiency.v1.0",
+  "asof": 1168,
+  "candidate": "T10_ANCHOR_UNIFORM",
+  "before": 100,
+  "after": 200,
+  "extend": true,
+  "arms": {
+    "G10_ANCHOR_UNIFORM": {
+      "training": [
+        {
+          "origin": 612,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.22612905358684374,
+                "objective": 0.07290195529817058
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.19823761265861467,
+                "objective": 0.10436845072658354
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.18073996690895466,
+                "objective": 0.10396892220206187
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 792,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.14186354016710725,
+                "objective": 0.1054368533372612
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.3004480963646787,
+                "objective": 0.12186633712445748
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.19808040351295106,
+                "objective": 0.10909344835418537
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 972,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.24709806437539447,
+                "objective": 0.10260368754649098
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.3097794436291494,
+                "objective": 0.12331983313855052
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.2413578717422944,
+                "objective": 0.12325013052341557
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 1168,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.21797811746594334,
+                "objective": 0.09141806609970206
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.2540205744650744,
+                "objective": 0.09955506466614929
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.27151626495739795,
+                "objective": 0.1063486238183889
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        }
+      ],
+      "training_pass": true,
+      "historical": [
+        {
+          "origin": 612,
+          "reductions": {
+            "mae": 0.030715145222896752,
+            "rmse": 0.042625270583894995
+          },
+          "seed_details": [
+            {
+              "seed": 0,
+              "both_improve": true
+            },
+            {
+              "seed": 1,
+              "both_improve": true
+            },
+            {
+              "seed": 2,
+              "both_improve": true
+            }
+          ],
+          "seed_count": 3,
+          "protected": true,
+          "seed_pass": true
+        },
+        {
+          "origin": 792,
+          "reductions": {
+            "mae": 0.12934235491574803,
+            "rmse": 0.11392056530020692
+          },
+          "seed_details": [
+            {
+              "seed": 0,
+              "both_improve": true
+            },
+            {
+              "seed": 1,
+              "both_improve": true
+            },
+            {
+              "seed": 2,
+              "both_improve": true
+            }
+          ],
+          "seed_count": 3,
+          "protected": true,
+          "seed_pass": true
+        }
+      ],
+      "historical_average_reductions": {
+        "mae": 0.07767670371255764,
+        "rmse": 0.0750951937832257
+      },
+      "historical_average_pass": true,
+      "historical_pass": true,
+      "combined_pass": true
+    },
+    "T10_ANCHOR_UNIFORM": {
+      "training": [
+        {
+          "origin": 612,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.2842545370139847,
+                "objective": 0.08636323345500145
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.1366491736938174,
+                "objective": 0.11298877072231388
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.15067018172219515,
+                "objective": 0.08069752220902747
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 792,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.2179833135826143,
+                "objective": 0.12209836841426652
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.28033912985641996,
+                "objective": 0.12626276080479262
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.22214547231502366,
+                "objective": 0.14094990019921586
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 972,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.3125631024047299,
+                "objective": 0.1323843251311901
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.3168233942170073,
+                "objective": 0.12414602346978151
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.25313754651052006,
+                "objective": 0.13381184500216659
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        },
+        {
+          "origin": 1168,
+          "seed_details": [
+            {
+              "seed": 0,
+              "reductions": {
+                "mse": 0.244449326030098,
+                "objective": 0.10688046967621098
+              },
+              "passed": true
+            },
+            {
+              "seed": 1,
+              "reductions": {
+                "mse": 0.29030746198534363,
+                "objective": 0.12116463173610556
+              },
+              "passed": true
+            },
+            {
+              "seed": 2,
+              "reductions": {
+                "mse": 0.28083357359027233,
+                "objective": 0.10255260908059034
+              },
+              "passed": true
+            }
+          ],
+          "count": 3,
+          "passed": true
+        }
+      ],
+      "training_pass": true,
+      "historical": [
+        {
+          "origin": 612,
+          "reductions": {
+            "mae": 0.03942051150411616,
+            "rmse": 0.05196711936925362
+          },
+          "seed_details": [
+            {
+              "seed": 0,
+              "both_improve": true
+            },
+            {
+              "seed": 1,
+              "both_improve": true
+            },
+            {
+              "seed": 2,
+              "both_improve": true
+            }
+          ],
+          "seed_count": 3,
+          "protected": true,
+          "seed_pass": true
+        },
+        {
+          "origin": 792,
+          "reductions": {
+            "mae": 0.10655783974954704,
+            "rmse": 0.09164064053208823
+          },
+          "seed_details": [
+            {
+              "seed": 0,
+              "both_improve": true
+            },
+            {
+              "seed": 1,
+              "both_improve": true
+            },
+            {
+              "seed": 2,
+              "both_improve": true
+            }
+          ],
+          "seed_count": 3,
+          "protected": true,
+          "seed_pass": true
+        }
+      ],
+      "historical_average_reductions": {
+        "mae": 0.0724566449222945,
+        "rmse": 0.07060088305940589
+      },
+      "historical_average_pass": true,
+      "historical_pass": true,
+      "combined_pass": true
+    }
+  },
+  "final_labels_used": false,
+  "checkpoint_selection": false,
+  "interpretation": "exploratory warrant for one additional fixed-budget comparison, not a convergence or efficacy certificate"
+}

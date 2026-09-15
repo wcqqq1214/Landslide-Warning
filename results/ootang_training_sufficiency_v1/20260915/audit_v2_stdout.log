@@ -1,0 +1,5 @@
+n=612: all targets/losses and 24 independent checkpoint replays passed
+n=792: all targets/losses and 24 independent checkpoint replays passed
+n=972: all targets/losses and 24 independent checkpoint replays passed
+n=1168: all targets/losses and 24 independent checkpoint replays passed
+{"status": "passed", "source_files": 1329, "checkpoints": 96, "checks": 2330, "values": 401128, "max_difference": 4.547473508864641e-13, "full_panel_target_loss_values": true, "independent_numpy_panel_slots": [0, 42, 85, 127], "independent_numpy_full_paths": 96, "gradient_norm": "finite and weights unchanged; not an independent gradient calculation", "gate_reproduced": true, "extend": true, "new_fits": 0, "optimizer_updates": 0, "max_label_rows": 1168}

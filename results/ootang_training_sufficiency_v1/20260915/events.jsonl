@@ -1,1 +1,9 @@
 {"time_utc": "2026-09-15T10:16:57.105639+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "preflight_training_prefix_only"}
+{"time_utc": "2026-09-15T10:17:48.799979+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "fixed_training_panel_no_optimizer"}
+{"time_utc": "2026-09-15T10:17:54.244283+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "fixed_training_panel_no_optimizer"}
+{"time_utc": "2026-09-15T10:18:00.574717+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "fixed_training_panel_no_optimizer"}
+{"time_utc": "2026-09-15T10:18:07.902894+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "fixed_training_panel_no_optimizer"}
+{"time_utc": "2026-09-15T10:18:16.253782+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "mature_historical_paths_only_no_final_labels"}
+{"time_utc": "2026-09-15T10:18:16.332373+00:00", "event": "diagnostic_locked", "extend": true, "optimizer_updates": 0}
+{"time_utc": "2026-09-15T10:20:18.194946+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "independent_diagnostic_replay_no_final_labels"}
+{"time_utc": "2026-09-15T10:21:39.934787+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "independent_diagnostic_replay_no_final_labels"}
