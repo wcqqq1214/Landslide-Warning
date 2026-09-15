@@ -1,2 +1,108 @@
 {"time_utc": "2026-09-15T06:50:27.545439+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "preflight_612_only"}
 {"time_utc": "2026-09-15T06:50:27.856565+00:00", "event": "preflight_passed", "checks": 207, "source_entries": 708}
+{"time_utc": "2026-09-15T06:52:10.942651+00:00", "event": "label_prefix_read", "rows": 612, "purpose": "fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-15T06:52:10.967099+00:00", "event": "fit_started", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:52:16.292675+00:00", "event": "fit_completed", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 5.3247837498784065}
+{"time_utc": "2026-09-15T06:52:16.299100+00:00", "event": "fit_started", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:52:21.515768+00:00", "event": "fit_completed", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 5.215927040670067}
+{"time_utc": "2026-09-15T06:52:21.521247+00:00", "event": "fit_started", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:52:26.734548+00:00", "event": "fit_completed", "origin": 612, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 5.212464832700789}
+{"time_utc": "2026-09-15T06:52:26.740131+00:00", "event": "fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:52:32.067887+00:00", "event": "fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 5.326988666784018}
+{"time_utc": "2026-09-15T06:52:32.073312+00:00", "event": "fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:52:37.325957+00:00", "event": "fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 5.251846124883741}
+{"time_utc": "2026-09-15T06:52:37.331684+00:00", "event": "fit_started", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:52:42.598918+00:00", "event": "fit_completed", "origin": 612, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 5.266476875171065}
+{"time_utc": "2026-09-15T06:52:42.605471+00:00", "event": "fit_started", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:52:47.730022+00:00", "event": "fit_completed", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 5.123720666859299}
+{"time_utc": "2026-09-15T06:52:47.735907+00:00", "event": "fit_started", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:52:52.726158+00:00", "event": "fit_completed", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 4.989531209226698}
+{"time_utc": "2026-09-15T06:52:52.731834+00:00", "event": "fit_started", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:52:57.752474+00:00", "event": "fit_completed", "origin": 612, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 5.019915500190109}
+{"time_utc": "2026-09-15T06:52:57.758731+00:00", "event": "fit_started", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:53:02.855692+00:00", "event": "fit_completed", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 5.096238042227924}
+{"time_utc": "2026-09-15T06:53:02.861749+00:00", "event": "fit_started", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:53:07.891780+00:00", "event": "fit_completed", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 5.029228542000055}
+{"time_utc": "2026-09-15T06:53:07.897493+00:00", "event": "fit_started", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:53:12.963940+00:00", "event": "fit_completed", "origin": 612, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 5.065736290998757}
+{"time_utc": "2026-09-15T06:53:12.968770+00:00", "event": "trajectory_issued", "origin": 612, "end": 905, "lock_sha256": "b3fe5506bc108c525eed881e04b705c9857a7479f920f28f1eeb3036820c0ce6"}
+{"time_utc": "2026-09-15T06:53:12.968863+00:00", "event": "label_prefix_read", "rows": 792, "purpose": "fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-15T06:53:12.981338+00:00", "event": "fit_started", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:53:19.551953+00:00", "event": "fit_completed", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 6.569838792085648}
+{"time_utc": "2026-09-15T06:53:19.558986+00:00", "event": "fit_started", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:53:26.069776+00:00", "event": "fit_completed", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 6.510011666920036}
+{"time_utc": "2026-09-15T06:53:26.075909+00:00", "event": "fit_started", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:53:32.588296+00:00", "event": "fit_completed", "origin": 792, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 6.5115573750808835}
+{"time_utc": "2026-09-15T06:53:32.594822+00:00", "event": "fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:53:39.253666+00:00", "event": "fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 6.65806020796299}
+{"time_utc": "2026-09-15T06:53:39.259878+00:00", "event": "fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:53:45.872148+00:00", "event": "fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 6.611262666061521}
+{"time_utc": "2026-09-15T06:53:45.878552+00:00", "event": "fit_started", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:53:52.456607+00:00", "event": "fit_completed", "origin": 792, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 6.577313041314483}
+{"time_utc": "2026-09-15T06:53:52.463026+00:00", "event": "fit_started", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:53:58.839755+00:00", "event": "fit_completed", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 6.375989292282611}
+{"time_utc": "2026-09-15T06:53:58.846178+00:00", "event": "fit_started", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:54:05.183042+00:00", "event": "fit_completed", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 6.3356122081168}
+{"time_utc": "2026-09-15T06:54:05.189398+00:00", "event": "fit_started", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:54:11.471838+00:00", "event": "fit_completed", "origin": 792, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 6.27968370821327}
+{"time_utc": "2026-09-15T06:54:11.478762+00:00", "event": "fit_started", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:54:17.870309+00:00", "event": "fit_completed", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 6.390820374712348}
+{"time_utc": "2026-09-15T06:54:17.876988+00:00", "event": "fit_started", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:54:24.187679+00:00", "event": "fit_completed", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 6.307908707764}
+{"time_utc": "2026-09-15T06:54:24.194187+00:00", "event": "fit_started", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:54:30.553268+00:00", "event": "fit_completed", "origin": 792, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 6.358262500260025}
+{"time_utc": "2026-09-15T06:54:30.561662+00:00", "event": "trajectory_issued", "origin": 792, "end": 1085, "lock_sha256": "0a6ad96c69985afe90a0da5eb6564cda2ef0d01557b907bb9ea1a8a2de130f3a"}
+{"time_utc": "2026-09-15T06:54:30.561844+00:00", "event": "label_prefix_read", "rows": 972, "purpose": "fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-15T06:54:30.575858+00:00", "event": "fit_started", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:54:38.513659+00:00", "event": "fit_completed", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 7.937452457845211}
+{"time_utc": "2026-09-15T06:54:38.522210+00:00", "event": "fit_started", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:54:46.385908+00:00", "event": "fit_completed", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 7.866528584156185}
+{"time_utc": "2026-09-15T06:54:46.392476+00:00", "event": "fit_started", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:54:54.230292+00:00", "event": "fit_completed", "origin": 972, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 7.840651915874332}
+{"time_utc": "2026-09-15T06:54:54.236770+00:00", "event": "fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:55:02.183547+00:00", "event": "fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 7.948188541922718}
+{"time_utc": "2026-09-15T06:55:02.189801+00:00", "event": "fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:55:10.093746+00:00", "event": "fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 7.904534250032157}
+{"time_utc": "2026-09-15T06:55:10.099767+00:00", "event": "fit_started", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:55:17.977776+00:00", "event": "fit_completed", "origin": 972, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 7.878068834077567}
+{"time_utc": "2026-09-15T06:55:17.984381+00:00", "event": "fit_started", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:55:25.681547+00:00", "event": "fit_completed", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 7.6968735423870385}
+{"time_utc": "2026-09-15T06:55:25.688064+00:00", "event": "fit_started", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:55:33.219133+00:00", "event": "fit_completed", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 7.530581958591938}
+{"time_utc": "2026-09-15T06:55:33.226051+00:00", "event": "fit_started", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:55:40.809964+00:00", "event": "fit_completed", "origin": 972, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 7.581230750307441}
+{"time_utc": "2026-09-15T06:55:40.816927+00:00", "event": "fit_started", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:55:48.325494+00:00", "event": "fit_completed", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 7.5055686249397695}
+{"time_utc": "2026-09-15T06:55:48.332799+00:00", "event": "fit_started", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:55:55.792237+00:00", "event": "fit_completed", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 7.456645750440657}
+{"time_utc": "2026-09-15T06:55:55.799598+00:00", "event": "fit_started", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:56:03.457261+00:00", "event": "fit_completed", "origin": 972, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 7.656670541968197}
+{"time_utc": "2026-09-15T06:56:03.466717+00:00", "event": "trajectory_issued", "origin": 972, "end": 1265, "lock_sha256": "fea1499827bbdfa4b059795ccbafa9a806f7e3786b965e736c86a50e18f1039d"}
+{"time_utc": "2026-09-15T06:56:03.466915+00:00", "event": "label_prefix_read", "rows": 1168, "purpose": "fit_current_prefix_and_calibrate_previous_issued_errors"}
+{"time_utc": "2026-09-15T06:56:03.482656+00:00", "event": "fit_started", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:56:13.168454+00:00", "event": "fit_completed", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 9.684111708775163}
+{"time_utc": "2026-09-15T06:56:13.176463+00:00", "event": "fit_started", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:56:22.955630+00:00", "event": "fit_completed", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 9.77740512508899}
+{"time_utc": "2026-09-15T06:56:22.963031+00:00", "event": "fit_started", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:56:32.812318+00:00", "event": "fit_completed", "origin": 1168, "arm": "G00_RAW_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 9.845871208701283}
+{"time_utc": "2026-09-15T06:56:32.819910+00:00", "event": "fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:56:43.062714+00:00", "event": "fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 0, "updates": 200, "elapsed_seconds": 10.241291499696672}
+{"time_utc": "2026-09-15T06:56:43.069812+00:00", "event": "fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:56:53.043719+00:00", "event": "fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 1, "updates": 200, "elapsed_seconds": 9.970664291176945}
+{"time_utc": "2026-09-15T06:56:53.050806+00:00", "event": "fit_started", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:57:02.856709+00:00", "event": "fit_completed", "origin": 1168, "arm": "G10_ANCHOR_UNIFORM", "seed": 2, "updates": 200, "elapsed_seconds": 9.804823084268719}
+{"time_utc": "2026-09-15T06:57:02.864925+00:00", "event": "fit_started", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:57:12.291266+00:00", "event": "fit_completed", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 9.425513917114586}
+{"time_utc": "2026-09-15T06:57:12.299594+00:00", "event": "fit_started", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:57:21.356124+00:00", "event": "fit_completed", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 9.055258790962398}
+{"time_utc": "2026-09-15T06:57:21.363396+00:00", "event": "fit_started", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:57:30.489692+00:00", "event": "fit_completed", "origin": 1168, "arm": "G01_RAW_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 9.12501358287409}
+{"time_utc": "2026-09-15T06:57:30.497705+00:00", "event": "fit_started", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200}
+{"time_utc": "2026-09-15T06:57:40.235875+00:00", "event": "fit_completed", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 0, "updates": 200, "elapsed_seconds": 9.735243374947459}
+{"time_utc": "2026-09-15T06:57:40.243495+00:00", "event": "fit_started", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200}
+{"time_utc": "2026-09-15T06:57:49.479304+00:00", "event": "fit_completed", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 1, "updates": 200, "elapsed_seconds": 9.232806374784559}
+{"time_utc": "2026-09-15T06:57:49.486322+00:00", "event": "fit_started", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200}
+{"time_utc": "2026-09-15T06:57:58.948962+00:00", "event": "fit_completed", "origin": 1168, "arm": "G11_ANCHOR_BOUNDARY", "seed": 2, "updates": 200, "elapsed_seconds": 9.461818166077137}
+{"time_utc": "2026-09-15T06:57:58.959496+00:00", "event": "trajectory_issued", "origin": 1168, "end": 1461, "lock_sha256": "d70d89612e9413e88deeeb499c1036989df99bd7ed1aa99a7610fb173dc384a1"}
+{"time_utc": "2026-09-15T06:58:21.579844+00:00", "event": "label_prefix_read", "rows": 1461, "purpose": "all_paths_issued_before_full_scoring"}
+{"time_utc": "2026-09-15T06:58:21.803158+00:00", "event": "scoring_complete", "summary_rows": 24}

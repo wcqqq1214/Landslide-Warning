@@ -1,0 +1,12 @@
+{
+  "time_utc": "2026-09-15T06:57:58.967785+00:00",
+  "status": "complete",
+  "new_fits": 48,
+  "updates": 9600,
+  "files": {
+    "origin_1168/issue_lock.json": "d70d89612e9413e88deeeb499c1036989df99bd7ed1aa99a7610fb173dc384a1",
+    "origin_612/issue_lock.json": "b3fe5506bc108c525eed881e04b705c9857a7479f920f28f1eeb3036820c0ce6",
+    "origin_792/issue_lock.json": "0a6ad96c69985afe90a0da5eb6564cda2ef0d01557b907bb9ea1a8a2de130f3a",
+    "origin_972/issue_lock.json": "fea1499827bbdfa4b059795ccbafa9a806f7e3786b965e736c86a50e18f1039d"
+  }
+}
