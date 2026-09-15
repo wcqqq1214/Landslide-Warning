@@ -1,0 +1,57 @@
+{
+  "status": "passed",
+  "reviewed_utc": "2026-09-15T07:15:48.104344+00:00",
+  "method": "each final PNG viewed directly after the last layout change",
+  "figures": [
+    {
+      "name": "factorial_overview",
+      "panels": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "review": "titles, units, legends, dates, axes, full uncertainty extent, seed visibility and numeric labels checked; no overlaps or clipping found"
+    },
+    {
+      "name": "g00_raw_uniform_four_points",
+      "panels": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "review": "titles, units, legends, dates, axes, full uncertainty extent, seed visibility and numeric labels checked; no overlaps or clipping found"
+    },
+    {
+      "name": "g10_anchor_uniform_four_points",
+      "panels": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "review": "titles, units, legends, dates, axes, full uncertainty extent, seed visibility and numeric labels checked; no overlaps or clipping found"
+    },
+    {
+      "name": "g01_raw_boundary_four_points",
+      "panels": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "review": "titles, units, legends, dates, axes, full uncertainty extent, seed visibility and numeric labels checked; no overlaps or clipping found"
+    },
+    {
+      "name": "g11_anchor_boundary_four_points",
+      "panels": [
+        "a",
+        "b",
+        "c",
+        "d"
+      ],
+      "review": "titles, units, legends, dates, axes, full uncertainty extent, seed visibility and numeric labels checked; no overlaps or clipping found"
+    }
+  ]
+}

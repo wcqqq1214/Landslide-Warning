@@ -1,0 +1,82 @@
+{
+  "completed_utc": "2026-09-15T07:07:15.837501+00:00",
+  "figures": [
+    {
+      "name": "factorial_overview",
+      "png": "factorial_overview.png",
+      "svg": "factorial_overview.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/factorial_overview.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g00_raw_uniform_four_points",
+      "png": "g00_raw_uniform_four_points.png",
+      "svg": "g00_raw_uniform_four_points.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/g00_raw_uniform_four_points.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g10_anchor_uniform_four_points",
+      "png": "g10_anchor_uniform_four_points.png",
+      "svg": "g10_anchor_uniform_four_points.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/g10_anchor_uniform_four_points.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g01_raw_boundary_four_points",
+      "png": "g01_raw_boundary_four_points.png",
+      "svg": "g01_raw_boundary_four_points.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/g01_raw_boundary_four_points.pdf",
+      "panels": 4
+    },
+    {
+      "name": "g11_anchor_boundary_four_points",
+      "png": "g11_anchor_boundary_four_points.png",
+      "svg": "g11_anchor_boundary_four_points.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/g11_anchor_boundary_four_points.pdf",
+      "panels": 4
+    }
+  ],
+  "source_data": "/Users/wcqqq1214/Project/Landslide-Warning/results/ootang_gru_ablation_v1/20260915/analysis",
+  "figure_contract": "docs/ootang_gru_ablation_figure_contract.v1.0.md",
+  "pdf_delivery": false,
+  "dimensions_mm": [
+    240,
+    170
+  ],
+  "seed_uncertainty": "all individual seeds, no confidence intervals",
+  "sigma": "own previous-issued distance91..180 errors, RMS per point, fixed Gaussian",
+  "transforms": "subtract point initial displacement only",
+  "points": [
+    "ATU1",
+    "ATU5",
+    "MJ3",
+    "MJ1"
+  ],
+  "observations_removed": 0,
+  "seed_predictions_removed": 0,
+  "main_origins": [
+    792,
+    972,
+    1168
+  ],
+  "curves_origin": 1168,
+  "common_limits": [
+    [
+      -24.19303855067378,
+      561.8161174545356
+    ],
+    [
+      -31.80888356492376,
+      738.6729627854519
+    ],
+    [
+      -16.960879639381254,
+      393.8693160700758
+    ],
+    [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  ]
+}

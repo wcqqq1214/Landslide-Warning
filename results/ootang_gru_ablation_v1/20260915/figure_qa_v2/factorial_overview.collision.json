@@ -1,0 +1,72 @@
+{
+  "pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-gru-ablation-figure-qa-55u9ge9g/factorial_overview.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 69,
+  "text_trace_count": 69,
+  "stroke_path_count": 330,
+  "filled_region_count": 266,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 2,
+    "warn": 0,
+    "contained_fill_overlays": 3,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "A 起点表达",
+      "text_bbox": [
+        422.6551513671875,
+        360.654296875,
+        459.2481384277344,
+        368.0543212890625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        395.275146484375,
+        360.98931884765625,
+        664.667724609375,
+        360.98931884765625
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        263
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 1 stroked path(s)",
+      "text": "A×B 交互",
+      "text_bbox": [
+        422.6551513671875,
+        381.195556640625,
+        453.7055358886719,
+        388.5955810546875
+      ],
+      "other_text": null,
+      "other_bbox": [
+        395.275146484375,
+        386.33319091796875,
+        664.667724609375,
+        386.33319091796875
+      ],
+      "object_count": 1,
+      "object_indexes": [
+        261
+      ]
+    }
+  ]
+}

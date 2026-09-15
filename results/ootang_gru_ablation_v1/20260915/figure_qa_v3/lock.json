@@ -1,0 +1,28 @@
+{
+  "time_utc": "2026-09-15T07:12:41.139269+00:00",
+  "status": "passed",
+  "files": {
+    "checks.json": "08d4a4c6cff601c0ad76d1c72ffea385bf6a11cbb4fb122a246935794e707482",
+    "factorial_overview.collision.json": "ad0b3baf006309b3d3f78eee1bb6bffd03160222a1b8f40d76595fed372dd77f",
+    "factorial_overview.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "factorial_overview.text.json": "f40e8d336d1a214cd055bcda306119781da2746f5fc026465d2e8ee79dc04794",
+    "factorial_overview.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g00_raw_uniform_four_points.collision.json": "a348726907b1fac56c9044b889605fab78e82be3113d1e65c7ae2c1f00a0577f",
+    "g00_raw_uniform_four_points.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g00_raw_uniform_four_points.text.json": "ae7203f51fb64364cc172a46384f5de29f6c36c0c3c3d3119f90eab518ba2bb2",
+    "g00_raw_uniform_four_points.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g01_raw_boundary_four_points.collision.json": "a4e6a9e92c046c9f0eaeac257e8764e4c4b0519801b980527123df95b4f1e9b0",
+    "g01_raw_boundary_four_points.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g01_raw_boundary_four_points.text.json": "cb546fbf0d8af27626efa9f90a8019393cce2e05fcc37b4b1eb98f7c0461fa3f",
+    "g01_raw_boundary_four_points.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g10_anchor_uniform_four_points.collision.json": "31a3ec7e16b1768d7898b84421e656790eb1a88772021191b2a64cc7b23c4477",
+    "g10_anchor_uniform_four_points.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g10_anchor_uniform_four_points.text.json": "7af9839a1c062f1eee455fe7f3a10ecb966ac2570ef1b5fced0e9179b8d90673",
+    "g10_anchor_uniform_four_points.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g11_anchor_boundary_four_points.collision.json": "923c8c057bc3c47644e89ba9d8ec749721fc2f35e2c5fe39862b13f7a4571923",
+    "g11_anchor_boundary_four_points.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "g11_anchor_boundary_four_points.text.json": "91d916883b87f12a2514418212a9d9c0605213fffb6b4e3aa4a060b3d98d33a2",
+    "g11_anchor_boundary_four_points.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt.json": "a7ffdf9b969b29f32a3eff3cbfe9b96927340ec7ff392ff28e3ac6a89b398723"
+  }
+}

@@ -1,0 +1,162 @@
+[
+  {
+    "figure": "g00_raw_uniform_four_points",
+    "point": "ATU1",
+    "rmse": 14.491995349695191,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.19303855067378,
+      561.8161174545356
+    ]
+  },
+  {
+    "figure": "g00_raw_uniform_four_points",
+    "point": "ATU5",
+    "rmse": 10.941765137738344,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -31.80888356492376,
+      738.6729627854519
+    ]
+  },
+  {
+    "figure": "g00_raw_uniform_four_points",
+    "point": "MJ3",
+    "rmse": 23.23976679966376,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.960879639381254,
+      393.8693160700758
+    ]
+  },
+  {
+    "figure": "g00_raw_uniform_four_points",
+    "point": "MJ1",
+    "rmse": 8.356466896421257,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  },
+  {
+    "figure": "g10_anchor_uniform_four_points",
+    "point": "ATU1",
+    "rmse": 12.778882313411854,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.19303855067378,
+      561.8161174545356
+    ]
+  },
+  {
+    "figure": "g10_anchor_uniform_four_points",
+    "point": "ATU5",
+    "rmse": 7.051202451116132,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -31.80888356492376,
+      738.6729627854519
+    ]
+  },
+  {
+    "figure": "g10_anchor_uniform_four_points",
+    "point": "MJ3",
+    "rmse": 19.509793770285253,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.960879639381254,
+      393.8693160700758
+    ]
+  },
+  {
+    "figure": "g10_anchor_uniform_four_points",
+    "point": "MJ1",
+    "rmse": 5.225870722773998,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  },
+  {
+    "figure": "g01_raw_boundary_four_points",
+    "point": "ATU1",
+    "rmse": 11.794223450720812,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.19303855067378,
+      561.8161174545356
+    ]
+  },
+  {
+    "figure": "g01_raw_boundary_four_points",
+    "point": "ATU5",
+    "rmse": 7.335755778685435,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -31.80888356492376,
+      738.6729627854519
+    ]
+  },
+  {
+    "figure": "g01_raw_boundary_four_points",
+    "point": "MJ3",
+    "rmse": 20.161715450895255,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.960879639381254,
+      393.8693160700758
+    ]
+  },
+  {
+    "figure": "g01_raw_boundary_four_points",
+    "point": "MJ1",
+    "rmse": 6.9637385189714704,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  },
+  {
+    "figure": "g11_anchor_boundary_four_points",
+    "point": "ATU1",
+    "rmse": 12.787855384581253,
+    "bplus_rmse": 8.06824598915759,
+    "limits": [
+      -24.19303855067378,
+      561.8161174545356
+    ]
+  },
+  {
+    "figure": "g11_anchor_boundary_four_points",
+    "point": "ATU5",
+    "rmse": 6.3061272123997165,
+    "bplus_rmse": 9.115006709976656,
+    "limits": [
+      -31.80888356492376,
+      738.6729627854519
+    ]
+  },
+  {
+    "figure": "g11_anchor_boundary_four_points",
+    "point": "MJ3",
+    "rmse": 18.508130200393932,
+    "bplus_rmse": 13.016273948901418,
+    "limits": [
+      -16.960879639381254,
+      393.8693160700758
+    ]
+  },
+  {
+    "figure": "g11_anchor_boundary_four_points",
+    "point": "MJ1",
+    "rmse": 5.5384511604971545,
+    "bplus_rmse": 6.297166223062725,
+    "limits": [
+      -18.140347386695094,
+      419.0999265387693
+    ]
+  }
+]

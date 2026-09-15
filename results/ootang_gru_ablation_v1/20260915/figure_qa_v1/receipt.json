@@ -1,0 +1,11 @@
+{
+  "status": "failed",
+  "started_utc": "2026-09-15T07:10:19.462970+00:00",
+  "values": 51850,
+  "max_source_difference": 0.0,
+  "max_svg_difference_pt": 4.968043754161044e-07,
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "completed_utc": "2026-09-15T07:10:19.585873+00:00",
+  "error": "Traceback (most recent call last):\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/figure_audit.py\", line 98, in main\n    close(gid+'/svg',xy,rec['svg_xy'],1.1e-6,'svg')\n  File \"/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/figure_audit.py\", line 31, in close\n    assert a.shape==b.shape,(name,a.shape,b.shape)\nAssertionError: ('ATU1_band95/svg', (588, 2), (589, 2))\n"
+}

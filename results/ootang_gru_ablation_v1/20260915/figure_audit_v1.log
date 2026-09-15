@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Users/wcqqq1214/.local/share/uv/python/cpython-3.10-macos-aarch64-none/lib/python3.10/runpy.py", line 86, in _run_code
+    exec(code, run_globals)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/figure_audit.py", line 140, in <module>
+    args=parser.parse_args();main(args.attempt,args.figures)
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/figure_audit.py", line 98, in main
+    close(gid+'/svg',xy,rec['svg_xy'],1.1e-6,'svg')
+  File "/Users/wcqqq1214/Project/Landslide-Warning/code/gru_ablation/figure_audit.py", line 31, in close
+    assert a.shape==b.shape,(name,a.shape,b.shape)
+AssertionError: ('ATU1_band95/svg', (588, 2), (589, 2))

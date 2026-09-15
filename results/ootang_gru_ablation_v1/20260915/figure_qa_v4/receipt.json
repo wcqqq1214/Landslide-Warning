@@ -1,0 +1,73 @@
+{
+  "status": "passed",
+  "started_utc": "2026-09-15T07:14:04.915049+00:00",
+  "values": 406161,
+  "max_source_difference": 0.0,
+  "max_svg_difference_pt": 7.204687904049933e-07,
+  "max_layout_difference_mm": 1.305555770159117e-07,
+  "new_fits": 0,
+  "physical_forwards": 0,
+  "completed_utc": "2026-09-15T07:14:05.937447+00:00",
+  "figures": 5,
+  "panels": 20,
+  "plot_records": 200,
+  "checks": 808,
+  "rendered_audits": [
+    {
+      "figure": "factorial_overview",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "factorial_overview",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_four_points",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g00_raw_uniform_four_points",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_four_points",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g10_anchor_uniform_four_points",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g01_raw_boundary_four_points",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g01_raw_boundary_four_points",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "g11_anchor_boundary_four_points",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "g11_anchor_boundary_four_points",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate manual record required",
+  "source_warnings": [
+    "PNG/SVG mentor delivery does not require TIFF",
+    "300dpi meets this frozen display contract",
+    "source parser misreads 240/25.4; SVG measured width is checked as 240mm below"
+  ]
+}
