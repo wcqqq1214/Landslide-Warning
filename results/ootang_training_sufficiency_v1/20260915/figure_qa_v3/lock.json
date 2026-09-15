@@ -1,0 +1,25 @@
+{
+  "time_utc": "2026-09-15T10:40:13.842808+00:00",
+  "status": "passed",
+  "files": {
+    "budget_comparison.collision.json": "e842711d629532351dfaa22ef0a626c268dc78f5f4d1acbb96541eca033d3ecd",
+    "budget_comparison.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "budget_comparison.text.json": "2f476fce2ead4d50acfd9ec4b9f5ea7c705effcf68591ee2a3c75af5bbc476f1",
+    "budget_comparison.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checkpoint_diagnostic.collision.json": "5762ef7f7a7a7ccde8269492565c84483ae55e1ee97d040dd6f7889c1bd85675",
+    "checkpoint_diagnostic.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checkpoint_diagnostic.text.json": "dd65777f07f9e156d87220c21e83dd8e93efb11acdc44267fcf532320782ec99",
+    "checkpoint_diagnostic.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "checks.json": "c407b41f8e9b373905ff59361698add3424e5b93778397779c176d13799e9fa2",
+    "gru_final400.collision.json": "701502802c786eb0b929bb612d23f20758e3395a09f15cfc628fd9ca8fffe006",
+    "gru_final400.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "gru_final400.text.json": "68d21c4605c68816d57a6cd034ed5d6c1bd18d7499dbbb716c3d09f12de3dcba",
+    "gru_final400.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt.json": "d23bc85874d1141f35aec428f09c58e459a1fd1bd56b01f17ab0194f55897f6b",
+    "source_qa.json": "110e94161c7b6d4c4a5bc480f2074b6acce796d5ba9fc8ff1fb1fcebd4c10d99",
+    "transformer_final400.collision.json": "8d3c709f8cfb435c450f158066b131a66eb2d576cb7d7f53f708ff4aeba55821",
+    "transformer_final400.collision.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "transformer_final400.text.json": "2df5b754fbe3bdc77b5eb6f1e7bde35815591b284bc0891674ef13adf79c763a",
+    "transformer_final400.text.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

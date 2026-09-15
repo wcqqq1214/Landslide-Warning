@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T10:39:25.450413+00:00",
+  "status": "rendered_pending_visual_qa",
+  "files": {
+    "annotations.json": "e53ab1cad0fb876896998ccd6eb67afea7efb69c5bc98eabc494a032599a6a04",
+    "budget_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "budget_comparison.png": "69290fbaf9b4b67400a9621c96d6a97099f02e488c904ec098c78766349c6368",
+    "budget_comparison.svg": "7166a87a89f84523eb6a9ee9ab2530aece922caf6b9eecb75cebc6dec04d3e6a",
+    "budget_comparison.text_geometry.json": "2211f4317de2b92563bced90b41ca8261f50b6dc1159fee6878f716119981f39",
+    "checkpoint_diagnostic.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "checkpoint_diagnostic.png": "13c8870d3360ddd535202b6d6de00d9841c63175e10d94d5842116217bf12c8c",
+    "checkpoint_diagnostic.svg": "1f45b61f316efa7366f73f04a4139505e0f528d7f4651f26a449de2ae6aaab3f",
+    "checkpoint_diagnostic.text_geometry.json": "27092041bee73c571719f5d259fb6647b8c3f073fe033352a9730ef0d88c4905",
+    "exports.json": "86ff8b4059c99b4a960be9a826521e3e7b61262ba7cef8b40d08deab3c18287a",
+    "gru_final400.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "gru_final400.png": "6e916cd9aa3b56ee3a1125615b40f66d176baa9fc5c1888c7b3261937092f932",
+    "gru_final400.svg": "6d796182c381f925481ab92541db5f23f0da4aa118865d40356806ee6f616b34",
+    "gru_final400.text_geometry.json": "43d5071e3a5ec0b7d4378de4bcf42f13bd89befe92d904cde6f5feebd8be2e28",
+    "plot_records.json": "34d5973ed3abc75b406714b5084523bdc5b708b3227236d040b1bb3880a58e55",
+    "source_arrays.npz": "607606fd9cf2546a0a66e85bee0d1ce3e16a03353705c7f3a4a13420be6010be",
+    "transformer_final400.alignment.json": "eb243645094e8762de9a24bed19da6cebbc9dcd2db60e173ac84e5ea66c5926a",
+    "transformer_final400.png": "82ebce2eff4ed8c1ab1dd083301067cef165d361ce33319648524faced096afd",
+    "transformer_final400.svg": "03d42d7da85facad88b1fea4cf9375ed83252ac346a800e66f5ad9a13fef3099",
+    "transformer_final400.text_geometry.json": "43d5071e3a5ec0b7d4378de4bcf42f13bd89befe92d904cde6f5feebd8be2e28"
+  }
+}

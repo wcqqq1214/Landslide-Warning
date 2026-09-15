@@ -1,0 +1,52 @@
+{
+  "figures": [
+    {
+      "name": "checkpoint_diagnostic",
+      "png": "checkpoint_diagnostic.png",
+      "svg": "checkpoint_diagnostic.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-training-sufficiency-figure-qa-rjtttrag/checkpoint_diagnostic.pdf",
+      "panels": 4
+    },
+    {
+      "name": "budget_comparison",
+      "png": "budget_comparison.png",
+      "svg": "budget_comparison.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-training-sufficiency-figure-qa-rjtttrag/budget_comparison.pdf",
+      "panels": 4
+    },
+    {
+      "name": "gru_final400",
+      "png": "gru_final400.png",
+      "svg": "gru_final400.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-training-sufficiency-figure-qa-rjtttrag/gru_final400.pdf",
+      "panels": 4
+    },
+    {
+      "name": "transformer_final400",
+      "png": "transformer_final400.png",
+      "svg": "transformer_final400.svg",
+      "qa_pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-training-sufficiency-figure-qa-rjtttrag/transformer_final400.pdf",
+      "panels": 4
+    }
+  ],
+  "common_limits": [
+    [
+      -24.395505733834774,
+      566.5178553746075
+    ],
+    [
+      -31.583753094403196,
+      733.4449329700298
+    ],
+    [
+      -15.944923402021729,
+      370.2765545580602
+    ],
+    [
+      -17.383108589071867,
+      401.5151589050743
+    ]
+  ],
+  "backend": "python",
+  "panels": 16
+}

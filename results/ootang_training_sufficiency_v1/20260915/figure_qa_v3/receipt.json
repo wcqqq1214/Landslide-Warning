@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "source_max_difference": 2.1316282072803006e-14,
+  "svg_max_difference_pt": 7.204565122265194e-07,
+  "figures": 4,
+  "panels": 16,
+  "records": 129,
+  "checks": 481,
+  "values": 232804,
+  "all_scientific_marks_inside_axes": true,
+  "rendered_audits": [
+    {
+      "figure": "checkpoint_diagnostic",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "checkpoint_diagnostic",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "budget_comparison",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "budget_comparison",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "gru_final400",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "gru_final400",
+      "audit": "collision",
+      "returncode": 0
+    },
+    {
+      "figure": "transformer_final400",
+      "audit": "text",
+      "returncode": 0
+    },
+    {
+      "figure": "transformer_final400",
+      "audit": "collision",
+      "returncode": 0
+    }
+  ],
+  "visual_review": "separate record",
+  "source_warning_review": [
+    "PNG300dpi and SVG are the frozen report deliverables; no TIFF required",
+    "Measured final width240mm overrides heuristic misreading of240/25.4",
+    "Forecast annotations are placed below plot rectangles and checked in every panel"
+  ],
+  "initial_render_issue": "v1 budget panel a fixed y range before data; v2 fixed limits but forecast annotation collision gate failed; v3 moves forecast annotations below plots; no data or model changes"
+}

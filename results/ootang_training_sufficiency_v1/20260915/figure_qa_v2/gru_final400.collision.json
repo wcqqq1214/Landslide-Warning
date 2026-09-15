@@ -1,0 +1,432 @@
+{
+  "pdf": "/var/folders/zv/dx4rjcrn7f991f1jvtzt696m0000gn/T/ootang-training-sufficiency-figure-qa-18ntco7d/gru_final400.pdf",
+  "auditable": true,
+  "verdict": "FIX BEFORE DELIVERY",
+  "page_count": 1,
+  "visible_text_box_count": 61,
+  "text_trace_count": 61,
+  "stroke_path_count": 87,
+  "filled_region_count": 62,
+  "image_region_count": 0,
+  "summary": {
+    "fail": 8,
+    "warn": 8,
+    "contained_fill_overlays": 16,
+    "contained_image_overlays": 0
+  },
+  "thresholds": {
+    "text_inset_pt": 0.6,
+    "min_overlap_ratio": 0.05,
+    "clipping_tolerance_pt": 0.5
+  },
+  "findings": [
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "RMSE：200次 12.78 / 400次 12.10 mm",
+      "text_bbox": [
+        193.09373474121094,
+        197.1109161376953,
+        323.05999755859375,
+        204.5109100341797
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        108.42520141601562,
+        317.2329406738281,
+        220.86614990234375
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        2,
+        3,
+        16
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "RMSE：200次 19.51 / 400次 20.44 mm",
+      "text_bbox": [
+        193.09373474121094,
+        371.39434814453125,
+        323.05999755859375,
+        378.79437255859375
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        282.70867919921875,
+        317.2329406738281,
+        395.14959716796875
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        52,
+        53,
+        64
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "B+ 13.02 mm；400次90%覆盖 94.9%",
+      "text_bbox": [
+        199.03123474121094,
+        379.4224853515625,
+        323.0342102050781,
+        386.822509765625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        282.70867919921875,
+        317.2329406738281,
+        395.14959716796875
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        52,
+        53,
+        64
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "B+ 8.07 mm；400次90%覆盖 98.6%",
+      "text_bbox": [
+        203.14060974121094,
+        205.13902282714844,
+        323.0291748046875,
+        212.5390167236328
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        108.42520141601562,
+        317.2329406738281,
+        220.86614990234375
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        2,
+        3,
+        16
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "B+ 6.30 mm；400次90%覆盖 100.0%",
+      "text_bbox": [
+        534.2753295898438,
+        379.4224853515625,
+        658.2783203125,
+        386.822509765625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        282.70867919921875,
+        652.47705078125,
+        395.14959716796875
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        76,
+        77,
+        89
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "RMSE：200次 7.05 / 400次 6.83 mm",
+      "text_bbox": [
+        536.5565795898438,
+        197.1109161376953,
+        658.2940063476562,
+        204.5109100341797
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        108.42520141601562,
+        652.47705078125,
+        220.86614990234375
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        28,
+        29,
+        40
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "RMSE：200次 5.23 / 400次 5.98 mm",
+      "text_bbox": [
+        536.5565795898438,
+        371.39434814453125,
+        658.2940063476562,
+        378.79437255859375
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        282.70867919921875,
+        652.47705078125,
+        395.14959716796875
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        76,
+        77,
+        89
+      ]
+    },
+    {
+      "severity": "FAIL",
+      "kind": "text-stroke",
+      "page": 1,
+      "message": "Text is crossed by 3 stroked path(s)",
+      "text": "B+ 9.12 mm；400次90%覆盖 99.3%",
+      "text_bbox": [
+        538.3847045898438,
+        205.13902282714844,
+        658.2732543945312,
+        212.5390167236328
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        108.42520141601562,
+        652.47705078125,
+        220.86614990234375
+      ],
+      "object_count": 3,
+      "object_indexes": [
+        28,
+        29,
+        40
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "RMSE：200次 12.78 / 400次 12.10 mm",
+      "text_bbox": [
+        193.09373474121094,
+        197.1109161376953,
+        323.05999755859375,
+        204.5109100341797
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        108.42520141601562,
+        317.2329406738281,
+        220.86614990234375
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        2000,
+        3000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "RMSE：200次 19.51 / 400次 20.44 mm",
+      "text_bbox": [
+        193.09373474121094,
+        371.39434814453125,
+        323.05999755859375,
+        378.79437255859375
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        282.70867919921875,
+        317.2329406738281,
+        395.14959716796875
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        52000,
+        53000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "B+ 13.02 mm；400次90%覆盖 94.9%",
+      "text_bbox": [
+        199.03123474121094,
+        379.4224853515625,
+        323.0342102050781,
+        386.822509765625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        282.70867919921875,
+        317.2329406738281,
+        395.14959716796875
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        52000,
+        53000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "B+ 8.07 mm；400次90%覆盖 98.6%",
+      "text_bbox": [
+        203.14060974121094,
+        205.13902282714844,
+        323.0291748046875,
+        212.5390167236328
+      ],
+      "other_text": null,
+      "other_bbox": [
+        73.4190444946289,
+        108.42520141601562,
+        317.2329406738281,
+        220.86614990234375
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        2000,
+        3000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "B+ 6.30 mm；400次90%覆盖 100.0%",
+      "text_bbox": [
+        534.2753295898438,
+        379.4224853515625,
+        658.2783203125,
+        386.822509765625
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        282.70867919921875,
+        652.47705078125,
+        395.14959716796875
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        76000,
+        77000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "RMSE：200次 7.05 / 400次 6.83 mm",
+      "text_bbox": [
+        536.5565795898438,
+        197.1109161376953,
+        658.2940063476562,
+        204.5109100341797
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        108.42520141601562,
+        652.47705078125,
+        220.86614990234375
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        28000,
+        29000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "RMSE：200次 5.23 / 400次 5.98 mm",
+      "text_bbox": [
+        536.5565795898438,
+        371.39434814453125,
+        658.2940063476562,
+        378.79437255859375
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        282.70867919921875,
+        652.47705078125,
+        395.14959716796875
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        76000,
+        77000
+      ]
+    },
+    {
+      "severity": "WARN",
+      "kind": "text-fill-edge",
+      "page": 1,
+      "message": "Text partially overlaps the edge of 2 filled region(s)",
+      "text": "B+ 9.12 mm；400次90%覆盖 99.3%",
+      "text_bbox": [
+        538.3847045898438,
+        205.13902282714844,
+        658.2732543945312,
+        212.5390167236328
+      ],
+      "other_text": null,
+      "other_bbox": [
+        408.66314697265625,
+        108.42520141601562,
+        652.47705078125,
+        220.86614990234375
+      ],
+      "object_count": 2,
+      "object_indexes": [
+        28000,
+        29000
+      ]
+    }
+  ]
+}

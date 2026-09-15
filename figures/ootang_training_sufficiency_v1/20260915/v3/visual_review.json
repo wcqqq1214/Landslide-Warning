@@ -1,0 +1,42 @@
+{
+  "status": "passed",
+  "time_utc": "2026-09-15T10:44:34.182530+00:00",
+  "reviewer": "Codex visual inspection",
+  "panels": 16,
+  "figures": {
+    "checkpoint_diagnostic": {
+      "png_sha256": "13c8870d3360ddd535202b6d6de00d9841c63175e10d94d5842116217bf12c8c",
+      "all_four_panels_reviewed": true,
+      "legends_labels_units_legible": true,
+      "complete_scientific_data_visible": true,
+      "uncertainty_not_cropped": true,
+      "final_visual_basis": "v2 directly inspected and PNG hash identical in v3"
+    },
+    "budget_comparison": {
+      "png_sha256": "69290fbaf9b4b67400a9621c96d6a97099f02e488c904ec098c78766349c6368",
+      "all_four_panels_reviewed": true,
+      "legends_labels_units_legible": true,
+      "complete_scientific_data_visible": true,
+      "uncertainty_not_cropped": true,
+      "final_visual_basis": "v2 directly inspected and PNG hash identical in v3"
+    },
+    "gru_final400": {
+      "png_sha256": "6e916cd9aa3b56ee3a1125615b40f66d176baa9fc5c1888c7b3261937092f932",
+      "all_four_panels_reviewed": true,
+      "legends_labels_units_legible": true,
+      "complete_scientific_data_visible": true,
+      "uncertainty_not_cropped": true,
+      "final_visual_basis": "v3 directly inspected"
+    },
+    "transformer_final400": {
+      "png_sha256": "82ebce2eff4ed8c1ab1dd083301067cef165d361ce33319648524faced096afd",
+      "all_four_panels_reviewed": true,
+      "legends_labels_units_legible": true,
+      "complete_scientific_data_visible": true,
+      "uncertainty_not_cropped": true,
+      "final_visual_basis": "v3 directly inspected"
+    }
+  },
+  "data_edits": false,
+  "negative_results_visible": true
+}

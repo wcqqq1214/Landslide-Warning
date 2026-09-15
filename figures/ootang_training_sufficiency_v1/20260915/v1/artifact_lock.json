@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-09-15T10:34:04.287513+00:00",
+  "status": "rendered_pending_visual_qa",
+  "files": {
+    "annotations.json": "e53ab1cad0fb876896998ccd6eb67afea7efb69c5bc98eabc494a032599a6a04",
+    "budget_comparison.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "budget_comparison.png": "05bea10be545258b106a3a9fab803e731827a207b44e0638ed1fd993d6d3c9c9",
+    "budget_comparison.svg": "47eab9590aa9e57b098347f796adee496aee8ab052e7af705318d588a5143db1",
+    "budget_comparison.text_geometry.json": "f5df6758268b5ed4d59400c2be8dd7e8ebed144485acc77b8ad4b83bdbcc113c",
+    "checkpoint_diagnostic.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "checkpoint_diagnostic.png": "13c8870d3360ddd535202b6d6de00d9841c63175e10d94d5842116217bf12c8c",
+    "checkpoint_diagnostic.svg": "a63a72e4c931aee529f7011d78982925d2ac6d37900e3c976ee8641824fe768f",
+    "checkpoint_diagnostic.text_geometry.json": "27092041bee73c571719f5d259fb6647b8c3f073fe033352a9730ef0d88c4905",
+    "exports.json": "c6500467910a0268a2b890b2baeacc7192e728056bbbbdf2c8cef7f1b6516a44",
+    "gru_final400.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "gru_final400.png": "66f01906e6a9e51c9c4aec4042fcd47fadc82b46a35bfbdf06ad277aa9a4ba4e",
+    "gru_final400.svg": "6056bcb66836755eb24949c06897c443fbc4c940bf75d8e8454311dfd0634b25",
+    "gru_final400.text_geometry.json": "43d5071e3a5ec0b7d4378de4bcf42f13bd89befe92d904cde6f5feebd8be2e28",
+    "plot_records.json": "f4684a920d0a99c81c775c824e9e49738ecb9cc924fc02d0b4256f9aa95d8fb7",
+    "source_arrays.npz": "607606fd9cf2546a0a66e85bee0d1ce3e16a03353705c7f3a4a13420be6010be",
+    "transformer_final400.alignment.json": "6a994232f5d8a4733cace36c1ce74c49baabe5f0b1d7f9a60665e47a82383073",
+    "transformer_final400.png": "89c255f5eb390ce92b8d8882c93e937618926f0c89d7f3d3f132ebeed8769657",
+    "transformer_final400.svg": "ad2571f51fbfe1a815c3aa7e2a204861f3509b2e1918efe1cbef05709870f3a5",
+    "transformer_final400.text_geometry.json": "43d5071e3a5ec0b7d4378de4bcf42f13bd89befe92d904cde6f5feebd8be2e28"
+  }
+}
