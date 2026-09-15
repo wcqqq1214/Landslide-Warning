@@ -1,0 +1,74 @@
+[
+  {
+    "origin": 612,
+    "seed": 0,
+    "allowed_response": 0.032622454886039404,
+    "unrestricted_early_response": 0.33913194794998625
+  },
+  {
+    "origin": 612,
+    "seed": 1,
+    "allowed_response": 0.01848425711608733,
+    "unrestricted_early_response": 0.27268007638454483
+  },
+  {
+    "origin": 612,
+    "seed": 2,
+    "allowed_response": 0.010344515160379056,
+    "unrestricted_early_response": 0.5321732829051202
+  },
+  {
+    "origin": 792,
+    "seed": 0,
+    "allowed_response": 0.11733866466028542,
+    "unrestricted_early_response": 0.12229950926204139
+  },
+  {
+    "origin": 792,
+    "seed": 1,
+    "allowed_response": 0.027352260566493536,
+    "unrestricted_early_response": 0.1169433372519996
+  },
+  {
+    "origin": 792,
+    "seed": 2,
+    "allowed_response": 0.05057646214794109,
+    "unrestricted_early_response": 0.20584886878398348
+  },
+  {
+    "origin": 972,
+    "seed": 0,
+    "allowed_response": 0.07493705580888799,
+    "unrestricted_early_response": 0.06794693054594747
+  },
+  {
+    "origin": 972,
+    "seed": 1,
+    "allowed_response": 0.03310564334955174,
+    "unrestricted_early_response": 0.06794643243173536
+  },
+  {
+    "origin": 972,
+    "seed": 2,
+    "allowed_response": 0.042554701241014736,
+    "unrestricted_early_response": 0.045516828075704105
+  },
+  {
+    "origin": 1168,
+    "seed": 0,
+    "allowed_response": 0.024082881079696028,
+    "unrestricted_early_response": 0.06557890179206595
+  },
+  {
+    "origin": 1168,
+    "seed": 1,
+    "allowed_response": 0.015511029085669203,
+    "unrestricted_early_response": 0.02139527617393731
+  },
+  {
+    "origin": 1168,
+    "seed": 2,
+    "allowed_response": 0.017612940602454885,
+    "unrestricted_early_response": 0.02712155771978323
+  }
+]

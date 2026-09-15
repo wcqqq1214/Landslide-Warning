@@ -1,0 +1,6 @@
+{
+  "forward_backward_seconds": 0.00682411680027144,
+  "approx_4800_updates_seconds": 32.75576064130291,
+  "optimizer_updates": 0,
+  "note": "Nonzero old weights, five gradient evaluations only; estimate excludes optimizer, IO, audits and figures"
+}

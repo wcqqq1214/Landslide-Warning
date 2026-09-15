@@ -1,0 +1,35 @@
+{
+  "status": "verified",
+  "time_utc": "2026-09-15T18:26:48.252071+00:00",
+  "files": {
+    "../../../code/tide_prefix/run.py": "de67b1c3f50a8c470b9d8d3bf9dcf7dcb4754136c5a3bdc903c755bb2593151c",
+    "../../../code/tide_prefix/numpy_model.py": "f6459ca56f4e062c4c7b0c9f8e0c99bdbd6318a16148a5e64dfe0d6e2372d2f3",
+    "../../../code/tide_prefix/__init__.py": "166035f8712337a8743c2ffd5bd9d0258acc19996a83687311cd1df248b7dfbe",
+    "../../../code/tide_prefix/core.py": "69314374a87df2cab586656267715dd96f049fd197771db5626a86c6c5521cc6",
+    "../../../code/tide_prefix/preflight.py": "912c59637ed812b8f8b4a326fb51c97c2632fcd33277c9d57d680b10a49feaea",
+    "../../../config/ootang_tide_prefix.v1_0.json": "49943891dfa1a058a23b070d72ff87df30921c0015672f4538e1aaee4a43902f",
+    "../../../docs/ootang_tide_prefix_sources.v1.0.json": "833237b01972c4635e48cf326f7e55dd20878df1f22b6f0d4a7b24f5dd1ff509",
+    "../../../docs/ootang_tide_prefix_plan.v1.0.md": "8f3e417c22f14b3034715180480d797904595311aef6e91afd207ba1dc044d1c",
+    "../../../docs/ootang_tide_prefix_implementation.v1.0.md": "403dc3ff63c8214667cbda61a7790a0542d23e4e18932f31ca18ceed982499f5",
+    "preflight/reload_probe.pt": "bc6090d7159439d556e50d565397b5f1608fe3158e9c6f0af95e126c1f7f718f",
+    "preflight/runtime_probe.json": "105db6235a699770720fbf8fb35965d35cf918b32b94e4284b3a0ba30763f019",
+    "preflight/checks.json": "dfc4ce5f83fca01d7c18246a8a2befc242b00041f48d5859df7c3b72857eecc3",
+    "preflight/positive_controls.json": "10f20a0c6bc1777581bc7221fcd1d857f8cc55867eb2309867b4cdaf0e4c1245",
+    "preflight/receipt.json": "2434ab170c032f09269aae776c0a33f413d71441d867348d69da817079989c39"
+  },
+  "preflight": {
+    "status": "passed",
+    "source_files": 308,
+    "checks": 926,
+    "values": 3781808,
+    "max_difference": 2.19824158875781e-14,
+    "parameters": 110392,
+    "all294_output_and_gradient_equivalent": true,
+    "all12_nonzero_weight_probes": true,
+    "late_input_isolation": true,
+    "optimizer_updates": 0,
+    "new_fits": 0,
+    "new_bplus_fits": 0,
+    "new_physical_forwards": 0
+  }
+}

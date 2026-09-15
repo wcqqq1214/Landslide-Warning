@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "source_files": 308,
+  "checks": 926,
+  "values": 3781808,
+  "max_difference": 2.19824158875781e-14,
+  "parameters": 110392,
+  "all294_output_and_gradient_equivalent": true,
+  "all12_nonzero_weight_probes": true,
+  "late_input_isolation": true,
+  "optimizer_updates": 0,
+  "new_fits": 0,
+  "new_bplus_fits": 0,
+  "new_physical_forwards": 0
+}

@@ -1,0 +1,5558 @@
+[
+  {
+    "name": "n612/identical_data/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/identical_data/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/identical_data/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/identical_data/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/future_forcing_training_isolation/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/future_forcing_training_isolation/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/future_forcing_training_isolation/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/future_forcing_training_isolation/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m432/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n612/m432/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.0980799602933189e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/m432/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m432/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m610/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n612/m610/independent_covariates",
+    "values": 22752,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/m610/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m610/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m611/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n612/m611/independent_covariates",
+    "values": 22752,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/m611/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/m611/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/numpy",
+    "values": 1176,
+    "max_difference": 3.885780586188048e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s0/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s0/full_last_query",
+    "values": 4,
+    "max_difference": 3.885780586188048e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s0/literal_queries",
+    "values": 32,
+    "max_difference": 3.885780586188048e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s0/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/numpy",
+    "values": 1176,
+    "max_difference": 3.3306690738754696e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s1/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s1/full_last_query",
+    "values": 4,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s1/literal_queries",
+    "values": 32,
+    "max_difference": 1.8041124150158794e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s1/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/numpy",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s2/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n612/s2/full_last_query",
+    "values": 4,
+    "max_difference": 4.163336342344337e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s2/literal_queries",
+    "values": 32,
+    "max_difference": 7.216449660063518e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n612/s2/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/identical_data/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/identical_data/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/identical_data/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/identical_data/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/future_forcing_training_isolation/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/future_forcing_training_isolation/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/future_forcing_training_isolation/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/future_forcing_training_isolation/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m432/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n792/m432/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/m432/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m432/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m790/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n792/m790/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/m790/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m790/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m791/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n792/m791/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.0651202142497596e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/m791/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/m791/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/numpy",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s0/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s0/full_last_query",
+    "values": 4,
+    "max_difference": 3.3306690738754696e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s0/literal_queries",
+    "values": 32,
+    "max_difference": 4.440892098500626e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s0/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "all294_literal_output",
+    "values": 1176,
+    "max_difference": 5.551115123125783e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.a.weight",
+    "values": 192,
+    "max_difference": 4.107825191113079e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.a.bias",
+    "values": 16,
+    "max_difference": 2.7755575615628914e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.b.weight",
+    "values": 32,
+    "max_difference": 8.992806499463768e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.skip.weight",
+    "values": 24,
+    "max_difference": 2.19824158875781e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 2.42861286636753e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.a.bias",
+    "values": 16,
+    "max_difference": 1.734723475976807e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.b.weight",
+    "values": 256,
+    "max_difference": 1.0408340855860843e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.b.bias",
+    "values": 16,
+    "max_difference": 3.469446951953614e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 5.204170427930421e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 6.938893903907228e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.a.weight",
+    "values": 256,
+    "max_difference": 2.7755575615628914e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.a.bias",
+    "values": 16,
+    "max_difference": 1.734723475976807e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 1.5265566588595902e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.b.bias",
+    "values": 588,
+    "max_difference": 6.938893903907228e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 6.938893903907228e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 6.938893903907228e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.a.weight",
+    "values": 64,
+    "max_difference": 5.551115123125783e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.a.bias",
+    "values": 16,
+    "max_difference": 3.469446951953614e-18,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.b.weight",
+    "values": 16,
+    "max_difference": 3.885780586188048e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 2.6645352591003757e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/linear.weight",
+    "values": 52920,
+    "max_difference": 2.498001805406602e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/linear.bias",
+    "values": 294,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "all294_literal_gradient/point.weight",
+    "values": 16,
+    "max_difference": 1.214306433183765e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "late_input_jacobian",
+    "values": 11572,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "reload",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/numpy",
+    "values": 1176,
+    "max_difference": 6.522560269672795e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s1/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s1/full_last_query",
+    "values": 4,
+    "max_difference": 2.220446049250313e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s1/literal_queries",
+    "values": 32,
+    "max_difference": 7.494005416219807e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s1/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/numpy",
+    "values": 1176,
+    "max_difference": 4.440892098500626e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s2/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n792/s2/full_last_query",
+    "values": 4,
+    "max_difference": 3.885780586188048e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s2/literal_queries",
+    "values": 32,
+    "max_difference": 3.3306690738754696e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n792/s2/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/identical_data/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/identical_data/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/identical_data/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/identical_data/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/future_forcing_training_isolation/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/future_forcing_training_isolation/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/future_forcing_training_isolation/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/future_forcing_training_isolation/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m432/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n972/m432/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.071365218763276e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/m432/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m432/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m970/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n972/m970/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.687538997430238e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/m970/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m970/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m971/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n972/m971/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.687538997430238e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/m971/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/m971/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/numpy",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s0/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s0/full_last_query",
+    "values": 4,
+    "max_difference": 8.326672684688674e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s0/literal_queries",
+    "values": 32,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s0/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/numpy",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s1/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s1/full_last_query",
+    "values": 4,
+    "max_difference": 2.7755575615628914e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s1/literal_queries",
+    "values": 32,
+    "max_difference": 8.326672684688674e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s1/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/numpy",
+    "values": 1176,
+    "max_difference": 3.0531133177191805e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s2/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n972/s2/full_last_query",
+    "values": 4,
+    "max_difference": 1.942890293094024e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s2/literal_queries",
+    "values": 32,
+    "max_difference": 1.942890293094024e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n972/s2/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/identical_data/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/identical_data/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/identical_data/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/identical_data/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/future_forcing_training_isolation/0",
+    "values": 2160,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/future_forcing_training_isolation/1",
+    "values": 68256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/future_forcing_training_isolation/2",
+    "values": 3516,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/future_forcing_training_isolation/3",
+    "values": 879,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m432/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n1168/m432/independent_covariates",
+    "values": 22752,
+    "max_difference": 1.1178558079194545e-14,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/m432/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m432/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m1166/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n1168/m1166/independent_covariates",
+    "values": 22752,
+    "max_difference": 9.048317650695026e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/m1166/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m1166/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m1167/independent_history",
+    "values": 720,
+    "max_difference": 0.0,
+    "tolerance": 1e-10
+  },
+  {
+    "name": "n1168/m1167/independent_covariates",
+    "values": 22752,
+    "max_difference": 9.048317650695026e-15,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/m1167/target",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/m1167/mask",
+    "values": 293,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/numpy",
+    "values": 1176,
+    "max_difference": 2.220446049250313e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s0/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s0/full_last_query",
+    "values": 4,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s0/literal_queries",
+    "values": 32,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s0/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/numpy",
+    "values": 1176,
+    "max_difference": 2.7755575615628914e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s1/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s1/full_last_query",
+    "values": 4,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s1/literal_queries",
+    "values": 32,
+    "max_difference": 1.1102230246251565e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s1/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.a.weight",
+    "values": 192,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.b.weight",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.b.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.skip.weight",
+    "values": 24,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/feature.skip.bias",
+    "values": 2,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.a.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.b.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.b.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.skip.weight",
+    "values": 18112,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/encoder.skip.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.a.weight",
+    "values": 256,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.b.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.b.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.skip.weight",
+    "values": 9408,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/decoder.skip.bias",
+    "values": 588,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.a.weight",
+    "values": 64,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.a.bias",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.b.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.b.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.skip.weight",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/temporal.skip.bias",
+    "values": 1,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/linear.weight",
+    "values": 52920,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/linear.bias",
+    "values": 294,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/original_init/point.weight",
+    "values": 16,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/schedule",
+    "values": 3200,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/zero_init",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/numpy",
+    "values": 1176,
+    "max_difference": 1.6653345369377348e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s2/origin",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 0
+  },
+  {
+    "name": "n1168/s2/full_last_query",
+    "values": 4,
+    "max_difference": 8.326672684688674e-17,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s2/literal_queries",
+    "values": 32,
+    "max_difference": 1.6653345369377348e-16,
+    "tolerance": 1e-08
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h0",
+    "values": 4,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h1",
+    "values": 8,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h7",
+    "values": 32,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h30",
+    "values": 124,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h90",
+    "values": 364,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h180",
+    "values": 724,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h292",
+    "values": 1172,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  },
+  {
+    "name": "n1168/s2/late_input_isolation/h293",
+    "values": 1176,
+    "max_difference": 0.0,
+    "tolerance": 1e-09
+  }
+]
