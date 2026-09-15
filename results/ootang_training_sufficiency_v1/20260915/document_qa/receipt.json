@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "tables": 6,
+  "table_rows": 34,
+  "numeric_cells": 104,
+  "links": 187,
+  "effect_gates_and_seed_counts_reproduced": true,
+  "narrative_key_numbers_checked": true,
+  "new_fits": 0,
+  "optimizer_updates": 0,
+  "statistical_fallacy_checks": 11
+}

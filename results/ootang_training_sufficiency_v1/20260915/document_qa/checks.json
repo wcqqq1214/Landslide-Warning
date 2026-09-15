@@ -1,0 +1,26 @@
+[
+  {
+    "table": "rmse",
+    "rows": 8
+  },
+  {
+    "table": "budget_changes",
+    "rows": 6
+  },
+  {
+    "table": "training_changes",
+    "rows": 4
+  },
+  {
+    "table": "probability",
+    "rows": 8
+  },
+  {
+    "table": "final_points",
+    "rows": 4
+  },
+  {
+    "table": "gates",
+    "rows": 4
+  }
+]

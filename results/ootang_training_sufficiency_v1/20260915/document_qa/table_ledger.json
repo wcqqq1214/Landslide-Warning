@@ -1,0 +1,2180 @@
+{
+  "report": "docs/ootang_training_sufficiency_results.v1.0.md",
+  "source_files": {
+    "summary": "results/ootang_training_sufficiency_v1/20260915/extension/analysis/phase_summary.csv",
+    "points": "results/ootang_training_sufficiency_v1/20260915/extension/analysis/metrics_by_point.csv",
+    "train200": "results/ootang_training_sufficiency_v1/20260915/diagnostic/training_summary.csv",
+    "train400": "results/ootang_training_sufficiency_v1/20260915/extension/audit/training400_summary.csv"
+  },
+  "tables": [
+    {
+      "name": "rmse",
+      "headers": [
+        "方法",
+        "792历史窗",
+        "972历史窗",
+        "1168最终窗"
+      ],
+      "rows": [
+        [
+          {
+            "text": "改进B+"
+          },
+          {
+            "text": "27.313325",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "67.167389",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "9.124173",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "仅起点校正B+"
+          },
+          {
+            "text": "27.297235",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "40.433365",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "9.116413",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "DRIFT1"
+          },
+          {
+            "text": "5.824270",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "DRIFT1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "10.594506",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "DRIFT1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "12.977735",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "普通岭回归"
+          },
+          {
+            "text": "31.315924",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "RR_COND"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "48.588248",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "RR_COND"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "12.338214",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "GRU起点版200次"
+          },
+          {
+            "text": "26.778773",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "20.445223",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "11.141437",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "GRU起点版400次"
+          },
+          {
+            "text": "21.725008",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "24.737119",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "11.339123",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版200次"
+          },
+          {
+            "text": "29.102037",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "20.640218",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "13.290363",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版400次"
+          },
+          {
+            "text": "27.310036",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 792,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "24.154311",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 972,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "13.653310",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          }
+        ]
+      ]
+    },
+    {
+      "name": "budget_changes",
+      "headers": [
+        "骨干",
+        "起点",
+        "MAE变化/%",
+        "RMSE变化/%",
+        "同种子MAE及RMSE均改善"
+      ],
+      "rows": [
+        [
+          {
+            "text": "GRU"
+          },
+          {
+            "text": "792"
+          },
+          {
+            "text": "-21.0134",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-18.8723",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "3/3"
+          }
+        ],
+        [
+          {
+            "text": "GRU"
+          },
+          {
+            "text": "972"
+          },
+          {
+            "text": "24.6095",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "20.9922",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "1/3"
+          }
+        ],
+        [
+          {
+            "text": "GRU"
+          },
+          {
+            "text": "1168"
+          },
+          {
+            "text": "-5.1676",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "1.7743",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "G10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "G10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "1/3"
+          }
+        ],
+        [
+          {
+            "text": "Transformer"
+          },
+          {
+            "text": "792"
+          },
+          {
+            "text": "-7.3285",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-6.1576",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 792,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "2/3"
+          }
+        ],
+        [
+          {
+            "text": "Transformer"
+          },
+          {
+            "text": "972"
+          },
+          {
+            "text": "19.0460",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "17.0255",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 972,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "0/3"
+          }
+        ],
+        [
+          {
+            "text": "Transformer"
+          },
+          {
+            "text": "1168"
+          },
+          {
+            "text": "-0.4804",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "mae",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "2.7309",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "T10_ANCHOR_UNIFORM_E200"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              },
+              "new": {
+                "table": "summary",
+                "filters": {
+                  "origin": 1168,
+                  "method": "T10_ANCHOR_UNIFORM_E400"
+                },
+                "column": "rmse",
+                "aggregate": "single",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "2/3"
+          }
+        ]
+      ]
+    },
+    {
+      "name": "training_changes",
+      "headers": [
+        "训练前缀",
+        "GRU MSE/%",
+        "GRU J/%",
+        "TF MSE/%",
+        "TF J/%"
+      ],
+      "rows": [
+        [
+          {
+            "text": "612"
+          },
+          {
+            "text": "-18.4680",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 612,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 612,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-5.8680",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 612,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 612,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-16.2076",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 612,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 612,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-6.0924",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 612,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 612,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "792"
+          },
+          {
+            "text": "-20.7516",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 792,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 792,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-8.6579",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 792,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 792,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-21.8733",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 792,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 792,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-7.3524",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 792,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 792,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "972"
+          },
+          {
+            "text": "-18.2918",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 972,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 972,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-6.4866",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 972,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 972,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-17.0595",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 972,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 972,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-6.5101",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 972,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 972,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "1168"
+          },
+          {
+            "text": "-17.4034",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-7.3127",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "G10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "G10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-16.9581",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "mse",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          },
+          {
+            "text": "-6.7958",
+            "rule": {
+              "op": "change_percent",
+              "old": {
+                "table": "train200",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "T10_ANCHOR_UNIFORM",
+                  "step": 200
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              },
+              "new": {
+                "table": "train400",
+                "filters": {
+                  "origin": 1168,
+                  "arm": "T10_ANCHOR_UNIFORM"
+                },
+                "column": "objective",
+                "aggregate": "mean",
+                "scale": 1
+              }
+            },
+            "places": 4
+          }
+        ]
+      ]
+    },
+    {
+      "name": "probability",
+      "headers": [
+        "最终窗方法",
+        "CRPS/mm",
+        "90%区间评分/mm",
+        "90%覆盖/%",
+        "90%宽度/mm"
+      ],
+      "rows": [
+        [
+          {
+            "text": "改进B+"
+          },
+          {
+            "text": "14.8949",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "201.6420",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "100.0000",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "201.6420",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "仅起点校正B+"
+          },
+          {
+            "text": "8.8825",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "107.9754",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "99.8294",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "107.9227",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_ORIGIN_ANCHOR"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "DRIFT1"
+          },
+          {
+            "text": "7.5850",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "88.5591",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "71.0751",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "28.4215",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "DRIFT1"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "普通岭回归"
+          },
+          {
+            "text": "13.0772",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "165.1704",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "100.0000",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "165.1704",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "RR_COND"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "GRU起点版200次"
+          },
+          {
+            "text": "6.9082",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "72.4524",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "92.6621",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "58.4822",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "GRU起点版400次"
+          },
+          {
+            "text": "8.1643",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "86.2200",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "98.2082",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "84.9406",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版200次"
+          },
+          {
+            "text": "8.6026",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "84.0560",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "77.8157",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "54.9625",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E200"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版400次"
+          },
+          {
+            "text": "8.4183",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "crps",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "76.7364",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "interval_score90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          },
+          {
+            "text": "95.6485",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 4
+          },
+          {
+            "text": "69.7101",
+            "rule": {
+              "table": "summary",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400"
+              },
+              "column": "width90",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 4
+          }
+        ]
+      ]
+    },
+    {
+      "name": "final_points",
+      "headers": [
+        "测点",
+        "B+ RMSE",
+        "GRU400 RMSE",
+        "TF400 RMSE",
+        "GRU400覆盖/%",
+        "TF400覆盖/%"
+      ],
+      "rows": [
+        [
+          {
+            "text": "ATU1"
+          },
+          {
+            "text": "8.068246",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "ATU1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "12.104740",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "ATU1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "14.470137",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "ATU1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "98.63",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "ATU1"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          },
+          {
+            "text": "94.20",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "ATU1"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          }
+        ],
+        [
+          {
+            "text": "ATU5"
+          },
+          {
+            "text": "9.115007",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "ATU5"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "6.826291",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "ATU5"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "11.022014",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "ATU5"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "99.32",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "ATU5"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          },
+          {
+            "text": "94.54",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "ATU5"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          }
+        ],
+        [
+          {
+            "text": "MJ3"
+          },
+          {
+            "text": "13.016274",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "MJ3"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "20.444273",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "MJ3"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "22.522107",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "MJ3"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "94.88",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "MJ3"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          },
+          {
+            "text": "93.86",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "MJ3"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          }
+        ],
+        [
+          {
+            "text": "MJ1"
+          },
+          {
+            "text": "6.297166",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "BPLUS_CONTINUOUS",
+                "point": "MJ1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "5.981188",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "MJ1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "6.598981",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "MJ1"
+              },
+              "column": "rmse",
+              "aggregate": "single",
+              "scale": 1
+            },
+            "places": 6
+          },
+          {
+            "text": "100.00",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "G10_ANCHOR_UNIFORM_E400",
+                "point": "MJ1"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          },
+          {
+            "text": "100.00",
+            "rule": {
+              "table": "points",
+              "filters": {
+                "origin": 1168,
+                "method": "T10_ANCHOR_UNIFORM_E400",
+                "point": "MJ1"
+              },
+              "column": "coverage90",
+              "aggregate": "single",
+              "scale": 100
+            },
+            "places": 2
+          }
+        ]
+      ]
+    },
+    {
+      "name": "gates",
+      "headers": [
+        "方法",
+        "均值门",
+        "概率门",
+        "联合通过窗数"
+      ],
+      "rows": [
+        [
+          {
+            "text": "GRU起点版200次"
+          },
+          {
+            "text": "未过 / 过 / 未过"
+          },
+          {
+            "text": "未过 / 未过 / 未过"
+          },
+          {
+            "text": "0/3"
+          }
+        ],
+        [
+          {
+            "text": "GRU起点版400次"
+          },
+          {
+            "text": "过 / 过 / 未过"
+          },
+          {
+            "text": "未过 / 未过 / 过"
+          },
+          {
+            "text": "0/3"
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版200次"
+          },
+          {
+            "text": "未过 / 过 / 未过"
+          },
+          {
+            "text": "未过 / 未过 / 未过"
+          },
+          {
+            "text": "0/3"
+          }
+        ],
+        [
+          {
+            "text": "Transformer起点版400次"
+          },
+          {
+            "text": "未过 / 过 / 未过"
+          },
+          {
+            "text": "未过 / 未过 / 过"
+          },
+          {
+            "text": "0/3"
+          }
+        ]
+      ]
+    }
+  ]
+}

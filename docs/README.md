@@ -1,8 +1,19 @@
 # 项目文档导航
 
-当前入口以 **2026-09-15已完成的统一接口GRU/Transformer×起点残差表达消融**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
+当前入口以 **2026-09-15已完成的训练充分性核验与固定200对400次对照**为准。结果、实现核验和效果判断分别阅读；历史计划中的“尚未训练”保留形成时含义。
 
-## 最新交付：统一接口骨干×起点表达
+## 最新交付：训练充分性与固定预算对照
+
+| 文档/产物 | 用途 |
+| --- | --- |
+| [完整结果](ootang_training_sufficiency_results.v1.0.md) · [四张PNG/SVG](../figures/ootang_training_sufficiency_v1/20260915/README.md) | 训练改善与外推不稳定、两骨干最终四点曲线 |
+| [完整24组CSV](../results/ootang_training_sufficiency_v1/20260915/extension/analysis/phase_summary.csv) · [逐点结果](../results/ootang_training_sufficiency_v1/20260915/extension/analysis/metrics_by_point.csv) | 三个完整293日窗、原200及新400结果，全部种子保留 |
+| [计划](ootang_training_sufficiency_plan.v1.0.md) · [配置](../config/ootang_training_sufficiency.v1_0.json) · [1329来源](ootang_training_sufficiency_sources.v1.0.json) · [零训练诊断](ootang_training_sufficiency_diagnostic.v1.0.md) | 先固定触发，只有训练与成熟历史共同改善才追加 |
+| [实现](ootang_training_sufficiency_implementation.v1.0.md) · [核验](ootang_training_sufficiency_validation.v1.0.md) · [图件约定](ootang_training_sufficiency_figure_contract.v1.0.md) · [回执](../results/ootang_training_sufficiency_v1/20260915/final_receipt.json) | 96旧/72新检查点，原200步精确重放，24新拟合9600实际更新 |
+
+最终GRU400/TF400 RMSE11.339123/13.653310mm均比原200次更高，B+9.124173保持；两个400版本最终概率门通过，但三个窗口联合仍0/3。本轮已收束，不继续加训练或结构。
+
+## 上一轮交付：统一接口骨干×起点表达
 
 | 文档/产物 | 用途 |
 | --- | --- |
